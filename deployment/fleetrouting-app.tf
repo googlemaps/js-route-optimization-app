@@ -27,22 +27,6 @@ resource "time_sleep" "wait_for_cloud_run_service_agent" {
   create_duration = "60s"
 }
 
-resource "google_artifact_registry_repository_iam_member" "fleetrouting_app_reader" {
-  depends_on = [
-    google_project_service.cloud_run,
-    time_sleep.wait_for_cloud_run_service_agent
-  ]
-
-  provider = google-beta
-
-  project    = var.image_repo_project
-  location   = var.image_repo_location
-  repository = var.image_repo_id
-
-  role   = "roles/artifactregistry.reader"
-  member = "serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
-}
-
 # maps api key secret
 resource "google_secret_manager_secret" "maps_api_key" {
   depends_on = [
@@ -71,10 +55,6 @@ resource "google_secret_manager_secret_version" "maps_api_key" {
 
 # cloud run services
 module "cloud_run_fleetrouting_app" {
-  depends_on = [
-    google_artifact_registry_repository_iam_member.fleetrouting_app_reader
-  ]
-
   source  = "GoogleCloudPlatform/cloud-run/google"
   version = "~> 0.2.0"
 
