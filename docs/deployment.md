@@ -16,11 +16,9 @@ and supporting resources to an initialized Google Cloud Platform (GCP) project.
 - [Terraform CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli) v1.0 or later
 
 ## Authorize `gcloud` CLI
-The `gcloud` commands in the following steps will require
-the CLI to be logged in as a Google account
+**Terraform** runs as your `gcloud` *Application Default Credentials*.
+So the CLI must be logged in as a Google account
 with permission to modify the target project.
-
-Additionally, **Terraform** will run as your `gcloud` *Application Default Credentials*.
 
 If not already configured, run the following commands
 to authorize the CLI and set your default credentials:
@@ -59,7 +57,7 @@ The following sections explain the variables in detail.
 At minimum, the following variables must be populated in your `local.auto.tfvars` file. If you followed the [project setup instructions](project.md), these values should be familiar:
 
 - `project` - GCP *project ID* (NOT number or name) of the project you created in [project setup](project.md).
-- `dns_name` - Fully-qualified domain name to host the app at, _without_ any   protocol (e.g. `fleetrouting.example.com`)
+- `dns_name` - Fully-qualified domain name to host the app at, without any protocol or path (e.g. `fleetrouting.example.com`)
   - This domain must be registered in a **Google Cloud DNS zone** and be editable by your Google account.
 - `dns_zone` - ID of the Cloud DNS zone that owns your `dns_name` domain
 - `dns_project` - ID of the GCP project that contains `dns_zone`
