@@ -1,0 +1,79 @@
+<div class="row header">
+  <mat-checkbox
+    color="primary"
+    [checked]="getSelected()"
+    (change)="selectedChange.emit($event.checked)">
+  </mat-checkbox>
+  <div>
+    <div class="text__title mb-0">
+      <a href="javascript:void(0)" title="View metadata" (click)="viewMetadata.emit(vehicle.id)">
+        {{
+          (vehicle | entityName: 'Vehicle').length <= maxNameLength
+            ? (vehicle | entityName: 'Vehicle')
+            : (vehicle | entityName: 'Vehicle' | slice: 0:maxNameLength) + '...'
+        }}
+      </a>
+    </div>
+    <div
+      class="text__caption mb-0 text--gray"
+      *ngIf="vehicleOperator?.length > 0 && allowExperimentalFeatures">
+      Operators: {{ vehicleOperator }}
+    </div>
+    <div class="text__caption mb-0 text--gray">Shipments: {{ shipmentCount || 0 }}</div>
+  </div>
+  <button
+    class="edit-button"
+    mat-icon-button
+    type="button"
+    title="Edit vehicle"
+    (click)="editVehicle.emit(vehicle.id)">
+    <mat-icon>create</mat-icon>
+  </button>
+</div>
+<div class="row body">
+  <div class="underlay">
+    <svg class="axis">
+      <line x1="0" y1="50%" x2="100%" y2="50%" />
+    </svg>
+  </div>
+  <div class="injected-solution-times">
+    <div class="relative-position-container">
+      <div *ngFor="let time of relaxationTimes">
+        <div
+          #markerLine
+          *ngIf="validTime(time)"
+          class="marker-line"
+          [style.left]="getMarkerElementLeft(time, markerLine)"
+          [title]="getInjectedSolutionTimeLabel(time)"></div>
+      </div>
+    </div>
+  </div>
+  <app-timeline
+    #t
+    [duration]="duration"
+    [availability]="availability"
+    [timeline]="timeline"
+    [offset]="7"
+    [timezoneOffset]="timezoneOffset">
+  </app-timeline>
+  <app-points-of-interest
+    [isDragging]="isDragging"
+    [currentOverlapId]="currentOverlapId"
+    [currentDragVisitIds]="currentDragVisitIds"
+    [routeId]="route?.id"
+    [usableWidth]="t.usableWidth"
+    [maxOffset]="7"
+    [duration]="duration"
+    [changedVisits]="changedVisits"
+    [pointsOfInterest]="pointsOfInterest"
+    [timezoneOffset]="timezoneOffset"
+    [pendingNewPois]="pendingNewPois"
+    [pendingOldVisitIds]="pendingOldVisitIds"
+    (mouseEnterVisit)="mouseEnterVisit.emit($event)"
+    (mouseExitVisit)="mouseExitVisit.emit($event)"
+    (dragStart)="dragStart.emit($event)"
+    (timelineEnter)="timelineEnter.emit($event)"
+    (timelineLeave)="timelineLeave.emit($event)"
+    (pointOfInterestClick)="pointOfInterestClick.emit($event)">
+  </app-points-of-interest>
+</div>

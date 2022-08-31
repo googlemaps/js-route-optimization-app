@@ -1,0 +1,22 @@
+<app-base-edit-vehicle-dialog
+  [bulkEdit]="vehicleIds.length > 1"
+  [bulkNumber]="vehicleIds.length"
+  [scenarioBounds]="scenarioBounds$ | async"
+  [vehicle]="vehicle$ | async"
+  [timezoneOffset]="timezoneOffset$ | async"
+  [nextVehicleId]="nextVehicleId$ | async"
+  [disabled]="disabled$ | async"
+  [abbreviations]="abbreviations$ | async"
+  [injectedSolution]="injectedSolution$ | async"
+  [relaxationSettings]="timeThresholds$ | async"
+  [scenarioCapacities]="scenarioCapacities$ | async"
+  [globalDuration]="globalDuration$ | async"
+  [scenarioDemands]="scenarioDemands$ | async"
+  [visitTags]="visitTags$ | async"
+  [visitTypes]="visitTypes$ | async"
+  [operatorTypes]="operatorTypes$ | async"
+  [existingOperatorTypes]="existingOperatorTypes$ | async"
+  (cancel)="onCancel()"
+  [allowExperimentalFeatures]="allowExperimentalFeatures$ | async"
+  (save)="onSave($event)">
+</app-base-edit-vehicle-dialog>

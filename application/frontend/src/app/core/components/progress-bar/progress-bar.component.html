@@ -1,0 +1,4 @@
+<mat-progress-bar *ngIf="loading; else notLoading" mode="indeterminate"> </mat-progress-bar>
+<ng-template #notLoading>
+  <mat-divider></mat-divider>
+</ng-template>

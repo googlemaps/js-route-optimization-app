@@ -1,0 +1,9 @@
+<app-base-validation-result-dialog
+  [allowedVehicleWarnings]="allowedVehicleWarnings$ | async"
+  [shipmentTimeRangeWarnings]="shipmentTimeRangeWarnings$ | async"
+  [vehicleTimeRangeWarnings]="vehicleTimeRangeWarnings$ | async"
+  (cancel)="onCancel()"
+  (ok)="onOk()"
+  (editShipment)="onEditShipment($event)"
+  (editVehicle)="onEditVehicle($event)">
+</app-base-validation-result-dialog>

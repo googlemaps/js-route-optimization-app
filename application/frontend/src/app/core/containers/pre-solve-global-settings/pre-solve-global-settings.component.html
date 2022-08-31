@@ -1,0 +1,126 @@
+<form [formGroup]="form" autocomplete="off" class="edit-menu-content">
+  <div class="settings-item pad-right item-md">
+    <div class="mat-body-strong">Label</div>
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        type="text"
+        (change)="onUpdateLabel($event.target.value)"
+        [value]="label$ | async"
+        placeholder="Enter label" />
+    </mat-form-field>
+  </div>
+  <div class="settings-item pad-right item-lg">
+    <div class="mat-body-strong">Solve Strategy</div>
+    <mat-form-field appearance="outline">
+      <mat-select (selectionChange)="onUpdateSearchMode($event.value)" [value]="currentSearchMode">
+        <mat-option *ngFor="let key of searchModeKeys" [value]="key">
+          {{ searchModeLabels[key] }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="settings-item item-sm pad-right">
+    <div class="mat-body-strong">Time Limit</div>
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        type="number"
+        min="1"
+        max="3600"
+        [formControl]="timeout"
+        (change)="onUpdateTimeout()"
+        placeholder="Seconds" />
+      <mat-error *ngIf="timeout.errors"> Must be in range 1-3600. </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="settings-datetime pad-right timezone-settings item-lg">
+    <div class="mat-body-strong">Timezone</div>
+    <app-timezone-edit
+      appearance="outline"
+      [currentTimezone]="currentTimezone"
+      (timezoneSelected)="onUpdateTimezone($event)">
+    </app-timezone-edit>
+  </div>
+  <div class="settings-datetime settings-traffic item-sm pad-right">
+    <div class="mat-body-strong">Traffic</div>
+    <mat-checkbox
+      [checked]="traffic$ | async"
+      color="primary"
+      (change)="onUpdateTraffic($event.checked)">
+      Consider Traffic
+    </mat-checkbox>
+  </div>
+  <div class="settings-datetime settings-item item-sm pad-right">
+    <div class="mat-body-strong">Iterate on solution</div>
+    <mat-slide-toggle
+      color="primary"
+      [checked]="injectedSolution"
+      (change)="toggleInjectedSolution($event)"
+      [disabled]="(hasSolution$ | async) === false">
+      {{ injectedSolution ? 'On' : 'Off' }}
+    </mat-slide-toggle>
+  </div>
+  <div *ngIf="injectedSolution && !constraintRelaxations.length" class="settings-item item-md">
+    <div class="mat-body-strong">Iteration relaxations</div>
+    <mat-form-field appearance="outline">
+      <mat-select [value]="0" (selectionChange)="initialRelaxationConstraintChanged($event)">
+        <mat-option *ngFor="let key of relaxationLevelKeys" [value]="RelaxationLevel[key]">
+          {{ RelaxationLevelNames[key] }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="injectedSolution" class="settings-item item-sm settings-interpret">
+    <div class="mat-body-strong">Interpret injected solutions using labels</div>
+    <mat-slide-toggle
+      color="primary"
+      [checked]="isInterpretInjectedSolutionsUsingLabels"
+      (change)="toggleInterpretInjectedSolutionsUsingLabels($event)"
+      [formControl]="interpretInjectedSolutionsUsingLabels">
+      {{ isInterpretInjectedSolutionsUsingLabels ? 'On' : 'Off' }}
+    </mat-slide-toggle>
+  </div>
+  <div
+    class="settings-relaxation pad-right"
+    *ngIf="injectedSolution && constraintRelaxations.length">
+    <div class="mat-body-strong">Iteration relaxations</div>
+    <app-injected-relaxation-constraints-form
+      [appearance]="'outline'"
+      [maxToShow]="1"
+      formArrayName="constraintRelaxations"
+      (inputChange)="updateThresholds()"
+      (removeThreshold)="removeThreshold($event)">
+    </app-injected-relaxation-constraints-form>
+    <p *ngIf="updatedTimeThresholds.length">
+      <button type="button" mat-button color="primary" (click)="editAllThresholds()">
+        {{
+          updatedTimeThresholds.length <= 1
+            ? 'Add more relaxations'
+            : 'Show ' + (updatedTimeThresholds.length - 1) + ' more'
+        }}
+      </button>
+    </p>
+  </div>
+  <div class="settings-datetime settings-item item-sm pad-right">
+    <div class="mat-body-strong">Populate transition polylines</div>
+    <mat-slide-toggle
+      color="primary"
+      [checked]="isSelectPopulateTransitionPolylines"
+      (change)="toggleSelectPopulateTransitionPolylines($event)"
+      [formControl]="populateTransitionPolylines">
+      {{ isSelectPopulateTransitionPolylines ? 'On' : 'Off' }}
+    </mat-slide-toggle>
+  </div>
+  <div class="settings-datetime settings-item item-sm pad-right">
+    <div class="mat-body-strong">Allow large deadline despite interruption risk</div>
+    <mat-slide-toggle
+      color="primary"
+      [checked]="isSelectAllowLargeDeadlineDespiteInterruptionRisk"
+      (change)="toggleSelectAllowLargeDeadlineDespiteInterruptionRisk($event)"
+      [formControl]="allowLargeDeadlineDespiteInterruptionRisk">
+      {{ isSelectAllowLargeDeadlineDespiteInterruptionRisk ? 'On' : 'Off' }}
+    </mat-slide-toggle>
+  </div>
+</form>

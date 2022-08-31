@@ -1,0 +1,9 @@
+<form [formGroup]="form" (ngSubmit)="apply.emit()">
+  <mat-form-field *ngIf="optionCtrl as control">
+    <mat-select [formControl]="control">
+      <mat-option *ngFor="let option of options" [value]="option">
+        {{ option.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

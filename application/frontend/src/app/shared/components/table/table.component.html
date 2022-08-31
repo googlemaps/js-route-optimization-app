@@ -1,0 +1,38 @@
+<table mat-table [dataSource]="dataSource" [trackBy]="trackItemBy.bind(this)">
+  <ng-container matColumnDef="select" sticky>
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox
+        color="primary"
+        (change)="onSelectAllToggleClick($event)"
+        [checked]="selectAllChecked"
+        [indeterminate]="selectAllIndeterminate"
+        [aria-label]="checkboxLabel()"
+        [disabled]="selectDisabled">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let item">
+      <mat-checkbox
+        *ngIf="canSelect == null || canSelect(item)"
+        color="primary"
+        (change)="onSelectClick($event, item)"
+        [checked]="isSelected(item)"
+        [aria-label]="checkboxLabel(item)"
+        [disabled]="selectDisabled || isDisabled(item)"
+        [matTooltip]="
+          isDisabled(item) ? 'Cannot ignore vehicles where - used if route is empty is true' : ''
+        ">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="_filler">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef></td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+  <tr
+    mat-row
+    *matRowDef="let item; columns: columns"
+    [ngClass]="{ selected: isSelected(item), 'mouse-over': isMouseOver(item) }"
+    (mouseenter)="mouseOverActive && mouseEnter(item)"
+    (mouseleave)="mouseOverActive && mouseExit(item)"></tr>
+</table>

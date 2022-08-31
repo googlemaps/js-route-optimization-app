@@ -1,0 +1,6 @@
+<div class="text__title">
+  <span [ngClass]="{ link: navigation }" (click)="onVehicleClick()">
+    {{ vehicle | entityName: 'Vehicle' }}
+  </span>
+</div>
+<div *ngIf="shipmentCount != null" class="text__caption">Shipments: {{ shipmentCount }}</div>

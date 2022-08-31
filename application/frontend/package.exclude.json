@@ -1,0 +1,15 @@
+{
+  "devDependencies": {
+    "codelyzer": { "$remove": true },
+    "jasmine-core": { "$remove": true },
+    "jasmine-marbles": { "$remove": true },
+    "jasmine-spec-reporter": { "$remove": true },
+    "karma": { "$remove": true },
+    "karma-chrome-launcher": { "$remove": true },
+    "karma-coverage-istanbul-reporter": { "$remove": true },
+    "karma-jasmine": { "$remove": true },
+    "karma-jasmine-html-reporter": { "$remove": true },
+    "protractor": { "$remove": true },
+    "puppeteer": { "$remove": true }
+  }
+}

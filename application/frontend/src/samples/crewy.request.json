@@ -1,0 +1,720 @@
+{
+  "depot": {
+    "latitude": 41.399892,
+    "longitude": -81.704404
+  },
+  "model": {
+    "shipments": [
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.912889,
+                "longitude": -83.811472
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.338431,
+                "longitude": -82.998485
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.338431,
+                "longitude": -82.998485
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.69348,
+                "longitude": -82.854667
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.060841,
+                "longitude": -82.637511
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.446239,
+                "longitude": -82.587507
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.049767,
+                "longitude": -82.647163
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.334611,
+                "longitude": -82.974334
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.722749,
+                "longitude": -82.855063
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.290473,
+                "longitude": -82.133731
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.543103,
+                "longitude": -82.689055
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.047672,
+                "longitude": -82.642618
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.246638,
+                "longitude": -82.481405
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.846403,
+                "longitude": -82.282506
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.988031,
+                "longitude": -83.881325
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.962687,
+                "longitude": -82.959936
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.453837,
+                "longitude": -82.227409
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.942983,
+                "longitude": -83.056066
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.233437,
+                "longitude": -82.194354
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.74996,
+                "longitude": -82.862361
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.330635,
+                "longitude": -82.099814
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.332714,
+                "longitude": -82.110252
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.059849,
+                "longitude": -82.641639
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.93239,
+                "longitude": -83.059982
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.96871,
+                "longitude": -83.139345
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.0598,
+                "longitude": -82.640775
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.913263,
+                "longitude": -83.812726
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.55475,
+                "longitude": -82.712029
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.900303,
+                "longitude": -83.77745
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.59661,
+                "longitude": -82.943614
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.930317,
+                "longitude": -82.79941
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.539463,
+                "longitude": -82.400555
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.746762,
+                "longitude": -82.98555
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.978173,
+                "longitude": -82.999876
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.409183,
+                "longitude": -82.535793
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.528674,
+                "longitude": -82.677305
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.913071,
+                "longitude": -83.814141
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.622997,
+                "longitude": -82.852426
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.495676,
+                "longitude": -82.633174
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.3386,
+                "longitude": -82.99873
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 41.110524,
+                "longitude": -83.210322
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.247586,
+                "longitude": -82.473726
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.844755,
+                "longitude": -82.254896
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.492604,
+                "longitude": -82.647721
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.319237,
+                "longitude": -82.071592
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 41.162601,
+                "longitude": -83.411501
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.330512,
+                "longitude": -82.095913
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.455574,
+                "longitude": -82.48082
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.456163,
+                "longitude": -82.480305
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.02616,
+                "longitude": -82.62966
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.537133,
+                "longitude": -82.67687
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.338621,
+                "longitude": -82.998472
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.963108,
+                "longitude": -82.974159
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 39.111635,
+                "longitude": -82.534717
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 38.744366,
+                "longitude": -82.98595
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "vehicles": [
+      {
+        "startLocation": {
+          "latitude": 41.399892,
+          "longitude": -81.704404
+        },
+        "endLocation": {
+          "latitude": 41.399892,
+          "longitude": -81.704404
+        }
+      },
+      {
+        "startLocation": {
+          "latitude": 40.037583,
+          "longitude": -83.07966
+        },
+        "endLocation": {
+          "latitude": 40.037583,
+          "longitude": -83.07966
+        }
+      },
+      {
+        "startLocation": {
+          "latitude": 39.845074,
+          "longitude": -82.8961
+        },
+        "endLocation": {
+          "latitude": 39.845074,
+          "longitude": -82.8961
+        }
+      },
+      {
+        "startLocation": {
+          "latitude": 41.655319,
+          "longitude": -83.578086
+        },
+        "endLocation": {
+          "latitude": 41.655319,
+          "longitude": -83.578086
+        }
+      }
+    ],
+    "globalStartTime": {
+      "seconds": "1570716653"
+    },
+    "globalEndTime": {
+      "seconds": "1570745453"
+    },
+    "costPerHourOfGlobalDuration": 1
+  },
+  "considerRoadTraffic": true
+}

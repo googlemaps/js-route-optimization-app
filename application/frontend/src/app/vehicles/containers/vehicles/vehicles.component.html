@@ -1,0 +1,33 @@
+<div class="table-container">
+  <app-base-vehicles-table
+    [dataSource]="dataSource"
+    [sort]="sort$ | async"
+    [itemsSelected]="itemsSelected$ | async"
+    [itemsDisabled]="itemsDisabled$ | async"
+    [capacityTypes]="capacityTypes$ | async"
+    [columnsToDisplay]="columnsToDisplay$ | async"
+    [duration]="duration$ | async"
+    [relativeTo]="relativeTo$ | async"
+    [unitAbbreviations]="unitAbbreviations$ | async"
+    [totalItems]="totalItems$ | async"
+    [changeDisabled]="changeDisabled$ | async"
+    (selectAll)="onSelectAll()"
+    (deselectAll)="onDeselectAll()"
+    (selectedChange)="onSelectedChange($event)"
+    (sortChange)="onSortChange($event)"
+    (editVehicle)="onEdit($event)"
+    (deleteVehicle)="onDelete($event)"
+    (add)="onAdd()"
+    [shipmentCount]="shipmentCount$ | async">
+  </app-base-vehicles-table>
+</div>
+<div class="footer-container">
+  <mat-paginator
+    [length]="totalItems$ | async"
+    [pageIndex]="pageIndex$ | async"
+    [pageSize]="pageSize$ | async"
+    (page)="onPage($event)"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [hidePageSize]="true">
+  </mat-paginator>
+</div>

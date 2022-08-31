@@ -1,0 +1,25 @@
+<app-base-routes-chart
+  [routes]="routes$ | async"
+  [range]="range$ | async"
+  [duration]="duration$ | async"
+  [unitStep]="unitStep$ | async"
+  [columnLabelFormatter]="columnLabelFormatter$ | async"
+  [previousRangeOffset]="previousRangeOffset$ | async"
+  [nextRangeOffset]="nextRangeOffset$ | async"
+  [timezoneOffset]="timezoneOffset$ | async"
+  (selectPreviousRangeOffset)="onSelectPreviousRangeOffset($event)"
+  (selectNextRangeOffset)="onSelectNextRangeOffset($event)"
+  #routesChart>
+</app-base-routes-chart>
+<div class="footer-container">
+  <mat-paginator
+    [length]="totalRoutes$ | async"
+    [pageIndex]="pageIndex$ | async"
+    [pageSize]="pageSize$ | async"
+    (page)="onPage($event)"
+    [pageSizeOptions]="[10, 25, 50, 100]">
+  </mat-paginator>
+</div>
+<div class="drag-container">
+  <app-point-of-interest-drag></app-point-of-interest-drag>
+</div>

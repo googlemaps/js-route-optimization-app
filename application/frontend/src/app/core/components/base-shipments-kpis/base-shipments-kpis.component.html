@@ -1,0 +1,23 @@
+<ng-container *ngIf="shipmentsKpis">
+  <div class="planning-totals">
+    <ng-container *ngIf="shipmentsKpis.selected; else noShipmentsSelected">
+      <span class="planning-total">{{ shipmentsKpis.selected | number }}</span>
+      Shipment{{ shipmentsKpis.selected > 1 ? 's' : '' }} selected out of
+      <span class="planning-total">{{ shipmentsKpis.total | number }}</span>
+    </ng-container>
+    <ng-template #noShipmentsSelected>
+      Shipments in total <span class="planning-total">{{ shipmentsKpis.total | number }}</span>
+    </ng-template>
+  </div>
+  <div class="demands" [ngClass]="maxColumnsClass">
+    <div *ngFor="let demand of shipmentsKpis.demands">
+      <span class="mat-body-strong"
+        >{{ shipmentsKpis.selected ? (demand.selected | number) + '/' : ''
+        }}{{ demand.total | number }}</span
+      >
+      <span *ngIf="(demand.type | capacityQuantityUnit: unitAbbreviations) || demand.type as unit">
+        {{ unit }}</span
+      >
+    </div>
+  </div>
+</ng-container>

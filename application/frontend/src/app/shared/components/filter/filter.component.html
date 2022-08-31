@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <span>{{ filterOption?.label }}</span>
+  <span class="spacer"></span>
+  <button type="button" mat-icon-button aria-label="Cancel" (click)="onCancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar>
+<div class="content">
+  <ng-template #content></ng-template>
+</div>
+<div class="actions">
+  <button type="button" mat-button color="primary" (click)="onApply()" [disabled]="invalid">
+    Apply
+  </button>
+</div>

@@ -1,0 +1,16 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+app-base-shipments-table {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid $blue-lighter;
+}

@@ -1,0 +1,10 @@
+<app-base-edit-vehicle-operator-dialog
+  [bulkEdit]="vehicleOperatorIds.length > 1"
+  [bulkNumber]="vehicleOperatorIds.length"
+  [vehicleOperator]="vehicleOperator$ | async"
+  [nextOperatorId]="nextOperatorId$ | async"
+  [timezoneOffset]="timezoneOffset$ | async"
+  [disabled]="disabled$ | async"
+  (cancel)="onCancel()"
+  (save)="onSave($event)">
+</app-base-edit-vehicle-operator-dialog>

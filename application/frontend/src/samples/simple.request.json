@@ -1,0 +1,99 @@
+{
+    "model": {
+        "shipments": [
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 48.8774134,
+                                "longitude": 2.3295316
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 48.859549,
+                                "longitude": 2.293709
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 48.860226,
+                                "longitude": 2.340444
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 48.873961,
+                                "longitude": 2.294201
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 48.858427,
+                                "longitude": 2.312758
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "vehicles": [
+            {
+                "startLocation": {
+                    "latitude": 48.883332,
+                    "longitude": 2.369089
+                },
+                "endLocation": {
+                    "latitude": 48.883332,
+                    "longitude": 2.369089
+                },
+                "costPerHour": 30,
+                "costPerKilometer": 0.2
+            },
+            {
+                "startLocation": {
+                    "latitude": 48.883332,
+                    "longitude": 2.369089
+                },
+                "endLocation": {
+                    "latitude": 48.883332,
+                    "longitude": 2.369089
+                },
+                "costPerHour": 30,
+                "costPerKilometer": 0.2
+            }
+        ],
+        "globalStartTime": {
+            "seconds": "1563094800"
+        },
+        "globalEndTime": {
+            "seconds": "1563134400"
+        },
+        "costPerHourOfGlobalDuration": 1
+    }
+}

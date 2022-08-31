@@ -1,0 +1,151 @@
+app-gantt-chart {
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+
+  > section {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+  }
+
+  .cdk-virtual-scroll-viewport {
+    height: 100%;
+  }
+
+  .cdk-virtual-scroll-orientation-vertical .cdk-virtual-scroll-content-wrapper {
+    min-width: 100%;
+  }
+
+  .collection {
+    display: grid;
+    grid-template-columns: var(--row-header-width, min-content) auto;
+    grid-template-rows: auto auto;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-width: fit-content;
+    &,
+    * {
+      box-sizing: border-box;
+    }
+  }
+
+  .body-container {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .marker-line-container,
+  .rule-container {
+    grid-column: 2;
+    grid-row: 2 / -1;
+  }
+
+  .marker-line-container {
+    position: relative;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .marker-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+
+  .item-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+
+  .attribute-container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: 1fr;
+    flex-wrap: nowrap;
+  }
+
+  .attribute {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .header:not(.rule) {
+    background-color: white;
+  }
+
+  .column.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-overflow: initial;
+    white-space: normal;
+  }
+
+  .row,
+  .column {
+    overflow: hidden;
+  }
+
+  /* Fixed Headers */
+  .row.header {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    z-index: 1002;
+  }
+
+  .row.column.header {
+    top: 0;
+    z-index: 1003;
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .column-header-container,
+  .marker-handle-container {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .column-header-container {
+    background-color: white;
+    z-index: 1001;
+  }
+
+  .marker-handle-container {
+    pointer-events: none;
+    z-index: 1002;
+  }
+
+  .marker-handle {
+    position: absolute;
+  }
+
+  .column-headers-overlay-container {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    grid-row: 1;
+    grid-column: 1 / -1;
+    > * {
+      pointer-events: none;
+    }
+  }
+
+  .column-headers-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}

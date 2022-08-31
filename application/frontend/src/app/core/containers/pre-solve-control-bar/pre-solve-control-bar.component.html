@@ -1,0 +1,25 @@
+<div class="control-bar">
+  <app-map-toggle-button (toggleMap)="onToggleMap()"></app-map-toggle-button>
+  <button
+    mat-mini-fab
+    class="mat-elevation-z0"
+    color=""
+    aria-label="Undo"
+    (click)="onUndo()"
+    [disabled]="(disabled$ | async) || (canUndo$ | async) !== true">
+    <mat-icon>undo</mat-icon>
+  </button>
+  <button
+    mat-mini-fab
+    class="mat-elevation-z0"
+    color=""
+    aria-label="Redo"
+    (click)="onRedo()"
+    [disabled]="(disabled$ | async) || (canRedo$ | async) !== true">
+    <mat-icon>redo</mat-icon>
+  </button>
+  <button class="settings-dialog" mat-button (click)="openSettings()">
+    Scenario Settings
+    <mat-icon>settings</mat-icon>
+  </button>
+</div>

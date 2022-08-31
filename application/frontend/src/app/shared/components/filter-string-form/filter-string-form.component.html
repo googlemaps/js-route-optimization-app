@@ -1,0 +1,17 @@
+<form [formGroup]="form" (ngSubmit)="apply.emit()">
+  <mat-form-field *ngIf="operationCtrl as control">
+    <mat-select [formControl]="control">
+      <mat-option *ngFor="let operation of operations" [value]="operation">
+        {{ operation }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field
+    *ngIf="operationCtrl.value !== StringFilterOperation.Empty && valueCtrl as control">
+    <mat-label>Value</mat-label>
+    <input matInput [formControl]="control" required />
+    <mat-error *ngIf="control.errors?.required && (control.touched || control.dirty)">
+      Value is required
+    </mat-error>
+  </mat-form-field>
+</form>

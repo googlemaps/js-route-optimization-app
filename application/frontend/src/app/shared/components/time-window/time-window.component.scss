@@ -1,0 +1,41 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: block;
+}
+
+section {
+  display: flex;
+  flex-wrap: wrap;
+  &:not(:first-of-type) {
+    margin-top: 1rem;
+  }
+}
+
+.datetime {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+header {
+  color: $gray;
+  &:not(:first-of-type) {
+    margin-top: 1rem;
+  }
+}
+
+header.time-window {
+  display: flex;
+  align-items: center;
+  button {
+    margin-left: auto;
+  }
+}
+
+header + section {
+  margin-top: 0;
+}
+
+.to-text {
+  margin-top: 1rem;
+}

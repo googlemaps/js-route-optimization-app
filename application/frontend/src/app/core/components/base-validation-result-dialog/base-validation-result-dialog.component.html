@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>Warning</h1>
+<div mat-dialog-content>
+  <section *ngIf="shipmentTimeRangeWarnings?.length">
+    <header>
+      Shipment{{
+        shipmentTimeRangeWarnings.length > 1 ? 's have time windows' : ' has time window'
+      }}
+      outside global start time and end time:
+    </header>
+    <p>
+      <a *ngFor="let shipment of shipmentTimeRangeWarnings" (click)="editShipment.emit(shipment)">{{
+        shipment | entityName: 'Shipment'
+      }}</a>
+    </p>
+  </section>
+  <section *ngIf="allowedVehicleWarnings?.length">
+    <header>
+      Shipment{{ allowedVehicleWarnings.length > 1 ? 's have' : ' has' }} vehicle constraint, but
+      none of the allowed vehicles selected:
+    </header>
+    <p>
+      <a *ngFor="let shipment of allowedVehicleWarnings" (click)="editShipment.emit(shipment)">{{
+        shipment | entityName: 'Shipment'
+      }}</a>
+    </p>
+  </section>
+  <section *ngIf="vehicleTimeRangeWarnings?.length">
+    <header>
+      Vehicle{{ vehicleTimeRangeWarnings.length > 1 ? 's have time windows' : ' has time window' }}
+      outside global start time and end time:
+    </header>
+    <p>
+      <a *ngFor="let vehicle of vehicleTimeRangeWarnings" (click)="editVehicle.emit(vehicle)">{{
+        vehicle | entityName: 'Vehicle'
+      }}</a>
+    </p>
+  </section>
+</div>
+<div mat-dialog-actions>
+  <a
+    class="secondary-link mr-4"
+    tabindex="0"
+    (click)="cancel.emit()"
+    (keydown.enter)="cancel.emit()"
+    (keydown.space)="cancel.emit()"
+    >Cancel</a
+  >
+  <button type="button" mat-raised-button color="primary" (click)="ok.emit()">OK</button>
+</div>

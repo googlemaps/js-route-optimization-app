@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mat-dialog-content {
+  flex: 1;
+}
+
+.progress {
+  margin-bottom: 1rem;
+}
+
+.all-routes {
+  margin-right: 1rem;
+}

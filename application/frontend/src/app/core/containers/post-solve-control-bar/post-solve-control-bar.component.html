@@ -1,0 +1,42 @@
+<mat-button-toggle-group
+  class="main-toggle-group"
+  name="solutionViews"
+  aria-label="Solution Views"
+  (change)="onToggleChange($event.value)"
+  [value]="page$ | async">
+  <mat-button-toggle class="main-toggle" [value]="Page.RoutesChart" [disableRipple]="true"
+    >Gantt
+  </mat-button-toggle>
+  <mat-button-toggle class="main-toggle" [value]="Page.RoutesMetadata" [disableRipple]="true"
+    >Metadata
+  </mat-button-toggle>
+</mat-button-toggle-group>
+<app-map-toggle-button (toggleMap)="onToggleMap()"></app-map-toggle-button>
+<button
+  mat-mini-fab
+  class="mat-elevation-z0"
+  color=""
+  aria-label="Undo"
+  (click)="onUndo()"
+  [disabled]="(disabled$ | async) || (canUndo$ | async) !== true">
+  <mat-icon>undo</mat-icon>
+</button>
+<button
+  mat-mini-fab
+  class="mat-elevation-z0"
+  color=""
+  aria-label="Redo"
+  (click)="onRedo()"
+  [disabled]="(disabled$ | async) || (canRedo$ | async) !== true">
+  <mat-icon>redo</mat-icon>
+</button>
+<app-time-navigation
+  *ngIf="(page$ | async) === Page.RoutesChart"
+  [range]="range$ | async"
+  [rangeOffset]="rangeOffset$ | async"
+  [nowRangeOffset]="nowRangeOffset$ | async"
+  [previousRangeOffset]="previousRangeOffset$ | async"
+  [nextRangeOffset]="nextRangeOffset$ | async"
+  [timezoneOffset]="timezoneOffset$ | async"
+  (rangeOffsetChange)="onRangeOffsetChange($event)">
+</app-time-navigation>

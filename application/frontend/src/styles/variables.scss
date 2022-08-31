@@ -1,0 +1,93 @@
+// Custom Theming for Angular Material
+@use '@angular/material' as mat;
+// For more information: https://material.angular.io/guide/theming
+@import '@angular/material/theming';
+
+// Define a custom typography config that overrides the font-family as well as the
+// `headlines` and `body-1` levels.
+$custom-typography: mat.define-typography-config(
+  $font-family: 'Google Sans, Roboto, "Helvetica Neue", sans-serif',
+);
+
+// Colors
+$blue: #4285f4;
+$blue-light: #7ab4f9;
+$blue-lighter: #d7e3f1;
+$blue-lightest: #f3f8ff;
+$blue-dark: #1a73e8;
+$blue-darker: #185abc;
+$green: #0f9d58;
+$red: #d7261b;
+$red-light: #ea4335;
+$orange: #e98000;
+$yellow: #fbbc05;
+$gray: #80868b;
+$gray-light: #a6a6a6;
+$gray-lighter: #c6c6c6;
+$gray-lightest: #e0e0e0;
+$gray-dark: rgb(95, 99, 104);
+
+$bulk-highlight: lighten($yellow, 46%);
+$bulk-unset-highlight: lighten($red-light, 46%);
+$shipment-label: lighten($yellow, 40%);
+$vehicle-label: #c0e9d4;
+$vehicle-operator-label: #ffccc4;
+$visit-request-label: lighten($blue, 25%);
+
+$primary: $blue;
+$mute: rgba(0, 0, 0, 0.38);
+$dark: rgba(0, 0, 0, 0.54);
+$darker: rgba(0, 0, 0, 0.87);
+
+// Color maps to create palettes for the theme
+$blue-map: (
+  50: #e8f0fe,
+  100: #c6dafc,
+  200: #a1c2fa,
+  300: #7baaf7,
+  400: #5e97f6,
+  500: #4285f4,
+  600: #3c7df3,
+  700: #3372f1,
+  800: #2b68ef,
+  900: #1d55ec,
+  A100: #ffffff,
+  A200: #eef2ff,
+  A400: #bbcbff,
+  A700: #a1b8ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$dispatcher-app-primary: mat.define-palette($blue-map);
+$dispatcher-app-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$dispatcher-app-warn: mat.define-palette(mat.$red-palette);
+$warn: map-get(mat.$red-palette, 500);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$dispatcher-app-theme: mat.define-light-theme(
+  $dispatcher-app-primary,
+  $dispatcher-app-accent,
+  $dispatcher-app-warn
+);
+
+$edit-menu-map-width: 40%;

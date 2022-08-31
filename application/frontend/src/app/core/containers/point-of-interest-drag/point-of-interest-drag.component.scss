@@ -1,0 +1,28 @@
+@import '../../../../styles/variables.scss';
+
+.drag-marker {
+  position: absolute;
+  pointer-events: none;
+}
+
+.drag-info-window {
+  display: inline-block;
+  position: absolute;
+  pointer-events: none;
+  min-width: 12rem;
+  padding: 1rem;
+  top: 0.75rem;
+  left: 0.75rem;
+  background-color: $blue-lightest;
+  z-index: 10;
+  border-radius: 0.25rem;
+
+  p {
+    margin: 0;
+  }
+
+  .time {
+    display: inline-block;
+    min-width: 4.25rem;
+  }
+}

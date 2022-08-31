@@ -1,0 +1,69 @@
+@import '../../../../styles/variables.scss';
+
+.settings-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.global-duration-cost {
+  padding: 1rem 1rem 0 0;
+}
+
+.shipment-type {
+  width: 100%;
+}
+
+.shipment-type > header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.unused-shipment-type-warning {
+  font-size: 0.8em;
+  color: $orange;
+}
+
+mat-error {
+  font-size: 0.8em;
+}
+
+.edit-menu-content {
+  &.mat-elevation-z1 {
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: rgba(0, 0, 0, 0.015);
+  }
+
+  h3,
+  h4 {
+    margin: 0;
+    width: 100%;
+  }
+
+  mat-form-field {
+    padding-top: 0;
+  }
+
+  > header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.operator-type-list {
+  padding-left: 1.5rem;
+}
+
+.operator-type {
+  padding-bottom: 1.5rem;
+}
+
+.operator-type-delete {
+  justify-content: end;
+}
+
+.time-windows > header {
+  align-items: flex-start;
+}

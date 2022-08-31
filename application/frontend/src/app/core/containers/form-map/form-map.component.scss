@@ -1,0 +1,17 @@
+:host {
+  position: relative;
+}
+
+app-map-type-button {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 10px;
+}
+
+app-zoom-home-button {
+  position: absolute;
+  z-index: 1;
+  bottom: 112px;
+  right: 10px;
+}

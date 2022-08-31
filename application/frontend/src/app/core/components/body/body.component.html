@@ -1,0 +1,43 @@
+<app-progress-bar *ngIf="!isWelcomePage" [loading]="loading"></app-progress-bar>
+
+<app-pre-solve-control-bar *ngIf="isPreSolve"></app-pre-solve-control-bar>
+
+<app-post-solve-control-bar *ngIf="isPostSolve"></app-post-solve-control-bar>
+
+<ng-container *ngIf="isShipmentsPage">
+  <app-shipments-kpis></app-shipments-kpis>
+  <app-shipments-control-bar></app-shipments-control-bar>
+</ng-container>
+
+<ng-container *ngIf="isVehiclesPage">
+  <app-vehicles-kpis></app-vehicles-kpis>
+  <app-vehicles-control-bar></app-vehicles-control-bar>
+</ng-container>
+
+<ng-container *ngIf="isVehicleOperatorsPage">
+  <app-vehicle-operators-kpis></app-vehicle-operators-kpis>
+  <app-vehicle-operators-control-bar></app-vehicle-operators-control-bar>
+</ng-container>
+
+<app-post-solve-metrics *ngIf="isPostSolve"></app-post-solve-metrics>
+<app-routes-chart-control-bar *ngIf="isRoutesChartPage"></app-routes-chart-control-bar>
+<app-metadata-control-bar *ngIf="isMetadata"></app-metadata-control-bar>
+
+<main>
+  <div id="main-page" class="page-wrapper">
+    <div class="page">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <app-map id="main-map" [ngClass]="{ 'map-hidden': !hasMap }"></app-map>
+</main>
+
+<div class="map-hidden">
+  <!-- Map component instance shared by forms -->
+  <app-form-map></app-form-map>
+</div>
+
+<div class="map-hidden">
+  <!-- Map component instance used for generating pdf reports -->
+  <app-pdf-map></app-pdf-map>
+</div>

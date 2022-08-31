@@ -1,0 +1,21 @@
+@import '../../../../styles/variables.scss';
+
+app-base-shipments-metadata-table {
+  .shipped-status-chip {
+    background-color: $green !important;
+    color: #fff;
+  }
+
+  .skipped-status-chip {
+    background-color: $orange !important;
+    color: #fff;
+  }
+
+  .shipped-status-chip,
+  .skipped-status-chip {
+    display: inline-block;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+    margin: 0.125rem 0;
+  }
+}

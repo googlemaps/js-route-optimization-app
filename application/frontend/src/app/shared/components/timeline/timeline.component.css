@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  margin: 16px;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+svg {
+  display: block;
+}
+
+.scrub__time {
+  stroke: #fff;
+  stroke-width: 1px;
+  fill: #333;
+  pointer-events: none;
+}
+
+.scrub__mask {
+  mix-blend-mode: color;
+  fill: #fff;
+  pointer-events: none;
+}

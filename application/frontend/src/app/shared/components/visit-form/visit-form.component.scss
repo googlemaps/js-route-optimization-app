@@ -1,0 +1,60 @@
+@import '../../../../styles/variables.scss';
+
+app-visit-form {
+  .edit-menu-content {
+    .mat-form-field-infix {
+      width: auto;
+    }
+  }
+
+  section {
+    &:not(.warnings) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    &:not(:first-of-type) {
+      margin-top: 1rem;
+    }
+    &.warnings {
+      background-color: rgba($yellow, 0.15);
+      border-radius: 4px;
+      padding: 0.5rem;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+
+  .datetime {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  header {
+    color: $gray;
+    &:not(:first-of-type) {
+      margin-top: 1rem;
+    }
+  }
+
+  header.time-window {
+    display: flex;
+    align-items: center;
+    button {
+      margin-left: auto;
+    }
+  }
+
+  header + section {
+    margin-top: 0;
+  }
+
+  .to-text {
+    margin-top: 1rem;
+  }
+}
+
+.visit-vehicles-panel.mat-autocomplete-hidden {
+  height: 0;
+}

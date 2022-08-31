@@ -1,0 +1,29 @@
+<div class="table-container">
+  <app-base-shipments-metadata-table
+    [dataSource]="dataSource"
+    [sort]="sort$ | async"
+    [selected]="selected$ | async"
+    [columnsToDisplay]="columnsToDisplay$ | async"
+    [timezoneOffset]="timezoneOffset$ | async"
+    [total]="total$ | async"
+    [changeDisabled]="changeDisabled$ | async"
+    [hasMap]="mapOpen$ | async"
+    (selectAll)="onSelectAll()"
+    (deselectAll)="onDeselectAll()"
+    (selectedChange)="onSelectedChange($event)"
+    (sortChange)="onSortChange($event)"
+    (edit)="onEdit($event)"
+    (mouseEnterVisitRequest)="onMouseEnterVisitRequest($event)"
+    (mouseExitVisitRequest)="onMouseExitVisitRequest()">
+  </app-base-shipments-metadata-table>
+</div>
+<div class="footer-container">
+  <mat-paginator
+    [length]="total$ | async"
+    [pageIndex]="pageIndex$ | async"
+    [pageSize]="pageSize$ | async"
+    (page)="onPage($event)"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [hidePageSize]="true">
+  </mat-paginator>
+</div>

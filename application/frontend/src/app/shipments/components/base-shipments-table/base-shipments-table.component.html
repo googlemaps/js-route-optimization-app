@@ -1,0 +1,197 @@
+<app-table
+  #table
+  [mouseOverActive]="hasMap"
+  [idSelector]="idSelector"
+  [selectedIdSelector]="selectedIdSelector"
+  [canSelect]="canSelect"
+  [dataSource]="dataSource"
+  [itemsSelected]="itemsSelected"
+  [columnsToDisplay]="columnsToDisplay"
+  [totalSelectableItems]="totalShipments"
+  [selectDisabled]="changeDisabled"
+  (selectAll)="onSelectAll()"
+  (deselectAll)="onDeselectAll()"
+  (selectedChange)="onSelectionChange($event)"
+  matSort
+  [matSortActive]="sort?.active"
+  [matSortDirection]="sort?.direction"
+  (matSortChange)="onSortChange($event)"
+  (mouseEnterRow)="onMouseEnterRow($event)"
+  (mouseExitRow)="onMouseExitRow($event)">
+  <ng-container matColumnDef="id" sticky>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+    <td mat-cell *matCellDef="let item">
+      <ng-container *ngIf="item.first">{{ item.shipment.id }}</ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="label">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Label</th>
+    <td mat-cell *matCellDef="let item" class="shipment-chips">
+      <ng-container *ngIf="item.first">
+        <ng-container *ngIf="item.shipment.label | splitLabel as labels; else listNilCharacter">
+          <span *ngFor="let label of labels">{{ label }}</span>
+        </ng-container>
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="type" sticky>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+    <td mat-cell *matCellDef="let item">
+      <ng-container *ngIf="item.first">{{ item.shipment.shipmentType }}</ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="visitRequest.label">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Visit Label</th>
+    <td mat-cell *matCellDef="let item" class="visit-request-chips">
+      <ng-container *ngIf="item.visitRequest.label | splitLabel as labels; else listNilCharacter">
+        <span *ngFor="let label of labels">{{ label }}</span>
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="visitRequest.pickup">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Visit Type</th>
+    <td mat-cell *matCellDef="let item">
+      {{ item.visitRequest.pickup ? 'Pickup' : 'Delivery' }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="visitRequest.timeWindow">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><span>Time Window</span></th>
+    <td mat-cell *matCellDef="let item" class="time-window">
+      <ng-container
+        *ngIf="findVisitRequestTimeWindow(item.visitRequest) as timeWindow; else listNilCharacter">
+        <ng-container
+          *ngIf="
+            timeWindow | formatHardTimeWindow: duration:timezoneOffset as tw;
+            else listNilCharacter
+          ">
+          <div class="time-window__time">
+            {{ tw.startTime }}<ng-container *ngIf="tw.startTime && tw.endTime"> - </ng-container
+            >{{ tw.endTime }}
+            <ng-container *ngIf="item.visitRequest.timeWindows.length - 1 as otherCount">
+              <a [matMenuTriggerFor]="hardTimeWindowsMenu" [matMenuTriggerData]="item.visitRequest"
+                >+{{ otherCount }}</a
+              >
+            </ng-container>
+          </div>
+          <div class="time-window__date">
+            {{ tw.startDate }}<ng-container *ngIf="tw.startDate && tw.endDate"> - </ng-container
+            >{{ tw.endDate }}
+          </div>
+        </ng-container>
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="visitRequest.softTimeWindow">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><span>Soft Time Window</span></th>
+    <td mat-cell *matCellDef="let item" class="time-window">
+      <ng-container
+        *ngIf="findVisitRequestTimeWindow(item.visitRequest) as timeWindow; else listNilCharacter">
+        <ng-container
+          *ngIf="
+            timeWindow | formatSoftTimeWindow: duration:timezoneOffset as tw;
+            else listNilCharacter
+          ">
+          <div class="time-window__time">
+            {{ tw.startTime }}<ng-container *ngIf="tw.startTime && tw.endTime"> - </ng-container
+            >{{ tw.endTime }}
+          </div>
+          <div class="time-window__date">
+            {{ tw.startDate }}<ng-container *ngIf="tw.startDate && tw.endDate"> - </ng-container
+            >{{ tw.endDate }}
+          </div>
+        </ng-container>
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="visitRequest.duration">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Duration&nbsp;<span>(mm:ss)</span></th>
+    <td mat-cell *matCellDef="let item">
+      <ng-container *ngIf="item.visitRequest.duration?.seconds != null; else listNilCharacter">
+        {{ secondsToFormattedTime(item.visitRequest.duration) }}
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="visitRequest.cost">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cost</th>
+    <td mat-cell *matCellDef="let item">
+      <ng-container *ngIf="item.visitRequest.cost != null; else listNilCharacter">
+        {{ item.visitRequest.cost }}
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container
+    *ngFor="let demandType of demandTypes; let i = index"
+    [matColumnDef]="'shipment.demands.' + i">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+      Load Demand&nbsp;
+      <span class="text-nowrap"
+        >(<span class="demand-label">{{ demandType }}</span
+        >)</span
+      >
+    </th>
+    <td mat-cell *matCellDef="let item">
+      <ng-container>
+        {{ (item.shipment?.loadDemands && item.shipment.loadDemands[demandType]?.amount) || '-' }}
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="menu" stickyEnd>
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let item">
+      <ng-container *ngIf="item.first">
+        <div class="menu-shipment">
+          <button
+            class="menu-button"
+            type="button"
+            mat-icon-button
+            [attr.title]="editLabel(item)"
+            (click)="onEdit(item.shipment.id)">
+            <mat-icon>create</mat-icon>
+          </button>
+          <button
+            class="menu-button"
+            type="button"
+            mat-icon-button
+            [attr.title]="deleteLabel(item)"
+            (click)="onDelete(item)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-template #listNilCharacter>
+    <span>-</span>
+  </ng-template>
+</app-table>
+<button
+  mat-fab
+  class="add-shipment"
+  type="button"
+  color=""
+  title="Add shipment"
+  (click)="add.emit()"
+  [disabled]="changeDisabled">
+  <mat-icon svgIcon="add_color"></mat-icon>
+</button>
+<mat-menu #hardTimeWindowsMenu="matMenu" class="time-windows-panel">
+  <ng-template matMenuContent let-timeWindows="timeWindows">
+    <ng-container *ngFor="let timeWindow of timeWindows.slice(1)">
+      <div
+        class="time-window"
+        *ngIf="
+          timeWindow | formatHardTimeWindow: duration:timezoneOffset as tw;
+          else listNilCharacter
+        ">
+        <div class="time-window__time">
+          {{ tw.startTime }}<ng-container *ngIf="tw.startTime && tw.endTime"> - </ng-container
+          >{{ tw.endTime }}
+        </div>
+        <div class="time-window__date">
+          {{ tw.startDate }}<ng-container *ngIf="tw.startDate && tw.endDate"> - </ng-container
+          >{{ tw.endDate }}
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+</mat-menu>

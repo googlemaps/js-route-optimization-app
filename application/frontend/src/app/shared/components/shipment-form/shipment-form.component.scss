@@ -1,0 +1,64 @@
+app-shipment-form {
+  .shipment-type {
+    align-items: flex-end;
+  }
+
+  .float-right {
+    float: right;
+  }
+
+  .shipment-demands {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    padding-bottom: 1rem;
+
+    app-load-demands-form {
+      padding-left: 1rem;
+    }
+
+    h3 {
+      margin: 0;
+      width: 100%;
+    }
+
+    > header {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  .edit-menu-content {
+    .mat-form-field-infix {
+      width: auto;
+    }
+
+    &.mat-elevation-z1 {
+      padding: 1rem;
+      margin: 1rem 0;
+      background-color: rgba(0, 0, 0, 0.015);
+    }
+
+    h3 {
+      margin: 0;
+      width: 100%;
+    }
+
+    mat-form-field {
+      padding-top: 0;
+    }
+
+    > header {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+}
+
+.allowed-vehicles-panel.mat-autocomplete-hidden {
+  height: 0;
+}

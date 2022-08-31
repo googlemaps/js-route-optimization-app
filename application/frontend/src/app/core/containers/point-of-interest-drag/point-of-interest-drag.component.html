@@ -1,0 +1,65 @@
+<ng-container *ngIf="dragParams && isDragging">
+  <ng-container *ngIf="getDragIcon(0) as attr">
+    <svg
+      class="drag-marker"
+      width="14"
+      height="14"
+      style="z-index: 10000"
+      [style.transform]="
+        'translate(' +
+        (positions[0][0] - attr.width / 2) +
+        'px, ' +
+        (positions[0][1] - attr.height / 2) +
+        'px)'
+      ">
+      <g>
+        <image
+          x="0"
+          y="0"
+          [attr.width]="attr.width"
+          [attr.height]="attr.height"
+          [attr.href]="attr.href" />
+      </g>
+    </svg>
+  </ng-container>
+  <ng-container *ngIf="visits.length > 1 && getDragIcon(1) as attr">
+    <svg
+      class="drag-marker"
+      width="14"
+      height="14"
+      style="z-index: 10000"
+      [style.transform]="
+        'translate(' +
+        (positions[1][0] - attr.width / 2) +
+        'px, ' +
+        (positions[1][1] - attr.height / 2) +
+        'px)'
+      ">
+      <g>
+        <image
+          x="0"
+          y="0"
+          [attr.width]="attr.width"
+          [attr.height]="attr.height"
+          [attr.href]="attr.href" />
+      </g>
+    </svg>
+  </ng-container>
+  <div
+    class="drag-info-window mat-elevation-z1"
+    [style.transform]="'translate(' + positions[0][0] + 'px, ' + positions[0][1] + 'px)'">
+    <h4>Moving Shipment #{{ (visits[0].shipmentIndex || 0) + 1 }}</h4>
+    <p *ngIf="visits.length > 1 && visits[1].isPickup">
+      New {{ visits[1].isPickup ? 'Pickup' : 'Delivery' }} Time:
+      <strong class="time">{{ currentDragTimes[1] }}</strong>
+    </p>
+    <p>
+      New {{ visits[0].isPickup ? 'Pickup' : 'Delivery' }} Time:
+      <strong class="time">{{ currentDragTimes[0] }}</strong>
+    </p>
+    <p *ngIf="visits.length > 1 && !visits[1].isPickup">
+      New {{ visits[1].isPickup ? 'Pickup' : 'Delivery' }} Time:
+      <strong class="time">{{ currentDragTimes[1] }}</strong>
+    </p>
+  </div>
+</ng-container>

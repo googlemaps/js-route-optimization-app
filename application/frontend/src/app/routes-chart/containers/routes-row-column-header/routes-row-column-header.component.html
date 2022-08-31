@@ -1,0 +1,6 @@
+<app-base-routes-row-column-header
+  [totalRoutes]="totalRoutes$ | async"
+  [totalSelectedRoutes]="totalSelectedRoutes$ | async"
+  (selectAllRoutes)="onSelectAllRoutes()"
+  (deselectAllRoutes)="onDeselectAllRoutes()">
+</app-base-routes-row-column-header>

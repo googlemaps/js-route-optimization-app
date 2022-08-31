@@ -1,0 +1,22 @@
+<app-base-edit-shipment-dialog
+  [bulkEdit]="shipmentIds.length > 1"
+  [bulkNumber]="shipmentIds.length"
+  [shipment]="shipment$ | async"
+  [vehicles]="vehicles$ | async"
+  [vehicleIds]="vehicleIds$ | async"
+  [visitRequests]="visitRequests$ | async"
+  [pickup]="pickup$ | async"
+  [delivery]="delivery$ | async"
+  [visitTags]="visitTags$ | async"
+  [visitTypes]="visitTypes$ | async"
+  [timezoneOffset]="timezoneOffset$ | async"
+  [disabled]="disabled$ | async"
+  [nextVisitRequestId]="nextVisitRequestId$ | async"
+  [bounds]="bounds$ | async"
+  [abbreviations]="abbreviations$ | async"
+  [scenarioCapacities]="scenarioCapacities$ | async"
+  [scenarioDemands]="scenarioDemands$ | async"
+  [scenarioShipmentTypes]="scenarioShipmentTypes$ | async"
+  (cancel)="onCancel()"
+  (save)="onSave($event)">
+</app-base-edit-shipment-dialog>

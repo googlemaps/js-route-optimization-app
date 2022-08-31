@@ -1,0 +1,42 @@
+<app-gantt-chart
+  [value]="routes"
+  [range]="range"
+  [marker]="marker"
+  [unitStep]="unitStep"
+  [columnLabelFormatter]="columnLabelFormatter"
+  [trackBy]="trackRouteBy"
+  [timezoneOffset]="timezoneOffset">
+  <ng-template appGanttRowColumnHeader>
+    <app-routes-row-column-header></app-routes-row-column-header>
+  </ng-template>
+  <ng-template appGanttColumnHeader let-column let-last="last">
+    {{ column.label }}
+  </ng-template>
+  <ng-template appGanttRow let-route>
+    <app-routes-row [route]="route"></app-routes-row>
+  </ng-template>
+  <ng-template appGanttColumnHeadersOverlay>
+    <div class="navigation">
+      <div class="navigation__button">
+        <button
+          type="button"
+          mat-icon-button
+          title="Previous {{ unitStep?.label }}"
+          [disabled]="previousRangeOffset == null"
+          (click)="selectPreviousRangeOffset.emit(previousRangeOffset)">
+          <mat-icon class="icon--smaller m-0" svgIcon="navigate_before"></mat-icon>
+        </button>
+      </div>
+      <div class="navigation__button">
+        <button
+          type="button"
+          mat-icon-button
+          title="Next {{ unitStep?.label }}"
+          [disabled]="nextRangeOffset == null"
+          (click)="selectNextRangeOffset.emit(nextRangeOffset)">
+          <mat-icon class="icon--smaller m-0" svgIcon="navigate_next"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</app-gantt-chart>

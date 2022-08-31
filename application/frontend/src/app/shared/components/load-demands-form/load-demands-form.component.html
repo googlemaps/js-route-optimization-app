@@ -1,0 +1,44 @@
+<div *ngFor="let group of control?.controls; index as i" class="mat-typography" [formGroup]="group">
+  <header [ngClass]="{ 'header-top-margin': i > 0 }">Demand</header>
+  <mat-form-field>
+    <mat-label>Type</mat-label>
+    <input
+      matInput
+      formControlName="type"
+      [matAutocomplete]="typeAuto"
+      type="text"
+      placeholder="Ex. weight"
+      autocomplete="new-password"
+      (focus)="setAutocompleteFocus(i)"
+      (input)="checkCapacityUsage(i)" />
+    <mat-error *ngIf="group.getError('required', 'type')" [attr.title]="errorMessage.innerText">
+      <span #errorMessage>Required</span>
+    </mat-error>
+    <mat-autocomplete #typeAuto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredTypes$ | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Amount</mat-label>
+    <input matInput formControlName="value" type="number" placeholder="Enter amount" />
+    <mat-error *ngIf="group.get('value').errors" [attr.title]="errorMessage.innerText">
+      <span #errorMessage>{{
+        group.getError('required', 'value') ? 'Required' : 'Non-negative integer required'
+      }}</span>
+    </mat-error>
+  </mat-form-field>
+  <button
+    type="button"
+    class="clear-place"
+    (click)="removeCapacity(i)"
+    mat-icon-button
+    title="Remove capacity"
+    [disabled]="disabled">
+    <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+  </button>
+  <p class="unused-capacity-warning" *ngIf="unusedCapacities[i]">
+    This demand type and/or unit does not exist on any vehicles.
+  </p>
+</div>

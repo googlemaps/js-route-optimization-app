@@ -1,0 +1,43 @@
+@import '../../../../styles/variables.scss';
+
+app-message-snack-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .data {
+    color: white;
+    font-size: 18px;
+    word-break: break-word;
+  }
+
+  .dismiss {
+    color: white;
+    margin-left: 12px;
+  }
+
+  a {
+    text-decoration: underline;
+    color: white !important;
+  }
+}
+
+.mat-snack-bar-container {
+  &.error-message {
+    background: $red-light;
+  }
+
+  &.warning-message {
+    .data {
+      color: $darker;
+    }
+    background: $yellow;
+    .dismiss {
+      color: $darker;
+    }
+  }
+
+  &.info-message {
+    background: $primary;
+  }
+}

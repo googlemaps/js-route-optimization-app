@@ -1,0 +1,127 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "delivery": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.867217,
+                "longitude": 2.329175
+              },
+              "duration": {
+                "seconds": "3600"
+              }
+            }
+          ]
+        },
+        "demands": [
+          {
+            "type": "weight_kilograms",
+            "value": "100"
+          },
+          {
+            "type": "volume_liters",
+            "value": "30"
+          }
+        ]
+      }
+    ],
+    "vehicles": [
+      {
+        "startLocation": {
+          "latitude": 48.883332,
+          "longitude": 2.369089
+        },
+        "endLocation": {
+          "latitude": 48.883332,
+          "longitude": 2.369089
+        },
+        "capacities": [
+          {
+            "type": "weight_kilograms",
+            "value": "400"
+          },
+          {
+            "type": "volume_liters",
+            "value": "50"
+          }
+        ],
+        "costPerHour": 30,
+        "costPerKilometer": 0.2,
+        "breakRuleIndices": [
+          0
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": {
+              "seconds": "1563097800"
+            },
+            "endTime": {
+              "seconds": "1563102000"
+            }
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": {
+              "seconds": "1563117800"
+            },
+            "endTime": {
+              "seconds": "1563122000"
+            }
+          }
+        ]
+      },
+      {
+        "startLocation": {
+          "latitude": 48.883332,
+          "longitude": 2.369089
+        },
+        "endLocation": {
+          "latitude": 48.883332,
+          "longitude": 2.369089
+        },
+        "capacities": [
+          {
+            "type": "weight_kilograms",
+            "value": "400"
+          },
+          {
+            "type": "volume_liters",
+            "value": "50"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 50,
+        "costPerKilometer": 0.2,
+        "breakRuleIndices": [
+          0
+        ]
+      }
+    ],
+    "globalStartTime": {
+      "seconds": "1563094800"
+    },
+    "globalEndTime": {
+      "seconds": "1563134400"
+    },
+    "breakRules": [
+      {
+        "breakRequests": [
+          {
+            "earliestStartTime": {
+              "seconds": "1563102000"
+            },
+            "latestStartTime": {
+              "seconds": "1563109200"
+            },
+            "duration": {
+              "seconds": "2700"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

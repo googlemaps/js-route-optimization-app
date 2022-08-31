@@ -1,0 +1,167 @@
+<h2 mat-dialog-title>
+  <ng-container [ngTemplateOutlet]="saving ? saveTitle : loadTitle"></ng-container>
+</h2>
+<ng-container [ngTemplateOutlet]="saveBar" *ngIf="saving"></ng-container>
+<mat-dialog-content class="mat-typography">
+  <mat-tab-group
+    [(selectedIndex)]="selectedTab"
+    (selectedTabChange)="changeTab($event.index)"
+    #tabGroup>
+    <mat-tab label="Scenario" #scenarioTab>
+      <ng-container [ngTemplateOutlet]="resultsTable"></ng-container>
+    </mat-tab>
+    <mat-tab label="Solution">
+      <ng-container [ngTemplateOutlet]="resultsTable"></ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions align="end">
+  <ng-container [ngTemplateOutlet]="searchBar"></ng-container>
+  <button mat-button mat-dialog-close [disabled]="loadingFile">Cancel</button>
+  <ng-container *ngIf="saving; else openButton" [ngTemplateOutlet]="saveButton"></ng-container>
+</mat-dialog-actions>
+
+<ng-template #loadTitle>Open new scenario or new solution</ng-template>
+<ng-template #saveTitle>Save current scenario or solution to Google Cloud Storage</ng-template>
+
+<ng-template #loadingSpinner>
+  <mat-spinner diameter="25"></mat-spinner>
+</ng-template>
+
+<ng-template #openButton>
+  <button
+    mat-flat-button
+    (click)="accept()"
+    color="primary"
+    [disabled]="!currentSelection || loading || loadingFile">
+    Open
+  </button>
+</ng-template>
+<ng-template #saveButton>
+  <button
+    mat-flat-button
+    (click)="accept()"
+    color="primary"
+    [disabled]="!filename || loading || loadingFile">
+    Save
+  </button>
+</ng-template>
+
+<ng-template #saveBar>
+  <div class="dialog-element save-field">
+    <mat-form-field appearance="outline">
+      <mat-label>Save as</mat-label>
+      <input matInput type="text" [(ngModel)]="filename" #saveInput />
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #searchBar>
+  <div class="dialog-element search-field">
+    <mat-form-field appearance="outline">
+      <mat-label>Search</mat-label>
+      <input
+        placeholder="Filename starts with"
+        matInput
+        type="text"
+        [(ngModel)]="searchText"
+        cdkFocusInitial
+        (keydown.enter)="search()" />
+      <button
+        mat-button
+        *ngIf="searchText"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearSearchText()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #resultsTable>
+  <div class="dialog-element results">
+    <table
+      mat-table
+      [dataSource]="searchResults"
+      *ngIf="!loading; else loadingSpinner"
+      [ngClass]="{ 'table-loading': loading }">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td
+          mat-cell
+          *matCellDef="let result"
+          (click)="selectFile(result)"
+          [ngClass]="{ 'selected-file': currentSelection === result.name }">
+          {{ result.name }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="dateCreated">
+        <th mat-header-cell *matHeaderCellDef>Created At</th>
+        <td
+          mat-cell
+          *matCellDef="let result"
+          (click)="selectFile(result)"
+          [ngClass]="{ 'selected-file': currentSelection === result.name }">
+          {{ result.dateCreated | date: 'short' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="dateModified">
+        <th mat-header-cell *matHeaderCellDef>Last Modified</th>
+        <td
+          mat-cell
+          *matCellDef="let result"
+          (click)="selectFile(result)"
+          [ngClass]="{ 'selected-file': currentSelection === result.name }">
+          {{ result.dateModified | date: 'short' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td
+          mat-cell
+          *matCellDef="let result"
+          [ngClass]="{ 'selected-file': currentSelection === result.name }">
+          <button
+            mat-icon-button
+            class="delete-button"
+            type="button"
+            title="Delete"
+            (click)="confirmDelete(result)"
+            [disabled]="loading || loadingFile">
+            <mat-icon svgIcon="delete"></mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+    </table>
+    <ng-container [ngTemplateOutlet]="paginator"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #paginator>
+  <div class="paginator mat-typography">
+    <span class="mat-caption" *ngIf="searchResults.length"
+      >Showing {{ pageMin }}-{{ pageMax }}</span
+    >
+    <button
+      mat-button
+      mat-icon-button
+      aria-label="Prev Page"
+      (click)="prevPage()"
+      [disabled]="!pageTokens.length">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button
+      mat-button
+      mat-icon-button
+      aria-label="Next Page"
+      (click)="nextPage()"
+      [disabled]="!hasNextPage">
+      <mat-icon>navigate_next</mat-icon>
+    </button>
+  </div>
+</ng-template>

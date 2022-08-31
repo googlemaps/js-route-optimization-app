@@ -1,0 +1,275 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.8774134,
+                "longitude": 2.3295316
+              },
+              "timeWindows": [
+                {
+                  "costPerHourBeforeSoftStartTime": {
+                    "value": 1
+                  },
+                  "endTime": {
+                    "seconds": "1563112800"
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "3600"
+              }
+            }
+          ]
+        },
+        "demands": [
+          {
+            "type": "weight_kilograms",
+            "value": "100"
+          },
+          {
+            "type": "volume_liters",
+            "value": "20"
+          }
+        ]
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.859549,
+                "longitude": 2.293709
+              },
+              "duration": {
+                "seconds": "7200"
+              }
+            }
+          ]
+        },
+        "delivery": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.867217,
+                "longitude": 2.329175
+              },
+              "duration": {
+                "seconds": "3600"
+              }
+            }
+          ]
+        },
+        "demands": [
+          {
+            "type": "weight_kilograms",
+            "value": "100"
+          },
+          {
+            "type": "volume_liters",
+            "value": "30"
+          }
+        ]
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.860226,
+                "longitude": 2.340444
+              },
+              "timeWindows": [
+                {
+                  "endTime": {
+                    "seconds": "1563109200"
+                  }
+                },
+                {
+                  "startTime": {
+                    "seconds": "1563112800"
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2700"
+              }
+            }
+          ]
+        },
+        "demands": [
+          {
+            "type": "weight_kilograms",
+            "value": "200"
+          },
+          {
+            "type": "volume_liters",
+            "value": "15"
+          }
+        ]
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.873961,
+                "longitude": 2.294201
+              },
+              "timeWindows": [
+                {
+                  "endTime": {
+                    "seconds": "1563112800"
+                  },
+                  "softEndTime": {
+                    "seconds": "1563102000"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 20
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "3600"
+              }
+            }
+          ]
+        },
+        "demands": [
+          {
+            "type": "weight_kilograms",
+            "value": "100"
+          },
+          {
+            "type": "volume_liters",
+            "value": "5"
+          }
+        ]
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.858427,
+                "longitude": 2.312758
+              },
+              "duration": {
+                "seconds": "1800"
+              }
+            }
+          ]
+        },
+        "demands": [
+          {
+            "type": "weight_kilograms",
+            "value": "100"
+          },
+          {
+            "type": "volume_liters",
+            "value": "25"
+          }
+        ]
+      }
+    ],
+    "vehicles": [
+      {
+        "startLocation": {
+          "latitude": 48.883332,
+          "longitude": 2.369089
+        },
+        "endLocation": {
+          "latitude": 48.883332,
+          "longitude": 2.369089
+        },
+        "capacities": [
+          {
+            "type": "weight_kilograms",
+            "value": "400"
+          },
+          {
+            "type": "volume_liters",
+            "value": "50"
+          }
+        ],
+        "costPerHour": 30,
+        "costPerKilometer": 0.2,
+        "breakRuleIndices": [
+          0
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": {
+              "seconds": "1563097800"
+            },
+            "endTime": {
+              "seconds": "1563102000"
+            }
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": {
+              "seconds": "1563117800"
+            },
+            "endTime": {
+              "seconds": "1563122000"
+            }
+          }
+        ]
+      },
+      {
+        "startLocation": {
+          "latitude": 48.883332,
+          "longitude": 2.369089
+        },
+        "endLocation": {
+          "latitude": 48.883332,
+          "longitude": 2.369089
+        },
+        "capacities": [
+          {
+            "type": "weight_kilograms",
+            "value": "400"
+          },
+          {
+            "type": "volume_liters",
+            "value": "50"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 50,
+        "costPerKilometer": 0.2,
+        "breakRuleIndices": [
+          0
+        ]
+      }
+    ],
+    "globalStartTime": {
+      "seconds": "1563094800"
+    },
+    "globalEndTime": {
+      "seconds": "1563134400"
+    },
+    "breakRules": [
+      {
+        "breakRequests": [
+          {
+            "earliestStartTime": {
+              "seconds": "1563102000"
+            },
+            "latestStartTime": {
+              "seconds": "1563109200"
+            },
+            "duration": {
+              "seconds": "2700"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,212 @@
+<form [formGroup]="form">
+  <ng-container *ngIf="pickup">
+    <header class="time-window">
+      <span class="pad-right">Pickup #{{ pickup.id }}</span>
+      <div *ngIf="pickup.visitLabel | splitLabel as labels" class="visit-request-chips">
+        <span *ngFor="let label of labels">{{ label }}</span>
+      </div>
+    </header>
+    <section>
+      <div class="datetime-wrapper">
+        <div class="datetime">
+          <mat-form-field
+            *ngIf="pickupStartDateCtrl as control"
+            [appearance]="appearance"
+            class="date pad-right">
+            <input matInput [matDatepicker]="startDatePicker" [formControl]="control" />
+            <mat-hint>Date</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+            <mat-error *ngIf="control.errors?.required" [attr.title]="message.innerText">
+              <span #message>Date is required</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field
+            *ngIf="pickupStartTimeCtrl as control"
+            [appearance]="appearance"
+            class="time pad-right">
+            <input matInput type="time" [formControl]="control" />
+            <mat-hint>Time</mat-hint>
+            <mat-error *ngIf="control.errors?.timeString" [attr.title]="message.innerText">
+              <span #message>Invalid format</span>
+            </mat-error>
+            <mat-error
+              *ngIf="!control.errors?.timeString && control.errors?.required"
+              [attr.title]="message.innerText">
+              <span #message>Time is required</span>
+            </mat-error>
+          </mat-form-field>
+          <span class="mat-body-strong pad-right to-text">to</span>
+        </div>
+      </div>
+      <div class="datetime-wrapper">
+        <div class="datetime">
+          <mat-form-field [appearance]="appearance" class="date pad-right">
+            <input matInput [matDatepicker]="endDatePicker" formControlName="pickupEndDate" />
+            <mat-hint>Date</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field
+            *ngIf="pickupEndTimeCtrl as control"
+            [appearance]="appearance"
+            class="time pad-right">
+            <input matInput type="time" [formControl]="control" />
+            <mat-hint>Time</mat-hint>
+            <mat-error *ngIf="control.errors?.timeString" [attr.title]="message.innerText">
+              <span #message>Invalid format</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </section>
+    <mat-error *ngIf="pickupErrors?.globalOutOfRange">
+      Pickup outside global start time and end time
+    </mat-error>
+    <mat-error *ngIf="pickupErrors?.vehicleOutOfRange">
+      Pickup outside vehicle time window
+    </mat-error>
+  </ng-container>
+  <ng-container *ngIf="delivery">
+    <header class="time-window">
+      <span class="pad-right">Delivery #{{ delivery.id }}</span>
+      <div *ngIf="delivery.visitLabel | splitLabel as labels" class="visit-request-chips">
+        <span *ngFor="let label of labels">{{ label }}</span>
+      </div>
+    </header>
+    <section>
+      <div class="datetime-wrapper">
+        <div class="datetime">
+          <mat-form-field
+            *ngIf="deliveryStartDateCtrl as control"
+            [appearance]="appearance"
+            class="date pad-right">
+            <input matInput [matDatepicker]="startDatePicker" [formControl]="control" />
+            <mat-hint>Date</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+            <mat-error *ngIf="control.errors?.required" [attr.title]="message.innerText">
+              <span #message>Date is required</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field
+            *ngIf="deliveryStartTimeCtrl as control"
+            [appearance]="appearance"
+            class="time pad-right">
+            <input matInput type="time" [formControl]="control" />
+            <mat-hint>Time</mat-hint>
+            <mat-error *ngIf="control.errors?.timeString" [attr.title]="message.innerText">
+              <span #message>Invalid format</span>
+            </mat-error>
+            <mat-error
+              *ngIf="!control.errors?.timeString && control.errors?.required"
+              [attr.title]="message.innerText">
+              <span #message>Time is required</span>
+            </mat-error>
+          </mat-form-field>
+          <span class="mat-body-strong pad-right to-text">to</span>
+        </div>
+      </div>
+      <div class="datetime-wrapper">
+        <div class="datetime">
+          <mat-form-field [appearance]="appearance" class="date pad-right">
+            <input matInput [matDatepicker]="endDatePicker" formControlName="deliveryEndDate" />
+            <mat-hint>Date</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field
+            *ngIf="deliveryEndTimeCtrl as control"
+            [appearance]="appearance"
+            class="time pad-right">
+            <input matInput type="time" [formControl]="control" />
+            <mat-hint>Time</mat-hint>
+            <mat-error *ngIf="control.errors?.timeString" [attr.title]="message.innerText">
+              <span #message>Invalid format</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </section>
+    <mat-error *ngIf="deliveryErrors?.deliveryOutOfRange"> Delivery before pickup </mat-error>
+    <mat-error *ngIf="deliveryErrors?.globalOutOfRange">
+      Delivery outside global start time and end time
+    </mat-error>
+    <mat-error *ngIf="deliveryErrors?.vehicleOutOfRange">
+      Delivery outside vehicle time window
+    </mat-error>
+  </ng-container>
+  <section class="edit-menu-content">
+    <div *ngIf="vehicleCtrl as control" class="item-sm pad-right">
+      <mat-form-field [appearance]="appearance">
+        <mat-label>Associated vehicle</mat-label>
+        <input matInput [formControl]="control" [matAutocomplete]="auto" />
+        <mat-autocomplete
+          class="visit-vehicles-panel"
+          #auto="matAutocomplete"
+          [displayWith]="getVehicleName">
+          <cdk-virtual-scroll-viewport
+            style="height: 200px"
+            [itemSize]="optionItemSize"
+            minBufferPx="200"
+            maxBufferPx="400">
+            <mat-option
+              [style.height.px]="optionItemSize"
+              *cdkVirtualFor="let vehicle of filteredVehicles$ | async"
+              [value]="vehicle">
+              {{ getVehicleName(vehicle) }}
+            </mat-option>
+          </cdk-virtual-scroll-viewport>
+        </mat-autocomplete>
+        <mat-error
+          *ngIf="control.errors?.required && (control.touched || control.dirty)"
+          [attr.title]="message.innerText">
+          <span #message>Vehicle is required</span>
+        </mat-error>
+        <mat-error
+          *ngIf="
+            control.errors?.invalid &&
+            !control.errors.required &&
+            (control.touched || control.dirty)
+          "
+          [attr.title]="message.innerText">
+          <span #message>Invalid vehicle</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </section>
+  <section class="warnings" *ngIf="pickupWarnings || deliveryWarnings as warnings">
+    <span class="mat-body-strong">Warning</span>
+    <p *ngIf="pickupWarnings?.visitRequestOutOfRange">Pickup outside visit request time window</p>
+    <p *ngIf="deliveryWarnings?.visitRequestOutOfRange">
+      Delivery outside visit request time window
+    </p>
+    <p *ngIf="warnings.shipmentTypeCannotBePerformedBySameVehicle as error">
+      The shipment type "{{ error.shipmentType }}" cannot be together with
+      {{ formatTypes(error.otherShipmentTypes) }}
+      on the same vehicle
+    </p>
+    <p *ngIf="warnings.shipmentTypeCannotBeInSameVehicleSimultaneously as error">
+      The shipment type "{{ error.shipmentType }}" cannot be together with
+      {{ formatTypes(error.otherShipmentTypes) }}
+      on the same vehicle simultaneously
+    </p>
+    <p *ngIf="warnings.shipmentTypeMustBePerformedBySameVehicle as error">
+      The shipment type "{{ error.shipmentType }}" must be together with
+      {{ formatTypes(error.otherShipmentTypes) }} on the same vehicle
+    </p>
+    <p *ngIf="warnings.shipmentTypeMustBePerformedBySameVehicleAtPickupTime as error">
+      The shipment type "{{ error.shipmentType }}" must be together with
+      {{ formatTypes(error.otherShipmentTypes) }} on the same vehicle by pickup time
+    </p>
+    <p *ngIf="warnings.shipmentTypeMustBePerformedBySameVehicleAtDeliveryTime as error">
+      The shipment type "{{ error.shipmentType }}" must be together with
+      {{ formatTypes(error.otherShipmentTypes) }} on the same vehicle by delivery time
+    </p>
+    <ng-container *ngIf="warnings.shipmentExcessDemand as error">
+      <p *ngFor="let type of getKeys(error)">
+        Demand type "{{ type }}" exceeds the capacity of the vehicle by {{ error[type] }}
+      </p>
+    </ng-container>
+  </section>
+</form>

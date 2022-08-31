@@ -1,0 +1,48 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .mat-dialog-title {
+    display: flex;
+    button:last-of-type {
+      margin-left: auto;
+    }
+  }
+
+  .mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    max-height: initial;
+    position: relative;
+  }
+
+  .progress-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-title {
+    display: flex;
+    flex: auto;
+    align-items: center;
+    h3 {
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+  }
+
+  .form-wrapper {
+    flex: auto;
+    padding: 0 1rem;
+    overflow: auto;
+  }
+}

@@ -1,0 +1,18 @@
+:host {
+  height: 81px;
+}
+
+#map-select-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.divider {
+  position: relative;
+  overflow: hidden;
+  width: 30px;
+  height: 1px;
+  margin: 0px 5px;
+  background-color: rgb(230, 230, 230);
+  top: 0px;
+}

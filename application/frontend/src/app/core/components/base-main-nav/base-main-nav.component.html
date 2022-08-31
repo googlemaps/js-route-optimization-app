@@ -1,0 +1,188 @@
+<div
+  class="nav-container mat-body-strong"
+  [ngClass]="{
+    'extended-border':
+      page === pages.Shipments || page === pages.Vehicles || page === pages.VehicleOperators
+  }">
+  <div class="nav-item nav-scenario nav-page-button">
+    <button mat-flat-button (click)="shipmentsClick.emit()">
+      <ng-container *ngTemplateOutlet="disabled ? bulletLarge : checkmarkLarge"></ng-container>
+      <span class="nav-subtitle">Planning Scenario</span>
+    </button>
+  </div>
+  <div class="nav-item nav-subitem nav-page-button">
+    <button
+      mat-flat-button
+      (click)="shipmentsClick.emit()"
+      [ngClass]="{ selected: page === pages.Shipments }">
+      <ng-container *ngIf="!selectedShipmentCount; else checkmark">
+        <svg height="24" width="24" class="nav-subitem-bullet">
+          <circle cx="12" cy="12" r="4" stroke-width="3" stroke="white" fill="#757575" />
+        </svg>
+      </ng-container>
+      <span class="nav-subtitle">
+        <svg width="24" height="24">
+          <g transform="translate(-68.845219,-101.12324)">
+            <g transform="matrix(1.3306897,0,0,1.3306897,66.841151,99.589074)">
+              <path
+                d="m 17.532097,2.4368309 -1.55451,0.730021 1.66616,3.572796 h -9.9712 l -2.0097,-4.302817 -1.55451,0.730021 1.69193,3.615736 v 2.533591 h -2.5336 v 1.7176861 h 2.5336 v 1.7177 H 2.3648871 v 1.717691 H 5.800267 v 1.726276 H 1.5060371 v 1.7091 H 19.541797 V 6.7396479 Z m 0.29201,13.7501111 H 7.517957 V 8.4573389 h 10.30615 z"
+                fill="rgba(0, 0, 0, 0.87)" />
+              <path
+                d="m 10.953337,11.892715 h 3.43539 c 0.47236,0 0.85884,-0.38648 0.85884,-0.85885 0,-0.47236 -0.38648,-0.85884 -0.85884,-0.85884 h -3.43539 c -0.47236,0 -0.85884,0.38648 -0.85884,0.85884 0,0.47237 0.38648,0.85885 0.85884,0.85885 z"
+                fill="rgba(0, 0, 0, 0.87)" />
+            </g>
+          </g>
+        </svg>
+        Shipments{{ selectedShipmentCount ? ' (' + (selectedShipmentCount | number) + ')' : '' }}
+      </span>
+    </button>
+  </div>
+  <div class="nav-item nav-subitem nav-page-button">
+    <button
+      mat-flat-button
+      (click)="vehiclesClick.emit()"
+      [ngClass]="{ selected: page === pages.Vehicles }">
+      <ng-container *ngIf="!selectedVehicleCount; else checkmark">
+        <svg height="24" width="24" class="nav-subitem-bullet">
+          <circle cx="12" cy="12" r="4" stroke-width="3" stroke="white" fill="#757575" />
+        </svg>
+      </ng-container>
+      <span class="nav-subtitle">
+        <svg width="24" height="24">
+          <g transform="translate(-79.204911,-87.606691)">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="m 85.795191,92.147231 c 0.898014,0 1.622915,-0.724324 1.622915,-1.621621 0,-1.081082 -1.622915,-2.918919 -1.622915,-2.918919 0,0 -1.622918,1.837837 -1.622918,2.918919 0,0.897297 0.724902,1.621621 1.622918,1.621621 z m 7.032638,-1.621621 c 0,0.897297 -0.724903,1.621621 -1.622918,1.621621 -0.898012,0 -1.622915,-0.724324 -1.622915,-1.621621 0,-1.081082 1.622915,-2.918919 1.622915,-2.918919 0,0 1.622918,1.837837 1.622918,2.918919 z m 5.409721,0 c 0,0.897297 -0.7249,1.621621 -1.622916,1.621621 -0.898014,0 -1.622915,-0.724324 -1.622915,-1.621621 0,-1.081082 1.622915,-2.918919 1.622915,-2.918919 0,0 1.622916,1.837837 1.622916,2.918919 z m -1.081943,3.783784 c 0.714083,0 1.319973,0.454053 1.536363,1.09189 l 2.25044,6.475666 v 8.64866 c 0,0.59459 -0.48687,1.08108 -1.08194,1.08108 h -1.08195 c -0.59506,0 -1.08194,-0.48649 -1.08194,-1.08108 v -1.08107 H 84.713246 v 1.08107 c 0,0.59459 -0.486876,1.08108 -1.081945,1.08108 h -1.081945 c -0.595069,0 -1.081945,-0.48649 -1.081945,-1.08108 v -8.64866 l 2.250444,-6.475666 c 0.227209,-0.637837 0.822279,-1.09189 1.536363,-1.09189 z M 85.632899,96.471555 H 96.766108 L 97.89133,99.7148 H 84.507677 Z m -2.001598,5.772975 v 5.03785 H 98.77852 v -5.03785 l -0.11901,-0.36758 H 83.761133 Z m 2.704861,3.95677 c 0.896283,0 1.622917,-0.72649 1.622917,-1.62163 0,-0.89621 -0.726634,-1.62162 -1.622917,-1.62162 -0.896282,0 -1.622916,0.72541 -1.622916,1.62162 0,0.89514 0.726634,1.62163 1.622916,1.62163 z m 11.360418,-1.62163 c 0,0.89514 -0.726634,1.62163 -1.622917,1.62163 -0.896284,0 -1.622917,-0.72649 -1.622917,-1.62163 0,-0.89621 0.726633,-1.62162 1.622917,-1.62162 0.896283,0 1.622917,0.72541 1.622917,1.62162 z"
+              fill="rgba(0, 0, 0, 0.87)" />
+          </g>
+        </svg>
+        Vehicles{{ selectedVehicleCount ? ' (' + (selectedVehicleCount | number) + ')' : '' }}
+      </span>
+    </button>
+  </div>
+  <div class="nav-item nav-subitem nav-page-button" *ngIf="allowExperimentalFeatures">
+    <button
+      mat-flat-button
+      (click)="vehicleOperatorsClick.emit()"
+      [ngClass]="{ selected: page === pages.VehicleOperators }">
+      <ng-container *ngIf="!selectedVehicleOperatorCount; else checkmark">
+        <svg height="24" width="24" class="nav-subitem-bullet">
+          <circle cx="12" cy="12" r="4" stroke-width="3" stroke="white" fill="#757575" />
+        </svg>
+      </ng-container>
+      <span class="nav-subtitle">
+        <svg width="24" height="24">
+          <path
+            d="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+        </svg>
+        Operators{{
+          selectedVehicleOperatorCount ? ' (' + (selectedVehicleOperatorCount | number) + ')' : ''
+        }}
+      </span>
+    </button>
+  </div>
+  <div
+    class="nav-item nav-subitem"
+    *ngIf="page === pages.Shipments || page === pages.Vehicles || page === pages.VehicleOperators">
+    <app-generate-button
+      class="nav-generate"
+      [disabled]="disabled"
+      [prompt]="isSolutionIllegal"
+      [solving]="solving"
+      [label]="label"
+      *ngIf="!disabled; else selectionMessage"></app-generate-button>
+  </div>
+  <div class="nav-item nav-page-button nav-solution" [ngClass]="{ warning: hasSolutionWarning }">
+    <button
+      mat-flat-button
+      (click)="hasSolution && solutionClick.emit()"
+      [ngClass]="{ selected: page === pages.RoutesChart }">
+      <ng-container
+        *ngTemplateOutlet="
+          hasSolution ? (hasSolutionWarning ? cautionLarge : checkmarkLarge) : bulletLarge
+        ">
+      </ng-container>
+      <span class="nav-subtitle"> Solution </span>
+      <span class="warning-label" [ngSwitch]="isSolutionIllegal" *ngIf="hasSolutionWarning">
+        <ng-container *ngSwitchCase="true">Illegal</ng-container>
+        <ng-container *ngSwitchDefault>Stale</ng-container>
+      </span>
+    </button>
+  </div>
+  <div class="border"></div>
+</div>
+<div class="nav-container mat-body-strong">
+  <ng-container
+    *ngIf="
+      hasSolutionWarning &&
+      page !== pages.Shipments &&
+      page !== pages.Vehicles &&
+      page !== pages.VehicleOperators
+    ">
+    <div class="nav-item nav-subitem">
+      <app-post-solve-message class="nav-message"></app-post-solve-message>
+    </div>
+    <div class="nav-item nav-subitem">
+      <app-generate-button
+        class="nav-generate"
+        [disabled]="disabled"
+        [prompt]="isSolutionIllegal"
+        [solving]="solving"
+        [label]="label"
+        *ngIf="!disabled"></app-generate-button>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #selectionMessage>
+  <app-pre-solve-message class="nav-message"></app-pre-solve-message>
+</ng-template>
+
+<ng-template #bulletLarge>
+  <svg height="24" width="24">
+    <circle cx="12" cy="12" r="5" stroke-width="3" stroke="white" fill="#757575" />
+  </svg>
+</ng-template>
+<ng-template #checkmark>
+  <svg width="24" height="24">
+    <g transform="translate(-103.98173,-146.71139)">
+      <circle
+        style="fill: #ffffff; fill-opacity: 1; stroke-width: 1.79756"
+        cx="116.98785"
+        cy="-159.71025"
+        transform="scale(1,-1)"
+        r="9.015873" />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="m 123.19043,154.83795 c 0.38444,0.34177 0.41908,0.93039 0.0775,1.31505 l -7.45052,8.38183 c -0.18233,0.20486 -0.446,0.31925 -0.72047,0.31188 -0.27456,-0.007 -0.53169,-0.13516 -0.70315,-0.34918 l -3.72197,-4.65657 c -0.32103,-0.40232 -0.25592,-0.98814 0.14611,-1.30945 0.40178,-0.32137 0.98776,-0.25519 1.30898,0.1461 l 3.03224,3.79415 6.71669,-7.55665 c 0.34178,-0.38463 0.93037,-0.4191 1.31481,-0.0776 z"
+        fill="#1e8e3e" />
+    </g>
+  </svg>
+</ng-template>
+<ng-template #checkmarkLarge>
+  <svg width="24" height="24">
+    <g>
+      <rect x="1" y="1" width="22" height="22" rx="11" fill="#1e8e3e" />
+      <path
+        d="m 10.7871,16.996 c 0.3106,0 0.5508,-0.129 0.7207,-0.381 l 5.5078,-8.578 c 0.1231,-0.193 0.1758,-0.357 0.1758,-0.516 0,-0.416 -0.293,-0.703 -0.7148,-0.703 -0.2871,0 -0.4629,0.106 -0.6387,0.381 L 10.7578,15.256 8.1504,11.91 C 7.9746,11.682 7.793,11.588 7.5352,11.588 c -0.4219,0 -0.7266,0.299 -0.7266,0.709 0,0.182 0.0644,0.357 0.2168,0.539 l 3.0351,3.785 c 0.2051,0.258 0.4219,0.375 0.7266,0.375 z"
+        fill="#ffffff" />
+    </g>
+  </svg>
+</ng-template>
+<ng-template #cautionLarge>
+  <svg width="24" height="24">
+    <rect x="1" y="1" width="22" height="22" rx="11" fill="white" />
+    <g transform="translate(-1,-1.5)">
+      <path
+        d="m4.3252 19.45h15.34c0.63742 0 1.0348-0.6871 0.72021-1.2417l-7.6739-13.245c-0.32285-0.55464-1.1176-0.55464-1.4321 0l-7.6739 13.245c-0.31457 0.55464 0.082782 1.2417 0.72021 1.2417zm8.5018-2.4835h-1.6556v-1.6556h1.6556zm-0.82782-3.3113c-0.4553 0-0.82782-0.37252-0.82782-0.82782v-1.6556c0-0.4553 0.37252-0.82782 0.82782-0.82782s0.82782 0.37252 0.82782 0.82782v1.6556c0 0.4553-0.37252 0.82782-0.82782 0.82782z"
+        stroke-width=".82782" />
+      <path
+        d="m11.889 13.643c-0.34173-0.05425-0.60958-0.29859-0.68859-0.62815-0.01895-0.07904-0.01989-0.12711-0.01996-1.0193-6.9e-5 -0.90654 5.87e-4 -0.93892 0.02061-1.0172 0.09884-0.38647 0.44689-0.64602 0.8376-0.6246 0.0593 0.0033 0.13542 0.01337 0.16915 0.02249 0.15276 0.04129 0.32198 0.15031 0.42281 0.27239 0.06516 0.07889 0.13687 0.2204 0.16754 0.33064l0.02276 0.08179 1.39e-4 0.93031c1.11e-4 0.74586-0.0026 0.94248-0.01371 0.99165-0.08528 0.37782-0.39656 0.64526-0.77264 0.66382-0.05099 0.0025-0.11656 7.91e-4 -0.14572-0.0038z"
+        fill="white"
+        stroke-width=".1" />
+      <path d="m11.181 16.142v-0.82297h1.6459v1.6459h-1.6459z" fill="white" stroke-width=".1" />
+    </g>
+  </svg>
+</ng-template>

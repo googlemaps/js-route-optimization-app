@@ -1,0 +1,37 @@
+<div *ngFor="let group of control?.controls; index as i" class="mat-typography" [formGroup]="group">
+  <div style="display: flex">
+    <mat-form-field>
+      <mat-label>Visit Type</mat-label>
+      <input
+        matInput
+        formControlName="visitType"
+        type="text"
+        placeholder="visit type"
+        [matAutocomplete]="auto"
+        (focus)="setAutocompleteFocus(i)" />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredVisitTypes$ | async" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error
+        *ngIf="group.getError('required', 'visitType')"
+        [attr.title]="errorMessage.innerText">
+        <span #errorMessage>Required</span>
+      </mat-error>
+    </mat-form-field>
+    <app-duration-min-sec-form
+      [parentFormGroup]="group.controls.extraDuration"
+      [errorStateMatcher]="extraVisitDurationErrorStateMatcher"
+      [labelName]="'Duration'"></app-duration-min-sec-form>
+    <button
+      type="button"
+      class="clear-place"
+      (click)="removeExtraVisitDuration(i)"
+      mat-icon-button
+      title="Remove duration"
+      [disabled]="disabled">
+      <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+    </button>
+  </div>
+</div>

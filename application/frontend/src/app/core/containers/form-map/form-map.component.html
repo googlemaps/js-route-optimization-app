@@ -1,0 +1,5 @@
+<app-map-type-button (typeChange)="onTypeChange($event)"> </app-map-type-button>
+<app-zoom-home-button
+  (zoomToHome)="onZoomToHome()"
+  [disabled]="zoomToHomeDisabled$ | async"></app-zoom-home-button>
+<app-map-wrapper [options]="options$ | async"></app-map-wrapper>

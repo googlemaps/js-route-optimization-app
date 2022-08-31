@@ -1,0 +1,21 @@
+<div mat-dialog-title>
+  <h3 class="inline mat-h3">Iteration relaxations</h3>
+  <button mat-icon-button type="button" title="Cancel" mat-dialog-close cdkFocusInitial>
+    <mat-icon svgIcon="clear"></mat-icon>
+  </button>
+</div>
+<mat-dialog-content>
+  <form [formGroup]="form" autocomplete="off" class="threshold-form">
+    <app-injected-relaxation-constraints-form
+      formArrayName="constraintRelaxations"
+      (removeThreshold)="removeConstraintRelaxation($event)">
+    </app-injected-relaxation-constraints-form>
+  </form>
+  <button type="button" mat-button color="primary" (click)="addConstraintRelaxation()">
+    Add additional relaxation
+  </button>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button color="primary" mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid">Save</button>
+</mat-dialog-actions>

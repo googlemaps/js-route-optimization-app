@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <input matInput type="number" min="0" [formControl]="quantityValue" />
+  <span matSuffix *ngIf="!selectableUnit">
+    {{ typeUnit | unitAbbreviation: unitAbbreviations }}
+  </span>
+  <div class="unit-field" *ngIf="selectableUnit">
+    <mat-select [formControl]="quantityTypeUnit">
+      <mat-option
+        *ngFor="let u of unitOptions"
+        [value]="u"
+        [attr.title]="u === (u | unitAbbreviation: unitAbbreviations) ? null : u">
+        {{ u | unitAbbreviation: unitAbbreviations }}
+      </mat-option>
+    </mat-select>
+  </div>
+</div>

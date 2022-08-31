@@ -1,0 +1,23 @@
+mat-select.mat-select {
+  min-width: 0;
+  width: 190px;
+  margin-left: 1rem;
+  font-weight: 500;
+}
+
+mat-select mat-select-trigger {
+  position: relative;
+  top: -4px;
+
+  mat-icon {
+    width: 1rem;
+    position: relative;
+    top: 6px;
+    padding-right: 4px;
+  }
+}
+
+mat-option mat-icon {
+  position: relative;
+  top: -2px;
+}

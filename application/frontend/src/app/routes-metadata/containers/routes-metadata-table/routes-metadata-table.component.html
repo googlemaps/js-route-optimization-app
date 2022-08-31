@@ -1,0 +1,24 @@
+<div class="table-container">
+  <app-base-routes-metadata-table
+    [changeDisabled]="changeDisabled$ | async"
+    [columnsToDisplay]="columnsToDisplay$ | async"
+    [dataSource]="dataSource"
+    [sort]="sort$ | async"
+    [selected]="selected$ | async"
+    [total]="total$ | async"
+    [unitAbbreviations]="unitAbbreviations$ | async"
+    (selectAll)="onSelectAll()"
+    (deselectAll)="onDeselectAll()"
+    (selectedChange)="onSelectedChange($event)"
+    (sortChange)="onSortChange($event)"></app-base-routes-metadata-table>
+</div>
+<div class="footer-container">
+  <mat-paginator
+    [length]="total$ | async"
+    [pageIndex]="pageIndex$ | async"
+    [pageSize]="pageSize$ | async"
+    (page)="onPage($event)"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [hidePageSize]="true">
+  </mat-paginator>
+</div>

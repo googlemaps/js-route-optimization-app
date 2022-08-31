@@ -1,0 +1,33 @@
+<ng-content></ng-content>
+<button mat-button color="primary" (click)="bulkEdit.emit()" [disabled]="!showBulkEdit">
+  Bulk edit
+</button>
+<button mat-button color="warn" (click)="bulkDelete.emit()" [disabled]="!showBulkDelete">
+  Bulk delete
+</button>
+<app-filter-list
+  class="grow"
+  [filters]="filters"
+  (editFilter)="editFilter.emit($event)"
+  (removeFilter)="removeFilter.emit($event)">
+</app-filter-list>
+<button
+  class="display-columns-menu-trigger"
+  mat-button
+  [disabled]="!(displayColumns?.length > 0)"
+  [matMenuTriggerFor]="menu"
+  aria-label="Display columns menu"
+  @.disabled>
+  <mat-icon svgIcon="toc_rtl"></mat-icon>
+  <mat-menu #menu="matMenu" class="display-columns-menu">
+    <div
+      mat-menu-item
+      *ngFor="let c of displayColumns; trackBy: trackDisplayColumnBy"
+      [disabled]="!c.toggleable"
+      (click)="$event.stopPropagation(); cb.toggle(); onDisplayColumnChange(c, cb.checked)">
+      <mat-checkbox #cb color="primary" [checked]="c.active" [disabled]="!c.toggleable">{{
+        c.label
+      }}</mat-checkbox>
+    </div>
+  </mat-menu>
+</button>

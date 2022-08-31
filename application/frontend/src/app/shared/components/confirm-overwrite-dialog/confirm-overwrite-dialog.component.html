@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Confirm Overwrite</h2>
+<div mat-dialog-content>
+  File named <span class="mat-body-strong">{{ data.filename }}</span> already exists. Overwrite?
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button mat-flat-button color="warn" [mat-dialog-close]="true">Accept</button>
+</div>

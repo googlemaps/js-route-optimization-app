@@ -1,0 +1,4 @@
+label,type,startTimeWindowStartTime,startTimeWindowEndTime,endTimeWindowStartTime,endTimeWindowEndTime
+truck Operator 1,Operator Type 1,2021-08-02T13:00:00.000Z,2021-08-02T17:00:00.000Z,2021-08-02T22:00:00.000Z,2021-08-02T23:00:00.000Z
+truck Operator 2,Operator Type 2,2021-08-02T14:00:00.000Z,2021-08-02T19:00:00.000Z,2021-08-02T22:00:00.000Z,2021-08-02T23:50:00.000Z
+auxilary truck Operator,Operator Type 1,,,,

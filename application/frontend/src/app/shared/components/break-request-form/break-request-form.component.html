@@ -1,0 +1,118 @@
+<form [formGroup]="form">
+  <div class="break-request-form">
+    <section>
+      <div class="datetime-wrapper">
+        <div class="datetime">
+          <mat-form-field [appearance]="appearance" class="date pad-right">
+            <input
+              matInput
+              [matDatepicker]="earliestStartDatePicker"
+              [errorStateMatcher]="earliestErrorStateMatcher"
+              formControlName="earliestStartDate" />
+            <mat-hint>Earliest Date</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="earliestStartDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #earliestStartDatePicker></mat-datepicker>
+            <mat-error
+              *ngIf="form.getError('required', 'earliestStartDate')"
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Earliest Start Date is Required</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field [appearance]="appearance" class="time pad-right">
+            <input
+              matInput
+              type="time"
+              formControlName="earliestStartTime"
+              [errorStateMatcher]="earliestErrorStateMatcher" />
+            <mat-hint>Earliest Time</mat-hint>
+            <mat-error
+              *ngIf="form.getError('required', 'earliestStartTime')"
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Earliest Start Time is Required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <ng-container
+          *ngIf="form.errors && (showError(earliestStartDate) || showError(earliestStartTime))">
+          <mat-error *ngIf="form.errors.earliestIncomplete" [attr.title]="message.innerText">
+            <span #message>Incomplete Earliest Date and time</span>
+          </mat-error>
+        </ng-container>
+      </div>
+      <div class="datetime-wrapper">
+        <div class="datetime">
+          <mat-form-field [appearance]="appearance" class="date pad-right">
+            <input
+              matInput
+              [matDatepicker]="latestStartDatePicker"
+              formControlName="latestStartDate"
+              [errorStateMatcher]="latestErrorStateMatcher" />
+            <mat-hint>Latest Date</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="latestStartDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #latestStartDatePicker></mat-datepicker>
+            <mat-error
+              *ngIf="form.getError('required', 'latestStartDate')"
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Latest Start Date is Required</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field [appearance]="appearance" class="time pad-right">
+            <input
+              matInput
+              type="time"
+              formControlName="latestStartTime"
+              [errorStateMatcher]="latestErrorStateMatcher" />
+            <mat-hint>Latest Time</mat-hint>
+            <mat-error
+              *ngIf="form.getError('required', 'latestStartTime')"
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Latest Start Time is Required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <ng-container
+          *ngIf="
+            form.errors &&
+            (showError(earliestStartDate) ||
+              showError(earliestStartTime) ||
+              showError(latestStartDate) ||
+              showError(latestStartTime))
+          ">
+          <mat-error
+            *ngIf="
+              !form.errors.endIncomplete &&
+              !latestStartDate.invalid &&
+              !latestStartTime.invalid &&
+              (form.errors.latestStartDate || form.errors.latestStartTime)
+            "
+            [attr.title]="message.innerText">
+            <span #message
+              >Latest Start Date and time must be greater than or equal to Earliest Start Date and
+              time</span
+            >
+          </mat-error>
+          <mat-error *ngIf="form.errors.latestIncomplete" [attr.title]="message.innerText">
+            <span #message>Incomplete latest date and time</span>
+          </mat-error>
+        </ng-container>
+      </div>
+      <app-duration-min-sec-form
+        class="app-duration-min-sec-form"
+        [parentFormGroup]="minDuration"
+        [errorStateMatcher]="breakRequestErrorStateMatcher"
+        [labelName]="'Min Duration'"></app-duration-min-sec-form>
+    </section>
+    <div class="delete-break-request">
+      <button
+        mat-icon-button
+        type="button"
+        title="Remove break rule"
+        (click)="remove.emit()"
+        *ngIf="form.enabled">
+        <mat-icon svgIcon="delete"></mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

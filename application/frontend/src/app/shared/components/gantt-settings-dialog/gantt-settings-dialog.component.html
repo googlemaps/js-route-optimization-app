@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Timezone</h2>
+<mat-dialog-content>
+  <app-timezone-edit
+    [currentTimezone]="currentTimezone"
+    (timezoneSelected)="onTimezoneSelected($event)"></app-timezone-edit>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="selectedTimezone">Ok</button>
+</mat-dialog-actions>

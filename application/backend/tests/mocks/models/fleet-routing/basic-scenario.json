@@ -1,0 +1,137 @@
+{
+  "label": "optimize-tours-basic",
+  "model": {
+    "shipments": [
+      {
+        "deliveries": [
+          {
+            "arrivalLocation": {
+              "latitude": 48.880942,
+              "longitude": 2.323866
+            },
+            "duration": {
+              "seconds": 250
+            },
+            "timeWindows": [
+              {
+                "endTime": {
+                  "seconds": 4000
+                },
+                "startTime": {
+                  "seconds": 3000
+                }
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "weight": {
+            "amount": "10"
+          }
+        },
+        "pickups": [
+          {
+            "arrivalLocation": {
+              "latitude": 48.874507,
+              "longitude": 2.30361
+            },
+            "duration": {
+              "seconds": 150
+            },
+            "timeWindows": [
+              {
+                "endTime": {
+                  "seconds": 2000
+                },
+                "startTime": {
+                  "seconds": 1000
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalLocation": {
+              "latitude": 48.88094,
+              "longitude": 2.323844
+            },
+            "duration": {
+              "seconds": 251
+            },
+            "timeWindows": [
+              {
+                "endTime": {
+                  "seconds": 4001
+                },
+                "startTime": {
+                  "seconds": 3001
+                }
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "weight": {
+            "amount": "20"
+          }
+        },
+        "pickups": [
+          {
+            "arrivalLocation": {
+              "latitude": 48.880943,
+              "longitude": 2.323867
+            },
+            "duration": {
+              "seconds": 151
+            },
+            "timeWindows": [
+              {
+                "endTime": {
+                  "seconds": 2001
+                },
+                "startTime": {
+                  "seconds": 1001
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "vehicles": [
+      {
+        "loadLimits": {
+          "weight": {
+            "maxLoad": 50
+          }
+        },
+        "endLocation": {
+          "latitude": 48.86311,
+          "longitude": 2.341205
+        },
+        "startLocation": {
+          "latitude": 48.863102,
+          "longitude": 2.341204
+        }
+      },
+      {
+        "loadLimits": {
+          "weight": {
+            "maxLoad": 60
+          }
+        },
+        "endLocation": {
+          "latitude": 48.86312,
+          "longitude": 2.341215
+        },
+        "startLocation": {
+          "latitude": 48.863112,
+          "longitude": 2.341214
+        }
+      }
+    ]
+  }
+}

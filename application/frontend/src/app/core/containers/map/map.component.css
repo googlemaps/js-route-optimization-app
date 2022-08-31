@@ -1,0 +1,38 @@
+:host {
+  position: relative;
+}
+
+app-map-type-button {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 10px;
+}
+
+app-toggle-selection-filter-button {
+  position: absolute;
+  z-index: 1;
+  top: 60px;
+  left: 10px;
+}
+
+app-select-map-items-button {
+  position: absolute;
+  z-index: 1;
+  top: 110px;
+  left: 10px;
+}
+
+app-hide-map-button {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
+}
+
+app-zoom-home-button {
+  position: absolute;
+  z-index: 1;
+  bottom: 112px;
+  right: 10px;
+}

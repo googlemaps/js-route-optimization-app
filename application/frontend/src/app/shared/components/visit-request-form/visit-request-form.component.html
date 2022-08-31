@@ -1,0 +1,362 @@
+<header>
+  <h3>{{ isPickup ? 'Pickup' : 'Delivery' }} request alternative #{{ id }}</h3>
+  <button
+    mat-icon-button
+    type="button"
+    title="Remove {{ isPickup ? 'pickup' : 'delivery' }} request alternative #{{ id }}"
+    (click)="remove.emit()"
+    *ngIf="form.enabled">
+    <mat-icon svgIcon="delete"></mat-icon>
+  </button>
+</header>
+<form [formGroup]="form" autocomplete="off" novalidate>
+  <section class="edit-menu-content flex-column">
+    <mat-form-field class="edit-label pad-right">
+      <!-- visit label -->
+      <mat-chip-list #labelChipList aria-label="Visit request labels" [disabled]="disabled">
+        <mat-chip
+          class="visit-request-chip"
+          *ngFor="let label of labels; let i = index"
+          (removed)="removeLabel(i)"
+          [removable]="!disabled">
+          {{ label }}
+          <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Label"
+          [formControl]="labelCtrl"
+          [matChipInputFor]="labelChipList"
+          (keydown)="onLabelKeyDown($event)"
+          [matChipInputSeparatorKeyCodes]="labelSeparatorKeysCodes"
+          (matChipInputTokenEnd)="addLabel($event.value, $event.input)"
+          (focusout)="addLabel($event.target.value, $event.target)" />
+      </mat-chip-list>
+    </mat-form-field>
+
+    <!-- arrival location -->
+    <div class="w-100 d-flex flex-row flex-wrap align-items-baseline">
+      <div class="edit-place pad-right place-autocomplete-wide">
+        <mat-form-field>
+          <mat-label>Arrival location</mat-label>
+          <app-place-autocomplete
+            [bounds]="bounds"
+            formControlName="arrivalLocation"
+            [required]="true">
+          </app-place-autocomplete>
+          <mat-error
+            *ngIf="
+              arrivalLocation.hasError('required') &&
+              (arrivalLocation.touched || arrivalLocation.dirty)
+            "
+            [attr.title]="requiredMessage.innerText">
+            <span #requiredMessage>Arrival location is required</span>
+          </mat-error>
+          <mat-hint>
+            <span *ngIf="arrivalLocation.value">
+              <span class="mr-2">Coordinates:</span>{{ arrivalLocation.value | formatLatLng }}
+            </span>
+          </mat-hint>
+        </mat-form-field>
+        <ng-container *ngIf="!disabled">
+          <button
+            *ngIf="arrivalLocation.value; else setArrivalLocationTemplate"
+            type="button"
+            class="clear-place"
+            mat-icon-button
+            title="Clear arrival location"
+            (click)="clearControl(arrivalLocation)">
+            <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+          </button>
+          <ng-template #setArrivalLocationTemplate>
+            <button
+              *ngIf="!setMapActive; else cancelSetArrivalLocationTemplate"
+              type="button"
+              class="clear-place"
+              mat-icon-button
+              title="Set arrival location"
+              (click)="setArrivalLocation()">
+              <mat-icon class="icon--smaller m-0" svgIcon="add"></mat-icon>
+            </button>
+            <ng-template #cancelSetArrivalLocationTemplate>
+              <button
+                type="button"
+                class="clear-place"
+                mat-icon-button
+                title="Cancel set arrival location"
+                (click)="cancelSetArrivalLocation()">
+                <mat-icon class="icon--smaller m-0" svgIcon="clear"></mat-icon>
+              </button>
+            </ng-template>
+          </ng-template>
+        </ng-container>
+      </div>
+      <mat-form-field class="item-sm padded-form-field pad-right waypoint-heading">
+        <mat-label>Heading</mat-label>
+        <input matInput type="number" min="0" max="360" [formControl]="arrivalHeading" />
+        <mat-error
+          *ngIf="arrivalHeading.errors && (arrivalHeading.touched || arrivalHeading.dirty)"
+          [attr.title]="errorMessage.innerText">
+          <span #errorMessage>Invalid Value</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox [formControl]="arrivalSideOfRoad" color="primary"> Side of road </mat-checkbox>
+    </div>
+
+    <!-- departure location -->
+    <div class="w-100 d-flex flex-row flex-wrap align-items-baseline">
+      <div class="edit-place pad-right place-autocomplete-wide">
+        <mat-form-field>
+          <mat-label>Departure location (if different than arrival)</mat-label>
+          <app-place-autocomplete
+            [bounds]="bounds"
+            formControlName="departureLocation"
+            [required]="false">
+          </app-place-autocomplete>
+          <mat-hint>
+            <span *ngIf="departureLocation.value">
+              <span class="mr-2">Coordinates:</span>{{ departureLocation.value | formatLatLng }}
+            </span>
+          </mat-hint>
+        </mat-form-field>
+        <ng-container *ngIf="!disabled">
+          <button
+            *ngIf="departureLocation.value; else setDepartureLocationTemplate"
+            type="button"
+            class="clear-place"
+            mat-icon-button
+            title="Clear arrival location"
+            (click)="clearControl(departureLocation)">
+            <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+          </button>
+          <ng-template #setDepartureLocationTemplate>
+            <button
+              *ngIf="!setMapActive; else cancelSetDepartureLocationTemplate"
+              type="button"
+              class="clear-place"
+              mat-icon-button
+              title="Set arrival location"
+              (click)="setDepartureLocation()">
+              <mat-icon class="icon--smaller m-0" svgIcon="add"></mat-icon>
+            </button>
+            <ng-template #cancelSetDepartureLocationTemplate>
+              <button
+                type="button"
+                class="clear-place"
+                mat-icon-button
+                title="Cancel set arrival location"
+                (click)="cancelSetDepartureLocation()">
+                <mat-icon class="icon--smaller m-0" svgIcon="clear"></mat-icon>
+              </button>
+            </ng-template>
+          </ng-template>
+        </ng-container>
+      </div>
+      <mat-form-field class="item-sm padded-form-field pad-right waypoint-heading">
+        <mat-label>Heading</mat-label>
+        <input matInput type="number" min="0" max="360" [formControl]="departureHeading" />
+        <mat-error
+          *ngIf="departureHeading.errors && (departureHeading.touched || departureHeading.dirty)"
+          [attr.title]="errorMessage.innerText">
+          <span #errorMessage>Invalid Value</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox [formControl]="departureSideOfRoad" color="primary">
+        Side of road
+      </mat-checkbox>
+    </div>
+  </section>
+
+  <section class="edit-menu-content">
+    <!-- duration -->
+    <div *ngIf="durationMinutes as control" class="item-sm pad-right">
+      <mat-form-field [appearance]="appearance">
+        <mat-label>Duration</mat-label>
+        <input matInput type="number" min="0" pattern="\d*" formControlName="durationMinutes" />
+        <span title="minutes" matSuffix>min</span>
+        <mat-error
+          *ngIf="control.errors?.pattern && (control.touched || control.dirty)"
+          [attr.title]="patternMessage.innerText">
+          <span #patternMessage>Non-negative integer required</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div *ngIf="durationSeconds as control" class="item-sm pad-right">
+      <mat-form-field [appearance]="appearance" class="secField">
+        <input
+          matInput
+          type="number"
+          min="0"
+          max="59"
+          pattern="\d*"
+          formControlName="durationSeconds" />
+        <span title="seconds" matSuffix>sec</span>
+        <mat-error
+          *ngIf="control.errors?.pattern && (control.touched || control.dirty)"
+          [attr.title]="patternMessage.innerText">
+          <span #patternMessage>Non-negative integer required</span>
+        </mat-error>
+        <mat-error
+          *ngIf="control.errors?.max && (control.touched || control.dirty)"
+          [attr.title]="patternMessage.innerText">
+          <span #patternMessage>Cannot exceed 59 seconds</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- cost -->
+    <div *ngIf="cost as control" class="item-sm pad-right">
+      <mat-form-field [appearance]="appearance">
+        <mat-label>Cost</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          pattern="\d*(\.\d+)?"
+          step=".1"
+          formControlName="cost" />
+        <mat-error
+          *ngIf="control.errors?.pattern && (control.touched || control.dirty)"
+          [attr.title]="patternMessage.innerText">
+          <span #patternMessage>Non-negative number required</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- visit tags -->
+    <div class="visit-tags pad-right">
+      <mat-form-field class="visit-tag-list" [appearance]="appearance">
+        <mat-label>Visit Tags</mat-label>
+        <mat-chip-list #visitTagChipList aria-label="Visit tag selection" [disabled]="disabled">
+          <mat-chip
+            *ngFor="let visitTag of visitTags.value"
+            [selectable]="false"
+            [removable]="!disabled"
+            (removed)="removeVisitTag(visitTag)">
+            {{ visitTag }}
+            <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+          </mat-chip>
+          <input
+            #visitTagsInput
+            [formControl]="visitTagsCtrl"
+            [matAutocomplete]="autoTags"
+            [matChipInputFor]="visitTagChipList"
+            [matChipInputSeparatorKeyCodes]="visitTagsSeparatorKeysCodes"
+            (matChipInputTokenEnd)="addVisitTagInputToken($event.value, $event.input)"
+            (focusout)="addVisitTagInputToken($event.target.value, $event.target)"
+            (keydown)="onVisitTagsKeyDown($event)" />
+        </mat-chip-list>
+        <mat-autocomplete #autoTags="matAutocomplete" (optionSelected)="onVisitTagSelected($event)">
+          <mat-option
+            *ngFor="let visitTag of filteredAvailableVisitTags | async"
+            [value]="visitTag">
+            {{ visitTag }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <!-- visit types -->
+    <div class="visit-types pad-right">
+      <mat-form-field class="visit-type-list" [appearance]="appearance">
+        <mat-label>Visit Types</mat-label>
+        <mat-chip-list #visitTypeChipList aria-label="Visit type selection" [disabled]="disabled">
+          <mat-chip
+            *ngFor="let visitType of visitTypes.value"
+            [selectable]="false"
+            [removable]="!disabled"
+            (removed)="removeVisitType(visitType)">
+            {{ visitType }}
+            <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+          </mat-chip>
+          <input
+            #visitTypesInput
+            [formControl]="visitTypesCtrl"
+            [matAutocomplete]="autoTypes"
+            [matChipInputFor]="visitTypeChipList"
+            [matChipInputSeparatorKeyCodes]="visitTypesSeparatorKeysCodes"
+            (matChipInputTokenEnd)="addVisitTypeInputToken($event.value, $event.input)"
+            (focusout)="addVisitTypeInputToken($event.target.value, $event.target)"
+            (keydown)="onVisitTypesKeyDown($event)" />
+        </mat-chip-list>
+        <mat-autocomplete
+          #autoTypes="matAutocomplete"
+          (optionSelected)="onVisitTypeSelected($event)">
+          <mat-option
+            *ngFor="let visitType of filteredAvailableVisitTypes | async"
+            [value]="visitType">
+            {{ visitType }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </section>
+
+  <!-- load demands -->
+  <section class="shipment-demands">
+    <header>
+      <div>
+        <span class="mat-h4">Demands</span> ({{ loadDemands.length }})
+        <mat-error
+          class="mb-4"
+          *ngIf="loadDemands.errors && (loadDemands.touched || loadDemands.dirty)"
+          [attr.title]="errorMessage.innerText">
+          <span #errorMessage>Cannot have duplicate demand types</span>
+        </mat-error>
+      </div>
+      <button type="button" mat-button color="primary" (click)="addDemand()" [disabled]="disabled">
+        Add demand
+      </button>
+    </header>
+    <ng-container>
+      <app-load-demands-form
+        formArrayName="loadDemands"
+        [disabled]="disabled"
+        [scenarioCapacities]="scenarioCapacities"
+        [scenarioDemands]="scenarioDemands"
+        [abbreviations]="abbreviations">
+      </app-load-demands-form>
+    </ng-container>
+  </section>
+
+  <!-- time windows -->
+  <section class="time-windows">
+    <header>
+      <div>
+        <span class="mat-h4">Time windows</span> ({{ timeWindows.length }})
+        <mat-error class="mb-4" *ngIf="timeWindows.errors?.overlap"
+          >Time windows must not overlap</mat-error
+        >
+      </div>
+      <button type="button" mat-button color="primary" (click)="addTimeWindow()" *ngIf="!disabled">
+        Add time window
+      </button>
+    </header>
+    <ng-container *ngIf="timeWindows.at(0) as control">
+      <app-time-window
+        [formGroup]="control"
+        [startAt]="timeWindowsStartAt"
+        [timezoneOffset]="timezoneOffset"
+        [appearance]="appearance"
+        [disableSoftTime]="timeWindows.length > 1">
+      </app-time-window>
+    </ng-container>
+    <mat-expansion-panel #timeWindowsPanel [disabled]="timeWindows.length < 2">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Show more time windows </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-container
+        *ngFor="let control of timeWindows.controls | slice: 1; index as i; first as isFirst">
+        <mat-divider class="time-window-divider" *ngIf="!isFirst"></mat-divider>
+        <app-time-window
+          [formGroup]="control"
+          [startAt]="timeWindowsStartAt"
+          [timezoneOffset]="timezoneOffset"
+          [appearance]="appearance"
+          (remove)="removeTimeWindow(i + 1)"
+          [removable]="true"
+          [hideSoftTime]="true">
+        </app-time-window>
+      </ng-container>
+    </mat-expansion-panel>
+  </section>
+</form>

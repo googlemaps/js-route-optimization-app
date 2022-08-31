@@ -1,0 +1,444 @@
+openapi: 3.0.3
+info:
+  title: Fleet Routing App - Backend
+  version: 4.0.0
+paths:
+  /:
+    get:
+      description:
+        Static web content.
+        Paths not matched by other API routes are directed to static file serving middleware
+        to deliver the frontend application.
+
+  /healthz:
+    get:
+      description:
+        Health check
+      responses:
+        200:
+          description:
+            OK
+
+
+  # cloud fleet routing
+  /api/optimization/fleet-routing/optimize-tours:
+    post:
+      description:
+        Forwards a request to the **Cloud Fleet Routing** `optimizeTours` endpoint.
+      requestBody:
+        description:
+          A [`google.cloud.optimization.v1.IOptimizeToursRequest`](https://cloud.google.com/optimization/docs/reference/rpc/google.cloud.optimization.v1#optimizetoursrequest),
+          with the `parent` property omitted (to be added by the backend).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+      responses:
+        200:
+          description:
+            A [`google.cloud.optimization.v1.IOptimizeToursResponse`](https://cloud.google.com/optimization/docs/reference/rpc/google.cloud.optimization.v1#optimizetoursresponse) object.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description:
+            Unsuccessful requests return the error message as plain text in the response body.
+            gRPC status codes received from CFR are translated
+            to the equivalent HTTP status code.
+          content:
+            text/plain:
+              schema:
+                type: string
+
+
+  # scenarios
+  /api/scenarios:
+    description:
+      CRUD operations for scenarios saved as JSON files in *Google Cloud Storage*.
+
+      Requires that the optional Google Cloud Storage integration is enabled
+      with the `ALLOW_USER_GCS_STORAGE` environment variable.
+
+    get:
+      description:
+        List all saved scenarios
+      parameters:
+        - name: startsWith
+          description:
+            Filter to include only scenarios with a given date prefix.
+          in: query
+          required: false
+          schema:
+            type: string
+            pattern: \d{4}-\d{1,2}-\d{1,2}
+
+        - name: limit
+          description:
+            Maximum number of records to return
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description:
+            Returns an array of object names
+            with an optional `pageToken` to retrieve the next page of records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  schema:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      pageToken:
+                        type: object
+                        properties:
+                          prefix:
+                            type: string
+                          maxResults:
+                            type: integer
+                          autoPaginate:
+                            type: boolean
+                          pageToken:
+                            type: string
+                      required: ['name']
+              example:
+                - name: "2020-10-23/0-vehicles-10-shipments-dayton.request.json"
+                  pageToken:
+                    prefix: "scenarios/2020-10-23"
+                    maxResults: 5
+                    autoPaginate: false
+                    pageToken: "CkxzY2Vu...dC5qc29u"
+
+    post:
+      description:
+        Upload a new scenario to *Google Cloud Storage*
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  enum:
+                    - file
+                value:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          description:
+            Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    description:
+                      Path the to file within the bucket.
+                    type: string
+
+
+  /api/scenarios/{id}:
+    parameters:
+      - name: id
+        description:
+          Name of a saved scenario JSON file.
+          This should be the the path to a single file
+          within the *Google Cloud Storage* bucket
+          (i.e. including prefix, but not the bucket name).
+        in: path
+        required: true
+        schema:
+          type: string
+
+    get:
+      description:
+        Download a saved scenario file
+      responses:
+        200:
+          description:
+            A **Fleet Routing App** scenario definition
+          content:
+            application/json:
+              schema: {}
+        404:
+          description:
+            Not found
+
+    put:
+      description:
+        Replace a saved scenario file with a new version
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  enum:
+                    - file
+                value:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description:
+            OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messsage:
+                    type: string
+                  data:
+                    description:
+                      Path to the file within Google Cloud Storage
+                    type: string
+              example:
+                message: "Update was successful"
+                data: "2021-1-6/crewy.request.json"
+
+    delete:
+      description:
+        Delete a saved scenario file
+      responses:
+        200:
+          description:
+            OK
+
+
+  # solutions
+  /api/solutions:
+    description:
+      CRUD operations for solutions saved as JSON files in *Google Cloud Storage*.
+
+      Requires that the optional Google Cloud Storage integration is enabled
+      with the `ALLOW_USER_GCS_STORAGE` environment variable.
+
+    get:
+      description:
+        List all saved solutions
+      parameters:
+        - name: startsWith
+          description:
+            Filter to include only scenarios with a given date prefix.
+          in: query
+          required: false
+          schema:
+            type: string
+            pattern: \d{4}-\d{1,2}-\d{1,2}
+
+        - name: limit
+          description:
+            Maximum number of records to return
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description:
+            Success, returns an array of object names
+            with an optional `pageToken` to retrieve the next page of records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  schema:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      pageToken:
+                        type: object
+                        properties:
+                          prefix:
+                            type: string
+                          maxResults:
+                            type: integer
+                          autoPaginate:
+                            type: boolean
+                          pageToken:
+                            type: string
+              example:
+                - name: "2020-10-23/0-vehicles-10-shipments-dayton.request.json"
+                  pageToken:
+                      prefix: "solutions/2020-10-23"
+                      maxResults: 5
+                      autoPaginate: false
+                      pageToken: "CkxzY2Vu...dC5qc29u"
+
+    post:
+      description:
+        Upload a new solution to *Google Cloud Storage*
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  enum:
+                    - file
+                value:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          description:
+            Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    description:
+                      Path the to file within the bucket.
+                    type: string
+
+
+  /api/solutions/{id}:
+    parameters:
+      - name: id
+        description:
+          Name of a saved solution JSON file.
+          This should be the the path to a single file
+          within the *Google Cloud Storage* bucket
+          (i.e. including prefix, but not the bucket name).
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      description:
+        Download a saved solution file
+      responses:
+        200:
+          description:
+            A **Fleet Routing App** solution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Path to the file within the Google Cloud Storage bucket
+                  scenario:
+                    type: object
+                  solution:
+                    type: object
+        404:
+          description:
+            Not found
+
+    put:
+      description:
+        Replace a saved solution file with a new version
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  enum:
+                    - file
+                value:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description:
+            OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messsage:
+                    type: string
+                  data:
+                    description:
+                      Path to the file within Google Cloud Storage
+                    type: string
+              example:
+                message: "Update was successful"
+                data: "2021-1-6/crewy.request.json"
+
+    delete:
+      description:
+        Delete a saved solution file
+      responses:
+        200:
+          description:
+            OK
+
+
+  # status
+  /api/status/{id}:
+    get:
+      description:
+        Check if a scenario or solution file exists
+      parameters:
+        - name: id
+          description:
+            Name of a saved solution JSON file.
+            This should be the the path to a single file
+            within the *Google Cloud Storage* bucket
+            (i.e. including prefix, but not the bucket name).
+          in: path
+          required: true
+          schema:
+            type: string
+
+        - name: prefix
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - scenarios
+              - solutions
+      responses:
+        200:
+          description:
+            Returns a status message indicating whether the file exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    description:
+                      Value will be `true` if file exists, otherwise `false`
+                    type: boolean
+                  name:
+                    description:
+                      Path to the file within the Google Cloud Storage bucket
+                    type: string
+              example:
+                status: true
+                name: "2021-1-5/crewy.request.json"

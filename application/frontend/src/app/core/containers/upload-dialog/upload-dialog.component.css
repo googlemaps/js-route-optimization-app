@@ -1,0 +1,23 @@
+.file-input__form-field {
+  display: flex;
+  align-items: center;
+}
+
+.file-input__form-field mat-form-field.mat-form-field {
+  flex-grow: 1;
+  width: auto;
+}
+
+.file-input__form-field :last-child {
+  flex-grow: 0;
+  margin-left: 16px;
+}
+
+.file-input input[type='file'] {
+  opacity: 0;
+  height: 0;
+}
+
+.mat-dialog-content {
+  overflow-x: hidden;
+}

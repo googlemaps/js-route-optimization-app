@@ -1,0 +1,4428 @@
+{
+    "model": {
+        "shipments": [
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.95762116283498,
+                                "longitude": -118.16367638235948
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572531635"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572538835"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02670655662733,
+                                "longitude": -118.28090762537838
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572552917"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572560117"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.06882989692534,
+                                "longitude": -118.29772973601614
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572524478"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572531678"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.95600738356924,
+                                "longitude": -118.33801233199328
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572542777"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572549977"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.08282425260964,
+                                "longitude": -118.16558908675398
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572527150"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572534350"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.047269649348294,
+                                "longitude": -118.23776303041733
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550542"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557742"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.954360404640965,
+                                "longitude": -118.22935758828133
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572528685"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572535885"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.031459670193115,
+                                "longitude": -118.22247895908643
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572544706"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572551906"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.87764025877499,
+                                "longitude": -118.23004902273698
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572526481"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572533681"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.148422039641645,
+                                "longitude": -118.28544371112145
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572541738"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572548938"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.048026337561396,
+                                "longitude": -118.27174894649352
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572518668"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572525868"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.95064401981864,
+                                "longitude": -118.20596663908195
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572543848"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572551048"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02185092076999,
+                                "longitude": -118.27255783490443
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572518358"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572525558"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02104536069146,
+                                "longitude": -118.19652073823838
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550490"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557690"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.10999482965295,
+                                "longitude": -118.20631288749884
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572534456"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572541656"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.99938505967893,
+                                "longitude": -118.34048813071409
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572549674"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572556874"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.991683131602585,
+                                "longitude": -118.2734765768709
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572528144"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572535344"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.15726772234618,
+                                "longitude": -118.09993312485533
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572544647"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572551847"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.101646342224456,
+                                "longitude": -118.36435190535818
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572534621"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572541821"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.11149420572501,
+                                "longitude": -118.21450832643866
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572546290"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572553490"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.137385622630276,
+                                "longitude": -118.21387092910983
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572527641"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572534841"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.054771083238435,
+                                "longitude": -118.24618417325995
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572547980"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572555180"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.22435575387193,
+                                "longitude": -118.22028900665781
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572535245"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572542445"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.93426988501314,
+                                "longitude": -118.1389377590217
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572544721"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572551921"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.97272133333587,
+                                "longitude": -118.1348563029272
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572526069"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572533269"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.044864289077466,
+                                "longitude": -118.1127877431652
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572547019"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572554219"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.17238433377139,
+                                "longitude": -118.26452915869754
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572534418"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572541618"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.034987055629585,
+                                "longitude": -118.23035765200429
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572542927"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572550127"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.96154922146714,
+                                "longitude": -118.27128697891939
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572517144"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572524344"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.98876461327029,
+                                "longitude": -118.28142031671837
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545704"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572552904"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.09434873455763,
+                                "longitude": -118.37560025221607
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572530347"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572537547"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.006143252561856,
+                                "longitude": -118.25191703893283
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572551975"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572559175"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.9511987618404,
+                                "longitude": -118.21858536721457
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572519574"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572526774"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.0295176510339,
+                                "longitude": -118.21396156754453
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572544205"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572551405"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.01318341426472,
+                                "longitude": -118.12632182690704
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572534468"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572541668"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.98718067677521,
+                                "longitude": -118.24682945116018
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572544283"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572551483"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.0745495713841,
+                                "longitude": -118.24823194977638
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572521388"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572528588"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.11134802163977,
+                                "longitude": -118.20547508574653
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572544888"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572552088"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02686771038174,
+                                "longitude": -118.26205713131273
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572531305"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572538505"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.949781171602,
+                                "longitude": -118.13860448738102
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545628"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572552828"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.07775973025866,
+                                "longitude": -118.14203073518416
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572519703"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572526903"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.03738409405838,
+                                "longitude": -118.21930492096368
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550344"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557544"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.03863143814527,
+                                "longitude": -118.25151031280373
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572532233"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572539433"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02802842701138,
+                                "longitude": -118.15289494853106
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550466"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557666"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.0502819629385,
+                                "longitude": -118.2414529583912
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572525789"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572532989"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.09378022562382,
+                                "longitude": -118.20141513810373
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572546079"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572553279"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.1549151208292,
+                                "longitude": -118.20850302441734
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572521278"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572528478"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.01974214469283,
+                                "longitude": -118.35993654700206
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545852"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572553052"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.07055319568215,
+                                "longitude": -118.37685956075133
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572531442"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572538642"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.97451311262003,
+                                "longitude": -118.362555553196
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545368"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572552568"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.079236083023545,
+                                "longitude": -118.28976523967228
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572523145"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572530345"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.963550980469506,
+                                "longitude": -118.3881018129803
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572548597"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572555797"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.18046127139391,
+                                "longitude": -118.27039740988188
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572530401"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572537601"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.04040103648103,
+                                "longitude": -118.34755858987745
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572546978"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572554178"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.065901283215226,
+                                "longitude": -118.24136523325309
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572528682"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572535882"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.06182109413831,
+                                "longitude": -118.1873771797048
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572554385"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572561585"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.941763119765426,
+                                "longitude": -118.26434848702259
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572526817"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572534017"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.07074237548744,
+                                "longitude": -118.20937944167447
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572544410"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572551610"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.90132530523047,
+                                "longitude": -118.29965163300346
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572533582"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572540782"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.08491293197734,
+                                "longitude": -118.25745658160254
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572552202"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572559402"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.97333188663387,
+                                "longitude": -118.25113009501898
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572532750"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572539950"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.04362268915912,
+                                "longitude": -118.3105149401197
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545898"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572553098"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.98549347170723,
+                                "longitude": -118.3978902606465
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572517934"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572525134"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02027489434431,
+                                "longitude": -118.18732167031443
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572543033"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572550233"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.09134304170388,
+                                "longitude": -118.24449959441858
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572532169"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572539369"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.01886738750824,
+                                "longitude": -118.325225398875
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572547469"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572554669"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.994556698852904,
+                                "longitude": -118.11597562497906
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572530169"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572537369"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.93934775940521,
+                                "longitude": -118.1751880671907
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545758"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572552958"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.029358833945395,
+                                "longitude": -118.23785005792233
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572528497"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572535697"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.92222029573841,
+                                "longitude": -118.25671984617159
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572551749"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572558949"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.10363518232282,
+                                "longitude": -118.16625572345177
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572516822"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572524022"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.90449395295394,
+                                "longitude": -118.24899090162525
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572551706"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572558906"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.96803699951985,
+                                "longitude": -118.35267416575249
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572537050"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572544250"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.011259224988166,
+                                "longitude": -118.165644940018
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572552597"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572559797"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.05492221125827,
+                                "longitude": -118.23659581230315
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572522266"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572529466"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.06826104744695,
+                                "longitude": -118.12732352473479
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572551174"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572558374"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.08620774816228,
+                                "longitude": -118.28837953029557
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572525342"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572532542"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.97297235907402,
+                                "longitude": -118.35229232281203
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572551626"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572558826"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.026458739394684,
+                                "longitude": -118.30758181911344
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572519319"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572526519"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02827246261613,
+                                "longitude": -118.15213890220603
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572555406"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572562606"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.211155587654616,
+                                "longitude": -118.32775921467244
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572526029"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572533229"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.991072552688735,
+                                "longitude": -118.20876700138622
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572553623"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572560823"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.13759149157066,
+                                "longitude": -118.20383580421326
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572533639"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572540839"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.99089701521544,
+                                "longitude": -118.36617713792462
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550148"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557348"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.051989490233694,
+                                "longitude": -118.24353484482073
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572524744"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572531944"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.992622975502115,
+                                "longitude": -118.18472776023708
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572546405"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572553605"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.974402644215616,
+                                "longitude": -118.2032052802256
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572533879"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572541079"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.989392364595744,
+                                "longitude": -118.41143173346089
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572552811"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572560011"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.098722515018125,
+                                "longitude": -118.192994099236
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572517736"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572524936"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.04033956113935,
+                                "longitude": -118.25202838790263
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572547977"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572555177"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.15330624171358,
+                                "longitude": -118.26301580047189
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572528810"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572536010"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.97813576600363,
+                                "longitude": -118.27817197636638
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550266"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557466"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.983538994616836,
+                                "longitude": -118.33035591941365
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572526566"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572533766"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.01390712801546,
+                                "longitude": -118.33602100525376
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545382"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572552582"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.052623324857734,
+                                "longitude": -118.28274713489853
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572532600"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572539800"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02881983427301,
+                                "longitude": -118.33206073779826
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545106"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572552306"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.13787413863882,
+                                "longitude": -118.16394857708617
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572533475"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572540675"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.01380922291068,
+                                "longitude": -118.19255335817253
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572553823"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572561023"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.974757133688726,
+                                "longitude": -118.22463134721336
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572534599"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572541799"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.08366741905786,
+                                "longitude": -118.21259497945576
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572554918"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572562118"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.99996372099332,
+                                "longitude": -118.23451567355698
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572516643"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572523843"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02308162519233,
+                                "longitude": -118.28980736676705
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550652"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557852"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.036859800328486,
+                                "longitude": -118.20110086909574
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572516125"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572523325"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.11620644845581,
+                                "longitude": -118.17976560513179
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572549844"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557044"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.10056222226848,
+                                "longitude": -118.24908221939998
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572519079"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572526279"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.19277567768316,
+                                "longitude": -118.3203761472706
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572552055"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572559255"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.07008909563663,
+                                "longitude": -118.36857745189064
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572531248"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572538448"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.151056644297114,
+                                "longitude": -118.19428356013096
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572544121"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572551321"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.13464554548929,
+                                "longitude": -118.33707280443024
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572517684"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572524884"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.97146615617743,
+                                "longitude": -118.20541723574692
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572546264"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572553464"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.00577795576551,
+                                "longitude": -118.15586508397
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572531277"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572538477"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.13898631382591,
+                                "longitude": -118.29269003759768
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572548730"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572555930"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.16731983249883,
+                                "longitude": -118.29016954451191
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572525860"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572533060"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02613831024871,
+                                "longitude": -118.23161713372325
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572552709"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572559909"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.99621933157107,
+                                "longitude": -118.29940692033833
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572517522"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572524722"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.11415724974431,
+                                "longitude": -118.26299488200375
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572553761"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572560961"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.18793745352673,
+                                "longitude": -118.34161928433171
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572529247"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572536447"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.16567402666041,
+                                "longitude": -118.17755819112034
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572553843"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572561043"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.110677491706525,
+                                "longitude": -118.38732080919861
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572534683"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572541883"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.01568249093938,
+                                "longitude": -118.38607743688225
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572551005"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572558205"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.05832635834577,
+                                "longitude": -118.28157042856665
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572526263"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572533463"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.06067221777303,
+                                "longitude": -118.34005456656814
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572541842"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572549042"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.14298277789082,
+                                "longitude": -118.2447530247685
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572529584"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572536784"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.949818362927985,
+                                "longitude": -118.3128457225149
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572553856"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572561056"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02644255612954,
+                                "longitude": -118.12347555784375
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572530841"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572538041"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.92208872165875,
+                                "longitude": -118.26376283911351
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550130"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557330"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.99339521055401,
+                                "longitude": -118.2672197264691
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572526139"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572533339"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.08393169703234,
+                                "longitude": -118.30117375923082
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572541523"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572548723"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.04279947046655,
+                                "longitude": -118.33268801984472
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572523973"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572531173"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.21057318503077,
+                                "longitude": -118.21229779253963
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572542810"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572550010"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.95534971183643,
+                                "longitude": -118.32860567106067
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572520153"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572527353"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.958130765413415,
+                                "longitude": -118.32280016179384
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550118"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557318"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.03379737084694,
+                                "longitude": -118.25227458807483
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572530638"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572537838"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.0730840310261,
+                                "longitude": -118.28068765822492
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572548801"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572556001"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.081503454644945,
+                                "longitude": -118.26431150045634
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572523087"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572530287"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.0695691341073,
+                                "longitude": -118.24573030135703
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572541511"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572548711"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.01298213474618,
+                                "longitude": -118.14474100822301
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572536405"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572543605"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.1209066906238,
+                                "longitude": -118.26933761210275
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572542525"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572549725"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.16593462615634,
+                                "longitude": -118.30707733330259
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572523718"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572530918"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.043548016186264,
+                                "longitude": -118.24722147557759
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572548621"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572555821"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.910517950269536,
+                                "longitude": -118.32039976416142
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572523900"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572531100"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.09487660156799,
+                                "longitude": -118.23979307718301
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572555272"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572562472"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.05410735163309,
+                                "longitude": -118.27458583177032
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572535582"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572542782"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.04225662480712,
+                                "longitude": -118.20590279073576
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572543574"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572550774"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.00849285767666,
+                                "longitude": -118.39185831792236
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572525290"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572532490"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.03224503724687,
+                                "longitude": -118.25971233444096
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572554866"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572562066"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.003887518734444,
+                                "longitude": -118.35713629690346
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572534911"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572542111"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.06847088774222,
+                                "longitude": -118.23540225346794
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572547053"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572554253"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.95088963859621,
+                                "longitude": -118.26909069852661
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572532317"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572539517"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.10309862987192,
+                                "longitude": -118.3450772529347
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572542071"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572549271"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.88350015900707,
+                                "longitude": -118.18164741862712
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572533600"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572540800"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.121525962133205,
+                                "longitude": -118.38583343605617
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572542857"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572550057"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.155610581514765,
+                                "longitude": -118.1759514854419
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572524483"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572531683"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.13992282051878,
+                                "longitude": -118.08827690827782
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572545275"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572552475"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.06583666115259,
+                                "longitude": -118.3847431876489
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572532546"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572539746"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.15042300178163,
+                                "longitude": -118.10568392479335
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572547800"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572555000"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.9529455523913,
+                                "longitude": -118.27323419200037
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572516803"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572524003"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.010894539283555,
+                                "longitude": -118.26514094109805
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572549060"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572556260"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.0295083507268,
+                                "longitude": -118.26037146830015
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572525107"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572532307"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.07742781312918,
+                                "longitude": -118.15299240170326
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550824"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572558024"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.022169464518186,
+                                "longitude": -118.35737813550922
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572525411"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572532611"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.04507993596026,
+                                "longitude": -118.26900051000815
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572549697"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572556897"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.9439117242907,
+                                "longitude": -118.34740286962283
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572531798"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572538998"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.04071275913623,
+                                "longitude": -118.18819454585994
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572548413"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572555613"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.96751884649234,
+                                "longitude": -118.23974703117723
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572519131"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572526331"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.095998818945304,
+                                "longitude": -118.20914044138874
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572546395"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572553595"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.04595322807387,
+                                "longitude": -118.14575625810022
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572521500"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572528700"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "600"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.994207338626865,
+                                "longitude": -118.26279680638928
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572547525"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572554725"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.02343715431273,
+                                "longitude": -118.22745897467446
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572535233"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572542433"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.11375547252376,
+                                "longitude": -118.2934316877096
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572551230"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572558430"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.14252512911918,
+                                "longitude": -118.286333524873
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572529705"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572536905"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.041674168043926,
+                                "longitude": -118.33348174478992
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572549885"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557085"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "420"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.05407192097779,
+                                "longitude": -118.2491433589473
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572524923"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572532123"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.11734976932006,
+                                "longitude": -118.21220845556766
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572548729"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572555929"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "300"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.985789943401215,
+                                "longitude": -118.29383958531082
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572524812"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572532012"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.0308390354806,
+                                "longitude": -118.24688336817376
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572552023"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572559223"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "480"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.105767774174964,
+                                "longitude": -118.2893840511585
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572522402"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572529602"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "360"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 33.93104602533968,
+                                "longitude": -118.28884973029957
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572550399"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572557599"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pickup": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.0625891158037,
+                                "longitude": -118.2631238470272
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572537459"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572544659"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                },
+                "delivery": {
+                    "visitRequests": [
+                        {
+                            "arrivalLocation": {
+                                "latitude": 34.07749076441195,
+                                "longitude": -118.1607968015005
+                            },
+                            "timeWindows": [
+                                {
+                                    "startTime": {
+                                        "seconds": "1572543219"
+                                    },
+                                    "endTime": {
+                                        "seconds": "1572550419"
+                                    }
+                                }
+                            ],
+                            "duration": {
+                                "seconds": "540"
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "vehicles": [
+            {
+                "startLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "endLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "costPerHour": 30
+            },
+            {
+                "startLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "endLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "costPerHour": 30
+            },
+            {
+                "startLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "endLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "costPerHour": 30
+            },
+            {
+                "startLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "endLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "costPerHour": 30
+            },
+            {
+                "startLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "endLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "costPerHour": 30
+            },
+            {
+                "startLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "endLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "costPerHour": 30
+            },
+            {
+                "startLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "endLocation": {
+                    "latitude": 34.0522,
+                    "longitude": -118.2437
+                },
+                "costPerHour": 30
+            }
+        ],
+        "globalStartTime": {
+            "seconds": "1572512400"
+        },
+        "globalEndTime": {
+            "seconds": "1572570000"
+        },
+        "breakRules": [
+            {
+                "breakRequests": [
+                    {
+                        "earliestStartTime": {
+                            "seconds": "1572516000"
+                        },
+                        "latestStartTime": {
+                            "seconds": "1572566400"
+                        },
+                        "duration": {
+                            "seconds": "3600"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

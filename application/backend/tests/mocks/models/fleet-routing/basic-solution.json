@@ -1,0 +1,433 @@
+{
+  "requestLabel": "optimize-tours-basic",
+  "routes": [{
+      "vehicleOperatorIndices": [],
+      "vehicleOperatorLabels": [],
+      "visits": [{
+          "demands": [{
+              "type": "weight",
+              "value": "10"
+            }
+          ],
+          "arrivalLoads": [{
+              "type": "weight",
+              "value": "0"
+            }
+          ],
+          "loadDemands": {
+            "weight": {
+              "amount": "10"
+            }
+          },
+          "shipmentIndex": 0,
+          "isPickup": true,
+          "visitRequestIndex": 0,
+          "startTime": {
+            "seconds": "1087",
+            "nanos": 0
+          },
+          "detour": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "shipmentLabel": "",
+          "visitLabel": "",
+          "delayBeforeStart": null
+        }, {
+          "demands": [{
+              "type": "weight",
+              "value": "20"
+            }
+          ],
+          "arrivalLoads": [{
+              "type": "weight",
+              "value": "10"
+            }
+          ],
+          "loadDemands": {
+            "weight": {
+              "amount": "20"
+            }
+          },
+          "shipmentIndex": 1,
+          "isPickup": true,
+          "visitRequestIndex": 0,
+          "startTime": {
+            "seconds": "1789",
+            "nanos": 0
+          },
+          "detour": {
+            "seconds": "797",
+            "nanos": 0
+          },
+          "shipmentLabel": "",
+          "visitLabel": "",
+          "delayBeforeStart": null
+        }, {
+          "demands": [{
+              "type": "weight",
+              "value": "-10"
+            }
+          ],
+          "arrivalLoads": [{
+              "type": "weight",
+              "value": "30"
+            }
+          ],
+          "loadDemands": {
+            "weight": {
+              "amount": "-10"
+            }
+          },
+          "shipmentIndex": 0,
+          "isPickup": false,
+          "visitRequestIndex": 0,
+          "startTime": {
+            "seconds": "3000",
+            "nanos": 0
+          },
+          "detour": {
+            "seconds": "1211",
+            "nanos": 0
+          },
+          "shipmentLabel": "",
+          "visitLabel": "",
+          "delayBeforeStart": null
+        }, {
+          "demands": [{
+              "type": "weight",
+              "value": "-20"
+            }
+          ],
+          "arrivalLoads": [{
+              "type": "weight",
+              "value": "20"
+            }
+          ],
+          "loadDemands": {
+            "weight": {
+              "amount": "-20"
+            }
+          },
+          "shipmentIndex": 1,
+          "isPickup": false,
+          "visitRequestIndex": 0,
+          "startTime": {
+            "seconds": "3250",
+            "nanos": 0
+          },
+          "detour": {
+            "seconds": "1310",
+            "nanos": 0
+          },
+          "shipmentLabel": "",
+          "visitLabel": "",
+          "delayBeforeStart": null
+        }
+      ],
+      "transitions": [{
+          "loads": [],
+          "vehicleLoads": {
+            "weight": {
+              "amount": "0"
+            }
+          },
+          "travelDuration": {
+            "seconds": "1087",
+            "nanos": 0
+          },
+          "travelDistanceMeters": 4244,
+          "trafficInfoUnavailable": false,
+          "delayDuration": null,
+          "breakDuration": null,
+          "waitDuration": null,
+          "totalDuration": {
+            "seconds": "1087",
+            "nanos": 0
+          },
+          "startTime": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "routePolyline": null
+        }, {
+          "loads": [],
+          "vehicleLoads": {
+            "weight": {
+              "amount": "10"
+            }
+          },
+          "travelDuration": {
+            "seconds": "552",
+            "nanos": 0
+          },
+          "travelDistanceMeters": 2479,
+          "trafficInfoUnavailable": false,
+          "delayDuration": null,
+          "breakDuration": null,
+          "waitDuration": null,
+          "totalDuration": {
+            "seconds": "552",
+            "nanos": 0
+          },
+          "startTime": {
+            "seconds": "1237",
+            "nanos": 0
+          },
+          "routePolyline": null
+        }, {
+          "loads": [],
+          "vehicleLoads": {
+            "weight": {
+              "amount": "30"
+            }
+          },
+          "travelDuration": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "travelDistanceMeters": 0,
+          "trafficInfoUnavailable": false,
+          "delayDuration": null,
+          "breakDuration": null,
+          "waitDuration": {
+            "seconds": "1060",
+            "nanos": 0
+          },
+          "totalDuration": {
+            "seconds": "1060",
+            "nanos": 0
+          },
+          "startTime": {
+            "seconds": "1940",
+            "nanos": 0
+          },
+          "routePolyline": null
+        }, {
+          "loads": [],
+          "vehicleLoads": {
+            "weight": {
+              "amount": "20"
+            }
+          },
+          "travelDuration": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "travelDistanceMeters": 0,
+          "trafficInfoUnavailable": false,
+          "delayDuration": null,
+          "breakDuration": null,
+          "waitDuration": null,
+          "totalDuration": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "startTime": {
+            "seconds": "3250",
+            "nanos": 0
+          },
+          "routePolyline": null
+        }, {
+          "loads": [],
+          "vehicleLoads": {
+            "weight": {
+              "amount": "0"
+            }
+          },
+          "travelDuration": {
+            "seconds": "842",
+            "nanos": 0
+          },
+          "travelDistanceMeters": 3111,
+          "trafficInfoUnavailable": false,
+          "delayDuration": null,
+          "breakDuration": null,
+          "waitDuration": null,
+          "totalDuration": {
+            "seconds": "842",
+            "nanos": 0
+          },
+          "startTime": {
+            "seconds": "3501",
+            "nanos": 0
+          },
+          "routePolyline": null
+        }
+      ],
+      "breaks": [],
+      "endLoads": [{
+          "type": "weight",
+          "value": "0"
+        }
+      ],
+      "travelSteps": [{
+          "duration": {
+            "seconds": "1087",
+            "nanos": 0
+          },
+          "distanceMeters": 4244,
+          "trafficInfoUnavailable": false,
+          "routePolyline": null
+        }, {
+          "duration": {
+            "seconds": "552",
+            "nanos": 0
+          },
+          "distanceMeters": 2479,
+          "trafficInfoUnavailable": false,
+          "routePolyline": null
+        }, {
+          "duration": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "distanceMeters": 0,
+          "trafficInfoUnavailable": false,
+          "routePolyline": null
+        }, {
+          "duration": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "distanceMeters": 0,
+          "trafficInfoUnavailable": false,
+          "routePolyline": null
+        }, {
+          "duration": {
+            "seconds": "842",
+            "nanos": 0
+          },
+          "distanceMeters": 3111,
+          "trafficInfoUnavailable": false,
+          "routePolyline": null
+        }
+      ],
+      "routeCosts": {},
+      "vehicleIndex": 0,
+      "vehicleLabel": "",
+      "vehicleStartTime": {
+        "seconds": "0",
+        "nanos": 0
+      },
+      "vehicleEndTime": {
+        "seconds": "4343",
+        "nanos": 0
+      },
+      "hasTrafficInfeasibilities": false,
+      "routePolyline": null,
+      "metrics": {
+        "maxLoads": {
+          "weight": {
+            "amount": "30"
+          }
+        },
+        "costs": {},
+        "performedShipmentCount": 2,
+        "travelDuration": {
+          "seconds": "2481",
+          "nanos": 0
+        },
+        "waitDuration": {
+          "seconds": "1060",
+          "nanos": 0
+        },
+        "delayDuration": {
+          "seconds": "0",
+          "nanos": 0
+        },
+        "breakDuration": {
+          "seconds": "0",
+          "nanos": 0
+        },
+        "visitDuration": {
+          "seconds": "802",
+          "nanos": 0
+        },
+        "totalDuration": {
+          "seconds": "4343",
+          "nanos": 0
+        },
+        "travelDistanceMeters": 9834,
+        "totalCost": 0
+      },
+      "vehicleDetour": {
+        "seconds": "4343",
+        "nanos": 0
+      },
+      "delayBeforeVehicleEnd": null,
+      "routeTotalCost": 0
+    }, {
+      "vehicleOperatorIndices": [],
+      "vehicleOperatorLabels": [],
+      "visits": [],
+      "transitions": [],
+      "breaks": [],
+      "endLoads": [],
+      "travelSteps": [],
+      "routeCosts": {},
+      "vehicleIndex": 1,
+      "vehicleLabel": "",
+      "vehicleStartTime": null,
+      "vehicleEndTime": null,
+      "hasTrafficInfeasibilities": false,
+      "routePolyline": null,
+      "metrics": null,
+      "vehicleDetour": null,
+      "delayBeforeVehicleEnd": null,
+      "routeTotalCost": 0
+    }
+  ],
+  "skippedShipments": [],
+  "validationErrors": [],
+  "totalCost": 0,
+  "metrics": {
+    "costs": {},
+    "aggregatedRouteMetrics": {
+      "maxLoads": {
+        "weight": {
+          "amount": "30"
+        }
+      },
+      "costs": {},
+      "performedShipmentCount": 2,
+      "travelDuration": {
+        "seconds": "2481",
+        "nanos": 0
+      },
+      "waitDuration": {
+        "seconds": "1060",
+        "nanos": 0
+      },
+      "delayDuration": {
+        "seconds": "0",
+        "nanos": 0
+      },
+      "breakDuration": {
+        "seconds": "0",
+        "nanos": 0
+      },
+      "visitDuration": {
+        "seconds": "802",
+        "nanos": 0
+      },
+      "totalDuration": {
+        "seconds": "4343",
+        "nanos": 0
+      },
+      "travelDistanceMeters": 9834,
+      "totalCost": 0
+    },
+    "skippedMandatoryShipmentCount": 0,
+    "usedVehicleCount": 1,
+    "earliestVehicleStartTime": {
+      "seconds": "0",
+      "nanos": 0
+    },
+    "latestVehicleEndTime": {
+      "seconds": "4343",
+      "nanos": 0
+    },
+    "totalCost": 0
+  }
+}

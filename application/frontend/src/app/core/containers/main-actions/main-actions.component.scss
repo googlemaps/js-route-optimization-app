@@ -1,0 +1,38 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 0;
+}
+
+button {
+  color: $gray;
+  border-radius: 0;
+  text-align: left;
+  &:not(:first-of-type) {
+    margin-top: 0.75rem;
+  }
+  *:first-child {
+    margin-right: 1rem;
+  }
+}
+
+.main-actions-accordion-header {
+  width: 100%;
+  color: $gray;
+}
+
+.main-actions-accordion-button {
+  width: 100%;
+  padding-left: 2rem;
+}
+
+.main-actions-accordion-body {
+  display: none;
+  flex-direction: column;
+
+  &.expanded {
+    display: flex;
+  }
+}

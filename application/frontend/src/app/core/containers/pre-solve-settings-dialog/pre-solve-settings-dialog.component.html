@@ -1,0 +1,36 @@
+<div mat-dialog-title>
+  <h3 class="d-inline mat-h3">Scenario Settings</h3>
+  <button mat-icon-button type="button" title="Close" (click)="onCancel()">
+    <mat-icon svgIcon="clear"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab label="Global">
+      <app-pre-solve-global-settings> </app-pre-solve-global-settings>
+    </mat-tab>
+    <mat-tab label="Shipment Model">
+      <app-pre-solve-shipment-model-settings> </app-pre-solve-shipment-model-settings>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<div mat-dialog-actions>
+  <a
+    class="secondary-link mr-4"
+    tabindex="0"
+    (click)="onCancel()"
+    (keydown.enter)="onCancel()"
+    (keydown.space)="onCancel()"
+    >Cancel</a
+  >
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    (click)="onSave()"
+    (keydown.enter)="onSave()"
+    (keydown.space)="onSave()"
+    [disabled]="saveDisabled">
+    Save
+  </button>
+</div>

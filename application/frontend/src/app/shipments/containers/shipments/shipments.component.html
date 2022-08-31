@@ -1,0 +1,35 @@
+<div class="table-container">
+  <app-base-shipments-table
+    [dataSource]="dataSource"
+    [sort]="sort$ | async"
+    [itemsSelected]="itemsSelected$ | async"
+    [demandTypes]="demandTypes$ | async"
+    [columnsToDisplay]="columnsToDisplay$ | async"
+    [duration]="duration$ | async"
+    [relativeTo]="relativeTo$ | async"
+    [unitAbbreviations]="unitAbbreviations$ | async"
+    [timezoneOffset]="timezoneOffset$ | async"
+    [totalShipments]="totalShipments$ | async"
+    [changeDisabled]="changeDisabled$ | async"
+    [hasMap]="mapOpen$ | async"
+    (selectAll)="onSelectAll()"
+    (deselectAll)="onDeselectAll()"
+    (selectedChange)="onSelectedChange($event)"
+    (sortChange)="onSortChange($event)"
+    (add)="onAdd()"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+    (mouseEnterVisitRequest)="onMouseEnterVisitRequest($event)"
+    (mouseExitVisitRequest)="onMouseExitVisitRequest()">
+  </app-base-shipments-table>
+</div>
+<div class="footer-container">
+  <mat-paginator
+    [length]="totalShipments$ | async"
+    [pageIndex]="pageIndex$ | async"
+    [pageSize]="pageSize$ | async"
+    (page)="onPage($event)"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [hidePageSize]="true">
+  </mat-paginator>
+</div>

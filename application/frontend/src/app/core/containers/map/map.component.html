@@ -1,0 +1,14 @@
+<app-map-wrapper [options]="options$ | async" (mapInitialize)="onMapInitialize($event)">
+</app-map-wrapper>
+<app-map-type-button (typeChange)="onTypeChange($event)"> </app-map-type-button>
+<app-toggle-selection-filter-button
+  *ngIf="mapSelectionToolsVisible$ | async"
+  [active]="selectionFilterActive$ | async"
+  (activeChange)="onToggleSelectionFilter($event)">
+</app-toggle-selection-filter-button>
+<app-select-map-items-button
+  *ngIf="mapSelectionToolsVisible$ | async"
+  (activeChange)="onToggleSelectMapItems($event)">
+</app-select-map-items-button>
+<app-hide-map-button (hideMap)="onHideMap()"></app-hide-map-button>
+<app-zoom-home-button (zoomToHome)="onZoomToHome()" [disabled]="!bounds"></app-zoom-home-button>

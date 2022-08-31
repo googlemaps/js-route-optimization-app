@@ -1,0 +1,16 @@
+<app-base-main-nav
+  [disabled]="disabled$ | async"
+  [selectedShipmentCount]="selectedShipmentCount$ | async"
+  [selectedVehicleCount]="selectedVehicleCount$ | async"
+  [selectedVehicleOperatorCount]="selectedVehicleOperatorCount$ | async"
+  [page]="page$ | async"
+  [hasSolution]="hasSolution$ | async"
+  [isSolutionStale]="isSolutionStale$ | async"
+  [isSolutionIllegal]="isSolutionIllegal$ | async"
+  [solving]="solving$ | async"
+  (shipmentsClick)="onShipmentsClick()"
+  (vehiclesClick)="onVehiclesClick()"
+  (vehicleOperatorsClick)="onVehicleOperatorsClick()"
+  [allowExperimentalFeatures]="allowExperimentalFeatures$ | async"
+  (solutionClick)="onSolutionClick()">
+</app-base-main-nav>

@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Confirm Bulk Overwrite</h2>
+<div mat-dialog-content>
+  This will overwrite the below fields for ALL selected shipments. Do you want to continue?
+</div>
+<li *ngFor="let fieldName of data.fields">{{ fieldName }}</li>
+<div mat-dialog-actions>
+  <button mat-flat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button mat-flat-button color="warn" [mat-dialog-close]="true">Accept</button>
+</div>

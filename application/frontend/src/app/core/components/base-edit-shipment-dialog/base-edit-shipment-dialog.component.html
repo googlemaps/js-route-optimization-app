@@ -1,0 +1,133 @@
+<div mat-dialog-title>
+  <div class="form-title">
+    <h3>
+      {{ bulkEdit ? 'Bulk editing ' + bulkNumber + ' shipments' : 'Shipment #' + shipment?.id }}
+    </h3>
+    <mat-button-toggle-group
+      name="visitCategory"
+      aria-label="Visit Request Type"
+      [value]="activeVisitCategory"
+      (change)="onVisitCategoryChange($event.value)">
+      <mat-button-toggle [value]="VisitCategory.Pickup" [disableRipple]="true">
+        <mat-icon svgIcon="pickup"></mat-icon>Pickup
+      </mat-button-toggle>
+      <mat-button-toggle [value]="VisitCategory.Delivery" [disableRipple]="true">
+        <mat-icon svgIcon="dropoff"></mat-icon>Delivery
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <button mat-icon-button type="button" title="Cancel" (click)="cancel.emit()">
+    <mat-icon svgIcon="clear"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <div class="form-wrapper">
+    <section>
+      <app-shipment-form
+        [abbreviations]="abbreviations"
+        [bulkEdit]="bulkEdit"
+        [scenarioCapacities]="scenarioCapacities"
+        [scenarioDemands]="scenarioDemands"
+        [scenarioShipmentTypes]="scenarioShipmentTypes"
+        [shipment]="shipment"
+        [vehicles]="vehicles"
+        [vehicleIds]="vehicleIds"
+        [disabled]="disabled"
+        [unsetFields]="unsetFields"
+        (unsetEvent)="onUnsetChange($event)">
+      </app-shipment-form>
+      <mat-error *ngIf="visitRequestsMissing && !bulkEdit"
+        >A pickup or delivery request alternative is required
+      </mat-error>
+    </section>
+    <section class="visit-requests">
+      <header *ngIf="isShowingPickups; else deliveryRequestsHeader">
+        <div><span class="mat-h3">Pickup request alternatives</span> ({{ pickups.length }})</div>
+        <button
+          *ngIf="!disabled"
+          type="button"
+          mat-button
+          color="primary"
+          (click)="addPickup()"
+          [disabled]="addVisitRequestsDisabled">
+          Add pickup alternative
+        </button>
+      </header>
+      <ng-template #deliveryRequestsHeader>
+        <header>
+          <div>
+            <span class="mat-h3">Delivery request alternatives</span> ({{ deliveries.length }})
+          </div>
+          <button
+            *ngIf="!disabled"
+            type="button"
+            mat-button
+            color="primary"
+            (click)="addDelivery()"
+            [disabled]="addVisitRequestsDisabled">
+            Add delivery alternative
+          </button>
+        </header>
+      </ng-template>
+      <section
+        *ngIf="getPickupsStartAt() as pickupsStartAt"
+        class="visit-request-forms"
+        [ngClass]="{ active: isShowingPickups }">
+        <app-visit-request-form
+          class="mat-elevation-z1"
+          *ngFor="let visitRequest of pickups"
+          [id]="visitRequest.id"
+          [visitRequest]="visitRequest"
+          [visitTagOptions]="visitTags"
+          [visitTypeOptions]="visitTypes"
+          [visitCategory]="VisitCategory.Pickup"
+          [scenarioCapacities]="scenarioCapacities"
+          [scenarioDemands]="scenarioDemands"
+          [startAt]="pickupsStartAt.startAt"
+          [timezoneOffset]="timezoneOffset"
+          [disabled]="disabled"
+          (remove)="removeVisitRequest(visitRequest)">
+        </app-visit-request-form>
+      </section>
+      <section
+        *ngIf="getDeliveriesStartAt() as deliveriesStartAt"
+        class="visit-request-forms"
+        [ngClass]="{ active: !isShowingPickups }">
+        <app-visit-request-form
+          class="mat-elevation-z1"
+          *ngFor="let visitRequest of deliveries"
+          [id]="visitRequest.id"
+          [visitRequest]="visitRequest"
+          [visitTagOptions]="visitTags"
+          [visitTypeOptions]="visitTypes"
+          [visitCategory]="VisitCategory.Delivery"
+          [scenarioCapacities]="scenarioCapacities"
+          [scenarioDemands]="scenarioDemands"
+          [startAt]="deliveriesStartAt.startAt"
+          [timezoneOffset]="timezoneOffset"
+          [disabled]="disabled"
+          (remove)="removeVisitRequest(visitRequest)">
+        </app-visit-request-form>
+      </section>
+    </section>
+  </div>
+  <ng-template [cdkPortalOutlet]="mapPortal"></ng-template>
+</div>
+<div mat-dialog-actions>
+  <a
+    class="secondary-link mr-4"
+    tabindex="0"
+    (click)="cancel.emit()"
+    (keydown.enter)="cancel.emit()"
+    (keydown.space)="cancel.emit()"
+    >Cancel</a
+  >
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    (click)="onSave()"
+    [disabled]="invalid || disabled">
+    {{ bulkEdit ? 'Overwrite' : 'Save' }}
+  </button>
+</div>

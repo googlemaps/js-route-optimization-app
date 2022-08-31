@@ -1,0 +1,28 @@
+<div class="table-container">
+  <app-base-vehicle-operators-table
+    [dataSource]="dataSource"
+    [sort]="sort$ | async"
+    [itemsSelected]="itemsSelected$ | async"
+    [columnsToDisplay]="columnsToDisplay$ | async"
+    [totalItems]="totalItems$ | async"
+    [changeDisabled]="changeDisabled$ | async"
+    (selectAll)="onSelectAll()"
+    (deselectAll)="onDeselectAll()"
+    (selectedChange)="onSelectedChange($event)"
+    (sortChange)="onSortChange($event)"
+    (editVehicleOperator)="onEdit($event)"
+    (deleteVehicleOperator)="onDelete($event)"
+    (add)="onAdd()"
+    [timezoneOffset]="timezoneOffset$ | async">
+  </app-base-vehicle-operators-table>
+</div>
+<div class="footer-container">
+  <mat-paginator
+    [length]="totalItems$ | async"
+    [pageIndex]="pageIndex$ | async"
+    [pageSize]="pageSize$ | async"
+    (page)="onPage($event)"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [hidePageSize]="true">
+  </mat-paginator>
+</div>

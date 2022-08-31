@@ -1,0 +1,16 @@
+<app-base-visit-request-info-window
+  #baseInfoWindow
+  [visitRequest]="visitRequest$ | async"
+  [shipment]="shipment$ | async"
+  [visit]="visit$ | async"
+  [vehicle]="vehicle$ | async"
+  [vehicles]="vehicles$ | async"
+  [timezoneOffset]="timezoneOffset$ | async"
+  [postSolve]="postSolve$ | async"
+  [navigation]="true"
+  [savePending]="savePending$ | async"
+  (shipmentClick)="onShipmentClick($event)"
+  (vehicleClick)="onVehicleClick($event)"
+  (visitClick)="onVisitClick($event)"
+  (vehicleAssignmentChange)="onVehicleAssignmentChange($event)">
+</app-base-visit-request-info-window>

@@ -1,0 +1,19 @@
+<form>
+  <mat-form-field style="width: 100%" [appearance]="appearance">
+    <input
+      type="text"
+      placeholder="Search for timezone"
+      aria-label="Timezone"
+      matInput
+      [formControl]="formControl"
+      [matAutocomplete]="auto" />
+    <mat-autocomplete
+      autoActiveFirstOption
+      #auto="matAutocomplete"
+      (optionSelected)="onTimezoneSelected($event.option.value)">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

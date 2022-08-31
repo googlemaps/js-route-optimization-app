@@ -1,0 +1,156 @@
+<div *ngFor="let group of control?.controls; index as i" class="mat-typography" [formGroup]="group">
+  <header [ngClass]="{ 'header-top-margin': i > 0 }">Load limit</header>
+  <div class="contents">
+    <!-- Form controls -->
+    <div>
+      <mat-form-field class="pad-right">
+        <mat-label>Type</mat-label>
+        <input
+          matInput
+          formControlName="type"
+          [matAutocomplete]="typeAuto"
+          type="text"
+          placeholder="Ex. weight"
+          autocomplete="new-password"
+          (focus)="setAutocompleteFocus(i)"
+          (input)="checkLoadLimitUsage(i)" />
+        <mat-error
+          *ngIf="group.getError('required', 'type')"
+          [attr.title]="typeErrorMessage.innerText">
+          <span #typeErrorMessage>Required</span>
+        </mat-error>
+        <mat-autocomplete #typeAuto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredTypes$ | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="pad-right">
+        <mat-label>Max load</mat-label>
+        <input matInput formControlName="maxLoad" type="number" placeholder="Enter amount" />
+        <mat-error *ngIf="group.get('maxLoad').errors" [attr.title]="maxLoadErrorMessage.innerText">
+          <span #maxLoadErrorMessage>{{
+            group.getError('required', 'maxLoad') ? 'Required' : 'Non-negative integer required'
+          }}</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="pad-right">
+        <mat-label>Soft max load</mat-label>
+        <input
+          matInput
+          formControlName="softMaxLoad"
+          type="number"
+          placeholder="Enter amount"
+          min="0"
+          [errorStateMatcher]="softMaxErrorStateMatcher" />
+        <mat-error
+          *ngIf="group.get('softMaxLoad').errors"
+          [attr.title]="softMaxValueErrorMessage.innerText">
+          <span #softMaxValueErrorMessage>Cannot be negative</span>
+        </mat-error>
+        <mat-error
+          *ngIf="group.errors?.softMaxLessThanMax"
+          [attr.title]="softMaxErrorMessage.innerText">
+          <span #softMaxErrorMessage>Soft max must be less than max load</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="pad-right">
+        <mat-label>Cost per unit above soft max load</mat-label>
+        <input
+          matInput
+          formControlName="costPerUnitAboveSoftMax"
+          type="number"
+          placeholder="Enter amount"
+          min="0" />
+        <mat-error
+          *ngIf="group.get('costPerUnitAboveSoftMax').errors"
+          [attr.title]="softMaxErrorMessage.innerText">
+          <span #softMaxErrorMessage>Cannot have a negative cost</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="pad-right">
+        <mat-label>Start load interval min</mat-label>
+        <input
+          matInput
+          formControlName="startLoadIntervalMin"
+          type="number"
+          placeholder="Enter amount"
+          min="0"
+          [errorStateMatcher]="startLoadErrorStateMatcher" />
+        <mat-error
+          *ngIf="group.get('startLoadIntervalMin').errors"
+          [attr.title]="startLoadIntervalMinErrorMessage.innerText">
+          <span #startLoadIntervalMinErrorMessage>Cannot be negative</span>
+        </mat-error>
+        <mat-error
+          *ngIf="group.errors?.startMinLessThanMax"
+          [attr.title]="startLoadIntervalMinMaxErrorMessage.innerText">
+          <span #startLoadIntervalMinMaxErrorMessage>Min must be less than max</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="pad-right">
+        <mat-label>Start load interval max</mat-label>
+        <input
+          matInput
+          formControlName="startLoadIntervalMax"
+          type="number"
+          placeholder="Enter amount"
+          min="0" />
+        <mat-error
+          *ngIf="group.get('startLoadIntervalMax').errors"
+          [attr.title]="startLoadIntervalMaxErrorMessage.innerText">
+          <span #startLoadIntervalMaxErrorMessage>Cannot be negative</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="pad-right">
+        <mat-label>End load interval min</mat-label>
+        <input
+          matInput
+          formControlName="endLoadIntervalMin"
+          type="number"
+          placeholder="Enter amount"
+          min="0"
+          [errorStateMatcher]="endLoadErrorStateMatcher" />
+        <mat-error
+          *ngIf="group.get('endLoadIntervalMin').errors"
+          [attr.title]="endLoadIntervalMinErrorMessage.innerText">
+          <span #endLoadIntervalMinErrorMessage>Cannot be negative</span>
+        </mat-error>
+        <mat-error
+          *ngIf="group.errors?.endMinLessThanMax"
+          [attr.title]="endLoadIntervalMinMaxErrorMessage.innerText">
+          <span #endLoadIntervalMinMaxErrorMessage>Min must be less than max</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>End load interval max</mat-label>
+        <input
+          matInput
+          formControlName="endLoadIntervalMax"
+          type="number"
+          placeholder="Enter amount"
+          min="0" />
+        <mat-error
+          *ngIf="group.get('endLoadIntervalMax').errors"
+          [attr.title]="endLoadIntervalMaxErrorMessage.innerText">
+          <span #endLoadIntervalMaxErrorMessage>Cannot be negative</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <!-- Delete button -->
+    <div>
+      <button
+        type="button"
+        class="clear-place"
+        (click)="removeLoadLimit(i)"
+        mat-icon-button
+        title="Remove capacity"
+        [disabled]="disabled">
+        <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+      </button>
+    </div>
+  </div>
+  <p class="unused-load-limit-warning" *ngIf="unusedLoadLimits[i]">
+    This demand type and/or unit does not exist on any vehicles.
+  </p>
+</div>

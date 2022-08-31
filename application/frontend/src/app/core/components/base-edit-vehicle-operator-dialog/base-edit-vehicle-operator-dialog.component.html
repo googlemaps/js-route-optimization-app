@@ -1,0 +1,153 @@
+<div mat-dialog-title class="w-100">
+  <h3 class="d-inline mat-h3">
+    {{
+      bulkEdit
+        ? 'Bulk editing ' + bulkNumber + ' vehicle operators'
+        : 'Vehicle Operator #' + updatedVehicleOperator?.id
+    }}
+  </h3>
+  <button mat-icon-button type="button" title="Cancel" (click)="cancel.emit()">
+    <mat-icon svgIcon="clear"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <div class="form-wrapper">
+    <form [formGroup]="form" autocomplete="off" novalidate>
+      <section class="shipment-type">
+        <div class="w-100 operator-type-list">
+          <div class="contents">
+            <!-- Form controls -->
+            <div>
+              <div
+                class="edit-menu-content padded-content"
+                [ngClass]="{ highlighted: bulkEdit && type.value }">
+                <mat-form-field class="flex-grow-1 mr-3">
+                  <input
+                    matInput
+                    formControlName="type"
+                    [matAutocomplete]="typeAuto"
+                    type="text"
+                    placeholder="Type"
+                    (focus)="setOperatorAutocompleteFocus(updatedVehicleOperator.id)" />
+                  <mat-error
+                    *ngIf="type.errors?.required"
+                    [attr.title]="typeErrorMessage.innerText">
+                    <span #typeErrorMessage>Required</span>
+                  </mat-error>
+                  <mat-autocomplete #typeAuto="matAutocomplete">
+                    <mat-option
+                      *ngFor="let option of filteredOperatorTypes$ | async"
+                      [value]="option">
+                      {{ option }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div
+                class="edit-menu-content padded-content"
+                [ngClass]="{
+                  highlighted: bulkEdit && label.value,
+                  'unset-highlighted': isUnset(FormFields.Label)
+                }">
+                <mat-form-field class="flex-grow-1 mr-3">
+                  <input matInput formControlName="label" type="text" placeholder="Label" />
+                  <app-bulk-edit-unset
+                    *ngIf="bulkEdit"
+                    matSuffix
+                    [fieldName]="FormFields.Label"
+                    [isUnset]="isUnset(FormFields.Label)"
+                    (unsetEvent)="onUnsetChange($event)">
+                  </app-bulk-edit-unset>
+                </mat-form-field>
+              </div>
+              <div
+                class="time-windows mat-elevation-z1"
+                [ngClass]="{
+                  highlighted: bulkEdit && timeWindowsChanged(startTimeWindows),
+                  'unset-highlighted': this.isUnset(FormFields.StartTimeWindows)
+                }">
+                <header class="w-100 d-flex">
+                  <div class="flex-grow-1">
+                    <span class="mat-h4">Start time windows</span>
+                    <mat-error class="mb-4" *ngIf="startTimeWindows.errors?.overlap">
+                      Time windows must not overlap
+                    </mat-error>
+                  </div>
+                  <app-bulk-edit-unset
+                    *ngIf="bulkEdit"
+                    [fieldName]="FormFields.StartTimeWindows"
+                    [isUnset]="isUnset(FormFields.StartTimeWindows)"
+                    (unsetEvent)="onUnsetChange($event)">
+                  </app-bulk-edit-unset>
+                </header>
+                <div>
+                  <ng-container *ngIf="startTimeWindows.at(0) as control">
+                    <app-time-window
+                      [formGroup]="control"
+                      [startAt]="startAt"
+                      [timezoneOffset]="timezoneOffset$ | async"
+                      [startAt]="startAt()"
+                      [hideSoftTime]="true"
+                      [hideHeader]="true">
+                    </app-time-window>
+                  </ng-container>
+                </div>
+              </div>
+              <div
+                class="time-windows mat-elevation-z1"
+                [ngClass]="{
+                  highlighted: bulkEdit && timeWindowsChanged(endTimeWindows),
+                  'unset-highlighted': isUnset(FormFields.EndTimeWindows)
+                }">
+                <header class="w-100 d-flex">
+                  <div class="flex-grow-1">
+                    <span class="mat-h4">End time windows</span>
+                    <mat-error class="mb-4" *ngIf="endTimeWindows.errors?.overlap"
+                      >Time windows must not overlap
+                    </mat-error>
+                  </div>
+                  <app-bulk-edit-unset
+                    *ngIf="bulkEdit"
+                    [fieldName]="FormFields.EndTimeWindows"
+                    [isUnset]="isUnset(FormFields.EndTimeWindows)"
+                    (unsetEvent)="onUnsetChange($event)">
+                  </app-bulk-edit-unset>
+                </header>
+                <div>
+                  <ng-container *ngIf="endTimeWindows.at(0) as control">
+                    <app-time-window
+                      [formGroup]="control"
+                      [startAt]="startAt"
+                      [timezoneOffset]="timezoneOffset$ | async"
+                      [startAt]="endAt()"
+                      [hideSoftTime]="true"
+                      [hideHeader]="true">
+                    </app-time-window>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <a
+    class="secondary-link mr-4"
+    tabindex="0"
+    (click)="cancel.emit()"
+    (keydown.enter)="cancel.emit()"
+    (keydown.space)="cancel.emit()"
+    >Cancel</a
+  >
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    (click)="onSave()"
+    [disabled]="invalid || disabled">
+    {{ bulkEdit ? 'Overwrite' : 'Save' }}
+  </button>
+</div>

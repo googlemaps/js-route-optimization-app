@@ -1,0 +1,16 @@
+<app-base-edit-visit-dialog
+  [shipment]="shipment$ | async"
+  [pickup]="pickup$ | async"
+  [pickupRequest]="pickupRequest$ | async"
+  [delivery]="delivery$ | async"
+  [deliveryRequest]="deliveryRequest$ | async"
+  [vehicles]="vehicles$ | async"
+  [timezoneOffset]="timezoneOffset$ | async"
+  [globalDuration]="globalDuration$ | async"
+  [disabled]="disabled$ | async"
+  [savePending]="savePending$ | async"
+  [saveError]="saveError$ | async"
+  (cancel)="onCancel()"
+  (detail)="onDetail($event)"
+  (save)="onSave($event)">
+</app-base-edit-visit-dialog>

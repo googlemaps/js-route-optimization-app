@@ -1,0 +1,56 @@
+@import '../../../../styles/variables.scss';
+
+.metrics-container {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  border-bottom: 1px solid #d7e3f1;
+
+  .metric-group {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    padding: 0 1rem;
+
+    &.left-border {
+      border-left: 1px solid #d7e3f1;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.5rem;
+    }
+
+    h3 {
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .lighter-text {
+      color: $dark;
+    }
+
+    .darker-text {
+      color: $darker;
+    }
+
+    button {
+      text-align: left;
+      white-space: normal;
+    }
+
+    .warning-button {
+      color: white;
+      background-color: $orange;
+    }
+
+    .top-text {
+      padding-top: 0.5rem;
+    }
+
+    .bottom-text {
+      padding-bottom: 0.5rem;
+    }
+  }
+}

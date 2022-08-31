@@ -1,0 +1,7 @@
+<div
+  class="time-container"
+  *ngFor="let l of timeLabels"
+  [style.left.px]="l[1] - labelWidth / 2"
+  [style.width.px]="labelWidth">
+  {{ l[0] }}
+</div>

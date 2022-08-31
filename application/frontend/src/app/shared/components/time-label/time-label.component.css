@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  height: 17px;
+  width: 100%;
+  font-size: 12px;
+  position: relative;
+}
+
+.time-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+}

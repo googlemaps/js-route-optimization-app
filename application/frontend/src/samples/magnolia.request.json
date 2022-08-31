@@ -1,0 +1,140 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 29.606379,
+                "longitude": -95.007432
+              }
+            }
+          ]
+        },
+        "delivery": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 29.646963,
+                "longitude": -95.293951
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 29.677827,
+                "longitude": -94.995003
+              }
+            }
+          ]
+        },
+        "delivery": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 29.679132,
+                "longitude": -95.376420
+              }
+            }
+          ]
+        }
+      },
+      {
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 29.606379,
+                "longitude": -95.007432
+              }
+            }
+          ]
+        },
+        "delivery": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 29.794623,
+                "longitude": -95.456516
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "vehicles": [
+      {
+        "startLocation": {
+          "latitude": 30.154214,
+          "longitude": -95.644645
+        },
+        "endLocation": {
+          "latitude": 30.154214,
+          "longitude": -95.644645
+        },
+        "costPerHour": 30,
+        "costPerKilometer": 0.2
+      },
+      {
+        "startLocation": {
+          "latitude": 29.801139,
+          "longitude": -95.23146
+        },
+        "endLocation": {
+          "latitude": 29.801139,
+          "longitude": -95.23146
+        },
+        "costPerHour": 30,
+        "costPerKilometer": 0.2
+      },
+      {
+        "startLocation": {
+          "latitude": 29.688345,
+          "longitude": -95.045761
+        },
+        "endLocation": {
+          "latitude": 29.688345,
+          "longitude": -95.045761
+        },
+        "costPerHour": 30,
+        "costPerKilometer": 0.2
+      },
+      {
+        "startLocation": {
+          "latitude": 29.800678,
+          "longitude": -95.231536
+        },
+        "endLocation": {
+          "latitude": 29.800678,
+          "longitude": -95.231536
+        },
+        "costPerHour": 30,
+        "costPerKilometer": 0.2
+      },
+      {
+        "startLocation": {
+          "latitude": 29.800064,
+          "longitude": -95.231132
+        },
+        "endLocation": {
+          "latitude": 29.800064,
+          "longitude": -95.231132
+        },
+        "costPerHour": 30,
+        "costPerKilometer": 0.2
+      }
+    ],
+    "globalStartTime": {
+      "seconds": "1563094800"
+    },
+    "globalEndTime": {
+      "seconds": "1563134400"
+    }
+  }
+}

@@ -1,0 +1,87 @@
+@import '../../../../styles/variables.scss';
+
+app-visit-request-form {
+  form > section:not(:first-of-type) {
+    margin-top: 1rem;
+  }
+  > header,
+  form > section > header,
+  > footer {
+    display: flex;
+    button.mat-button-base {
+      margin-left: auto;
+    }
+  }
+  .time-window-divider {
+    margin: 0.5rem 0;
+  }
+
+  .edit-label {
+    flex-grow: 5;
+  }
+
+  .edit-place {
+    display: flex;
+    min-width: 20rem;
+  }
+
+  .clear-place {
+    margin-top: 0.25rem;
+    svg {
+      fill: $gray;
+    }
+  }
+
+  .time-windows > mat-expansion-panel {
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
+
+  app-time-window {
+    margin-left: 1rem;
+  }
+
+  .time-windows > header {
+    align-items: flex-start;
+  }
+
+  .visit-tags {
+    flex: auto;
+  }
+
+  .visit-types {
+    flex: auto;
+  }
+
+  .visit-tag-list {
+    width: 100%;
+  }
+
+  .visit-types {
+    flex: auto;
+  }
+
+  .visit-type-list {
+    width: 100%;
+  }
+
+  .edit-menu-content {
+    .mat-form-field-infix {
+      width: auto;
+      padding-right: 10px;
+    }
+  }
+
+  .secField {
+    width: 100%;
+  }
+
+  .waypoint-heading {
+    max-width: 64px;
+  }
+
+  app-load-demands-form {
+    display: block;
+    margin-left: 1rem;
+  }
+}

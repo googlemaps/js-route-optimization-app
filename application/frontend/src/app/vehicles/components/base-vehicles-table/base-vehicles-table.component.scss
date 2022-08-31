@@ -1,0 +1,53 @@
+app-base-vehicles-table {
+  app-table {
+    overflow: auto;
+  }
+
+  /** Workarounds for mat-table leaving gaps between sticky columns */
+  .cdk-column-select {
+    left: 0px !important;
+    width: 54px !important;
+    min-width: 54px !important;
+    max-width: 54px !important;
+    box-sizing: border-box;
+    overflow: initial;
+  }
+
+  .cdk-column-id {
+    left: 54px !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    box-sizing: border-box;
+  }
+
+  .cdk-column-menu {
+    right: 0px !important;
+    width: 70px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    box-sizing: border-box;
+    overflow: initial;
+  }
+
+  .menu-button {
+    width: 35px !important;
+    height: 35px !important;
+  }
+
+  .menu-vehicles {
+    display: flex;
+  }
+
+  /** End workarounds */
+
+  .add-vehicle {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 1;
+
+    &[disabled='true'] {
+      filter: grayscale(100%);
+    }
+  }
+}

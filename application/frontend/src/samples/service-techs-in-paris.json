@@ -1,0 +1,3606 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "id": 1,
+        "index": 0,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.88008839716042,
+                "longitude": 2.353004336811267
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572541065"
+                  },
+                  "endTime": {
+                    "seconds": "1572551865"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572546465"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1620"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 2,
+        "index": 1,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.876076135864764,
+                "longitude": 2.329868251672764
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572519782"
+                  },
+                  "endTime": {
+                    "seconds": "1572530582"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572525182"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1380"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 3,
+        "index": 2,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.90418746967231,
+                "longitude": 2.2510412133215425
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572534920"
+                  },
+                  "endTime": {
+                    "seconds": "1572545720"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572540320"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "360"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 4,
+        "index": 3,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.9402628189938,
+                "longitude": 2.226678353853771
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572524853"
+                  },
+                  "endTime": {
+                    "seconds": "1572535653"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572530253"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "480"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 5,
+        "index": 4,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 49.006682002704025,
+                "longitude": 2.3114131246601914
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572526032"
+                  },
+                  "endTime": {
+                    "seconds": "1572536832"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572531432"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1740"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 6,
+        "index": 5,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.83830883295553,
+                "longitude": 2.410931103398326
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572517949"
+                  },
+                  "endTime": {
+                    "seconds": "1572528749"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572523349"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2100"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 7,
+        "index": 6,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.773440919717586,
+                "longitude": 2.3628872473673823
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572532578"
+                  },
+                  "endTime": {
+                    "seconds": "1572543378"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572537978"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1620"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 8,
+        "index": 7,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.87879477993948,
+                "longitude": 2.331131336040869
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572549161"
+                  },
+                  "endTime": {
+                    "seconds": "1572559961"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572554561"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1260"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 9,
+        "index": 8,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.87684982411497,
+                "longitude": 2.339002901410197
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572519415"
+                  },
+                  "endTime": {
+                    "seconds": "1572530215"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572524815"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1500"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 10,
+        "index": 9,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.95975040840506,
+                "longitude": 2.427550055012091
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572554428"
+                  },
+                  "endTime": {
+                    "seconds": "1572565228"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572559828"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "960"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 11,
+        "index": 10,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.88183507542587,
+                "longitude": 2.3388818251915495
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572539280"
+                  },
+                  "endTime": {
+                    "seconds": "1572550080"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572544680"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1260"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 12,
+        "index": 11,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.87462899060506,
+                "longitude": 2.3223977968430916
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572535549"
+                  },
+                  "endTime": {
+                    "seconds": "1572546349"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572540949"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1200"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 13,
+        "index": 12,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.86245293149017,
+                "longitude": 2.3364430808083227
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572539123"
+                  },
+                  "endTime": {
+                    "seconds": "1572549923"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572544523"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1860"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 14,
+        "index": 13,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.96248836961473,
+                "longitude": 2.3132560692585287
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572522812"
+                  },
+                  "endTime": {
+                    "seconds": "1572533612"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572528212"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "360"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 15,
+        "index": 14,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.8702540708085,
+                "longitude": 2.4944457213127578
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572536441"
+                  },
+                  "endTime": {
+                    "seconds": "1572547241"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572541841"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1020"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 16,
+        "index": 15,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.84764461096333,
+                "longitude": 2.3208066430998997
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572535279"
+                  },
+                  "endTime": {
+                    "seconds": "1572546079"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572540679"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1200"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 17,
+        "index": 16,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.90833995395937,
+                "longitude": 2.2757569474938464
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572517216"
+                  },
+                  "endTime": {
+                    "seconds": "1572528016"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572522616"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "600"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 18,
+        "index": 17,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.88107819729123,
+                "longitude": 2.2915850563174445
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572532024"
+                  },
+                  "endTime": {
+                    "seconds": "1572542824"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572537424"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1380"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 19,
+        "index": 18,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.88002768185902,
+                "longitude": 2.1588183726624948
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572530195"
+                  },
+                  "endTime": {
+                    "seconds": "1572540995"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572535595"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2040"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 20,
+        "index": 19,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.93929399432008,
+                "longitude": 2.3176120486629372
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572523968"
+                  },
+                  "endTime": {
+                    "seconds": "1572534768"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572529368"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "300"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 21,
+        "index": 20,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.92692382141203,
+                "longitude": 2.292467352274457
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572546281"
+                  },
+                  "endTime": {
+                    "seconds": "1572557081"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572551681"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "480"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 22,
+        "index": 21,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.89473861773118,
+                "longitude": 2.398509907041216
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572522495"
+                  },
+                  "endTime": {
+                    "seconds": "1572533295"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572527895"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1860"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 23,
+        "index": 22,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 49.02011450036346,
+                "longitude": 2.3774793722802485
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572530053"
+                  },
+                  "endTime": {
+                    "seconds": "1572540853"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572535453"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1860"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 24,
+        "index": 23,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.800364051989504,
+                "longitude": 2.308644032932335
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572554959"
+                  },
+                  "endTime": {
+                    "seconds": "1572565759"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572560359"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1680"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 25,
+        "index": 24,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.812527212398095,
+                "longitude": 2.173175559283351
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572517670"
+                  },
+                  "endTime": {
+                    "seconds": "1572528470"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572523070"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "720"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 26,
+        "index": 25,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.87075513052798,
+                "longitude": 2.348263649663295
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572538384"
+                  },
+                  "endTime": {
+                    "seconds": "1572549184"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572543784"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "600"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 27,
+        "index": 26,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.85709701506377,
+                "longitude": 2.2623156165735736
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572527658"
+                  },
+                  "endTime": {
+                    "seconds": "1572538458"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572533058"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1500"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 28,
+        "index": 27,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.838093784136305,
+                "longitude": 2.284849361896306
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572528053"
+                  },
+                  "endTime": {
+                    "seconds": "1572538853"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572533453"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "480"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 29,
+        "index": 28,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.84700245851704,
+                "longitude": 2.354580780331929
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572518493"
+                  },
+                  "endTime": {
+                    "seconds": "1572529293"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572523893"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "840"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 30,
+        "index": 29,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.88795804305397,
+                "longitude": 2.282127348115438
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572528519"
+                  },
+                  "endTime": {
+                    "seconds": "1572539319"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572533919"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1800"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 31,
+        "index": 30,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.91599797872743,
+                "longitude": 2.277028875744463
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572523671"
+                  },
+                  "endTime": {
+                    "seconds": "1572534471"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572529071"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1440"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 32,
+        "index": 31,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.85901700645965,
+                "longitude": 2.3119224330586405
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572543158"
+                  },
+                  "endTime": {
+                    "seconds": "1572553958"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572548558"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2340"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 33,
+        "index": 32,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.899697371147965,
+                "longitude": 2.343664393183019
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572532451"
+                  },
+                  "endTime": {
+                    "seconds": "1572543251"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572537851"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1500"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 34,
+        "index": 33,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.999593197439935,
+                "longitude": 2.2327024651171143
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572540970"
+                  },
+                  "endTime": {
+                    "seconds": "1572551770"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572546370"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1140"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 35,
+        "index": 34,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 49.026179083636606,
+                "longitude": 2.4292658427180243
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572531826"
+                  },
+                  "endTime": {
+                    "seconds": "1572542626"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572537226"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2040"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 36,
+        "index": 35,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.87513062422724,
+                "longitude": 2.3954626821018223
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572529435"
+                  },
+                  "endTime": {
+                    "seconds": "1572540235"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572534835"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "960"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 37,
+        "index": 36,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.74583639983999,
+                "longitude": 2.2360595493100845
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572522079"
+                  },
+                  "endTime": {
+                    "seconds": "1572532879"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572527479"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "900"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 38,
+        "index": 37,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.93251306612797,
+                "longitude": 2.295815113063867
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572548779"
+                  },
+                  "endTime": {
+                    "seconds": "1572559579"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572554179"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "600"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 39,
+        "index": 38,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.846272576007266,
+                "longitude": 2.3413620415830962
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572518292"
+                  },
+                  "endTime": {
+                    "seconds": "1572529092"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572523692"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1080"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 40,
+        "index": 39,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.88396596356651,
+                "longitude": 2.2521738293192755
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572521398"
+                  },
+                  "endTime": {
+                    "seconds": "1572532198"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572526798"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1260"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 41,
+        "index": 40,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.85793883599919,
+                "longitude": 2.3598311149748383
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572532602"
+                  },
+                  "endTime": {
+                    "seconds": "1572543402"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572538002"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2040"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 42,
+        "index": 41,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.86911871035085,
+                "longitude": 2.2233726016414153
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572534690"
+                  },
+                  "endTime": {
+                    "seconds": "1572545490"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572540090"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1140"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 43,
+        "index": 42,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.939737889803666,
+                "longitude": 2.494334145350706
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572525124"
+                  },
+                  "endTime": {
+                    "seconds": "1572535924"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572530524"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "480"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 44,
+        "index": 43,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.992203085241044,
+                "longitude": 2.3434938062140986
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572546884"
+                  },
+                  "endTime": {
+                    "seconds": "1572557684"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572552284"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "720"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 45,
+        "index": 44,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.979931853054325,
+                "longitude": 2.2362849704892653
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572519980"
+                  },
+                  "endTime": {
+                    "seconds": "1572530780"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572525380"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "480"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 46,
+        "index": 45,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.89596946900528,
+                "longitude": 2.1966662981947707
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572527068"
+                  },
+                  "endTime": {
+                    "seconds": "1572537868"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572532468"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1200"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 47,
+        "index": 46,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.75385407408956,
+                "longitude": 2.2104025777282175
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572532301"
+                  },
+                  "endTime": {
+                    "seconds": "1572543101"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572537701"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1080"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 48,
+        "index": 47,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 49.04026560008609,
+                "longitude": 2.3893986090922112
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572519860"
+                  },
+                  "endTime": {
+                    "seconds": "1572530660"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572525260"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "960"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 49,
+        "index": 48,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.740937639587344,
+                "longitude": 2.364929473626489
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572549816"
+                  },
+                  "endTime": {
+                    "seconds": "1572560616"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572555216"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2280"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 50,
+        "index": 49,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.910021824111,
+                "longitude": 2.285739460786999
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572518114"
+                  },
+                  "endTime": {
+                    "seconds": "1572528914"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572523514"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "540"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 51,
+        "index": 50,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.898013896843,
+                "longitude": 2.3390932373082194
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572530771"
+                  },
+                  "endTime": {
+                    "seconds": "1572541571"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572536171"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2220"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 52,
+        "index": 51,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.924775623902065,
+                "longitude": 2.324152664403755
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572539591"
+                  },
+                  "endTime": {
+                    "seconds": "1572550391"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572544991"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "360"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 53,
+        "index": 52,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.96543927513895,
+                "longitude": 2.293314761649924
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572547525"
+                  },
+                  "endTime": {
+                    "seconds": "1572558325"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572552925"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1800"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 54,
+        "index": 53,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.89432157148252,
+                "longitude": 2.311603260815019
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572540997"
+                  },
+                  "endTime": {
+                    "seconds": "1572551797"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572546397"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1620"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 55,
+        "index": 54,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 49.01172147063278,
+                "longitude": 2.3325730312722044
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572526602"
+                  },
+                  "endTime": {
+                    "seconds": "1572537402"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572532002"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1620"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 56,
+        "index": 55,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.97940062654993,
+                "longitude": 2.4652255117695745
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572528779"
+                  },
+                  "endTime": {
+                    "seconds": "1572539579"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572534179"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2100"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 57,
+        "index": 56,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.920959656038235,
+                "longitude": 2.342968302959605
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572543030"
+                  },
+                  "endTime": {
+                    "seconds": "1572553830"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572548430"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1980"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 58,
+        "index": 57,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.74964370455095,
+                "longitude": 2.3563724264002417
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572526860"
+                  },
+                  "endTime": {
+                    "seconds": "1572537660"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572532260"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1140"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 59,
+        "index": 58,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.82589460278095,
+                "longitude": 2.2018869277483475
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572541306"
+                  },
+                  "endTime": {
+                    "seconds": "1572552106"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572546706"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "780"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 60,
+        "index": 59,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.8450075764909,
+                "longitude": 2.190941833397517
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572538442"
+                  },
+                  "endTime": {
+                    "seconds": "1572549242"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572543842"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2220"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 61,
+        "index": 60,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.73802497666318,
+                "longitude": 2.3330303771870433
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572549360"
+                  },
+                  "endTime": {
+                    "seconds": "1572560160"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572554760"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1740"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 62,
+        "index": 61,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 49.00052745191471,
+                "longitude": 2.3379425207798192
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572545472"
+                  },
+                  "endTime": {
+                    "seconds": "1572556272"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572550872"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1740"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 63,
+        "index": 62,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.864814026924876,
+                "longitude": 2.3130848027207946
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572539241"
+                  },
+                  "endTime": {
+                    "seconds": "1572550041"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572544641"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1380"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 64,
+        "index": 63,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.94606808123618,
+                "longitude": 2.4822831891648036
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572549271"
+                  },
+                  "endTime": {
+                    "seconds": "1572560071"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572554671"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "360"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 65,
+        "index": 64,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.83516767757982,
+                "longitude": 2.300612745954453
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572545019"
+                  },
+                  "endTime": {
+                    "seconds": "1572555819"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572550419"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2040"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 66,
+        "index": 65,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.84901677758103,
+                "longitude": 2.297904985895258
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572518376"
+                  },
+                  "endTime": {
+                    "seconds": "1572529176"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572523776"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1620"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 67,
+        "index": 66,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.88465229708285,
+                "longitude": 2.344940797572036
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572548910"
+                  },
+                  "endTime": {
+                    "seconds": "1572559710"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572554310"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "960"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 68,
+        "index": 67,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.76498550800687,
+                "longitude": 2.3017729154366577
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572542453"
+                  },
+                  "endTime": {
+                    "seconds": "1572553253"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572547853"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1500"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 69,
+        "index": 68,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.9896265141069,
+                "longitude": 2.2874441642343015
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572544544"
+                  },
+                  "endTime": {
+                    "seconds": "1572555344"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572549944"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1680"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 70,
+        "index": 69,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 49.035056246639556,
+                "longitude": 2.2829194054277764
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572541302"
+                  },
+                  "endTime": {
+                    "seconds": "1572552102"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572546702"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "300"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 71,
+        "index": 70,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.935594266537294,
+                "longitude": 2.490348178690425
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572533967"
+                  },
+                  "endTime": {
+                    "seconds": "1572544767"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572539367"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2160"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 72,
+        "index": 71,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.81954234663354,
+                "longitude": 2.3507000220864995
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572541795"
+                  },
+                  "endTime": {
+                    "seconds": "1572552595"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572547195"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "900"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 73,
+        "index": 72,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.727525284560016,
+                "longitude": 2.285920678663018
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572528997"
+                  },
+                  "endTime": {
+                    "seconds": "1572539797"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572534397"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1800"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 74,
+        "index": 73,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.85625426423161,
+                "longitude": 2.1716035836859646
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572518313"
+                  },
+                  "endTime": {
+                    "seconds": "1572529113"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572523713"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1260"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 75,
+        "index": 74,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.740610046884626,
+                "longitude": 2.352445867542656
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572530741"
+                  },
+                  "endTime": {
+                    "seconds": "1572541541"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572536141"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1440"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 76,
+        "index": 75,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.84288870100232,
+                "longitude": 2.2727130419518176
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572526807"
+                  },
+                  "endTime": {
+                    "seconds": "1572537607"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572532207"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1140"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 77,
+        "index": 76,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.953011764093134,
+                "longitude": 2.2414383467128403
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572540699"
+                  },
+                  "endTime": {
+                    "seconds": "1572551499"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572546099"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "360"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 78,
+        "index": 77,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.86287020943837,
+                "longitude": 2.312667775065222
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572535629"
+                  },
+                  "endTime": {
+                    "seconds": "1572546429"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572541029"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1260"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 79,
+        "index": 78,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.91303985341,
+                "longitude": 2.330422994234226
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572533098"
+                  },
+                  "endTime": {
+                    "seconds": "1572543898"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572538498"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1260"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 80,
+        "index": 79,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.791570674164944,
+                "longitude": 2.250551817370024
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572543053"
+                  },
+                  "endTime": {
+                    "seconds": "1572553853"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572548453"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1500"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 81,
+        "index": 80,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.827270626846,
+                "longitude": 2.3199248077090147
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572532740"
+                  },
+                  "endTime": {
+                    "seconds": "1572543540"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572538140"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1620"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 82,
+        "index": 81,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.86443079495487,
+                "longitude": 2.4342630899502637
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572543529"
+                  },
+                  "endTime": {
+                    "seconds": "1572554329"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572548929"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "960"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 83,
+        "index": 82,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.983967416038865,
+                "longitude": 2.360149847170362
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572532852"
+                  },
+                  "endTime": {
+                    "seconds": "1572543652"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572538252"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2100"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 84,
+        "index": 83,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.893672822615684,
+                "longitude": 2.430356166981994
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572536573"
+                  },
+                  "endTime": {
+                    "seconds": "1572547373"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572541973"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "540"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 85,
+        "index": 84,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.86779804615031,
+                "longitude": 2.151363426539376
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572532350"
+                  },
+                  "endTime": {
+                    "seconds": "1572543150"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572537750"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1080"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 86,
+        "index": 85,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.93596064014457,
+                "longitude": 2.4213666675264562
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572550232"
+                  },
+                  "endTime": {
+                    "seconds": "1572561032"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572555632"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "480"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 87,
+        "index": 86,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.94759208260734,
+                "longitude": 2.3751351323111862
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572521969"
+                  },
+                  "endTime": {
+                    "seconds": "1572532769"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572527369"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1980"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 88,
+        "index": 87,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.792833650314606,
+                "longitude": 2.3705069078779104
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572526188"
+                  },
+                  "endTime": {
+                    "seconds": "1572536988"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572531588"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "960"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 89,
+        "index": 88,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.84055815741522,
+                "longitude": 2.2727259532427695
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572544266"
+                  },
+                  "endTime": {
+                    "seconds": "1572555066"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572549666"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1740"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 90,
+        "index": 89,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.827689999353254,
+                "longitude": 2.2693307250430337
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572554884"
+                  },
+                  "endTime": {
+                    "seconds": "1572565684"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572560284"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1920"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 91,
+        "index": 90,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.98460388588998,
+                "longitude": 2.4000318113467927
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572527513"
+                  },
+                  "endTime": {
+                    "seconds": "1572538313"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572532913"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "360"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 92,
+        "index": 91,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.886287257089805,
+                "longitude": 2.3947373307050555
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572516638"
+                  },
+                  "endTime": {
+                    "seconds": "1572527438"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572522038"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1500"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 93,
+        "index": 92,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.84946469158231,
+                "longitude": 2.4215070293201393
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572528609"
+                  },
+                  "endTime": {
+                    "seconds": "1572539409"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572534009"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1620"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 94,
+        "index": 93,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.97593927989598,
+                "longitude": 2.384282109416233
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572524102"
+                  },
+                  "endTime": {
+                    "seconds": "1572534902"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572529502"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1320"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 95,
+        "index": 94,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.857663313220485,
+                "longitude": 2.292842766714813
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572550411"
+                  },
+                  "endTime": {
+                    "seconds": "1572561211"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572555811"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "660"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 96,
+        "index": 95,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.92418278725475,
+                "longitude": 2.2573902957142025
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572521102"
+                  },
+                  "endTime": {
+                    "seconds": "1572531902"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572526502"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1560"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 97,
+        "index": 96,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.93971750497107,
+                "longitude": 2.483814701875673
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572516503"
+                  },
+                  "endTime": {
+                    "seconds": "1572527303"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572521903"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "2040"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 98,
+        "index": 97,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 49.0309983168184,
+                "longitude": 2.3980360688824476
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572536096"
+                  },
+                  "endTime": {
+                    "seconds": "1572546896"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572541496"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1020"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 99,
+        "index": 98,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.80679616653342,
+                "longitude": 2.259213834789392
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572535271"
+                  },
+                  "endTime": {
+                    "seconds": "1572546071"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572540671"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1500"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      },
+      {
+        "id": 100,
+        "index": 99,
+        "pickup": {
+          "visitRequests": [
+            {
+              "arrivalLocation": {
+                "latitude": 48.858207632734064,
+                "longitude": 2.2961059031372884
+              },
+              "timeWindows": [
+                {
+                  "startTime": {
+                    "seconds": "1572538980"
+                  },
+                  "endTime": {
+                    "seconds": "1572549780"
+                  },
+                  "softEndTime": {
+                    "seconds": "1572544380"
+                  },
+                  "costPerHourAfterSoftEndTime": {
+                    "value": 100
+                  }
+                }
+              ],
+              "duration": {
+                "seconds": "1920"
+              }
+            }
+          ]
+        },
+        "delivery": null
+      }
+    ],
+    "vehicles": [
+      {
+        "startLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "endLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "capacities": [
+          {
+            "type": "weight"
+          },
+          {
+            "type": "volume"
+          },
+          {
+            "type": "other"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 30,
+        "costPerKilometer": 0.2112667304609343
+      },
+      {
+        "startLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "endLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "capacities": [
+          {
+            "type": "weight"
+          },
+          {
+            "type": "volume"
+          },
+          {
+            "type": "other"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 30,
+        "costPerKilometer": 0.2112667304609343
+      },
+      {
+        "startLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "endLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "capacities": [
+          {
+            "type": "weight"
+          },
+          {
+            "type": "volume"
+          },
+          {
+            "type": "other"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 30,
+        "costPerKilometer": 0.2112667304609343
+      },
+      {
+        "startLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "endLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "capacities": [
+          {
+            "type": "weight"
+          },
+          {
+            "type": "volume"
+          },
+          {
+            "type": "other"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 30,
+        "costPerKilometer": 0.2112667304609343
+      },
+      {
+        "startLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "endLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "capacities": [
+          {
+            "type": "weight"
+          },
+          {
+            "type": "volume"
+          },
+          {
+            "type": "other"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 30,
+        "costPerKilometer": 0.2112667304609343
+      },
+      {
+        "startLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "endLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "capacities": [
+          {
+            "type": "weight"
+          },
+          {
+            "type": "volume"
+          },
+          {
+            "type": "other"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 30,
+        "costPerKilometer": 0.2112667304609343
+      },
+      {
+        "startLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "endLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "capacities": [
+          {
+            "type": "weight"
+          },
+          {
+            "type": "volume"
+          },
+          {
+            "type": "other"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 30,
+        "costPerKilometer": 0.2112667304609343
+      },
+      {
+        "startLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "endLocation": {
+          "latitude": 48.877108,
+          "longitude": 2.329308
+        },
+        "capacities": [
+          {
+            "type": "weight"
+          },
+          {
+            "type": "volume"
+          },
+          {
+            "type": "other"
+          }
+        ],
+        "costPerHour": 30,
+        "fixedCost": 30,
+        "costPerKilometer": 0.2112667304609343
+      }
+    ],
+    "globalStartTime": {
+      "seconds": "1572512400"
+    },
+    "globalEndTime": {
+      "seconds": "1572570000"
+    }
+  }
+}

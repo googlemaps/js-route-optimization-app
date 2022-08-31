@@ -1,0 +1,28 @@
+<form [formGroup]="form" (ngSubmit)="apply.emit()">
+  <mat-form-field *ngIf="operationCtrl as control">
+    <mat-select [formControl]="control">
+      <mat-option *ngFor="let operation of operations" [value]="operation">
+        {{ operation }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <ng-container *ngIf="operationCtrl.value !== NumberFilterOperation.Empty">
+    <mat-form-field *ngIf="valueCtrl as control">
+      <mat-label>{{ valueLabel }}</mat-label>
+      <input matInput type="number" [formControl]="control" required />
+      <mat-error *ngIf="control.errors?.required && (control.touched || control.dirty)">
+        {{ valueLabel }} is required
+      </mat-error>
+    </mat-form-field>
+    <ng-container *ngIf="operationCtrl.value === NumberFilterOperation.Between">
+      <span>and</span>
+      <mat-form-field *ngIf="value2Ctrl as control">
+        <mat-label>Max Value</mat-label>
+        <input matInput type="number" [formControl]="control" required />
+        <mat-error *ngIf="control.errors?.required && (control.touched || control.dirty)">
+          Max Value is required
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+</form>

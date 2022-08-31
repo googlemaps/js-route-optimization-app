@@ -1,0 +1,49 @@
+<div mat-dialog-title>
+  <div class="form-title">
+    <h3 class="pad-right">Shipment #{{ shipment?.id }}</h3>
+    <div *ngIf="shipment?.label as shipmentLabel" class="mat-body shipment-chips pad-right">
+      <span *ngFor="let label of shipmentLabel | splitLabel">{{ label }}</span>
+    </div>
+  </div>
+  <button mat-icon-button type="button" title="Cancel" (click)="cancel.emit()">
+    <mat-icon svgIcon="clear"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <div class="form-wrapper">
+    <app-visit-form
+      #visitForm
+      [pickup]="pickup"
+      [pickupRequest]="pickupRequest"
+      [delivery]="delivery"
+      [deliveryRequest]="deliveryRequest"
+      [vehicles]="vehicles"
+      [timezoneOffset]="timezoneOffset"
+      [globalDuration]="globalDuration"
+      [disabled]="disabled || savePending">
+    </app-visit-form>
+  </div>
+  <div *ngIf="savePending" class="progress-wrapper">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-error *ngIf="saveError"> Polyline update failed. Please try again. </mat-error>
+</div>
+<div mat-dialog-actions>
+  <a
+    class="secondary-link mr-4"
+    tabindex="0"
+    (click)="cancel.emit()"
+    (keydown.enter)="cancel.emit()"
+    (keydown.space)="cancel.emit()"
+    >Cancel</a
+  >
+  <button type="button" mat-button color="primary" (click)="onDetail()">Detail</button>
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    (click)="onSave(visitForm.getPickup(), visitForm.getDelivery())"
+    [disabled]="visitForm?.invalid || disabled || savePending">
+    Save
+  </button>
+</div>

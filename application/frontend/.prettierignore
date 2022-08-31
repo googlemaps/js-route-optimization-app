@@ -1,0 +1,8 @@
+# Ignore files not in /src
+/*
+!/src
+src/assets
+src/config
+src/lib
+src/proto
+src/samples

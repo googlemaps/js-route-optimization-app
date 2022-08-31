@@ -1,0 +1,71 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-dialog-content {
+  max-height: 100%;
+  flex-grow: 1;
+}
+
+.dialog-element {
+  width: 100%;
+
+  .paginator {
+    text-align: right;
+  }
+
+  &.save-field {
+    display: flex;
+
+    mat-form-field {
+      flex-grow: 1;
+      margin: 0.5rem 0;
+    }
+  }
+
+  &.search-field {
+    width: 0;
+    flex-grow: 1;
+    display: flex;
+
+    mat-form-field {
+      flex-grow: 1;
+    }
+  }
+
+  table {
+    width: 100%;
+
+    tr {
+      .delete-button {
+        mat-icon {
+          fill: $red;
+        }
+
+        &:disabled {
+          mat-icon {
+            fill: $gray;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: $blue-lightest;
+        cursor: pointer;
+      }
+
+      th {
+        background-color: white;
+        cursor: default;
+      }
+
+      .selected-file {
+        background-color: $blue-lightest;
+      }
+    }
+  }
+}

@@ -1,0 +1,1108 @@
+<div mat-dialog-title>
+  <h3 class="d-inline mat-h3">
+    {{ bulkEdit ? 'Bulk editing ' + bulkNumber + ' vehicles' : 'Vehicle #' + updatedVehicle?.id }}
+  </h3>
+  <button mat-icon-button type="button" title="Cancel" (click)="cancel.emit()">
+    <mat-icon svgIcon="clear"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <div class="form-wrapper">
+    <form [formGroup]="form" autocomplete="off" novalidate>
+      <div
+        class="edit-menu-content padded-content"
+        [ngClass]="{ unsethighlighted: isUnset(formFields.RouteEmpty) }">
+        <div class="mat-body-strong route-empty-label">Used if route is empty?</div>
+
+        <mat-slide-toggle color="primary" [formControl]="usedIfRouteIsEmpty"></mat-slide-toggle>
+        <app-bulk-edit-unset
+          *ngIf="bulkEdit"
+          matSuffix
+          [fieldName]="formFields.RouteEmpty"
+          [isUnset]="isUnset(formFields.RouteEmpty)"
+          (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+      </div>
+
+      <div
+        class="edit-menu-content padded-content"
+        [ngClass]="{
+          highlighted: bulkEdit && labels.length,
+          unsethighlighted: isUnset(formFields.Label)
+        }">
+        <mat-form-field class="w-100">
+          <mat-chip-list #labelChipList aria-label="Vehicle Labels" [disabled]="disabled">
+            <mat-chip
+              *ngFor="let label of labels; let i = index"
+              class="vehicle-chip"
+              (removed)="removeLabel(i)"
+              [removable]="!disabled"
+              selected>
+              {{ label }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Label"
+              [matChipInputFor]="labelChipList"
+              (matChipInputTokenEnd)="addLabel($event.value, $event.input)"
+              (focusout)="addLabel($event.target.value, $event.target)"
+              (keydown)="onLabelKeyDown($event)"
+              [matChipInputSeparatorKeyCodes]="labelSeparatorKeysCodes" />
+          </mat-chip-list>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.Label"
+            [isUnset]="isUnset(formFields.Label)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+        </mat-form-field>
+      </div>
+      <div class="edit-menu-content">
+        <div
+          class="autocomplete place-autocomplete-wide padded-content"
+          [ngClass]="{
+            highlighted: bulkEdit && startLocation.value,
+            unsethighlighted: isUnset(formFields.StartLocation)
+          }">
+          <mat-form-field class="padded-form-field location-autocomplete">
+            <mat-label>Start location</mat-label>
+            <app-place-autocomplete [bounds]="scenarioBounds" formControlName="startLocation">
+            </app-place-autocomplete>
+            <mat-hint>
+              <span *ngIf="startLocation.value; else setStartLocationPrompt">
+                <span class="mr-2">Coordinates:</span>{{ startLocation.value | formatLatLng }}
+              </span>
+              <ng-template #setStartLocationPrompt
+                >Type address above or press the plus and click on the map.
+              </ng-template>
+            </mat-hint>
+          </mat-form-field>
+          <button
+            *ngIf="startLocation.value; else setStartLocationTemplate"
+            type="button"
+            class="clear-place"
+            mat-icon-button
+            title="Clear start location"
+            (click)="clearControl(startLocation)"
+            [disabled]="disabled">
+            <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+          </button>
+          <ng-template #setStartLocationTemplate>
+            <button
+              *ngIf="editState !== editStates.Start; else cancelSetStartLocationTemplate"
+              type="button"
+              class="clear-place"
+              mat-icon-button
+              title="Set start location"
+              (click)="setStartLocation()"
+              [disabled]="disabled">
+              <mat-icon class="icon--smaller m-0" svgIcon="add"></mat-icon>
+            </button>
+            <ng-template #cancelSetStartLocationTemplate>
+              <button
+                type="button"
+                class="clear-place"
+                mat-icon-button
+                title="Cancel set start location"
+                (click)="cancelEditLocation()"
+                [disabled]="disabled">
+                <mat-icon class="icon--smaller m-0" svgIcon="clear"></mat-icon>
+              </button>
+            </ng-template>
+          </ng-template>
+          <mat-form-field class="item-sm padded-form-field pad-right waypoint-heading">
+            <mat-label>Heading</mat-label>
+            <input matInput type="number" min="0" max="360" [formControl]="startLocationHeading" />
+            <mat-error
+              *ngIf="
+                startLocationHeading.errors &&
+                (startLocationHeading.touched || startLocationHeading.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Invalid Value</span>
+            </mat-error>
+          </mat-form-field>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.StartLocation"
+            [isUnset]="isUnset(formFields.StartLocation)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+          <mat-checkbox color="primary" [formControl]="startLocationSideOfRoad">
+            Side of road
+          </mat-checkbox>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.StartLocation"
+            [isUnset]="isUnset(formFields.StartLocation)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+        </div>
+        <div
+          class="autocomplete place-autocomplete-wide padded-content"
+          [ngClass]="{
+            highlighted: bulkEdit && endLocation.value,
+            unsethighlighted: isUnset(formFields.EndLocation)
+          }">
+          <mat-form-field class="padded-form-field location-autocomplete">
+            <mat-label>End location</mat-label>
+            <app-place-autocomplete [bounds]="scenarioBounds" formControlName="endLocation">
+            </app-place-autocomplete>
+            <mat-hint>
+              <span *ngIf="endLocation.value; else setEndLocationPrompt">
+                <span class="mr-2">Coordinates:</span>{{ endLocation.value | formatLatLng }}
+              </span>
+              <ng-template #setEndLocationPrompt
+                >Type address above or press the plus and click on the map.
+              </ng-template>
+            </mat-hint>
+          </mat-form-field>
+          <button
+            *ngIf="endLocation.value; else setendLocationTemplate"
+            type="button"
+            class="clear-place"
+            mat-icon-button
+            title="Clear end location"
+            (click)="clearControl(endLocation)"
+            [disabled]="disabled">
+            <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+          </button>
+          <ng-template #setendLocationTemplate>
+            <button
+              *ngIf="editState != editStates.End; else cancelSetEndLocationTemplate"
+              type="button"
+              class="clear-place"
+              mat-icon-button
+              title="Set end location"
+              (click)="setEndLocation()"
+              [disabled]="disabled">
+              <mat-icon class="icon--smaller m-0" svgIcon="add"></mat-icon>
+            </button>
+            <ng-template #cancelSetEndLocationTemplate>
+              <button
+                type="button"
+                class="clear-place"
+                mat-icon-button
+                title="Cancel set end location"
+                (click)="cancelEditLocation()"
+                [disabled]="disabled">
+                <mat-icon class="icon--smaller m-0" svgIcon="clear"></mat-icon>
+              </button>
+            </ng-template>
+          </ng-template>
+          <mat-form-field class="item-sm padded-form-field waypoint-heading">
+            <mat-label>Heading</mat-label>
+            <input matInput type="number" min="0" max="360" [formControl]="endLocationHeading" />
+            <mat-error
+              *ngIf="
+                endLocationHeading.errors &&
+                (endLocationHeading.touched || endLocationHeading.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Invalid Value</span>
+            </mat-error>
+          </mat-form-field>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.EndLocation"
+            [isUnset]="isUnset(formFields.EndLocation)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+
+          <mat-checkbox color="primary" [formControl]="endLocationSideOfRoad">
+            Side of road
+          </mat-checkbox>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.EndLocation"
+            [isUnset]="isUnset(formFields.EndLocation)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+        </div>
+      </div>
+      <div class="edit-menu-content">
+        <div
+          class="flex-grow-1 d-flex padded-content align-self-stretch"
+          [ngClass]="{
+            highlighted: bulkEdit && updatedVehicle.startTags?.length,
+            unsethighlighted: isUnset(formFields.StartVisitTags)
+          }">
+          <mat-form-field class="flex-grow-1 align-self-end">
+            <mat-chip-list
+              #startvisitTagsChipList
+              aria-label="Start Visit Tags"
+              [disabled]="disabled">
+              <mat-chip
+                *ngFor="let visitTag of updatedVehicle?.startTags"
+                (removed)="removeStartVisitTag(visitTag)"
+                [selectable]="false"
+                [removable]="!disabled">
+                {{ visitTag }}
+                <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+              </mat-chip>
+              <input
+                placeholder="Start visit tags"
+                [matChipInputFor]="startvisitTagsChipList"
+                (matChipInputTokenEnd)="addStartVisitTagsInputToken($event.value, $event.input)"
+                (focusout)="addStartVisitTagsInputToken($event.target.value, $event.target)"
+                (keydown)="onStartVisitTagsKeyDown($event)"
+                [matChipInputSeparatorKeyCodes]="visitTagsSeparatorKeysCodes"
+                [matAutocomplete]="autoStartvisitTag" />
+            </mat-chip-list>
+            <mat-autocomplete
+              #autoStartvisitTag="matAutocomplete"
+              (optionSelected)="onStartVisitTagsSelected($event)">
+              <mat-option
+                *ngFor="let visitTag of filteredAvailableStartVisitTags | async"
+                [value]="visitTag">
+                {{ visitTag }}
+              </mat-option>
+            </mat-autocomplete>
+            <app-bulk-edit-unset
+              *ngIf="bulkEdit"
+              matSuffix
+              [fieldName]="formFields.StartVisitTags"
+              [isUnset]="isUnset(formFields.StartVisitTags)"
+              (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+          </mat-form-field>
+        </div>
+        <div
+          class="flex-grow-1 d-flex padded-content align-self-stretch"
+          [ngClass]="{
+            highlighted: bulkEdit && updatedVehicle.endTags?.length,
+            unsethighlighted: isUnset(formFields.EndVisitTags)
+          }">
+          <mat-form-field class="flex-grow-1 align-self-end">
+            <mat-chip-list #endvisitTagsChipList aria-label="End Visit Tags" [disabled]="disabled">
+              <mat-chip
+                *ngFor="let visitTag of updatedVehicle?.endTags"
+                (removed)="removeEndVisitTag(visitTag)"
+                [selectable]="false"
+                [removable]="!disabled">
+                {{ visitTag }}
+                <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+              </mat-chip>
+              <input
+                placeholder="End visit tags"
+                [matChipInputFor]="endvisitTagsChipList"
+                (matChipInputTokenEnd)="addEndVisitTagsInputToken($event.value, $event.input)"
+                (focusout)="addEndVisitTagsInputToken($event.target.value, $event.target)"
+                (keydown)="onEndVisitTagsKeyDown($event)"
+                [matChipInputSeparatorKeyCodes]="visitTagsSeparatorKeysCodes"
+                [matAutocomplete]="autoEndvisitTag" />
+            </mat-chip-list>
+            <mat-autocomplete
+              #autoEndvisitTag="matAutocomplete"
+              (optionSelected)="onEndVisitTagsSelected($event)">
+              <mat-option
+                *ngFor="let visitTag of filteredAvailableEndVisitTags | async"
+                [value]="visitTag">
+                {{ visitTag }}
+              </mat-option>
+            </mat-autocomplete>
+            <app-bulk-edit-unset
+              *ngIf="bulkEdit"
+              matSuffix
+              [fieldName]="formFields.EndVisitTags"
+              [isUnset]="isUnset(formFields.EndVisitTags)"
+              (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+          </mat-form-field>
+        </div>
+      </div>
+      <div
+        class="edit-menu-content padded-content"
+        *ngIf="allowExperimentalFeatures"
+        [ngClass]="{
+          highlighted: bulkEdit && requiredOperatorTypes.length,
+          unsethighlighted: isUnset(formFields.OperatorTypes)
+        }">
+        <mat-form-field class="w-100">
+          <mat-chip-list
+            #operatorChipList
+            aria-label="Vehicle Operator Types"
+            [disabled]="disabled">
+            <mat-chip
+              *ngFor="let operatorType of requiredOperatorTypes; let i = index"
+              class="vehicle-chip"
+              (removed)="removeOperatorType(i)"
+              [removable]="!disabled"
+              selected>
+              {{ operatorType }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Vehicle Operator Types"
+              [matChipInputFor]="operatorChipList"
+              (matChipInputTokenEnd)="addOperatorTypeInputToken($event.value, $event.input)"
+              (focusout)="addOperatorTypeInputToken($event.target.value, $event.target)"
+              (keydown)="onOperatorTypeKeyDown($event)"
+              [matChipInputSeparatorKeyCodes]="operatorTypeKeysCodes"
+              [matAutocomplete]="autoVehicleOperatorTypes" />
+          </mat-chip-list>
+          <mat-autocomplete
+            #autoVehicleOperatorTypes="matAutocomplete"
+            (optionSelected)="onOperatorTypesSelected($event)">
+            <mat-option
+              *ngFor="let operatorType of filteredAvailableOperatorTypes | async"
+              [value]="operatorType">
+              {{ operatorType }}
+            </mat-option>
+          </mat-autocomplete>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.OperatorTypes"
+            [isUnset]="isUnset(formFields.OperatorTypes)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+        </mat-form-field>
+        <p class="unused-vehicle-operator-warning" *ngIf="isOperatorTypeError">
+          An operator type does not exist.
+        </p>
+      </div>
+      <div
+        class="edit-menu-content padded-content"
+        *ngIf="injectedSolution"
+        [ngClass]="{ highlighted: bulkEdit && relaxationSettingsForm.value.length }">
+        <header>
+          <h4>Iteration relaxations</h4>
+        </header>
+        <app-injected-relaxation-constraints-form
+          formArrayName="relaxationSettings"
+          (removeThreshold)="
+            removeTimeThreshold($event)
+          "></app-injected-relaxation-constraints-form>
+        <button type="button" mat-button color="primary" (click)="addTimeThreshold()">
+          Add additional relaxation
+        </button>
+      </div>
+      <div
+        class="edit-menu-content time-windows mat-elevation-z1"
+        [ngClass]="{
+          highlighted: bulkEdit && startTimeWindows.value.length,
+          unsethighlighted: isUnset(formFields.StartTimeWindows)
+        }">
+        <header>
+          <div>
+            <span class="mat-h4">Start time windows</span> ({{ startTimeWindows.length }})
+            <mat-error class="mb-4" *ngIf="startTimeWindows.errors?.overlap"
+              >Time windows must not overlap</mat-error
+            >
+          </div>
+          <button
+            type="button"
+            mat-button
+            color="primary"
+            (click)="addStartTimeWindow()"
+            [disabled]="disabled">
+            Add time window
+          </button>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            [fieldName]="formFields.StartTimeWindows"
+            [isUnset]="isUnset(formFields.StartTimeWindows)"
+            (unsetEvent)="onUnsetChange($event)"
+            [showText]="true">
+          </app-bulk-edit-unset>
+        </header>
+        <ng-container *ngIf="startTimeWindows.at(0) as control">
+          <app-time-window
+            [formGroup]="control"
+            [startAt]="startAt"
+            [timezoneOffset]="timezoneOffset"
+            [appearance]="appearance"
+            [startAt]="startAt()"
+            (remove)="removeStartTimeWindow(0)"
+            [removable]="true"
+            [disableSoftTime]="startTimeWindows.length > 1">
+          </app-time-window>
+        </ng-container>
+        <mat-expansion-panel #startTimeWindowsPanel [disabled]="startTimeWindows.length < 2">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Show more time windows </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container
+            *ngFor="
+              let control of startTimeWindows.controls | slice: 1;
+              index as i;
+              first as isFirst
+            ">
+            <mat-divider class="time-window-divider" *ngIf="!isFirst"></mat-divider>
+            <app-time-window
+              [formGroup]="control"
+              [startAt]="startAt"
+              [timezoneOffset]="timezoneOffset"
+              [appearance]="appearance"
+              [startAt]="startAt()"
+              (remove)="removeStartTimeWindow(i + 1)"
+              [removable]="true"
+              [hideSoftTime]="true">
+            </app-time-window>
+          </ng-container>
+        </mat-expansion-panel>
+      </div>
+      <div
+        class="edit-menu-content time-windows mat-elevation-z1"
+        [ngClass]="{
+          highlighted: bulkEdit && endTimeWindows.value.length,
+          unsethighlighted: isUnset(formFields.EndTimeWindows)
+        }">
+        <header>
+          <div>
+            <span class="mat-h4">End time windows</span> ({{ endTimeWindows.length }})
+            <mat-error class="mb-4" *ngIf="endTimeWindows.errors?.overlap"
+              >Time windows must not overlap</mat-error
+            >
+          </div>
+          <button
+            type="button"
+            mat-button
+            color="primary"
+            (click)="addEndTimeWindow()"
+            [disabled]="disabled">
+            Add time window
+          </button>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            [fieldName]="formFields.EndTimeWindows"
+            [isUnset]="isUnset(formFields.EndTimeWindows)"
+            (unsetEvent)="onUnsetChange($event)"
+            [showText]="true">
+          </app-bulk-edit-unset>
+        </header>
+        <ng-container *ngIf="endTimeWindows.at(0) as control">
+          <app-time-window
+            [formGroup]="control"
+            [startAt]="startAt"
+            [timezoneOffset]="timezoneOffset"
+            [appearance]="appearance"
+            [startAt]="endAt()"
+            (remove)="removeEndTimeWindow(0)"
+            [removable]="true"
+            [disableSoftTime]="endTimeWindows.length > 1">
+          </app-time-window>
+        </ng-container>
+        <mat-expansion-panel #endTimeWindowsPanel [disabled]="endTimeWindows.length < 2">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Show more time windows </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container
+            *ngFor="
+              let control of endTimeWindows.controls | slice: 1;
+              index as i;
+              first as isFirst
+            ">
+            <mat-divider class="time-window-divider" *ngIf="!isFirst"></mat-divider>
+            <app-time-window
+              [formGroup]="control"
+              [startAt]="startAt"
+              [timezoneOffset]="timezoneOffset"
+              [appearance]="appearance"
+              [startAt]="endAt()"
+              (remove)="removeEndTimeWindow(i + 1)"
+              [removable]="true"
+              [hideSoftTime]="true">
+            </app-time-window>
+          </ng-container>
+        </mat-expansion-panel>
+      </div>
+      <div
+        class="edit-menu-content time-windows mat-elevation-z1"
+        [ngClass]="{
+          highlighted: bulkEdit && loadLimits.value.length,
+          unsethighlighted: isUnset(formFields.LoadLimits)
+        }">
+        <header>
+          <div>
+            <span class="mat-h4">Load limits</span> ({{ loadLimits.length }})
+            <mat-error
+              class="mb-4"
+              *ngIf="loadLimits.errors && (loadLimits.touched || loadLimits.dirty)"
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Cannot have duplicate load limit types</span>
+            </mat-error>
+          </div>
+          <button
+            type="button"
+            mat-button
+            color="primary"
+            (click)="addLoadLimit()"
+            [disabled]="disabled">
+            Add load limit
+          </button>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            [fieldName]="formFields.LoadLimits"
+            [isUnset]="isUnset(formFields.LoadLimits)"
+            (unsetEvent)="onUnsetChange($event)"
+            [showText]="true">
+          </app-bulk-edit-unset>
+        </header>
+        <app-load-limits-form
+          class="padded-form-field"
+          formArrayName="loadLimits"
+          [appearance]="appearance"
+          [disabled]="disabled"
+          [scenarioLoadLimits]="scenarioCapacities"
+          [scenarioLoadDemands]="scenarioDemands"
+          [abbreviations]="abbreviations">
+        </app-load-limits-form>
+      </div>
+      <div
+        class="edit-menu-content mat-elevation-z1"
+        [formGroup]="travelCosts"
+        [ngClass]="{
+          highlighted: bulkEdit && formGroupHasValue(travelCosts),
+          unsethighlighted: isTravelCostsUnset()
+        }">
+        <header>
+          <h4 class="mat-h4">Travel costs</h4>
+        </header>
+        <mat-form-field class="item-sm padded-form-field">
+          <mat-label>Fixed cost of use</mat-label>
+          <input matInput type="number" [formControl]="travelFixedCost" />
+          <mat-error
+            *ngIf="travelFixedCost.errors && (travelFixedCost.touched || travelFixedCost.dirty)"
+            [attr.title]="errorMessage.innerText">
+            <span #errorMessage>Non-negative number required</span>
+          </mat-error>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.TravelFixedCost"
+            [isUnset]="isUnset(formFields.TravelFixedCost)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+        </mat-form-field>
+        <mat-form-field class="item-sm padded-form-field">
+          <mat-label>Cost per kilometer</mat-label>
+          <input matInput type="number" [formControl]="travelCostPerKm" />
+          <mat-error
+            *ngIf="travelCostPerKm.errors && (travelCostPerKm.touched || travelCostPerKm.dirty)"
+            [attr.title]="errorMessage.innerText">
+            <span #errorMessage>Non-negative number required</span>
+          </mat-error>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.TravelCostPerKm"
+            [isUnset]="isUnset(formFields.TravelCostPerKm)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+        </mat-form-field>
+        <mat-form-field class="item-sm padded-form-field">
+          <mat-label>Cost per hour</mat-label>
+          <input matInput type="number" [formControl]="travelCostPerHour" />
+          <mat-error
+            *ngIf="
+              travelCostPerHour.errors && (travelCostPerHour.touched || travelCostPerHour.dirty)
+            "
+            [attr.title]="errorMessage.innerText">
+            <span #errorMessage>Non-negative number required</span>
+          </mat-error>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.TravelCostPerHour"
+            [isUnset]="isUnset(formFields.TravelCostPerHour)"
+            (unsetEvent)="onUnsetChange($event)">
+          </app-bulk-edit-unset>
+        </mat-form-field>
+        <mat-form-field class="item-sm padded-form-field">
+          <mat-label>Cost per traveled hour</mat-label>
+          <input matInput type="number" [formControl]="travelCostPerTraveledHour" />
+          <mat-error
+            *ngIf="
+              travelCostPerTraveledHour.errors &&
+              (travelCostPerTraveledHour.touched || travelCostPerTraveledHour.dirty)
+            "
+            [attr.title]="errorMessage.innerText">
+            <span #errorMessage>Non-negative number required</span>
+          </mat-error>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.TravelCostPerTravelledHour"
+            [isUnset]="isUnset(formFields.TravelCostPerTravelledHour)"
+            (unsetEvent)="onUnsetChange($event)">
+          </app-bulk-edit-unset>
+        </mat-form-field>
+      </div>
+      <div
+        class="edit-menu-content mat-elevation-z1"
+        [ngClass]="{
+          highlighted:
+            bulkEdit && (travelMode.value || travelDurationMultiple.value || unloadingPolicy.value),
+          unsethighlighted: isTravelSettingsUnset()
+        }">
+        <header>
+          <h4 class="mat-h4">Travel settings</h4>
+        </header>
+        <mat-form-field class="item-sm padded-form-field">
+          <mat-label>Travel mode</mat-label>
+          <mat-select [formControl]="travelMode">
+            <mat-option *ngFor="let key of travelModeKeys" [value]="TravelMode[key]">
+              {{ replaceAll(key, '_', ' ') | titlecase }}
+            </mat-option>
+          </mat-select>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.TravelModeSetting"
+            [isUnset]="isUnset(formFields.TravelModeSetting)"
+            (unsetEvent)="onUnsetChange($event)">
+          </app-bulk-edit-unset>
+        </mat-form-field>
+        <app-bulk-edit-unset
+          *ngIf="bulkEdit"
+          matSuffix
+          [fieldName]="formFields.TravelModeSetting"
+          [isUnset]="isUnset(formFields.TravelModeSetting)"
+          (unsetEvent)="onUnsetChange($event)">
+        </app-bulk-edit-unset>
+        <mat-form-field class="item-sm padded-form-field">
+          <mat-label>Travel duration multiple</mat-label>
+          <input matInput type="number" [formControl]="travelDurationMultiple" />
+          <mat-error
+            *ngIf="
+              travelDurationMultiple.errors &&
+              (travelDurationMultiple.touched || travelDurationMultiple.dirty)
+            "
+            [attr.title]="errorMessage.innerText">
+            <span #errorMessage>Number between 0.001 and 1000 required</span>
+          </mat-error>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.TravelDurationSetting"
+            [isUnset]="isUnset(formFields.TravelDurationSetting)"
+            (unsetEvent)="onUnsetChange($event)">
+          </app-bulk-edit-unset>
+        </mat-form-field>
+        <mat-form-field class="item-sm padded-form-field">
+          <mat-label>Unloading policy</mat-label>
+          <mat-select [formControl]="unloadingPolicy">
+            <mat-option *ngFor="let key of unloadingPolicyKeys" [value]="UnloadingPolicy[key]">
+              {{ replaceAll(key, '_', ' ') | titlecase }}
+            </mat-option>
+          </mat-select>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.TravelUnloadingPolicy"
+            [isUnset]="isUnset(formFields.TravelUnloadingPolicy)"
+            (unsetEvent)="onUnsetChange($event)">
+          </app-bulk-edit-unset>
+        </mat-form-field>
+        <app-bulk-edit-unset
+          *ngIf="bulkEdit"
+          matSuffix
+          [fieldName]="formFields.TravelUnloadingPolicy"
+          [isUnset]="isUnset(formFields.TravelUnloadingPolicy)"
+          (unsetEvent)="onUnsetChange($event)">
+        </app-bulk-edit-unset>
+      </div>
+      <div
+        class="edit-menu-content mat-elevation-z1"
+        [formGroup]="routeDurationLimit"
+        [ngClass]="{
+          highlighted: bulkEdit && formGroupHasValue(routeDurationLimit),
+          unsethighlighted: isUnset(formFields.RouteDurationLimit)
+        }">
+        <header>
+          <h4 class="mat-h4">Route duration limit</h4>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.RouteDurationLimit"
+            [isUnset]="isUnset(formFields.RouteDurationLimit)"
+            (unsetEvent)="onUnsetChange($event)">
+          </app-bulk-edit-unset>
+        </header>
+        <div>
+          <app-duration-min-sec-form
+            [parentFormGroup]="routeDurationLimit.controls.maxDuration"
+            [errorStateMatcher]="durationMaxErrorStateMatcher"
+            [labelName]="'Max duration'"></app-duration-min-sec-form>
+        </div>
+        <div>
+          <app-duration-min-sec-form
+            [parentFormGroup]="routeDurationLimit.controls.softMaxDuration"
+            [errorStateMatcher]="durationSoftMaxErrorStateMatcher"
+            [labelName]="'Soft max duration'">
+          </app-duration-min-sec-form>
+        </div>
+        <div>
+          <mat-form-field class="item-sm padded-form-field">
+            <mat-label>Cost after soft max</mat-label>
+            <span title="cost per hour" matSuffix>cost/hr</span>
+            <input
+              matInput
+              type="number"
+              [formControl]="routeDurationSoftCost"
+              [errorStateMatcher]="durationSoftCostErrorStateMatcher" />
+            <mat-error
+              *ngIf="
+                routeDurationSoftCost.errors &&
+                (routeDurationSoftCost.touched || routeDurationSoftCost.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Non-negative number required</span>
+            </mat-error>
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="routeDurationLimit.errors && routeDurationLimit.errors.softCostRequired">
+              <span #message>Required if soft max is provided.</span>
+            </mat-error>
+          </mat-form-field>
+          <div>
+            <app-duration-min-sec-form
+              [parentFormGroup]="routeDurationLimit.controls.quadraticMaxDuration"
+              [errorStateMatcher]="durationQuadraticMaxErrorStateMatcher"
+              [labelName]="'Quadratic soft max duration'">
+            </app-duration-min-sec-form>
+          </div>
+          <mat-form-field class="item-sm padded-form-field">
+            <mat-label>Cost after quadratic soft max duration</mat-label>
+            <span title="cost per hour" matSuffix>cost/hr</span>
+            <input
+              matInput
+              type="number"
+              [formControl]="routeDurationQuadraticCost"
+              [errorStateMatcher]="durationQuadraticCostErrorStateMatcher" />
+            <mat-error
+              *ngIf="
+                routeDurationQuadraticCost.errors &&
+                (routeDurationQuadraticCost.touched || routeDurationQuadraticCost.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Non-negative number required</span>
+            </mat-error>
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="routeDurationLimit.errors && routeDurationLimit.errors.quadraticCostRequired">
+              <span #message>Required if quadratic max is provided.</span>
+            </mat-error>
+          </mat-form-field>
+          <ng-container *ngIf="routeDurationLimit.errors">
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="routeDurationLimit.errors.softMaxLessThanMax">
+              <span #message>Soft max duration must be less than max duration</span>
+            </mat-error>
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="routeDurationLimit.errors.quadraticMaxLessThanMax">
+              <span #message>Quadratic max duration must be less than max duration</span>
+            </mat-error>
+          </ng-container>
+        </div>
+      </div>
+      <div
+        class="edit-menu-content mat-elevation-z1"
+        [formGroup]="travelDurationLimit"
+        [ngClass]="{
+          highlighted: bulkEdit && formGroupHasValue(travelDurationLimit),
+          unsethighlighted: isUnset(formFields.TravelDurationLimit)
+        }">
+        <header>
+          <h4 class="mat-h4">Travel duration limit</h4>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.TravelDurationLimit"
+            [isUnset]="isUnset(formFields.TravelDurationLimit)"
+            (unsetEvent)="onUnsetChange($event)">
+          </app-bulk-edit-unset>
+        </header>
+        <div>
+          <div>
+            <app-duration-min-sec-form
+              [parentFormGroup]="travelDurationLimit.controls.maxDuration"
+              [errorStateMatcher]="durationMaxErrorStateMatcher"
+              [labelName]="'Max duration'">
+            </app-duration-min-sec-form>
+          </div>
+          <div>
+            <app-duration-min-sec-form
+              [parentFormGroup]="travelDurationLimit.controls.softMaxDuration"
+              [errorStateMatcher]="durationSoftMaxErrorStateMatcher"
+              [labelName]="'Soft max duration'">
+            </app-duration-min-sec-form>
+          </div>
+          <mat-form-field class="item-sm padded-form-field">
+            <mat-label>Cost after soft max</mat-label>
+            <input
+              matInput
+              type="number"
+              [formControl]="travelDurationCostAfterSoftMax"
+              [errorStateMatcher]="durationSoftCostErrorStateMatcher" />
+            <span title="cost per hour" matSuffix>cost/hr</span>
+            <mat-error
+              *ngIf="
+                travelDurationCostAfterSoftMax.errors &&
+                (travelDurationCostAfterSoftMax.touched || travelDurationCostAfterSoftMax.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Non-negative number required</span>
+            </mat-error>
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="travelDurationLimit.errors && travelDurationLimit.errors.softCostRequired">
+              <span #message>Required if soft max is provided.</span>
+            </mat-error>
+          </mat-form-field>
+          <div>
+            <app-duration-min-sec-form
+              [parentFormGroup]="travelDurationLimit.controls.quadraticMaxDuration"
+              [errorStateMatcher]="durationQuadraticMaxErrorStateMatcher"
+              [labelName]="'Quadratic soft max duration'">
+            </app-duration-min-sec-form>
+          </div>
+          <mat-form-field class="item-sm padded-form-field">
+            <mat-label>Cost after quadratic soft max duration</mat-label>
+            <input
+              matInput
+              type="number"
+              [formControl]="travelDurationQuadraticCostAfterSoftMax"
+              [errorStateMatcher]="durationQuadraticCostErrorStateMatcher" />
+            <span title="cost per hour" matSuffix>cost/hr</span>
+            <mat-error
+              *ngIf="
+                travelDurationQuadraticCostAfterSoftMax.errors &&
+                (travelDurationQuadraticCostAfterSoftMax.touched ||
+                  travelDurationQuadraticCostAfterSoftMax.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Non-negative number required</span>
+            </mat-error>
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="
+                travelDurationLimit.errors && travelDurationLimit.errors.quadraticCostRequired
+              ">
+              <span #message>Required if quadratic max is provided.</span>
+            </mat-error>
+          </mat-form-field>
+          <ng-container *ngIf="travelDurationLimit.errors">
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="travelDurationLimit.errors.softMaxLessThanMax">
+              <span #message>Soft max duration must be less than max duration</span>
+            </mat-error>
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="travelDurationLimit.errors.quadraticMaxLessThanMax">
+              <span #message>Quadratic max duration must be less than max duration</span>
+            </mat-error>
+          </ng-container>
+        </div>
+      </div>
+      <div
+        class="edit-menu-content mat-elevation-z1"
+        [formGroup]="routeDistanceLimit"
+        [ngClass]="{
+          highlighted: bulkEdit && formGroupHasValue(routeDistanceLimit),
+          unsethighlighted: isUnset(formFields.RouteDistanceLimit)
+        }">
+        <header>
+          <h4 class="mat-h4">Route distance limit</h4>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.RouteDistanceLimit"
+            [isUnset]="isUnset(formFields.RouteDistanceLimit)"
+            (unsetEvent)="onUnsetChange($event)">
+          </app-bulk-edit-unset>
+        </header>
+        <div class="item-xl">
+          <mat-form-field class="item-sm padded-form-field">
+            <mat-label>Max distance</mat-label>
+            <input
+              matInput
+              type="number"
+              [formControl]="routeDistanceMax"
+              [errorStateMatcher]="distanceSoftMaxErrorStateMatcher" />
+            <span title="meters" matSuffix>m</span>
+            <mat-error
+              *ngIf="
+                routeDistanceMax.errors && (routeDistanceMax.touched || routeDistanceMax.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Non-negative number required</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="item-sm padded-form-field">
+            <mat-label>Soft max distance</mat-label>
+            <input
+              matInput
+              type="number"
+              [formControl]="routeDistanceSoftMax"
+              [errorStateMatcher]="distanceSoftMaxErrorStateMatcher" />
+            <span title="meters" matSuffix>m</span>
+            <mat-error
+              *ngIf="
+                routeDistanceSoftMax.errors &&
+                (routeDistanceSoftMax.touched || routeDistanceSoftMax.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Non-negative number required</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="item-sm padded-form-field">
+            <mat-label>Cost after soft max</mat-label>
+            <input
+              matInput
+              type="number"
+              [formControl]="routeDistanceCostPerKm"
+              [errorStateMatcher]="distanceSoftCostErrorStateMatcher" />
+            <span title="cost per km" matSuffix>cost/km</span>
+            <mat-error
+              *ngIf="
+                routeDistanceCostPerKm.errors &&
+                (routeDistanceCostPerKm.touched || routeDistanceCostPerKm.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Non-negative number required</span>
+            </mat-error>
+            <mat-error
+              *ngIf="routeDistanceLimit.errors?.aRequiredIfB"
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Required if soft max is provided.</span>
+            </mat-error>
+          </mat-form-field>
+          <ng-container *ngIf="routeDistanceLimit.errors">
+            <mat-error
+              [attr.title]="message.innerText"
+              *ngIf="routeDistanceLimit.errors.aLessThanB">
+              <span #message>Soft max distance must be less than max distance</span>
+            </mat-error>
+          </ng-container>
+        </div>
+      </div>
+
+      <div
+        class="edit-menu-content time-windows mat-elevation-z1"
+        [ngClass]="{
+          highlighted: bulkEdit && extraVisitDurationForVisitType.value.length,
+          unsethighlighted: isUnset(formFields.ExtraVisitDuration)
+        }">
+        <header>
+          <div>
+            <span class="mat-h4">Extra Visit Duration</span> ({{
+              extraVisitDurationForVisitType.length
+            }})
+            <mat-error
+              class="mb-4"
+              *ngIf="
+                extraVisitDurationForVisitType.errors &&
+                (extraVisitDurationForVisitType.touched || extraVisitDurationForVisitType.dirty)
+              "
+              [attr.title]="errorMessage.innerText">
+              <span #errorMessage>Cannot have duplicate extra visit durations</span>
+            </mat-error>
+          </div>
+          <button
+            type="button"
+            mat-button
+            color="primary"
+            (click)="addExtraVisitDuration()"
+            [disabled]="disabled">
+            Add extra visit duration
+          </button>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            [fieldName]="formFields.ExtraVisitDuration"
+            [isUnset]="isUnset(formFields.ExtraVisitDuration)"
+            (unsetEvent)="onUnsetChange($event)"
+            [showText]="true">
+          </app-bulk-edit-unset>
+        </header>
+        <app-extra-visit-duration-form
+          class="padded-form-field"
+          formArrayName="extraVisitDurationForVisitType"
+          [appearance]="appearance"
+          [disabled]="disabled"
+          [visitTypeOptions]="visitTypes">
+        </app-extra-visit-duration-form>
+      </div>
+
+      <div
+        class="break-rule mat-elevation-z1"
+        [formGroup]="breakRule"
+        [ngClass]="{
+          highlighted: bulkEdit && formGroupHasValue(breakRule),
+          unsethighlighted: isUnset(formFields.BreakRule)
+        }">
+        <header>
+          <div>
+            <span class="mat-h4">Break Rule</span>
+            <app-bulk-edit-unset
+              *ngIf="bulkEdit"
+              class="float-right"
+              matSuffix
+              [fieldName]="formFields.BreakRule"
+              [isUnset]="isUnset(formFields.BreakRule)"
+              (unsetEvent)="onUnsetChange($event)"
+              [showText]="true">
+            </app-bulk-edit-unset>
+          </div>
+        </header>
+        <div class="break-request">
+          <header>
+            <div><span class="mat-h4">Break Requests</span> ({{ breakRequests.length }})</div>
+            <button
+              type="button"
+              mat-button
+              color="primary"
+              (click)="addBreakRequest()"
+              [disabled]="disabled">
+              Add break request
+            </button>
+          </header>
+          <ng-container *ngFor="let control of breakRequests.controls; index as i">
+            <app-break-request-form
+              [formGroup]="control"
+              (remove)="removeBreakRequest(i)"></app-break-request-form>
+          </ng-container>
+        </div>
+        <div class="frequency-constraint">
+          <header>
+            <div>
+              <span class="mat-h4">Frequency Constraints</span> ({{ frequencyConstraints.length }})
+            </div>
+            <button
+              type="button"
+              mat-button
+              color="primary"
+              (click)="addFrequencyConstraint()"
+              [disabled]="disabled">
+              Add frequency constraint
+            </button>
+          </header>
+          <ng-container *ngFor="let control of frequencyConstraints.controls; index as i">
+            <app-frequency-constraint-form
+              [formGroup]="control"
+              (remove)="removeFrequencyConstraint(i)">
+            </app-frequency-constraint-form>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </div>
+  <ng-template [cdkPortalOutlet]="mapPortal"></ng-template>
+</div>
+<div mat-dialog-actions>
+  <a
+    class="secondary-link mr-4"
+    tabindex="0"
+    (click)="cancel.emit()"
+    (keydown.enter)="cancel.emit()"
+    (keydown.space)="cancel.emit()"
+    >Cancel</a
+  >
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    (click)="onSave()"
+    [disabled]="invalid || disabled">
+    {{ bulkEdit ? 'Overwrite' : 'Save' }}
+  </button>
+</div>

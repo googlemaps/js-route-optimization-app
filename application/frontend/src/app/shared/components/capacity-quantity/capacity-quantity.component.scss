@@ -1,0 +1,22 @@
+app-capacity-quantity {
+  .wrapper {
+    display: flex;
+  }
+
+  input {
+    flex: auto;
+    flex-basis: 0;
+    flex-grow: 3;
+  }
+
+  .unit-field {
+    flex: auto;
+    margin-left: 4px;
+  }
+}
+
+.mat-form-field-type-app-capacity-quantity
+  app-capacity-quantity.selectable-unit:not(.floating)
+  ~ .mat-form-field-label-wrapper {
+  width: calc(66% - 20px);
+}

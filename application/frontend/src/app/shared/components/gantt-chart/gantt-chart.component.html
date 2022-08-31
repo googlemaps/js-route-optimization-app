@@ -1,0 +1,53 @@
+<section>
+  <cdk-virtual-scroll-viewport [itemSize]="64">
+    <div #collection class="collection collection-container">
+      <ng-container *ngIf="inverseTranslation as top">
+        <div class="attribute row column header" [style.top]="top" #rowColumnHeader>
+          <ng-container *ngTemplateOutlet="rowColumnHeaderTemplate"></ng-container>
+        </div>
+        <div class="attribute-container column-header-container" [style.top]="top">
+          <div class="attribute column header" *ngFor="let column of columns; last as l">
+            <ng-container
+              *ngTemplateOutlet="columnHeaderTemplate; context: { $implicit: column, last: l }">
+            </ng-container>
+          </div>
+        </div>
+        <div *ngIf="hasMarker" class="marker-handle-container" [style.top]="top">
+          <div class="relative-position-container">
+            <div
+              #markerHandle
+              class="marker-handle"
+              [style.bottom.px]="-markerHandle.clientHeight / 2"
+              [style.left]="getMarkerElementLeft(markerHandle)"></div>
+          </div>
+        </div>
+        <div
+          class="column-headers-overlay-container"
+          [style.top]="top"
+          [style.width.px]="viewPortWidth"
+          #headerOverlay>
+          <div class="column-headers-overlay">
+            <ng-container *ngTemplateOutlet="columnHeadersOverlayTemplate"></ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <div class="body-container">
+        <div *cdkVirtualFor="let item of value; trackBy: trackBy">
+          <ng-container
+            *ngTemplateOutlet="rowTemplate; context: { $implicit: item }"></ng-container>
+        </div>
+      </div>
+      <div class="attribute-container rule-container">
+        <div class="attribute column rule" *ngFor="let column of columns"></div>
+      </div>
+      <div *ngIf="hasMarker" class="marker-line-container">
+        <div class="relative-position-container">
+          <div
+            #markerLine
+            class="marker-line"
+            [style.left]="getMarkerElementLeft(markerLine)"></div>
+        </div>
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</section>

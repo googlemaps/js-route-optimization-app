@@ -1,0 +1,655 @@
+{
+  "timeout": "2s",
+  "model": {
+    "shipments": [
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878454159723745,
+                  "longitude": 2.330904891015635
+                }
+              }
+            },
+            "tags": [
+              "Visit Tag1",
+              "Visit Tag2"
+            ],
+            "timeWindows": [
+              {
+                "endTime": "2022-06-01T14:00:00.000Z"
+              }
+            ],
+            "duration": "3600s",
+            "cost": 0.25,
+            "visitTypes": [
+              "Visit Type1"
+            ],
+            "label": "Pickup Request 1"
+          },
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878454159723745,
+                  "longitude": 2.330904891015635
+                }
+              }
+            },
+            "tags": [
+              "Visit Tag1",
+              "Visit Tag3"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-06-02T13:00:00.000Z",
+                "endTime": "2022-06-02T14:00:00.000Z",
+                "softStartTime": "2022-06-02T13:15:00.000Z",
+                "softEndTime": "2022-06-02T14:00:00.000Z",
+                "costPerHourBeforeSoftStartTime": 0.25,
+                "costPerHourAfterSoftEndTime": 0
+              }
+            ],
+            "duration": "3315s",
+            "cost": 0.15,
+            "visitTypes": [
+              "Visit Type1"
+            ],
+            "label": "Pickup Request 2",
+            "loadDemands": {
+              "weight_kilograms": {
+                "amount": "100"
+              },
+              "volume_liters": {
+                "amount": "10"
+              },
+              "number_of_boxes": {
+                "amount": 1
+              }
+            }
+          }
+        ],
+        "allowedVehicleIndices": [
+          0,
+          1
+        ],
+        "shipmentType": "Shipment Type1",
+        "label": "Shipment Label 1",
+        "loadDemands": {
+          "weight_kilograms": {
+            "amount": "100"
+          },
+          "volume_liters": {
+            "amount": "20"
+          }
+        }
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.859549,
+                  "longitude": 2.293709
+                }
+              }
+            },
+            "duration": "7200s",
+            "label": "Pickup Request 3"
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.867217,
+                  "longitude": 2.329175
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-06-02T09:00:00.000Z"
+              }
+            ],
+            "duration": "3600s",
+            "label": "Delivery Request 3",
+            "loadDemands": {
+              "number_of_pallets": {
+                "amount": "200"
+              }
+            }
+          }
+        ],
+        "shipmentType": "Shipment Type 2",
+        "label": "Shipment Label 2",
+        "loadDemands": {
+          "weight_kilograms": {
+            "amount": "100"
+          },
+          "volume_liters": {
+            "amount": "30"
+          },
+          "number_of_pallets": {
+            "amount": "10"
+          }
+        }
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.860226,
+                  "longitude": 2.340444
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "endTime": "2022-06-01T13:00:00.000Z"
+              },
+              {
+                "startTime": "2022-06-01T14:00:00.000Z"
+              }
+            ],
+            "duration": "2700s"
+          }
+        ],
+        "shipmentType": "Frozen Foods",
+        "label": "Shipment Label 3",
+        "loadDemands": {
+          "weight_kilograms": {
+            "amount": "200"
+          },
+          "volume_liters": {
+            "amount": "15"
+          }
+        }
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.873961,
+                  "longitude": 2.294201
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "endTime": "2022-06-01T14:00:00.000Z",
+                "softEndTime": "2022-06-01T11:00:00.000Z",
+                "costPerHourAfterSoftEndTime": 20
+              }
+            ],
+            "duration": "3600s"
+          }
+        ],
+        "shipmentType": "Furniture",
+        "label": "Shipment Label 4",
+        "loadDemands": {
+          "weight_kilograms": {
+            "amount": "100"
+          },
+          "volume_liters": {
+            "amount": "5"
+          }
+        }
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.858427,
+                  "longitude": 2.312758
+                }
+              }
+            },
+            "duration": "1800s"
+          }
+        ],
+        "shipmentType": "Medical  Lab Samples",
+        "label": "Shipment Label5",
+        "loadDemands": {
+          "weight_kilograms": {
+            "amount": "100"
+          },
+          "volume_liters": {
+            "amount": "25"
+          }
+        }
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86636449299355,
+                  "longitude": 2.3389522707285604
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-06-02T22:00:00.000Z",
+                "softStartTime": "2022-06-03T01:00:00.000Z",
+                "costPerHourBeforeSoftStartTime": 0.5
+              }
+            ],
+            "duration": "7250s",
+            "label": "Pickup Alternative 7"
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8673490227949,
+                  "longitude": 2.3389737284006795
+                }
+              }
+            },
+            "tags": [
+              "Visit Tag1",
+              "Visit Tag2",
+              "Visit Tag3",
+              "Visit Tag4"
+            ],
+            "duration": "5430s",
+            "cost": 1.75,
+            "visitTypes": [
+              "Visit Type1",
+              "Visit Type2"
+            ],
+            "label": "Delivery Alternative 6"
+          }
+        ],
+        "penaltyCost": 3.45,
+        "costsPerVehicle": [
+          3,
+          0.9
+        ],
+        "costsPerVehicleIndices": [
+          0,
+          1
+        ],
+        "pickupToDeliveryRelativeDetourLimit": 15,
+        "pickupToDeliveryAbsoluteDetourLimit": "900s",
+        "pickupToDeliveryTimeLimit": "600s",
+        "shipmentType": "Shipment Type1",
+        "label": "Shipment Label 6",
+        "loadDemands": {
+          "weight_kilograms": {
+            "amount": "45"
+          },
+          "volume_liters": {
+            "amount": "10"
+          },
+          "number_of_pallets": {
+            "amount": "10"
+          }
+        }
+      }
+    ],
+    "vehicles": [
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.883332,
+              "longitude": 2.369089
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.883332,
+              "longitude": 2.369089
+            }
+          }
+        },
+        "startTags": [
+          "Visit Tag1",
+          "Visit Tag2",
+          "New Visit Tag"
+        ],
+        "endTags": [
+          "Visit Tag1"
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": "2022-06-01T09:50:00.000Z",
+            "endTime": "2022-06-01T11:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2022-06-01T15:23:00.000Z",
+            "endTime": "2022-06-01T16:33:00.000Z"
+          }
+        ],
+        "unloadingPolicy": 1,
+        "costPerHour": 30,
+        "costPerKilometer": 0.2,
+        "usedIfRouteIsEmpty": true,
+        "routeDurationLimit": {
+          "maxDuration": "16800s",
+          "softMaxDuration": "9600s",
+          "costPerHourAfterSoftMax": 0.56,
+          "quadraticSoftMaxDuration": "11450s",
+          "costPerSquareHourAfterQuadraticSoftMax": 0.67
+        },
+        "travelDurationLimit": {
+          "maxDuration": "18050s",
+          "softMaxDuration": "11400s",
+          "costPerHourAfterSoftMax": 3.75,
+          "quadraticSoftMaxDuration": "15000s",
+          "costPerSquareHourAfterQuadraticSoftMax": 0.54
+        },
+        "routeDistanceLimit": {
+          "maxMeters": "100000",
+          "softMaxMeters": "90000",
+          "costPerKilometerAboveSoftMax": 1.45
+        },
+        "breakRule": {
+          "breakRequests": [
+            {
+              "earliestStartTime": "2022-06-01T11:00:00.000Z",
+              "latestStartTime": "2022-06-01T13:00:00.000Z",
+              "minDuration": "2700s"
+            }
+          ]
+        },
+        "requiredOperatorTypes": [
+          "Operator Type 1"
+        ],
+        "label": "Vehicle Label 1,Vehicle Label 1.0",
+        "loadLimits": {
+          "weight_kilograms": {
+            "maxLoad": "400",
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          },
+          "volume_liters": {
+            "maxLoad": "50",
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.883332,
+              "longitude": 2.369089
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.883332,
+              "longitude": 2.369089
+            }
+          }
+        },
+        "costPerHour": 30,
+        "costPerKilometer": 0.2,
+        "fixedCost": 50,
+        "usedIfRouteIsEmpty": true,
+        "travelDurationLimit": {},
+        "label": "Vehicle Label 2",
+        "loadLimits": {
+          "weight_kilograms": {
+            "maxLoad": "400",
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          },
+          "volume_liters": {
+            "maxLoad": "50",
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.886234793886246,
+              "longitude": 2.315263000709029
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.82117617208692,
+              "longitude": 2.356461731177779
+            },
+            "heading": 45
+          },
+          "sideOfRoad": true
+        },
+        "startTags": [
+          "Visit Tag1",
+          "Visit Tag2"
+        ],
+        "endTags": [
+          "New Visit Tag",
+          "New Visit Tag1"
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": "2022-06-01T10:20:00.000Z",
+            "endTime": "2022-06-03T16:33:00.000Z",
+            "softStartTime": "2022-06-01T15:25:00.000Z",
+            "softEndTime": "2022-06-03T16:32:00.000Z",
+            "costPerHourBeforeSoftStartTime": 1.85,
+            "costPerHourAfterSoftEndTime": 2.85
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2022-06-01T10:45:00.000Z",
+            "endTime": "2022-06-01T19:45:00.000Z"
+          }
+        ],
+        "travelDurationMultiple": 1,
+        "unloadingPolicy": 0,
+        "costPerHour": 0.08,
+        "costPerTraveledHour": 0.09,
+        "costPerKilometer": 0.14,
+        "fixedCost": 0.1,
+        "travelDurationLimit": {
+          "maxDuration": "192000s",
+          "softMaxDuration": "180000s",
+          "costPerHourAfterSoftMax": 0.15,
+          "quadraticSoftMaxDuration": "186030s",
+          "costPerSquareHourAfterQuadraticSoftMax": 0.25
+        },
+        "extraVisitDurationForVisitType": {
+          "Visit Type4": "1202s",
+          "Visit Type3": "601s"
+        },
+        "breakRule": {
+          "breakRequests": [
+            {
+              "earliestStartTime": "2022-06-02T11:00:00.000Z",
+              "latestStartTime": "2022-06-02T11:45:00.000Z",
+              "minDuration": "2700s"
+            }
+          ],
+          "frequencyConstraints": [
+            {
+              "minBreakDuration": "1800s",
+              "maxInterBreakDuration": "5400s"
+            },
+            {
+              "minBreakDuration": "2730s",
+              "maxInterBreakDuration": "5425s"
+            }
+          ]
+        },
+        "label": "Vehicle Label 3",
+        "loadLimits": {
+          "weight_kilograms": {
+            "maxLoad": "5000",
+            "startLoadInterval": {
+              "min": "10",
+              "max": "12"
+            },
+            "endLoadInterval": {
+              "min": "11",
+              "max": "12"
+            }
+          },
+          "volume_liters": {
+            "maxLoad": "2000",
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          },
+          "number_of_boxes": {
+            "maxLoad": "100",
+            "softMaxLoad": "50",
+            "costPerUnitAboveSoftMax": 20
+          }
+        }
+      }
+    ],
+    "vehicleOperators": [
+      {
+        "startTimeWindows": [
+          {
+            "startTime": "2022-06-01T10:18:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {}
+        ],
+        "type": "Operator Type 1",
+        "label": "Operator 1"
+      },
+      {
+        "startTimeWindows": [
+          {
+            "startTime": "2022-06-01T13:00:00.000Z",
+            "endTime": "2022-06-02T21:04:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2022-06-01T12:00:00.000Z",
+            "endTime": "2022-06-03T20:45:00.000Z"
+          }
+        ],
+        "type": "Heavy Weight Vehicle Operator",
+        "label": "Operator 2"
+      }
+    ],
+    "maxActiveVehicles": 10,
+    "globalStartTime": "2022-06-01T09:00:00.000Z",
+    "globalEndTime": "2022-06-04T01:00:00.000Z",
+    "globalDurationCostPerHour": 2.4,
+    "transitionAttributes": [
+      {
+        "srcTag": "Visit Tag1",
+        "excludedSrcTag": "",
+        "dstTag": "Visit Tag2",
+        "excludedDstTag": "",
+        "cost": 1.5,
+        "costPerKilometer": 2.3,
+        "distanceLimit": {
+          "softMaxMeters": "25",
+          "costPerKilometerAboveSoftMax": 2.3
+        },
+        "delay": "920s"
+      },
+      {
+        "srcTag": "",
+        "excludedSrcTag": "Visit Tag1",
+        "dstTag": "",
+        "excludedDstTag": "Visit Tag2",
+        "cost": 5,
+        "costPerKilometer": 3.1,
+        "distanceLimit": {
+          "softMaxMeters": "100",
+          "costPerKilometerAboveSoftMax": 5
+        },
+        "delay": "60s"
+      }
+    ],
+    "shipmentTypeIncompatibilities": [
+      {
+        "types": [
+          "Shipment Type1",
+          "Medical  Lab Samples"
+        ],
+        "incompatibilityMode": 1
+      },
+      {
+        "types": [
+          "Shipment Type 2",
+          "Furniture"
+        ],
+        "incompatibilityMode": 2
+      }
+    ],
+    "shipmentTypeRequirements": [
+      {
+        "requiredShipmentTypeAlternatives": [
+          "Shipment Type 2"
+        ],
+        "dependentShipmentTypes": [
+          "Shipment Type1"
+        ],
+        "requirementMode": 1
+      },
+      {
+        "requiredShipmentTypeAlternatives": [
+          "Furniture"
+        ],
+        "dependentShipmentTypes": [
+          "Frozen Foods"
+        ],
+        "requirementMode": 2
+      }
+    ],
+    "precedenceRules": [
+      {
+        "firstIndex": 0,
+        "secondIndex": 1,
+        "offsetDuration": "2s",
+        "firstIsDelivery": false
+      },
+      {
+        "firstIndex": 2,
+        "secondIndex": 4,
+        "secondIsDelivery": true
+      }
+    ]
+  },
+  "searchMode": 2,
+  "interpretInjectedSolutionsUsingLabels": false,
+  "considerRoadTraffic": false,
+  "populatePolylines": false,
+  "populateTransitionPolylines": true,
+  "allowLargeDeadlineDespiteInterruptionRisk": true,
+  "label": "Global Settings Label"
+}

@@ -1,0 +1,25 @@
+<app-table-control-bar
+  [filters]="filters$ | async"
+  (editFilter)="onEditFilter($event)"
+  (removeFilter)="onRemoveFilter($event)"
+  [displayColumns]="displayColumns$ | async"
+  (displayColumnChange)="onDisplayColumnChange($event)">
+  <mat-select (selectionChange)="onSelectionChange($event.value)" [value]="page$ | async">
+    <mat-select-trigger>
+      <mat-icon svgIcon="vehicles_nav" *ngIf="(page$ | async) === Page.RoutesMetadata"></mat-icon>
+      <mat-icon svgIcon="shipments_nav" *ngIf="(page$ | async) !== Page.RoutesMetadata"></mat-icon>
+      {{ (page$ | async) === Page.RoutesMetadata ? 'Metrics per route' : 'Metrics per shipment' }}
+    </mat-select-trigger>
+    <mat-option [value]="Page.RoutesMetadata">
+      <mat-icon svgIcon="vehicles_nav"></mat-icon> Metrics per route
+    </mat-option>
+    <mat-option [value]="Page.ShipmentsMetadata">
+      <mat-icon svgIcon="shipments_nav"></mat-icon> Metrics per shipment
+    </mat-option>
+  </mat-select>
+  <app-filter-menu
+    [filters]="filters$ | async"
+    [filterOptions]="filterOptions$ | async"
+    (addFilter)="onAddFilter($event)">
+  </app-filter-menu>
+</app-table-control-bar>

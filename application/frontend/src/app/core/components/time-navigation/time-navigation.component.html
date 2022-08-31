@@ -1,0 +1,23 @@
+<button
+  *ngIf="nowRangeOffset != null"
+  class="now"
+  type="button"
+  mat-stroked-button
+  (click)="onNowClick()">
+  Today
+</button>
+<button
+  type="button"
+  mat-stroked-button
+  (click)="onPreviousClick()"
+  [disabled]="previousRangeOffset == null">
+  <mat-icon svgIcon="navigate_before" [attr.title]="'Previous ' + range?.label"></mat-icon>
+</button>
+<label>{{ getFormattedRangeOffset() }}</label>
+<button
+  type="button"
+  mat-stroked-button
+  (click)="onNextClick()"
+  [disabled]="nextRangeOffset == null">
+  <mat-icon svgIcon="navigate_next" [attr.title]="'Next ' + range?.label"></mat-icon>
+</button>

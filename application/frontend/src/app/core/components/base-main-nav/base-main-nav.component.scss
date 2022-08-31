@@ -1,0 +1,94 @@
+@import '../../../../styles/variables.scss';
+
+.nav-container {
+  position: relative;
+  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  color: rgba(0, 0, 0, 0.87);
+  .border {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border: 1px solid#757575;
+    border-image: linear-gradient(
+      to bottom,
+      rgba(#757575, 0) 14%,
+      rgba(#757575, 1) 14%,
+      rgba(#757575, 1) 92%,
+      rgba(#757575, 0) 92%
+    );
+    border-image-slice: 0 0 0 1;
+  }
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  svg {
+    position: relative;
+    left: -11.5px;
+    z-index: 100;
+  }
+
+  &.nav-scenario {
+    margin-top: 1rem;
+    padding: 0;
+  }
+}
+
+.nav-solution.warning svg path:first-of-type {
+  fill: $yellow;
+}
+
+.nav-generate {
+  padding: 1rem 0 1rem 34px;
+}
+
+.nav-message {
+  padding-left: 0.5rem;
+  width: 10rem;
+}
+
+.nav-subitem .nav-subtitle svg {
+  padding-left: 0.5rem;
+  vertical-align: middle;
+  position: relative;
+  top: -3px;
+}
+
+.nav-page-button {
+  button {
+    padding: 0.5rem 0;
+    width: 100%;
+    text-align: left;
+    border-radius: 0 26px 26px 0;
+
+    &.selected {
+      background-color: #e8f0fd;
+      color: $blue-dark;
+
+      .nav-subtitle svg,
+      svg.nav-subitem-bullet {
+        path,
+        g path,
+        circle {
+          fill: $blue-dark;
+        }
+      }
+    }
+  }
+}
+
+.warning-label {
+  display: inline-block;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  margin: 0.125rem 0;
+  margin-left: 0.25rem;
+  line-height: 1;
+  background-color: #feefe3 !important;
+  color: $darker !important;
+}

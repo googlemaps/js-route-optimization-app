@@ -1,0 +1,6 @@
+<app-base-vehicle-info-window
+  [vehicle]="vehicle$ | async"
+  [shipmentCount]="shipmentCount$ | async"
+  [navigation]="true"
+  (vehicleClick)="onVehicleClick($event)">
+</app-base-vehicle-info-window>

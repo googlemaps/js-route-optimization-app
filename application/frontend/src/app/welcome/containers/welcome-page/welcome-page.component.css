@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  text-align: center;
+}
+
+.page-content {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+svg {
+  max-height: 500px;
+}
+
+section .mat-title {
+  display: inline-block;
+  margin: 0;
+}
+
+section {
+  margin-bottom: 28px;
+}
+
+section:last-child {
+  margin-bottom: 0;
+}
+
+.intro {
+  margin-top: 8px;
+}
+
+.intro > :last-child {
+  margin-bottom: 0;
+}
+
+.guide {
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.info-panel {
+  margin: 12px;
+}
+
+.info-panel__content > * {
+  text-align: center;
+}
+
+.info-panel__content > :last-child {
+  margin-bottom: 0 !important;
+}
+
+.entry-points {
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.entry-points > .col {
+  display: flex;
+}
+
+.entry-points button {
+  margin: 16px 8px 0;
+  flex-shrink: 0;
+}
+
+.cloud-invisible {
+  visibility: hidden;
+}
+
+.cloud-visible {
+  visibility: visible;
+}
+
+@media only screen and (max-width: 1024px) {
+  .intro,
+  .guide {
+    margin-bottom: 0;
+  }
+
+  .intro .mat-title,
+  .intro p {
+    margin-bottom: 4px;
+  }
+
+  .metric svg {
+    margin-right: 10px;
+  }
+
+  .entry-points button {
+    margin-top: 8px;
+  }
+}
+
+#page-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

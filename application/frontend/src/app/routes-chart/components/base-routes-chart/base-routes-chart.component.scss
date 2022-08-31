@@ -1,0 +1,118 @@
+@import '../../../../styles/variables.scss';
+
+app-base-routes-chart {
+  position: relative;
+  border-bottom: 1px solid $blue-lighter;
+  --row-header-width: 195px;
+  --min-column-width: 200px;
+  --body-row-height: auto;
+
+  .body app-points-of-interest > .clusters {
+    position: absolute;
+    top: 11px;
+  }
+
+  app-routes-row-column-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .column-header-container,
+  .marker-handle-container,
+  .marker-line-container,
+  .rule-column-header-container,
+  .rule-container {
+    /** padding consistent with the timeline/POI offset */
+    padding: 0 7px;
+  }
+
+  .relative-position-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  .column-header-container,
+  .row {
+    border-bottom: 1px solid $blue-lighter;
+  }
+
+  .row.header {
+    width: var(--row-header-width);
+    border-right: 1px solid $blue-lighter;
+    padding: 8px 16px;
+    .mat-checkbox {
+      margin-right: 16px;
+    }
+  }
+
+  .column-headers-overlay-container .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: var(--row-header-width);
+    .navigation__button {
+      height: 35px;
+      margin: 1px 0;
+      background-color: white;
+      pointer-events: auto;
+      &:first-of-type {
+        padding-left: 2px;
+      }
+      &:last-of-type {
+        padding-right: 2px;
+      }
+      .mat-icon-button {
+        margin-top: -3px;
+      }
+    }
+  }
+
+  .column-header-container .column,
+  .rule {
+    border-right: 1px solid $blue-lighter;
+    min-width: var(--min-column-width);
+    &:last-of-type {
+      border-right: 0;
+    }
+  }
+
+  .column.header:last-of-type {
+    position: relative;
+    button.mat-button-base {
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .marker-handle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .marker-line {
+    width: 2px;
+  }
+
+  .marker-line,
+  .marker-handle {
+    background-color: $red-light;
+  }
+
+  .columns-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /** Fix Safari */
+  app-gantt-chart {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}

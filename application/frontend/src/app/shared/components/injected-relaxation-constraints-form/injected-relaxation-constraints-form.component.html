@@ -1,0 +1,57 @@
+<div
+  *ngFor="let constraint of control?.controls | slice: 0:maxToShow; let i = index"
+  [formGroup]="constraint"
+  class="relaxation-group">
+  <mat-error *ngIf="constraint.errors"> Time must be within the global window </mat-error>
+  <mat-form-field [appearance]="appearance" class="item-md pad-right no-bottom-pad">
+    <mat-label>Relaxation level</mat-label>
+    <mat-select formControlName="level" (selectionChange)="inputChange.emit()">
+      <mat-option>No relaxation</mat-option>
+      <mat-option *ngFor="let key of relaxationLevelKeys" [value]="RelaxationLevel[key]">
+        {{ RelaxationLevelNames[key] }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="constraint.get('level').errors"> Must specify relaxation level </mat-error>
+  </mat-form-field>
+  <mat-form-field [appearance]="appearance" class="item-sm pad-right no-bottom-pad">
+    <mat-label>Relax from</mat-label>
+    <input
+      matInput
+      [matDatepicker]="relaxationDatePicker"
+      formControlName="date"
+      (dateChange)="inputChange.emit()" />
+    <mat-datepicker-toggle matSuffix [for]="relaxationDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #relaxationDatePicker></mat-datepicker>
+    <mat-error *ngIf="constraint.getError('required', 'date')"> Date is required </mat-error>
+  </mat-form-field>
+  <mat-form-field [appearance]="appearance" class="item-sm pad-right no-bottom-pad">
+    <input
+      matInput
+      type="time"
+      formControlName="time"
+      (blur)="inputChange.emit()"
+      #relaxationTimePicker />
+    <mat-error *ngIf="constraint.getError('timeString', 'time')" [attr.title]="message.innerText">
+      <span #message>Invalid format</span>
+    </mat-error>
+    <mat-error
+      *ngIf="!constraint.getError('timeString', 'time') && constraint.getError('required', 'time')">
+      Time is required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field [appearance]="appearance" class="item-sm no-bottom-pad">
+    <mat-label>Relax at number of visits</mat-label>
+    <input matInput type="number" formControlName="numberOfVisits" (blur)="inputChange.emit()" />
+    <mat-error *ngIf="constraint.get('numberOfVisits').invalid">
+      Non-negative integer required
+    </mat-error>
+  </mat-form-field>
+  <button
+    type="button"
+    class="clear-place"
+    (click)="removeThreshold.emit(i)"
+    mat-icon-button
+    title="Remove relaxation">
+    <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+  </button>
+</div>

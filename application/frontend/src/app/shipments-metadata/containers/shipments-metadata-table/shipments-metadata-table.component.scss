@@ -1,0 +1,27 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.table-container {
+  position: relative;
+  flex: auto;
+  overflow: auto;
+}
+
+app-base-shipments-metadata-table {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid $blue-lighter;
+}
+
+.footer-container {
+  display: flex;
+  white-space: nowrap;
+}

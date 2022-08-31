@@ -1,0 +1,49 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+app-pre-solve-control-bar,
+app-post-solve-control-bar {
+  background-color: $blue-lightest;
+}
+
+main {
+  display: flex;
+  flex-grow: 1;
+}
+
+.map-hidden {
+  width: 0;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+.page-wrapper {
+  flex: auto;
+}
+
+app-map {
+  overflow: auto;
+}
+
+.page-wrapper,
+app-map {
+  box-sizing: border-box;
+}
+
+.page-wrapper {
+  position: relative;
+}
+
+.page {
+  overflow: visible;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

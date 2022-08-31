@@ -1,0 +1,65 @@
+<ng-container [formGroup]="parentFormGroup">
+  <div [ngClass]="{ unsethighlighted: isUnset }">
+    <mat-form-field class="item-sm padded-form-field pad-right" [appearance]="appearance">
+      <mat-label>{{ labelName }}</mat-label>
+      <input
+        matInput
+        type="number"
+        min="0"
+        formControlName="min"
+        [errorStateMatcher]="errorStateMatcher" />
+      <span title="minutes" matSuffix>min</span>
+      <mat-error
+        *ngIf="
+          parentFormGroup.controls.min?.errors &&
+          (parentFormGroup.controls.min?.touched || parentFormGroup.controls.min?.dirty)
+        "
+        [attr.title]="errorMessageMin.innerText">
+        <span #errorMessageMin>Non-negative number required</span>
+      </mat-error>
+      <mat-error
+        *ngIf="
+          parentFormGroup.errors?.requireAny &&
+          (parentFormGroup.controls.min?.touched ||
+            parentFormGroup.controls.min?.dirty ||
+            parentFormGroup.controls.sec?.touched ||
+            parentFormGroup.controls.sec?.dirty)
+        "
+        [attr.title]="errorMessageRequired.innerText">
+        <span #errorMessageRequired>Duration is required</span>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="item-sm padded-form-field" [appearance]="appearance">
+      <input
+        matInput
+        type="number"
+        min="0"
+        max="59"
+        formControlName="sec"
+        [errorStateMatcher]="errorStateMatcher" />
+      <span title="seconds" matSuffix>sec</span>
+      <mat-error
+        *ngIf="
+          parentFormGroup.controls.sec?.errors?.min &&
+          (parentFormGroup.controls.sec?.touched || parentFormGroup.controls.sec?.dirty)
+        "
+        [attr.title]="errorMessageSecMin.innerText">
+        <span #errorMessageSecMin>Non-negative number required</span>
+      </mat-error>
+      <mat-error
+        *ngIf="
+          parentFormGroup.controls.sec?.errors?.max &&
+          (parentFormGroup.controls.sec?.touched || parentFormGroup.controls.sec?.dirty)
+        "
+        [attr.title]="errorMessageSecMax.innerText">
+        <span #errorMessageSecMax>Cannot exceed 59 seconds</span>
+      </mat-error>
+    </mat-form-field>
+    <app-bulk-edit-unset
+      *ngIf="showUnset"
+      [fieldName]="fieldName"
+      [isUnset]="isUnset"
+      (unsetEvent)="onUnsetChange($event)">
+    </app-bulk-edit-unset>
+  </div>
+</ng-container>

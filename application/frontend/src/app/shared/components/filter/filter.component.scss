@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  max-width: 100%;
+  min-height: 180px;
+  min-width: 160px;
+  overflow: auto;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.actions {
+  display: flex;
+  align-items: flex-end;
+  align-self: flex-end;
+  flex: auto;
+}
+
+.content,
+.actions {
+  padding: 1rem;
+}

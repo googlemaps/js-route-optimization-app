@@ -1,0 +1,12 @@
+<app-base-post-solve-metrics
+  [numberOfRoutes]="numberOfRoutes$ | async"
+  [solveTime]="solutionTime$ | async"
+  [totalCost]="totalCost$ | async"
+  [totalDistance]="totalDistance$ | async"
+  [skippedShipmentsCount]="skippedShipmentsCount$ | async"
+  [shipmentsCount]="shipmentsCount$ | async"
+  [duration]="duration$ | async"
+  [timezoneOffset]="timezoneOffset$ | async"
+  [vehicleTimeAverages]="vehicleTimeAverages$ | async"
+  (skippedShipmentsClick)="onSkippedShipmentsClick()">
+</app-base-post-solve-metrics>

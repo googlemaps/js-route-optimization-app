@@ -1,0 +1,175 @@
+@import '../../../../styles/variables.scss';
+
+app-base-edit-vehicle-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .mat-dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+  }
+
+  .float-right {
+    float: right;
+  }
+
+  .unsethighlighted {
+    background-color: #fae6e6 !important;
+  }
+
+  .bulk-unset {
+    color: red;
+  }
+
+  .float-right {
+    float: right;
+  }
+
+  .unsethighlighted {
+    background-color: #fae6e6 !important;
+  }
+
+  .vehicle-label-editor {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    max-width: 15rem;
+  }
+
+  .mat-dialog-content {
+    display: flex;
+    flex: auto;
+    max-height: initial;
+  }
+
+  .padded-form-field {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .location-autocomplete {
+    padding-left: 0;
+  }
+
+  .autocomplete {
+    mat-form-field {
+      padding-right: 0;
+    }
+
+    margin-right: 2rem;
+  }
+
+  .form-wrapper {
+    flex: auto;
+    overflow: auto;
+    max-width: calc(100% - #{$edit-menu-map-width});
+    padding: 0 1rem;
+  }
+
+  app-form-map {
+    width: $edit-menu-map-width;
+  }
+
+  .time-window-divider {
+    margin: 0.5rem 0;
+  }
+
+  .time-windows > header {
+    align-items: flex-start;
+  }
+
+  .time-windows > mat-expansion-panel,
+  app-time-window {
+    margin-left: 1rem;
+    width: 100%;
+  }
+
+  .break-rule > header {
+    align-items: flex-start;
+  }
+
+  .break-request {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .break-request > header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .frequency-constraint {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .frequency-constraint > header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .break-rule > app-break-request-form {
+    margin-left: 1rem;
+    width: 100%;
+  }
+
+  .break-rule {
+    padding: 1rem;
+
+    mat-form-field {
+      padding: 1rem 1rem 0 0 !important;
+    }
+
+    &.mat-elevation-z1 {
+      padding: 1rem;
+      margin: 1rem 0;
+      background-color: rgba(0, 0, 0, 0.015);
+    }
+  }
+
+  .edit-menu-content {
+    &.mat-elevation-z1 {
+      padding: 1rem;
+      margin: 1rem 0;
+      background-color: rgba(0, 0, 0, 0.015);
+    }
+
+    h3,
+    h4 {
+      margin: 0;
+      width: 100%;
+    }
+
+    mat-form-field {
+      padding-top: 0;
+    }
+
+    > header {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  app-injected-relaxation-constraints-form {
+    width: 100%;
+  }
+
+  .route-empty-label {
+    padding-right: 1rem;
+  }
+
+  .waypoint-heading {
+    max-width: 64px;
+    padding-right: 1rem !important;
+  }
+
+  .unused-vehicle-operator-warning {
+    color: $orange;
+  }
+}

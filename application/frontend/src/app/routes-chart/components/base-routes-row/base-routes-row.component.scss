@@ -1,0 +1,75 @@
+@import '../../../../styles/variables.scss';
+
+.underlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.row {
+  height: var(--body-row-height); /** defined by base-routes-chart */
+}
+
+.row.header,
+.row.body {
+  display: flex;
+  align-items: center;
+}
+
+.row.header .mat-checkbox {
+  align-self: flex-start;
+  margin-top: 14px;
+}
+
+.row.body {
+  position: relative;
+}
+
+svg.axis {
+  display: block;
+  height: 100%;
+  width: 100%;
+  /** padding consistent with the timeline/POI offset */
+  padding: 0 7px;
+  line {
+    stroke: $blue-lighter;
+    stroke-width: 1px;
+    stroke-dasharray: 12 8;
+  }
+}
+
+app-timeline {
+  flex: auto;
+  margin: 0;
+  z-index: 1;
+}
+
+app-points-of-interest {
+  position: absolute;
+  top: calc(50% + 3px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.edit-button {
+  margin-left: auto;
+}
+
+.injected-solution-times {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /** padding consistent with the timeline/POI offset */
+  padding: 0 7px;
+
+  .marker-line {
+    background-color: $blue;
+  }
+}

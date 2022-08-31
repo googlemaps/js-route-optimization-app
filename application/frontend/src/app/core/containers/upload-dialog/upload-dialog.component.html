@@ -1,0 +1,106 @@
+<form [formGroup]="form" autocomplete="off" novalidate (ngSubmit)="solve()">
+  <h1 mat-dialog-title>Upload an existing scenario or solution</h1>
+  <div mat-dialog-content>
+    <p>
+      Have an existing vehicle routing problem you want to solve? You can upload a JSON description
+      of the problem to see the routes that Cloud Fleet Routing recommends, and then download the generated
+      routes if you wish.
+    </p>
+    <p>
+      You may also upload a zip file containing a scenario and its matching solution. In order to do
+      this, please adhere to the following requirements:
+    </p>
+    <ul>
+      <li>The zip file contains two files named <i>scenario.json</i> and <i>solution.json</i></li>
+      <li>The provided solution is for the provided scenario</li>
+    </ul>
+    <div class="file-input">
+      <div class="file-input__form-field">
+        <mat-form-field>
+          <input
+            matInput
+            [readonly]="true"
+            [formControl]="fileName"
+            (click)="selectFile()"
+            required />
+          <mat-error
+            *ngIf="
+              fileName.errors?.required && (fileName.touched || fileName.dirty) && !validatingUpload
+            ">
+            {{ (messages$ | async)?.formFileRequired || 'File is required' }}
+          </mat-error>
+          <mat-error *ngIf="fileName.errors?.zipContents && (fileName.touched || fileName.dirty)">
+            {{ 'Invalid zip contents' }}
+          </mat-error>
+          <mat-error *ngIf="fileName.errors?.fileFormat && (fileName.touched || fileName.dirty)">
+            {{ (messages$ | async)?.formInvalidFileFormat || 'Invalid file format' }}
+          </mat-error>
+          <mat-error *ngIf="fileName.errors?.requestFormat && (fileName.touched || fileName.dirty)">
+            {{ (messages$ | async)?.formInvalidRequestFormat || 'Invalid request format' }}
+          </mat-error>
+        </mat-form-field>
+        <button
+          type="button"
+          mat-raised-button
+          cdkFocusInitial
+          (click)="selectFile()"
+          [disabled]="validatingUpload">
+          Choose a File
+        </button>
+      </div>
+      <p *ngIf="validatingUpload" class="mat-small">Validating upload</p>
+      <!-- resolve place ids -->
+      <div
+        *ngIf="scenarioHasPlaceIds && placeIdProgress < placeIdCount"
+        class="d-flex flex-column mat-small">
+        <div *ngIf="!resolvingPlaceIds" class="d-flex flex-column align-items-center">
+          <p>
+            ⚠️ This scenario contains Place ID waypoints. Some features of the application require
+            lat/lng locations. Click the button below to request the lat/lng location of all Place
+            IDs in the scenario (it will take a few minutes). You may continue with just the Place
+            IDs, but some parts of the application may not work properly.
+          </p>
+          <button type="button" mat-stroked-button (click)="resolveWaypointPlaceIds()">
+            Get Place ID Locations
+          </button>
+        </div>
+
+        <div *ngIf="resolvingPlaceIds">
+          <mat-progress-bar [value]="(placeIdProgress / placeIdCount) * 100"></mat-progress-bar>
+          <mat-label
+            >Requesting Place ID locations... ({{ placeIdProgress | number }} of
+            {{ placeIdCount | number }})</mat-label
+          >
+        </div>
+
+        <mat-error *ngIf="placeIdError">
+          {{ placeIdError }}
+        </mat-error>
+      </div>
+      <!-- file input browser (not visible) -->
+      <input
+        #fileInput
+        type="file"
+        accept=".json,.zip"
+        (click)="fileUploadClicked($event)"
+        (change)="fileSelected($event)" />
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <a
+      class="secondary-link mr-4"
+      tabindex="0"
+      (click)="cancel()"
+      (keydown.enter)="cancel()"
+      (keydown.space)="cancel()"
+      >Cancel</a
+    >
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      [disabled]="form.invalid || validatingUpload || resolvingPlaceIds">
+      OK
+    </button>
+  </div>
+</form>

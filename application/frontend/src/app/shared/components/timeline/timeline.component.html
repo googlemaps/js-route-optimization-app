@@ -1,0 +1,76 @@
+<span class="text--gray" *ngIf="empty && emptyMessage">{{ emptyMessage }}</span>
+<app-points-of-interest
+  *ngIf="pointsOfInterest?.length"
+  [usableWidth]="usableWidth"
+  [maxOffset]="maxOffset"
+  [duration]="duration"
+  [pointsOfInterest]="pointsOfInterest"
+  [timezoneOffset]="timezoneOffset">
+</app-points-of-interest>
+<svg width="100%" height="14">
+  <line
+    *ngIf="axis"
+    class="axis"
+    [attr.x1]="maxOffset"
+    y1="50%"
+    [attr.x2]="usableWidth + maxOffset"
+    y2="50%" />
+  <g *ngIf="availabilityRange">
+    <title>Vehicle availability {{ getSegmentTitle(availability[0], availability[1]) }}</title>
+    <line
+      class="availability-padding"
+      [attr.x1]="availabilityRange[0]"
+      y1="50%"
+      [attr.x2]="availabilityRange[1]"
+      y2="50%" />
+    <line
+      class="availability"
+      [attr.x1]="availabilityRange[0]"
+      y1="50%"
+      [attr.x2]="availabilityRange[1]"
+      y2="50%" />
+  </g>
+  <line
+    [attr.x1]="segmentsBound[0]"
+    y1="50%"
+    [attr.x2]="segmentsBound[1]"
+    y2="50%"
+    stroke="white"
+    stroke-width="3" />
+  <g *ngFor="let s of segments">
+    <g *ngIf="lineAttributeLookup[s[0]] as attr">
+      <title>{{ attr.title + ' ' + s[3] }}</title>
+      <line
+        [attr.x1]="s[1]"
+        y1="50%"
+        [attr.x2]="s[2]"
+        y2="50%"
+        [ngClass]="attr.class"
+        [attr.stroke]="attr.stroke" />
+    </g>
+  </g>
+  <g *ngIf="scrubTimePoint">
+    <g *ngIf="scrubMask && usableWidth + maxOffset > scrubTimePoint">
+      <rect
+        class="scrub__mask"
+        [attr.x]="scrubTimePoint"
+        y="3.5"
+        [attr.width]="usableWidth + maxOffset - scrubTimePoint"
+        height="7" />
+    </g>
+    <rect
+      class="scrub__time"
+      [attr.x]="scrubTimePoint"
+      [attr.width]="scrubTimeWidth"
+      y="5%"
+      height="90%" />
+  </g>
+</svg>
+<app-time-label
+  *ngIf="timeLabel"
+  class="text--gray"
+  [usableWidth]="usableWidth"
+  [maxOffset]="maxOffset"
+  [duration]="duration"
+  [timezoneOffset]="timezoneOffset">
+</app-time-label>

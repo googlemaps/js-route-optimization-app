@@ -1,0 +1,19 @@
+.legend-container {
+  white-space: nowrap;
+
+  p {
+    margin: 0;
+
+    &.legend-timeline-container {
+      display: flex;
+    }
+  }
+
+  .margin-right {
+    margin-right: 1rem;
+  }
+
+  .percent-label {
+    display: inline;
+  }
+}

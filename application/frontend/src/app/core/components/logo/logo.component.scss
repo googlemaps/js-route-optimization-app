@@ -1,0 +1,37 @@
+:host {
+  display: flex;
+  margin: 1rem 0 0 0;
+}
+
+.branding,
+.branding:hover {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  top: 2px;
+  margin: 4px 12px;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.branding__name {
+  position: relative;
+  top: -1.5px;
+  color: #5f6368;
+  font-family: 'Product Sans', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  padding-left: 4px;
+  text-rendering: optimizeLegibility;
+  text-align: left;
+}
+
+// a.branding:focus {
+//   text-decoration: none;
+// }
+
+// a.branding:focus .branding__name {
+//   text-decoration: underline;
+// }

@@ -1,0 +1,10 @@
+p {
+  margin-left: 1rem;
+  a {
+    margin-right: 1rem;
+  }
+}
+
+section:not(:first-of-type) {
+  margin-top: 1rem;
+}

@@ -1,0 +1,10 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  background-color: $blue-lightest;
+}
+
+mat-divider {
+  margin-bottom: 3px;
+  visibility: hidden;
+}

@@ -1,0 +1,15 @@
+<app-gantt-chart-control-bar
+  [filters]="filters$ | async"
+  (editFilter)="onEditFilter($event)"
+  (removeFilter)="onRemoveFilter($event)"
+  [ranges]="ranges$ | async"
+  [rangeIndex]="rangeIndex$ | async"
+  (rangeIndexSelect)="onRangeIndexSelect($event)"
+  (updateTimezone)="onUpdateTimezone($event)"
+  [currentTimezone]="currentTimezone$ | async">
+  <app-filter-menu
+    [filters]="filters$ | async"
+    [filterOptions]="filterOptions$ | async"
+    (addFilter)="onAddFilter($event)">
+  </app-filter-menu>
+</app-gantt-chart-control-bar>

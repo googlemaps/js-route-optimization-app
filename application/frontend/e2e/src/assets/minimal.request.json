@@ -1,0 +1,12 @@
+{
+  "model": {
+    "shipments": [],
+    "vehicles": [],
+    "globalStartTime": {
+      "seconds": "1563094800"
+    },
+    "globalEndTime": {
+      "seconds": "1563134400"
+    }
+  }
+}

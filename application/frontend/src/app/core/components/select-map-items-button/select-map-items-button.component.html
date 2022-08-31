@@ -1,0 +1,17 @@
+<div id="map-select-container">
+  <button
+    class="app-map-button"
+    type="button"
+    title="Select by rectangle"
+    (click)="toggle(selectionMode.Bbox)">
+    <mat-icon [svgIcon]="bboxIcon"></mat-icon>
+  </button>
+  <div class="divider"></div>
+  <button
+    class="app-map-button"
+    type="button"
+    title="Select by polygon"
+    (click)="toggle(selectionMode.Polygon)">
+    <mat-icon [svgIcon]="polygonIcon"></mat-icon>
+  </button>
+</div>

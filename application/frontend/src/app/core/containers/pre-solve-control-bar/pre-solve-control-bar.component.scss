@@ -1,0 +1,34 @@
+@import '../../../../styles/variables.scss';
+
+app-pre-solve-control-bar {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  padding-top: calc(1rem - 3px);
+
+  .control-bar {
+    display: flex;
+    align-items: center;
+
+    > :not(:first-child) {
+      margin-left: 1rem;
+    }
+
+    .settings-dialog {
+      margin-left: auto !important;
+    }
+
+    .global-settings-toggle {
+      margin-left: auto !important;
+    }
+  }
+
+  mat-expansion-panel.mat-expansion-panel {
+    background: none;
+    border-radius: 0;
+
+    .mat-expansion-panel-body {
+      padding-top: 1rem;
+    }
+  }
+}

@@ -1,0 +1,93 @@
+<app-table
+  #table
+  [idSelector]="idSelector"
+  [selectedIdSelector]="selectedIdSelector"
+  [dataSource]="dataSource"
+  [itemsSelected]="selected"
+  [columnsToDisplay]="columnsToDisplay"
+  [totalSelectableItems]="total"
+  [selectDisabled]="changeDisabled"
+  (selectAll)="onSelectAll()"
+  (deselectAll)="onDeselectAll()"
+  (selectedChange)="onSelectionChange($event)"
+  matSort
+  [matSortActive]="sort?.active"
+  [matSortDirection]="sort?.direction"
+  (matSortChange)="onSortChange($event)">
+  <ng-container matColumnDef="id" sticky>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+    <td mat-cell *matCellDef="let item">
+      {{ item.route.id }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="vehicle.label">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Vehicle Label</th>
+    <td mat-cell *matCellDef="let item" class="vehicle-chips">
+      <ng-container *ngIf="item.route.vehicleLabel | splitLabel as labels; else listNilCharacter">
+        <span *ngFor="let label of labels">{{ label }}</span>
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="vehicleOperator.ids" *ngIf="allowExperimentalFeatures">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Operator ID</th>
+    <td mat-cell *matCellDef="let item">
+      <ng-container *ngIf="item.route.vehicleOperatorIndices as ids">
+        <span *ngFor="let id of ids; let i = index"
+          >{{ id + 1 }} {{ i === ids.length - 1 ? '' : ',&nbsp;' }}</span
+        >
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="vehicleOperator.label" *ngIf="allowExperimentalFeatures">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Operator Labels</th>
+    <td mat-cell *matCellDef="let item" class="vehicle-operator-chips">
+      <ng-container *ngIf="item.route.vehicleOperatorLabels?.toString() | splitLabel as labels">
+        <span *ngFor="let label of labels">{{ label }}</span>
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="capacityUtilization">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Used / Max Load Limit</th>
+    <td mat-cell *matCellDef="let item">
+      <p *ngFor="let key of objectKeys(item.capacityUtilization)">
+        {{ item.capacityUtilization[key].used }} / {{ item.capacityUtilization[key].capacity }}
+        {{ key }}
+      </p>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="totalShipments">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Number of shipments</th>
+    <td mat-cell *matCellDef="let item">
+      {{ item.totalShipments }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="totalPickups">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total number of pickups</th>
+    <td mat-cell *matCellDef="let item">
+      {{ item.totalPickups }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="totalDropoffs">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total number of deliveries</th>
+    <td mat-cell *matCellDef="let item">
+      {{ item.totalDropoffs }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="traveledTime">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Traveled time</th>
+    <td mat-cell *matCellDef="let item">
+      {{ durationFormatter(item.traveledTime) }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="cost">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cost per route</th>
+    <td mat-cell *matCellDef="let item">
+      <ng-container *ngIf="item.cost != null; else listNilCharacter">
+        {{ item.cost | currency }}
+      </ng-container>
+    </td>
+  </ng-container>
+  <ng-template #listNilCharacter>
+    <span>-</span>
+  </ng-template>
+</app-table>

@@ -1,0 +1,356 @@
+<form [formGroup]="form">
+  <section class="edit-menu-content">
+    <div
+      class="flex-grow-1 d-flex padded-content align-self-stretch"
+      [ngClass]="{
+        highlighted: bulkEdit && labels.length,
+        unsethighlighted: isUnset(formFields.Label)
+      }">
+      <mat-form-field class="flex-grow-1 align-self-end">
+        <mat-chip-list #labelChipList aria-label="Shipment labels" [disabled]="disabled">
+          <mat-chip
+            class="shipment-chip"
+            *ngFor="let label of labels; let i = index"
+            (removed)="removeLabel(i)"
+            [removable]="!disabled">
+            {{ label }}
+            <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="Label"
+            [formControl]="labelCtrl"
+            [matChipInputFor]="labelChipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (focusout)="addLabel($event.target.value, $event.target)"
+            (matChipInputTokenEnd)="addLabel($event.value, $event.input)"
+            (keydown)="onLabelKeyDown($event)" />
+        </mat-chip-list>
+        <app-bulk-edit-unset
+          *ngIf="bulkEdit"
+          matSuffix
+          [fieldName]="formFields.Label"
+          [isUnset]="isUnset(formFields.Label)"
+          (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+      </mat-form-field>
+    </div>
+    <!-- shipment type -->
+    <div
+      class="flex-grow-1 d-flex padded-content align-self-stretch shipment-type"
+      [ngClass]="{ unsethighlighted: isUnset(formFields.ShipmentType) }">
+      <mat-form-field class="shipment-type-list">
+        <mat-label>Shipment type</mat-label>
+        <input
+          #shipmentTypeInput
+          [formControl]="shipmentTypeCtrl"
+          matInput
+          [matAutocomplete]="autoTypes" />
+        <mat-autocomplete
+          #autoTypes="matAutocomplete"
+          (optionSelected)="onShipmentTypeSelected($event)">
+          <mat-option
+            *ngFor="let shipmentTypeOption of filteredAvailableShipmentTypes$ | async"
+            [value]="shipmentTypeOption">
+            {{ shipmentTypeOption }}
+          </mat-option>
+        </mat-autocomplete>
+        <app-bulk-edit-unset
+          *ngIf="bulkEdit"
+          matSuffix
+          [fieldName]="formFields.ShipmentType"
+          [isUnset]="isUnset(formFields.ShipmentType)"
+          (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+      </mat-form-field>
+    </div>
+    <!-- penalty cost -->
+    <div
+      *ngIf="penaltyCost as control"
+      class="d-flex item-sm padded-content align-self-stretch"
+      [ngClass]="{
+        highlighted: bulkEdit && penaltyCost.value,
+        unsethighlighted: isUnset(formFields.PenaltyCost)
+      }">
+      <div class="align-self-end">
+        <mat-form-field>
+          <mat-label>Penalty cost</mat-label>
+          <input
+            matInput
+            type="number"
+            min="0"
+            pattern="\d*(\.\d+)?"
+            step=".1"
+            [formControl]="control" />
+          <mat-error
+            *ngIf="control.errors?.pattern && (control.touched || control.dirty)"
+            [attr.title]="patternMessage.innerText">
+            <span #patternMessage>Non-negative number required</span>
+          </mat-error>
+          <app-bulk-edit-unset
+            *ngIf="bulkEdit"
+            matSuffix
+            [fieldName]="formFields.PenaltyCost"
+            [isUnset]="isUnset(formFields.PenaltyCost)"
+            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+        </mat-form-field>
+      </div>
+    </div>
+  </section>
+  <!-- allowed vehicles -->
+  <section
+    class="d-flex padded-content"
+    [ngClass]="{
+      highlighted: bulkEdit && allowedVehicles.length,
+      unsethighlighted: isUnset(formFields.AllowedVehicles)
+    }">
+    <mat-form-field class="w-100 pad-right">
+      <mat-label>Allowed vehicles</mat-label>
+      <mat-chip-list
+        #allowedVehicleChipList
+        aria-label="Allowed vehicle selection"
+        [disabled]="disabled">
+        <mat-chip
+          *ngFor="let vehicle of allowedVehicles"
+          [selectable]="false"
+          [removable]="!disabled"
+          (removed)="removeAllowedVehicle(vehicle)">
+          {{ getVehicleName(vehicle) }}
+          <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+        </mat-chip>
+        <input
+          #allowedVehicleInput
+          [formControl]="allowedVehicleCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="allowedVehicleChipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addAllowedVehicleInputToken($event.value, $event.input)"
+          (keydown)="onAllowedVehicleKeyDown($event)" />
+      </mat-chip-list>
+      <mat-autocomplete
+        class="allowed-vehicles-panel"
+        #auto="matAutocomplete"
+        (optionSelected)="selectedAllowedVehicle($event)">
+        <cdk-virtual-scroll-viewport
+          style="height: 200px"
+          [itemSize]="optionItemSize"
+          minBufferPx="200"
+          maxBufferPx="400">
+          <mat-option
+            [style.height.px]="optionItemSize"
+            *cdkVirtualFor="let vehicle of filteredAvailableAllowedVehicles$ | async"
+            [value]="vehicle.id">
+            {{ getVehicleName(vehicle) }}
+          </mat-option>
+        </cdk-virtual-scroll-viewport>
+      </mat-autocomplete>
+      <app-bulk-edit-unset
+        *ngIf="bulkEdit"
+        matSuffix
+        [fieldName]="formFields.AllowedVehicles"
+        [isUnset]="isUnset(formFields.AllowedVehicles)"
+        (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+    </mat-form-field>
+  </section>
+  <!-- costs per-vehicle -->
+  <section
+    class="d-flex flex-column padded-content edit-menu-content"
+    [ngClass]="{ unsethighlighted: isUnset(formFields.CostsPerVehicle) }">
+    <header>
+      <div><span class="mat-h4">Costs per-vehicle</span> ({{ costsPerVehicleMap.length }})</div>
+      <button
+        type="button"
+        mat-button
+        color="primary"
+        (click)="addPerVehicleCost()"
+        [disabled]="disabled">
+        Add per-vehicle cost
+      </button>
+      <app-bulk-edit-unset
+        *ngIf="bulkEdit"
+        matSuffix
+        [fieldName]="formFields.CostsPerVehicle"
+        [showText]="true"
+        [isUnset]="isUnset(formFields.CostsPerVehicle)"
+        (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
+    </header>
+    <mat-error
+      class="mb-4"
+      *ngIf="
+        perVehicleCosts.errors?.duplicateValues?.cost &&
+        (perVehicleCosts.touched || perVehicleCosts.dirty)
+      ">
+      <span #errorMessage>Cannot have duplicate cost values</span>
+    </mat-error>
+    <div formArrayName="perVehicleCosts">
+      <div
+        *ngFor="let pvc of perVehicleCosts.controls; let perVehicleCostIndex = index"
+        [formGroupName]="perVehicleCostIndex"
+        class="d-flex flex-row align-items-end">
+        <mat-form-field class="item-sm padded-form-field pad-right">
+          <mat-label>Cost</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="cost"
+            min="0"
+            (ngModelChange)="updatePerVehicleCost(perVehicleCostIndex, $event)"
+            class="flex-grow-1" />
+          <mat-error *ngIf="pvc.get('cost').errors?.min">
+            <span #patternMessage>Non-negative number required</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="flex-grow-1">
+          <mat-label>Vehicles</mat-label>
+          <mat-chip-list
+            #costVehiclesChipList
+            aria-label="Allowed vehicle selection"
+            [disabled]="disabled">
+            <mat-chip
+              *ngFor="let costVehicle of costsPerVehicleMap[perVehicleCostIndex][1]"
+              [selectable]="false"
+              [removable]="!disabled"
+              (removed)="removeCostVehicle(perVehicleCostIndex, costVehicle)">
+              {{ getVehicleName(costVehicle) }}
+              <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+            </mat-chip>
+            <input
+              #costVehiclesInput
+              formControlName="vehicles"
+              [matAutocomplete]="autoCostVehicles"
+              [matChipInputFor]="costVehiclesChipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="
+                addCostVehicleInputToken(perVehicleCostIndex, $event.value, $event.input)
+              "
+              (keydown)="onCostVehicleKeyDown(perVehicleCostIndex, $event)"
+              (ngModelChange)="updateFilteredCostVehicles($event)" />
+          </mat-chip-list>
+
+          <mat-autocomplete
+            class="cost-vehicles-panel"
+            #autoCostVehicles="matAutocomplete"
+            (optionSelected)="selectedCostVehicle(perVehicleCostIndex, $event)">
+            <cdk-virtual-scroll-viewport
+              style="height: 200px"
+              [itemSize]="optionItemSize"
+              minBufferPx="200"
+              maxBufferPx="400">
+              <mat-option
+                [style.height.px]="optionItemSize"
+                *cdkVirtualFor="let vehicle of filteredAvailableCostVehicles$ | async"
+                [value]="vehicle.id">
+                {{ getVehicleName(vehicle) }}
+              </mat-option>
+            </cdk-virtual-scroll-viewport>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <button
+          type="button"
+          class="clear-place"
+          (click)="removePerVehicleCost(perVehicleCostIndex)"
+          mat-icon-button
+          title="Remove per-vehicle cost"
+          [disabled]="disabled">
+          <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </section>
+  <!-- pickup-to-delivery limits -->
+  <section
+    class="shipment-pickup-delivery-limits padded-content"
+    [ngClass]="{ unsethighlighted: isUnset(formFields.PickupToDeliveryLimits) }">
+    <header>
+      <span class="mat-h4">Pickup-to-delivery limits</span>
+      <app-bulk-edit-unset
+        *ngIf="bulkEdit"
+        class="float-right"
+        [fieldName]="formFields.PickupToDeliveryLimits"
+        [isUnset]="isUnset(formFields.PickupToDeliveryLimits)"
+        (unsetEvent)="onUnsetChange($event)">
+      </app-bulk-edit-unset>
+    </header>
+    <div [formGroup]="pickupToDeliveryLimits">
+      <app-duration-min-sec-form
+        [parentFormGroup]="pickupToDeliveryLimits.controls.timeLimit"
+        [labelName]="'Time limit'"
+        [showUnset]="bulkEdit"
+        [fieldName]="formFields.TimeLimit"
+        [isUnset]="isUnset(formFields.TimeLimit)"
+        (unsetEvent)="onUnsetChange($event)">
+      </app-duration-min-sec-form>
+
+      <app-duration-min-sec-form
+        [parentFormGroup]="pickupToDeliveryLimits.controls.absoluteDetourLimit"
+        [labelName]="'Absolute detour limit'"
+        [showUnset]="bulkEdit"
+        [fieldName]="formFields.AbsoluteDetourLimit"
+        [isUnset]="isUnset(formFields.AbsoluteDetourLimit)"
+        (unsetEvent)="onUnsetChange($event)">
+      </app-duration-min-sec-form>
+
+      <div [ngClass]="{ unsethighlighted: isUnset(formFields.RelativeDetourLimit) }">
+        <mat-form-field class="item-sm padded-form-field">
+          <mat-label>Relative detour limit</mat-label>
+          <input
+            matInput
+            type="number"
+            min="0"
+            [formControl]="pickupToDeliveryLimits.controls.relativeDetourLimit" />
+          <mat-error
+            *ngIf="
+              pickupToDeliveryLimits.controls.relativeDetourLimit.errors &&
+              (pickupToDeliveryLimits.controls.relativeDetourLimit.touched ||
+                pickupToDeliveryLimits.controls.relativeDetourLimit.dirty)
+            "
+            [attr.title]="patternMessage.innerText">
+            <span #patternMessage>Non-negative number required</span>
+          </mat-error>
+        </mat-form-field>
+        <app-bulk-edit-unset
+          *ngIf="bulkEdit"
+          matSuffix
+          [fieldName]="formFields.RelativeDetourLimit"
+          [isUnset]="isUnset(formFields.RelativeDetourLimit)"
+          (unsetEvent)="onUnsetChange($event)">
+        </app-bulk-edit-unset>
+      </div>
+    </div>
+  </section>
+  <!-- load demands -->
+  <section
+    class="shipment-demands padded-content"
+    [ngClass]="{
+      highlighted: bulkEdit && loadDemands.length,
+      unsethighlighted: isUnset(formFields.LoadDemands)
+    }">
+    <header>
+      <div>
+        <span class="mat-h4">Demands</span> ({{ loadDemands.length }})
+        <mat-error
+          class="mb-4"
+          *ngIf="loadDemands.errors && (loadDemands.touched || loadDemands.dirty)"
+          [attr.title]="errorMessage.innerText">
+          <span #errorMessage>Cannot have duplicate demand types</span>
+        </mat-error>
+      </div>
+      <button type="button" mat-button color="primary" (click)="addDemand()" [disabled]="disabled">
+        Add demand
+      </button>
+      <app-bulk-edit-unset
+        *ngIf="bulkEdit"
+        [fieldName]="formFields.LoadDemands"
+        [showText]="true"
+        [isUnset]="isUnset(formFields.LoadDemands)"
+        (unsetEvent)="onUnsetChange($event)">
+      </app-bulk-edit-unset>
+    </header>
+    <app-load-demands-form
+      formArrayName="loadDemands"
+      [disabled]="disabled"
+      [scenarioCapacities]="scenarioCapacities"
+      [scenarioDemands]="scenarioDemands"
+      [abbreviations]="abbreviations">
+    </app-load-demands-form>
+  </section>
+</form>

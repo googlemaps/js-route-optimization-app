@@ -1,0 +1,50 @@
+<div class="metrics-container mat-typography">
+  <div class="metric-group">
+    <h3>Generated routes</h3>
+    <p class="lighter-text mat-body-strong">
+      <span class="darker-text">{{ numberOfRoutes }}</span> route{{
+        numberOfRoutes > 1 ? 's' : ''
+      }}
+      in <span class="darker-text">{{ solveSeconds | number: '1.2-2' }}</span> seconds
+    </p>
+  </div>
+  <div class="metric-group mat-body-strong">
+    <app-post-solve-timeline-legend
+      [vehicleTimeAverages]="vehicleTimeAverages"></app-post-solve-timeline-legend>
+  </div>
+  <div class="metric-group left-border mat-body-strong">
+    <p class="darker-text top-text">{{ totalCost | currency }}</p>
+    <p class="lighter-text bottom-text">Total cost</p>
+  </div>
+  <div class="metric-group left-border mat-body-strong">
+    <p class="darker-text top-text">{{ totalDistance / 1000 | number: '1.1-1' }}</p>
+    <p class="lighter-text bottom-text">Total km driven</p>
+  </div>
+  <div class="metric-group left-border">
+    <button
+      *ngIf="skippedShipmentsCount > 0; else skippedShipmentsMetric"
+      mat-flat-button
+      class="warning-button"
+      (click)="skippedShipmentsClick.emit()"
+      title="Go to skipped shipments metadata">
+      <ng-container *ngTemplateOutlet="skippedShipmentsMetric"></ng-container>
+    </button>
+  </div>
+  <div class="metric-group left-border mat-body-strong">
+    <p class="darker-text top-text">{{ numberOfRoutes }}</p>
+    <p class="lighter-text bottom-text"># of vehicles</p>
+  </div>
+  <div class="metric-group left-border mat-body-strong">
+    <p class="darker-text top-text">
+      {{ formattedStart }}-{{ formattedEnd }}{{ totalDays > 0 ? '+' + totalDays : '' }}
+    </p>
+    <p class="lighter-text bottom-text">Duration</p>
+  </div>
+</div>
+
+<ng-template #skippedShipmentsMetric>
+  <p class="top-text">{{ madeShipments }}/{{ shipmentsCount }}</p>
+  <p class="bottom-text">
+    {{ skippedShipmentsCount }} shipment{{ skippedShipmentsCount === 1 ? '' : 's' }} skipped
+  </p>
+</ng-template>

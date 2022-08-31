@@ -1,0 +1,52 @@
+@import '../../../../styles/variables.scss';
+
+:host,
+svg {
+  display: block;
+  position: relative;
+}
+
+.poi {
+  position: absolute;
+  line-height: 0;
+}
+
+:host.dragging .poi {
+  pointer-events: none;
+}
+
+.dragging-poi,
+.pending-poi-old {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.poi-validation-error path {
+  fill: rgba($yellow, 0.15);
+  stroke: $yellow;
+}
+
+.pending-poi-old path,
+.pending-poi-new path {
+  fill: rgba($gray-light, 0.15);
+  stroke: $gray-light;
+}
+
+.select-poi {
+  cursor: pointer;
+}
+
+.clusters {
+  position: relative;
+  height: 14px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.cluster-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+}

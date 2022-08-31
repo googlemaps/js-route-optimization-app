@@ -1,0 +1,46 @@
+<form [formGroup]="form" (ngSubmit)="apply.emit()">
+  <mat-form-field *ngIf="operationCtrl as control">
+    <mat-select [formControl]="control">
+      <mat-option *ngFor="let operation of operations" [value]="operation">
+        {{ operation }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="datetime">
+    <mat-form-field *ngIf="dateCtrl as control" class="date pad-right">
+      <mat-label>{{ dateLabel }}</mat-label>
+      <input matInput [matDatepicker]="datePicker" [formControl]="control" />
+      <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+      <mat-datepicker #datePicker></mat-datepicker>
+      <mat-error *ngIf="control.errors?.required" [attr.title]="message.innerText">
+        <span #message>{{ dateLabel }} is required</span>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="timeCtrl as control" class="time">
+      <input matInput type="time" [formControl]="control" />
+      <mat-error *ngIf="control.errors?.timeString" [attr.title]="message.innerText">
+        <span #message>Invalid format</span>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <ng-container *ngIf="operationCtrl.value === DateFilterOperation.Between">
+    <span>and</span>
+    <div class="datetime">
+      <mat-form-field *ngIf="date2Ctrl as control" class="date pad-right">
+        <mat-label>Max date</mat-label>
+        <input matInput [matDatepicker]="date2Picker" [formControl]="control" />
+        <mat-datepicker-toggle matSuffix [for]="date2Picker"></mat-datepicker-toggle>
+        <mat-datepicker #date2Picker [startAt]="dateCtrl.value"></mat-datepicker>
+        <mat-error *ngIf="control.errors?.required" [attr.title]="message.innerText">
+          <span #message>Max Date is required</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="time2Ctrl as control" class="time">
+        <input matInput type="time" [formControl]="control" />
+        <mat-error *ngIf="control.errors?.timeString" [attr.title]="message.innerText">
+          <span #message>Invalid format</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </ng-container>
+</form>

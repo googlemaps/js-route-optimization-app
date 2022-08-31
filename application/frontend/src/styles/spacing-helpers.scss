@@ -1,0 +1,26 @@
+$spacing: 4;
+$steps: 8;
+$sides: (top, bottom, left, right);
+
+@for $step from 0 through $steps {
+  $space: $spacing * $step;
+  $value: if($space==0, 0, #{$space}px);
+
+  .m-#{$step} {
+    margin: #{$value} !important;
+  }
+
+  .p-#{$step} {
+    padding: #{$value} !important;
+  }
+
+  @each $side in $sides {
+    .m#{str-slice($side, 0, 1)}-#{$step} {
+      margin-#{$side}: #{$value} !important;
+    }
+
+    .p#{str-slice($side, 0, 1)}-#{$step} {
+      padding-#{$side}: #{$value} !important;
+    }
+  }
+}

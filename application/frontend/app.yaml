@@ -1,0 +1,13 @@
+# Copyright 2022 Google LLC
+#
+# Use of this source code is governed by an MIT-style
+# license that can be found in the LICENSE file or at
+# https://opensource.org/licenses/MIT.
+
+runtime: nodejs12
+handlers:
+- url: /
+  static_files: dist/fleetrouting-app/index.html
+  upload: dist/fleetrouting-app/index.html
+- url: /
+  static_dir: dist/fleetrouting-app

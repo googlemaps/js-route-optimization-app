@@ -1,0 +1,7 @@
+<button class="bulk-unset" type="button" mat-button (click)="onClick()">
+  <mat-icon *ngIf="!showText && isUnset">undo</mat-icon>
+  <mat-icon *ngIf="!showText && !isUnset">delete_forever</mat-icon>
+  <span *ngIf="showText">
+    {{ isUnset ? 'Undo Clear all' : 'Clear all' }}
+  </span>
+</button>

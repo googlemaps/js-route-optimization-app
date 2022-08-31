@@ -1,0 +1,23 @@
+app-table {
+  display: block;
+  height: 100%;
+
+  table {
+    width: 100%;
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    &:not(:first-of-type):not(:last-of-type) {
+      padding: 0 8px;
+    }
+    &:first-of-type,
+    &:last-of-type {
+      padding-right: 8px !important;
+    }
+  }
+
+  .mat-sort-header-content {
+    flex-wrap: wrap;
+  }
+}

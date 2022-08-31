@@ -1,0 +1,18 @@
+<button
+  class="filter-menu-trigger"
+  mat-button
+  [disabled]="!(filterOptions?.length > 0)"
+  [matMenuTriggerFor]="menu"
+  aria-label="Filter menu"
+  @.disabled>
+  <mat-icon>filter_list</mat-icon>
+  <label *ngIf="!(filters?.length > 0)">Filter</label>
+  <mat-menu #menu="matMenu">
+    <button
+      mat-menu-item
+      *ngFor="let f of filterOptions; trackBy: trackFilterOptionBy"
+      (click)="addFilter.emit(f)">
+      {{ f.label }}
+    </button>
+  </mat-menu>
+</button>

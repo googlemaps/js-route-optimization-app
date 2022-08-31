@@ -1,0 +1,16 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid $gray-lightest;
+}
+
+app-main-nav {
+  flex: auto;
+}
+
+app-main-actions {
+  margin-top: 1rem;
+  border-top: 1px solid $gray-lightest;
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="288" viewBox="0 0 288 288">
+  <polyline points="48,48 48,240, 240,240, 240,48 48,48" fill="none" stroke="black" stroke-width="16" stroke-dasharray="32,16"/>
+  <polyline points="240,192 240,288" stroke="#D32F2F" stroke-width="24" />
+  <polyline points="192,240 288,240" stroke="#D32F2F" stroke-width="24" />
+</svg>

@@ -1,0 +1,28 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .mat-dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h3 {
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+  }
+
+  .mat-dialog-content {
+    display: flex;
+    flex: auto;
+    max-height: initial;
+  }
+
+  app-pre-solve-global-settings {
+    margin: 3rem;
+  }
+}

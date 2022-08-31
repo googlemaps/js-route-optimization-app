@@ -1,0 +1,126 @@
+@import '../../../../styles/variables.scss';
+
+app-base-edit-shipment-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .unsethighlighted {
+    background-color: #fae6e6 !important;
+  }
+
+  .form-title {
+    display: flex;
+    flex: auto;
+    align-items: center;
+
+    h3 {
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+
+    .mat-button-toggle-group {
+      margin-left: auto;
+      margin-right: 1rem;
+    }
+  }
+
+  .bulk-unset {
+    color: red;
+  }
+
+  .visit-requests {
+    > header {
+      display: flex;
+      margin-bottom: 0.25rem;
+      align-items: center;
+
+      button.mat-button-base {
+        margin-left: auto;
+      }
+    }
+  }
+
+  .visit-request-forms {
+    margin-bottom: 1rem;
+
+    &:not(.active) {
+      display: none;
+    }
+  }
+
+  app-visit-request-form {
+    display: block;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.015);
+
+    &:not(:first-of-type) {
+      margin-top: 1rem;
+    }
+  }
+
+  mat-button-toggle-group.mat-button-toggle-group {
+    .mat-button-toggle-label-content {
+      line-height: 2.5rem;
+      font-size: 1rem;
+    }
+
+    .mat-button-toggle {
+      .mat-icon {
+        height: 1rem;
+        width: 1rem;
+        margin-right: 0.5rem;
+      }
+    }
+
+    .mat-button-toggle-checked {
+      background-color: $blue-lighter;
+      color: $primary;
+
+      svg path {
+        stroke: $primary;
+        fill: none;
+      }
+    }
+  }
+
+  .mat-dialog-title {
+    display: flex;
+
+    button:last-of-type {
+      margin-left: auto;
+    }
+  }
+
+  .mat-dialog-content {
+    display: flex;
+    flex: auto;
+    max-height: initial;
+  }
+
+  .form-title,
+  .form-wrapper,
+  app-form-map {
+    box-sizing: border-box;
+  }
+
+  .form-title,
+  .form-wrapper {
+    width: calc(100% - #{$edit-menu-map-width});
+  }
+
+  .form-title {
+    max-width: calc(100% - #{$edit-menu-map-width});
+  }
+
+  app-form-map {
+    width: $edit-menu-map-width;
+  }
+
+  .form-wrapper {
+    flex: auto;
+    padding: 0 1rem;
+    overflow: auto;
+  }
+}
