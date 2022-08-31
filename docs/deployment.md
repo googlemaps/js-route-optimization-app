@@ -63,7 +63,7 @@ At minimum, the following variables must be populated in your `local.auto.tfvars
 - `project` - GCP *project ID* (NOT number or name) of the project you created in [project setup](project.md).
 - `dns_name` - Fully-qualified domain name to host the app at, _without_ any   protocol (e.g. `fleetrouting.example.com`)
   - This domain must be registered in a **Google Cloud DNS zone** and be editable by your Google account.
-- `deployment_tag` - Container version to deploy (`4.0.0` or later).
+- `deployment_tag` - Container version to deploy (`4.2.2` or later).
 - `maps_api_key` - API Key credential created in [project setup](project.md) to enable Google Maps Platform features.
 - `iap_client_id` and `iap_client_secret` - The OAuth credential you created during [project setup](project.md). Find these on the Cloud Console page for your project (_APIs & Services > Credentials > OAuth 2 Client IDs_). Click the name of your key and copy the values from the right hand side of the page.
 - `authorized_users` - An array of users and/or groups of users who are authorized to access the app
@@ -89,7 +89,7 @@ dns_name          = "fleetrouting.example.com"
 dns_zone    = "example-com-zone"
 dns_project = "my-dns-project-456"
 
-deployment_tag = "4.0.0"  # or later
+deployment_tag = "4.2.2"  # or later
 
 # find the following values in Cloud Console (APIs & Services > Credentials)
 maps_api_key      = "AIzaBc123..."
