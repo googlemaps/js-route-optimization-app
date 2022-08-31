@@ -11,46 +11,42 @@ and supporting resources to an initialized Google Cloud Platform (GCP) project.
 
 
 ## Prerequisites
-
-
-- [**Google Cloud SDK**](https://cloud.google.com/sdk/docs/install) (`gcloud` CLI)
-- [**Terraform CLI**](https://learn.hashicorp.com/tutorials/terraform/install-cli) v1.0 or later
-- Access to the Fleet Routing App [source code repository](https://source.cloud.google.com/fleetrouting-app-ops/fleetrouting-app)
-
+- [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) (`gcloud` CLI)
+- [Git](https://git-scm.com/)
+- [Terraform CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli) v1.0 or later
 
 ## Authorize `gcloud` CLI
-The `gcloud` commands in the following steps will require
-the CLI to be logged in as a Google account
+**Terraform** runs as your `gcloud` *Application Default Credentials*.
+So the CLI must be logged in as a Google account
 with permission to modify the target project.
-
-Additionally, **Terraform** will run as your `gcloud` *Application Default Credentials*.
 
 If not already configured, run the following commands
 to authorize the CLI and set your default credentials:
-```sh
+```shell
 gcloud auth login
 
 gcloud auth application-default login
 ```
 
 
-## Get the code
-Clone the repo with the following command:
-```sh
-gcloud source repos clone fleetrouting-app --project=fleetrouting-app-ops
+## Clone the Repository
+This repository contains Terraform configurations for the deployment.
+Clone the repository and navigate to the checked-out directory.
+
+```shell
+git clone https://github.com/google/cfr.git
 cd fleetrouting-app
 ```
 
 ## Deploy the Fleet Routing Application
-
 Open a shell to the root of the cloned source code repo
 and follow these steps.
 
 ### Create a Configuration File
-
 Create a file named `local.auto.tfvars`
 in the `deployment/` directory:
-```sh
+
+```shell
 touch deployment/local.auto.tfvars
 ```
 
@@ -61,8 +57,10 @@ The following sections explain the variables in detail.
 At minimum, the following variables must be populated in your `local.auto.tfvars` file. If you followed the [project setup instructions](project.md), these values should be familiar:
 
 - `project` - GCP *project ID* (NOT number or name) of the project you created in [project setup](project.md).
-- `dns_name` - Fully-qualified domain name to host the app at, _without_ any   protocol (e.g. `fleetrouting.example.com`)
+- `dns_name` - Fully-qualified domain name to host the app at, without any protocol or path (e.g. `fleetrouting.example.com`)
   - This domain must be registered in a **Google Cloud DNS zone** and be editable by your Google account.
+- `dns_zone` - ID of the Cloud DNS zone that owns your `dns_name` domain
+- `dns_project` - ID of the GCP project that contains `dns_zone`
 - `deployment_tag` - Container version to deploy (`4.2.2` or later).
 - `maps_api_key` - API Key credential created in [project setup](project.md) to enable Google Maps Platform features.
 - `iap_client_id` and `iap_client_secret` - The OAuth credential you created during [project setup](project.md). Find these on the Cloud Console page for your project (_APIs & Services > Credentials > OAuth 2 Client IDs_). Click the name of your key and copy the values from the right hand side of the page.
@@ -72,20 +70,11 @@ At minimum, the following variables must be populated in your `local.auto.tfvars
   - Be sure to include yourself in this list
     (project owners do not automatically inherit *IAP-secured Web App User* permission).
 
-##### Required Variables for Non-Google Deployments
-
-The following variables are additionally required when deploying outside of
-the Google-owned `fleetrouting.app` domain:
-
-- `dns_zone` - ID of the Cloud DNS zone that owns your `dns_name` domain
-- `dns_project` - ID of the GCP project that contains `dns_zone`
-
 ##### Sample Minimal `local.auto.tfvars` File
 ```hcl
-project           = "my-fleetrouting-123"
-dns_name          = "fleetrouting.example.com"
+project = "my-fleetrouting-123"
 
-# for domains other than fleetrouting.app
+dns_name    = "fleetrouting.example.com"
 dns_zone    = "example-com-zone"
 dns_project = "my-dns-project-456"
 
@@ -121,7 +110,7 @@ or are referencing resources that already exist from a previous deployment.
 ### Deploy the GCP resources and application
 Navigate to the `deployment/` directory.
 Initialize **Terraform** and run the `apply` command to deploy the app and its resources:
-```sh
+```shell
 cd deployment
 terraform init
 
