@@ -63,6 +63,8 @@ At minimum, the following variables must be populated in your `local.auto.tfvars
 - `project` - GCP *project ID* (NOT number or name) of the project you created in [project setup](project.md).
 - `dns_name` - Fully-qualified domain name to host the app at, _without_ any   protocol (e.g. `fleetrouting.example.com`)
   - This domain must be registered in a **Google Cloud DNS zone** and be editable by your Google account.
+- `dns_zone` - ID of the Cloud DNS zone that owns your `dns_name` domain
+- `dns_project` - ID of the GCP project that contains `dns_zone`
 - `deployment_tag` - Container version to deploy (`4.2.2` or later).
 - `maps_api_key` - API Key credential created in [project setup](project.md) to enable Google Maps Platform features.
 - `iap_client_id` and `iap_client_secret` - The OAuth credential you created during [project setup](project.md). Find these on the Cloud Console page for your project (_APIs & Services > Credentials > OAuth 2 Client IDs_). Click the name of your key and copy the values from the right hand side of the page.
@@ -71,14 +73,6 @@ At minimum, the following variables must be populated in your `local.auto.tfvars
     (e.g. `user:alex@example.com`, `group:cfr-users@example.com`, `domain:example.com`).
   - Be sure to include yourself in this list
     (project owners do not automatically inherit *IAP-secured Web App User* permission).
-
-##### Required Variables for Non-Google Deployments
-
-The following variables are additionally required when deploying outside of
-the Google-owned `fleetrouting.app` domain:
-
-- `dns_zone` - ID of the Cloud DNS zone that owns your `dns_name` domain
-- `dns_project` - ID of the GCP project that contains `dns_zone`
 
 ##### Sample Minimal `local.auto.tfvars` File
 ```hcl
