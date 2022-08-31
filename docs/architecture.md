@@ -23,7 +23,7 @@ flowchart LR
 
 ## Cloud Infrastructure
 
-![Google Cloud infrastructure diagram](diagrams/fleetrouting-app-architecture.png)
+![Google Cloud infrastructure diagram](fleetrouting-app-architecture.png)
 
 All resources are deployed to a single Google Cloud Platform (GCP) project.
 By default, regional resources are deployed to the `us-central1` region
