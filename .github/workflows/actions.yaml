@@ -83,6 +83,9 @@ jobs:
         env:
           GCLOUD_SERVICE_ACCOUNT_JSON: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
       - run: gcloud auth activate-service-account --key-file=/tmp/service-account.json
+
+      - uses: actions/checkout@v3
+
       - run: make build
         env:
           SNAPSHOT_REGISTRY: ${{ secrets.SNAPSHOT_REGISTRY }}
