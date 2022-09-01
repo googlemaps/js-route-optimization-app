@@ -63,7 +63,7 @@ jobs:
     - run: npm run lint
     - run: npm run style-check
     - run: Xvfb :99 &
-    - run: npm test
+    - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage
       env:
         DISPLAY: ':99'
 
