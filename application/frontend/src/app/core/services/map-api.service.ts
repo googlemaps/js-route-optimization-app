@@ -86,9 +86,6 @@ export class MapApiService {
   }
 
   private getScriptSource(config: MapConfig, callbackName: string): string {
-    const libraries = ['geometry,places,drawing'];
-    return `${config.apiRoot}?key=${config.apiKey}&libraries=${libraries.join(
-      ','
-    )}&callback=${callbackName}`;
+    return `https://maps.googleapis.com/maps/api/js?key=${config.apiKey}&libraries=geometry,places,drawing&callback=${callbackName}`;
   }
 }

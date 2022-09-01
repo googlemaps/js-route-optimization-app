@@ -9,7 +9,6 @@
 
 export interface MapConfig {
   apiKey: string;
-  apiRoot: string;
   symbols?: SymbolConfig;
   options?: google.maps.MapOptions;
 }

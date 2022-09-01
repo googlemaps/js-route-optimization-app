@@ -58,8 +58,6 @@ export const selectMapConfig = (state: State): MapConfig => state.map;
 
 export const selectMapApiKey = (state: State): string => state.map && state.map.apiKey;
 
-export const selectMapApiRoot = (state: State): string => state.map && state.map.apiRoot;
-
 export const selectMapOptions = (state: State): google.maps.MapOptions =>
   state.map && state.map.options;
 

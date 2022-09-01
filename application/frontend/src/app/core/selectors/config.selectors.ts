@@ -45,8 +45,6 @@ export const selectMapConfig = createSelector(selectConfigState, fromConfig.sele
 
 export const selectMapApiKey = createSelector(selectConfigState, fromConfig.selectMapApiKey);
 
-export const selectMapApiRoot = createSelector(selectConfigState, fromConfig.selectMapApiRoot);
-
 export const selectMapOptions = createSelector(selectConfigState, fromConfig.selectMapOptions);
 
 export const selectMapSymbols = createSelector(selectConfigState, fromConfig.selectMapSymbols);
