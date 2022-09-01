@@ -1,0 +1,124 @@
+name: Fleet Routing App CI
+on:
+  push:
+jobs:
+  # detect changes
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          backend:
+            - 'application/backend/**'
+          frontend:
+            - 'application/frontend/**'
+
+  # backend checks
+  check-backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: application/backend
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js v16 LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+        cache-dependency-path: application/backend/package-lock.json
+
+    - run: npm ci
+    - run: npm run lint
+    - run: npm test
+
+  # frontend checks
+  check-frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: application/frontend
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js v16 LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+        cache-dependency-path: application/frontend/package-lock.json
+
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run style-check
+    - run: Xvfb :99 &
+    - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage
+      env:
+        DISPLAY: ':99'
+
+  # build container image
+  build-container:
+    needs:
+    - check-backend
+    - check-frontend
+
+    runs-on: ubuntu-latest
+    container: google/cloud-sdk
+    env:
+      GCLOUD_SERVICE_ACCOUNT_JSON: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
+      SNAPSHOT_REGISTRY: ${{ secrets.SNAPSHOT_REGISTRY }}
+      COMMIT_TAG: ${{ github.sha }}
+
+    steps:
+      - run: echo "COMMIT_TAG=$(echo $COMMIT_TAG | cut -c 1-7)" >> $GITHUB_ENV
+
+      - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
+
+      - uses: actions/checkout@v3
+
+      - run: make build
+      - run: make push
+
+
+  # push container image
+  tag-release:
+    if: ${{ github.ref_type == 'tag' }}
+
+    needs:
+    - build-container
+
+    runs-on: ubuntu-latest
+    container: google/cloud-sdk
+    env:
+      GCLOUD_SERVICE_ACCOUNT_JSON: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
+      SNAPSHOT_REGISTRY: ${{ secrets.SNAPSHOT_REGISTRY }}
+      RELEASE_REGISTRY: ${{ secrets.RELEASE_REGISTRY }}
+      COMMIT_TAG: ${{ github.sha }}
+      RELEASE_TAG: ${{ github.ref_name }}
+
+    steps:
+      - run: echo "COMMIT_TAG=$(echo $COMMIT_TAG | cut -c 1-7)" >> $GITHUB_ENV
+
+      - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d > /tmp/service-account.json
+      - run: gcloud auth activate-service-account --key-file=/tmp/service-account.json
+
+      - uses: actions/checkout@v3
+
+      - run: make release
+
+  # terraform checks
