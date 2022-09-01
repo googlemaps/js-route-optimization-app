@@ -25,6 +25,10 @@ jobs:
     if: ${{ needs.changes.outputs.backend == 'true' }}
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: application/backend
+
     steps:
     - uses: actions/checkout@v3
 
@@ -33,7 +37,6 @@ jobs:
       with:
         node-version: '16'
 
-    - run: cd application/backend
     - run: npm ci
     - run: npm run lint
     - run: npm test
