@@ -39,7 +39,10 @@ export class BaseDocumentationDialogComponent implements AfterViewInit, OnDestro
 
   ngAfterViewInit(): void {
     this.http.get('assets/docs/documentation.md', { responseType: 'text' }).subscribe((data) => {
-      marked.use({ renderer: this.buildRenderer() });
+      marked.use({
+        baseUrl: 'assets/docs/',
+        renderer: this.buildRenderer()
+      });
       this.dialogContent.nativeElement.innerHTML = marked(data);
       this.addListeners();
       this.changeRef.detectChanges();

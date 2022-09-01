@@ -26,7 +26,7 @@
 
 Cloud Fleet Routing is an end-user web application that planners on transportation or logistics team can use to plan pickups and deliveries to locations using a fleet of vehicles.
 
-![application overview](assets/docs/app-overview.png "Overview screenshot of Cloud Fleet Routing")
+![application overview](app-overview.png "Overview screenshot of Cloud Fleet Routing")
 
 Behind the scenes, Cloud Fleet Routing uses a powerful service from Google called the Fleet Routing API. Cloud Fleet Routing makes it easy for a Planner to do their daily work without having to know the details of how the Fleet Routing API works.
 
@@ -46,7 +46,7 @@ Learn the basics of using Cloud Fleet Routing by getting a [solution](#solution)
 
 #### Get an initial solution
 
-1. <a href="assets/docs/sample-scenario.json" target="_none">Download the sample scenario</a>. If your browser opens this in a new tab, do _Save As_ to save to your computer in a location you will remember.
+1. <a href="sample-scenario.json" target="_none">Download the sample scenario</a>. If your browser opens this in a new tab, do _Save As_ to save to your computer in a location you will remember.
 
 2. Click _Cloud Optimization AI_ in the top-left corner of the web page to get to the starting page.
 
@@ -57,7 +57,7 @@ Learn the basics of using Cloud Fleet Routing by getting a [solution](#solution)
    1. Select the _Planning Scenario > Shipments_ item on the left hand side of the page.
    2. In the Shipment Click the checkbox in the top row of the Shipments table to include all shipments.
 
-      ![shipment selections](assets/docs/select-shipments.png "Selecting all shipments to include in a scenario")
+      ![shipment selections](select-shipments.png "Selecting all shipments to include in a scenario")
 
    3. Click on _Vehicles_ and select them all by clicking on the checkbox in the top row. Now that you have at least one Shipment and at least one Vehicle selected, the _GENERATE_ button is available.
 
@@ -67,7 +67,7 @@ Learn the basics of using Cloud Fleet Routing by getting a [solution](#solution)
 
    2. Cloud Fleet Routing just submitted this small scenario representing a vehicle routing problem to Google's Fleet Routing API. It got a solution to the problem. The application switched to the Gantt view.
 
-      ![sample solution](assets/docs/sample-solution.png "Viewing the solution proposed by the Fleet Routing API to our sample vehicle routing problem.")
+      ![sample solution](sample-solution.png "Viewing the solution proposed by the Fleet Routing API to our sample vehicle routing problem.")
 
 6. Click on the _Toggle map_ tool to show a map of the solution proposed by the Fleet Routing API. You can see a map of central Paris with the planned vehicle route. There's an icon showing the Depot, and little triangular icons showing pickup locations.
 
@@ -78,13 +78,13 @@ Learn the basics of using Cloud Fleet Routing by getting a [solution](#solution)
 
    1. This reveals the Visit popup. You can see the related Shipment and the Vehicle that will be making the visit.
 
-      ![show map visit](assets/docs/show-visit-map.png "Show a single visit popup by clicking on the map")
+      ![show map visit](show-visit-map.png "Show a single visit popup by clicking on the map")
 
    2. **TIP:** Shipments are pickups or deliveries. The act of making a pickup or a delivery in the Fleet Routing API is called a **visit**. So if you see _Visit_ in Cloud Fleet Routing, just know that it's a specific vehicle making a stop at a location to pickup or drop something off.
 
 8. Click the small link on the popup window for the Visit to open the Shipment for this visit to open the _Shipment Detail_. There's a lot on this screen but for now let's change the label from a simple number to something more helpful.
 
-     ![show shipment edit](assets/docs/edit-shipment-detail.png "Edit a shipment by adding a label")
+     ![show shipment edit](edit-shipment-detail.png "Edit a shipment by adding a label")
 
 9. Click on the _Label_ field and type a short label, e.g., `order-123`.
 
@@ -101,7 +101,7 @@ Having a plan is great, but what if you have new information and want to get a f
 1. Open _Planning Scenario > Shipments_ to see the current VRP definition.
    1. Notice that Shipment #2 has both a pickup and a delivery. In the app a pickup and delivery are treated as a combination.
 
-      ![solution inputs](assets/docs/solution-inputs.png "Reviewing the shipments that make up the scenario.")
+      ![solution inputs](solution-inputs.png "Reviewing the shipments that make up the scenario.")
 
 2. Click the _Edit_ icon (little pencil) on the row for Shipment #2 to open the _Shipment Detail_ view. Now that we're looking at the Pickup part of the shipment, we notice a few missing elements that we know should be changed.
    1. Notice that it's possible to provide more than one set of constraints (time windows, penalties) for a single pickup or delivery. Those are called visit request alternatives. But for now, we'll just update the one that has been provided.
@@ -109,25 +109,25 @@ Having a plan is great, but what if you have new information and want to get a f
    3. Update the `Soft time window` to _start_ at 8:00AM on the same date. This indicates that the Fleet Routing API should **try** to get that shipment picked up after 8:00AM. That's different than the (hard) time window, which **must** be picked up during the 7:00-8:30AM window.
    4. You can also tell the solver that there is a penalty for not hitting the soft time window. Change the `Earliness penalty` to `2 / hour`. The units are value-less, but you might assume that this means _"2 euros penalty for each hour that the shipment is picked up early"_. Why Euros? Because it's in Paris, France!
 
-      ![edit sample shipment](assets/docs/edit-sample-shipment.png "Make changes to one of the shipments.")
+      ![edit sample shipment](edit-sample-shipment.png "Make changes to one of the shipments.")
 
    5. Finally, we'll switch to the delivery part of this shipment by clicking the _Delivery_ icon at the top of the _Shipment Detail_ form.
    6. Change _Penalty cost_ to `30.00`. This means that the penalty for missing this delivery altogether is 30.00 (following the previous statement about units, we can assume this is 30 Euros, but we don't specify the units).
 
-      ![add delivery penalty](assets/docs/penalty-for-missed-delivery.png "Making a missed delivery have a financial penalty.")
+      ![add delivery penalty](penalty-for-missed-delivery.png "Making a missed delivery have a financial penalty.")
 
    7. Click the _Save_ button to see the updated information in the Shipment list view.
 3. You have updated your Shipment. The action button changes from _Generate_ (first time) to _Regenerate_. Click the _Regenerate_ button.
    1. Oh no! We have a problem. One of the dates or times cannot be accommodated due to a global setting.
 
-      ![global time violation](assets/docs/global-time-violation.png "Getting an error message about global time window that we need to fix.")
+      ![global time violation](global-time-violation.png "Getting an error message about global time window that we need to fix.")
 
 4. Click on the _Scenario settings_ button on the top right of the application window.
 
    1. There are plenty of settings to adjust here. Go to _Shipment Model_ tab. Notice that the _Routes begin at_  _Start Date_ field is July 14, 2019? Compare that with the _Time Window_ column in the _Shipment List_ table: we accidentally entered a shipment date of July 4th. That violates the global time window. We need to either adjust the global time window or adjust the shipment.
 
-      ![global settings](assets/docs/global-settings.png "Viewing global settings.")
-      ![shipment model settings](assets/docs/shipment-model-settings.png "Viewing shipment model settings.")
+      ![global settings](global-settings.png "Viewing global settings.")
+      ![shipment model settings](shipment-model-settings.png "Viewing shipment model settings.")
 
    2. Reopen the _Shipment Detail_ view for that shipment, adjust the date to July 14th, 20219 on the Pickup screen.
 
@@ -141,15 +141,15 @@ Having a plan is great, but what if you have new information and want to get a f
 
 Looks good...until you see in the key performance indicator (KPI) summary that a shipment was skipped. We'll use the metadata view to figure out what's happened.
 
-![skipped shipment kpi](assets/docs/missed-shipment-kpi.png "The KPI bar shows how many shipments were skipped.")
+![skipped shipment kpi](missed-shipment-kpi.png "The KPI bar shows how many shipments were skipped.")
 
 1. Switch to the _Metadata_ view then choose _Metrics per shipment_ to see the complete list of shipments.
 
-   ![shipment metadata](assets/docs/shipment-metadata.png "How to access the list of metrics per shipment.")
+   ![shipment metadata](shipment-metadata.png "How to access the list of metrics per shipment.")
 
 2. Sure enough, Shipment #2 was skipped.
 
-   ![shipment metrics list](assets/docs/shipment-metrics-list.png "A list of shipment metrics showing a skipped shipment.")
+   ![shipment metrics list](shipment-metrics-list.png "A list of shipment metrics showing a skipped shipment.")
 
 #### Understanding the solver
 
@@ -187,22 +187,22 @@ The home screen gives you three choices when you first open the application.
 - Open a saved scenario or solution. The application is integrated with your [TMS](#tms) and you want to open a file exported from the TMS, or saved ready for use by the TMS.
 - Build a new scenario. Start from an empty [scenario](#scenario) and add [shipments](#shipments) and [vehicles](#vehicle) manually.
 
-![home-screen](assets/docs/home-screen.png "The application landing page")
+![home-screen](home-screen.png "The application landing page")
 
 ### App actions
 
 Application actions work with scenario and solution files.
 _Download_ and _Upload_ work with local files from your computer, whereas _Open_ and _Save_ work with files that will integrated with the [TMS](#tms).
 
-![app-actions](assets/docs/app-actions1.png "Application-level actions")
-![app-actions](assets/docs/app-actions2.png "Application-level actions")
+![app-actions](app-actions1.png "Application-level actions")
+![app-actions](app-actions2.png "Application-level actions")
 
 ### Sidebar
 
 The sidebar gives you a quick overview of the number of shipments and vehicles and uses gray (in progress), green (completed), and orange (warning) colors to indicate where you are in the application workflow.
 Possible solution actions are shown as buttons, like _Generate_.
 
-![sidebar](assets/docs/sidebar.png "The application sidebar")
+![sidebar](sidebar.png "The application sidebar")
 
 ### Scenario settings
 
@@ -212,7 +212,7 @@ Changing the time zone just adjusts how it is displayed in the application; it *
 
 Most other Scenario Settings affect how the Fleet Routing API solver will act on a given input [VRP](#vrp) scenario.
 
-![global-settings](assets/docs/global-settings.png "Global application settings")
+![global-settings](global-settings.png "Global application settings")
 
 ### Toolbar
 
@@ -220,7 +220,7 @@ The toolbar switches between the major Solution views in the application: the Ga
 The map tool toggles the visibility of the Google Map showing routes and shipments.
 The Undo and Redo buttons enable you to back out of changes or reapply them.
 
-![toolbar](assets/docs/toolbar.png "Application-level toolbar")
+![toolbar](toolbar.png "Application-level toolbar")
 
 ### Shipment and vehicle planning views
 
@@ -232,7 +232,7 @@ Bulk Edit to edit multiple Shipments or Vehicles in one go.
 Choose which columns are visible using the column picker.
 Click on the pencil icon to edit any fields in the shipment or vehicle.
 
-![shipment-planning](assets/docs/shipment-planning-view.png "Shipments and vehicles have a planning view to prepare a VRP scenario")
+![shipment-planning](shipment-planning-view.png "Shipments and vehicles have a planning view to prepare a VRP scenario")
 
 ### Add Item button
 
@@ -248,13 +248,13 @@ Clicking the pencil icon on any Shipment Planning List row opens the Shipment Ed
 A Shipment has minimal required information: a single pickup or drop-off [request alternative](#pra) with a location defined.
 Everything is optional, but in almost all cases you will want to define [demands](#demands), and likely also time windows and fixed costs and penalties.
 
-![shipment-edit](assets/docs/shipment-edit-view.png "Shipments can be edited")
+![shipment-edit](shipment-edit-view.png "Shipments can be edited")
 
 Once a solution has been built, an abbreviated version of the form is available, called the Shipment Quick Edit view.
 The primary purpose of the Quick Edit is to tie a shipment to a subset of vehicles, or to change the pickup or drop-off time window.
 The Quick Edit form replicates the actions performed by dragging-and-dropping a shipment on the Gantt View.
 
-![shipment-quick-edit](assets/docs/shipment-quick-edit.png "Key aspects of a shipment can be edited")
+![shipment-quick-edit](shipment-quick-edit.png "Key aspects of a shipment can be edited")
 
 ### Vehicle edit view
 
@@ -267,7 +267,7 @@ Now typically, there will be a lot more going on: a start and end location; a st
 
 If you are adding a new Vehicle in this way, we recommend at least adding a label so that you can differentiate vehicles in the list view.
 
-![vehicle-edit](assets/docs/vehicle-edit-view.png "Vehicles can be edited")
+![vehicle-edit](vehicle-edit-view.png "Vehicles can be edited")
 
 [back](#contents)
 
@@ -280,7 +280,7 @@ Pickups are shown using a triangle pointing up; drop-offs use a downwards-point 
 If you drag a pickup and it has a related drop-off, you will see both move.
 The same is true if you drag a drop-off: the pickup will move.
 
-![gantt-view](assets/docs/gantt-view.png "The Gantt chart view is the default way to visualize a solution proposed by the Fleet Routing API")
+![gantt-view](gantt-view.png "The Gantt chart view is the default way to visualize a solution proposed by the Fleet Routing API")
 
 While on the Gantt view you can:
 
@@ -306,7 +306,7 @@ The map has several useful tools.
 
 Clicking on a single visit provides shortcuts to associated shipment and vehicle, plus some brief summary information.
 
-![map-view](assets/docs/show-visit-map.png "Using the Map view to get details on a visit")
+![map-view](show-visit-map.png "Using the Map view to get details on a visit")
 
 ### Metadata View
 
@@ -315,23 +315,23 @@ Use the _Metrics per route_ and _Metrics per shipment_ dropdown to toggle betwee
 Filters are very capable to help focus on a subset.
 You can edit an existing filters by click on them.
 
-![metadata-view](assets/docs/metadata-view.png "Metadata view is a tabular, filtered view of the solution proposed by the Fleet Routing API solver.")
+![metadata-view](metadata-view.png "Metadata view is a tabular, filtered view of the solution proposed by the Fleet Routing API solver.")
 
 The _Skipped Shipment_ button is a quick way to access the Metadata View with the appropriate filter already in place.
 The button will be highlighted in orange if your solution has skipped shipments.
 
-![skipped-shipments](assets/docs/skipped-shipment-button.png "Use the skipped shipment button to quickly access a filtered Metadata View")
+![skipped-shipments](skipped-shipment-button.png "Use the skipped shipment button to quickly access a filtered Metadata View")
 
 Any skipped shipments will have similar highlighting:
 
-![skipped-shipments-label](assets/docs/shipment-metrics-list.png "Skipped shipments have a highlighted label in the metadata list view")
+![skipped-shipments-label](shipment-metrics-list.png "Skipped shipments have a highlighted label in the metadata list view")
 
 ### Warnings and messages
 
 Warnings are presented in the app whenever it can detect that you have a potential cause for error or confusion, or are taking an action that might result in a suboptimal solution.
 For example, if you set the start or end time for a single shipment outside of the global time window defined in _Global Settings_ you will see this:
 
-![global-time-violation](assets/docs/global-time-violation.png "Warning messages like this one about global time violations help to isolate problems")
+![global-time-violation](global-time-violation.png "Warning messages like this one about global time violations help to isolate problems")
 
 Similar messages will show up on edit forms, e.g., if you define a Load Demand in a Shipment, but no Vehicles have a related Load Limit (capacity) you will see a hint.
 
@@ -397,7 +397,7 @@ If you _Download_ a file you can subsequently _Upload_ it back into Cloud Fleet 
 Cloud Fleet Routing can be used in a standalone mode: just use the _Upload_ and _Download_ tools to work with solution and scenario files on your computer.
 But it is designed to be part of a bigger overall fleet dispatching system with both: an upstream system supplying the word to be done, which we term [vehicle routing problems](#vrp) or [scenarios](#scenarios); and a downstream system that accepts the [solutions](#solution) that Cloud Fleet Routing user has generated.
 
-![application architecture](assets/docs/app-architecture.png "How Cloud Fleet Routing fits into the broader IT infrastructure of a logistics organization.")
+![application architecture](app-architecture.png "How Cloud Fleet Routing fits into the broader IT infrastructure of a logistics organization.")
 
 From a Planner's perspective, Cloud Fleet Routing is just a web application that understands how to find work to be planned in the corporate TMS via the _Open_ tool, and to be saved back to the corporate TMS using the _Save_ tool.
 
@@ -437,7 +437,7 @@ The [API documentation][devsite] contains much more detail these and additional 
 
 A: An _undefined_ penalty cost on a shipment is interepreted as an _infinite_ penalty cost. In the application UI this looks like an empty field:
 
-   ![infinite penalty cost](assets/docs/empty-penalty-cost.png "Empty penalty cost field")
+   ![infinite penalty cost](empty-penalty-cost.png "Empty penalty cost field")
 
 An infinite penalty cost will cause the solver to attempt to handle that shipment at--almost literally--any cost.
 
@@ -474,7 +474,7 @@ We will use the convention `$PROJECT` as a placeholder for the name of the GCP p
 
 Now let's get a scenario loaded into Cloud Fleet Routing!
 
-1. <a href="assets/docs/sample-scenario.json" target="_none">Download the sample scenario</a> and save it as `sample-scenario.json`.
+1. <a href="sample-scenario.json" target="_none">Download the sample scenario</a> and save it as `sample-scenario.json`.
 2. Configure `gcloud` with access to the necessary Google Cloud Platform resources in your project.
 
    ```bash
