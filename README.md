@@ -21,6 +21,7 @@ tune constraint parameters, visualize routes, and more.
 
 <https://cloud.google.com/optimization>
 
+![Fleet Routing App screenshot](application/frontend/src/assets/docs/app-overview.png)
 
 ## Intended Use
 
@@ -88,8 +89,20 @@ follow the steps in the project setup and deployment guides:
 - **[Deployment Guide](docs/deployment.md)** <br>
   Deploy an instance of Fleet Routing App into your GCP project.
 
+
 ---
 ## Local Development
 
 To run a local instance of the application on your machine for development purposes,
 follow the steps in the **[Development Setup](docs/development.md)** guide.
+
+
+---
+## User Guide
+Instructions for how to use the application are available in the
+[User Guide](application/frontend/src/assets/docs/documentation.md).
+
+This guide can also be accessed by clicking the
+"app help docs" link on the application's landing page
+or "❔ Help" button in the lower-left corner
+of the main application window.
