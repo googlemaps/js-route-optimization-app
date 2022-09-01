@@ -64,6 +64,8 @@ jobs:
     - run: npm run style-check
     - run: Xvfb :99 &
     - run: npm test
+      env:
+        DISPLAY: ':99'
 
   # build container image
 
