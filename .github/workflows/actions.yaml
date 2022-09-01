@@ -1,0 +1,45 @@
+name: Fleet Routing App CI
+on:
+  push:
+jobs:
+  # detect changes
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          backend:
+            - 'application/backend/**'
+          frontend:
+            - 'application/frontend/**'
+
+  # backend checks
+  check-backend:
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js v16 LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'npm'
+
+    - run: npm ci
+    - run: npm run lint
+    - run: npm test
+
+  # frontend checks
+
+  # build container image
+
+  # push container image
