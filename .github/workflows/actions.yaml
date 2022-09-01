@@ -77,6 +77,11 @@ jobs:
     - check-backend
     - check-frontend
 
+    if: |
+      always() &&
+      (needs.check-backend.result == 'success' || needs.check-backend.result == 'skipped') &&
+      (needs.check-frontend.result == 'success' || needs.check-frontend.result == 'skipped')
+
     runs-on: ubuntu-latest
     container: google/cloud-sdk
     env:
