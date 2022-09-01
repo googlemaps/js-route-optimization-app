@@ -30,8 +30,6 @@ jobs:
         working-directory: application/backend
 
     steps:
-    - uses: actions/checkout@v3
-
     - name: Use Node.js v16 LTS
       uses: actions/setup-node@v3
       with:
@@ -52,8 +50,6 @@ jobs:
         working-directory: application/frontend
 
     steps:
-    - uses: actions/checkout@v3
-
     - name: Use Node.js v16 LTS
       uses: actions/setup-node@v3
       with:
