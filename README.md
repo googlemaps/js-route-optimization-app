@@ -93,8 +93,13 @@ follow the steps in the project setup and deployment guides:
 ---
 ## Local Development
 
-To run a local instance of the application on your machine for development purposes,
-follow the steps in the **[Development Setup](docs/development.md)** guide.
+To run a local instance of the application on your machine,
+follow the steps in the project setup and development guides:
+
+- **[Project Setup](docs/project.md)** <br>
+  Create and configure a GCP project with the prerequisites to run Fleet Routing App.
+- **[Development Guide](docs/development.md)** <br>
+  Run Fleet Routing App in your local Node.js environment.
 
 
 ---
