@@ -42,7 +42,30 @@ jobs:
     - run: npm test
 
   # frontend checks
+  check-frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: application/frontend
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js v16 LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run style-check
+    - run: npm test
 
   # build container image
 
   # push container image
+
+  # terraform checks
