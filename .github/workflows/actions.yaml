@@ -101,6 +101,7 @@ jobs:
     env:
       GCLOUD_SERVICE_ACCOUNT_JSON: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
       SNAPSHOT_REGISTRY: ${{ secrets.SNAPSHOT_REGISTRY }}
+      RELEASE_REGISTRY: ${{ secrets.RELEASE_REGISTRY }}
       COMMIT_TAG: ${{ github.sha }}
       RELEASE_TAG: ${{ github.ref }}
 
