@@ -77,9 +77,13 @@ jobs:
     container: google/cloud-sdk
 
     steps:
-      - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d > service-account.json
-      - run: gcloud auth activate-service-account --key-file=service-account.json
+      - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d > /tmp/service-account.json
+        env:
+          GCLOUD_SERVICE_ACCOUNT_JSON: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
+      - run: gcloud auth activate-service-account --key-file=/tmp/service-account.json
       - run: make build
+        env:
+          SNAPSHOT_REGISTRY: ${{ secrets.SNAPSHOT_REGISTRY }}
 
   # push container image
 
