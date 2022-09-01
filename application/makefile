@@ -7,7 +7,7 @@ push:
 	docker push $(REGISTRY):$(COMMIT_TAG);
 
 release:
-	$(eval DIGEST = $(shell gcloud container images list-tags $(SNAPSHOT_REGISTRY)/app --filter=$(COMMIT_TAG) --format='get(digest)'))
+	$(eval DIGEST = $(shell gcloud container images list-tags $(SNAPSHOT_REGISTRY) --filter=$(COMMIT_TAG) --format='get(digest)'))
 	gcloud container images add-tag --quiet \
 		$(SNAPSHOT_REGISTRY)@$(DIGEST) \
 		$(RELEASE_REGISTRY):$(COMMIT_TAG) \
