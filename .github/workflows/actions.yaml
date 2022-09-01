@@ -80,9 +80,7 @@ jobs:
       SNAPSHOT_REGISTRY: ${{ secrets.SNAPSHOT_REGISTRY }}
 
     steps:
-      - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d > /tmp/service-account.json
-      - run: gcloud auth activate-service-account --key-file=/tmp/service-account.json
-
+      - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
       - uses: actions/checkout@v3
 
       - run: make build
@@ -90,5 +88,7 @@ jobs:
 
 
   # push container image
+      # - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d > /tmp/service-account.json
+      # - run: gcloud auth activate-service-account --key-file=/tmp/service-account.json
 
   # terraform checks
