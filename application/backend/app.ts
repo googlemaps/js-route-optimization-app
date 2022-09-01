@@ -139,5 +139,3 @@ if (process.env.FRONTEND_PROXY) {
 // other routes
 app.use("/api", apiRoutes);
 app.use("/api/optimization", optimizationRoutes);
-
-// test
