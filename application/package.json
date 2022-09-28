@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.2",
-    "lerna": "^5.4.3"
+    "lerna": "^5.5.2"
   },
   "scripts": {
     "postinstall": "npx lerna init",
