@@ -218,6 +218,13 @@ export class CsvService {
         ...this.mapToLoadDemands(shipment, mapping),
         ...this.mapToPickup(shipment, mapping, timeWindows.pickup),
         ...this.mapToDelivery(shipment, mapping, timeWindows.delivery),
+        ...this.mapKeyToModelValue(
+          'allowedVehicleIndices',
+          'AllowedVehicleIndices',
+          shipment,
+          mapping,
+          this.commaSeparatedStringToIntArray
+        ),
       };
       return parsedShipment;
     });
@@ -648,6 +655,10 @@ export class CsvService {
 
   private toDuration(value: any): any {
     return { seconds: value };
+  }
+
+  private commaSeparatedStringToIntArray(value: string): number[] {
+    return value.split(',').map((entry) => parseInt(entry, 10));
   }
 
   geocodeLocation(location: string): Observable<ILatLng | GeocodeErrorResponse> {

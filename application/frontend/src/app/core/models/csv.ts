@@ -36,6 +36,7 @@ export enum ShipmentFields {
   LoadDemand3Value,
   LoadDemand4Type,
   LoadDemand4Value,
+  AllowedVehicleIndices,
 }
 
 export enum VehicleFields {

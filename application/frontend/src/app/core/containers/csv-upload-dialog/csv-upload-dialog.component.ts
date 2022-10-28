@@ -596,6 +596,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         LoadDemand3Value: this.fb.control(''),
         LoadDemand4Type: this.fb.control(''),
         LoadDemand4Value: this.fb.control(''),
+        AllowedVehicleIndices: this.fb.control(''),
       },
       {
         validators: [
