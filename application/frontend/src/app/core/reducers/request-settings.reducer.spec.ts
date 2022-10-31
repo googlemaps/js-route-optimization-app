@@ -3,7 +3,6 @@ import { RelaxationLevel } from '../models';
 import {
   reducer,
   initialState,
-  State,
   selectInjectedModelConstraint,
   selectAllowLargeDeadlineDespiteInterruptionRisk,
   selectGeodesicMetersPerSecond,
