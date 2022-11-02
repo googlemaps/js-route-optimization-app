@@ -13,7 +13,7 @@ to authenticate requests.
 > ⏭️ If you have already [deployed an instance](deployment.md)
 > of **Fleet Routing App** to a Google Cloud project,
 > you can use the resources in that project for local development.
-> Skip to the [*Authentication*](#authentication) section.
+> Skip to the [*Local Environment Setup*](#local-environment-setup) section.
 
 If you don't have an existing deployment
 or don't wish to use it for development purposes,
