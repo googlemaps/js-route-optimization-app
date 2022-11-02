@@ -185,7 +185,8 @@ npm install
 
 ### Configure Environment Variables
 Create a `.env` environment variable file at `application/.env`.
-Populate the file with details from your Google Cloud project as follows:
+
+Populate the `.env` file with the details of your Google Cloud project as follows:
 
 | Varable Name | Description | Default |
 | - | - | - |
