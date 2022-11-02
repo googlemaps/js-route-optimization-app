@@ -25,7 +25,7 @@ flowchart LR
 
 ![Google Cloud infrastructure diagram](fleetrouting-app-architecture.png)
 
-All resources are deployed to a single Google Cloud Platform (GCP) project.
+All resources are deployed to a single Google Cloud project.
 By default, regional resources are deployed to the `us-central1` region
 and multi-regional resources are deployed to the `us` multi-region.
 
@@ -81,7 +81,7 @@ Unencrypted HTTP traffic is redirected to HTTPS.
 The application requires that the following APIs and services (and their dependencies)
 are enabled for the project:
 
-- Google Cloud Platform
+- Google Cloud
   - Cloud Run
   - Identity-Aware Proxy
   - Secret Manager
@@ -90,7 +90,7 @@ are enabled for the project:
 - Optimization / Fleet Routing
   - Cloud Optimization API
   - Maps for Fleet Routing
-- Google Maps Platform
+- Google Maps
   - Distance Matrix API
   - Geocoding API
   - Maps JavaScript API

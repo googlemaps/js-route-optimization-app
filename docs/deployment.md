@@ -1,10 +1,10 @@
 # Google Fleet Routing App - Deployment
 
 Follow these steps to deploy the Google **Fleet Routing App** container image
-and supporting resources to an initialized Google Cloud Platform (GCP) project.
+and supporting resources to an initialized Google Cloud project.
 
 > 🛑 This document assumes that you have created
-> and initialized a GCP project as described in the
+> and initialized a Google Cloud project as described in the
 > [project creation and configuration guide](project.md).
 > If you have not created a project according to that process,
 > go follow those steps, then come back here to continue with deployment.
@@ -56,11 +56,11 @@ The following sections explain the variables in detail.
 #### Required Variables
 At minimum, the following variables must be populated in your `local.auto.tfvars` file. If you followed the [project setup instructions](project.md), these values should be familiar:
 
-- `project` - GCP *project ID* (NOT number or name) of the project you created in [project setup](project.md).
+- `project` - Google Cloud *project ID* (NOT number or name) of the project you created in [project setup](project.md).
 - `dns_name` - Fully-qualified domain name to host the app at, without any protocol or path (e.g. `fleetrouting.example.com`)
   - This domain must be registered in a **Google Cloud DNS zone** and be editable by your Google account.
 - `dns_zone` - ID of the Cloud DNS zone that owns your `dns_name` domain
-- `dns_project` - ID of the GCP project that contains `dns_zone`
+- `dns_project` - ID of the Google Cloud project that contains `dns_zone`
 - `deployment_tag` - Container version to deploy (`4.2.2` or later).
 - `maps_api_key` - API Key credential created in [project setup](project.md) to enable Google Maps Platform features.
 - `iap_client_id` and `iap_client_secret` - The OAuth credential you created during [project setup](project.md). Find these on the Cloud Console page for your project (_APIs & Services > Credentials > OAuth 2 Client IDs_). Click the name of your key and copy the values from the right hand side of the page.
@@ -107,7 +107,7 @@ or are referencing resources that already exist from a previous deployment.
 | `region` | Google Cloud region to deploy to. Must be a supported [Cloud Run region](https://cloud.google.com/run/docs/locations). | `us-central1` |
 
 
-### Deploy the GCP resources and application
+### Deploy the Google Cloud resources and application
 Navigate to the `deployment/` directory.
 Initialize **Terraform** and run the `apply` command to deploy the app and its resources:
 ```shell
@@ -165,7 +165,7 @@ Go to the Cloud Run section of Cloud Console and check for errors.
 
 ### Google Sign-In Fails for External Users
 An authorized user (from your `authorized_user` list) may still be rejected
-if they are not a member of your GCP organization.
+if they are not a member of your Google Cloud organization.
 This is working as intended because OAuth was originally configured
 as an *Internal* app, meaning it only supports identities from your organization.
 

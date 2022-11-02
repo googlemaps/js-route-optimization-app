@@ -1,14 +1,14 @@
 # Google Fleet Routing App - Project Setup
-The following instructions describe how to create a *Google Cloud Platform* (GCP)
-project and configure it so it's ready to deploy an
-instance of **Fleet Routing App** into.
+Follow these instructions to create a Google Cloud project
+and configure it so it's ready to deploy
+an instance of **Fleet Routing App** into.
 
 > ⏭️ If you have already completed the one-time setup steps below,
 > you can skip to the [application deployment instructions](deployment.md).
 
 ## Prerequisites
 
-- **Google account** with rights to create *Google Cloud Platform* (GCP) projects in your organization
+- **Google account** with rights to create Google Cloud projects in your organization
 - Google Cloud **Billing Account** to enable paid services
 - [**Google Cloud SDK**](https://cloud.google.com/sdk/docs/install) installed and configured
   > You can use [Google Cloud Shell](https://cloud.google.com/shell) in a web browser
@@ -19,7 +19,7 @@ instance of **Fleet Routing App** into.
   > But it must be registered with **Google Cloud DNS**.
 
 ---
-## Create a GCP project
+## Create a Google Cloud project
 
 ### Authenticate the `gcloud` CLI
 
@@ -31,8 +31,8 @@ gcloud auth login
 
 ### Create a Google Cloud project
 
-Run the following command to create a new GCP project.
-If you are not a member of a GCP organization,
+Run the following command to create a new Google Cloud project.
+If you are not a member of a Google Cloud organization,
 omit the `--folder` flag.
 
 ```sh
@@ -54,13 +54,13 @@ Follow the instructions in Google's documentation to
 
 
 ---
-## Create a Google Maps Platform (GMP) API Key
+## Create a Google Maps API Key
 
 The frontend application depends on **Google Maps JavaScript API**
 as well as the **Geocoding**, **Places**, and **Static Maps** APIs.
 
 Create [an API key](https://cloud.google.com/docs/authentication/api-keys#creating_an_api_key)
-to enable the frontend to use the required GMP APIs.
+to enable the frontend to use the required Google Maps APIs.
 
 1. Go to **[Google Cloud Console](https://console.cloud.google.com)** and open your project
 

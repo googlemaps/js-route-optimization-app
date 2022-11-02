@@ -52,7 +52,7 @@ variable "dns_project" {
 
 variable "static_ip_address_name" {
   type        = string
-  description = "Name of GCP Global static IP address"
+  description = "Name of Google Cloud Global static IP address"
   default     = "fleetrouting-app-ip"
 }
 

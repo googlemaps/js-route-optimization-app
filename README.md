@@ -56,11 +56,11 @@ The customer is responsible for all charges accrued on the account.
 
 ### Pricing
 Refer to the following pricing guides for Cloud, Maps, and CFR for detailed costs:
-- [Google Cloud Platform Pricing](https://cloud.google.com/pricing)
+- [Google Cloud Pricing](https://cloud.google.com/pricing)
 - [Google Maps Platform Pricing](https://mapsplatform.google.com/pricing/)
 - [Cloud Fleet Routing Pricing](https://cloud.google.com/optimization/pricing)
 
-> ⚠️ GCP and GMP offer "getting started" and "free tier" credits that may cover
+> ⚠️ Google Cloud and Google Maps Platform offer "getting started" and "free tier" credits that may cover
 > a small amount of usage for free. However, as mentioned in the previous section,
 > large scenarios can rack up a lot of spend in a short period of time.
 > If you are not careful, it is possible to use up all of your credits
@@ -72,7 +72,7 @@ see [LICENSE](LICENSE) for details.
 
 ## Terms of Use
 The application is subject the following terms of use:
-- [Google Cloud Platform Terms of Use](https://cloud.google.com/terms)
+- [Google Cloud Terms of Use](https://cloud.google.com/terms)
 - [Google Maps Platform Terms of Use](https://cloud.google.com/maps-platform/terms)
 - [Google Cloud Optimization API service-specific terms](https://cloud.google.com/optimization/docs/tos/service-terms)
 - [Google OAuth 2.0 Policies](https://developers.google.com/identity/protocols/oauth2/policies)
@@ -85,9 +85,9 @@ To deploy a containerized instance of the application from **Google Artifact Reg
 follow the steps in the project setup and deployment guides:
 
 - **[Project Setup](docs/project.md)** <br>
-  Create and configure a GCP project with the prerequisites to deploy Fleet Routing App.
+  Create and configure a Google Cloud project with the prerequisites to deploy Fleet Routing App.
 - **[Deployment Guide](docs/deployment.md)** <br>
-  Deploy an instance of Fleet Routing App into your GCP project.
+  Deploy an instance of Fleet Routing App into your Google Cloud project.
 
 
 ---
@@ -97,7 +97,7 @@ To run a local instance of the application on your machine,
 follow the steps in the project setup and development guides:
 
 - **[Project Setup](docs/project.md)** <br>
-  Create and configure a GCP project with the prerequisites to run Fleet Routing App.
+  Create and configure a Google Cloud project with the prerequisites to run Fleet Routing App.
 - **[Development Guide](docs/development.md)** <br>
   Run Fleet Routing App in your local Node.js environment.
 
