@@ -458,15 +458,15 @@ If you do not grant location permission, the app will use a default location spe
 
 ### Load scenarios from another system
 
-> NOTE: This is an advanced topic for IT and engineering staff. You will need to install the [`gcloud`](https://cloud.google.com/sdk/gcloud) command-line tool and understand how to work with Google Cloud Platform resources.
+> NOTE: This is an advanced topic for IT and engineering staff. You will need to install the [`gcloud`](https://cloud.google.com/sdk/gcloud) command-line tool and understand how to work with Google Cloud resources.
 
 The _Open_ dialog supports an end user opening a valid Fleet Routing API scenario. But how do they get into that list in the first place? The [application architecture diagram](#overall-system-and-workflow) explains the big picture for TMS-to-Cloud Fleet Routing integration. The _default_ integration approach that comes as part of Cloud Fleet Routing from Google Marketplace uses Google Cloud Storage. While most integrations will likely use something more elegant like the [Google Cloud client libraries](https://cloud.google.com/apis/docs/cloud-client-libraries) (like [the Go client library for Cloud Storage](https://pkg.go.dev/cloud.google.com/go/storage)), we can mimic the operation using a few commands.
 
 #### Configure `gcloud`
 
-We will use the convention `$PROJECT` as a placeholder for the name of the GCP project where you deployed Cloud Fleet Routing.
+We will use the convention `$PROJECT` as a placeholder for the name of the Google Cloud project where you deployed Cloud Fleet Routing.
 
-1. Open the GCP Cloud Console Service Accounts page. For example, https://console.cloud.google.com/iam-admin/serviceaccounts?project=$PROJECT.
+1. Open the Google Cloud Console Service Accounts page. For example, https://console.cloud.google.com/iam-admin/serviceaccounts?project=$PROJECT.
 2. Use the _Actions >... > Create key_ menu for the _Compute Engine default service account_ record.
 3. Choose Key Type > JSON and save the resulting `*.json` file somewhere locally that you can find again, e.g., `my_account_key.json`.
 
@@ -475,7 +475,7 @@ We will use the convention `$PROJECT` as a placeholder for the name of the GCP p
 Now let's get a scenario loaded into Cloud Fleet Routing!
 
 1. <a href="sample-scenario.json" target="_none">Download the sample scenario</a> and save it as `sample-scenario.json`.
-2. Configure `gcloud` with access to the necessary Google Cloud Platform resources in your project.
+2. Configure `gcloud` with access to the necessary Google Cloud resources in your project.
 
    ```bash
     gcloud config set project $PROJECTID
