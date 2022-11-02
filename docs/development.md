@@ -1,12 +1,13 @@
 # Google Fleet Routing App - Development
 
-Follow these steps to set up a local development environment for the Fleet Routing App.
+Follow these steps to set up a local development environment
+for **Fleet Routing App**.
 
 ## Google Cloud Project Setup
 🛑 Before you can run the app,
 you will need access to a Google Cloud project
 with **Optimization API** other required services enabled.
-You will also need *Service Account* and *API Key* credentials
+You will also need **Service Account** and **API Key** credentials
 to authenticate requests.
 
 > ⏭️ If you have already [deployed an instance](deployment.md)
