@@ -133,12 +133,12 @@ with the **Cloud Optimization AI Editor** role.
 [Create a JSON service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys)
 for the *Fleet Routing App Service Account (`fleetrouting-app@`)*
 in your project. Save it to your machine
-and set the absolute path to the downloaded credentials JSON file
+and set the absolute path of the downloaded credentials JSON file
 as the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
 (see [*Configure Environment Variables*](#configure-environment-variables) section).
 
 ### API Key for Google Maps
-To load the **Google Maps JavaScript API**
+To load **Google Maps JavaScript API**
 and make other requests to Google Maps Platform APIs,
 the frontend needs an **API Key**.
 
@@ -148,7 +148,7 @@ and set it as the `MAP_API_KEY` environment variable
 (see [*Configure Environment Variables*](#configure-environment-variables) section).
 
 ---
-## Set up Local Environment
+## Local Environment
 
 ### Prerequisites
 - [Git](https://git-scm.com/)
