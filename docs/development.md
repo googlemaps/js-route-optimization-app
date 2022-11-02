@@ -186,14 +186,14 @@ npm install
 ### Configure Environment Variables
 Create a `.env` environment variable file at `application/.env`.
 
-Populate the `.env` file with the details of your Google Cloud project as follows:
+Populate `application/.env` file with the details of your Google Cloud project as follows:
 
 | Varable Name | Description | Default |
 | - | - | - |
 | **Required** | | |
 | PROJECT_ID | ID (not number) of your Google Cloud project, a.k.a. **Optimization API** "parent" project  | |
 | API_ROOT | URL of the backend API (probably `http://localhost:8080/api`) |  |
-| FRONTEND_PROXY | URL of the frontend Angular development server (probably `http://localhost:4200`) - *FOR DEVELOPMENT USE ONLY* |  |
+| FRONTEND_PROXY | URL of the frontend Angular development server (probably `http://localhost:4200/`) - *FOR DEVELOPMENT USE ONLY* |  |
 | MAP_API_KEY | API Key to load Google Maps JavaScript API in frontend |  |
 | GOOGLE_APPLICATION_CREDENTIALS | Path to a service account credentials JSON file to authenticate Google API requests | *Default application credentials* |
 | **Optional** | | |
