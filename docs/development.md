@@ -122,33 +122,7 @@ gcloud projects add-iam-policy-binding {PROJECT_ID} \
 ```
 
 ---
-## Authentication
-### Service Account Credentials
-To authenticate requests to **Cloud Fleet Routing**,
-the backend needs credentials for a Google Cloud service account
-with the **Cloud Optimization AI Editor** role.
-
-> ℹ **Cloud Fleet Routing** requests cannot be authenticated with end-user credentials.
-
-[Create a JSON service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys)
-for the *Fleet Routing App Service Account (`fleetrouting-app@`)*
-in your project. Save it to your machine
-and set the absolute path of the downloaded credentials JSON file
-as the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
-(see [*Configure Environment Variables*](#configure-environment-variables) section).
-
-### API Key for Google Maps
-To load **Google Maps JavaScript API**
-and make other requests to Google Maps Platform APIs,
-the frontend needs an **API Key**.
-
-Locate your API Key in the [**APIs & Services > Credentials**](https://console.cloud.google.com/apis/credentials)
-section of Cloud Console. Copy its value
-and set it as the `MAP_API_KEY` environment variable
-(see [*Configure Environment Variables*](#configure-environment-variables) section).
-
----
-## Local Environment
+## Local Environment Setup
 
 ### Prerequisites
 - [Git](https://git-scm.com/)
@@ -156,7 +130,7 @@ and set it as the `MAP_API_KEY` environment variable
 
 ### Clone the Repository
 This single repository contains both the `backend` and `frontend`
-packages for the Fleet Routing App.
+packages for **Fleet Routing App**.
 Clone the repository and navigate to the checked-out directory.
 
 ```shell
@@ -181,8 +155,6 @@ npm install
 > in the `backend` and `frontend` sub-packages.
 
 
-## Run the App
-
 ### Configure Environment Variables
 Create a `.env` environment variable file at `application/.env`.
 
@@ -194,8 +166,8 @@ Populate `application/.env` file with the details of your Google Cloud project a
 | PROJECT_ID | ID (not number) of your Google Cloud project, a.k.a. **Optimization API** "parent" project  | |
 | API_ROOT | URL of the backend API (probably `http://localhost:8080/api`) |  |
 | FRONTEND_PROXY | URL of the frontend Angular development server (probably `http://localhost:4200/`) - *FOR DEVELOPMENT USE ONLY* |  |
-| MAP_API_KEY | API Key to load Google Maps JavaScript API in frontend |  |
-| GOOGLE_APPLICATION_CREDENTIALS | Path to a service account credentials JSON file to authenticate Google API requests | *Default application credentials* |
+| MAP_API_KEY | API Key to load Google Maps JavaScript API in frontend (see [*Authentication*](#authentication) section) |  |
+| GOOGLE_APPLICATION_CREDENTIALS | Path to a service account credentials JSON file to authenticate Google API requests (see [*Authentication*](#authentication) section) | *Default application credentials* |
 | **Optional** | | |
 | LOG_FORMAT | Log format to output (`google` or `pretty`) | `google` |
 | LOG_LEVEL | Minimum [Pino log level](https://getpino.io/#/docs/api?id=level-string) to output | `info` |
@@ -212,13 +184,39 @@ Template:
 PROJECT_ID={YOUR_PROJECT_ID}
 API_ROOT=http://localhost:8080/api
 FRONTEND_PROXY=http://localhost:4200/
+GOOGLE_APPLICATION_CREDENTIALS={PATH_TO_SERVICE_ACCOUNT_KEY}
 MAP_API_KEY={YOUR_API_KEY}
-STORAGE_BUCKET_NAME={YOUR_BUCKET_NAME}
 LOG_LEVEL=debug
 LOG_FORMAT=pretty
 ```
 
-### Start
+### Authentication
+#### Service Account Credentials
+To authenticate requests to **Cloud Fleet Routing**,
+the backend needs credentials for a Google Cloud service account
+with the **Cloud Optimization AI Editor** role.
+
+> ℹ **Cloud Fleet Routing** requests cannot be authenticated with end-user credentials.
+
+[Create a JSON service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys)
+for the *Fleet Routing App Service Account (`fleetrouting-app@`)*
+in your project. Save it to your machine
+and set the absolute path of the downloaded credentials JSON file
+as the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
+(see [*Configure Environment Variables*](#configure-environment-variables) section).
+
+#### API Key for Google Maps
+To load **Google Maps JavaScript API**
+and make other requests to Google Maps Platform APIs,
+the frontend needs an **API Key**.
+
+Locate your API Key in the [**APIs & Services > Credentials**](https://console.cloud.google.com/apis/credentials)
+section of Cloud Console. Copy its value
+and set it as the `MAP_API_KEY` environment variable
+(see [*Configure Environment Variables*](#configure-environment-variables) section).
+
+---
+## Run the App
 To run the `backend` and `frontend` together in development mode,
 navigate to the `application` directory and run `npm start`.
 *Lerna* will start both packages in parallel:
