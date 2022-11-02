@@ -94,10 +94,8 @@ follow the steps in the project setup and deployment guides:
 ## Local Development
 
 To run a local instance of the application on your machine,
-follow the steps in the project setup and development guides:
+follow the steps in the development guide:
 
-- **[Project Setup](docs/project.md)** <br>
-  Create and configure a Google Cloud project with the prerequisites to run Fleet Routing App.
 - **[Development Guide](docs/development.md)** <br>
   Run Fleet Routing App in your local Node.js environment.
 
