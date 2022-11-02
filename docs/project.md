@@ -1,14 +1,14 @@
 # Google Fleet Routing App - Project Setup
-The following instructions describe how to create a *Google Cloud*
-project and configure it so it's ready to deploy an
-instance of **Fleet Routing App** into.
+Follow these instructions to create a Google Cloud project
+and configure it so it's ready to deploy
+an instance of **Fleet Routing App** into.
 
 > ⏭️ If you have already completed the one-time setup steps below,
 > you can skip to the [application deployment instructions](deployment.md).
 
 ## Prerequisites
 
-- **Google account** with rights to create *Google Cloud* projects in your organization
+- **Google account** with rights to create Google Cloud projects in your organization
 - Google Cloud **Billing Account** to enable paid services
 - [**Google Cloud SDK**](https://cloud.google.com/sdk/docs/install) installed and configured
   > You can use [Google Cloud Shell](https://cloud.google.com/shell) in a web browser

@@ -2,7 +2,7 @@
 
 [**Terraform**](https://www.terraform.io/) module to deploy
 a containerized build of the **Fleet Routing App**
-to a *Google Cloud* project.
+to a Google Cloud project.
 
 ## Deployment Strategy
 
