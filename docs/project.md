@@ -78,10 +78,10 @@ to enable the frontend to use the required Google Maps APIs.
 > 📝 Take note of your new API Key value.
 > You will need to reference it later for deployment configuration.
 
-### Restrict API Key
+### 🕑 (Optional) Restrict API Key
 
-To prevent unauthorized use of your API Key,
-add the following restrictions after deployment is complete.
+After deployment is complete, to prevent unauthorized use of your API Key,
+add the following restrictions.
 
 #### Application Restrictions
 DO NOT add any **Application Restrictions**,
