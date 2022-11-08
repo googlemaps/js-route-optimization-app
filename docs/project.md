@@ -78,23 +78,6 @@ to enable the frontend to use the required Google Maps APIs.
 > 📝 Take note of your new API Key value.
 > You will need to reference it later for deployment configuration.
 
-### 🕑 (Optional) Restrict API Key
-
-After deployment is complete, to prevent unauthorized use of your API Key,
-add the following restrictions.
-
-#### Application Restrictions
-DO NOT add any **Application Restrictions**,
-they will break the Geocoding API integration.
-
-#### API Restrictions
-In the **API restrictions** section, toggle the **Restrict Key** option
-and select the following APIs from the dropdown checklist:
-   - Geocoding API
-   - Maps JavaScript API
-   - Places API
-   - Static Maps API
-
 
 ## Configure OAuth
 The application relies on **Identity-Aware Proxy** (IAP) to authenticate users.
@@ -160,6 +143,32 @@ In the previous steps, you created:
 - OAuth credentials for IAP
 
 After these manual steps, the necessary prerequisites are in place
-to deploy Fleet Routing App.
+to deploy **Fleet Routing App**.
 
 **Next step:** [Deploy the application](deployment.md)
+
+---
+## (Optional) Restrict API Key
+
+After deployment is complete, to prevent unauthorized use of your API Key,
+add the following restrictions.
+
+1. Go to **[Google Cloud Console](https://console.cloud.google.com)** and open your project
+
+2. Navigate to the [**APIs & Services > Credentials**](https://console.cloud.google.com/apis/credentials) section
+
+3. Click the name of your API Key to edit it
+
+4. In the **Key Restrictions** section, make the following changes, then click **Save**
+
+#### Application Restrictions
+DO NOT add any **Application Restrictions**,
+they will break the Geocoding API integration.
+
+#### API Restrictions
+In the **API restrictions** section, toggle the **Restrict Key** option
+and select the following APIs from the dropdown checklist:
+   - Geocoding API
+   - Maps JavaScript API
+   - Places API
+   - Static Maps API
