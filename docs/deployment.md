@@ -13,7 +13,7 @@ and supporting resources to an initialized Google Cloud project.
 ## Prerequisites
 - [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) (`gcloud` CLI)
 - [Git](https://git-scm.com/)
-- [Terraform CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli) v1.0 or later
+- [Terraform CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli) v1.1 or later
 
 ## Authorize `gcloud` CLI
 **Terraform** runs as your `gcloud` *Application Default Credentials*.
