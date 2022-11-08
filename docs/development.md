@@ -57,6 +57,7 @@ Follow the instructions in Google's documentation to
 The frontend application depends on the following APIs:
 - **Cloud Optimization API**
 - **Google Maps Distance Matrix**
+- **Google Maps for Fleet Routing**
 - **Google Maps Geocoding**
 - **Google Maps JavaScript API**,
 - **Google Maps Places**
@@ -71,6 +72,8 @@ gcloud services enable cloudoptimization.googleapis.com --project {PROJECT_ID}
 gcloud services enable distance-matrix-backend.googleapis.com --project {PROJECT_ID}
 # geocoding
 gcloud services enable geocoding-backend.googleapis.com --project {PROJECT_ID}
+# maps for fleet routing
+gcloud services enable mapsfleetrouting.googleapis.com --project {PROJECT_ID}
 # maps javascript
 gcloud services enable maps-backend.googleapis.com --project {PROJECT_ID}
 # places
@@ -118,7 +121,7 @@ section of Cloud Console, or run the following `gcloud` command:
 
 ```sh
 gcloud projects add-iam-policy-binding {PROJECT_ID} \
-  --member=fleetrouting-app@{PROJECT_ID}.iam.gserviceaccount.com \
+  --member=serviceAccount:fleetrouting-app@{PROJECT_ID}.iam.gserviceaccount.com \
   --role=roles/cloudoptimization.editor
 ```
 
@@ -136,7 +139,7 @@ Clone the repository and navigate to the checked-out directory.
 
 ```shell
 git clone https://github.com/google/cfr.git
-cd fleetrouting-app
+cd cfr
 ```
 
 ### Install Dependencies
