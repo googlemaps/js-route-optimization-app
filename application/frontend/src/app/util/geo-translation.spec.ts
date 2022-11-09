@@ -16,7 +16,9 @@ import {
   fromDispatcherWaypointLatLng,
   fromTurfPoint,
   fromTurfRoute,
+  isLatLngString,
   mapsPolygonToTurfPolygon,
+  stringToLatLng,
   toCheapRulerLine,
   toCheapRulerPoint,
   toDispatcherLatLng,
@@ -224,4 +226,25 @@ describe('geo translation', () => {
 
     expect(result).toEqual(expected);
   });
+
+  it('should validate latLng string', () => {
+    expect(isLatLngString('-50, 10')).toBeTruthy();
+    expect(isLatLngString('50.11,-123.456')).toBeTruthy();
+    expect(isLatLngString(' 9.1  ,  -33 ')).toBeTruthy();
+  });
+
+  it('should not validate invalid latLng strings', () => {
+    expect(isLatLngString('-50, abc123')).toBeFalsy();
+    expect(isLatLngString('50.11 -123.456')).toBeFalsy();
+    expect(isLatLngString('north, south')).toBeFalsy();
+    expect(isLatLngString('5, null')).toBeFalsy();
+    expect(isLatLngString('false, 123.3')).toBeFalsy();
+    expect(isLatLngString('-11.111,     true')).toBeFalsy();
+  });
+
+  it('should convert string to ILatLng', () => {
+    expect(stringToLatLng('-50, 10')).toEqual({ latitude: -50, longitude: 10})
+    expect(stringToLatLng('50.11,-123.456')).toEqual({ latitude: 50.11, longitude: -123.456})
+    expect(stringToLatLng(' 9.1  ,  -33 ')).toEqual({ latitude: 9.1, longitude: -33})
+  })
 });

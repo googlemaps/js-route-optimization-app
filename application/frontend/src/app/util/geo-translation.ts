@@ -100,3 +100,35 @@ export function toCheapRulerLine(path: google.maps.LatLng[]): cheapRuler.Line {
 export function toCheapRulerPoint(vertex: google.maps.LatLng): cheapRuler.Point {
   return [vertex.lng(), vertex.lat()];
 }
+
+export function isLatLngString(str: string): boolean {
+  const split = str.split(',');
+
+  if (split.length !== 2) {
+    return false;
+  }
+
+  const latitude = parseFloat(split[0].trim());
+  const longitude = parseFloat(split[1].trim());
+
+  if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
+    return false;
+  }
+
+  return true;
+}
+
+export function stringToLatLng(str: string): ILatLng {
+  if (!isLatLngString(str)) {
+    return null
+  }
+
+  const split = str.split(',');
+  const latitude = parseFloat(split[0].trim());
+  const longitude = parseFloat(split[1].trim());
+
+  return {
+    latitude,
+    longitude
+  }
+}

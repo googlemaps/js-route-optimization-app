@@ -26,6 +26,7 @@ import { FileService } from './file.service';
 import { GeocodingService } from './geocoding.service';
 
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
+import { isLatLngString, stringToLatLng } from 'src/app/util';
 
 @Injectable({ providedIn: 'root' })
 export class CsvService {
@@ -668,16 +669,10 @@ export class CsvService {
       return of(null);
     }
 
-    const split = location.split(',');
-    if (split.length === 2) {
-      const latitude = parseFloat(split[0].trim());
-      const longitude = parseFloat(split[1].trim());
-      if (
-        !Number.isNaN(latitude) &&
-        !Number.isNaN(longitude) &&
-        this.validRange(latitude, longitude)
-      ) {
-        return of({ latitude, longitude });
+    if (isLatLngString(location)) {
+      const latLng = stringToLatLng(location);
+      if (this.validRange(latLng.latitude, latLng.longitude)) {
+        return of(latLng);
       }
     }
 
