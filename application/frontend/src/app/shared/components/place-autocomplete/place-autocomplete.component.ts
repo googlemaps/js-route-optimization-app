@@ -185,26 +185,26 @@ export class PlaceAutocompleteComponent
     });
     this.zone.runOutsideAngular(() => {
       this.searchEl.nativeElement.addEventListener('keydown', (event: KeyboardEvent) => {
-        // if user enters a place ID, get the details
-        if (isPlaceId(this.searchEl.nativeElement.value)) {
-          const placeId = (event.target as HTMLInputElement).value;
-          this.placesService.getDetails(placeId).then((placeResult) => {
-            this.form.setValue({
-              search: placeResult.formatted_address,
-              location: toDispatcherLatLng(placeResult.geometry?.location),
-              placeId: placeResult.place_id,
+        if (event.key === 'Enter' || event.key === 'Tab') {
+          // if user enters a place ID, get the details
+          if (isPlaceId(this.searchEl.nativeElement.value)) {
+            const placeId = (event.target as HTMLInputElement).value;
+            this.placesService.getDetails(placeId).then((placeResult) => {
+              this.form.setValue({
+                search: placeResult.formatted_address,
+                location: toDispatcherLatLng(placeResult.geometry?.location),
+                placeId: placeResult.place_id,
+              });
+
+              this.searchEl.nativeElement.value = placeResult.formatted_address;
+
+              // Ensure input title is updated
+              this.changeDetector.markForCheck();
             });
 
-            this.searchEl.nativeElement.value = placeResult.formatted_address;
+            return;
+          }
 
-            // Ensure input title is updated
-            this.changeDetector.markForCheck();
-          });
-
-          return;
-        }
-
-        if (event.key === 'Enter') {
           const value = this.searchEl.nativeElement.value;
 
           if (isLatLngString(value)) {
