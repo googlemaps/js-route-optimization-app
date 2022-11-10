@@ -37,7 +37,7 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject, Subscription } from 'rxjs';
 import { ILatLng } from 'src/app/core/models';
 import { isPlaceId, PlacesService } from 'src/app/core/services';
-import { isLatLngString, stringToLatLng, toDispatcherLatLng } from 'src/app/util';
+import { isLatLngString, stringToLatLng, timeWindowHasTime, toDispatcherLatLng } from 'src/app/util';
 
 /** Mimic the Angular material error state implementation to play nice with the material stepper */
 class PlaceAutocompleteComponentBase {
@@ -139,6 +139,7 @@ export class PlaceAutocompleteComponent
   private readonly placeId: FormControl;
   private autocomplete: google.maps.places.Autocomplete;
   private subscription: Subscription;
+  private autocompleteSelection = true;
   // eslint-disable-next-line  @typescript-eslint/no-empty-function
   private onChange = (_value: any): void => {};
   // eslint-disable-next-line  @typescript-eslint/no-empty-function
@@ -185,37 +186,8 @@ export class PlaceAutocompleteComponent
     });
     this.zone.runOutsideAngular(() => {
       this.searchEl.nativeElement.addEventListener('keydown', (event: KeyboardEvent) => {
-        if (event.key === 'Enter' || event.key === 'Tab') {
-          // if user enters a place ID, get the details
-          if (isPlaceId(this.searchEl.nativeElement.value)) {
-            const placeId = (event.target as HTMLInputElement).value;
-            this.placesService.getDetails(placeId).then((placeResult) => {
-              this.form.setValue({
-                search: placeResult.formatted_address,
-                location: toDispatcherLatLng(placeResult.geometry?.location),
-                placeId: placeResult.place_id,
-              });
-
-              this.searchEl.nativeElement.value = placeResult.formatted_address;
-
-              // Ensure input title is updated
-              this.changeDetector.markForCheck();
-            });
-
-            return;
-          }
-
-          const value = this.searchEl.nativeElement.value;
-
-          if (isLatLngString(value)) {
-            this.form.setValue({
-              search: value,
-              location: stringToLatLng(value),
-              placeId: null
-            });
-            this.searchEl.nativeElement.value = value;
-            this.changeDetector.markForCheck();
-          }
+        if (event.key === 'Enter') {
+          this.checkForPlaceIdOrLatLng(event);
         }
       });
 
@@ -231,17 +203,53 @@ export class PlaceAutocompleteComponent
           const placeResult = this.autocomplete.getPlace();
           const location = toDispatcherLatLng(placeResult?.geometry?.location);
           const search = this.searchEl.nativeElement.value;
-          this.form.setValue({
-            search: search || '',
-            location: location || null,
-            placeId: placeResult?.place_id || null,
-          });
-
+          if (this.autocompleteSelection) {
+            this.form.setValue({
+              search: search || '',
+              location: location || null,
+              placeId: placeResult?.place_id || null,
+            });
+          }
+          this.autocompleteSelection = true;
           // Ensure input title is updated
           this.changeDetector.markForCheck();
         });
       });
     });
+  }
+
+  checkForPlaceIdOrLatLng(event: KeyboardEvent): void {
+    const value = this.searchEl.nativeElement.value;
+
+    // if user enters a place ID, get the details
+    if (isPlaceId(value)) {
+      const placeId = (event.target as HTMLInputElement).value;
+      this.placesService.getDetails(placeId).then((placeResult) => {
+        this.form.setValue({
+          search: placeResult.formatted_address,
+          location: toDispatcherLatLng(placeResult.geometry?.location),
+          placeId: placeResult.place_id,
+        });
+
+        this.searchEl.nativeElement.value = placeResult.formatted_address;
+        this.autocompleteSelection = false;
+        // Ensure input title is updated
+        this.changeDetector.markForCheck();
+      });
+
+      return;
+    }
+
+    // if user enters a valid lat,lng pair, parse it
+    if (isLatLngString(value)) {
+      this.form.setValue({
+        search: value,
+        location: stringToLatLng(value),
+        placeId: null
+      });
+      this.autocompleteSelection = false;
+      this.changeDetector.markForCheck();
+    }
   }
 
   ngDoCheck(): void {
