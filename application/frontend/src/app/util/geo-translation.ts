@@ -120,7 +120,7 @@ export function isLatLngString(str: string): boolean {
 
 export function stringToLatLng(str: string): ILatLng {
   if (!isLatLngString(str)) {
-    return null
+    return null;
   }
 
   const split = str.split(',');
@@ -129,6 +129,6 @@ export function stringToLatLng(str: string): ILatLng {
 
   return {
     latitude,
-    longitude
-  }
+    longitude,
+  };
 }

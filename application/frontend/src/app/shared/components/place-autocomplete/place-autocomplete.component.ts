@@ -37,7 +37,12 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject, Subscription } from 'rxjs';
 import { ILatLng } from 'src/app/core/models';
 import { isPlaceId, PlacesService } from 'src/app/core/services';
-import { isLatLngString, stringToLatLng, timeWindowHasTime, toDispatcherLatLng } from 'src/app/util';
+import {
+  isLatLngString,
+  stringToLatLng,
+  timeWindowHasTime,
+  toDispatcherLatLng,
+} from 'src/app/util';
 
 /** Mimic the Angular material error state implementation to play nice with the material stepper */
 class PlaceAutocompleteComponentBase {
@@ -245,7 +250,7 @@ export class PlaceAutocompleteComponent
       this.form.setValue({
         search: value,
         location: stringToLatLng(value),
-        placeId: null
+        placeId: null,
       });
       this.autocompleteSelection = false;
       this.changeDetector.markForCheck();

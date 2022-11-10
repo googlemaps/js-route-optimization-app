@@ -243,8 +243,8 @@ describe('geo translation', () => {
   });
 
   it('should convert string to ILatLng', () => {
-    expect(stringToLatLng('-50, 10')).toEqual({ latitude: -50, longitude: 10})
-    expect(stringToLatLng('50.11,-123.456')).toEqual({ latitude: 50.11, longitude: -123.456})
-    expect(stringToLatLng(' 9.1  ,  -33 ')).toEqual({ latitude: 9.1, longitude: -33})
-  })
+    expect(stringToLatLng('-50, 10')).toEqual({ latitude: -50, longitude: 10 });
+    expect(stringToLatLng('50.11,-123.456')).toEqual({ latitude: 50.11, longitude: -123.456 });
+    expect(stringToLatLng(' 9.1  ,  -33 ')).toEqual({ latitude: 9.1, longitude: -33 });
+  });
 });
