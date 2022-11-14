@@ -18,8 +18,6 @@
 // ** All changes to this file may be overwritten. **
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FleetRoutingClient = void 0;
-/* global window */
-const gax = require("google-gax");
 const jsonProtos = require("../../protos/protos.json");
 /**
  * Client JSON configuration object, loaded from
@@ -27,7 +25,6 @@ const jsonProtos = require("../../protos/protos.json");
  * This file defines retry strategy and timeouts for all API methods in this library.
  */
 const gapicConfig = require("./fleet_routing_client_config.json");
-const google_gax_1 = require("google-gax");
 const version = require('../../../package.json').version;
 /**
  *  A service for optimizing vehicle tours.
@@ -56,7 +53,7 @@ class FleetRoutingClient {
      *
      * @param {object} [options] - The configuration object.
      * The options accepted by the constructor are described in detail
-     * in [this document](https://github.com/googleapis/gax-nodejs/blob/master/client-libraries.md#creating-the-client-instance).
+     * in [this document](https://github.com/googleapis/gax-nodejs/blob/main/client-libraries.md#creating-the-client-instance).
      * The common options are:
      * @param {object} [options.credentials] - Credentials object.
      * @param {string} [options.credentials.client_email]
@@ -79,13 +76,19 @@ class FleetRoutingClient {
      *     API remote host.
      * @param {gax.ClientConfig} [options.clientConfig] - Client configuration override.
      *     Follows the structure of {@link gapicConfig}.
-     * @param {boolean} [options.fallback] - Use HTTP fallback mode.
-     *     In fallback mode, a special browser-compatible transport implementation is used
-     *     instead of gRPC transport. In browser context (if the `window` object is defined)
-     *     the fallback mode is enabled automatically; set `options.fallback` to `false`
-     *     if you need to override this behavior.
+     * @param {boolean | "rest"} [options.fallback] - Use HTTP fallback mode.
+     *     Pass "rest" to use HTTP/1.1 REST API instead of gRPC.
+     *     For more information, please check the
+     *     {@link https://github.com/googleapis/gax-nodejs/blob/main/client-libraries.md#http11-rest-api-mode documentation}.
+     * @param {gax} [gaxInstance]: loaded instance of `google-gax`. Useful if you
+     *     need to avoid loading the default gRPC version and want to use the fallback
+     *     HTTP implementation. Load only fallback version and pass it to the constructor:
+     *     ```
+     *     const gax = require('google-gax/build/src/fallback'); // avoids loading google-gax with gRPC
+     *     const client = new FleetRoutingClient({fallback: 'rest'}, gax);
+     *     ```
      */
-    constructor(opts) {
+    constructor(opts, gaxInstance) {
         var _a, _b;
         this._terminated = false;
         this.descriptors = {
@@ -106,8 +109,12 @@ class FleetRoutingClient {
         if (servicePath !== staticMembers.servicePath && !('scopes' in opts)) {
             opts['scopes'] = staticMembers.scopes;
         }
+        // Load google-gax module synchronously if needed
+        if (!gaxInstance) {
+            gaxInstance = require('google-gax');
+        }
         // Choose either gRPC or proto-over-HTTP implementation of google-gax.
-        this._gaxModule = opts.fallback ? gax.fallback : gax;
+        this._gaxModule = opts.fallback ? gaxInstance.fallback : gaxInstance;
         // Create a `gaxGrpc` object, with any grpc-specific options sent to the client.
         this._gaxGrpc = new this._gaxModule.GrpcClient(opts);
         // Save options to use in initialize() method.
@@ -144,14 +151,30 @@ class FleetRoutingClient {
         }
         // Load the applicable protos.
         this._protos = this._gaxGrpc.loadProtoJSON(jsonProtos);
+        // This API contains "path templates"; forward-slash-separated
+        // identifiers to uniquely identify resources within the API.
+        // Create useful helper objects for these.
+        this.pathTemplates = {
+            optimizerPathTemplate: new this._gaxModule.PathTemplate('projects/{project}/locations/{location}/workspaces/{workspace}/optimizers/{optimizer}'),
+            shipmentPathTemplate: new this._gaxModule.PathTemplate('projects/{project}/locations/{location}/workspaces/{workspace}/shipments/{shipment}'),
+            solutionPathTemplate: new this._gaxModule.PathTemplate('projects/{project}/locations/{location}/workspaces/{workspace}/solutions/{solution}'),
+            vehiclePathTemplate: new this._gaxModule.PathTemplate('projects/{project}/locations/{location}/workspaces/{workspace}/vehicles/{vehicle}'),
+            workspacePathTemplate: new this._gaxModule.PathTemplate('projects/{project}/locations/{location}/workspaces/{workspace}'),
+        };
         const protoFilesRoot = this._gaxModule.protobuf.Root.fromJSON(jsonProtos);
         // This API contains "long-running operations", which return a
         // an Operation object that allows for tracking of the operation,
         // rather than holding a request open.
-        this.operationsClient = this._gaxModule.lro({
+        const lroOptions = {
             auth: this.auth,
             grpc: 'grpc' in this._gaxGrpc ? this._gaxGrpc.grpc : undefined
-        }).operationsClient(opts);
+        };
+        if (opts.fallback === 'rest') {
+            lroOptions.protoJson = protoFilesRoot;
+            lroOptions.httpRules = [{ selector: 'google.longrunning.Operations.GetOperation', get: '/v1/{name=projects/*/operations/*}', additional_bindings: [{ get: '/v1/{name=projects/*/locations/*/operations/*}', }],
+                }];
+        }
+        this.operationsClient = this._gaxModule.lro(lroOptions).operationsClient(opts);
         const batchOptimizeToursResponse = protoFilesRoot.lookup('.google.cloud.optimization.v1.BatchOptimizeToursResponse');
         const batchOptimizeToursMetadata = protoFilesRoot.lookup('.google.cloud.optimization.v1.AsyncModelMetadata');
         this.descriptors.longrunning = {
@@ -164,7 +187,7 @@ class FleetRoutingClient {
         // merely providing the destination and request information.
         this.innerApiCalls = {};
         // Add a warn function to the client constructor so it can be easily tested.
-        this.warn = gax.warn;
+        this.warn = this._gaxModule.warn;
     }
     /**
      * Initialize the client.
@@ -203,7 +226,7 @@ class FleetRoutingClient {
             });
             const descriptor = this.descriptors.longrunning[methodName] ||
                 undefined;
-            const apiCall = this._gaxModule.createApiCall(callPromise, this._defaults[methodName], descriptor);
+            const apiCall = this._gaxModule.createApiCall(callPromise, this._defaults[methodName], descriptor, this._opts.fallback);
             this.innerApiCalls[methodName] = apiCall;
         }
         return this.fleetRoutingStub;
@@ -252,6 +275,7 @@ class FleetRoutingClient {
         return this.auth.getProjectId();
     }
     optimizeTours(request, optionsOrCallback, callback) {
+        var _a;
         request = request || {};
         let options;
         if (typeof optionsOrCallback === 'function' && callback === undefined) {
@@ -264,13 +288,14 @@ class FleetRoutingClient {
         options = options || {};
         options.otherArgs = options.otherArgs || {};
         options.otherArgs.headers = options.otherArgs.headers || {};
-        options.otherArgs.headers['x-goog-request-params'] = gax.routingHeader.fromParams({
-            'parent': request.parent || '',
+        options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+            'parent': (_a = request.parent) !== null && _a !== void 0 ? _a : '',
         });
         this.initialize();
         return this.innerApiCalls.optimizeTours(request, options, callback);
     }
     batchOptimizeTours(request, optionsOrCallback, callback) {
+        var _a;
         request = request || {};
         let options;
         if (typeof optionsOrCallback === 'function' && callback === undefined) {
@@ -283,8 +308,8 @@ class FleetRoutingClient {
         options = options || {};
         options.otherArgs = options.otherArgs || {};
         options.otherArgs.headers = options.otherArgs.headers || {};
-        options.otherArgs.headers['x-goog-request-params'] = gax.routingHeader.fromParams({
-            'parent': request.parent || '',
+        options.otherArgs.headers['x-goog-request-params'] = this._gaxModule.routingHeader.fromParams({
+            'parent': (_a = request.parent) !== null && _a !== void 0 ? _a : '',
         });
         this.initialize();
         return this.innerApiCalls.batchOptimizeTours(request, options, callback);
@@ -302,10 +327,416 @@ class FleetRoutingClient {
      * region_tag:cloudoptimization_v1_generated_FleetRouting_BatchOptimizeTours_async
      */
     async checkBatchOptimizeToursProgress(name) {
-        const request = new google_gax_1.operationsProtos.google.longrunning.GetOperationRequest({ name });
+        const request = new this._gaxModule.operationsProtos.google.longrunning.GetOperationRequest({ name });
         const [operation] = await this.operationsClient.getOperation(request);
-        const decodeOperation = new gax.Operation(operation, this.descriptors.longrunning.batchOptimizeTours, gax.createDefaultBackoffSettings());
+        const decodeOperation = new this._gaxModule.Operation(operation, this.descriptors.longrunning.batchOptimizeTours, this._gaxModule.createDefaultBackoffSettings());
         return decodeOperation;
+    }
+    /**
+       * Gets the latest state of a long-running operation.  Clients can use this
+       * method to poll the operation result at intervals as recommended by the API
+       * service.
+       *
+       * @param {Object} request - The request object that will be sent.
+       * @param {string} request.name - The name of the operation resource.
+       * @param {Object=} options
+       *   Optional parameters. You can override the default settings for this call,
+       *   e.g, timeout, retries, paginations, etc. See [gax.CallOptions]{@link
+       *   https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the
+       *   details.
+       * @param {function(?Error, ?Object)=} callback
+       *   The function which will be called with the result of the API call.
+       *
+       *   The second parameter to the callback is an object representing
+       * [google.longrunning.Operation]{@link
+       * external:"google.longrunning.Operation"}.
+       * @return {Promise} - The promise which resolves to an array.
+       *   The first element of the array is an object representing
+       * [google.longrunning.Operation]{@link
+       * external:"google.longrunning.Operation"}. The promise has a method named
+       * "cancel" which cancels the ongoing API call.
+       *
+       * @example
+       * ```
+       * const client = longrunning.operationsClient();
+       * const name = '';
+       * const [response] = await client.getOperation({name});
+       * // doThingsWith(response)
+       * ```
+       */
+    getOperation(request, options, callback) {
+        return this.operationsClient.getOperation(request, options, callback);
+    }
+    /**
+     * Lists operations that match the specified filter in the request. If the
+     * server doesn't support this method, it returns `UNIMPLEMENTED`. Returns an iterable object.
+     *
+     * For-await-of syntax is used with the iterable to recursively get response element on-demand.
+     *
+     * @param {Object} request - The request object that will be sent.
+     * @param {string} request.name - The name of the operation collection.
+     * @param {string} request.filter - The standard list filter.
+     * @param {number=} request.pageSize -
+     *   The maximum number of resources contained in the underlying API
+     *   response. If page streaming is performed per-resource, this
+     *   parameter does not affect the return value. If page streaming is
+     *   performed per-page, this determines the maximum number of
+     *   resources in a page.
+     * @param {Object=} options
+     *   Optional parameters. You can override the default settings for this call,
+     *   e.g, timeout, retries, paginations, etc. See [gax.CallOptions]{@link
+     *   https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the
+     *   details.
+     * @returns {Object}
+     *   An iterable Object that conforms to @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols.
+     *
+     * @example
+     * ```
+     * const client = longrunning.operationsClient();
+     * for await (const response of client.listOperationsAsync(request));
+     * // doThingsWith(response)
+     * ```
+     */
+    listOperationsAsync(request, options) {
+        return this.operationsClient.listOperationsAsync(request, options);
+    }
+    /**
+     * Starts asynchronous cancellation on a long-running operation.  The server
+     * makes a best effort to cancel the operation, but success is not
+     * guaranteed.  If the server doesn't support this method, it returns
+     * `google.rpc.Code.UNIMPLEMENTED`.  Clients can use
+     * {@link Operations.GetOperation} or
+     * other methods to check whether the cancellation succeeded or whether the
+     * operation completed despite cancellation. On successful cancellation,
+     * the operation is not deleted; instead, it becomes an operation with
+     * an {@link Operation.error} value with a {@link google.rpc.Status.code} of
+     * 1, corresponding to `Code.CANCELLED`.
+     *
+     * @param {Object} request - The request object that will be sent.
+     * @param {string} request.name - The name of the operation resource to be cancelled.
+     * @param {Object=} options
+     *   Optional parameters. You can override the default settings for this call,
+     * e.g, timeout, retries, paginations, etc. See [gax.CallOptions]{@link
+     * https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the
+     * details.
+     * @param {function(?Error)=} callback
+     *   The function which will be called with the result of the API call.
+     * @return {Promise} - The promise which resolves when API call finishes.
+     *   The promise has a method named "cancel" which cancels the ongoing API
+     * call.
+     *
+     * @example
+     * ```
+     * const client = longrunning.operationsClient();
+     * await client.cancelOperation({name: ''});
+     * ```
+     */
+    cancelOperation(request, options, callback) {
+        return this.operationsClient.cancelOperation(request, options, callback);
+    }
+    /**
+     * Deletes a long-running operation. This method indicates that the client is
+     * no longer interested in the operation result. It does not cancel the
+     * operation. If the server doesn't support this method, it returns
+     * `google.rpc.Code.UNIMPLEMENTED`.
+     *
+     * @param {Object} request - The request object that will be sent.
+     * @param {string} request.name - The name of the operation resource to be deleted.
+     * @param {Object=} options
+     *   Optional parameters. You can override the default settings for this call,
+     * e.g, timeout, retries, paginations, etc. See [gax.CallOptions]{@link
+     * https://googleapis.github.io/gax-nodejs/global.html#CallOptions} for the
+     * details.
+     * @param {function(?Error)=} callback
+     *   The function which will be called with the result of the API call.
+     * @return {Promise} - The promise which resolves when API call finishes.
+     *   The promise has a method named "cancel" which cancels the ongoing API
+     * call.
+     *
+     * @example
+     * ```
+     * const client = longrunning.operationsClient();
+     * await client.deleteOperation({name: ''});
+     * ```
+     */
+    deleteOperation(request, options, callback) {
+        return this.operationsClient.deleteOperation(request, options, callback);
+    }
+    // --------------------
+    // -- Path templates --
+    // --------------------
+    /**
+     * Return a fully-qualified optimizer resource name string.
+     *
+     * @param {string} project
+     * @param {string} location
+     * @param {string} workspace
+     * @param {string} optimizer
+     * @returns {string} Resource name string.
+     */
+    optimizerPath(project, location, workspace, optimizer) {
+        return this.pathTemplates.optimizerPathTemplate.render({
+            project: project,
+            location: location,
+            workspace: workspace,
+            optimizer: optimizer,
+        });
+    }
+    /**
+     * Parse the project from Optimizer resource.
+     *
+     * @param {string} optimizerName
+     *   A fully-qualified path representing Optimizer resource.
+     * @returns {string} A string representing the project.
+     */
+    matchProjectFromOptimizerName(optimizerName) {
+        return this.pathTemplates.optimizerPathTemplate.match(optimizerName).project;
+    }
+    /**
+     * Parse the location from Optimizer resource.
+     *
+     * @param {string} optimizerName
+     *   A fully-qualified path representing Optimizer resource.
+     * @returns {string} A string representing the location.
+     */
+    matchLocationFromOptimizerName(optimizerName) {
+        return this.pathTemplates.optimizerPathTemplate.match(optimizerName).location;
+    }
+    /**
+     * Parse the workspace from Optimizer resource.
+     *
+     * @param {string} optimizerName
+     *   A fully-qualified path representing Optimizer resource.
+     * @returns {string} A string representing the workspace.
+     */
+    matchWorkspaceFromOptimizerName(optimizerName) {
+        return this.pathTemplates.optimizerPathTemplate.match(optimizerName).workspace;
+    }
+    /**
+     * Parse the optimizer from Optimizer resource.
+     *
+     * @param {string} optimizerName
+     *   A fully-qualified path representing Optimizer resource.
+     * @returns {string} A string representing the optimizer.
+     */
+    matchOptimizerFromOptimizerName(optimizerName) {
+        return this.pathTemplates.optimizerPathTemplate.match(optimizerName).optimizer;
+    }
+    /**
+     * Return a fully-qualified shipment resource name string.
+     *
+     * @param {string} project
+     * @param {string} location
+     * @param {string} workspace
+     * @param {string} shipment
+     * @returns {string} Resource name string.
+     */
+    shipmentPath(project, location, workspace, shipment) {
+        return this.pathTemplates.shipmentPathTemplate.render({
+            project: project,
+            location: location,
+            workspace: workspace,
+            shipment: shipment,
+        });
+    }
+    /**
+     * Parse the project from Shipment resource.
+     *
+     * @param {string} shipmentName
+     *   A fully-qualified path representing Shipment resource.
+     * @returns {string} A string representing the project.
+     */
+    matchProjectFromShipmentName(shipmentName) {
+        return this.pathTemplates.shipmentPathTemplate.match(shipmentName).project;
+    }
+    /**
+     * Parse the location from Shipment resource.
+     *
+     * @param {string} shipmentName
+     *   A fully-qualified path representing Shipment resource.
+     * @returns {string} A string representing the location.
+     */
+    matchLocationFromShipmentName(shipmentName) {
+        return this.pathTemplates.shipmentPathTemplate.match(shipmentName).location;
+    }
+    /**
+     * Parse the workspace from Shipment resource.
+     *
+     * @param {string} shipmentName
+     *   A fully-qualified path representing Shipment resource.
+     * @returns {string} A string representing the workspace.
+     */
+    matchWorkspaceFromShipmentName(shipmentName) {
+        return this.pathTemplates.shipmentPathTemplate.match(shipmentName).workspace;
+    }
+    /**
+     * Parse the shipment from Shipment resource.
+     *
+     * @param {string} shipmentName
+     *   A fully-qualified path representing Shipment resource.
+     * @returns {string} A string representing the shipment.
+     */
+    matchShipmentFromShipmentName(shipmentName) {
+        return this.pathTemplates.shipmentPathTemplate.match(shipmentName).shipment;
+    }
+    /**
+     * Return a fully-qualified solution resource name string.
+     *
+     * @param {string} project
+     * @param {string} location
+     * @param {string} workspace
+     * @param {string} solution
+     * @returns {string} Resource name string.
+     */
+    solutionPath(project, location, workspace, solution) {
+        return this.pathTemplates.solutionPathTemplate.render({
+            project: project,
+            location: location,
+            workspace: workspace,
+            solution: solution,
+        });
+    }
+    /**
+     * Parse the project from Solution resource.
+     *
+     * @param {string} solutionName
+     *   A fully-qualified path representing Solution resource.
+     * @returns {string} A string representing the project.
+     */
+    matchProjectFromSolutionName(solutionName) {
+        return this.pathTemplates.solutionPathTemplate.match(solutionName).project;
+    }
+    /**
+     * Parse the location from Solution resource.
+     *
+     * @param {string} solutionName
+     *   A fully-qualified path representing Solution resource.
+     * @returns {string} A string representing the location.
+     */
+    matchLocationFromSolutionName(solutionName) {
+        return this.pathTemplates.solutionPathTemplate.match(solutionName).location;
+    }
+    /**
+     * Parse the workspace from Solution resource.
+     *
+     * @param {string} solutionName
+     *   A fully-qualified path representing Solution resource.
+     * @returns {string} A string representing the workspace.
+     */
+    matchWorkspaceFromSolutionName(solutionName) {
+        return this.pathTemplates.solutionPathTemplate.match(solutionName).workspace;
+    }
+    /**
+     * Parse the solution from Solution resource.
+     *
+     * @param {string} solutionName
+     *   A fully-qualified path representing Solution resource.
+     * @returns {string} A string representing the solution.
+     */
+    matchSolutionFromSolutionName(solutionName) {
+        return this.pathTemplates.solutionPathTemplate.match(solutionName).solution;
+    }
+    /**
+     * Return a fully-qualified vehicle resource name string.
+     *
+     * @param {string} project
+     * @param {string} location
+     * @param {string} workspace
+     * @param {string} vehicle
+     * @returns {string} Resource name string.
+     */
+    vehiclePath(project, location, workspace, vehicle) {
+        return this.pathTemplates.vehiclePathTemplate.render({
+            project: project,
+            location: location,
+            workspace: workspace,
+            vehicle: vehicle,
+        });
+    }
+    /**
+     * Parse the project from Vehicle resource.
+     *
+     * @param {string} vehicleName
+     *   A fully-qualified path representing Vehicle resource.
+     * @returns {string} A string representing the project.
+     */
+    matchProjectFromVehicleName(vehicleName) {
+        return this.pathTemplates.vehiclePathTemplate.match(vehicleName).project;
+    }
+    /**
+     * Parse the location from Vehicle resource.
+     *
+     * @param {string} vehicleName
+     *   A fully-qualified path representing Vehicle resource.
+     * @returns {string} A string representing the location.
+     */
+    matchLocationFromVehicleName(vehicleName) {
+        return this.pathTemplates.vehiclePathTemplate.match(vehicleName).location;
+    }
+    /**
+     * Parse the workspace from Vehicle resource.
+     *
+     * @param {string} vehicleName
+     *   A fully-qualified path representing Vehicle resource.
+     * @returns {string} A string representing the workspace.
+     */
+    matchWorkspaceFromVehicleName(vehicleName) {
+        return this.pathTemplates.vehiclePathTemplate.match(vehicleName).workspace;
+    }
+    /**
+     * Parse the vehicle from Vehicle resource.
+     *
+     * @param {string} vehicleName
+     *   A fully-qualified path representing Vehicle resource.
+     * @returns {string} A string representing the vehicle.
+     */
+    matchVehicleFromVehicleName(vehicleName) {
+        return this.pathTemplates.vehiclePathTemplate.match(vehicleName).vehicle;
+    }
+    /**
+     * Return a fully-qualified workspace resource name string.
+     *
+     * @param {string} project
+     * @param {string} location
+     * @param {string} workspace
+     * @returns {string} Resource name string.
+     */
+    workspacePath(project, location, workspace) {
+        return this.pathTemplates.workspacePathTemplate.render({
+            project: project,
+            location: location,
+            workspace: workspace,
+        });
+    }
+    /**
+     * Parse the project from Workspace resource.
+     *
+     * @param {string} workspaceName
+     *   A fully-qualified path representing Workspace resource.
+     * @returns {string} A string representing the project.
+     */
+    matchProjectFromWorkspaceName(workspaceName) {
+        return this.pathTemplates.workspacePathTemplate.match(workspaceName).project;
+    }
+    /**
+     * Parse the location from Workspace resource.
+     *
+     * @param {string} workspaceName
+     *   A fully-qualified path representing Workspace resource.
+     * @returns {string} A string representing the location.
+     */
+    matchLocationFromWorkspaceName(workspaceName) {
+        return this.pathTemplates.workspacePathTemplate.match(workspaceName).location;
+    }
+    /**
+     * Parse the workspace from Workspace resource.
+     *
+     * @param {string} workspaceName
+     *   A fully-qualified path representing Workspace resource.
+     * @returns {string} A string representing the workspace.
+     */
+    matchWorkspaceFromWorkspaceName(workspaceName) {
+        return this.pathTemplates.workspacePathTemplate.match(workspaceName).workspace;
     }
     /**
      * Terminate the gRPC channel and close the client.
