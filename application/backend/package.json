@@ -11,7 +11,7 @@
     "start": "concurrently \"tsc --watch --preserveWatchOutput\" \"npx nodemon server.js\"",
     "build": "tsc",
     "lint": "eslint .",
-    "test": "npm run build && jest --runInBand --silent=false"
+    "test": "npm run build && tsc jest.config.ts && jest --runInBand --silent=false"
   },
   "dependencies": {
     "@google-cloud/optimization": "file:./lib/optimization-api/",

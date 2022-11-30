@@ -17,12 +17,14 @@
 // ** https://github.com/googleapis/gapic-generator-typescript **
 // ** All changes to this file may be overwritten. **
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.protos = exports.FleetRoutingClient = exports.v1 = void 0;
+exports.protos = exports.StatefulFleetRoutingClient = exports.FleetRoutingClient = exports.v1 = void 0;
 const v1 = require("./v1");
 exports.v1 = v1;
 const FleetRoutingClient = v1.FleetRoutingClient;
 exports.FleetRoutingClient = FleetRoutingClient;
-exports.default = { v1, FleetRoutingClient };
+const StatefulFleetRoutingClient = v1.StatefulFleetRoutingClient;
+exports.StatefulFleetRoutingClient = StatefulFleetRoutingClient;
+exports.default = { v1, FleetRoutingClient, StatefulFleetRoutingClient };
 const protos = require("../protos/protos");
 exports.protos = protos;
 //# sourceMappingURL=index.js.map
