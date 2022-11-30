@@ -9,7 +9,6 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { IDuration, IDurationLimit } from 'src/app/core/models';
-import { durationSeconds } from 'src/app/util';
 
 /**
  * Converts a protobuf DurationLimit to an object.
@@ -24,16 +23,11 @@ export class DurationLimitPipe implements PipeTransform {
     if (!durationLimit) {
       return;
     }
-    const maxDuration = durationSeconds(durationLimit.maxDuration, null);
-    const softMaxDuration = durationSeconds(durationLimit.softMaxDuration, null);
-    const costPerHourAfterSoftMax = durationLimit.costPerHourAfterSoftMax;
-    if (maxDuration == null && softMaxDuration == null && costPerHourAfterSoftMax == null) {
-      return;
-    }
+
     return {
       maxDuration: durationLimit.maxDuration,
       softMaxDuration: durationLimit.softMaxDuration,
-      costPerHourAfterSoftMax,
+      costPerHourAfterSoftMax: durationLimit.costPerHourAfterSoftMax,
     };
   }
 }

@@ -83,9 +83,9 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Route Duration Limit</th>
     <td mat-cell *matCellDef="let item">
       <ng-container *ngIf="item.routeDurationLimit | durationLimit as dl; else listNilCharacter">
-        <div class="text-nowrap">Max: {{ secondsToFormattedTime(dl.maxDuration) }}</div>
-        <div class="text-nowrap">Soft max: {{ secondsToFormattedTime(dl.softMaxDuration) }}</div>
-        <div class="text-nowrap">
+        <div *ngIf="dl.maxDuration" class="text-nowrap">Max: {{ secondsToFormattedTime(dl.maxDuration) }}</div>
+        <div *ngIf="dl.softMaxDuration" class="text-nowrap">Soft max: {{ secondsToFormattedTime(dl.softMaxDuration) }}</div>
+        <div *ngIf="dl.costPerHourAfterSoftMax" class="text-nowrap">
           Cost per hour after soft max: {{ dl.costPerHourAfterSoftMax }}
         </div>
       </ng-container>
@@ -95,9 +95,9 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Travel Duration Limit</th>
     <td mat-cell *matCellDef="let item">
       <ng-container *ngIf="item.travelDurationLimit | durationLimit as dl; else listNilCharacter">
-        <div class="text-nowrap">Max: {{ secondsToFormattedTime(dl.maxDuration) }}</div>
-        <div class="text-nowrap">Soft max: {{ secondsToFormattedTime(dl.softMaxDuration) }}</div>
-        <div class="text-nowrap">
+        <div *ngIf="dl.maxDuration" class="text-nowrap">Max: {{ secondsToFormattedTime(dl.maxDuration) }}</div>
+        <div *ngIf="dl.softMaxDuration" class="text-nowrap">Soft max: {{ secondsToFormattedTime(dl.softMaxDuration) }}</div>
+        <div *ngIf="dl.costPerHourAfterSoftMax" class="text-nowrap">
           Cost per hour after soft max: {{ dl.costPerHourAfterSoftMax }}
         </div>
       </ng-container>
