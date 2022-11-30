@@ -31,7 +31,9 @@ export class DistanceLimitPipe implements PipeTransform {
     return {
       maxMeters: maxMeters ? Long.fromValue(maxMeters)?.toNumber() : null,
       maxSoftMeters: maxSoftMeters ? Long.fromValue(maxSoftMeters)?.toNumber() : null,
-      costPerKilometerAfterSoftMax: costPerKilometerAfterSoftMax ? Long.fromValue(costPerKilometerAfterSoftMax)?.toNumber() : null,
+      costPerKilometerAfterSoftMax: costPerKilometerAfterSoftMax
+        ? Long.fromValue(costPerKilometerAfterSoftMax)?.toNumber()
+        : null,
     };
   }
 }
