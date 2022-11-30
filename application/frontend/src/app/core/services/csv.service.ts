@@ -168,7 +168,7 @@ export class CsvService {
     if (allowExperimentalFeatures) {
       return csv;
     }
-    const { data } = parse(csv, { header: true });
+    const { data } = parse(csv, { header: true, skipEmptyLines: 'greedy' });
     return unparse(data.map((row) => omit(row, filterFields)));
   }
 
@@ -186,6 +186,7 @@ export class CsvService {
         delimiter: ',',
         header: true,
         preview: n,
+        skipEmptyLines: 'greedy',
         complete: (results, _) => {
           observer.next(results);
           observer.complete();
@@ -200,7 +201,7 @@ export class CsvService {
       parse(file, {
         delimiter: ',',
         header: true,
-        skipEmptyLines: true,
+        skipEmptyLines: 'greedy',
         complete: (results, _) => {
           observer.next(results);
           observer.complete();
