@@ -40,7 +40,6 @@ import { isPlaceId, PlacesService } from 'src/app/core/services';
 import {
   isLatLngString,
   stringToLatLng,
-  timeWindowHasTime,
   toDispatcherLatLng,
 } from 'src/app/util';
 
