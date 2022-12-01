@@ -27,13 +27,13 @@ export class DistanceLimitPipe implements PipeTransform {
     const maxMeters = distanceLimit.maxMeters;
     const maxSoftMeters = distanceLimit.softMaxMeters;
     const costPerKilometerAfterSoftMax = distanceLimit.costPerKilometerAboveSoftMax;
-    if (maxMeters == null || maxSoftMeters == null || costPerKilometerAfterSoftMax == null) {
-      return;
-    }
+
     return {
-      maxMeters: Long.fromValue(maxMeters)?.toNumber(),
-      maxSoftMeters: Long.fromValue(maxSoftMeters)?.toNumber(),
-      costPerKilometerAfterSoftMax: Long.fromValue(costPerKilometerAfterSoftMax)?.toNumber(),
+      maxMeters: maxMeters ? Long.fromValue(maxMeters)?.toNumber() : null,
+      maxSoftMeters: maxSoftMeters ? Long.fromValue(maxSoftMeters)?.toNumber() : null,
+      costPerKilometerAfterSoftMax: costPerKilometerAfterSoftMax
+        ? Long.fromValue(costPerKilometerAfterSoftMax)?.toNumber()
+        : null,
     };
   }
 }
