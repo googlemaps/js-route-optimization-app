@@ -168,7 +168,7 @@ export class CsvService {
     if (allowExperimentalFeatures) {
       return csv;
     }
-    const { data } = parse(csv, { header: true });
+    const { data } = parse(csv, { header: true, skipEmptyLines: 'greedy' });
     return unparse(data.map((row) => omit(row, filterFields)));
   }
 
@@ -186,6 +186,7 @@ export class CsvService {
         delimiter: ',',
         header: true,
         preview: n,
+        skipEmptyLines: 'greedy',
         complete: (results, _) => {
           observer.next(results);
           observer.complete();
@@ -200,7 +201,7 @@ export class CsvService {
       parse(file, {
         delimiter: ',',
         header: true,
-        skipEmptyLines: true,
+        skipEmptyLines: 'greedy',
         complete: (results, _) => {
           observer.next(results);
           observer.complete();
@@ -663,10 +664,14 @@ export class CsvService {
   }
 
   geocodeLocation(location: string): Observable<ILatLng | GeocodeErrorResponse> {
-    // First try to split the location as at Lat,Lng pair
+    // First try to split the location as a Lat,Lng pair
     // Then geocode what the user provides if coordinates can't be parsed
     if (!location) {
-      return of(null);
+      return of(<GeocodeErrorResponse>{
+        error: true,
+        location,
+        message: 'Cannot geocode empty location',
+      });
     }
 
     if (isLatLngString(location)) {
