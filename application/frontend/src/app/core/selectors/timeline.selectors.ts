@@ -234,7 +234,7 @@ const getTimeline = (
   // to place the depot POI after user visit manipulation (max of last visit end time or vehicle end time)
   // and still be consistent with the timeline
   if (lastTravelSegment) {
-    lastTravelSegment.endTime  = maxLong(vehicleEndTime, lastTravelSegment.startTime);
+    lastTravelSegment.endTime = maxLong(vehicleEndTime, lastTravelSegment.startTime);
   }
 
   // User visit modification introduces potential for overlap that breaks assumptions that would
