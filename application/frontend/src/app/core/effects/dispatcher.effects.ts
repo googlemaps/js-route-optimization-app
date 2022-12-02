@@ -75,8 +75,6 @@ export class DispatcherEffects {
     () =>
       this.actions$.pipe(
         ofType(DispatcherActions.loadSolution),
-        withLatestFrom(this.store.pipe(select(fromPreSolve.selectActive))),
-        filter(([_, preSolveActive]) => preSolveActive),
         tap(() => this.router.navigateByUrl('routesChart', { skipLocationChange: true }))
       ),
     { dispatch: false }
