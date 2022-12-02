@@ -47,11 +47,16 @@ export class PdfDownloadService {
         return forkJoin(
           routes.map((route, index) => {
             const routeVisits = visitRequests.filter((vr) => route.visits.includes(vr.id));
+            
+            let path;
+            let encodedPath;
 
-            const path = simplifyPath(
-              route.path.map((point) => new google.maps.LatLng(point[1], point[0]))
-            );
-            const encodedPath = google.maps.geometry.encoding.encodePath(path);
+            if (route.path) {
+              path = simplifyPath(
+                route.path.map((point) => new google.maps.LatLng(point[1], point[0]))
+              );
+              encodedPath = google.maps.geometry.encoding.encodePath(path);
+            }
 
             const markers = [
               this.visitToDeliveries(
@@ -66,23 +71,30 @@ export class PdfDownloadService {
               this.getRouteEndMarker(route, vehicles, routeVisits, depotIcon),
             ];
 
-            const params = {
+            const params: any = {
               key: apiKey,
               format: 'png',
               size: '600x320',
               scale: '2',
               style,
-              path: `color:${MATERIAL_COLORS.Blue.hex.replace(
-                '#',
-                '0x'
-              )}FF|weight:2|enc:${encodedPath}`,
               markers,
             };
+
+            if (encodedPath) {
+              params.path = `color:${MATERIAL_COLORS.Blue.hex.replace('#', '0x')}FF|weight:2|enc:${encodedPath}`
+            }
+
             return of(true).pipe(
               // Slight delay to avoid going over the requests per minute quota
               delay(0.1 * index),
-              mergeMap((_) => this.getVehicleIcon(path)),
-              map((vehicleIcon) => params.markers.push(this.vehicleHeadingToIcon(vehicleIcon))),
+              mergeMap((_) => {
+                if (path) {
+                  return this.getVehicleIcon(path);
+                }
+
+                return of(null);
+              }),
+              map((vehicleIcon) => vehicleIcon && params.markers.push(this.vehicleHeadingToIcon(vehicleIcon))),
               mergeMap((_) =>
                 this.http.get('https://maps.googleapis.com/maps/api/staticmap', {
                   params,
