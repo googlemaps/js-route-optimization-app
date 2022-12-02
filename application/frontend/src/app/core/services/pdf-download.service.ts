@@ -45,13 +45,13 @@ export class PdfDownloadService {
         this.getPickupIconUrl(),
         this.getDropoffIconUrl(),
       ]),
-      this.store.select(selectBounds)
+      this.store.select(selectBounds),
     ]).pipe(
       mergeMap(([[style, apiKey, vehicles, depotIcon, pickupIcon, dropoffIcon], bounds]) => {
         return forkJoin(
           routes.map((route, index) => {
             const routeVisits = visitRequests.filter((vr) => route.visits.includes(vr.id));
-            
+
             let path;
             let encodedPath;
 
@@ -84,11 +84,16 @@ export class PdfDownloadService {
                 this.getRouteEndMarker(route, vehicles, routeVisits, depotIcon),
               ];
             } else {
-              params.visible = `${bounds.getNorthEast().lat()},${bounds.getNorthEast().lng()}|${bounds.getSouthWest().lat()},${bounds.getSouthWest().lng()}`
+              params.visible = `${bounds.getNorthEast().lat()},${bounds
+                .getNorthEast()
+                .lng()}|${bounds.getSouthWest().lat()},${bounds.getSouthWest().lng()}`;
             }
 
             if (encodedPath) {
-              params.path = `color:${MATERIAL_COLORS.Blue.hex.replace('#', '0x')}FF|weight:2|enc:${encodedPath}`
+              params.path = `color:${MATERIAL_COLORS.Blue.hex.replace(
+                '#',
+                '0x'
+              )}FF|weight:2|enc:${encodedPath}`;
             }
 
             return of(true).pipe(
@@ -101,7 +106,10 @@ export class PdfDownloadService {
 
                 return of(null);
               }),
-              map((vehicleIcon) => vehicleIcon && params.markers.push(this.vehicleHeadingToIcon(vehicleIcon))),
+              map(
+                (vehicleIcon) =>
+                  vehicleIcon && params.markers.push(this.vehicleHeadingToIcon(vehicleIcon))
+              ),
               mergeMap((_) =>
                 this.http.get('https://maps.googleapis.com/maps/api/staticmap', {
                   params,
