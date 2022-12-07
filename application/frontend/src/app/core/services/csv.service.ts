@@ -21,6 +21,7 @@ import {
   IShipment,
   IVehicle,
   IVehicleOperator,
+  ValidationErrorResponse,
 } from '../models';
 import { FileService } from './file.service';
 import { GeocodingService } from './geocoding.service';
@@ -211,7 +212,10 @@ export class CsvService {
     });
   }
 
-  csvToShipments(csvShipments: any[], mapping: { [key: string]: string }): IShipment[] {
+  csvToShipments(
+    csvShipments: any[],
+    mapping: { [key: string]: string }
+  ): { shipment: IShipment; errors: ValidationErrorResponse[] }[] {
     return csvShipments.map((shipment) => {
       const timeWindows = this.mapToShipmentTimeWindows(shipment, mapping);
       const parsedShipment = {
@@ -228,8 +232,30 @@ export class CsvService {
           this.commaSeparatedStringToIntArray
         ),
       };
-      return parsedShipment;
+
+      return {
+        shipment: parsedShipment,
+        errors: this.validateShipment(parsedShipment),
+      };
     });
+  }
+
+  private validateShipment(shipment: IShipment): ValidationErrorResponse[] {
+    const errors = [];
+    const loadDemandsError = Object.keys(shipment.loadDemands).some((demandKey) => {
+      const demand = shipment.loadDemands[demandKey];
+      return !Number.isInteger(Number.parseFloat(demand.amount as string));
+    });
+
+    if (loadDemandsError) {
+      errors.push({
+        error: true,
+        message: 'Shipment contains invalid load demands',
+        shipment,
+      });
+    }
+
+    return errors;
   }
 
   csvToVehicles(csvVehicles: any[], mapping: { [key: string]: string }): IVehicle[] {

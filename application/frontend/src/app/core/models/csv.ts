@@ -135,8 +135,7 @@ export const CSV_DATA_LABELS_ABBREVIATED = {
   timeToNextStop: 'Time to next stop',
 };
 
-export interface GeocodeErrorResponse {
-  location: string;
+export interface ValidationErrorResponse {
   error: true;
   message?: string;
   source?: any;
@@ -144,6 +143,10 @@ export interface GeocodeErrorResponse {
   shipment?: any;
   vehicle?: any;
   index?: number;
+}
+
+export interface GeocodeErrorResponse extends ValidationErrorResponse {
+  location: string;
 }
 
 export const EXPERIMENTAL_API_FIELDS_VEHICLES = [

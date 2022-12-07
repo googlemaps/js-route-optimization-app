@@ -1307,7 +1307,23 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
       .pipe(
         mergeMap((res: any[]) => {
           if (this.shipmentFile) {
-            shipments = this.service.csvToShipments(res[0].data, this.mappingFormShipments.value);
+            const shipmentsResults = this.service.csvToShipments(
+              res[0].data,
+              this.mappingFormShipments.value
+            );
+            if (shipmentsResults.some((result) => result.errors.length)) {
+              shipmentsResults.forEach((result, index) => {
+                this.validationErrors.push(
+                  ...result.errors.map(
+                    (error) =>
+                      `Shipment ${result.shipment.label || ''} at index ${index}: ${error.message}`
+                  )
+                );
+              });
+              throw Error('Shipment validation error');
+            }
+
+            shipments = shipmentsResults.map((result) => result.shipment);
           }
           if (this.vehicleFile) {
             vehicles = this.service.csvToVehicles(res[1].data, this.mappingFormVehicles.value);
@@ -1353,7 +1369,12 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         (err) => {
           this.isValidatingWithApi = false;
           this.errorValidating = true;
-          this.validationErrors.push(err.error?.error?.message || err.message);
+
+          // Throw default error if none have been provided
+          if (!this.validationErrors) {
+            this.validationErrors.push(err.error?.error?.message || err.message);
+          }
+
           this.changeRef.detectChanges();
         }
       );
