@@ -17,7 +17,7 @@ import { findPathHeadingAtPointOptimized, simplifyPath } from 'src/app/util';
 import { HttpClient } from '@angular/common/http';
 import { MATERIAL_COLORS } from '.';
 import PreSolveVehicleSelectors from '../selectors/pre-solve-vehicle.selectors';
-import { getVehicleStartingLocation } from '../selectors/map.selectors';
+import { getVehicleStartingLocation, selectBounds } from '../selectors/map.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -36,53 +36,80 @@ export class PdfDownloadService {
     visitRequests: VisitRequest[]
   ): Observable<{ map: string; routeId: number }[]> {
     return combineLatest([
-      this.mapParametersToStaticMapParameters(),
-      this.store.select(fromConfig.selectMapApiKey),
-      this.store.select(PreSolveVehicleSelectors.selectVehicles),
-      this.getDepotIconUrl(),
-      this.getPickupIconUrl(),
-      this.getDropoffIconUrl(),
+      // Workaround to get around the 6 observable limit of combineLatest
+      combineLatest([
+        this.mapParametersToStaticMapParameters(),
+        this.store.select(fromConfig.selectMapApiKey),
+        this.store.select(PreSolveVehicleSelectors.selectVehicles),
+        this.getDepotIconUrl(),
+        this.getPickupIconUrl(),
+        this.getDropoffIconUrl(),
+      ]),
+      this.store.select(selectBounds),
     ]).pipe(
-      mergeMap(([style, apiKey, vehicles, depotIcon, pickupIcon, dropoffIcon]) => {
+      mergeMap(([[style, apiKey, vehicles, depotIcon, pickupIcon, dropoffIcon], bounds]) => {
         return forkJoin(
           routes.map((route, index) => {
             const routeVisits = visitRequests.filter((vr) => route.visits.includes(vr.id));
 
-            const path = simplifyPath(
-              route.path.map((point) => new google.maps.LatLng(point[1], point[0]))
-            );
-            const encodedPath = google.maps.geometry.encoding.encodePath(path);
+            let path;
+            let encodedPath;
 
-            const markers = [
-              this.visitToDeliveries(
-                routeVisits.filter((vr) => !vr.pickup),
-                dropoffIcon
-              ),
-              this.visitsToPickups(
-                routeVisits.filter((vr) => vr.pickup),
-                pickupIcon
-              ),
-              this.getRouteStartMarker(route, vehicles, routeVisits, depotIcon),
-              this.getRouteEndMarker(route, vehicles, routeVisits, depotIcon),
-            ];
+            if (route.path) {
+              path = simplifyPath(
+                route.path.map((point) => new google.maps.LatLng(point[1], point[0]))
+              );
+              encodedPath = google.maps.geometry.encoding.encodePath(path);
+            }
 
-            const params = {
+            const params: any = {
               key: apiKey,
               format: 'png',
               size: '600x320',
               scale: '2',
               style,
-              path: `color:${MATERIAL_COLORS.Blue.hex.replace(
+            };
+
+            if (route.visits.length) {
+              params.markers = [
+                this.visitToDeliveries(
+                  routeVisits.filter((vr) => !vr.pickup),
+                  dropoffIcon
+                ),
+                this.visitsToPickups(
+                  routeVisits.filter((vr) => vr.pickup),
+                  pickupIcon
+                ),
+                this.getRouteStartMarker(route, vehicles, routeVisits, depotIcon),
+                this.getRouteEndMarker(route, vehicles, routeVisits, depotIcon),
+              ];
+            } else {
+              params.visible = `${bounds.getNorthEast().lat()},${bounds
+                .getNorthEast()
+                .lng()}|${bounds.getSouthWest().lat()},${bounds.getSouthWest().lng()}`;
+            }
+
+            if (encodedPath) {
+              params.path = `color:${MATERIAL_COLORS.Blue.hex.replace(
                 '#',
                 '0x'
-              )}FF|weight:2|enc:${encodedPath}`,
-              markers,
-            };
+              )}FF|weight:2|enc:${encodedPath}`;
+            }
+
             return of(true).pipe(
               // Slight delay to avoid going over the requests per minute quota
               delay(0.1 * index),
-              mergeMap((_) => this.getVehicleIcon(path)),
-              map((vehicleIcon) => params.markers.push(this.vehicleHeadingToIcon(vehicleIcon))),
+              mergeMap((_) => {
+                if (path) {
+                  return this.getVehicleIcon(path);
+                }
+
+                return of(null);
+              }),
+              map(
+                (vehicleIcon) =>
+                  vehicleIcon && params.markers.push(this.vehicleHeadingToIcon(vehicleIcon))
+              ),
               mergeMap((_) =>
                 this.http.get('https://maps.googleapis.com/maps/api/staticmap', {
                   params,
