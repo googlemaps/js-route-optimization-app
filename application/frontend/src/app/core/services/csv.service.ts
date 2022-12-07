@@ -693,11 +693,7 @@ export class CsvService {
     // First try to split the location as a Lat,Lng pair
     // Then geocode what the user provides if coordinates can't be parsed
     if (!location) {
-      return of(<GeocodeErrorResponse>{
-        error: true,
-        location,
-        message: 'Cannot geocode empty location',
-      });
+      return of(null);
     }
 
     if (isLatLngString(location)) {
