@@ -12,16 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import {
-  exhaustMap,
-  filter,
-  map,
-  mergeMap,
-  switchMapTo,
-  take,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { exhaustMap, filter, map, mergeMap, switchMapTo, take, tap } from 'rxjs/operators';
 import { State } from 'src/app/reducers';
 import { WelcomePageActions } from 'src/app/welcome/actions';
 import {
@@ -40,7 +31,6 @@ import {
 } from '../containers';
 import { Modal } from '../models';
 import DispatcherApiSelectors from '../selectors/dispatcher-api.selectors';
-import * as fromPreSolve from '../selectors/pre-solve.selectors';
 import RoutesChartSelectors from '../selectors/routes-chart.selectors';
 import { selectHasSolution } from '../selectors/solution.selectors';
 
@@ -75,8 +65,6 @@ export class DispatcherEffects {
     () =>
       this.actions$.pipe(
         ofType(DispatcherActions.loadSolution),
-        withLatestFrom(this.store.pipe(select(fromPreSolve.selectActive))),
-        filter(([_, preSolveActive]) => preSolveActive),
         tap(() => this.router.navigateByUrl('routesChart', { skipLocationChange: true }))
       ),
     { dispatch: false }
