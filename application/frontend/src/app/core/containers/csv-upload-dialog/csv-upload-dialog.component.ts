@@ -1311,7 +1311,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
               res[0].data,
               this.mappingFormShipments.value
             );
-            if (shipmentsResults.some((result) => result.errors)) {
+            if (shipmentsResults.some((result) => result.errors.length)) {
               shipmentsResults.forEach((result, index) => {
                 this.validationErrors.push(
                   ...result.errors.map(

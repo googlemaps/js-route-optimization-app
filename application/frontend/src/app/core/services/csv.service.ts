@@ -244,7 +244,7 @@ export class CsvService {
     const errors = [];
     const loadDemandsError = Object.keys(shipment.loadDemands).some((demandKey) => {
       const demand = shipment.loadDemands[demandKey];
-      return !Number.isInteger(demand.amount);
+      return !Number.isInteger(Number.parseFloat(demand.amount as string));
     });
 
     if (loadDemandsError) {
