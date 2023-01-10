@@ -182,7 +182,7 @@ export class PdfDownloadService {
   private mapParametersToStaticMapParameters(): Observable<string[]> {
     return this.store.select(fromConfig.selectMapOptions).pipe(
       map((options) => {
-        return options.styles.map((style) => {
+        return (options?.styles || []).map((style) => {
           const feature = `feature:${style.featureType || 'all'}|`;
           const element = style.elementType ? `element:${style.elementType}|` : '';
           const stylers = style.stylers
