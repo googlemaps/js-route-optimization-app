@@ -1209,7 +1209,7 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   }
 
   startAt(): { startAt: Date } {
-    const startTime = durationSeconds(this.updatedVehicle.startTimeWindows?.[0].startTime, null);
+    const startTime = durationSeconds(this.updatedVehicle.startTimeWindows?.[0]?.startTime, null);
     return {
       startAt:
         startTime !== null ? new Date((startTime.toNumber() + this.timezoneOffset) * 1000) : null,
