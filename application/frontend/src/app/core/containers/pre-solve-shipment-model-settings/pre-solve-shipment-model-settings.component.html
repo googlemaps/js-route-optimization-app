@@ -474,10 +474,11 @@
                 maxBufferPx="400">
                 <mat-option
                   *cdkVirtualFor="
-                    let shipment of scenarioShipments$ | async;
-                    let shipmentIndex = index
+                    let shipment of getPrecedenceRuleFirstIndexOptions(
+                      precedenceRule.value.firstIndex
+                    )
                   "
-                  [value]="shipmentIndex"
+                  [value]="getIndexOfShipment(shipment)"
                   [style.height.px]="48"
                   (onSelectionChange)="
                     precedenceRule.value.firstIndex = getIndexOfShipment(shipment)
@@ -513,7 +514,8 @@
                 <mat-option
                   *cdkVirtualFor="
                     let shipment of getPrecendenceRuleSecondIndexOptions(
-                      precedenceRule.value.firstIndex
+                      precedenceRule.value.firstIndex,
+                      precedenceRule.value.secondIndex
                     )
                   "
                   [value]="getIndexOfShipment(shipment)"
