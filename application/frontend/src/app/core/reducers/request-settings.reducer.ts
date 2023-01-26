@@ -109,7 +109,7 @@ export const reducer = createReducer(
     };
   }),
   on(RequestSettingsActions.setGlobalConstraints, (state, { constraints }) => {
-    const updatedRelaxations = state.injectedModelConstraint?.constraintRelaxations.slice() || [];
+    const updatedRelaxations = state.injectedModelConstraint?.constraintRelaxations?.slice() || [];
     const globalIndex = updatedRelaxations.findIndex(
       (constraint) => constraint.vehicleIndices.length === 0
     );
