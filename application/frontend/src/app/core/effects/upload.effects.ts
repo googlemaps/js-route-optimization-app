@@ -81,13 +81,6 @@ export class UploadEffects {
                 Date.now()
               );
 
-              if (normalizedScenario.injectedSolutionConstraint?.routes) {
-                this.messageService.warning(
-                  'The uploaded scenario contains injected routes, but no solution. These injected routes will be ignored by the application.',
-                  { duration: null, verticalPosition: 'bottom' }
-                );
-              }
-
               actions.push(
                 DispatcherActions.uploadScenarioSuccess({ scenario: normalizedScenario })
               );
@@ -101,13 +94,6 @@ export class UploadEffects {
                 this.normalizationService.normalizeScenario(scenario, requestTime);
               const requestedShipmentIds = shipments.filter((s) => !s.ignore).map((s) => s.id);
               const requestedVehicleIds = vehicles.filter((v) => !v.ignore).map((v) => v.id);
-
-              if (normalizedScenario.injectedSolutionConstraint?.routes) {
-                this.messageService.warning(
-                  'The uploaded scenario contains both injected routes and a solution. Only the solution will be considered for further injected iterations.',
-                  { duration: null, verticalPosition: 'bottom' }
-                );
-              }
 
               actions.push(
                 DispatcherActions.uploadScenarioSuccess({ scenario: normalizedScenario })
@@ -178,6 +164,13 @@ export class UploadEffects {
         vehicleOperators.forEach((vehicleOperator) =>
           selectedVehicleOperators.push(vehicleOperator.id)
         );
+
+        if (injectedModelConstraint?.routes) {
+          this.messageService.warning(
+            'The uploaded scenario contains injected routes, which will be ignored by the application.',
+            { duration: null, verticalPosition: 'bottom' }
+          );
+        }
 
         return [
           DispatcherActions.loadScenario({
