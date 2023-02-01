@@ -26,7 +26,7 @@ import { CsvUploadDialogComponent, UploadDialogComponent } from '../containers';
 import { Modal } from '../models';
 import { UploadType } from '../models/upload';
 import * as fromUI from '../selectors/ui.selectors';
-import { NormalizationService } from '../services';
+import { MessageService, NormalizationService } from '../services';
 
 @Injectable()
 export class UploadEffects {
@@ -80,6 +80,7 @@ export class UploadEffects {
                 dialogResult.content,
                 Date.now()
               );
+
               actions.push(
                 DispatcherActions.uploadScenarioSuccess({ scenario: normalizedScenario })
               );
@@ -93,6 +94,7 @@ export class UploadEffects {
                 this.normalizationService.normalizeScenario(scenario, requestTime);
               const requestedShipmentIds = shipments.filter((s) => !s.ignore).map((s) => s.id);
               const requestedVehicleIds = vehicles.filter((v) => !v.ignore).map((v) => v.id);
+
               actions.push(
                 DispatcherActions.uploadScenarioSuccess({ scenario: normalizedScenario })
               );
@@ -163,6 +165,13 @@ export class UploadEffects {
           selectedVehicleOperators.push(vehicleOperator.id)
         );
 
+        if (injectedModelConstraint?.routes) {
+          this.messageService.warning(
+            'The uploaded scenario contains injected routes, which will be ignored by the application.',
+            { duration: null, verticalPosition: 'bottom' }
+          );
+        }
+
         return [
           DispatcherActions.loadScenario({
             shipments,
@@ -199,6 +208,7 @@ export class UploadEffects {
     private actions$: Actions,
     private dialog: MatDialog,
     private normalizationService: NormalizationService,
-    private store: Store<fromRoot.State>
+    private store: Store<fromRoot.State>,
+    private messageService: MessageService
   ) {}
 }

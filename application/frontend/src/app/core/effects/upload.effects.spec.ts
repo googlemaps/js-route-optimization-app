@@ -9,6 +9,7 @@
 
 import { TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store } from '@ngrx/store';
@@ -21,7 +22,7 @@ import { closeDialog } from '../actions/upload.actions';
 import { UploadDialogComponent } from '../containers';
 import { Modal } from '../models';
 import * as fromUI from '../selectors/ui.selectors';
-import { NormalizationService } from '../services';
+import { MessageService, NormalizationService } from '../services';
 import { UploadEffects } from './upload.effects';
 
 describe('UploadEffects', () => {
@@ -37,6 +38,8 @@ describe('UploadEffects', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        MessageService,
+        { provide: MatSnackBar, useValue: jasmine.createSpyObj('snackBar', ['open']) },
         UploadEffects,
         {
           provide: MatDialog,
