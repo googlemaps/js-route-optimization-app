@@ -585,7 +585,7 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
   }
 
   private shouldUpdateState(control: AbstractControl): boolean {
-    return control.enabled && control.touched && control.valid;
+    return control.enabled && (control.touched || control.dirty) && control.valid;
   }
 
   onUpdateShipmentTypeIncompatibilities(): void {
@@ -631,6 +631,7 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
     const types = (reqControl.value || []).concat(value);
     reqControl.setValue(types);
     reqControl.markAsTouched();
+    this.shipmentTypeReqsControl.updateValueAndValidity();
     input.value = '';
   }
 
@@ -703,6 +704,7 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
     const types = (depControl.value || []).concat(value);
     depControl.setValue(types);
     depControl.markAsTouched();
+    this.shipmentTypeReqsControl.updateValueAndValidity();
     input.value = '';
   }
 
