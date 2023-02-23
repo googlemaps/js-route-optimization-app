@@ -236,7 +236,7 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
       vehicle.extraVisitDurationForVisitType = null;
     }
     if (unsetFields.includes(VehicleFormFields.BreakRule)) {
-      vehicle.breakRule = {};
+      vehicle.breakRule = undefined;
     }
     return vehicle;
   }

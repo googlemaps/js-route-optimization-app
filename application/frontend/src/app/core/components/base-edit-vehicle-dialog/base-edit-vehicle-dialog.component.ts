@@ -1282,12 +1282,16 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     this.saveRouteDistanceFormData();
     this.saveRouteDurationFormData();
     this.saveTravelDurationFormData();
+    this.saveBreakRules();
     if (this.usedIfRouteIsEmpty.value) {
       this.store.dispatch(
         PreSolveVehicleActions.selectVehicle({ vehicleId: this.updatedVehicle.id })
       );
     }
     this.updatedVehicle.usedIfRouteIsEmpty = this.usedIfRouteIsEmpty.value;
+  }
+
+  saveBreakRules(): void {
     if (this.breakRequests.value.length) {
       if (!this.updatedVehicle.breakRule) {
         this.updatedVehicle.breakRule = {};
@@ -1296,13 +1300,25 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
         this.breakRequests,
         this.timezoneOffset
       );
+    } else if (this.updatedVehicle.breakRule?.breakRequests) {
+      delete this.updatedVehicle.breakRule.breakRequests;
     }
+
     if (this.frequencyConstraints.value.length) {
       if (!this.updatedVehicle.breakRule) {
         this.updatedVehicle.breakRule = {};
       }
       this.updatedVehicle.breakRule.frequencyConstraints =
         FrequencyConstraintFormComponent.readFormValues(this.frequencyConstraints);
+    } else if (this.updatedVehicle.breakRule?.frequencyConstraints) {
+      delete this.updatedVehicle.breakRule.frequencyConstraints;
+    }
+
+    if (
+      !this.updatedVehicle.breakRule?.breakRequests &&
+      !this.updatedVehicle.breakRule?.frequencyConstraints
+    ) {
+      this.updatedVehicle.breakRule = undefined;
     }
   }
 
