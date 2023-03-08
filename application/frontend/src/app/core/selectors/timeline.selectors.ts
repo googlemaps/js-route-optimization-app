@@ -115,7 +115,15 @@ const getTimeline = (
   const vehicleStartTime = route.vehicleStartTime ? durationSeconds(route.vehicleStartTime) : null;
   const vehicleEndTime = route.vehicleEndTime ? durationSeconds(route.vehicleEndTime) : null;
   // Create break segments, exlcuding those that outside of the vehicle's day
-  const breaks = route.breaks ? route.breaks.map(createBreakSegment).filter(brk => brk.startTime.greaterThanOrEqual(vehicleStartTime) && brk.startTime.lessThanOrEqual(vehicleEndTime)) : [];
+  const breaks = route.breaks
+    ? route.breaks
+        .map(createBreakSegment)
+        .filter(
+          (brk) =>
+            brk.startTime.greaterThanOrEqual(vehicleStartTime) &&
+            brk.startTime.lessThanOrEqual(vehicleEndTime)
+        )
+    : [];
 
   // Add breaks before travel to the timeline
   for (const brk of breaks) {
