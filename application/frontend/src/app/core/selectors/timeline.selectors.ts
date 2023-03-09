@@ -114,7 +114,7 @@ const getTimeline = (
 
   const vehicleStartTime = route.vehicleStartTime ? durationSeconds(route.vehicleStartTime) : null;
   const vehicleEndTime = route.vehicleEndTime ? durationSeconds(route.vehicleEndTime) : null;
-  // Create break segments, exlcuding those that outside of the vehicle's day
+  // Create break segments, excluding those that outside of the vehicle's day
   const breaks = route.breaks
     ? route.breaks
         .map(createBreakSegment)
