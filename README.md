@@ -107,5 +107,5 @@ Instructions for how to use the application are available in the
 
 This guide can also be accessed by clicking the
 "app help docs" link on the application's landing page
-or "❔ Help" button in the lower-left corner
+or the "❔ Help" button in the lower-left corner
 of the main application window.
