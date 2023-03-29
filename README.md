@@ -46,7 +46,7 @@ the project must be linked to a valid **Google Cloud Billing Account**.
 The customer is responsible for all charges accrued on the account.
 
 > ⚠️ The application and Cloud Fleet Routing perform several kinds of batch operations.
-> This means it can be easy to rack up a high volume of usage in a short period of time,
+> This means it can be easy to generate a high volume of usage in a short period of time,
 > especially for large scenarios with many shipments.
 > Familiarize yourself with the pricing models for Maps Platform and Cloud Fleet Routing
 > before using the application and routinely monitor the charges on your billing account.
@@ -62,7 +62,7 @@ Refer to the following pricing guides for Cloud, Maps, and CFR for detailed cost
 
 > ⚠️ Google Cloud and Google Maps Platform offer "getting started" and "free tier" credits that may cover
 > a small amount of usage for free. However, as mentioned in the previous section,
-> large scenarios can rack up a lot of spend in a short period of time.
+> large scenarios can generate a lot of spend in a short period of time.
 > If you are not careful, it is possible to use up all of your credits
 > with just a few large scenarios.
 
