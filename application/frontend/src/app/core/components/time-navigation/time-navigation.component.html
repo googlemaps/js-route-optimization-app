@@ -14,6 +14,13 @@
   <mat-icon svgIcon="navigate_before" [attr.title]="'Previous ' + range?.label"></mat-icon>
 </button>
 <label>{{ getFormattedRangeOffset() }}</label>
+<mat-form-field class="offset-picker" appearance="standard">
+  <input matInput [value]="currentOffsetDate" [matDatepicker]="offsetPicker" (dateChange)="onDateChange($event)">
+  <mat-datepicker #offsetPicker></mat-datepicker>
+</mat-form-field>
+<button mat-icon-button type="button" title="Open calendar" (click)="offsetPicker.open()">
+  <mat-icon svgIcon="calendar"></mat-icon>
+</button>
 <button
   type="button"
   mat-stroked-button

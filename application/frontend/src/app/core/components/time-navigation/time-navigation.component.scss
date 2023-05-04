@@ -14,3 +14,10 @@ app-time-navigation {
     margin-left: 8px;
   }
 }
+
+.offset-picker {
+  visibility: hidden;
+  overflow: hidden;
+  width: 0;
+  height: 2rem;
+}
