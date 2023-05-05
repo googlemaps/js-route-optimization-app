@@ -49,7 +49,7 @@ class MockTimeNavigationComponent {
   @Input() previousRangeOffset: number;
   @Input() nextRangeOffset: number;
   @Input() timezoneOffset: number;
-  @Input() globalDuration: [Long, Long]
+  @Input() globalDuration: [Long, Long];
   @Output() rangeOffsetChange = new EventEmitter<number>();
 }
 
@@ -74,7 +74,10 @@ describe('PostSolveControlBarComponent', () => {
             { selector: RoutesChartSelectors.selectSelectedRange, value: [] },
             { selector: RoutesChartSelectors.selectRangeOffset, value: 0 },
             { selector: RoutesChartSelectors.selectNowRangeOffset, value: 0 },
-            { selector: ShipmentModelSelectors.selectGlobalDuration, value: [Long.ZERO, Long.ZERO] },
+            {
+              selector: ShipmentModelSelectors.selectGlobalDuration,
+              value: [Long.ZERO, Long.ZERO],
+            },
             { selector: fromConfig.selectTimezoneOffset, value: 0 },
             { selector: fromUndoRedo.selectCanUndo, value: false },
             { selector: fromUndoRedo.selectCanRedo, value: false },
