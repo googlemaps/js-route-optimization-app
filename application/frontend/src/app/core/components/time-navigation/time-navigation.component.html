@@ -15,7 +15,13 @@
 </button>
 <label>{{ getFormattedRangeOffset() }}</label>
 <mat-form-field class="offset-picker" appearance="standard">
-  <input matInput [value]="currentOffsetDate" [min]="globalStart" [max]="globalEnd" [matDatepicker]="offsetPicker" (dateChange)="onDateChange($event)">
+  <input
+    matInput
+    [value]="currentOffsetDate"
+    [min]="globalStart"
+    [max]="globalEnd"
+    [matDatepicker]="offsetPicker"
+    (dateChange)="onDateChange($event)" />
   <mat-datepicker #offsetPicker></mat-datepicker>
 </mat-form-field>
 <button mat-icon-button type="button" title="Open calendar" (click)="offsetPicker.open()">

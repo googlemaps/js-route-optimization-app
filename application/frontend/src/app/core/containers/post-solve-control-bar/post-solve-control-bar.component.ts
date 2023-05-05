@@ -59,7 +59,7 @@ export class PostSolveControlBarComponent implements OnInit {
     this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
     this.canUndo$ = this.store.pipe(select(fromUndoRedo.selectCanUndo));
     this.canRedo$ = this.store.pipe(select(fromUndoRedo.selectCanRedo));
-    this.globalDuration$ = this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration))
+    this.globalDuration$ = this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration));
   }
 
   onRangeOffsetChange(rangeOffset: number): void {
