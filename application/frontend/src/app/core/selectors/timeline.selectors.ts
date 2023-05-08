@@ -112,13 +112,22 @@ const getTimeline = (
     'Visits and travel steps not aligned.'
   );
 
-  const breaks = route.breaks ? route.breaks.map(createBreakSegment) : [];
-  const vehicleStartTime = route.vehicleStartTime ? durationSeconds(route.vehicleStartTime) : null;
-  const vehicleEndTime = route.vehicleEndTime ? durationSeconds(route.vehicleEndTime) : null;
+  const routeStartTime = route.vehicleStartTime ? durationSeconds(route.vehicleStartTime) : null;
+  const routeEndTime = route.vehicleEndTime ? durationSeconds(route.vehicleEndTime) : null;
+  // Create break segments, excluding those that are outside of the vehicle's day
+  const breaks = route.breaks
+    ? route.breaks
+        .map(createBreakSegment)
+        .filter(
+          (brk) =>
+            brk.startTime.greaterThanOrEqual(routeStartTime) &&
+            brk.startTime.lessThanOrEqual(routeEndTime)
+        )
+    : [];
 
   // Add breaks before travel to the timeline
   for (const brk of breaks) {
-    if (brk.startTime.greaterThanOrEqual(vehicleStartTime)) {
+    if (brk.startTime.greaterThanOrEqual(routeStartTime)) {
       break;
     }
     timeline.push({
@@ -141,8 +150,8 @@ const getTimeline = (
 
       const prevVisit = visits[index - 1];
       const travel = identifyTravelTimeSegment(
-        vehicleStartTime,
-        vehicleEndTime,
+        routeStartTime,
+        routeEndTime,
         prevVisit,
         nextVisit,
         travelDuration
@@ -234,7 +243,7 @@ const getTimeline = (
   // to place the depot POI after user visit manipulation (max of last visit end time or vehicle end time)
   // and still be consistent with the timeline
   if (lastTravelSegment) {
-    lastTravelSegment.endTime = maxLong(vehicleEndTime, lastTravelSegment.startTime);
+    lastTravelSegment.endTime = maxLong(routeEndTime, lastTravelSegment.startTime);
   }
 
   // User visit modification introduces potential for overlap that breaks assumptions that would
