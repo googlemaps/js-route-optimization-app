@@ -45,6 +45,7 @@ export class AppComponent {
       'arrow_downward',
       'arrow_drop_down',
       'arrow_upward',
+      'calendar',
       'clear',
       'clock',
       'cloud_download',

@@ -22,6 +22,7 @@ import { Page } from '../../models';
 import * as fromConfig from '../../selectors/config.selectors';
 import * as fromScenario from '../../selectors/scenario.selectors';
 import * as fromUndoRedo from '../../selectors/undo-redo.selectors';
+import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 
 @Component({
   selector: 'app-post-solve-control-bar',
@@ -35,11 +36,10 @@ export class PostSolveControlBarComponent implements OnInit {
   range$: Observable<Range>;
   rangeOffset$: Observable<number>;
   nowRangeOffset$: Observable<number>;
-  previousRangeOffset$: Observable<number>;
-  nextRangeOffset$: Observable<number>;
   timezoneOffset$: Observable<number>;
   canUndo$: Observable<boolean>;
   canRedo$: Observable<boolean>;
+  globalDuration$: Observable<[Long, Long]>;
 
   get Page(): typeof Page {
     return Page;
@@ -56,13 +56,10 @@ export class PostSolveControlBarComponent implements OnInit {
     this.range$ = this.store.pipe(select(RoutesChartSelectors.selectSelectedRange));
     this.rangeOffset$ = this.store.pipe(select(RoutesChartSelectors.selectRangeOffset));
     this.nowRangeOffset$ = this.store.pipe(select(RoutesChartSelectors.selectNowRangeOffset));
-    this.previousRangeOffset$ = this.store.pipe(
-      select(RoutesChartSelectors.selectPreviousRangeOffset)
-    );
-    this.nextRangeOffset$ = this.store.pipe(select(RoutesChartSelectors.selectNextRangeOffset));
     this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
     this.canUndo$ = this.store.pipe(select(fromUndoRedo.selectCanUndo));
     this.canRedo$ = this.store.pipe(select(fromUndoRedo.selectCanRedo));
+    this.globalDuration$ = this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration));
   }
 
   onRangeOffsetChange(rangeOffset: number): void {

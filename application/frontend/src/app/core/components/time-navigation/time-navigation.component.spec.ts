@@ -12,6 +12,8 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { MaterialModule } from 'src/app/material';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { TimeNavigationComponent } from './time-navigation.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 describe('TimeNavigationComponent', () => {
   let component: TimeNavigationComponent;
@@ -19,7 +21,7 @@ describe('TimeNavigationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaterialModule],
+      imports: [MaterialModule, NoopAnimationsModule, MatDatepickerModule],
       declarations: [TimeNavigationComponent],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })

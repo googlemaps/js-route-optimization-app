@@ -21,6 +21,8 @@ import * as fromConfig from '../../selectors/config.selectors';
 import * as fromScenario from '../../selectors/scenario.selectors';
 import * as fromUndoRedo from '../../selectors/undo-redo.selectors';
 import { PostSolveControlBarComponent } from './post-solve-control-bar.component';
+import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
+import Long from 'long';
 
 @Component({
   selector: 'app-generate-button',
@@ -44,11 +46,10 @@ class MockMapToggleButtonComponent {
 })
 class MockTimeNavigationComponent {
   @Input() range: Range;
-  @Input() rangeOffset: number;
-  @Input() nowRangeOffset: number;
   @Input() previousRangeOffset: number;
   @Input() nextRangeOffset: number;
   @Input() timezoneOffset: number;
+  @Input() globalDuration: [Long, Long];
   @Output() rangeOffsetChange = new EventEmitter<number>();
 }
 
@@ -73,8 +74,10 @@ describe('PostSolveControlBarComponent', () => {
             { selector: RoutesChartSelectors.selectSelectedRange, value: [] },
             { selector: RoutesChartSelectors.selectRangeOffset, value: 0 },
             { selector: RoutesChartSelectors.selectNowRangeOffset, value: 0 },
-            { selector: RoutesChartSelectors.selectPreviousRangeOffset, value: 0 },
-            { selector: RoutesChartSelectors.selectNextRangeOffset, value: 0 },
+            {
+              selector: ShipmentModelSelectors.selectGlobalDuration,
+              value: [Long.ZERO, Long.ZERO],
+            },
             { selector: fromConfig.selectTimezoneOffset, value: 0 },
             { selector: fromUndoRedo.selectCanUndo, value: false },
             { selector: fromUndoRedo.selectCanRedo, value: false },
