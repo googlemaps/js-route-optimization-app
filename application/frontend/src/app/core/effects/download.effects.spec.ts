@@ -49,7 +49,7 @@ describe('DownloadEffects', () => {
         provideMockStore({
           selectors: [
             { selector: fromDownload.selectDownload, value: null },
-            { selector: fromUI.selectModal, value: null }
+            { selector: fromUI.selectModal, value: null },
           ],
         }),
         provideMockActions(() => actions$),
