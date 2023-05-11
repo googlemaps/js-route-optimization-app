@@ -11,6 +11,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExtraVisitDurationFormComponent } from './extra-visit-duration-form.component';
 import { ControlContainer, FormGroup } from '@angular/forms';
+import { MaterialModule } from 'src/app/material';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 const controlContainer = new FormGroup({});
 describe('ExtraVisitDurationFormComponent', () => {
@@ -19,9 +22,12 @@ describe('ExtraVisitDurationFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [ExtraVisitDurationFormComponent],
       providers: [{ provide: ControlContainer, useValue: controlContainer }],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
   });
 
   beforeEach(() => {

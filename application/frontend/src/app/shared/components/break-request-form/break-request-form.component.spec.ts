@@ -10,7 +10,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BreakRequestFormComponent } from './break-request-form.component';
-import { ControlContainer, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { ControlContainer, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from 'src/app/material';
 
 const formDirective = new FormGroupDirective([], []);
 formDirective.form = new FormGroup({
@@ -26,6 +27,7 @@ describe('BreakRuleFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule, ReactiveFormsModule],
       declarations: [BreakRequestFormComponent],
       providers: [{ provide: ControlContainer, useValue: formDirective }],
     }).compileComponents();

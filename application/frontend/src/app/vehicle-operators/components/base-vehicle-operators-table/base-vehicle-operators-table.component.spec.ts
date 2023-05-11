@@ -9,6 +9,9 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BaseVehicleOperatorsTableComponent } from './base-vehicle-operators-table.component';
+import { MaterialModule } from 'src/app/material';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('BaseVehicleOperatorsTableComponent', () => {
   let component: BaseVehicleOperatorsTableComponent;
@@ -16,8 +19,11 @@ describe('BaseVehicleOperatorsTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [BaseVehicleOperatorsTableComponent],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
   });
 
   beforeEach(() => {

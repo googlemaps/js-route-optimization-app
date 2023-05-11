@@ -11,6 +11,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FrequencyConstraintFormComponent } from './frequency-constraint-form.component';
 import { ControlContainer, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
+import { MaterialModule } from 'src/app/material';
 
 const formDirective = new FormGroupDirective([], []);
 formDirective.form = new FormGroup({
@@ -24,9 +27,12 @@ describe('FrequencyConstraitsFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [FrequencyConstraintFormComponent],
       providers: [{ provide: ControlContainer, useValue: formDirective }],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
   });
 
   beforeEach(() => {

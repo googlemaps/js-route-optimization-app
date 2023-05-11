@@ -10,6 +10,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BulkEditUnsetComponent } from './bulk-edit-unset.component';
+import { MaterialModule } from 'src/app/material';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('BulkEditUnsetComponent', () => {
   let component: BulkEditUnsetComponent;
@@ -17,8 +20,11 @@ describe('BulkEditUnsetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [BulkEditUnsetComponent],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
   });
 
   beforeEach(() => {
