@@ -7,7 +7,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -22,12 +22,30 @@ import { FormMapService, VehicleLayer } from '../../services';
 import { PlacesService } from '../../services/places.service';
 import { BaseEditVehicleDialogComponent } from './base-edit-vehicle-dialog.component';
 import { provideMockStore } from '@ngrx/store/testing';
+import { FormGroup } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { DurationMinSecFormComponent } from 'src/app/shared/components/duration-min-sec-form/duration-min-sec-form.component';
 
 @Component({
   selector: 'app-form-map',
   template: '',
 })
 class MockFormMapComponent {}
+
+@Component({
+  selector: 'app-duration-min-sec-form',
+  template: ''
+})
+class MockAppDurationMinSecFormComponent {
+  @Input() appearance = 'legacy';
+  @Input() parentFormGroup: FormGroup;
+  @Input() errorStateMatcher: ErrorStateMatcher;
+  @Input() labelName: string;
+  @Input() showUnset: boolean;
+  @Input() isUnset: boolean;
+  @Input() fieldName: string;
+  @Output() unsetEvent = new EventEmitter<{ field: string }>();
+}
 
 describe('BaseEditVehicleDialogComponent', () => {
   let component: BaseEditVehicleDialogComponent;
@@ -54,6 +72,7 @@ describe('BaseEditVehicleDialogComponent', () => {
       .overrideProvider(FormMapService, { useValue: new MockMapService() })
       .overrideProvider(PlacesService, { useValue: placesService })
       .overrideProvider(VehicleLayer, { useValue: new MockMarkersLayerService() })
+      .overrideProvider(DurationMinSecFormComponent, { useValue: MockAppDurationMinSecFormComponent })
       .compileComponents();
 
     fixture = TestBed.createComponent(BaseEditVehicleDialogComponent);

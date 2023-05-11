@@ -21,6 +21,7 @@ import {
   Timeline,
   ChangedVisits,
   Vehicle,
+  PointOfInterestTimelineOverlapBegin,
 } from 'src/app/core/models';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import * as fromPointOfInterest from 'src/app/core/selectors/point-of-interest.selectors';
@@ -46,6 +47,7 @@ class MockBaseRoutesRowComponent {
   @Input() isDragging: boolean;
   @Input() route: ShipmentRoute;
   @Input() vehicle: Vehicle;
+  @Input() vehicleOperator: string;
   @Input() shipmentCount: number;
   @Input() selected = false;
   @Input() timeline: Timeline;
@@ -60,11 +62,13 @@ class MockBaseRoutesRowComponent {
   @Input() changedVisits: ChangedVisits;
   @Output() selectedChange = new EventEmitter<boolean>();
   @Output() dragStart = new EventEmitter<PointOfInterestStartDrag>();
-  @Output() timelineEnter = new EventEmitter<number>();
+  @Output() timelineEnter = new EventEmitter<PointOfInterestTimelineOverlapBegin>();
   @Output() timelineLeave = new EventEmitter<number>();
   @Output() pointOfInterestClick = new EventEmitter<PointOfInterestClick>();
   @Output() editVehicle = new EventEmitter<number>();
   @Output() viewMetadata = new EventEmitter<number>();
+  @Output() mouseEnterVisit = new EventEmitter<number>();
+  @Output() mouseExitVisit = new EventEmitter();
 }
 
 describe('RoutesRowComponent', () => {

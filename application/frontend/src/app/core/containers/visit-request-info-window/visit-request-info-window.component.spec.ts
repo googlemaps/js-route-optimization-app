@@ -24,6 +24,7 @@ import { createSelector } from '@ngrx/store';
   template: '',
 })
 class MockBaseVisitRequestInfoWindowComponent {
+  @Input() savePending: boolean;
   @Input() shipment: Shipment;
   @Input() visitRequest: VisitRequest;
   @Input() visit?: Visit;
@@ -31,9 +32,11 @@ class MockBaseVisitRequestInfoWindowComponent {
   @Input() timezoneOffset = 0;
   @Input() postSolve = false;
   @Input() navigation = false;
+  @Input() vehicles: Vehicle[];
   @Output() shipmentClick = new EventEmitter<Shipment>();
   @Output() vehicleClick = new EventEmitter<Vehicle>();
   @Output() visitClick = new EventEmitter<Visit>();
+  @Output() vehicleAssignmentChange = new EventEmitter<Vehicle>();
 }
 
 describe('VisitRequestInfoWindowComponent', () => {

@@ -26,17 +26,20 @@ import { MainNavComponent } from './main-nav.component';
   template: '',
 })
 class MockBaseMainNavComponent {
+  @Input() allowExperimentalFeatures: boolean;
   @Input() disabled: boolean;
   @Input() hasSolution: boolean;
   @Input() isSolutionStale: boolean;
   @Input() isSolutionIllegal: boolean;
   @Input() selectedShipmentCount: number;
   @Input() selectedVehicleCount: number;
+  @Input() selectedVehicleOperatorCount: number;
   @Input() solving: boolean;
   @Input() page: Page;
   @Output() shipmentsClick = new EventEmitter();
   @Output() solutionClick = new EventEmitter();
   @Output() vehiclesClick = new EventEmitter();
+  @Output() vehicleOperatorsClick = new EventEmitter();
 }
 
 describe('MainNavComponent', () => {

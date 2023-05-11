@@ -34,6 +34,7 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 })
 class MockBaseEditVehicleDialogComponent {
   @Input() abbreviations: { [unit: string]: string };
+  @Input() allowExperimentalFeatures: boolean;
   @Input() appearance: string;
   @Input() bulkEdit: boolean;
   @Input() bulkNumber: number;
@@ -46,10 +47,17 @@ class MockBaseEditVehicleDialogComponent {
   @Input() nextVehicleId: number;
   @Input() scenarioBounds?: google.maps.LatLngBounds;
   @Input() visitTags?: string[];
+  @Input() visitTypes?: string[];
+  @Input() operatorTypes?: Set<string>;
+  @Input() existingOperatorTypes?: Set<string>;
   @Input() timezoneOffset?: number;
   @Input() vehicle: Vehicle;
   @Output() cancel = new EventEmitter<void>();
-  @Output() save = new EventEmitter<{ timeThresholds: TimeThreshold[]; vehicle: Vehicle }>();
+  @Output() save = new EventEmitter<{
+    timeThresholds: TimeThreshold[];
+    vehicle: Vehicle;
+    unsetFields: string[];
+  }>();
 }
 
 describe('PreSolveEditVehicleDialogComponent', () => {

@@ -14,12 +14,29 @@ import { ControlContainer, FormControl, FormGroup, FormGroupDirective } from '@a
 import { MatIconRegistry } from '@angular/material/icon';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { MaterialModule } from 'src/app/material';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 const formDirective = new FormGroupDirective([], []);
 formDirective.form = new FormGroup({
   minBreakDuration: new FormControl(''),
   maxInterBreakDuration: new FormControl(''),
 });
+
+@Component({
+  selector: 'app-duration-min-sec-form',
+  template: ''
+})
+class MockAppDurationMinSecFormComponent {
+  @Input() appearance = 'legacy';
+  @Input() parentFormGroup: FormGroup;
+  @Input() errorStateMatcher: ErrorStateMatcher;
+  @Input() labelName: string;
+  @Input() showUnset: boolean;
+  @Input() isUnset: boolean;
+  @Input() fieldName: string;
+  @Output() unsetEvent = new EventEmitter<{ field: string }>();
+}
 
 describe('FrequencyConstraitsFormComponent', () => {
   let component: FrequencyConstraintFormComponent;
@@ -28,7 +45,7 @@ describe('FrequencyConstraitsFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MaterialModule],
-      declarations: [FrequencyConstraintFormComponent],
+      declarations: [FrequencyConstraintFormComponent, MockAppDurationMinSecFormComponent],
       providers: [{ provide: ControlContainer, useValue: formDirective }],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
