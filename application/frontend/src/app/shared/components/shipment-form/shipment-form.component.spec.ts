@@ -29,7 +29,7 @@ class MockCapacityQuantityFormComponent {
 
 @Component({
   selector: 'app-duration-min-sec-form',
-  template: ''
+  template: '',
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
@@ -49,7 +49,11 @@ describe('ShipmentFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MaterialModule, ReactiveFormsModule, NoopAnimationsModule],
-      declarations: [MockCapacityQuantityFormComponent, ShipmentFormComponent, MockAppDurationMinSecFormComponent],
+      declarations: [
+        MockCapacityQuantityFormComponent,
+        ShipmentFormComponent,
+        MockAppDurationMinSecFormComponent,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShipmentFormComponent);

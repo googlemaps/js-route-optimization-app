@@ -21,7 +21,7 @@ import { TableComponent } from 'src/app/shared/components';
 
 @Component({
   selector: 'app-table',
-  template: ''
+  template: '',
 })
 class MockTableComponent<T = any> {
   @Input() mouseOverActive: boolean;

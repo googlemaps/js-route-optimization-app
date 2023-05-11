@@ -21,7 +21,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-table',
-  template: ''
+  template: '',
 })
 class MockTableComponent<T = any> {
   @Input() mouseOverActive: boolean;

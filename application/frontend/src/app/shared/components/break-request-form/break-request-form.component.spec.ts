@@ -10,7 +10,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BreakRequestFormComponent } from './break-request-form.component';
-import { ControlContainer, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlContainer,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MaterialModule } from 'src/app/material';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -25,7 +31,7 @@ formDirective.form = new FormGroup({
 
 @Component({
   selector: 'app-duration-min-sec-form',
-  template: ''
+  template: '',
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';

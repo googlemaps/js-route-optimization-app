@@ -21,7 +21,7 @@ const controlContainer = new FormGroup({});
 
 @Component({
   selector: 'app-duration-min-sec-form',
-  template: ''
+  template: '',
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';

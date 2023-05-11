@@ -34,7 +34,7 @@ class MockFormMapComponent {}
 
 @Component({
   selector: 'app-duration-min-sec-form',
-  template: ''
+  template: '',
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
@@ -72,7 +72,9 @@ describe('BaseEditVehicleDialogComponent', () => {
       .overrideProvider(FormMapService, { useValue: new MockMapService() })
       .overrideProvider(PlacesService, { useValue: placesService })
       .overrideProvider(VehicleLayer, { useValue: new MockMarkersLayerService() })
-      .overrideProvider(DurationMinSecFormComponent, { useValue: MockAppDurationMinSecFormComponent })
+      .overrideProvider(DurationMinSecFormComponent, {
+        useValue: MockAppDurationMinSecFormComponent,
+      })
       .compileComponents();
 
     fixture = TestBed.createComponent(BaseEditVehicleDialogComponent);

@@ -17,7 +17,7 @@ import { DataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-table',
-  template: ''
+  template: '',
 })
 class MockTableComponent<T = any> {
   @Input() mouseOverActive: boolean;

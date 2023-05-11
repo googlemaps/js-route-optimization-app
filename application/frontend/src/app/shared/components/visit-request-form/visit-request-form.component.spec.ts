@@ -51,7 +51,7 @@ describe('VisitRequestFormComponent', () => {
         PlaceAutocompleteComponent,
         TimeWindowComponent,
         VisitRequestFormComponent,
-        MockCapacityQuantityFormComponent
+        MockCapacityQuantityFormComponent,
       ],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })

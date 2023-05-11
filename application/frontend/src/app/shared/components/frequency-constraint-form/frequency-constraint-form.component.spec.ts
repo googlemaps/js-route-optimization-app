@@ -10,7 +10,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FrequencyConstraintFormComponent } from './frequency-constraint-form.component';
-import { ControlContainer, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlContainer,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { MaterialModule } from 'src/app/material';
@@ -26,7 +32,7 @@ formDirective.form = new FormGroup({
 
 @Component({
   selector: 'app-duration-min-sec-form',
-  template: ''
+  template: '',
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';

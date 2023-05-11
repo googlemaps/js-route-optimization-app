@@ -21,7 +21,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'app-duration-min-sec-form',
-  template: ''
+  template: '',
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
