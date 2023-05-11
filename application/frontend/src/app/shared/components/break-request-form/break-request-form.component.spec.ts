@@ -18,7 +18,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 const formDirective = new FormGroupDirective([], []);
 formDirective.form = new FormGroup({
   earliestStartDate: new FormControl(''),
-  earliestStateTime: new FormControl(''),
+  earliestStartTime: new FormControl(''),
   latestStartDate: new FormControl(''),
   latestStartTime: new FormControl(''),
 });
