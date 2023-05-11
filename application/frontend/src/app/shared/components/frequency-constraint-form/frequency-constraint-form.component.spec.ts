@@ -10,12 +10,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FrequencyConstraintFormComponent } from './frequency-constraint-form.component';
-import { ControlContainer, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { ControlContainer, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { MaterialModule } from 'src/app/material';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const formDirective = new FormGroupDirective([], []);
 formDirective.form = new FormGroup({
@@ -44,7 +45,7 @@ describe('FrequencyConstraitsFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaterialModule],
+      imports: [MaterialModule, ReactiveFormsModule, NoopAnimationsModule],
       declarations: [FrequencyConstraintFormComponent, MockAppDurationMinSecFormComponent],
       providers: [{ provide: ControlContainer, useValue: formDirective }],
     })

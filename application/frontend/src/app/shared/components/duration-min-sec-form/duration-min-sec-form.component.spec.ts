@@ -8,7 +8,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material';
 import { DurationMinSecFormComponent } from './duration-min-sec-form.component';
@@ -19,7 +19,7 @@ describe('DurationMinSecFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaterialModule, NoopAnimationsModule],
+      imports: [MaterialModule, NoopAnimationsModule, ReactiveFormsModule],
       declarations: [DurationMinSecFormComponent],
     }).compileComponents();
 
