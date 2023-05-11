@@ -20,12 +20,13 @@ import {
 import { MaterialModule } from 'src/app/material';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const formDirective = new FormGroupDirective([], []);
 formDirective.form = new FormGroup({
-  earliestStartDate: new FormControl(''),
+  earliestStartDate: new FormControl(new Date()),
   earliestStartTime: new FormControl(''),
-  latestStartDate: new FormControl(''),
+  latestStartDate: new FormControl(new Date()),
   latestStartTime: new FormControl(''),
 });
 
@@ -50,7 +51,7 @@ describe('BreakRuleFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaterialModule, ReactiveFormsModule],
+      imports: [MaterialModule, ReactiveFormsModule, NoopAnimationsModule],
       declarations: [BreakRequestFormComponent, MockAppDurationMinSecFormComponent],
       providers: [{ provide: ControlContainer, useValue: formDirective }],
     }).compileComponents();
