@@ -63,7 +63,6 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular/service-worker": "13.3.12",
     "@angular-devkit/build-angular": "13.3.11",
     "@angular-eslint/builder": "~13.3.0",
     "@angular-eslint/eslint-plugin": "~13.3.0",
@@ -73,6 +72,7 @@
     "@angular/cli": "13.3.10",
     "@angular/compiler-cli": "13.3.12",
     "@angular/language-service": "13.3.12",
+    "@angular/service-worker": "13.3.12",
     "@types/google.maps": "^3.50.5",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
@@ -89,10 +89,11 @@
     "jasmine-marbles": "^0.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.3.16",
-    "karma-coverage": "~2.2.0",
     "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.2.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "karma-spec-reporter": "^0.0.36",
     "karma-webpack": "~5.0.0",
     "prettier": "2.7.0",
     "protractor": "~7.0.0",
