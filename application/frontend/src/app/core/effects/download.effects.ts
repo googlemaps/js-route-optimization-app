@@ -49,7 +49,7 @@ import {
 import * as fromRoot from 'src/app/reducers';
 import * as fromDownload from '../selectors/download.selectors';
 import { unparse } from 'papaparse';
-import { durationSeconds, secondsToFormattedTime } from 'src/app/util';
+import { durationSeconds, formattedDurationSeconds } from 'src/app/util';
 import { Modal } from '../models';
 import * as fromUI from '../selectors/ui.selectors';
 import { MatDialog } from '@angular/material/dialog';
@@ -212,7 +212,7 @@ export class DownloadEffects {
           visitEnd: new Date(
             durationSeconds(route.vehicleStartTime).toNumber() * 1000
           ).toUTCString(),
-          timeToNextStop: secondsToFormattedTime(
+          timeToNextStop: formattedDurationSeconds(
             durationSeconds(route.visits[0]?.startTime || route.vehicleEndTime)
               .subtract(durationSeconds(route.vehicleStartTime))
               .toNumber()
@@ -306,13 +306,13 @@ export class DownloadEffects {
     const endSeconds = durationSeconds(visitRequest.duration).add(startSeconds);
     let timeToNextStop = null;
     if (visitIndex < route.visits.length - 1) {
-      timeToNextStop = secondsToFormattedTime(
+      timeToNextStop = formattedDurationSeconds(
         durationSeconds(route.visits[visitIndex + 1].startTime)
           .subtract(endSeconds)
           .toNumber()
       );
     } else if (vehicle.endWaypoint) {
-      timeToNextStop = secondsToFormattedTime(
+      timeToNextStop = formattedDurationSeconds(
         durationSeconds(route.vehicleEndTime).subtract(endSeconds).toNumber()
       );
     }

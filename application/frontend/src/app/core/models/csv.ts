@@ -125,7 +125,7 @@ export const CSV_DATA_LABELS = {
   visitEnd: 'Visit end',
   shipmentIndex: 'Shipment index',
   shipmentLabel: 'Shipment label',
-  timeToNextStop: 'Time to next stop (HH:MM:SS)',
+  timeToNextStop: 'Time to next stop',
   location: 'Visit location (lat, lng)',
 };
 

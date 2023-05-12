@@ -38,6 +38,33 @@ export function secondsToFormattedTime(seconds: Long | number): string {
   return new Date(1000 * seconds).toISOString().substring(11, 19);
 }
 
+export function formattedDurationSeconds(seconds: Long | number): string {
+  if (!seconds) {
+    return '0s';
+  }
+
+  seconds = Long.fromValue(seconds).toNumber();
+
+  const days = Math.floor(seconds / 86400);
+  seconds -= days * 86400;
+  const hours = Math.floor(seconds / 3600);
+  seconds -= hours * 3600;
+  const minutes = Math.floor(seconds / 60);
+  seconds -= minutes * 60;
+
+  // Format string based on the highest unit of time in the duration
+  if (days) {
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+  if (hours) {
+    return `${hours}h ${minutes}m ${seconds}s`;
+  }
+  if (minutes) {
+    return `${minutes}m ${seconds}s`;
+  }
+  return `${seconds}s`;
+}
+
 export function durationSeconds(duration: IDuration | ITimestamp, defaultValue = Long.ZERO): Long {
   let seconds: Long;
   if (duration) {

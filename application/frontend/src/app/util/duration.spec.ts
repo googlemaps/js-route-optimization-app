@@ -13,6 +13,7 @@ import {
   durationSeconds,
   durationToMinutes,
   durationToRequestString,
+  formattedDurationSeconds,
   minutesToDuration,
   pad,
   secondsToDuration,
@@ -138,6 +139,24 @@ describe('duration util', () => {
           Long.fromValue(2),
         ])
       ).toEqual([Long.fromValue(1), Long.fromValue(2)]);
+    });
+  });
+
+  describe('formattedDurationSeconds', () => {
+    it('should return a defaul timestamp', () => {
+      expect(formattedDurationSeconds(null)).toBe('0s');
+    });
+    it('should return a formatted duration', () => {
+      expect(formattedDurationSeconds(0)).toBe('0s');
+      expect(formattedDurationSeconds(30)).toBe('30s');
+      expect(formattedDurationSeconds(60)).toBe('1m 0s');
+      expect(formattedDurationSeconds(95)).toBe('1m 35s');
+      expect(formattedDurationSeconds(601)).toBe('10m 1s');
+      expect(formattedDurationSeconds(3600)).toBe('1h 0m 0s');
+      expect(formattedDurationSeconds(4201)).toBe('1h 10m 1s');
+      expect(formattedDurationSeconds(46800)).toBe('13h 0m 0s');
+      expect(formattedDurationSeconds(172800)).toBe('2d 0h 0m 0s');
+      expect(formattedDurationSeconds(173409)).toBe('2d 0h 10m 9s');
     });
   });
 });
