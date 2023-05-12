@@ -49,7 +49,7 @@ import {
 import * as fromRoot from 'src/app/reducers';
 import * as fromDownload from '../selectors/download.selectors';
 import { unparse } from 'papaparse';
-import { durationSeconds, formattedDurationSeconds, secondsToFormattedTime } from 'src/app/util';
+import { durationSeconds, formattedDurationSeconds } from 'src/app/util';
 import { Modal } from '../models';
 import * as fromUI from '../selectors/ui.selectors';
 import { MatDialog } from '@angular/material/dialog';
