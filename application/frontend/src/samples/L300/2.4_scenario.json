@@ -1,0 +1,1396 @@
+{
+  "parent": "projects/dispathcer-api-demo",
+  "model": {
+    "shipments": [
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438523
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.78162272291712,
+                  "longitude": -122.4318453798176
+                }
+              }
+            },
+            "tags": [
+              "A"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book1",
+        "ignore": true
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438524
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.74420291824552,
+                  "longitude": -122.42142087930705
+                }
+              }
+            },
+            "tags": [
+              "A"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "new",
+        "label": "Book2"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438526
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.791914289687895,
+                  "longitude": -122.40317127800895
+                }
+              }
+            },
+            "tags": [
+              "A"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "new",
+        "label": "Book3"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438526
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.79025996541676,
+                  "longitude": -122.41461693934413
+                }
+              }
+            },
+            "tags": [
+              "A"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "new",
+        "label": "Book4"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438527
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.78977108049366,
+                  "longitude": -122.40728202956159
+                }
+              }
+            },
+            "tags": [
+              "A"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "new",
+        "label": "Book5"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438523
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73705554418,
+                  "longitude": -122.417617204385
+                }
+              }
+            },
+            "tags": [
+              "A"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "new",
+        "label": "Book6"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438524
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7816227229171,
+                  "longitude": -122.431845379817
+                }
+              }
+            },
+            "tags": [
+              "A"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "new",
+        "label": "Book7"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438526
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7532029182455,
+                  "longitude": -122.412420879307
+                }
+              }
+            },
+            "tags": [
+              "A"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "new",
+        "label": "Book8"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438527
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73405554418,
+                  "longitude": -122.410617204385
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "new",
+        "label": "Book9"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438523
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7906227229171,
+                  "longitude": -122.440845379817
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book10",
+        "ignore": true
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438524
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7512029182455,
+                  "longitude": -122.404420879307
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book11",
+        "ignore": true
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438526
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7772599654167,
+                  "longitude": -122.412616939344
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book12",
+        "ignore": true
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438527
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7967710804936,
+                  "longitude": -122.410282029561
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book13",
+        "ignore": true
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438523
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.72705554418,
+                  "longitude": -122.416617204385
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book14",
+        "ignore": true
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438524
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7826227229171,
+                  "longitude": -122.431845379817
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book15",
+        "ignore": true
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438526
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7472029182455,
+                  "longitude": -122.417420879307
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book16",
+        "ignore": true
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.73905554418008,
+                  "longitude": -122.41561720438527
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T00:00:00.000Z",
+                "endTime": "2022-04-20T01:00:00.000Z"
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              },
+              "pickups": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.7732599654167,
+                  "longitude": -122.424616939344
+                }
+              }
+            },
+            "tags": [
+              "B"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2022-04-20T02:00:00.000Z",
+                "endTime": "2022-04-20T04:00:00.000Z",
+                "softStartTime": "2022-04-20T02:15:00.000Z",
+                "softEndTime": "2022-04-20T03:45:00.000Z",
+                "costPerHourBeforeSoftStartTime": 1,
+                "costPerHourAfterSoftEndTime": 1
+              }
+            ],
+            "duration": "300s",
+            "loadDemands": {
+              "books": {
+                "amount": "1"
+              }
+            }
+          }
+        ],
+        "penaltyCost": 1000,
+        "shipmentType": "old",
+        "label": "Book17",
+        "ignore": true
+      }
+    ],
+    "vehicles": [
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.73905554418008,
+              "longitude": -122.41561720438523
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.73905554418008,
+              "longitude": -122.41561720438523
+            }
+          }
+        },
+        "startTags": [
+          "B"
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": "2022-04-20T00:00:00.000Z",
+            "endTime": "2022-04-20T00:10:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "softStartTime": "2022-04-20T04:00:00.000Z",
+            "softEndTime": "2022-04-20T04:30:00.000Z",
+            "costPerHourBeforeSoftStartTime": 0,
+            "costPerHourAfterSoftEndTime": 2
+          }
+        ],
+        "costPerHour": 4,
+        "costPerTraveledHour": 0,
+        "costPerKilometer": 4,
+        "fixedCost": 100,
+        "routeDurationLimit": {
+          "maxDuration": "28800s",
+          "softMaxDuration": "25200s",
+          "costPerHourAfterSoftMax": 2
+        },
+        "travelDurationLimit": {},
+        "breakRule": {
+          "breakRequests": [
+            {
+              "earliestStartTime": "2022-04-20T00:30:00.000Z",
+              "latestStartTime": "2022-04-20T01:30:00.000Z",
+              "minDuration": "1800s"
+            }
+          ]
+        },
+        "label": "RedHat",
+        "loadLimits": {
+          "books": {
+            "maxLoad": "6"
+          },
+          "pickups": {
+            "maxLoad": "6",
+            "softMaxLoad": "2",
+            "costPerUnitAboveSoftMax": 10
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.73905554418008,
+              "longitude": -122.41561720438523
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.73905554418008,
+              "longitude": -122.41561720438523
+            }
+          }
+        },
+        "startTags": [
+          "B"
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": "2022-04-20T00:00:00.000Z",
+            "endTime": "2022-04-20T00:10:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "softStartTime": "2022-04-20T04:00:00.000Z",
+            "softEndTime": "2022-04-20T04:30:00.000Z",
+            "costPerHourBeforeSoftStartTime": 0,
+            "costPerHourAfterSoftEndTime": 2
+          }
+        ],
+        "costPerHour": 4,
+        "costPerTraveledHour": 0,
+        "costPerKilometer": 4,
+        "fixedCost": 100,
+        "routeDurationLimit": {
+          "maxDuration": "28800s",
+          "softMaxDuration": "25200s",
+          "costPerHourAfterSoftMax": 2
+        },
+        "travelDurationLimit": {},
+        "breakRule": {
+          "breakRequests": [
+            {
+              "earliestStartTime": "2022-04-20T00:30:00.000Z",
+              "latestStartTime": "2022-04-20T01:30:00.000Z",
+              "minDuration": "1800s"
+            }
+          ]
+        },
+        "label": "YellowHat",
+        "loadLimits": {
+          "books": {
+            "maxLoad": "6"
+          },
+          "pickups": {
+            "maxLoad": "6",
+            "softMaxLoad": "2",
+            "costPerUnitAboveSoftMax": 10
+          }
+        }
+      },
+      {
+        "startTags": [
+          "B"
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": "2022-04-20T00:00:00.000Z",
+            "endTime": "2022-04-20T00:10:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "softStartTime": "2022-04-20T04:00:00.000Z",
+            "softEndTime": "2022-04-20T04:30:00.000Z",
+            "costPerHourBeforeSoftStartTime": 0,
+            "costPerHourAfterSoftEndTime": 2
+          }
+        ],
+        "costPerHour": 4,
+        "costPerKilometer": 4,
+        "fixedCost": 100,
+        "routeDurationLimit": {
+          "maxDuration": "28800s",
+          "softMaxDuration": "25200s",
+          "costPerHourAfterSoftMax": 2
+        },
+        "travelDurationLimit": {},
+        "breakRule": {
+          "breakRequests": [
+            {
+              "earliestStartTime": "2022-04-20T00:30:00.000Z",
+              "latestStartTime": "2022-04-20T01:30:00.000Z",
+              "minDuration": "1800s"
+            }
+          ]
+        },
+        "label": "GreenHat",
+        "loadLimits": {
+          "books": {
+            "maxLoad": "6"
+          },
+          "pickups": {
+            "maxLoad": "6",
+            "softMaxLoad": "2",
+            "costPerUnitAboveSoftMax": 10
+          }
+        }
+      },
+      {
+        "startTags": [
+          "B"
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": "2022-04-20T00:00:00.000Z",
+            "endTime": "2022-04-20T00:10:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "softStartTime": "2022-04-20T04:00:00.000Z",
+            "softEndTime": "2022-04-20T04:30:00.000Z",
+            "costPerHourBeforeSoftStartTime": 0,
+            "costPerHourAfterSoftEndTime": 2
+          }
+        ],
+        "costPerHour": 4,
+        "costPerKilometer": 4,
+        "fixedCost": 100,
+        "routeDurationLimit": {
+          "maxDuration": "28800s",
+          "softMaxDuration": "25200s",
+          "costPerHourAfterSoftMax": 2
+        },
+        "travelDurationLimit": {},
+        "breakRule": {
+          "breakRequests": [
+            {
+              "earliestStartTime": "2022-04-20T00:30:00.000Z",
+              "latestStartTime": "2022-04-20T01:30:00.000Z",
+              "minDuration": "1800s"
+            }
+          ]
+        },
+        "label": "BlueHat",
+        "loadLimits": {
+          "books": {
+            "maxLoad": "6"
+          },
+          "pickups": {
+            "maxLoad": "6",
+            "softMaxLoad": "2",
+            "costPerUnitAboveSoftMax": 10
+          }
+        }
+      },
+      {
+        "startTags": [
+          "B"
+        ],
+        "startTimeWindows": [
+          {
+            "startTime": "2022-04-20T00:00:00.000Z",
+            "endTime": "2022-04-20T00:10:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "softStartTime": "2022-04-20T04:00:00.000Z",
+            "softEndTime": "2022-04-20T04:30:00.000Z",
+            "costPerHourBeforeSoftStartTime": 0,
+            "costPerHourAfterSoftEndTime": 2
+          }
+        ],
+        "costPerHour": 4,
+        "costPerKilometer": 4,
+        "fixedCost": 100,
+        "routeDurationLimit": {
+          "maxDuration": "28800s",
+          "softMaxDuration": "25200s",
+          "costPerHourAfterSoftMax": 2
+        },
+        "travelDurationLimit": {},
+        "breakRule": {
+          "breakRequests": [
+            {
+              "earliestStartTime": "2022-04-20T00:30:00.000Z",
+              "latestStartTime": "2022-04-20T01:30:00.000Z",
+              "minDuration": "1800s"
+            }
+          ]
+        },
+        "label": "PurpleHat",
+        "loadLimits": {
+          "books": {
+            "maxLoad": "6"
+          },
+          "pickups": {
+            "maxLoad": "6",
+            "softMaxLoad": "2",
+            "costPerUnitAboveSoftMax": 10
+          }
+        }
+      }
+    ],
+    "globalStartTime": "2022-04-19T23:00:00.000Z",
+    "globalEndTime": "2022-04-20T12:00:00.000Z",
+    "transitionAttributes": [
+      {
+        "srcTag": "A",
+        "dstTag": "B",
+        "cost": 2,
+        "delay": "100s"
+      },
+      {
+        "srcTag": "B",
+        "dstTag": "A",
+        "cost": 2,
+        "delay": "100s"
+      }
+    ],
+    "shipmentTypeIncompatibilities": [
+      {
+        "types": [
+          "old",
+          "new"
+        ],
+        "incompatibilityMode": 1
+      }
+    ]
+  },
+  "solvingMode": 0,
+  "searchMode": 1,
+  "considerRoadTraffic": false,
+  "populatePolylines": true,
+  "populateTransitionPolylines": true,
+  "label": ""
+}

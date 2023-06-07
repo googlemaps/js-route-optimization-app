@@ -1,0 +1,66 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "pickups": [
+          {
+            "arrivalLocation": {
+              "latitude": 37.73881799999999,
+              "longitude": -122.4161
+            },
+            "duration": {
+              "seconds": "300"
+            },
+            "label": "Library"
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalLocation": {
+              "latitude": 37.79581,
+              "longitude": -122.4218856
+            },
+            "duration": {
+              "seconds": "300"
+            },
+            "label": "Turntable at Lord Stanley"
+          }
+        ],
+        "label": "Book 1",
+        "loadDemands": {
+          "books": {
+            "amount": "1"
+          }
+        }
+      }
+    ],
+    "vehicles": [
+      {
+        "startLocation": {
+          "latitude": 37.73881799999999,
+          "longitude": -122.4161
+        },
+        "endLocation": {
+          "latitude": 37.73881799999999,
+          "longitude": -122.4161
+        },
+        "travelDurationLimit": {},
+        "label": "Red Hat"
+      }
+    ],
+    "globalStartTime": {
+      "seconds": "1650412800"
+    },
+    "globalEndTime": {
+      "seconds": "1650535200"
+    }
+  },
+  "searchMode": 1,
+  "interpretInjectedSolutionsUsingLabels": false,
+  "considerRoadTraffic": false,
+  "populateTransitionPolylines": false,
+  "allowLargeDeadlineDespiteInterruptionRisk": false,
+  "useGeodesicDistances": false,
+  "geodesicMetersPerSecond": 1,
+  "label": ""
+}
