@@ -1,0 +1,271 @@
+{
+  "routes": [
+    {
+      "vehicleIndex": 0,
+      "vehicleLabel": "Red Hat",
+      "vehicleStartTime": {
+        "seconds": "1650412800",
+        "nanos": 0
+      },
+      "vehicleEndTime": {
+        "seconds": "1650415687",
+        "nanos": 0
+      },
+      "visits": [
+        {
+          "shipmentIndex": 0,
+          "isPickup": true,
+          "visitRequestIndex": 0,
+          "startTime": {
+            "seconds": "1650412800",
+            "nanos": 0
+          },
+          "demands": [
+            {
+              "type": "books",
+              "value": "1"
+            }
+          ],
+          "detour": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "shipmentLabel": "Book 1",
+          "visitLabel": "Library",
+          "arrivalLoads": [
+            {
+              "type": "books",
+              "value": "0"
+            }
+          ],
+          "loadDemands": {
+            "books": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 0,
+          "isPickup": false,
+          "visitRequestIndex": 0,
+          "startTime": {
+            "seconds": "1650414207",
+            "nanos": 0
+          },
+          "demands": [
+            {
+              "type": "books",
+              "value": "-1"
+            }
+          ],
+          "detour": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "shipmentLabel": "Book 1",
+          "visitLabel": "Turntable at Lord Stanley",
+          "arrivalLoads": [
+            {
+              "type": "books",
+              "value": "1"
+            }
+          ],
+          "loadDemands": {
+            "books": {
+              "amount": "-1"
+            }
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "travelDistanceMeters": 0,
+          "trafficInfoUnavailable": false,
+          "totalDuration": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "startTime": {
+            "seconds": "1650412800",
+            "nanos": 0
+          },
+          "vehicleLoads": {
+            "books": {
+              "amount": "0"
+            }
+          }
+        },
+        {
+          "travelDuration": {
+            "seconds": "1107",
+            "nanos": 0
+          },
+          "travelDistanceMeters": 9992,
+          "trafficInfoUnavailable": false,
+          "totalDuration": {
+            "seconds": "1107",
+            "nanos": 0
+          },
+          "startTime": {
+            "seconds": "1650413100",
+            "nanos": 0
+          },
+          "vehicleLoads": {
+            "books": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": {
+            "seconds": "1180",
+            "nanos": 0
+          },
+          "travelDistanceMeters": 9601,
+          "trafficInfoUnavailable": false,
+          "totalDuration": {
+            "seconds": "1180",
+            "nanos": 0
+          },
+          "startTime": {
+            "seconds": "1650414507",
+            "nanos": 0
+          },
+          "vehicleLoads": {
+            "books": {
+              "amount": "0"
+            }
+          }
+        }
+      ],
+      "hasTrafficInfeasibilities": false,
+      "routePolyline": {
+        "points": "{{ieF~jdjV@A?K@U@K?GB]@W?C?A@U?I@G?ED}@B]?GAU?IAQCo@?MAO?SAI?A?E?CAK?K?C?A?CAC?QAM?KAS?E?A?EAGA??CAAAAe@_AACAAACGMUc@Ue@Sa@?AKSGMSa@AACEAE?EAC@E@e@?UBm@@m@@c@@m@Bm@?a@Bo@@k@@]D{A@_@?QDyA@c@@I@m@?C@g@@a@@a@By@^Bb@Bx@D^NB@B?L@N?z@BR@L@D?@@@?@?B@B@BBB@BBLP@FDT@NBLBLDXDRFTDLFLHLJNBBJNBBBBPNJFFDJDJDNDj@PXELAH?B?FAHANGNGFEFEFGFKJODKXq@?_@AK?GCY?EA?COCOEIEKMSAAKOKKMKGCSCQAIAE?I?I?M@G?A@K@IBIBGBGBKH_@TgAl@WJCBMDE@KBMDMB[DC@I@M@o@Be@Rc@@Q?Y?KAQ?SAQ?c@Cc@EE?OCQEGEw@K}@Qq@Oc@Mo@SYMu@[c@Ua@WUO[UUOa@]WSg@_@i@e@a@[MIGE_As@]Ue@YMIc@Oq@[o@UOEWIWIg@KYGUEA?SEq@O_@Im@Mm@O[Ge@KoBc@u@O[IUGIAa@Km@MOEWEq@OUGUEa@K[G_@ISEOEkAWgBa@eAUe@Ke@Ia@Eg@GYCi@Eo@C_@AW?s@?W@]@W@]@[Bq@BY@gAFU@W@iADeAF[@q@DY@[BYDYBYFWDYJWHYLUJOHQJSNMJOLSROPMLQTKLY`@a@n@QVMTUZU\\W^m@p@EHCDE@GDGDWPMJULQHQJa@L_@Jc@H_@F[@g@@_@?UAKAWCWEIAICMCKCUIUIUKYMi@[s@_@g@Wi@YMG]M[M[K_@KYEa@GEA[E[C[CYAWCWAe@Ak@Ac@?A?aA@KFIBG?M@I?O@C@U@M?o@D_@D_@BwAFQ@u@FQBOBMBQDKDCBE@EBULGDGDKJEBCDA@MLSTQX[b@q@bAOXg@r@ORINKNILa@r@a@r@S^INIPITK\\IXAJCH?J?H?J?J@J@J@NHXHPDHNXDJNTFPFPBJBJ@JBP?F?NA\\EfAAb@OdD?B?FARArAA`ACnCC\\?FAdGAp@?p@A`A?D?@?@?J?BGbCCp@QzCGt@ANCT?@M|A?@Ej@CNAVGh@Ej@AVC\\?FAb@AX?R?JAR?P?NAVAp@ARAR?@CXCZEVCPCPK`@GP?DGNQn@Ud@GLS\\KREDEHIHEFGFKJMLUNEDiBbAQPOUQUMS]c@c@i@Y_@CE]c@OSQUMSKKKOEGQUQUGAAACA]g@qAgBEEAACACAC?C?G?UDOBOBmANSBy@HMB_@Dc@FQBG@kANQBG?I@e@Fe@DQBc@DSDQ@OBmANM@i@HK@E@QBuCXg@H_@Dy@Jw@Jc@Fc@DWDc@D{ARWDeALw@Ha@FSBiANUBc@Fc@DUBc@Fc@Fw@Hc@Fc@Dc@FSB{@Jc@D{APo@Ji@Hc@DoANkANiALO@_BR{APq@Jk@F{ARyAPk@FE?a@Fc@Dc@Dg@FaBRuAPoDb@mDb@qD`@a@FkBR_@Fk@FiBTc@FEm@Em@Ce@QoCEe@Ci@c@{G@UTCHARCjAOr@I`@GfAMb@G`@EDl@Dn@NdCHbA@X@VtAKzAO|@Qf@GfASNA|C_@VCfCYZCTEp@Il@It@ITExAQPCl@I\\ENAjAOLCVERCPAPCNAr@KVEPEl@KFAB?NCRAxASz@IREzAOv@GBA^CNAlAONE\\GJADAJCPC`@Gx@Kx@KBA^EVCbAMXC^Eb@EdC]XED?DA@?JARCXEr@IxASl@@XEn@I|@K`AOjAOl@E`Da@ZENAvAQ~@MNANClAOh@Gr@KVCd@Gf@Kr@Of@KhB_@|@SlB_@r@I@?dAUPEPGNGLCdBa@jAWd@KNCLCXILEDCROJIJIFC@?B?B?B?B?D@p@DD?@?@?NBF@@?RB@?D?J@@@D?n@BZBLLNJBBDDHLDF@DBD@H@D?D@B?F@D?DAD?DAH?DAFAFADEFCHCDEDCBEDGDEBC@CBE?C@I?I?G?GAEAECCACAIGGGEGACAACICGCGAI?AAEAI?I?K?K@MBYDa@Dc@HgA@MAOCk@J_EHaFByF?U@k@DuDB{A?g@@G@m@Dq@Bo@HiANeBFo@VoCHW@CLm@Jq@BQDi@@OBi@@QBa@@]@GDa@@IHg@H_@H_@Ts@DIBGDKXm@PWb@s@FE@AVQHEDCDATKLERETCDANAVCj@ED?TAHAFAJCFEHGPAPAVATAVA@?B?RANAn@EjAGJ?BA`@A@?TA`@Af@A@?^@R?J?^BN@TBB?J@VD^Hl@Pf@NTHFB\\Np@^h@XFDPJLFJDTJ`@RDBd@PXHXHPBJ@JBb@DZ@X?J?H?PAD?PANAHANCXGREJCTITIPIXOZQTQVQTWRQLOJOJMTYPWLUT_@HMHKLSHMLSLOX_@PSJMHIJKJINMNKNKTMVMZMPGPELETEXEZEXCVCf@CdAE~AIl@C|@Ev@EjAEhAGZAX?\\?l@?F@L?B?Z@\\BXBT@PBf@F`@FXFnAVrBd@lB`@r@PVFdE~@VDRFH@f@Jt@P`@JTD^LlAVXFj@Lh@JvAZr@Nd@J\\Hb@LPFVH\\N\\N^P`@Vd@VXTbAt@pB`Bl@d@XT^VZRVPTLj@XNHPFn@Vh@Pb@LF@PFt@Nr@JF@J@F@RDh@D`@DH?ZBT?L@h@?^LB@N?b@AZ?J?JAZAj@A~@A@?X?PAJ?H?F?Z@@@H?H?RBP@l@JD@LBB@@?TFf@PTJ`@RTNb@XJTJJLLPPd@l@\\`@d@v@DHZj@P\\DJ@D@B@B?B?@?B?@?D?BABCDCDCBMNKRIHA@CBMLGFMLIJJTFHBFHNJP^r@BB@B@D@F?B@B?@?BANAh@Aj@CzAA^Al@Al@A\\?LEdBAHA`@CpA?FClAAl@A`@A`A?H?NA`@Aj@AF?DAd@cAEgAGQ?CAgAEs@CMAE?q@CeAEk@Ec@Am@C}BKi@CgAEA?QAS?@Y@K@K?E@I?C"
+      },
+      "metrics": {
+        "performedShipmentCount": 1,
+        "travelDuration": {
+          "seconds": "2287",
+          "nanos": 0
+        },
+        "waitDuration": {
+          "seconds": "0",
+          "nanos": 0
+        },
+        "delayDuration": {
+          "seconds": "0",
+          "nanos": 0
+        },
+        "breakDuration": {
+          "seconds": "0",
+          "nanos": 0
+        },
+        "visitDuration": {
+          "seconds": "600",
+          "nanos": 0
+        },
+        "totalDuration": {
+          "seconds": "2887",
+          "nanos": 0
+        },
+        "travelDistanceMeters": 19593,
+        "maxLoads": {
+          "books": {
+            "amount": "1"
+          }
+        },
+        "totalCost": 0
+      },
+      "endLoads": [
+        {
+          "type": "books",
+          "value": "0"
+        }
+      ],
+      "travelSteps": [
+        {
+          "duration": {
+            "seconds": "0",
+            "nanos": 0
+          },
+          "distanceMeters": 0,
+          "trafficInfoUnavailable": false
+        },
+        {
+          "duration": {
+            "seconds": "1107",
+            "nanos": 0
+          },
+          "distanceMeters": 9992,
+          "trafficInfoUnavailable": false
+        },
+        {
+          "duration": {
+            "seconds": "1180",
+            "nanos": 0
+          },
+          "distanceMeters": 9601,
+          "trafficInfoUnavailable": false
+        }
+      ],
+      "vehicleDetour": {
+        "seconds": "2887",
+        "nanos": 0
+      },
+      "routeTotalCost": 0
+    }
+  ],
+  "totalCost": 0,
+  "requestLabel": "",
+  "metrics": {
+    "aggregatedRouteMetrics": {
+      "performedShipmentCount": 1,
+      "travelDuration": {
+        "seconds": "2287",
+        "nanos": 0
+      },
+      "waitDuration": {
+        "seconds": "0",
+        "nanos": 0
+      },
+      "delayDuration": {
+        "seconds": "0",
+        "nanos": 0
+      },
+      "breakDuration": {
+        "seconds": "0",
+        "nanos": 0
+      },
+      "visitDuration": {
+        "seconds": "600",
+        "nanos": 0
+      },
+      "totalDuration": {
+        "seconds": "2887",
+        "nanos": 0
+      },
+      "travelDistanceMeters": 19593,
+      "maxLoads": {
+        "books": {
+          "amount": "1"
+        }
+      },
+      "totalCost": 0
+    },
+    "skippedMandatoryShipmentCount": 0,
+    "usedVehicleCount": 1,
+    "earliestVehicleStartTime": {
+      "seconds": "1650412800",
+      "nanos": 0
+    },
+    "latestVehicleEndTime": {
+      "seconds": "1650415687",
+      "nanos": 0
+    },
+    "totalCost": 0
+  }
+}

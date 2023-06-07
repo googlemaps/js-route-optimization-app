@@ -1,0 +1,1375 @@
+{
+    "timeout": {
+        "seconds": "10"
+    },
+    "model": {
+        "shipments": [
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438523
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.78162272291712,
+                                    "longitude": -122.4318453798176
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650413700"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650419100"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book1",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438524
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.74420291824552,
+                                    "longitude": -122.42142087930705
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650413700"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650419100"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book2",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438526
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.791914289687895,
+                                    "longitude": -122.40317127800895
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650413700"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650419100"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book3",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438526
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.79025996541676,
+                                    "longitude": -122.41461693934413
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650413700"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650419100"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book4",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438527
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.78977108049366,
+                                    "longitude": -122.40728202956159
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650413700"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650419100"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book5",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438523
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73705554418,
+                                    "longitude": -122.417617204385
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650413700"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650419100"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book6",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438524
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7816227229171,
+                                    "longitude": -122.431845379817
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650413700"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650419100"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book7",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438526
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7532029182455,
+                                    "longitude": -122.412420879307
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650413700"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650419100"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book8",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438527
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73405554418,
+                                    "longitude": -122.410617204385
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book9",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438523
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7906227229171,
+                                    "longitude": -122.440845379817
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book10",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438524
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7512029182455,
+                                    "longitude": -122.404420879307
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book11",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438526
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7772599654167,
+                                    "longitude": -122.412616939344
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book12",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438527
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7967710804936,
+                                    "longitude": -122.410282029561
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book13",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438523
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.72705554418,
+                                    "longitude": -122.416617204385
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book14",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438524
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7826227229171,
+                                    "longitude": -122.431845379817
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book15",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438526
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7472029182455,
+                                    "longitude": -122.417420879307
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book16",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            },
+            {
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.73905554418008,
+                                    "longitude": -122.41561720438527
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650412800"
+                                },
+                                "endTime": {
+                                    "seconds": "1650416400"
+                                }
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 37.7732599654167,
+                                    "longitude": -122.424616939344
+                                }
+                            }
+                        },
+                        "timeWindows": [
+                            {
+                                "startTime": {
+                                    "seconds": "1650420000"
+                                },
+                                "endTime": {
+                                    "seconds": "1650427200"
+                                },
+                                "softStartTime": {
+                                    "seconds": "1650420900"
+                                },
+                                "softEndTime": {
+                                    "seconds": "1650426300"
+                                },
+                                "costPerHourBeforeSoftStartTime": 1,
+                                "costPerHourAfterSoftEndTime": 1
+                            }
+                        ],
+                        "duration": {
+                            "seconds": "300"
+                        }
+                    }
+                ],
+                "penaltyCost": 100,
+                "label": "Book17",
+                "loadDemands": {
+                    "books": {
+                        "amount": "1"
+                    }
+                }
+            }
+        ],
+        "vehicles": [
+            {
+                "travelMode": 1,
+                "startWaypoint": {
+                    "location": {
+                        "latLng": {
+                            "latitude": 37.73905554418008,
+                            "longitude": -122.41561720438523
+                        }
+                    }
+                },
+                "endWaypoint": {
+                    "location": {
+                        "latLng": {
+                            "latitude": 37.73905554418008,
+                            "longitude": -122.41561720438523
+                        }
+                    }
+                },
+                "startTimeWindows": [
+                    {
+                        "startTime": {
+                            "seconds": "1650412800"
+                        },
+                        "endTime": {
+                            "seconds": "1650413400"
+                        }
+                    }
+                ],
+                "endTimeWindows": [
+                    {
+                        "softStartTime": {
+                            "seconds": "1650427200"
+                        },
+                        "softEndTime": {
+                            "seconds": "1650429000"
+                        },
+                        "costPerHourBeforeSoftStartTime": 0,
+                        "costPerHourAfterSoftEndTime": 2
+                    }
+                ],
+                "costPerHour": 2,
+                "costPerTraveledHour": 0,
+                "costPerKilometer": 2,
+                "fixedCost": 50,
+                "travelDurationLimit": {},
+                "label": "RedHat",
+                "loadLimits": {
+                    "books": {
+                        "maxLoad": "2",
+                        "startLoadInterval": {},
+                        "endLoadInterval": {}
+                    }
+                }
+            },
+            {
+                "travelMode": 1,
+                "startWaypoint": {
+                    "location": {
+                        "latLng": {
+                            "latitude": 37.73905554418008,
+                            "longitude": -122.41561720438523
+                        }
+                    }
+                },
+                "endWaypoint": {
+                    "location": {
+                        "latLng": {
+                            "latitude": 37.73905554418008,
+                            "longitude": -122.41561720438523
+                        }
+                    }
+                },
+                "startTimeWindows": [
+                    {
+                        "startTime": {
+                            "seconds": "1650412800"
+                        },
+                        "endTime": {
+                            "seconds": "1650413400"
+                        }
+                    }
+                ],
+                "endTimeWindows": [
+                    {
+                        "softStartTime": {
+                            "seconds": "1650427200"
+                        },
+                        "softEndTime": {
+                            "seconds": "1650429000"
+                        },
+                        "costPerHourBeforeSoftStartTime": 0,
+                        "costPerHourAfterSoftEndTime": 2
+                    }
+                ],
+                "costPerHour": 2,
+                "costPerTraveledHour": 0,
+                "costPerKilometer": 2,
+                "fixedCost": 50,
+                "travelDurationLimit": {},
+                "label": "YellowHat",
+                "loadLimits": {
+                    "books": {
+                        "maxLoad": "2",
+                        "startLoadInterval": {},
+                        "endLoadInterval": {}
+                    }
+                }
+            },
+            {
+                "startTimeWindows": [
+                    {
+                        "startTime": {
+                            "seconds": "1650412800"
+                        },
+                        "endTime": {
+                            "seconds": "1650413400"
+                        }
+                    }
+                ],
+                "endTimeWindows": [
+                    {
+                        "softStartTime": {
+                            "seconds": "1650427200"
+                        },
+                        "softEndTime": {
+                            "seconds": "1650429000"
+                        },
+                        "costPerHourBeforeSoftStartTime": 0,
+                        "costPerHourAfterSoftEndTime": 2
+                    }
+                ],
+                "costPerHour": 2,
+                "costPerKilometer": 2,
+                "fixedCost": 50,
+                "travelDurationLimit": {},
+                "label": "GreenHat",
+                "loadLimits": {
+                    "books": {
+                        "maxLoad": "2",
+                        "startLoadInterval": {},
+                        "endLoadInterval": {}
+                    }
+                }
+            },
+            {
+                "startTimeWindows": [
+                    {
+                        "startTime": {
+                            "seconds": "1650412800"
+                        },
+                        "endTime": {
+                            "seconds": "1650413400"
+                        }
+                    }
+                ],
+                "endTimeWindows": [
+                    {
+                        "softStartTime": {
+                            "seconds": "1650427200"
+                        },
+                        "softEndTime": {
+                            "seconds": "1650429000"
+                        },
+                        "costPerHourBeforeSoftStartTime": 0,
+                        "costPerHourAfterSoftEndTime": 2
+                    }
+                ],
+                "costPerHour": 2,
+                "costPerKilometer": 2,
+                "fixedCost": 50,
+                "travelDurationLimit": {},
+                "label": "BlueHat",
+                "loadLimits": {
+                    "books": {
+                        "maxLoad": "2",
+                        "startLoadInterval": {},
+                        "endLoadInterval": {}
+                    }
+                }
+            },
+            {
+                "startTimeWindows": [
+                    {
+                        "startTime": {
+                            "seconds": "1650412800"
+                        },
+                        "endTime": {
+                            "seconds": "1650413400"
+                        }
+                    }
+                ],
+                "endTimeWindows": [
+                    {
+                        "softStartTime": {
+                            "seconds": "1650427200"
+                        },
+                        "softEndTime": {
+                            "seconds": "1650429000"
+                        },
+                        "costPerHourBeforeSoftStartTime": 0,
+                        "costPerHourAfterSoftEndTime": 2
+                    }
+                ],
+                "costPerHour": 2,
+                "costPerKilometer": 2,
+                "fixedCost": 50,
+                "travelDurationLimit": {},
+                "label": "PurpleHat",
+                "loadLimits": {
+                    "books": {
+                        "maxLoad": "2",
+                        "startLoadInterval": {},
+                        "endLoadInterval": {}
+                    }
+                }
+            }
+        ],
+        "globalStartTime": {
+            "seconds": "1650409200"
+        },
+        "globalEndTime": {
+            "seconds": "1650430800"
+        }
+    },
+    "searchMode": 2,
+    "considerRoadTraffic": false,
+    "label": ""
+}
