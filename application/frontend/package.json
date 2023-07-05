@@ -31,7 +31,7 @@
     "@deck.gl/google-maps": "~8.6.8",
     "@deck.gl/layers": "~8.6.8",
     "@google-cloud/optimization": "file:src/lib/optimization-api",
-    "google-gax": "^3.3.1",
+    "google-gax": "^3.6.0",
     "@ngrx/effects": "^13.0.2",
     "@ngrx/entity": "^13.0.2",
     "@ngrx/router-store": "^13.0.2",
