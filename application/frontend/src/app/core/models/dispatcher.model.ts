@@ -12,7 +12,7 @@ import dispatcher = google.cloud.optimization.v1;
 
 import IncompatibilityMode = dispatcher.ShipmentTypeIncompatibility.IncompatibilityMode;
 import RequirementMode = dispatcher.ShipmentTypeRequirement.RequirementMode;
-import OptimizeToursRequest = google.cloud.optimization.v1.OptimizeToursRequest;
+import OptimizeToursRequest = dispatcher.OptimizeToursRequest;
 import OptimizeToursResponse = dispatcher.OptimizeToursResponse;
 import RelaxationLevel = dispatcher.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level;
 import SearchMode = dispatcher.OptimizeToursRequest.SearchMode;
@@ -42,19 +42,19 @@ export {
 };
 
 export type IBreak = dispatcher.ShipmentRoute.IBreak;
-export type IBreakRule = google.cloud.optimization.v1.IBreakRule;
-export type IBreakRequest = google.cloud.optimization.v1.BreakRule.IBreakRequest;
+export type IBreakRule = dispatcher.IBreakRule;
+export type IBreakRequest = dispatcher.BreakRule.IBreakRequest;
 export type ICapacityQuantity = dispatcher.ICapacityQuantity;
 export type IConstraintRelaxation = dispatcher.InjectedSolutionConstraint.IConstraintRelaxation;
 export type IDistanceLimit = dispatcher.IDistanceLimit;
 export type IDuration = google.protobuf.IDuration;
 export type IDurationLimit = dispatcher.Vehicle.IDurationLimit;
 export type IEncodedPolyline = dispatcher.ShipmentRoute.IEncodedPolyline;
-export type IFrequencyConstraint = google.cloud.optimization.v1.BreakRule.IFrequencyConstraint;
+export type IFrequencyConstraint = dispatcher.BreakRule.IFrequencyConstraint;
 export type IInjectedSolution = dispatcher.IInjectedSolutionConstraint;
 export type ILatLng = google.type.ILatLng;
 export type ILoad = dispatcher.Shipment.ILoad;
-export type ILoadLimit = google.cloud.optimization.v1.Vehicle.ILoadLimit;
+export type ILoadLimit = dispatcher.Vehicle.ILoadLimit;
 export type IOptimizeToursRequest = dispatcher.IOptimizeToursRequest;
 export type IOptimizeToursResponse = dispatcher.IOptimizeToursResponse;
 export type IPrecedenceRule = dispatcher.ShipmentModel.IPrecedenceRule;
@@ -78,18 +78,18 @@ export type IWaypoint = dispatcher.IWaypoint;
 // Typing copied from IOptimizeToursRequest
 // Required since the scenario interface supports numbers and string forms of the enumerator
 export type ShipmentModelIncompatibilityMode =
-  | google.cloud.optimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode
-  | keyof typeof google.cloud.optimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode
+  | dispatcher.ShipmentTypeIncompatibility.IncompatibilityMode
+  | keyof typeof dispatcher.ShipmentTypeIncompatibility.IncompatibilityMode
   | null;
 export type ShipmentModelRequirementMode =
-  | google.cloud.optimization.v1.ShipmentTypeRequirement.RequirementMode
-  | keyof typeof google.cloud.optimization.v1.ShipmentTypeRequirement.RequirementMode
+  | dispatcher.ShipmentTypeRequirement.RequirementMode
+  | keyof typeof dispatcher.ShipmentTypeRequirement.RequirementMode
   | null;
 export type ScenarioSearchMode =
-  | google.cloud.optimization.v1.OptimizeToursRequest.SearchMode
-  | keyof typeof google.cloud.optimization.v1.OptimizeToursRequest.SearchMode
+  | dispatcher.OptimizeToursRequest.SearchMode
+  | keyof typeof dispatcher.OptimizeToursRequest.SearchMode
   | null;
 export type ScenarioSolvingMode =
-  | google.cloud.optimization.v1.OptimizeToursRequest.SolvingMode
-  | keyof typeof google.cloud.optimization.v1.OptimizeToursRequest.SolvingMode
+  | dispatcher.OptimizeToursRequest.SolvingMode
+  | keyof typeof dispatcher.OptimizeToursRequest.SolvingMode
   | null;
