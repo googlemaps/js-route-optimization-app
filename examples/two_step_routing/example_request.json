@@ -1,0 +1,286 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "label": "S001",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86471,
+                  "longitude": 2.34901
+                }
+              }
+            },
+            "duration": "120s"
+          }
+        ],
+        "allowedVehicleIndices": [
+          0
+        ]
+      },
+      {
+        "label": "S002",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86593,
+                  "longitude": 2.34886
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "allowedVehicleIndices": [
+          0
+        ]
+      },
+      {
+        "label": "S003",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86594,
+                  "longitude": 2.34887
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-08-11T12:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "allowedVehicleIndices": [
+          0
+        ]
+      },
+      {
+        "label": "S004",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86595,
+                  "longitude": 2.34888
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-08-11T14:00:00.000Z",
+                "endTime": "2023-08-11T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "allowedVehicleIndices": [
+          0
+        ]
+      },
+      {
+        "label": "S005",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86596,
+                  "longitude": 2.34889
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "allowedVehicleIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "label": "S006",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "allowedVehicleIndices": [
+          0,
+          1
+        ],
+        "loadDemands": {
+          "wheat": {
+            "amount": "3"
+          },
+          "ore": {
+            "amount": "2"
+          }
+        }
+      },
+      {
+        "label": "S007",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "allowedVehicleIndices": [
+          0,
+          1
+        ],
+        "loadDemands": {
+          "ore": {
+            "amount": "1"
+          },
+          "wood": {
+            "amount": "5"
+          }
+        }
+      },
+      {
+        "label": "S008",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "allowedVehicleIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "label": "S009",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "allowedVehicleIndices": [
+          0,
+          1
+        ]
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "V001",
+        "travelMode": 1,
+        "travelDurationMultiple": 1,
+        "costPerHour": 60,
+        "costPerKilometer": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86321,
+              "longitude": 2.34767
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86321,
+              "longitude": 2.34767
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-08-11T08:00:00.000Z",
+            "endTime": "2023-08-11T08:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2023-08-11T16:00:00.000Z",
+            "endTime": "2023-08-11T21:00:00.000Z"
+          }
+        ]
+      },
+      {
+        "label": "V002",
+        "travelMode": 1,
+        "travelDurationMultiple": 1,
+        "costPerHour": 60,
+        "costPerKilometer": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86321,
+              "longitude": 2.34767
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86321,
+              "longitude": 2.34767
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-08-11T08:00:00.000Z",
+            "endTime": "2023-08-11T08:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2023-08-11T20:00:00.000Z",
+            "endTime": "2023-08-11T21:00:00.000Z"
+          }
+        ]
+      }
+    ],
+    "globalStartTime": "2023-08-11T00:00:00.000Z",
+    "globalEndTime": "2023-08-12T00:00:00.000Z"
+  },
+  "searchMode": 1,
+  "label": "my_little_model",
+  "parent": "my_awesome_project"
+}
