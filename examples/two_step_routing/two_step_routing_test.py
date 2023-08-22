@@ -18,6 +18,7 @@ def _make_shipment(
     delivery_start: two_step_routing.TimeString | None = None,
     delivery_end: two_step_routing.TimeString | None = None,
     load_demands: Mapping[str, int] | None = None,
+    cost_per_vehicle: Mapping[int, float] | None = None,
 ) -> two_step_routing.Shipment:
   delivery = {
       "arrivalWaypoint": {
@@ -49,6 +50,10 @@ def _make_shipment(
     shipment["loadDemands"] = {
         unit: {"amount": str(amount)} for unit, amount in load_demands.items()
     }
+  if cost_per_vehicle is not None:
+    vehicle_indices, costs = zip(*cost_per_vehicle.items())
+    shipment["costsPerVehicle"] = list(costs)
+    shipment["costsPerVehicleIndices"] = list(vehicle_indices)
   return shipment
 
 
@@ -110,6 +115,7 @@ class PlannerTest(unittest.TestCase):
                   latlng=(48.86471, 2.34901),
                   duration="120s",
                   allowed_vehicle_indices=[0],
+                  cost_per_vehicle={0: 100, 1: 200},
               ),
               _make_shipment(  # 1
                   "S002",
@@ -750,6 +756,8 @@ class PlannerTest(unittest.TestCase):
                       },
                       "duration": "932s",
                   }],
+                  "costsPerVehicle": [100, 200],
+                  "costsPerVehicleIndices": [0, 1],
                   "label": "p:0 S001,S002",
               },
               {
@@ -1026,6 +1034,8 @@ class PlannerTest(unittest.TestCase):
                       "duration": "120s",
                   }],
                   "label": "S001",
+                  "costsPerVehicle": [100, 200],
+                  "costsPerVehicleIndices": [0, 1],
               },
               {
                   "allowedVehicleIndices": [0],

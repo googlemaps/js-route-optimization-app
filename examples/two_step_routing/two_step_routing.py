@@ -572,6 +572,8 @@ class Planner:
         # Vehicles are the same as in the original request.
         "vehicles": self._model["vehicles"],
     }
+    global_start_time = _parse_time_string(self._model["globalStartTime"])
+    global_end_time = _parse_time_string(self._model["globalEndTime"])
 
     # Take all shipments that are delivered directly, and copy them to the
     # global request. the only change we make is that we add the original
@@ -642,7 +644,7 @@ class Planner:
             # eat time from the delivery time window.
             start_time = _parse_time_string(time_window["startTime"])
             global_time_window["startTime"] = _make_time_string(
-                start_time - duration_to_first_shipment
+                max(start_time - duration_to_first_shipment, global_start_time)
             )
           if "endTime" in time_window:
             # Shift the end of the time window so that (1) the driver has enough
@@ -651,7 +653,12 @@ class Planner:
             # not eat from the delivery time window.
             end_time = _parse_time_string(time_window["endTime"])
             global_time_window["endTime"] = _make_time_string(
-                end_time - local_route_duration + duration_from_last_shipment
+                min(
+                    end_time
+                    - local_route_duration
+                    + duration_from_last_shipment,
+                    global_end_time,
+                )
             )
           global_time_windows.append(global_time_window)
 
@@ -681,7 +688,7 @@ class Planner:
 
       costs_per_vehicle_and_indices = _combined_costs_per_vehicle(shipments)
       if costs_per_vehicle_and_indices is not None:
-        costs, vehicle_indices = costs_per_vehicle_and_indices
+        vehicle_indices, costs = costs_per_vehicle_and_indices
         global_shipment["costsPerVehicle"] = costs
         global_shipment["costsPerVehicleIndices"] = vehicle_indices
 
@@ -919,7 +926,7 @@ class Planner:
           local_route = local_routes[index]
           for visit in local_route["visits"]:
             shipment_index, label = visit["shipmentLabel"].split(
-                " ", maxsplit=1
+                ": ", maxsplit=1
             )
             merged_skipped_shipments.append({
                 "index": int(shipment_index),
@@ -1151,10 +1158,11 @@ def _get_parking_tag_from_local_route(route: ShipmentRoute) -> str:
 def _make_local_model_vehicle_label(group_key: _ParkingGroupKey) -> str:
   """Creates a label for a vehicle in the local model."""
   parts = [group_key.parking_tag, " ["]
+  num_initial_parts = len(parts)
 
   def add_part_if_not_none(keyword: str, value: Any):
     if value is not None:
-      if len(parts) > 2:
+      if len(parts) > num_initial_parts:
         parts.append(" ")
       parts.append(keyword)
       parts.append(str(value))
