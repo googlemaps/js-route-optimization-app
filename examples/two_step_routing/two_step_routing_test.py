@@ -18,6 +18,7 @@ def _make_shipment(
     delivery_start: two_step_routing.TimeString | None = None,
     delivery_end: two_step_routing.TimeString | None = None,
     load_demands: Mapping[str, int] | None = None,
+    cost_per_vehicle: Mapping[int, float] | None = None,
 ) -> two_step_routing.Shipment:
   delivery = {
       "arrivalWaypoint": {
@@ -49,6 +50,10 @@ def _make_shipment(
     shipment["loadDemands"] = {
         unit: {"amount": str(amount)} for unit, amount in load_demands.items()
     }
+  if cost_per_vehicle is not None:
+    vehicle_indices, costs = zip(*cost_per_vehicle.items())
+    shipment["costsPerVehicle"] = list(costs)
+    shipment["costsPerVehicleIndices"] = list(vehicle_indices)
   return shipment
 
 
@@ -110,6 +115,7 @@ class PlannerTest(unittest.TestCase):
                   latlng=(48.86471, 2.34901),
                   duration="120s",
                   allowed_vehicle_indices=[0],
+                  cost_per_vehicle={0: 100, 1: 200},
               ),
               _make_shipment(  # 1
                   "S002",
@@ -149,14 +155,14 @@ class PlannerTest(unittest.TestCase):
                   "S007",
                   latlng=(48.86597, 2.34890),
                   duration="150s",
-                  allowed_vehicle_indices=[0, 1],
+                  allowed_vehicle_indices=[0],
                   load_demands={"ore": 1, "wood": 5},
               ),
               _make_shipment(  # 7
                   "S008",
                   latlng=(48.86597, 2.34890),
                   duration="150s",
-                  allowed_vehicle_indices=[0, 1],
+                  allowed_vehicle_indices=[1],
               ),
               _make_shipment(  # 8
                   "S009",
@@ -304,10 +310,10 @@ class PlannerTest(unittest.TestCase):
                       "duration": "150s",
                   }],
                   "label": "4: S005",
-                  "allowedVehicleIndices": [3, 4],
+                  "allowedVehicleIndices": [3],
               },
               {
-                  "allowedVehicleIndices": [3, 4],
+                  "allowedVehicleIndices": [3],
                   "deliveries": [{
                       "arrivalWaypoint": {
                           "location": {
@@ -326,7 +332,7 @@ class PlannerTest(unittest.TestCase):
                   },
               },
               {
-                  "allowedVehicleIndices": [3, 4],
+                  "allowedVehicleIndices": [4],
                   "deliveries": [{
                       "arrivalWaypoint": {
                           "location": {
@@ -345,7 +351,7 @@ class PlannerTest(unittest.TestCase):
                   },
               },
               {
-                  "allowedVehicleIndices": [3, 4],
+                  "allowedVehicleIndices": [5],
                   "deliveries": [{
                       "arrivalWaypoint": {
                           "location": {
@@ -362,7 +368,7 @@ class PlannerTest(unittest.TestCase):
           ],
           "vehicles": [
               {
-                  "label": "P001 []/0",
+                  "label": "P001 [vehicles=(0,)]/0",
                   "endWaypoint": {
                       "location": {
                           "latLng": {
@@ -388,7 +394,9 @@ class PlannerTest(unittest.TestCase):
                   "loadLimits": {"ore": {"maxLoad": "2"}},
               },
               {
-                  "label": "P001 [2023-08-11T12:00:00.000Z,]/0",
+                  "label": (
+                      "P001 [start=2023-08-11T12:00:00.000Z vehicles=(0,)]/0"
+                  ),
                   "endWaypoint": {
                       "location": {
                           "latLng": {
@@ -418,8 +426,8 @@ class PlannerTest(unittest.TestCase):
               },
               {
                   "label": (
-                      "P001 [2023-08-11T14:00:00.000Z,"
-                      "2023-08-11T16:00:00.000Z]/0"
+                      "P001 [start=2023-08-11T14:00:00.000Z"
+                      " end=2023-08-11T16:00:00.000Z vehicles=(0,)]/0"
                   ),
                   "endWaypoint": {
                       "location": {
@@ -452,7 +460,7 @@ class PlannerTest(unittest.TestCase):
                   "loadLimits": {"ore": {"maxLoad": "2"}},
               },
               {
-                  "label": "P002 []/0",
+                  "label": "P002 [vehicles=(0, 1)]/0",
                   "endWaypoint": {
                       "location": {
                           "latLng": {
@@ -489,7 +497,7 @@ class PlannerTest(unittest.TestCase):
                       }
                   },
                   "fixedCost": 10000,
-                  "label": "P002 []/1",
+                  "label": "P002 [vehicles=(0,)]/0",
                   "routeDurationLimit": {"maxDuration": "1800s"},
                   "startWaypoint": {
                       "location": {
@@ -503,6 +511,26 @@ class PlannerTest(unittest.TestCase):
                   "travelMode": 2,
                   "loadLimits": {"ore": {"maxLoad": "2"}},
               },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 10000,
+                  "label": "P002 [vehicles=(1,)]/0",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "routeDurationLimit": {"maxDuration": "1800s"},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.0,
+                  "travelMode": 2,
+              },
           ],
       },
       "parent": "my_awesome_project",
@@ -513,7 +541,7 @@ class PlannerTest(unittest.TestCase):
   _LOCAL_RESPONSE_JSON: two_step_routing.OptimizeToursResponse = {
       "routes": [
           {
-              "vehicleLabel": "P001 []/0",
+              "vehicleLabel": "P001 [vehicles=(0,)]/0",
               "vehicleStartTime": "2023-08-11T00:00:00Z",
               "vehicleEndTime": "2023-08-11T00:15:32Z",
               "visits": [
@@ -548,7 +576,9 @@ class PlannerTest(unittest.TestCase):
           },
           {
               "vehicleIndex": 1,
-              "vehicleLabel": "P001 [2023-08-11T12:00:00.000Z,]/0",
+              "vehicleLabel": (
+                  "P001 [start=2023-08-11T12:00:00.000Z vehicles=(0,)]/0"
+              ),
               "vehicleStartTime": "2023-08-11T12:00:00Z",
               "vehicleEndTime": "2023-08-11T12:12:04Z",
               "visits": [{
@@ -574,7 +604,8 @@ class PlannerTest(unittest.TestCase):
           {
               "vehicleIndex": 2,
               "vehicleLabel": (
-                  "P001 [2023-08-11T14:00:00.000Z,2023-08-11T16:00:00.000Z]/0"
+                  "P001 [start=2023-08-11T14:00:00.000Z"
+                  " end=2023-08-11T16:00:00.000Z vehicles=(0,)]/0"
               ),
               "vehicleStartTime": "2023-08-11T14:00:00Z",
               "vehicleEndTime": "2023-08-11T14:12:04Z",
@@ -600,13 +631,49 @@ class PlannerTest(unittest.TestCase):
           },
           {
               "vehicleIndex": 3,
-              "vehicleLabel": "P002 []/0",
+              "vehicleLabel": "P002 [vehicles=(0, 1)]/0",
+              "vehicleStartTime": "2023-08-11T00:00:00Z",
+              "vehicleEndTime": "2023-08-11T00:09:30Z",
+              "visits": [
+                  {
+                      "shipmentIndex": 5,
+                      "startTime": "2023-08-11T00:02:15Z",
+                      "shipmentLabel": "5: S006",
+                  },
+                  {
+                      "shipmentIndex": 4,
+                      "startTime": "2023-08-11T00:04:45Z",
+                      "shipmentLabel": "4: S005",
+                  },
+              ],
+              "transitions": [
+                  {
+                      "totalDuration": "135s",
+                      "startTime": "2023-08-11T00:00:00Z",
+                  },
+                  {
+                      "totalDuration": "0s",
+                      "startTime": "2023-08-11T00:04:45Z",
+                  },
+                  {
+                      "totalDuration": "135s",
+                      "startTime": "2023-08-11T00:07:15Z",
+                  },
+              ],
+              "metrics": {
+                  "totalDuration": "570s",
+              },
+              "routeTotalCost": 10069.94,
+          },
+          {
+              "vehicleIndex": 4,
+              "vehicleLabel": "P002 [vehicles=(0,)]/0",
               "vehicleStartTime": "2023-08-11T00:00:00Z",
               "vehicleEndTime": "2023-08-11T00:06:59Z",
               "visits": [{
-                  "shipmentIndex": 5,
+                  "shipmentIndex": 6,
                   "startTime": "2023-08-11T00:02:15Z",
-                  "shipmentLabel": "5: S006",
+                  "shipmentLabel": "6: S007",
               }],
               "transitions": [
                   {
@@ -624,52 +691,32 @@ class PlannerTest(unittest.TestCase):
               "routeTotalCost": 10057.356666666667,
           },
           {
-              "vehicleIndex": 4,
-              "vehicleLabel": "P002 []/1",
+              "vehicleIndex": 5,
+              "vehicleLabel": "P002 [vehicles=(1,)]/0",
               "vehicleStartTime": "2023-08-11T00:00:00Z",
-              "vehicleEndTime": "2023-08-11T00:12:00Z",
-              "visits": [
-                  {
-                      "shipmentIndex": 7,
-                      "startTime": "2023-08-11T00:02:15Z",
-                      "shipmentLabel": "7: S008",
-                  },
-                  {
-                      "shipmentIndex": 6,
-                      "startTime": "2023-08-11T00:04:45Z",
-                      "shipmentLabel": "6: S007",
-                  },
-                  {
-                      "shipmentIndex": 4,
-                      "startTime": "2023-08-11T00:07:15Z",
-                      "shipmentLabel": "4: S005",
-                  },
-              ],
+              "vehicleEndTime": "2023-08-11T00:06:59Z",
+              "visits": [{
+                  "shipmentIndex": 7,
+                  "startTime": "2023-08-11T00:02:15Z",
+                  "shipmentLabel": "7: S008",
+              }],
               "transitions": [
                   {
                       "totalDuration": "135s",
                       "startTime": "2023-08-11T00:00:00Z",
                   },
                   {
-                      "totalDuration": "0s",
+                      "totalDuration": "134s",
                       "startTime": "2023-08-11T00:04:45Z",
-                  },
-                  {
-                      "totalDuration": "0s",
-                      "startTime": "2023-08-11T00:07:15Z",
-                  },
-                  {
-                      "totalDuration": "135s",
-                      "startTime": "2023-08-11T00:09:45Z",
                   },
               ],
               "metrics": {
-                  "totalDuration": "720s",
+                  "totalDuration": "419s",
               },
-              "routeTotalCost": 10082.44,
+              "routeTotalCost": 10057.356666666667,
           },
       ],
-      "totalCost": 50679.65,
+      "totalCost": 60724.506666666661,
   }
 
   # The expected global model request created by the two-step planner for the
@@ -709,6 +756,8 @@ class PlannerTest(unittest.TestCase):
                       },
                       "duration": "932s",
                   }],
+                  "costsPerVehicle": [100, 200],
+                  "costsPerVehicleIndices": [0, 1],
                   "label": "p:0 S001,S002",
               },
               {
@@ -757,16 +806,16 @@ class PlannerTest(unittest.TestCase):
                               }
                           }
                       },
-                      "duration": "419s",
+                      "duration": "570s",
                   }],
-                  "label": "p:3 S006",
+                  "label": "p:3 S006,S005",
                   "loadDemands": {
                       "ore": {"amount": "2"},
                       "wheat": {"amount": "3"},
                   },
               },
               {
-                  "allowedVehicleIndices": [0, 1],
+                  "allowedVehicleIndices": [0],
                   "deliveries": [{
                       "arrivalWaypoint": {
                           "location": {
@@ -776,13 +825,28 @@ class PlannerTest(unittest.TestCase):
                               }
                           }
                       },
-                      "duration": "720s",
+                      "duration": "419s",
                   }],
-                  "label": "p:4 S008,S007,S005",
+                  "label": "p:4 S007",
                   "loadDemands": {
                       "ore": {"amount": "1"},
                       "wood": {"amount": "5"},
                   },
+              },
+              {
+                  "allowedVehicleIndices": [1],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "duration": "419s",
+                  }],
+                  "label": "p:5 S008",
               },
           ],
           "vehicles": [
@@ -852,59 +916,50 @@ class PlannerTest(unittest.TestCase):
               "vehicleEndTime": "2023-08-11T16:00:00Z",
               "visits": [
                   {
-                      "startTime": "2023-08-11T14:54:13Z",
+                      "startTime": "2023-08-11T15:06:13Z",
                       "shipmentLabel": "s:8 S009",
                   },
                   {
-                      "shipmentIndex": 4,
-                      "startTime": "2023-08-11T14:58:39Z",
-                      "shipmentLabel": "p:3 S006",
-                  },
-                  {
-                      "shipmentIndex": 5,
-                      "startTime": "2023-08-11T15:05:38Z",
-                      "shipmentLabel": "p:4 S008,S007,S005",
-                  },
-                  {
                       "shipmentIndex": 3,
-                      "startTime": "2023-08-11T15:17:38Z",
+                      "startTime": "2023-08-11T15:10:39Z",
                       "shipmentLabel": "p:2 S004",
                   },
                   {
                       "shipmentIndex": 1,
-                      "startTime": "2023-08-11T15:29:42Z",
+                      "startTime": "2023-08-11T15:22:43Z",
                       "shipmentLabel": "p:0 S001,S002",
                   },
                   {
                       "shipmentIndex": 2,
-                      "startTime": "2023-08-11T15:45:14Z",
+                      "startTime": "2023-08-11T15:38:15Z",
                       "shipmentLabel": "p:1 S003",
+                  },
+                  {
+                      "shipmentIndex": 5,
+                      "startTime": "2023-08-11T15:50:19Z",
+                      "shipmentLabel": "p:4 S007",
                   },
               ],
               "transitions": [
                   {
-                      "totalDuration": "24853s",
+                      "totalDuration": "25573s",
                       "startTime": "2023-08-11T08:00:00Z",
                   },
                   {
                       "totalDuration": "116s",
-                      "startTime": "2023-08-11T14:56:43Z",
+                      "startTime": "2023-08-11T15:08:43Z",
                   },
                   {
                       "totalDuration": "0s",
-                      "startTime": "2023-08-11T15:05:38Z",
+                      "startTime": "2023-08-11T15:22:43Z",
                   },
                   {
                       "totalDuration": "0s",
-                      "startTime": "2023-08-11T15:17:38Z",
+                      "startTime": "2023-08-11T15:38:15Z",
                   },
                   {
                       "totalDuration": "0s",
-                      "startTime": "2023-08-11T15:29:42Z",
-                  },
-                  {
-                      "totalDuration": "0s",
-                      "startTime": "2023-08-11T15:45:14Z",
+                      "startTime": "2023-08-11T15:50:19Z",
                   },
                   {
                       "totalDuration": "162s",
@@ -916,9 +971,44 @@ class PlannerTest(unittest.TestCase):
               },
               "routeTotalCost": 481.985,
           },
-          {"vehicleIndex": 1, "vehicleLabel": "V002"},
+          {
+              "vehicleIndex": 1,
+              "vehicleLabel": "V002",
+              "vehicleStartTime": "2023-08-11T08:00:00Z",
+              "vehicleEndTime": "2023-08-11T20:00:00Z",
+              "visits": [
+                  {
+                      "shipmentIndex": 6,
+                      "startTime": "2023-08-11T19:40:49Z",
+                      "shipmentLabel": "p:5 S008",
+                  },
+                  {
+                      "shipmentIndex": 4,
+                      "startTime": "2023-08-11T19:47:48Z",
+                      "shipmentLabel": "p:3 S006,S005",
+                  },
+              ],
+              "transitions": [
+                  {
+                      "totalDuration": "42049s",
+                      "startTime": "2023-08-11T08:00:00Z",
+                  },
+                  {
+                      "totalDuration": "0s",
+                      "startTime": "2023-08-11T19:47:48Z",
+                  },
+                  {
+                      "totalDuration": "162s",
+                      "startTime": "2023-08-11T19:57:18Z",
+                  },
+              ],
+              "metrics": {
+                  "totalDuration": "43200s",
+              },
+              "routeTotalCost": 721.965,
+          },
       ],
-      "totalCost": 481.985,
+      "totalCost": 1203.95,
   }
 
   # The expected merged model request created by the two-step planner for the
@@ -944,6 +1034,8 @@ class PlannerTest(unittest.TestCase):
                       "duration": "120s",
                   }],
                   "label": "S001",
+                  "costsPerVehicle": [100, 200],
+                  "costsPerVehicleIndices": [0, 1],
               },
               {
                   "allowedVehicleIndices": [0],
@@ -1032,7 +1124,7 @@ class PlannerTest(unittest.TestCase):
                   },
               },
               {
-                  "allowedVehicleIndices": [0, 1],
+                  "allowedVehicleIndices": [0],
                   "deliveries": [{
                       "arrivalWaypoint": {
                           "location": {
@@ -1051,7 +1143,7 @@ class PlannerTest(unittest.TestCase):
                   },
               },
               {
-                  "allowedVehicleIndices": [0, 1],
+                  "allowedVehicleIndices": [1],
                   "deliveries": [{
                       "arrivalWaypoint": {
                           "location": {
@@ -1092,6 +1184,90 @@ class PlannerTest(unittest.TestCase):
                       },
                       "duration": "0s",
                   }],
+                  "label": "P001 arrival",
+              },
+              {
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "duration": "0s",
+                  }],
+                  "label": "P001 departure",
+              },
+              {
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "duration": "0s",
+                  }],
+                  "label": "P001 arrival",
+              },
+              {
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "duration": "0s",
+                  }],
+                  "label": "P001 departure",
+              },
+              {
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "duration": "0s",
+                  }],
+                  "label": "P001 arrival",
+              },
+              {
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "duration": "0s",
+                  }],
+                  "label": "P001 departure",
+              },
+              {
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "duration": "0s",
+                  }],
                   "label": "P002 arrival",
               },
               {
@@ -1148,7 +1324,7 @@ class PlannerTest(unittest.TestCase):
                       },
                       "duration": "0s",
                   }],
-                  "label": "P001 arrival",
+                  "label": "P002 arrival",
               },
               {
                   "deliveries": [{
@@ -1162,63 +1338,7 @@ class PlannerTest(unittest.TestCase):
                       },
                       "duration": "0s",
                   }],
-                  "label": "P001 departure",
-              },
-              {
-                  "deliveries": [{
-                      "arrivalWaypoint": {
-                          "location": {
-                              "latLng": {
-                                  "latitude": 48.86482,
-                                  "longitude": 2.34932,
-                              }
-                          }
-                      },
-                      "duration": "0s",
-                  }],
-                  "label": "P001 arrival",
-              },
-              {
-                  "deliveries": [{
-                      "arrivalWaypoint": {
-                          "location": {
-                              "latLng": {
-                                  "latitude": 48.86482,
-                                  "longitude": 2.34932,
-                              }
-                          }
-                      },
-                      "duration": "0s",
-                  }],
-                  "label": "P001 departure",
-              },
-              {
-                  "deliveries": [{
-                      "arrivalWaypoint": {
-                          "location": {
-                              "latLng": {
-                                  "latitude": 48.86482,
-                                  "longitude": 2.34932,
-                              }
-                          }
-                      },
-                      "duration": "0s",
-                  }],
-                  "label": "P001 arrival",
-              },
-              {
-                  "deliveries": [{
-                      "arrivalWaypoint": {
-                          "location": {
-                              "latLng": {
-                                  "latitude": 48.86482,
-                                  "longitude": 2.34932,
-                              }
-                          }
-                      },
-                      "duration": "0s",
-                  }],
-                  "label": "P001 departure",
+                  "label": "P002 departure",
               },
           ],
           "vehicles": [
@@ -1287,61 +1407,50 @@ class PlannerTest(unittest.TestCase):
               "transitions": [
                   {
                       "startTime": "2023-08-11T08:00:00Z",
-                      "totalDuration": "24853s",
+                      "totalDuration": "25573s",
                   },
                   {
-                      "startTime": "2023-08-11T14:56:43Z",
+                      "startTime": "2023-08-11T15:08:43Z",
                       "totalDuration": "116s",
                   },
                   {
-                      "startTime": "2023-08-11T14:58:39Z",
-                      "totalDuration": "135s",
-                  },
-                  {
-                      "startTime": "2023-08-11T15:03:24Z",
-                      "totalDuration": "134s",
-                  },
-                  {"startTime": "2023-08-11T15:05:38Z", "totalDuration": "0s"},
-                  {
-                      "startTime": "2023-08-11T15:05:38Z",
-                      "totalDuration": "135s",
-                  },
-                  {"startTime": "2023-08-11T15:10:23Z", "totalDuration": "0s"},
-                  {"startTime": "2023-08-11T15:12:53Z", "totalDuration": "0s"},
-                  {
-                      "startTime": "2023-08-11T15:15:23Z",
-                      "totalDuration": "135s",
-                  },
-                  {"startTime": "2023-08-11T15:17:38Z", "totalDuration": "0s"},
-                  {
-                      "startTime": "2023-08-11T15:17:38Z",
+                      "startTime": "2023-08-11T15:10:39Z",
                       "totalDuration": "536s",
                   },
                   {
-                      "startTime": "2023-08-11T15:27:34Z",
+                      "startTime": "2023-08-11T15:20:35Z",
                       "totalDuration": "128s",
                   },
-                  {"startTime": "2023-08-11T15:29:42Z", "totalDuration": "0s"},
+                  {"startTime": "2023-08-11T15:22:43Z", "totalDuration": "0s"},
                   {
-                      "startTime": "2023-08-11T15:29:42Z",
+                      "startTime": "2023-08-11T15:22:43Z",
                       "totalDuration": "157s",
                   },
                   {
-                      "startTime": "2023-08-11T15:34:19Z",
+                      "startTime": "2023-08-11T15:27:20Z",
                       "totalDuration": "377s",
                   },
                   {
-                      "startTime": "2023-08-11T15:43:06Z",
+                      "startTime": "2023-08-11T15:36:07Z",
                       "totalDuration": "128s",
                   },
-                  {"startTime": "2023-08-11T15:45:14Z", "totalDuration": "0s"},
+                  {"startTime": "2023-08-11T15:38:15Z", "totalDuration": "0s"},
                   {
-                      "startTime": "2023-08-11T15:45:14Z",
+                      "startTime": "2023-08-11T15:38:15Z",
                       "totalDuration": "536s",
                   },
                   {
-                      "startTime": "2023-08-11T15:55:10Z",
+                      "startTime": "2023-08-11T15:48:11Z",
                       "totalDuration": "128s",
+                  },
+                  {"startTime": "2023-08-11T15:50:19Z", "totalDuration": "0s"},
+                  {
+                      "startTime": "2023-08-11T15:50:19Z",
+                      "totalDuration": "135s",
+                  },
+                  {
+                      "startTime": "2023-08-11T15:55:04Z",
+                      "totalDuration": "134s",
                   },
                   {
                       "startTime": "2023-08-11T15:57:18Z",
@@ -1356,101 +1465,147 @@ class PlannerTest(unittest.TestCase):
                   {
                       "shipmentIndex": 8,
                       "shipmentLabel": "S009",
-                      "startTime": "2023-08-11T14:54:13Z",
+                      "startTime": "2023-08-11T15:06:13Z",
                   },
                   {
                       "shipmentIndex": 9,
-                      "shipmentLabel": "P002 arrival",
-                      "startTime": "2023-08-11T14:58:39Z",
-                  },
-                  {
-                      "shipmentIndex": 5,
-                      "shipmentLabel": "S006",
-                      "startTime": "2023-08-11T15:00:54Z",
-                  },
-                  {
-                      "shipmentIndex": 10,
-                      "shipmentLabel": "P002 departure",
-                      "startTime": "2023-08-11T15:05:38Z",
-                  },
-                  {
-                      "shipmentIndex": 11,
-                      "shipmentLabel": "P002 arrival",
-                      "startTime": "2023-08-11T15:05:38Z",
-                  },
-                  {
-                      "shipmentIndex": 7,
-                      "shipmentLabel": "S008",
-                      "startTime": "2023-08-11T15:07:53Z",
-                  },
-                  {
-                      "shipmentIndex": 6,
-                      "shipmentLabel": "S007",
-                      "startTime": "2023-08-11T15:10:23Z",
-                  },
-                  {
-                      "shipmentIndex": 4,
-                      "shipmentLabel": "S005",
-                      "startTime": "2023-08-11T15:12:53Z",
-                  },
-                  {
-                      "shipmentIndex": 12,
-                      "shipmentLabel": "P002 departure",
-                      "startTime": "2023-08-11T15:17:38Z",
-                  },
-                  {
-                      "shipmentIndex": 13,
                       "shipmentLabel": "P001 arrival",
-                      "startTime": "2023-08-11T15:17:38Z",
+                      "startTime": "2023-08-11T15:10:39Z",
                   },
                   {
                       "shipmentIndex": 3,
                       "shipmentLabel": "S004",
-                      "startTime": "2023-08-11T15:26:34Z",
+                      "startTime": "2023-08-11T15:19:35Z",
                   },
                   {
-                      "shipmentIndex": 14,
+                      "shipmentIndex": 10,
                       "shipmentLabel": "P001 departure",
-                      "startTime": "2023-08-11T15:29:42Z",
+                      "startTime": "2023-08-11T15:22:43Z",
                   },
                   {
-                      "shipmentIndex": 15,
+                      "shipmentIndex": 11,
                       "shipmentLabel": "P001 arrival",
-                      "startTime": "2023-08-11T15:29:42Z",
+                      "startTime": "2023-08-11T15:22:43Z",
                   },
                   {
                       "shipmentIndex": 0,
                       "shipmentLabel": "S001",
-                      "startTime": "2023-08-11T15:32:19Z",
+                      "startTime": "2023-08-11T15:25:20Z",
                   },
                   {
                       "shipmentIndex": 1,
                       "shipmentLabel": "S002",
-                      "startTime": "2023-08-11T15:40:36Z",
+                      "startTime": "2023-08-11T15:33:37Z",
                   },
                   {
-                      "shipmentIndex": 16,
+                      "shipmentIndex": 12,
                       "shipmentLabel": "P001 departure",
-                      "startTime": "2023-08-11T15:45:14Z",
+                      "startTime": "2023-08-11T15:38:15Z",
                   },
                   {
-                      "shipmentIndex": 17,
+                      "shipmentIndex": 13,
                       "shipmentLabel": "P001 arrival",
-                      "startTime": "2023-08-11T15:45:14Z",
+                      "startTime": "2023-08-11T15:38:15Z",
                   },
                   {
                       "shipmentIndex": 2,
                       "shipmentLabel": "S003",
-                      "startTime": "2023-08-11T15:54:10Z",
+                      "startTime": "2023-08-11T15:47:11Z",
                   },
                   {
-                      "shipmentIndex": 18,
+                      "shipmentIndex": 14,
                       "shipmentLabel": "P001 departure",
+                      "startTime": "2023-08-11T15:50:19Z",
+                  },
+                  {
+                      "shipmentIndex": 15,
+                      "shipmentLabel": "P002 arrival",
+                      "startTime": "2023-08-11T15:50:19Z",
+                  },
+                  {
+                      "shipmentIndex": 6,
+                      "shipmentLabel": "S007",
+                      "startTime": "2023-08-11T15:52:34Z",
+                  },
+                  {
+                      "shipmentIndex": 16,
+                      "shipmentLabel": "P002 departure",
                       "startTime": "2023-08-11T15:57:18Z",
                   },
               ],
           },
-          {"vehicleIndex": 1, "vehicleLabel": "V002"},
+          {
+              "routeTotalCost": 721.965,
+              "transitions": [
+                  {
+                      "startTime": "2023-08-11T08:00:00Z",
+                      "totalDuration": "42049s",
+                  },
+                  {
+                      "startTime": "2023-08-11T19:40:49Z",
+                      "totalDuration": "135s",
+                  },
+                  {
+                      "startTime": "2023-08-11T19:45:34Z",
+                      "totalDuration": "134s",
+                  },
+                  {"startTime": "2023-08-11T19:47:48Z", "totalDuration": "0s"},
+                  {
+                      "startTime": "2023-08-11T19:47:48Z",
+                      "totalDuration": "135s",
+                  },
+                  {"startTime": "2023-08-11T19:52:33Z", "totalDuration": "0s"},
+                  {
+                      "startTime": "2023-08-11T19:55:03Z",
+                      "totalDuration": "135s",
+                  },
+                  {
+                      "startTime": "2023-08-11T19:57:18Z",
+                      "totalDuration": "162s",
+                  },
+              ],
+              "vehicleEndTime": "2023-08-11T20:00:00Z",
+              "vehicleIndex": 1,
+              "vehicleLabel": "V002",
+              "vehicleStartTime": "2023-08-11T08:00:00Z",
+              "visits": [
+                  {
+                      "shipmentIndex": 17,
+                      "shipmentLabel": "P002 arrival",
+                      "startTime": "2023-08-11T19:40:49Z",
+                  },
+                  {
+                      "shipmentIndex": 7,
+                      "shipmentLabel": "S008",
+                      "startTime": "2023-08-11T19:43:04Z",
+                  },
+                  {
+                      "shipmentIndex": 18,
+                      "shipmentLabel": "P002 departure",
+                      "startTime": "2023-08-11T19:47:48Z",
+                  },
+                  {
+                      "shipmentIndex": 19,
+                      "shipmentLabel": "P002 arrival",
+                      "startTime": "2023-08-11T19:47:48Z",
+                  },
+                  {
+                      "shipmentIndex": 5,
+                      "shipmentLabel": "S006",
+                      "startTime": "2023-08-11T19:50:03Z",
+                  },
+                  {
+                      "shipmentIndex": 4,
+                      "shipmentLabel": "S005",
+                      "startTime": "2023-08-11T19:52:33Z",
+                  },
+                  {
+                      "shipmentIndex": 20,
+                      "shipmentLabel": "P002 departure",
+                      "startTime": "2023-08-11T19:57:18Z",
+                  },
+              ],
+          },
       ]
   }
 
@@ -1766,7 +1921,8 @@ class GetParkingTagFromLocalRouteTest(unittest.TestCase):
         two_step_routing._get_parking_tag_from_local_route(
             {
                 "vehicleLabel": (
-                    "P001 [2023-08-11T14:00:00.000Z,2023-08-11T16:00:00.000Z]/0"
+                    "P001 [start=2023-08-11T14:00:00.000Z"
+                    " end=2023-08-11T16:00:00.000Z]/0"
                 )
             },
         ),
@@ -1777,39 +1933,73 @@ class GetParkingTagFromLocalRouteTest(unittest.TestCase):
 class MakeLocalModelVehicleLabelTest(unittest.TestCase):
   """Tests for _make_local_delivery_model_vehicle_label."""
 
+  maxDiff = None
+
   def test_parking_tag_only(self):
     self.assertEqual(
-        two_step_routing._make_local_model_vehicle_label("P123", None, None),
+        two_step_routing._make_local_model_vehicle_label(
+            two_step_routing._ParkingGroupKey("P123")
+        ),
         "P123 []",
     )
 
   def test_parking_tag_and_start_time(self):
     self.assertEqual(
         two_step_routing._make_local_model_vehicle_label(
-            "P123", "2023-08-11T00:00:00.000Z", None
+            two_step_routing._ParkingGroupKey(
+                "P123", "2023-08-11T00:00:00.000Z"
+            )
         ),
-        "P123 [2023-08-11T00:00:00.000Z,]",
+        "P123 [start=2023-08-11T00:00:00.000Z]",
     )
 
   def test_parking_tag_and_end_time(self):
     self.assertEqual(
         two_step_routing._make_local_model_vehicle_label(
-            "P123", None, "2023-08-11T00:00:00.000Z"
+            two_step_routing._ParkingGroupKey(
+                "P123", None, "2023-08-11T00:00:00.000Z"
+            )
         ),
-        "P123 [,2023-08-11T00:00:00.000Z]",
+        "P123 [end=2023-08-11T00:00:00.000Z]",
     )
 
   def test_parking_tag_and_start_and_end_time(self):
     self.assertEqual(
         two_step_routing._make_local_model_vehicle_label(
-            "P123", "2023-08-11T00:00:00.000Z", "2023-08-11T08:00:00.000Z"
+            two_step_routing._ParkingGroupKey(
+                "P123", "2023-08-11T00:00:00.000Z", "2023-08-11T08:00:00.000Z"
+            )
         ),
-        "P123 [2023-08-11T00:00:00.000Z,2023-08-11T08:00:00.000Z]",
+        "P123 [start=2023-08-11T00:00:00.000Z end=2023-08-11T08:00:00.000Z]",
+    )
+
+  def test_parking_tag_and_allowed_vehicles(self):
+    self.assertEqual(
+        two_step_routing._make_local_model_vehicle_label(
+            two_step_routing._ParkingGroupKey("P123", None, None, (0, 1, 2))
+        ),
+        "P123 [vehicles=(0, 1, 2)]",
+    )
+
+  def test_parking_tag_times_and_allowed_vehicles(self):
+    self.assertEqual(
+        two_step_routing._make_local_model_vehicle_label(
+            two_step_routing._ParkingGroupKey(
+                "P123",
+                "2023-08-11T00:00:00.000Z",
+                "2023-08-11T08:00:00.000Z",
+                (0, 1, 2),
+            )
+        ),
+        "P123 [start=2023-08-11T00:00:00.000Z end=2023-08-11T08:00:00.000Z"
+        " vehicles=(0, 1, 2)]",
     )
 
 
 class ParkingDeliveryGroupTest(unittest.TestCase):
   """Tests for _parking_delivery_group_key."""
+
+  maxDiff = None
 
   _START_TIME = "2023-08-09T12:12:00.000Z"
   _END_TIME = "2023-08-09T12:45:32.000Z"
@@ -1856,6 +2046,17 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
           }],
       }],
   }
+  _SHIPMENT_ALLOWED_VEHICLES: two_step_routing.Shipment = {
+      "deliveries": [{
+          "arrivalWaypoint": {
+              "location": {
+                  "latLng": {"latitude": 35.7669, "longitude": 139.7286}
+              }
+          },
+      }],
+      "label": "2023081000001",
+      "allowedVehicleIndices": [0, 5, 2],
+  }
 
   _PARKING_LOCATION = two_step_routing.ParkingLocation(
       coordinates={"latitude": 35.7668, "longitude": 139.7285}, tag="P1234"
@@ -1867,10 +2068,11 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
         self._SHIPMENT_TIME_WINDOW_START,
         self._SHIPMENT_TIME_WINDOW_END,
         self._SHIPMENT_TIME_WINDOW_START_END,
+        self._SHIPMENT_ALLOWED_VEHICLES,
     ):
       self.assertEqual(
           two_step_routing._parking_delivery_group_key(shipment, None),
-          (None, None, None),
+          two_step_routing._ParkingGroupKey(),
       )
 
   def test_with_parking_and_no_time_window(self):
@@ -1878,7 +2080,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
         two_step_routing._parking_delivery_group_key(
             self._SHIPMENT_NO_TIME_WINDOW, self._PARKING_LOCATION
         ),
-        ("P1234", None, None),
+        two_step_routing._ParkingGroupKey("P1234"),
     )
 
   def test_with_parking_and_time_window_start(self):
@@ -1886,7 +2088,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
         two_step_routing._parking_delivery_group_key(
             self._SHIPMENT_TIME_WINDOW_START, self._PARKING_LOCATION
         ),
-        ("P1234", self._START_TIME, None),
+        two_step_routing._ParkingGroupKey("P1234", self._START_TIME, None),
     )
 
   def test_with_parking_and_time_window_end(self):
@@ -1894,7 +2096,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
         two_step_routing._parking_delivery_group_key(
             self._SHIPMENT_TIME_WINDOW_END, self._PARKING_LOCATION
         ),
-        ("P1234", None, self._END_TIME),
+        two_step_routing._ParkingGroupKey("P1234", None, self._END_TIME),
     )
 
   def test_with_parking_and_time_window_start_end(self):
@@ -1902,7 +2104,22 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
         two_step_routing._parking_delivery_group_key(
             self._SHIPMENT_TIME_WINDOW_START_END, self._PARKING_LOCATION
         ),
-        ("P1234", self._START_TIME, self._END_TIME),
+        two_step_routing._ParkingGroupKey(
+            "P1234", self._START_TIME, self._END_TIME
+        ),
+    )
+
+  def test_with_allowed_vehicles(self):
+    self.assertEqual(
+        two_step_routing._parking_delivery_group_key(
+            self._SHIPMENT_ALLOWED_VEHICLES, self._PARKING_LOCATION
+        ),
+        two_step_routing._ParkingGroupKey(
+            "P1234",
+            None,
+            None,
+            (0, 2, 5),
+        ),
     )
 
 
