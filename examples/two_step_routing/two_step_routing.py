@@ -51,7 +51,7 @@ import dataclasses
 import datetime
 import math
 import re
-from typing import TypeAlias, TypedDict
+from typing import Any, TypeAlias, TypedDict
 
 # A duration in a string format following the protocol buffers specification in
 # https://protobuf.dev/reference/protobuf/google.protobuf/#duration
@@ -248,10 +248,30 @@ class OptimizeToursResponse(TypedDict, total=False):
 
 # pylint: enable=invalid-name
 
-# A key used to group shipments into parking groups. The key contains the
-# parking tag of the shipment (if used), and the delivery time window timestamps
-# (if present).
-_ParkingGroupKey = tuple[str | None, str | None, str | None]
+
+@dataclasses.dataclass(frozen=True)
+class _ParkingGroupKey:
+  """A key used to group shipments into parking groups.
+
+  A parking group is a group of shipments that are delivered from the same
+  parking location and that are planned as a group by the global model. The goal
+  of this class is that shipments with the same key can be grouped in the local
+  and global models.
+
+  Attributes:
+    parking_tag: The tag of the parking location from which the shipment is
+      delivered.
+    start_time: The beginning of the delivery window of the shipment.
+    end_time: The end of the delivery window of the shipment.
+    allowed_vehicle_indices: The list of vehicle indices that can deliver the
+      shipment.
+  """
+
+  parking_tag: str | None = None
+  start_time: str | None = None
+  end_time: str | None = None
+  allowed_vehicle_indices: tuple[int, ...] | None = None
+
 
 # The type of parking location tags. Technically, this is a string, but we use
 # an alias with a different name to make this apparent from type annotations
@@ -450,9 +470,8 @@ class Planner:
     }
 
     for parking_key, group_shipment_indices in self._parking_groups.items():
-      parking_tag, start_time, end_time = parking_key
-      assert parking_tag is not None
-      parking = self._parking_locations[parking_tag]
+      assert parking_key.parking_tag is not None
+      parking = self._parking_locations[parking_key.parking_tag]
       num_shipments = len(group_shipment_indices)
       assert num_shipments > 0
 
@@ -463,9 +482,7 @@ class Planner:
           num_shipments / self._options.min_average_shipments_per_round
       )
       assert max_num_rounds > 0
-      vehicle_label = _make_local_model_vehicle_label(
-          parking_tag, start_time, end_time
-      )
+      vehicle_label = _make_local_model_vehicle_label(parking_key)
       parking_waypoint: Waypoint = {"location": {"latLng": parking.coordinates}}
       group_vehicle_indices = []
       for round_index in range(max_num_rounds):
@@ -489,13 +506,13 @@ class Planner:
               unit: {"maxLoad": str(max_load)}
               for unit, max_load in parking.delivery_load_limits.items()
           }
-        if start_time is not None:
+        if parking_key.start_time is not None:
           vehicle["startTimeWindows"] = [{
-              "startTime": start_time,
+              "startTime": parking_key.start_time,
           }]
-        if end_time is not None:
+        if parking_key.end_time is not None:
           vehicle["endTimeWindows"] = [{
-              "endTime": end_time,
+              "endTime": parking_key.end_time,
           }]
         local_vehicles.append(vehicle)
 
@@ -958,7 +975,7 @@ def validate_request(
           "Shipments delivered via parking must have exactly one delivery"
           " visit request",
           shipment_index,
-          label
+          label,
       )
       continue
 
@@ -969,7 +986,7 @@ def validate_request(
           "Shipments delivered via parking must have at most one delivery time"
           " window",
           shipment_index,
-          label
+          label,
       )
 
   if errors:
@@ -1131,17 +1148,20 @@ def _get_parking_tag_from_local_route(route: ShipmentRoute) -> str:
   return parking_tag
 
 
-def _make_local_model_vehicle_label(
-    parking_tag: str, start_time: TimeString | None, end_time: TimeString | None
-) -> str:
+def _make_local_model_vehicle_label(group_key: _ParkingGroupKey) -> str:
   """Creates a label for a vehicle in the local model."""
-  parts = [parking_tag, " ["]
-  if start_time is not None:
-    parts.append(start_time)
-  if start_time is not None or end_time is not None:
-    parts.append(",")
-  if end_time is not None:
-    parts.append(end_time)
+  parts = [group_key.parking_tag, " ["]
+
+  def add_part_if_not_none(keyword: str, value: Any):
+    if value is not None:
+      if len(parts) > 2:
+        parts.append(" ")
+      parts.append(keyword)
+      parts.append(str(value))
+
+  add_part_if_not_none("start=", group_key.start_time)
+  add_part_if_not_none("end=", group_key.end_time)
+  add_part_if_not_none("vehicles=", group_key.allowed_vehicle_indices)
   parts.append("]")
   return "".join(parts)
 
@@ -1151,7 +1171,7 @@ def _parking_delivery_group_key(
 ) -> _ParkingGroupKey:
   """Creates a key that groups shipments with the same time window and parking."""
   if parking is None:
-    return (None, None, None)
+    return _ParkingGroupKey()
   parking_tag = parking.tag
   start_time = None
   end_time = None
@@ -1160,7 +1180,15 @@ def _parking_delivery_group_key(
   if time_window is not None:
     start_time = time_window.get("startTime")
     end_time = time_window.get("endTime")
-  return (parking_tag, start_time, end_time)
+  allowed_vehicle_indices = shipment.get("allowedVehicleIndices")
+  if allowed_vehicle_indices is not None:
+    allowed_vehicle_indices = tuple(sorted(allowed_vehicle_indices))
+  return _ParkingGroupKey(
+      parking_tag=parking_tag,
+      start_time=start_time,
+      end_time=end_time,
+      allowed_vehicle_indices=allowed_vehicle_indices,
+  )
 
 
 def _update_time_string(
