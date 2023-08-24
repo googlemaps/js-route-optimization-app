@@ -772,17 +772,19 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
   }
 
   getPrecedenceRuleFirstIndexOptions(selectedIndex: number): Shipment[] {
-    return [
-      selectedIndex && this.scenarioShipments$.value[selectedIndex],
-      ...this.scenarioShipments$.value,
-    ];
+    const options = [...this.scenarioShipments$.value];
+    if (selectedIndex != null) {
+      options.push(this.scenarioShipments$.value[selectedIndex]);
+    }
+    return options;
   }
 
   getPrecendenceRuleSecondIndexOptions(firstIndex: number, selectedIndex: number): Shipment[] {
-    return [
-      selectedIndex && this.scenarioShipments$.value[selectedIndex],
-      ...this.scenarioShipments$.value.filter((_, i) => i !== firstIndex),
-    ];
+    const options = [...this.scenarioShipments$.value.filter((_, i) => i !== firstIndex)];
+    if (selectedIndex != null) {
+      options.push(this.scenarioShipments$.value[selectedIndex]);
+    }
+    return options;
   }
 
   getIndexOfShipment(shipment: Shipment): number {
