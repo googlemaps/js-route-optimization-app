@@ -163,7 +163,7 @@ def _run_optimize_tours(
   sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
   sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 60)
   sock.setsockopt(
-      socket.IPPROTO_TCP, socket.TCP_KEEPCNT, int(timeout_seconds) // 30
+      socket.IPPROTO_TCP, socket.TCP_KEEPCNT, max(int(timeout_seconds) // 30, 1)
   )
 
   # For longer running requests, it may be necessary to set an explicit deadline

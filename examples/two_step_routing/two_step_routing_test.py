@@ -2191,7 +2191,7 @@ class MakeTimeStringTest(unittest.TestCase):
 
 
 class UpdateTimeStringTest(unittest.TestCase):
-  """Tests fo _update_time_string."""
+  """Tests of _update_time_string."""
 
   def test_invalid_time(self):
     with self.assertRaises(ValueError):
@@ -2240,6 +2240,64 @@ class ParseDurationStringTest(unittest.TestCase):
         two_step_routing.parse_duration_string("0.5s"),
         datetime.timedelta(seconds=0.5),
     )
+
+
+class EncodePolylineTest(unittest.TestCase):
+  """Tests for encode_polyline."""
+
+  def test_empty(self):
+    self.assertEqual(two_step_routing.encode_polyline(()), "")
+
+  def test_maps_doc_example(self):
+    self.assertSequenceEqual(
+        two_step_routing.encode_polyline((
+            {"latitude": 38.5, "longitude": -120.2},
+            {"latitude": 40.7, "longitude": -120.95},
+            {"latitude": 43.252, "longitude": -126.453},
+        )),
+        "_p~iF~ps|U_ulLnnqC_mqNvxq`@",
+    )
+
+
+class DecodePolylineTest(unittest.TestCase):
+  """Tests of decode_polyline."""
+
+  maxDiff = None
+
+  def test_empty(self):
+    self.assertSequenceEqual(two_step_routing.decode_polyline(""), ())
+
+  def test_maps_doc_example(self):
+    self.assertSequenceEqual(
+        two_step_routing.decode_polyline("_p~iF~ps|U_ulLnnqC_mqNvxq`@"),
+        (
+            {"latitude": 38.5, "longitude": -120.2},
+            {"latitude": 40.7, "longitude": -120.95},
+            {"latitude": 43.252, "longitude": -126.453},
+        ),
+    )
+
+  def test_encode_and_decode(self):
+    polyline = (
+        {"latitude": 38.5, "longitude": -120.2},
+        {"latitude": 40.7, "longitude": -120.95},
+        {"latitude": 40.7, "longitude": -122.31},
+        {"latitude": 40.4, "longitude": -122.31},
+        {"latitude": 43.252, "longitude": -126.453},
+    )
+    encoded1 = two_step_routing.encode_polyline(polyline)
+    decoded1 = two_step_routing.decode_polyline(encoded1)
+    self.assertSequenceEqual(decoded1, polyline)
+    encoded2 = two_step_routing.encode_polyline(decoded1)
+    self.assertEqual(encoded1, encoded2)
+
+  def test_missing_lng(self):
+    with self.assertRaisesRegex(ValueError, "Longitude is missing"):
+      two_step_routing.decode_polyline("_p~iF")
+
+  def test_incomplete_varint(self):
+    with self.assertRaisesRegex(ValueError, "Invalid varint encoding"):
+      two_step_routing.decode_polyline("_p~iF~ps")
 
 
 if __name__ == "__main__":

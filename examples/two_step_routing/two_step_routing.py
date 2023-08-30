@@ -45,7 +45,7 @@ On a high level, the solver does the following:
 """
 
 import collections
-from collections.abc import Collection, Mapping, Sequence, Set
+from collections.abc import Collection, Iterable, Mapping, Sequence, Set
 import copy
 import dataclasses
 import datetime
@@ -135,6 +135,7 @@ class Shipment(TypedDict, total=False):
   pickups: list[VisitRequest]
   deliveries: list[VisitRequest]
   label: str
+  shipmentType: str
 
   allowedVehicleIndices: list[int]
 
@@ -202,6 +203,9 @@ class OptimizeToursRequest(TypedDict, total=False):
   timeout: DurationString
   searchMode: int
 
+  populatePolylines: bool
+  populateTransitionPolylines: bool
+
 
 class Visit(TypedDict, total=False):
   """Represents a single visit on a route in the JSON CFR results."""
@@ -213,14 +217,21 @@ class Visit(TypedDict, total=False):
   isPickup: bool
 
 
+class EncodedPolyline(TypedDict, total=False):
+  """Represents an encoded polyline in the JSON CFR results."""
+
+  points: str
+
+
 class Transition(TypedDict, total=False):
   """Represents a single transition on a route in the JSON CFR results."""
 
-  travelDuration: str
+  travelDuration: DurationString
   travelDistanceMeters: int
-  waitDuration: str
-  totalDuration: str
-  startTime: str
+  waitDuration: DurationString
+  totalDuration: DurationString
+  startTime: TimeString
+  routePolyline: EncodedPolyline
 
 
 class AggregatedMetrics(TypedDict, total=False):
@@ -244,6 +255,8 @@ class ShipmentRoute(TypedDict, total=False):
   metrics: AggregatedMetrics
 
   routeTotalCost: float
+
+  routePolyline: EncodedPolyline
 
 
 class SkippedShipment(TypedDict, total=False):
@@ -551,11 +564,13 @@ class Planner:
           local_shipment["loadDemands"] = load_demands
         local_shipments.append(local_shipment)
 
-    return {
+    request = {
         "label": self._request.get("label", "") + "/local",
         "model": local_model,
         "parent": self._request.get("parent"),
     }
+    self._add_polyline_options_if_needed(request)
+    return request
 
   def make_global_request(
       self, local_response: OptimizeToursResponse
@@ -710,11 +725,13 @@ class Planner:
 
       global_shipments.append(global_shipment)
 
-    return {
+    request = {
         "label": self._request.get("label", "") + "/global",
         "model": global_model,
         "parent": self._request.get("parent"),
     }
+    self._add_polyline_options_if_needed(request)
+    return request
 
   def merge_local_and_global_result(
       self,
@@ -785,7 +802,12 @@ class Planner:
     }
 
     local_routes = local_response["routes"]
+    populate_polylines = self._request.get("populatePolylines", False)
 
+    # We need to define these two outside of the loop to avoid a useless warning
+    # about capturing a variable defined in a loop.
+    merged_transitions = None
+    route_points = None
     for global_route in global_response["routes"]:
       global_visits = global_route.get("visits", ())
       if not global_visits:
@@ -797,6 +819,7 @@ class Planner:
       global_transitions = global_route["transitions"]
       merged_visits: list[Visit] = []
       merged_transitions: list[Transition] = []
+      route_points: list[LatLng] = []
       merged_routes.append(
           {
               "vehicleIndex": global_route.get("vehicleIndex", 0),
@@ -835,11 +858,22 @@ class Planner:
         merged_shipments.append(shipment)
         return shipment_index, shipment
 
+      def add_merged_transition(transition: Transition):
+        merged_transitions.append(transition)
+        if populate_polylines:
+          decoded_polyline = decode_polyline(
+              transition["routePolyline"].get("points", "")
+          )
+          for latlng in decoded_polyline:
+            # Drop repeated points from the route polyline.
+            if not route_points or route_points[-1] != latlng:
+              route_points.append(latlng)
+
       for global_visit_index, global_visit in enumerate(global_visits):
         # The transition from the previous global visit to the current one can
         # be copied without any modifications, and it is the same regardless of
         # whether the next stop is a direct delivery or a parking location.
-        merged_transitions.append(global_transitions[global_visit_index])
+        add_merged_transition(global_transitions[global_visit_index])
         global_visit_label = global_visit["shipmentLabel"]
         visit_type, index = _parse_global_shipment_label(global_visit_label)
         match visit_type:
@@ -880,7 +914,7 @@ class Planner:
               merged_transition["startTime"] = _update_time_string(
                   merged_transition["startTime"], local_to_global_delta
               )
-              merged_transitions.append(merged_transition)
+              add_merged_transition(merged_transition)
 
               shipment_index = _get_shipment_index_from_local_route_visit(
                   local_visit
@@ -899,7 +933,7 @@ class Planner:
             transition_to_parking["startTime"] = _update_time_string(
                 transition_to_parking["startTime"], local_to_global_delta
             )
-            merged_transitions.append(transition_to_parking)
+            add_merged_transition(transition_to_parking)
 
             # Add a virtual shipment and a visit for the departure from the
             # parking location.
@@ -917,7 +951,11 @@ class Planner:
             raise ValueError(f"Unexpected visit type: '{visit_type}'")
 
       # Add the transition back to the depot.
-      merged_transitions.append(global_transitions[-1])
+      add_merged_transition(global_transitions[-1])
+      if populate_polylines:
+        merged_routes[-1]["routePolyline"] = {
+            "points": encode_polyline(route_points)
+        }
 
     merged_skipped_shipments = []
     for local_skipped_shipment in local_response.get("skippedShipments", ()):
@@ -953,6 +991,19 @@ class Planner:
       merged_result["skippedShipments"] = merged_skipped_shipments
 
     return merged_request, merged_result
+
+  def _add_polyline_options_if_needed(
+      self, request: OptimizeToursRequest
+  ) -> None:
+    """Copies "populatePolylines" options from `self._request` to `request`."""
+    populate_polylines = self._request.get("populatePolylines")
+    if populate_polylines is not None:
+      request["populatePolylines"] = populate_polylines
+    populate_transition_polylines = (
+        self._request.get("populateTransitionPolylines") or populate_polylines
+    )
+    if populate_transition_polylines is not None:
+      request["populateTransitionPolylines"] = populate_transition_polylines
 
 
 def validate_request(
@@ -1257,3 +1308,101 @@ def parse_duration_string(duration: DurationString) -> datetime.timedelta:
     raise ValueError(f"Unexpected duration string format: '{duration}'")
   seconds = float(duration[:-1])
   return datetime.timedelta(seconds=seconds)
+
+
+def encode_polyline(polyline: Sequence[LatLng]) -> str:
+  """Encodes a sequence of latlng pairs to a string.
+
+  Uses the encoding algorithm as described in the Google maps documentation at
+  https://developers.google.com/maps/documentation/utilities/polylinealgorithm.
+
+  Args:
+    polyline: A sequence of latlng pairs to be encoded.
+
+  Returns:
+    A string that contains the encoded polyline.
+  """
+  chunks = []
+
+  def encode_varint(value: int):
+    value = value << 1
+    if value < 0:
+      value = ~value
+    if value == 0:
+      chunks.append(63)
+    else:
+      while value != 0:
+        chunk = value & 31
+        value = value >> 5
+        if value != 0:
+          chunk = chunk | 32
+        chunks.append(chunk + 63)
+
+  previous_lat = 0
+  previous_lng = 0
+  for latlng in polyline:
+    lat = round(latlng["latitude"] * 1e5)
+    lng = round(latlng["longitude"] * 1e5)
+    encode_varint(lat - previous_lat)
+    encode_varint(lng - previous_lng)
+    previous_lat = lat
+    previous_lng = lng
+
+  return bytes(chunks).decode("ascii")
+
+
+def _decoded_varints(encoded_string: str) -> Iterable[int]:
+  """Extracts int values from a varint-encoded string."""
+  decoded_int = 0
+  shift_bits = 0
+  for chunk in encoded_string.encode("ascii"):
+    chunk -= 63
+    if chunk < 0:
+      raise ValueError("Invalid varint encoding")
+    decoded_int += (chunk & 31) << shift_bits
+    is_last_chunk = chunk & 32 == 0
+    if is_last_chunk:
+      if decoded_int & 1 == 1:
+        decoded_int = ~decoded_int
+      yield decoded_int >> 1
+      decoded_int = 0
+      shift_bits = 0
+    else:
+      shift_bits += 5
+  if shift_bits != 0:
+    # The last chunk had the "another chunk follows" bit set.
+    raise ValueError("Invalid varint encoding")
+
+
+def decode_polyline(encoded_polyline: str) -> Sequence[LatLng]:
+  """Decodes a sequence of latlng pairs from a string.
+
+  Uses the encoding algorithm as described in the Google Maps documentation at
+  https://developers.google.com/maps/documentation/utilities/polylinealgorithm.
+
+  Args:
+    encoded_polyline: The encoded polyline in the string format.
+
+  Returns:
+    The polyline as a sequence of points.
+
+  Raises:
+    ValueError: When the string has incorrect format.
+  """
+  lat_lngs = []
+  lat_e5 = 0
+  lng_e5 = 0
+  varint_iter = iter(_decoded_varints(encoded_polyline))
+  try:
+    for lat_e5_delta, lng_e5_delta in zip(
+        varint_iter, varint_iter, strict=True
+    ):
+      lat_e5 += lat_e5_delta
+      lng_e5 += lng_e5_delta
+      lat_lngs.append({"latitude": lat_e5 / 1e5, "longitude": lng_e5 / 1e5})
+  except ValueError as err:
+    if "zip()" in str(err):
+      raise ValueError("Longitude is missing.") from None
+    raise
+
+  return lat_lngs
