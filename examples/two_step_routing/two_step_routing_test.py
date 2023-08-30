@@ -1669,10 +1669,10 @@ class PlannerTest(unittest.TestCase):
                 current_time,
                 two_step_routing._parse_time_string(transition["startTime"]),
             )
-            transition_duration = two_step_routing._parse_duration_string(
+            transition_duration = two_step_routing.parse_duration_string(
                 transition["totalDuration"]
             )
-            visit_duration = two_step_routing._parse_duration_string(
+            visit_duration = two_step_routing.parse_duration_string(
                 shipment["deliveries"][0]["duration"]
             )
             total_duration += transition_duration
@@ -1683,7 +1683,7 @@ class PlannerTest(unittest.TestCase):
             )
             total_duration += visit_duration
             current_time += visit_duration
-        total_duration += two_step_routing._parse_duration_string(
+        total_duration += two_step_routing.parse_duration_string(
             transitions[-1]["totalDuration"]
         )
         self.assertEqual(
@@ -2209,35 +2209,35 @@ class UpdateTimeStringTest(unittest.TestCase):
 
 
 class ParseDurationStringTest(unittest.TestCase):
-  """Tests for _parse_duration_string."""
+  """Tests for parse_duration_string."""
 
   def test_empty_string(self):
     with self.assertRaises(ValueError):
-      two_step_routing._parse_duration_string("")
+      two_step_routing.parse_duration_string("")
 
   def test_invalid_format(self):
     with self.assertRaises(ValueError):
-      two_step_routing._parse_duration_string("foobar")
+      two_step_routing.parse_duration_string("foobar")
 
   def test_invalid_suffix(self):
     with self.assertRaises(ValueError):
-      two_step_routing._parse_duration_string("2h")
+      two_step_routing.parse_duration_string("2h")
 
   def test_invalid_amount(self):
     with self.assertRaises(ValueError):
-      two_step_routing._parse_duration_string("ABCs")
+      two_step_routing.parse_duration_string("ABCs")
 
   def test_valid_parse(self):
     self.assertEqual(
-        two_step_routing._parse_duration_string("0s"),
+        two_step_routing.parse_duration_string("0s"),
         datetime.timedelta(seconds=0),
     )
     self.assertEqual(
-        two_step_routing._parse_duration_string("1800s"),
+        two_step_routing.parse_duration_string("1800s"),
         datetime.timedelta(minutes=30),
     )
     self.assertEqual(
-        two_step_routing._parse_duration_string("0.5s"),
+        two_step_routing.parse_duration_string("0.5s"),
         datetime.timedelta(seconds=0.5),
     )
 

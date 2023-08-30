@@ -40,6 +40,7 @@ from http import client
 import json
 import logging
 import os
+import socket
 
 import two_step_routing
 
@@ -65,8 +66,8 @@ class Flags:
   parking_file: str
   google_cloud_project: str
   google_cloud_token: str
-  local_timeout: str
-  global_timeout: str
+  local_timeout: two_step_routing.DurationString
+  global_timeout: two_step_routing.DurationString
 
 
 def _parse_flags() -> Flags:
@@ -122,13 +123,16 @@ def _parse_flags() -> Flags:
 
 
 def _run_optimize_tours(
-    request: two_step_routing.OptimizeToursRequest, flags: Flags
+    request: two_step_routing.OptimizeToursRequest,
+    flags: Flags,
+    timeout: two_step_routing.DurationString,
 ) -> two_step_routing.OptimizeToursResponse:
   """Solves request using the Google CFR API.
 
   Args:
     request: The request to be solved.
     flags: The command-line flags.
+    timeout: The solve deadline for the request.
 
   Returns:
     Upon success, returns the response from the server.
@@ -139,12 +143,29 @@ def _run_optimize_tours(
   """
   host = "cloudoptimization.googleapis.com"
   path = f"/v1/projects/{flags.google_cloud_project}:optimizeTours"
+  timeout_seconds = two_step_routing.parse_duration_string(
+      timeout
+  ).total_seconds()
   headers = {
       "Content-Type": "application/json",
       "Authorization": f"Bearer {flags.google_cloud_token}",
       "x-goog-user-project": flags.google_cloud_project,
+      "X-Server-Timeout": str(timeout_seconds),
   }
   connection = client.HTTPSConnection(host)
+  connection.connect()
+  # Set up TCP keepalive pings for the connection to avoid losing it due to
+  # inactivity. This is important when using deadlines longer than a few
+  # minutes. The parameters used below were sufficient to successfully complete
+  # requests running up to one hour.
+  sock = connection.sock
+  sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+  sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
+  sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 60)
+  sock.setsockopt(
+      socket.IPPROTO_TCP, socket.TCP_KEEPCNT, int(timeout_seconds) // 30
+  )
+
   # For longer running requests, it may be necessary to set an explicit deadline
   # and set up keepalive pings so that the connection is not dropped before the
   # server returns.
@@ -196,22 +217,34 @@ def _run_two_step_planner() -> None:
 
   local_request = planner.make_local_request()
   local_request["searchMode"] = 2
-  local_request["timeout"] = flags.local_timeout
   _write_json_to_file(base_filename + ".local_request.json", local_request)
 
   logging.info("Solving local model")
-  local_response = _run_optimize_tours(local_request, flags)
-  _write_json_to_file(base_filename + ".local_response.json", local_response)
+  local_response = _run_optimize_tours(
+      local_request, flags, flags.local_timeout
+  )
+  _write_json_to_file(
+      f"{base_filename}.local_response.{flags.local_timeout}.json",
+      local_response,
+  )
 
   logging.info("Creating global model")
   global_request = planner.make_global_request(local_response)
-  global_request["timeout"] = flags.global_timeout
   global_request["searchMode"] = 2
-  _write_json_to_file(base_filename + ".global_request.json", global_request)
+  _write_json_to_file(
+      f"{base_filename}.global_request.{flags.local_timeout}.json",
+      global_request,
+  )
 
   logging.info("Solving global model")
-  global_response = _run_optimize_tours(global_request, flags)
-  _write_json_to_file(base_filename + ".global_response.json", global_response)
+  global_response = _run_optimize_tours(
+      global_request, flags, flags.global_timeout
+  )
+  timeout_suffix = f"{flags.local_timeout}.{flags.global_timeout}"
+  _write_json_to_file(
+      f"{base_filename}.global_response.{timeout_suffix}.json",
+      global_response,
+  )
 
   logging.info("Merging the results")
   merged_request, merged_response = planner.merge_local_and_global_result(
@@ -219,10 +252,21 @@ def _run_two_step_planner() -> None:
   )
 
   logging.info("Writing merged request")
-  _write_json_to_file(base_filename + ".merged_request.json", merged_request)
+  _write_json_to_file(
+      f"{base_filename}.merged_request.{timeout_suffix}.json",
+      merged_request,
+  )
   logging.info("Writing merged response")
-  _write_json_to_file(base_filename + ".merged_response.json", merged_response)
+  _write_json_to_file(
+      f"{base_filename}.merged_response.{timeout_suffix}.json",
+      merged_response,
+  )
 
 
 if __name__ == "__main__":
+  logging.basicConfig(
+      format="%(asctime)s %(levelname)-8s %(message)s",
+      level=logging.INFO,
+      datefmt="%Y-%m-%d %H:%M:%S",
+  )
   _run_two_step_planner()

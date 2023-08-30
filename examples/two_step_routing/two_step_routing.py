@@ -145,6 +145,20 @@ class Shipment(TypedDict, total=False):
   costsPerVehicleIndices: list[int]
 
 
+class BreakRequest(TypedDict, total=False):
+  """Represents a break request in the JSON CFR request."""
+
+  earliestStartTime: TimeString
+  latestStartTime: TimeString
+  minDuration: DurationString
+
+
+class BreakRule(TypedDict):
+  """Represents a break rule in the JSON CFR request."""
+
+  breakRequests: list[BreakRequest]
+
+
 class Vehicle(TypedDict, total=False):
   """Represents a vehicle in the JSON CFR request."""
 
@@ -166,6 +180,8 @@ class Vehicle(TypedDict, total=False):
   costPerKilometer: float
 
   loadLimits: dict[str, LoadLimit]
+
+  breakRule: BreakRule
 
 
 class ShipmentModel(TypedDict, total=False):
@@ -627,13 +643,13 @@ class Planner:
       time_windows = shipment["deliveries"][0].get("timeWindows")
       if time_windows is not None:
         global_time_windows = []
-        local_route_duration = _parse_duration_string(
+        local_route_duration = parse_duration_string(
             route["metrics"]["totalDuration"]
         )
-        duration_to_first_shipment = _parse_duration_string(
+        duration_to_first_shipment = parse_duration_string(
             route["transitions"][0]["totalDuration"]
         )
-        duration_from_last_shipment = _parse_duration_string(
+        duration_from_last_shipment = parse_duration_string(
             route["transitions"][-1]["totalDuration"]
         )
         for time_window in time_windows:
@@ -1099,7 +1115,7 @@ def _combined_load_demands(shipments: Collection[Shipment]) -> dict[str, Load]:
     if shipment_demands is None:
       continue
     for unit, amount in shipment_demands.items():
-      demands[unit] += int(amount["amount"])
+      demands[unit] += int(amount.get("amount", 0))
   return {unit: {"amount": str(amount)} for unit, amount in demands.items()}
 
 
@@ -1225,7 +1241,7 @@ def _make_time_string(timestamp: datetime.datetime) -> TimeString:
   return date_string
 
 
-def _parse_duration_string(duration: DurationString) -> datetime.timedelta:
+def parse_duration_string(duration: DurationString) -> datetime.timedelta:
   """Parses the duration string and converts it to a timedelta.
 
   Args:
