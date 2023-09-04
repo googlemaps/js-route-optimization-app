@@ -202,6 +202,7 @@ class OptimizeToursRequest(TypedDict, total=False):
   parent: str
   timeout: DurationString
   searchMode: int
+  allowLargeDeadlineDespiteInterruptionRisk: bool
 
   populatePolylines: bool
   populateTransitionPolylines: bool
@@ -569,7 +570,7 @@ class Planner:
         "model": local_model,
         "parent": self._request.get("parent"),
     }
-    self._add_polyline_options_if_needed(request)
+    self._add_options_from_original_request(request)
     return request
 
   def make_global_request(
@@ -730,7 +731,7 @@ class Planner:
         "model": global_model,
         "parent": self._request.get("parent"),
     }
-    self._add_polyline_options_if_needed(request)
+    self._add_options_from_original_request(request)
     return request
 
   def merge_local_and_global_result(
@@ -992,10 +993,28 @@ class Planner:
 
     return merged_request, merged_result
 
-  def _add_polyline_options_if_needed(
+  def _add_options_from_original_request(
       self, request: OptimizeToursRequest
   ) -> None:
-    """Copies "populatePolylines" options from `self._request` to `request`."""
+    """Copies solver options from `self._request` to `request`."""
+    # Copy solve mode.
+    # TODO(ondrasej): Consider always setting searchMode to
+    # CONSUME_ALL_AVAILABLE_TIME for the local model. The timeout for the local
+    # model is usually very short, and the difference between the two might not
+    # be that large.
+    search_mode = self._request.get("searchMode")
+    if search_mode is not None:
+      request["searchMode"] = search_mode
+
+    allow_large_deadlines = self._request.get(
+        "allowLargeDeadlineDespiteInterruptionRisk"
+    )
+    if allow_large_deadlines is not None:
+      request["allowLargeDeadlineDespiteInterruptionRisk"] = (
+          allow_large_deadlines
+      )
+
+    # Copy polyline settings.
     populate_polylines = self._request.get("populatePolylines")
     if populate_polylines is not None:
       request["populatePolylines"] = populate_polylines

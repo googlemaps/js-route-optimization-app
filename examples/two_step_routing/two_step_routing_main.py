@@ -42,7 +42,7 @@ import logging
 import os
 import socket
 
-import two_step_routing
+from google3.util.operations_research.tour_optimization.experiments import two_step_routing
 
 
 class PlannerError(Exception):

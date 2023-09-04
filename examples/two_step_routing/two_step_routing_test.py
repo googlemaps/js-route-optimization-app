@@ -7,7 +7,7 @@ from collections.abc import Mapping, Sequence
 import datetime
 import unittest
 
-import two_step_routing
+from google3.util.operations_research.tour_optimization.experiments import two_step_routing
 
 
 def _make_shipment(
@@ -201,6 +201,7 @@ class PlannerTest(unittest.TestCase):
           "globalEndTime": "2023-08-12T00:00:00.000Z",
       },
       "searchMode": 1,
+      "allowLargeDeadlineDespiteInterruptionRisk": True,
       "label": "my_little_model",
       "parent": "my_awesome_project",
   }
@@ -534,6 +535,8 @@ class PlannerTest(unittest.TestCase):
           ],
       },
       "parent": "my_awesome_project",
+      "searchMode": 1,
+      "allowLargeDeadlineDespiteInterruptionRisk": True,
   }
   # An example response from the CFR solver for _EXPECTED_LOCAL_REQUEST_JSON.
   # Fields that are not needed by the two-step solver were removed from the
@@ -903,6 +906,8 @@ class PlannerTest(unittest.TestCase):
           ],
       },
       "parent": "my_awesome_project",
+      "searchMode": 1,
+      "allowLargeDeadlineDespiteInterruptionRisk": True,
   }
 
   # An example response from the CFR solver for _EXPECTED_GLOBAL_REQUEST_JSON.
