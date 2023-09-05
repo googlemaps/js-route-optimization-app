@@ -7,7 +7,7 @@ from collections.abc import Mapping, Sequence
 import datetime
 import unittest
 
-from google3.util.operations_research.tour_optimization.experiments import two_step_routing
+import two_step_routing
 
 
 def _make_shipment(
