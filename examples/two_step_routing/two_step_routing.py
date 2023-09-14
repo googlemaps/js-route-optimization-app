@@ -376,7 +376,7 @@ class Options:
   local_model_vehicle_per_hour_cost: float = 300
   local_model_vehicle_per_km_cost: float = 60
 
-  min_average_shipments_per_round: int = 4
+  min_average_shipments_per_round: int = 1
   max_round_duration: str = "7200s"
 
 
@@ -961,7 +961,7 @@ class Planner:
     merged_skipped_shipments = []
     for local_skipped_shipment in local_response.get("skippedShipments", ()):
       shipment_index, label = local_skipped_shipment["label"].split(
-          ": ", maxsplit=1
+          " ", maxsplit=1
       )
       merged_skipped_shipments.append({
           "index": int(shipment_index),
