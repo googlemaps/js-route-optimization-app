@@ -3,97 +3,12 @@
 # Use of this source code is governed by an MIT-style license that can be found
 # in the LICENSE file or at https://opensource.org/licenses/MIT.
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 import datetime
 import unittest
 
+import cfr_json
 import two_step_routing
-
-
-def _make_shipment(
-    label: str,
-    latlng: tuple[float, float],
-    duration: str,
-    allowed_vehicle_indices: list[int] | None = None,
-    delivery_start: two_step_routing.TimeString | None = None,
-    delivery_end: two_step_routing.TimeString | None = None,
-    load_demands: Mapping[str, int] | None = None,
-    cost_per_vehicle: Mapping[int, float] | None = None,
-) -> two_step_routing.Shipment:
-  delivery = {
-      "arrivalWaypoint": {
-          "location": {
-              "latLng": {
-                  "latitude": latlng[0],
-                  "longitude": latlng[1],
-              }
-          }
-      },
-      "duration": duration,
-  }
-  time_window = None
-  if delivery_start is not None:
-    time_window = {}
-    time_window["startTime"] = delivery_start
-  if delivery_end is not None:
-    time_window = time_window or {}
-    time_window["endTime"] = delivery_end
-  if time_window is not None:
-    delivery["timeWindows"] = [time_window]
-  shipment = {
-      "label": label,
-      "deliveries": [delivery],
-  }
-  if allowed_vehicle_indices is not None:
-    shipment["allowedVehicleIndices"] = allowed_vehicle_indices
-  if load_demands is not None:
-    shipment["loadDemands"] = {
-        unit: {"amount": str(amount)} for unit, amount in load_demands.items()
-    }
-  if cost_per_vehicle is not None:
-    vehicle_indices, costs = zip(*cost_per_vehicle.items())
-    shipment["costsPerVehicle"] = list(costs)
-    shipment["costsPerVehicleIndices"] = list(vehicle_indices)
-  return shipment
-
-
-def _make_vehicle(
-    label: str,
-    depot_latlng: tuple[float, float],
-    start_time: tuple[str, str],
-    end_time: tuple[str, str],
-) -> two_step_routing.Vehicle:
-  return {
-      "label": label,
-      "travelMode": 1,
-      "travelDurationMultiple": 1,
-      "costPerHour": 60,
-      "costPerKilometer": 1,
-      "startWaypoint": {
-          "location": {
-              "latLng": {
-                  "latitude": depot_latlng[0],
-                  "longitude": depot_latlng[1],
-              }
-          }
-      },
-      "endWaypoint": {
-          "location": {
-              "latLng": {
-                  "latitude": depot_latlng[0],
-                  "longitude": depot_latlng[1],
-              }
-          }
-      },
-      "startTimeWindows": [{
-          "startTime": start_time[0],
-          "endTime": start_time[1],
-      }],
-      "endTimeWindows": [{
-          "startTime": end_time[0],
-          "endTime": end_time[1],
-      }],
-  }
 
 
 class PlannerTest(unittest.TestCase):
@@ -107,72 +22,72 @@ class PlannerTest(unittest.TestCase):
       min_average_shipments_per_round=2,
   )
 
-  _REQUEST_JSON: two_step_routing.OptimizeToursRequest = {
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = {
       "model": {
           "shipments": [
-              _make_shipment(  # 0
+              cfr_json.make_shipment(  # 0
                   "S001",
-                  latlng=(48.86471, 2.34901),
-                  duration="120s",
+                  delivery_latlng=(48.86471, 2.34901),
+                  delivery_duration="120s",
                   allowed_vehicle_indices=[0],
                   cost_per_vehicle={0: 100, 1: 200},
               ),
-              _make_shipment(  # 1
+              cfr_json.make_shipment(  # 1
                   "S002",
-                  latlng=(48.86593, 2.34886),
-                  duration="150s",
+                  delivery_latlng=(48.86593, 2.34886),
+                  delivery_duration="150s",
                   allowed_vehicle_indices=[0],
               ),
-              _make_shipment(  # 2
+              cfr_json.make_shipment(  # 2
                   "S003",
-                  latlng=(48.86594, 2.34887),
-                  duration="60s",
+                  delivery_latlng=(48.86594, 2.34887),
+                  delivery_duration="60s",
                   allowed_vehicle_indices=[0],
                   delivery_start="2023-08-11T12:00:00.000Z",
               ),
-              _make_shipment(  # 3
+              cfr_json.make_shipment(  # 3
                   "S004",
-                  latlng=(48.86595, 2.34888),
-                  duration="60s",
+                  delivery_latlng=(48.86595, 2.34888),
+                  delivery_duration="60s",
                   allowed_vehicle_indices=[0],
                   delivery_start="2023-08-11T14:00:00.000Z",
                   delivery_end="2023-08-11T16:00:00.000Z",
               ),
-              _make_shipment(  # 4
+              cfr_json.make_shipment(  # 4
                   "S005",
-                  latlng=(48.86596, 2.34889),
-                  duration="150s",
+                  delivery_latlng=(48.86596, 2.34889),
+                  delivery_duration="150s",
                   allowed_vehicle_indices=[0, 1],
               ),
-              _make_shipment(  # 5
+              cfr_json.make_shipment(  # 5
                   "S006",
-                  latlng=(48.86597, 2.34890),
-                  duration="150s",
+                  delivery_latlng=(48.86597, 2.34890),
+                  delivery_duration="150s",
                   allowed_vehicle_indices=[0, 1],
                   load_demands={"wheat": 3, "ore": 2},
               ),
-              _make_shipment(  # 6
+              cfr_json.make_shipment(  # 6
                   "S007",
-                  latlng=(48.86597, 2.34890),
-                  duration="150s",
+                  delivery_latlng=(48.86597, 2.34890),
+                  delivery_duration="150s",
                   allowed_vehicle_indices=[0],
                   load_demands={"ore": 1, "wood": 5},
               ),
-              _make_shipment(  # 7
+              cfr_json.make_shipment(  # 7
                   "S008",
-                  latlng=(48.86597, 2.34890),
-                  duration="150s",
+                  delivery_latlng=(48.86597, 2.34890),
+                  delivery_duration="150s",
                   allowed_vehicle_indices=[1],
               ),
-              _make_shipment(  # 8
+              cfr_json.make_shipment(  # 8
                   "S009",
-                  latlng=(48.86597, 2.34890),
-                  duration="150s",
+                  delivery_latlng=(48.86597, 2.34890),
+                  delivery_duration="150s",
                   allowed_vehicle_indices=[0, 1],
               ),
           ],
           "vehicles": [
-              _make_vehicle(
+              cfr_json.make_vehicle(
                   "V001",
                   depot_latlng=(48.86321, 2.34767),
                   start_time=(
@@ -184,7 +99,7 @@ class PlannerTest(unittest.TestCase):
                       "2023-08-11T21:00:00.000Z",
                   ),
               ),
-              _make_vehicle(
+              cfr_json.make_vehicle(
                   "V002",
                   depot_latlng=(48.86321, 2.34767),
                   start_time=(
@@ -232,7 +147,7 @@ class PlannerTest(unittest.TestCase):
 
   # The expected local model request created by the two-step planner for the
   # base request defined above.
-  _EXPECTED_LOCAL_REQUEST_JSON: two_step_routing.OptimizeToursRequest = {
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = {
       "label": "my_little_model/local",
       "model": {
           "globalEndTime": "2023-08-12T00:00:00.000Z",
@@ -541,7 +456,7 @@ class PlannerTest(unittest.TestCase):
   # An example response from the CFR solver for _EXPECTED_LOCAL_REQUEST_JSON.
   # Fields that are not needed by the two-step solver were removed from the
   # response to make it shorter.
-  _LOCAL_RESPONSE_JSON: two_step_routing.OptimizeToursResponse = {
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = {
       "routes": [
           {
               "vehicleLabel": "P001 [vehicles=(0,)]/0",
@@ -725,7 +640,7 @@ class PlannerTest(unittest.TestCase):
   # The expected global model request created by the two-step planner for the
   # base request defined above, using _EXPECTED_LOCAL_REQUEST_JSON as the
   # solution of the local model.
-  _EXPECTED_GLOBAL_REQUEST_JSON: two_step_routing.OptimizeToursRequest = {
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = {
       "label": "my_little_model/global",
       "model": {
           "globalEndTime": "2023-08-12T00:00:00.000Z",
@@ -913,7 +828,7 @@ class PlannerTest(unittest.TestCase):
   # An example response from the CFR solver for _EXPECTED_GLOBAL_REQUEST_JSON.
   # Fields that are not needed by the two-step solver were removed from the
   # response to make it shorter.
-  _GLOBAL_RESPONSE_JSON: two_step_routing.OptimizeToursResponse = {
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = {
       "routes": [
           {
               "vehicleLabel": "V001",
@@ -1616,8 +1531,8 @@ class PlannerTest(unittest.TestCase):
 
   def validate_response(
       self,
-      request: two_step_routing.OptimizeToursRequest,
-      response: two_step_routing.OptimizeToursResponse,
+      request: cfr_json.OptimizeToursRequest,
+      response: cfr_json.OptimizeToursResponse,
   ):
     """Validates basic properties of the merged response."""
     vehicles = request["model"]["vehicles"]
@@ -1646,9 +1561,7 @@ class PlannerTest(unittest.TestCase):
         self.assertEqual(len(visits) + 1, len(transitions))
 
         total_duration = datetime.timedelta()
-        current_time = two_step_routing._parse_time_string(
-            route["vehicleStartTime"]
-        )
+        current_time = cfr_json.parse_time_string(route["vehicleStartTime"])
         for visit_index, visit in enumerate(visits):
           with self.subTest(visit_index=visit_index):
             shipment_index = visit.get("shipmentIndex", 0)
@@ -1672,29 +1585,29 @@ class PlannerTest(unittest.TestCase):
             transition = transitions[visit_index]
             self.assertEqual(
                 current_time,
-                two_step_routing._parse_time_string(transition["startTime"]),
+                cfr_json.parse_time_string(transition["startTime"]),
             )
-            transition_duration = two_step_routing.parse_duration_string(
+            transition_duration = cfr_json.parse_duration_string(
                 transition["totalDuration"]
             )
-            visit_duration = two_step_routing.parse_duration_string(
+            visit_duration = cfr_json.parse_duration_string(
                 shipment["deliveries"][0]["duration"]
             )
             total_duration += transition_duration
             current_time += transition_duration
             self.assertEqual(
                 current_time,
-                two_step_routing._parse_time_string(visit["startTime"]),
+                cfr_json.parse_time_string(visit["startTime"]),
             )
             total_duration += visit_duration
             current_time += visit_duration
-        total_duration += two_step_routing.parse_duration_string(
+        total_duration += cfr_json.parse_duration_string(
             transitions[-1]["totalDuration"]
         )
         self.assertEqual(
             total_duration,
-            two_step_routing._parse_time_string(route["vehicleEndTime"])
-            - two_step_routing._parse_time_string(route["vehicleStartTime"]),
+            cfr_json.parse_time_string(route["vehicleEndTime"])
+            - cfr_json.parse_time_string(route["vehicleStartTime"]),
         )
 
     # Collect skipped shipment indices.
@@ -1812,100 +1725,6 @@ class ParseGlobalShipmentLabelTest(unittest.TestCase):
     self.assertEqual(index, 3)
 
 
-class CombinedCostsPerVehicleTest(unittest.TestCase):
-  """Tests for _combined_costs_per_vehicle."""
-
-  def test_no_shipments(self):
-    self.assertIsNone(two_step_routing._combined_costs_per_vehicle([]))
-
-  def test_no_costs_per_vehicle(self):
-    self.assertIsNone(
-        two_step_routing._combined_costs_per_vehicle([{}, {}, {}])
-    )
-
-  def test_some_costs(self):
-    shipments = [
-        {
-            "costsPerVehicle": [1000, 2000, 3000],
-            "costsPerVehicleIndices": [0, 2, 5],
-        },
-        {
-            "costsPerVehicle": [10, 20, 30, 40],
-            "costsPerVehicleIndices": [1, 3, 5, 6],
-        },
-        {},
-        {
-            "costsPerVehicle": [2, 3],
-            "costsPerVehicleIndices": [5, 6],
-        },
-    ]
-    expected_costs = [1000, 10, 2000, 20, 3000, 40]
-    expected_vehicle_indices = [0, 1, 2, 3, 5, 6]
-    self.assertEqual(
-        two_step_routing._combined_costs_per_vehicle(shipments),
-        (expected_vehicle_indices, expected_costs),
-    )
-
-
-class CombinedPenaltyCostTest(unittest.TestCase):
-  """Tests for _combined_penalty_cost."""
-
-  def test_no_shipments(self):
-    self.assertEqual(two_step_routing._combined_penalty_cost(()), 0)
-
-  def test_no_mandatory_shipments(self):
-    shipments = [
-        {"penaltyCost": 100},
-        {"penaltyCost": 1_000},
-        {"penaltyCost": 10_000},
-    ]
-    self.assertEqual(two_step_routing._combined_penalty_cost(shipments), 11100)
-
-  def test_some_mandatory_shipments(self):
-    shipments = [{"penaltyCost": 100}, {}, {"penaltyCost": 10000}]
-    self.assertIsNone(two_step_routing._combined_penalty_cost(shipments))
-
-  def test_all_mandatory_shipments(self):
-    shipments = [{}, {}, {}]
-    self.assertIsNone(two_step_routing._combined_penalty_cost(shipments))
-
-
-class CombinedLoadDemandsTest(unittest.TestCase):
-  """Tests for _combined_load_demands."""
-
-  def test_no_shipments(self):
-    self.assertEqual(two_step_routing._combined_load_demands(()), {})
-
-  def test_some_shipments(self):
-    shipments = [
-        _make_shipment(
-            "S001",
-            latlng=(48.86471, 2.34901),
-            duration="120s",
-            load_demands={"wheat": 3, "wood": 1},
-        ),
-        _make_shipment(
-            "S002",
-            latlng=(48.86471, 2.34901),
-            duration="120s",
-            load_demands={"wood": 5, "ore": 2},
-        ),
-        _make_shipment(
-            "S002",
-            latlng=(48.86471, 2.34901),
-            duration="120s",
-        ),
-    ]
-    self.assertEqual(
-        two_step_routing._combined_load_demands(shipments),
-        {
-            "wheat": {"amount": "3"},
-            "wood": {"amount": "6"},
-            "ore": {"amount": "2"},
-        },
-    )
-
-
 class GetParkingTagFromLocalRouteTest(unittest.TestCase):
   """Tests for _get_parking_tag_from_local_route."""
 
@@ -2008,7 +1827,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
 
   _START_TIME = "2023-08-09T12:12:00.000Z"
   _END_TIME = "2023-08-09T12:45:32.000Z"
-  _SHIPMENT_NO_TIME_WINDOW: two_step_routing.Shipment = {
+  _SHIPMENT_NO_TIME_WINDOW: cfr_json.Shipment = {
       "deliveries": [{
           "arrivalWaypoint": {
               "location": {
@@ -2018,7 +1837,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
       }],
       "label": "2023081000001",
   }
-  _SHIPMENT_TIME_WINDOW_START: two_step_routing.Shipment = {
+  _SHIPMENT_TIME_WINDOW_START: cfr_json.Shipment = {
       "deliveries": [{
           "arrivalWaypoint": {
               "location": {
@@ -2028,7 +1847,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
           "timeWindows": [{"startTime": _START_TIME}],
       }],
   }
-  _SHIPMENT_TIME_WINDOW_END: two_step_routing.Shipment = {
+  _SHIPMENT_TIME_WINDOW_END: cfr_json.Shipment = {
       "deliveries": [{
           "arrivalWaypoint": {
               "location": {
@@ -2038,7 +1857,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
           "timeWindows": [{"endTime": _END_TIME}],
       }],
   }
-  _SHIPMENT_TIME_WINDOW_START_END: two_step_routing.Shipment = {
+  _SHIPMENT_TIME_WINDOW_START_END: cfr_json.Shipment = {
       "deliveries": [{
           "arrivalWaypoint": {
               "location": {
@@ -2051,7 +1870,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
           }],
       }],
   }
-  _SHIPMENT_ALLOWED_VEHICLES: two_step_routing.Shipment = {
+  _SHIPMENT_ALLOWED_VEHICLES: cfr_json.Shipment = {
       "deliveries": [{
           "arrivalWaypoint": {
               "location": {
@@ -2126,183 +1945,6 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
             (0, 2, 5),
         ),
     )
-
-
-class ParseTimeStringTest(unittest.TestCase):
-  """Tests for _parse_time_string."""
-
-  maxDiff = None
-
-  def test_empty_string(self):
-    with self.assertRaises(ValueError):
-      two_step_routing._parse_time_string("")
-
-  def test_date_only(self):
-    self.assertEqual(
-        two_step_routing._parse_time_string("2023-08-11"),
-        datetime.datetime(year=2023, month=8, day=11),
-    )
-
-  def test_fractional_seconds(self):
-    self.assertEqual(
-        two_step_routing._parse_time_string("2023-08-15T12:32:44.567Z"),
-        datetime.datetime(
-            year=2023,
-            month=8,
-            day=15,
-            hour=12,
-            minute=32,
-            second=44,
-            microsecond=567000,
-        ),
-    )
-
-
-class MakeTimeStringTest(unittest.TestCase):
-  """Tests for _make_time_string."""
-
-  maxDiff = None
-
-  def test_no_timezone(self):
-    self.assertEqual(
-        two_step_routing._make_time_string(
-            datetime.datetime(
-                year=2023,
-                month=8,
-                day=15,
-                hour=9,
-                minute=21,
-                second=32,
-            )
-        ),
-        "2023-08-15T09:21:32Z",
-    )
-
-  def test_with_timezone(self):
-    self.assertEqual(
-        two_step_routing._make_time_string(
-            datetime.datetime(
-                year=2023,
-                month=8,
-                day=15,
-                hour=9,
-                minute=21,
-                second=32,
-                tzinfo=datetime.timezone(datetime.timedelta(hours=+2)),
-            )
-        ),
-        "2023-08-15T09:21:32+02:00",
-    )
-
-
-class UpdateTimeStringTest(unittest.TestCase):
-  """Tests of _update_time_string."""
-
-  def test_invalid_time(self):
-    with self.assertRaises(ValueError):
-      two_step_routing._update_time_string(
-          "foobar", datetime.timedelta(seconds=12)
-      )
-
-  def test_update_some_time(self):
-    self.assertEqual(
-        two_step_routing._update_time_string(
-            "2023-08-15T12:32:44Z", datetime.timedelta(hours=-3)
-        ),
-        "2023-08-15T09:32:44Z",
-    )
-
-
-class ParseDurationStringTest(unittest.TestCase):
-  """Tests for parse_duration_string."""
-
-  def test_empty_string(self):
-    with self.assertRaises(ValueError):
-      two_step_routing.parse_duration_string("")
-
-  def test_invalid_format(self):
-    with self.assertRaises(ValueError):
-      two_step_routing.parse_duration_string("foobar")
-
-  def test_invalid_suffix(self):
-    with self.assertRaises(ValueError):
-      two_step_routing.parse_duration_string("2h")
-
-  def test_invalid_amount(self):
-    with self.assertRaises(ValueError):
-      two_step_routing.parse_duration_string("ABCs")
-
-  def test_valid_parse(self):
-    self.assertEqual(
-        two_step_routing.parse_duration_string("0s"),
-        datetime.timedelta(seconds=0),
-    )
-    self.assertEqual(
-        two_step_routing.parse_duration_string("1800s"),
-        datetime.timedelta(minutes=30),
-    )
-    self.assertEqual(
-        two_step_routing.parse_duration_string("0.5s"),
-        datetime.timedelta(seconds=0.5),
-    )
-
-
-class EncodePolylineTest(unittest.TestCase):
-  """Tests for encode_polyline."""
-
-  def test_empty(self):
-    self.assertEqual(two_step_routing.encode_polyline(()), "")
-
-  def test_maps_doc_example(self):
-    self.assertSequenceEqual(
-        two_step_routing.encode_polyline((
-            {"latitude": 38.5, "longitude": -120.2},
-            {"latitude": 40.7, "longitude": -120.95},
-            {"latitude": 43.252, "longitude": -126.453},
-        )),
-        "_p~iF~ps|U_ulLnnqC_mqNvxq`@",
-    )
-
-
-class DecodePolylineTest(unittest.TestCase):
-  """Tests of decode_polyline."""
-
-  maxDiff = None
-
-  def test_empty(self):
-    self.assertSequenceEqual(two_step_routing.decode_polyline(""), ())
-
-  def test_maps_doc_example(self):
-    self.assertSequenceEqual(
-        two_step_routing.decode_polyline("_p~iF~ps|U_ulLnnqC_mqNvxq`@"),
-        (
-            {"latitude": 38.5, "longitude": -120.2},
-            {"latitude": 40.7, "longitude": -120.95},
-            {"latitude": 43.252, "longitude": -126.453},
-        ),
-    )
-
-  def test_encode_and_decode(self):
-    polyline = (
-        {"latitude": 38.5, "longitude": -120.2},
-        {"latitude": 40.7, "longitude": -120.95},
-        {"latitude": 40.7, "longitude": -122.31},
-        {"latitude": 40.4, "longitude": -122.31},
-        {"latitude": 43.252, "longitude": -126.453},
-    )
-    encoded1 = two_step_routing.encode_polyline(polyline)
-    decoded1 = two_step_routing.decode_polyline(encoded1)
-    self.assertSequenceEqual(decoded1, polyline)
-    encoded2 = two_step_routing.encode_polyline(decoded1)
-    self.assertEqual(encoded1, encoded2)
-
-  def test_missing_lng(self):
-    with self.assertRaisesRegex(ValueError, "Longitude is missing"):
-      two_step_routing.decode_polyline("_p~iF")
-
-  def test_incomplete_varint(self):
-    with self.assertRaisesRegex(ValueError, "Invalid varint encoding"):
-      two_step_routing.decode_polyline("_p~iF~ps")
 
 
 if __name__ == "__main__":

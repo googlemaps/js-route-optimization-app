@@ -42,6 +42,7 @@ import logging
 import os
 import socket
 
+import cfr_json
 import two_step_routing
 
 
@@ -66,8 +67,8 @@ class Flags:
   parking_file: str
   google_cloud_project: str
   google_cloud_token: str
-  local_timeout: two_step_routing.DurationString
-  global_timeout: two_step_routing.DurationString
+  local_timeout: cfr_json.DurationString
+  global_timeout: cfr_json.DurationString
 
 
 def _parse_flags() -> Flags:
@@ -123,10 +124,10 @@ def _parse_flags() -> Flags:
 
 
 def _run_optimize_tours(
-    request: two_step_routing.OptimizeToursRequest,
+    request: cfr_json.OptimizeToursRequest,
     flags: Flags,
-    timeout: two_step_routing.DurationString,
-) -> two_step_routing.OptimizeToursResponse:
+    timeout: cfr_json.DurationString,
+) -> cfr_json.OptimizeToursResponse:
   """Solves request using the Google CFR API.
 
   Args:
@@ -143,9 +144,7 @@ def _run_optimize_tours(
   """
   host = "cloudoptimization.googleapis.com"
   path = f"/v1/projects/{flags.google_cloud_project}:optimizeTours"
-  timeout_seconds = two_step_routing.parse_duration_string(
-      timeout
-  ).total_seconds()
+  timeout_seconds = cfr_json.parse_duration_string(timeout).total_seconds()
   headers = {
       "Content-Type": "application/json",
       "Authorization": f"Bearer {flags.google_cloud_token}",
@@ -191,7 +190,7 @@ def _run_two_step_planner() -> None:
 
   logging.info("Parsing %s", flags.request_file)
   with open(flags.request_file, "rb") as f:
-    request_json: two_step_routing.OptimizeToursRequest = json.load(f)
+    request_json: cfr_json.OptimizeToursRequest = json.load(f)
   logging.info("Parsing %s", flags.parking_file)
   with open(flags.parking_file, "rb") as f:
     parking_json = json.load(f)

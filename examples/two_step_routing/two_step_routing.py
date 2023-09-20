@@ -45,238 +45,14 @@ On a high level, the solver does the following:
 """
 
 import collections
-from collections.abc import Collection, Iterable, Mapping, Sequence, Set
+from collections.abc import Collection, Mapping, Sequence, Set
 import copy
 import dataclasses
-import datetime
 import math
 import re
-from typing import Any, TypeAlias, TypedDict
+from typing import Any, TypeAlias
 
-# A duration in a string format following the protocol buffers specification in
-# https://protobuf.dev/reference/protobuf/google.protobuf/#duration
-DurationString: TypeAlias = str
-
-# A timestamp in a string format following the protocol buffers specification in
-# https://protobuf.dev/reference/protobuf/google.protobuf/#timestamp.
-TimeString: TypeAlias = str
-
-
-# The amount value represented as a string. This is effectively an int64 stored
-# as a string, because JSON doesn't have 64-bit integers. See the reference in
-# https://developers.google.com/discovery/v1/type-format
-Int64String: TypeAlias = str
-
-# These TypedDicts are based on the JSON format for CFR requests that uses
-# smallCamelCase for all names. Note that these are not full definitions, they
-# have only attributes that are used in the code of the two-step planner.
-#
-# pylint: disable=invalid-name
-
-
-class LatLng(TypedDict):
-  """Represents a latitude-longitude pair in the JSON CFR request."""
-
-  latitude: float
-  longitude: float
-
-
-class DurationLimit(TypedDict, total=False):
-  """Represents a duration limit in the JSON CFR request."""
-
-  maxDuration: DurationString
-
-
-class TimeWindow(TypedDict, total=False):
-  """Represents a time window in the JSON CFR request."""
-
-  startTime: TimeString
-  softEndTime: TimeString
-  endTime: TimeString
-
-  costPerHourAfterSoftEndTime: float
-
-
-class Load(TypedDict):
-  """Represents a load object in the JSON CFR request."""
-
-  amount: Int64String
-
-
-class LoadLimit(TypedDict):
-  """Represents the vehicle load limit in the JSON CFR request."""
-
-  maxLoad: Int64String
-
-
-class Location(TypedDict):
-  """Represents a location in the JSON CFR request."""
-
-  latLng: LatLng
-
-
-class Waypoint(TypedDict):
-  """Represents a waypoint in the JSON CFR request."""
-
-  location: Location
-
-
-class VisitRequest(TypedDict, total=False):
-  """Represents a delivery in the JSON CFR request."""
-
-  arrivalWaypoint: Waypoint
-  timeWindows: list[TimeWindow]
-  duration: DurationString
-
-
-class Shipment(TypedDict, total=False):
-  """Represents a shipment in the JSON CFR request."""
-
-  pickups: list[VisitRequest]
-  deliveries: list[VisitRequest]
-  label: str
-  shipmentType: str
-
-  allowedVehicleIndices: list[int]
-
-  loadDemands: dict[str, Load]
-
-  penaltyCost: float
-  costsPerVehicle: list[float]
-  costsPerVehicleIndices: list[int]
-
-
-class BreakRequest(TypedDict, total=False):
-  """Represents a break request in the JSON CFR request."""
-
-  earliestStartTime: TimeString
-  latestStartTime: TimeString
-  minDuration: DurationString
-
-
-class BreakRule(TypedDict):
-  """Represents a break rule in the JSON CFR request."""
-
-  breakRequests: list[BreakRequest]
-
-
-class Vehicle(TypedDict, total=False):
-  """Represents a vehicle in the JSON CFR request."""
-
-  label: str
-
-  startWaypoint: Waypoint
-  endWaypoint: Waypoint
-
-  startTimeWindows: list[TimeWindow]
-  endTimeWindows: list[TimeWindow]
-
-  travelMode: int
-  travelDurationMultiple: float
-
-  routeDurationLimit: DurationLimit
-
-  fixedCost: float
-  costPerHour: float
-  costPerKilometer: float
-
-  loadLimits: dict[str, LoadLimit]
-
-  breakRule: BreakRule
-
-
-class ShipmentModel(TypedDict, total=False):
-  """Represents a shipment model in the JSON CFR request."""
-
-  shipments: list[Shipment]
-  vehicles: list[Vehicle]
-  globalStartTime: TimeString
-  globalEndTime: TimeString
-
-
-class OptimizeToursRequest(TypedDict, total=False):
-  """Represents the JSON CFR request."""
-
-  label: str
-  model: ShipmentModel
-  parent: str
-  timeout: DurationString
-  searchMode: int
-  allowLargeDeadlineDespiteInterruptionRisk: bool
-
-  populatePolylines: bool
-  populateTransitionPolylines: bool
-
-
-class Visit(TypedDict, total=False):
-  """Represents a single visit on a route in the JSON CFR results."""
-
-  shipmentIndex: int
-  shipmentLabel: str
-  startTime: TimeString
-  detour: str
-  isPickup: bool
-
-
-class EncodedPolyline(TypedDict, total=False):
-  """Represents an encoded polyline in the JSON CFR results."""
-
-  points: str
-
-
-class Transition(TypedDict, total=False):
-  """Represents a single transition on a route in the JSON CFR results."""
-
-  travelDuration: DurationString
-  travelDistanceMeters: int
-  waitDuration: DurationString
-  totalDuration: DurationString
-  startTime: TimeString
-  routePolyline: EncodedPolyline
-
-
-class AggregatedMetrics(TypedDict, total=False):
-  """Represents aggregated route metrics in the JSON CFR results."""
-
-  performedShipmentCount: int
-  totalDuration: DurationString
-
-
-class ShipmentRoute(TypedDict, total=False):
-  """Represents a single route in the JSON CFR result."""
-
-  vehicleIndex: int
-  vehicleLabel: str
-
-  vehicleStartTime: str
-  vehicleEndTime: str
-
-  visits: list[Visit]
-  transitions: list[Transition]
-  metrics: AggregatedMetrics
-
-  routeTotalCost: float
-
-  routePolyline: EncodedPolyline
-
-
-class SkippedShipment(TypedDict, total=False):
-  """Represents a skipped shipment in the JSON CFR result."""
-
-  index: int
-  penaltyCost: float
-  label: str
-
-
-class OptimizeToursResponse(TypedDict, total=False):
-  """Represents the JSON CFR result."""
-
-  routes: list[ShipmentRoute]
-  skippedShipments: list[SkippedShipment]
-  totalCost: float
-
-
-# pylint: enable=invalid-name
+import cfr_json
 
 
 @dataclasses.dataclass(frozen=True)
@@ -340,7 +116,7 @@ class ParkingLocation:
       and this value is used as the hard limit.
   """
 
-  coordinates: LatLng
+  coordinates: cfr_json.LatLng
   tag: str
 
   travel_mode: int = 1
@@ -389,11 +165,11 @@ ShipmentParkingMap = Mapping[int, ParkingTag]
 class Planner:
   """The two-step routing planner."""
 
-  _request: OptimizeToursRequest
-  _model: ShipmentModel
+  _request: cfr_json.OptimizeToursRequest
+  _model: cfr_json.ShipmentModel
   _options: Options
-  _shipments: Sequence[Shipment]
-  _vehicles: Sequence[Vehicle]
+  _shipments: Sequence[cfr_json.Shipment]
+  _vehicles: Sequence[cfr_json.Vehicle]
 
   _parking_locations: Mapping[str, ParkingLocation]
   _parking_for_shipment: ShipmentParkingMap
@@ -402,7 +178,7 @@ class Planner:
 
   def __init__(
       self,
-      request_json: OptimizeToursRequest,
+      request_json: cfr_json.OptimizeToursRequest,
       parking_locations: Collection[ParkingLocation],
       parking_for_shipment: ShipmentParkingMap,
       options: Options,
@@ -474,7 +250,7 @@ class Planner:
     self._direct_shipments = set(range(self._num_shipments))
     self._direct_shipments.difference_update(self._parking_for_shipment.keys())
 
-  def make_local_request(self) -> OptimizeToursRequest:
+  def make_local_request(self) -> cfr_json.OptimizeToursRequest:
     """Builds the local model request.
 
     Returns:
@@ -486,8 +262,8 @@ class Planner:
       mutating it is needed, first make a copy via copy.deepcopy().
     """
 
-    local_shipments: list[Shipment] = []
-    local_vehicles: list[Vehicle] = []
+    local_shipments: list[cfr_json.Shipment] = []
+    local_vehicles: list[cfr_json.Vehicle] = []
     local_model = {
         "globalEndTime": self._model["globalEndTime"],
         "globalStartTime": self._model["globalStartTime"],
@@ -495,7 +271,7 @@ class Planner:
         "vehicles": local_vehicles,
     }
 
-    round_duration_limit: DurationLimit = {
+    round_duration_limit: cfr_json.DurationLimit = {
         "maxDuration": self._options.max_round_duration
     }
 
@@ -513,11 +289,13 @@ class Planner:
       )
       assert max_num_rounds > 0
       vehicle_label = _make_local_model_vehicle_label(parking_key)
-      parking_waypoint: Waypoint = {"location": {"latLng": parking.coordinates}}
+      parking_waypoint: cfr_json.Waypoint = {
+          "location": {"latLng": parking.coordinates}
+      }
       group_vehicle_indices = []
       for round_index in range(max_num_rounds):
         group_vehicle_indices.append(len(local_vehicles))
-        vehicle: Vehicle = {
+        vehicle: cfr_json.Vehicle = {
             "label": f"{vehicle_label}/{round_index}",
             # Start and end waypoints.
             "endWaypoint": parking_waypoint,
@@ -551,7 +329,7 @@ class Planner:
       for shipment_index in group_shipment_indices:
         shipment = self._shipments[shipment_index]
         delivery = shipment["deliveries"][0]
-        local_shipment: Shipment = {
+        local_shipment: cfr_json.Shipment = {
             "deliveries": [{
                 "arrivalWaypoint": delivery["arrivalWaypoint"],
                 "duration": delivery["duration"],
@@ -574,8 +352,8 @@ class Planner:
     return request
 
   def make_global_request(
-      self, local_response: OptimizeToursResponse
-  ) -> OptimizeToursRequest:
+      self, local_response: cfr_json.OptimizeToursResponse
+  ) -> cfr_json.OptimizeToursRequest:
     """Creates a request for the global model.
 
     Args:
@@ -596,16 +374,18 @@ class Planner:
 
     # TODO(ondrasej): Validate that the local results corresponds to the
     # original request.
-    global_shipments: list[Shipment] = []
-    global_model: ShipmentModel = {
+    global_shipments: list[cfr_json.Shipment] = []
+    global_model: cfr_json.ShipmentModel = {
         "globalStartTime": self._model["globalStartTime"],
         "globalEndTime": self._model["globalEndTime"],
         "shipments": global_shipments,
         # Vehicles are the same as in the original request.
         "vehicles": self._model["vehicles"],
     }
-    global_start_time = _parse_time_string(self._model["globalStartTime"])
-    global_end_time = _parse_time_string(self._model["globalEndTime"])
+    global_start_time = cfr_json.parse_time_string(
+        self._model["globalStartTime"]
+    )
+    global_end_time = cfr_json.parse_time_string(self._model["globalEndTime"])
 
     # Take all shipments that are delivered directly, and copy them to the
     # global request. the only change we make is that we add the original
@@ -645,7 +425,7 @@ class Planner:
       # location visit (if there is one).
       shipment = shipments[0]
 
-      global_delivery: VisitRequest = {
+      global_delivery: cfr_json.VisitRequest = {
           # We use the coordinates of the parking location for the waypoint.
           "arrivalWaypoint": {"location": {"latLng": parking.coordinates}},
           # The duration of the delivery at the parking location is the total
@@ -659,13 +439,13 @@ class Planner:
       time_windows = shipment["deliveries"][0].get("timeWindows")
       if time_windows is not None:
         global_time_windows = []
-        local_route_duration = parse_duration_string(
+        local_route_duration = cfr_json.parse_duration_string(
             route["metrics"]["totalDuration"]
         )
-        duration_to_first_shipment = parse_duration_string(
+        duration_to_first_shipment = cfr_json.parse_duration_string(
             route["transitions"][0]["totalDuration"]
         )
-        duration_from_last_shipment = parse_duration_string(
+        duration_from_last_shipment = cfr_json.parse_duration_string(
             route["transitions"][-1]["totalDuration"]
         )
         for time_window in time_windows:
@@ -674,8 +454,8 @@ class Planner:
             # Shift the beginning of the time window so that the walking time to
             # the first delivery on the route from the parking location does not
             # eat time from the delivery time window.
-            start_time = _parse_time_string(time_window["startTime"])
-            global_time_window["startTime"] = _make_time_string(
+            start_time = cfr_json.parse_time_string(time_window["startTime"])
+            global_time_window["startTime"] = cfr_json.as_time_string(
                 max(start_time - duration_to_first_shipment, global_start_time)
             )
           if "endTime" in time_window:
@@ -683,8 +463,8 @@ class Planner:
             # time to do all deliveries within the time window, and (2) the time
             # to walk from the last shipment back to the parking location does
             # not eat from the delivery time window.
-            end_time = _parse_time_string(time_window["endTime"])
-            global_time_window["endTime"] = _make_time_string(
+            end_time = cfr_json.parse_time_string(time_window["endTime"])
+            global_time_window["endTime"] = cfr_json.as_time_string(
                 min(
                     end_time
                     - local_route_duration
@@ -697,7 +477,7 @@ class Planner:
         global_delivery["timeWindows"] = global_time_windows
 
       shipment_labels = ",".join(shipment["label"] for shipment in shipments)
-      global_shipment: Shipment = {
+      global_shipment: cfr_json.Shipment = {
           "label": f"p:{route_index} {shipment_labels}",
           # We use the total duration of the parking location route as the
           # duration of this virtual shipment.
@@ -705,20 +485,24 @@ class Planner:
       }
       # The load demands of the virtual shipment is the sum of the demands of
       # all individual shipments delivered on the local route.
-      load_demands = _combined_load_demands(shipments)
+      load_demands = cfr_json.combined_load_demands(shipments)
       if load_demands:
         global_shipment["loadDemands"] = load_demands
 
       # Add the penalty cost of the virtual shipment if needed.
-      penalty_cost = _combined_penalty_cost(shipments)
+      penalty_cost = cfr_json.combined_penalty_cost(shipments)
       if penalty_cost is not None:
         global_shipment["penaltyCost"] = penalty_cost
 
-      allowed_vehicle_indices = _combined_allowed_vehicle_indices(shipments)
+      allowed_vehicle_indices = cfr_json.combined_allowed_vehicle_indices(
+          shipments
+      )
       if allowed_vehicle_indices:
         global_shipment["allowedVehicleIndices"] = allowed_vehicle_indices
 
-      costs_per_vehicle_and_indices = _combined_costs_per_vehicle(shipments)
+      costs_per_vehicle_and_indices = cfr_json.combined_costs_per_vehicle(
+          shipments
+      )
       if costs_per_vehicle_and_indices is not None:
         vehicle_indices, costs = costs_per_vehicle_and_indices
         global_shipment["costsPerVehicle"] = costs
@@ -736,9 +520,9 @@ class Planner:
 
   def merge_local_and_global_result(
       self,
-      local_response: OptimizeToursResponse,
-      global_response: OptimizeToursResponse,
-  ) -> tuple[OptimizeToursRequest, OptimizeToursResponse]:
+      local_response: cfr_json.OptimizeToursResponse,
+      global_response: cfr_json.OptimizeToursResponse,
+  ) -> tuple[cfr_json.OptimizeToursRequest, cfr_json.OptimizeToursResponse]:
     """Creates a merged request and a response from the local and global models.
 
     The merged request and response incorporate both the global "driving" routes
@@ -781,8 +565,8 @@ class Planner:
     # original request + virtual shipments to handle parking location visits. We
     # preserve the shipment indices from the original request, and add all the
     # virtual shipments at the end.
-    merged_shipments: list[Shipment] = copy.copy(self._shipments)
-    merged_model: ShipmentModel = {
+    merged_shipments: list[cfr_json.Shipment] = copy.copy(self._shipments)
+    merged_model: cfr_json.ShipmentModel = {
         # The start and end time remain unchanged.
         "globalStartTime": self._model["globalStartTime"],
         "globalEndTime": self._model["globalEndTime"],
@@ -792,13 +576,13 @@ class Planner:
         # the original request.
         "vehicles": self._model["vehicles"],
     }
-    merged_request: OptimizeToursRequest = {
+    merged_request: cfr_json.OptimizeToursRequest = {
         "model": merged_model,
         "label": self._request.get("label", "") + "/merged",
         "parent": self._request.get("parent"),
     }
-    merged_routes: list[ShipmentRoute] = []
-    merged_result: OptimizeToursResponse = {
+    merged_routes: list[cfr_json.ShipmentRoute] = []
+    merged_result: cfr_json.OptimizeToursResponse = {
         "routes": merged_routes,
     }
 
@@ -818,9 +602,9 @@ class Planner:
         continue
 
       global_transitions = global_route["transitions"]
-      merged_visits: list[Visit] = []
-      merged_transitions: list[Transition] = []
-      route_points: list[LatLng] = []
+      merged_visits: list[cfr_json.Visit] = []
+      merged_transitions: list[cfr_json.Transition] = []
+      route_points: list[cfr_json.LatLng] = []
       merged_routes.append(
           {
               "vehicleIndex": global_route.get("vehicleIndex", 0),
@@ -839,14 +623,14 @@ class Planner:
         continue
 
       def add_parking_location_shipment(
-          local_route: ShipmentRoute, arrival: bool
+          local_route: cfr_json.ShipmentRoute, arrival: bool
       ):
         arrival_or_departure = "arrival" if arrival else "departure"
         shipment_index = len(merged_shipments)
         parking_tag = _get_parking_tag_from_local_route(local_route)
         parking = self._parking_locations[parking_tag]
 
-        shipment: Shipment = {
+        shipment: cfr_json.Shipment = {
             "label": f"{parking.tag} {arrival_or_departure}",
             "deliveries": [{
                 "arrivalWaypoint": {
@@ -859,10 +643,10 @@ class Planner:
         merged_shipments.append(shipment)
         return shipment_index, shipment
 
-      def add_merged_transition(transition: Transition):
+      def add_merged_transition(transition: cfr_json.Transition):
         merged_transitions.append(transition)
         if populate_polylines:
-          decoded_polyline = decode_polyline(
+          decoded_polyline = cfr_json.decode_polyline(
               transition["routePolyline"].get("points", "")
           )
           for latlng in decoded_polyline:
@@ -894,8 +678,10 @@ class Planner:
             arrival_shipment_index, arrival_shipment = (
                 add_parking_location_shipment(local_route, arrival=True)
             )
-            global_start_time = _parse_time_string(global_visit["startTime"])
-            local_start_time = _parse_time_string(
+            global_start_time = cfr_json.parse_time_string(
+                global_visit["startTime"]
+            )
+            local_start_time = cfr_json.parse_time_string(
                 local_route["vehicleStartTime"]
             )
             local_to_global_delta = global_start_time - local_start_time
@@ -912,7 +698,7 @@ class Planner:
             for local_visit_index, local_visit in enumerate(local_visits):
               local_transition_in = local_transitions[local_visit_index]
               merged_transition = copy.deepcopy(local_transition_in)
-              merged_transition["startTime"] = _update_time_string(
+              merged_transition["startTime"] = cfr_json.update_time_string(
                   merged_transition["startTime"], local_to_global_delta
               )
               add_merged_transition(merged_transition)
@@ -920,10 +706,10 @@ class Planner:
               shipment_index = _get_shipment_index_from_local_route_visit(
                   local_visit
               )
-              merged_visit: Visit = {
+              merged_visit: cfr_json.Visit = {
                   "shipmentIndex": shipment_index,
                   "shipmentLabel": self._shipments[shipment_index]["label"],
-                  "startTime": _update_time_string(
+                  "startTime": cfr_json.update_time_string(
                       local_visit["startTime"], local_to_global_delta
                   ),
               }
@@ -931,7 +717,7 @@ class Planner:
 
             # Add a transition back to the parking location.
             transition_to_parking = copy.deepcopy(local_transitions[-1])
-            transition_to_parking["startTime"] = _update_time_string(
+            transition_to_parking["startTime"] = cfr_json.update_time_string(
                 transition_to_parking["startTime"], local_to_global_delta
             )
             add_merged_transition(transition_to_parking)
@@ -944,7 +730,7 @@ class Planner:
             merged_visits.append({
                 "shipmentIndex": departure_shipment_index,
                 "shipmentLabel": departure_shipment["label"],
-                "startTime": _update_time_string(
+                "startTime": cfr_json.update_time_string(
                     local_route["vehicleEndTime"], local_to_global_delta
                 ),
             })
@@ -955,7 +741,7 @@ class Planner:
       add_merged_transition(global_transitions[-1])
       if populate_polylines:
         merged_routes[-1]["routePolyline"] = {
-            "points": encode_polyline(route_points)
+            "points": cfr_json.encode_polyline(route_points)
         }
 
     merged_skipped_shipments = []
@@ -994,7 +780,7 @@ class Planner:
     return merged_request, merged_result
 
   def _add_options_from_original_request(
-      self, request: OptimizeToursRequest
+      self, request: cfr_json.OptimizeToursRequest
   ) -> None:
     """Copies solver options from `self._request` to `request`."""
     # Copy solve mode.
@@ -1026,7 +812,7 @@ class Planner:
 
 
 def validate_request(
-    request: OptimizeToursRequest,
+    request: cfr_json.OptimizeToursRequest,
     parking_for_shipment: ShipmentParkingMap,
 ) -> Sequence[str] | None:
   """Checks that request conforms to the requirements of the two-step planner.
@@ -1097,109 +883,17 @@ def _parse_global_shipment_label(label: str) -> tuple[str, int]:
   return match[1], int(match[2])
 
 
-def _combined_penalty_cost(
-    shipments: Collection[Shipment],
-) -> float | None:
-  """Returns the combined skipped shipment penalty cost of a group of shipments.
-
-  Args:
-    shipments: The list of shipments.
-
-  Returns:
-    The sum of the penalty costs of the shipments or None if any of the
-    shipments is mandatory.
-  """
-  cost_sum = 0
-  for shipment in shipments:
-    shipment_cost = shipment.get("penaltyCost")
-    if shipment_cost is None:
-      return None
-    cost_sum += shipment_cost
-  return cost_sum
-
-
-def _combined_costs_per_vehicle(
-    shipments: Collection[Shipment],
-) -> tuple[list[int], list[float]] | None:
-  """Returns the combined shipment-vehicle costs for the shipments.
-
-  The cost of the group for a vehicle is the maximum of the costs of the
-  individual shipments for that vehicle.
-
-  Args:
-    shipments: The group of shipments for which the costs are computed.
-
-  Returns:
-    A tuple (vehicle_indices, costs) that can be used in attributes
-    `costsPerVehicle` and `costsPerVehicleIndices` of a shipment. Returns None
-    when there are no vehicle-shipment costs.
-  """
-  vehicle_costs = collections.defaultdict(float)
-  for shipment in shipments:
-    costs = shipment.get("costsPerVehicle")
-    if costs is None:
-      continue
-    vehicle_indices = shipment.get("costsPerVehicleIndices")
-    if vehicle_indices is None:
-      raise ValueError(
-          "Vehicle-shipment costs are supported only when using"
-          " costsPerVehicleIndices."
-      )
-    for vehicle_index, cost in zip(vehicle_indices, costs, strict=True):
-      vehicle_costs[vehicle_index] = max(vehicle_costs[vehicle_index], cost)
-
-  if not vehicle_costs:
-    # There were no vehicle-shipment costs.
-    return None
-
-  # Convert the dict into a list of costs and a list of corresponding indices.
-  indices, costs = zip(*sorted(vehicle_costs.items()))
-  return list(indices), list(costs)
-
-
-def _combined_allowed_vehicle_indices(
-    shipments: Collection[Shipment],
-) -> list[int] | None:
-  """Returns the list of allowed vehicle indices that can serve all shipments."""
-  allowed_vehicles = None
-  for shipment in shipments:
-    shipment_allowed_vehicles = shipment.get("allowedVehicleIndices")
-    if shipment_allowed_vehicles is None:
-      continue
-    if allowed_vehicles is None:
-      allowed_vehicles = set(shipment_allowed_vehicles)
-    else:
-      allowed_vehicles.intersection_update(shipment_allowed_vehicles)
-      if not allowed_vehicles:
-        raise ValueError("No allowed vehicles are left")
-  if allowed_vehicles is None:
-    return None
-  return sorted(allowed_vehicles)
-
-
-def _combined_load_demands(shipments: Collection[Shipment]) -> dict[str, Load]:
-  """Computes the combined load demands of all shipments in `shipments`."""
-  demands = collections.defaultdict(int)
-  for shipment in shipments:
-    shipment_demands = shipment.get("loadDemands")
-    if shipment_demands is None:
-      continue
-    for unit, amount in shipment_demands.items():
-      demands[unit] += int(amount.get("amount", 0))
-  return {unit: {"amount": str(amount)} for unit, amount in demands.items()}
-
-
 def _get_shipment_index_from_local_label(label: str) -> int:
   shipment_index, _ = label.split(":")
   return int(shipment_index)
 
 
-def _get_shipment_index_from_local_route_visit(visit: Visit) -> int:
+def _get_shipment_index_from_local_route_visit(visit: cfr_json.Visit) -> int:
   return _get_shipment_index_from_local_label(visit["shipmentLabel"])
 
 
 def _get_shipment_indices_from_local_route_visits(
-    visits: Sequence[Visit],
+    visits: Sequence[cfr_json.Visit],
 ) -> Sequence[int]:
   """Returns the list of shipment indices from a route in the local model.
 
@@ -1217,7 +911,7 @@ def _get_shipment_indices_from_local_route_visits(
   )
 
 
-def _get_parking_tag_from_local_route(route: ShipmentRoute) -> str:
+def _get_parking_tag_from_local_route(route: cfr_json.ShipmentRoute) -> str:
   """Extracts the parking location tag from a route.
 
   Expects that the route is from a solution of the local model, and the vehicle
@@ -1261,7 +955,7 @@ def _make_local_model_vehicle_label(group_key: _ParkingGroupKey) -> str:
 
 
 def _parking_delivery_group_key(
-    shipment: Shipment, parking: ParkingLocation | None
+    shipment: cfr_json.Shipment, parking: ParkingLocation | None
 ) -> _ParkingGroupKey:
   """Creates a key that groups shipments with the same time window and parking."""
   if parking is None:
@@ -1283,145 +977,3 @@ def _parking_delivery_group_key(
       end_time=end_time,
       allowed_vehicle_indices=allowed_vehicle_indices,
   )
-
-
-def _update_time_string(
-    time_string: TimeString, delta: datetime.timedelta
-) -> TimeString:
-  """Takes the time from `times_string` and adds `delta` to it."""
-  timestamp = _parse_time_string(time_string)
-  updated_timestamp = timestamp + delta
-  return _make_time_string(updated_timestamp)
-
-
-def _parse_time_string(time_string: TimeString) -> datetime.datetime:
-  """Parses the time string and converts it into a datetime."""
-  if time_string.endswith("Z") or time_string.endswith("z"):
-    # Drop the 'Z', we do not need it for parsing.
-    time_string = time_string[:-1]
-  return datetime.datetime.fromisoformat(time_string)
-
-
-def _make_time_string(timestamp: datetime.datetime) -> TimeString:
-  """Formats timestampt to a string format used in the CFR JSON API."""
-  date_string = timestamp.isoformat()
-  if "+" not in date_string:
-    # There is no time zone offset. We need to add the "Z" terminator.
-    date_string += "Z"
-  return date_string
-
-
-def parse_duration_string(duration: DurationString) -> datetime.timedelta:
-  """Parses the duration string and converts it to a timedelta.
-
-  Args:
-    duration: The duration in the string format "{number_of_seconds}s".
-
-  Returns:
-    The duration as a timedelta object.
-
-  Raises:
-    ValueError: When the duration string does not have the right format.
-  """
-  if not duration.endswith("s"):
-    raise ValueError(f"Unexpected duration string format: '{duration}'")
-  seconds = float(duration[:-1])
-  return datetime.timedelta(seconds=seconds)
-
-
-def encode_polyline(polyline: Sequence[LatLng]) -> str:
-  """Encodes a sequence of latlng pairs to a string.
-
-  Uses the encoding algorithm as described in the Google maps documentation at
-  https://developers.google.com/maps/documentation/utilities/polylinealgorithm.
-
-  Args:
-    polyline: A sequence of latlng pairs to be encoded.
-
-  Returns:
-    A string that contains the encoded polyline.
-  """
-  chunks = []
-
-  def encode_varint(value: int):
-    value = value << 1
-    if value < 0:
-      value = ~value
-    if value == 0:
-      chunks.append(63)
-    else:
-      while value != 0:
-        chunk = value & 31
-        value = value >> 5
-        if value != 0:
-          chunk = chunk | 32
-        chunks.append(chunk + 63)
-
-  previous_lat = 0
-  previous_lng = 0
-  for latlng in polyline:
-    lat = round(latlng["latitude"] * 1e5)
-    lng = round(latlng["longitude"] * 1e5)
-    encode_varint(lat - previous_lat)
-    encode_varint(lng - previous_lng)
-    previous_lat = lat
-    previous_lng = lng
-
-  return bytes(chunks).decode("ascii")
-
-
-def _decoded_varints(encoded_string: str) -> Iterable[int]:
-  """Extracts int values from a varint-encoded string."""
-  decoded_int = 0
-  shift_bits = 0
-  for chunk in encoded_string.encode("ascii"):
-    chunk -= 63
-    if chunk < 0:
-      raise ValueError("Invalid varint encoding")
-    decoded_int += (chunk & 31) << shift_bits
-    is_last_chunk = chunk & 32 == 0
-    if is_last_chunk:
-      if decoded_int & 1 == 1:
-        decoded_int = ~decoded_int
-      yield decoded_int >> 1
-      decoded_int = 0
-      shift_bits = 0
-    else:
-      shift_bits += 5
-  if shift_bits != 0:
-    # The last chunk had the "another chunk follows" bit set.
-    raise ValueError("Invalid varint encoding")
-
-
-def decode_polyline(encoded_polyline: str) -> Sequence[LatLng]:
-  """Decodes a sequence of latlng pairs from a string.
-
-  Uses the encoding algorithm as described in the Google Maps documentation at
-  https://developers.google.com/maps/documentation/utilities/polylinealgorithm.
-
-  Args:
-    encoded_polyline: The encoded polyline in the string format.
-
-  Returns:
-    The polyline as a sequence of points.
-
-  Raises:
-    ValueError: When the string has incorrect format.
-  """
-  lat_lngs = []
-  lat_e5 = 0
-  lng_e5 = 0
-  varint_iter = iter(_decoded_varints(encoded_polyline))
-  try:
-    for lat_e5_delta, lng_e5_delta in zip(
-        varint_iter, varint_iter, strict=True
-    ):
-      lat_e5 += lat_e5_delta
-      lng_e5 += lng_e5_delta
-      lat_lngs.append({"latitude": lat_e5 / 1e5, "longitude": lng_e5 / 1e5})
-  except ValueError as err:
-    if "zip()" in str(err):
-      raise ValueError("Longitude is missing.") from None
-    raise
-
-  return lat_lngs
