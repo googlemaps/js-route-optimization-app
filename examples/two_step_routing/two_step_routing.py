@@ -422,7 +422,7 @@ class Planner:
     # global request. the only change we make is that we add the original
     # shipment index to their label.
     for shipment_index in self._direct_shipments:
-      # We"re changing only the label - no need to make a deep copy.
+      # We're changing only the label - no need to make a deep copy.
       shipment = copy.copy(self._shipments[shipment_index])
       shipment["label"] = f"s:{shipment_index} {shipment.get('label')}"
       global_shipments.append(shipment)
@@ -789,7 +789,7 @@ class Planner:
     merged_skipped_shipments = []
     for local_skipped_shipment in local_response.get("skippedShipments", ()):
       shipment_index, label = local_skipped_shipment["label"].split(
-          " ", maxsplit=1
+          ": ", maxsplit=1
       )
       merged_skipped_shipments.append({
           "index": int(shipment_index),
@@ -802,7 +802,10 @@ class Planner:
       match shipment_type:
         case "s":
           # Shipments delivered directly can be added directly to the list.
-          merged_skipped_shipments.append(global_skipped_shipment)
+          merged_skipped_shipments.append({
+              "index": int(index),
+              "label": self._model["shipments"][index].get("label", "")
+          })
         case "p":
           # For parking locations, we need to add all shipments delivered from
           # that parking location.
