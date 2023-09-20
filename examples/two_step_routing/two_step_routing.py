@@ -50,7 +50,7 @@ import copy
 import dataclasses
 import math
 import re
-from typing import Any, TypeAlias
+from typing import Any, TypeAlias, cast
 
 import cfr_json
 
@@ -114,6 +114,28 @@ class ParkingLocation:
       visits to the parking location in the global model. Since the local model
       allows only very limited cost tuning, we accept only one value per unit,
       and this value is used as the hard limit.
+    max_round_duration: The maximal duration of one delivery round from the
+      parking location. When None, there is no limit on the maximal duration of
+      one round.
+    arrival_duration: The time that is spent when a vehicle arrives to the
+      parking location. This time is added to the total duration of the route
+      whenever the vehicle arrives to the parking location from a different
+      location. Can be used to model the time required to enter a parking lot,
+      park the vehicle, and pick up the shipments for the first delivery round.
+    departure_duration: The time that is spent when a vehicle leaves the parking
+      location. This time is added to the total duration of the route whenever
+      the vehicle leaves the parking location for a different location. Can be
+      used to model the time needed to leave a parking lot.
+    reload_duration: The time that is spent at the parking location between two
+      consecutive delivery rounds from the parking location. Can be used to
+      model the time required to pick up packages from the vehicle before
+      another round of pickups.
+    arrival_cost: The cost of entering the parking location. The cost is applied
+      when a vehicle enters the parking location from another location.
+    departure_cost: The cost of leaving the parking location. The cost is
+      applied when a vehicle leaves the parking location for another location.
+    reload_cost: The cost of visiting the parking location between two
+      consecutive delivery rounds from the parking location.
   """
 
   coordinates: cfr_json.LatLng
@@ -123,6 +145,16 @@ class ParkingLocation:
   travel_duration_multiple: float = 1.0
 
   delivery_load_limits: Mapping[str, int] | None = None
+
+  max_round_duration: cfr_json.DurationString | None = None
+
+  arrival_duration: cfr_json.DurationString | None = None
+  departure_duration: cfr_json.DurationString | None = None
+  reload_duration: cfr_json.DurationString | None = None
+
+  arrival_cost: float = 0.0
+  departure_cost: float = 0.0
+  reload_cost: float = 0.0
 
 
 @dataclasses.dataclass
@@ -142,8 +174,6 @@ class Options:
     min_average_shipments_per_round: The minimal (average) number of shipments
       that is delivered from a parking location without returning to the parking
       location. This is used to estimate the number of vehicles in the plan.
-    max_round_duration: The maximal duration of a single delivery round from the
-      parking location to customer sites.
   """
 
   # TODO(ondrasej): Do we actually need these? Perhaps they can be filled in on
@@ -153,7 +183,6 @@ class Options:
   local_model_vehicle_per_km_cost: float = 60
 
   min_average_shipments_per_round: int = 1
-  max_round_duration: str = "7200s"
 
 
 # Defines a mapping from shipments to the parking locations from which they are
@@ -271,10 +300,6 @@ class Planner:
         "vehicles": local_vehicles,
     }
 
-    round_duration_limit: cfr_json.DurationLimit = {
-        "maxDuration": self._options.max_round_duration
-    }
-
     for parking_key, group_shipment_indices in self._parking_groups.items():
       assert parking_key.parking_tag is not None
       parking = self._parking_locations[parking_key.parking_tag]
@@ -301,7 +326,6 @@ class Planner:
             "endWaypoint": parking_waypoint,
             "startWaypoint": parking_waypoint,
             # Limits and travel speed.
-            "routeDurationLimit": round_duration_limit,
             "travelDurationMultiple": parking.travel_duration_multiple,
             "travelMode": parking.travel_mode,
             # Costs.
@@ -309,6 +333,10 @@ class Planner:
             "costPerHour": self._options.local_model_vehicle_per_hour_cost,
             "costPerKilometer": self._options.local_model_vehicle_per_km_cost,
         }
+        if parking.max_round_duration is not None:
+          vehicle["routeDurationLimit"] = {
+              "maxDuration": parking.max_round_duration,
+          }
         if parking.delivery_load_limits is not None:
           vehicle["loadLimits"] = {
               unit: {"maxLoad": str(max_load)}
@@ -386,6 +414,9 @@ class Planner:
         self._model["globalStartTime"]
     )
     global_end_time = cfr_json.parse_time_string(self._model["globalEndTime"])
+
+    # TODO(ondrasej): Honor transition attributes from the input request.
+    transition_attributes = _ParkingTransitionAttributeManager(self._model)
 
     # Take all shipments that are delivered directly, and copy them to the
     # global request. the only change we make is that we add the original
@@ -476,6 +507,13 @@ class Planner:
 
         global_delivery["timeWindows"] = global_time_windows
 
+      # Add arrival/departure/reload costs and delays if needed.
+      parking_transition_tag = transition_attributes.get_or_create_if_needed(
+          parking
+      )
+      if parking_transition_tag is not None:
+        global_delivery["tags"] = [parking_transition_tag]
+
       shipment_labels = ",".join(shipment["label"] for shipment in shipments)
       global_shipment: cfr_json.Shipment = {
           "label": f"p:{route_index} {shipment_labels}",
@@ -509,6 +547,10 @@ class Planner:
         global_shipment["costsPerVehicleIndices"] = vehicle_indices
 
       global_shipments.append(global_shipment)
+
+    global_transition_attributes = transition_attributes.transition_attributes
+    if global_transition_attributes:
+      global_model["transitionAttributes"] = global_transition_attributes
 
     request = {
         "label": self._request.get("label", "") + "/global",
@@ -871,6 +913,123 @@ def validate_request(
   if errors:
     return errors
   return None
+
+
+class _ParkingTransitionAttributeManager:
+  """Manages transition attributes for parking locations in the global model."""
+
+  def __init__(self, model: cfr_json.ShipmentModel):
+    """Initializes the transition attribute manager."""
+    self._existing_tags = cfr_json.get_all_visit_tags(model)
+    self._cached_parking_transition_tags = {}
+    self._transition_attributes = []
+
+  @property
+  def transition_attributes(self) -> list[cfr_json.TransitionAttributes]:
+    """Returns transition attributes created by the manager."""
+    return self._transition_attributes
+
+  def get_or_create_if_needed(self, parking: ParkingLocation) -> str | None:
+    """Creates parking transition attribute for a parking location if needed.
+
+    When the parking location uses arrival/departure/reload costs or delays,
+    creates transition attributes for the parking location that implement them.
+    Does nothing when the parking location doesn't use any of these features.
+
+    Can be safely called multiple times for the same parking location.
+
+    Args:
+      parking: The parking location for which the transition attributes are
+        created.
+
+    Returns:
+      When the parking location has features that reuqire transition attributes,
+      returns a unique tag for visits to the parking location. Otherwise,
+      returns None.
+    """
+    # `None` is a valid value in self._cached_parking_transition_tags, so a
+    # special sentinel object is needed.
+    sentinel = object()
+    cached_tag = self._cached_parking_transition_tags.get(parking.tag, sentinel)
+    if cached_tag is not sentinel:
+      return cast(str | None, cached_tag)
+
+    parking_transition_tag = self._get_non_existent_tag(
+        f"parking: {parking.tag}"
+    )
+
+    added_transitions = self._add_transition_attribute_if_needed(
+        delay=parking.arrival_duration,
+        cost=parking.arrival_cost,
+        excluded_src_tag=parking_transition_tag,
+        dst_tag=parking_transition_tag,
+    )
+    added_transitions |= self._add_transition_attribute_if_needed(
+        delay=parking.departure_duration,
+        cost=parking.departure_cost,
+        src_tag=parking_transition_tag,
+        excluded_dst_tag=parking_transition_tag,
+    )
+    added_transitions |= self._add_transition_attribute_if_needed(
+        delay=parking.reload_duration,
+        cost=parking.reload_cost,
+        src_tag=parking_transition_tag,
+        dst_tag=parking_transition_tag,
+    )
+    if not added_transitions:
+      parking_transition_tag = None
+
+    self._cached_parking_transition_tags[parking.tag] = parking_transition_tag
+    return parking_transition_tag
+
+  def _add_transition_attribute_if_needed(
+      self,
+      *,
+      delay: cfr_json.DurationString | None,
+      cost: float,
+      src_tag: str | None = None,
+      excluded_src_tag: str | None = None,
+      dst_tag: str | None = None,
+      excluded_dst_tag: str | None = None,
+  ) -> bool:
+    """Adds a new transition attributes objects when delay or cost are used."""
+    if delay is None and cost == 0:
+      return False
+    if cost < 0:
+      raise ValueError("Cost must be non-negative.")
+    if (src_tag is None) == (excluded_src_tag is None):
+      raise ValueError(
+          "Exactly one of `src_tag` and `excluded_src_tag` must be provided."
+      )
+    if (dst_tag is None) == (excluded_dst_tag is None):
+      raise ValueError(
+          "Exactly one of `dst_tag` and `excluded_dst_tag` must be provided."
+      )
+    transition_attributes: cfr_json.TransitionAttributes = {}
+    if delay is not None:
+      transition_attributes["delay"] = delay
+    if cost > 0:
+      transition_attributes["cost"] = cost
+    if src_tag is not None:
+      transition_attributes["srcTag"] = src_tag
+    if excluded_src_tag is not None:
+      transition_attributes["excludedSrcTag"] = excluded_src_tag
+    if dst_tag is not None:
+      transition_attributes["dstTag"] = dst_tag
+    if excluded_dst_tag is not None:
+      transition_attributes["excludedDstTag"] = excluded_dst_tag
+    self._transition_attributes.append(transition_attributes)
+    return True
+
+  def _get_non_existent_tag(self, base: str) -> str:
+    if base not in self._existing_tags:
+      return base
+    index = 1
+    while True:
+      tag = f"{base}#{index}"
+      if tag not in self._existing_tags:
+        return tag
+      index += 1
 
 
 _GLOBAL_SHIPEMNT_LABEL = re.compile(r"^([ps]):(\d+) .*")

@@ -39,6 +39,7 @@ class MakeShipmentTest(unittest.TestCase):
             "S0002",
             delivery_latlng=(48.86471, 2.34901),
             delivery_duration="45s",
+            delivery_tags=("foo", "bar"),
         ),
         {
             "label": "S0002",
@@ -52,6 +53,7 @@ class MakeShipmentTest(unittest.TestCase):
                     },
                 },
                 "duration": "45s",
+                "tags": ["foo", "bar"],
             }],
         },
     )
@@ -142,6 +144,7 @@ class MakeShipmentTest(unittest.TestCase):
             delivery_latlng=(48.86471, 2.34901),
             delivery_duration="0s",
             delivery_end="2023-09-14T15:00:00Z",
+            pickup_tags=("tag1", "tag2"),
         ),
         {
             "deliveries": [{
@@ -161,6 +164,7 @@ class MakeShipmentTest(unittest.TestCase):
                     }
                 },
                 "duration": "180s",
+                "tags": ["tag1", "tag2"],
                 "timeWindows": [{"startTime": "2023-09-14T09:00:00Z"}],
             }],
         },
@@ -248,6 +252,55 @@ class MakeVehicleTest(unittest.TestCase):
             "endTimeWindows": [{"endTime": "2023-09-14T18:00:00Z"}],
             "startTimeWindows": [{"startTime": "2023-09-14T08:00:00Z"}],
         },
+    )
+
+
+class GetAllVisitTagsTest(unittest.TestCase):
+  """Tests for get_all_visit_tags."""
+
+  maxDiff = None
+
+  def test_no_tags(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {"label": "S0001"},
+            {"label": "S0002"},
+            {"label": "S0003"},
+        ],
+        "vehicles": [
+            {"label": "V0001"},
+            {"label": "V0002"},
+        ],
+    }
+    self.assertCountEqual(cfr_json.get_all_visit_tags(model), ())
+
+  def test_with_some_tags(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            cfr_json.make_shipment(
+                "S0001",
+                pickup_latlng=(48.86595, 2.34888),
+                pickup_tags=("foo", "bar"),
+            ),
+            cfr_json.make_shipment(
+                "S0002",
+                delivery_latlng=(48.86595, 2.34888),
+                delivery_tags=("bar", "baz"),
+            ),
+            cfr_json.make_shipment("S0003"),
+        ],
+        "vehicles": [
+            cfr_json.make_vehicle(
+                "V0001", (48.86595, 2.34888), start_tags=("V0001_start",)
+            ),
+            cfr_json.make_vehicle(
+                "V0002", (48.86595, 2.34888), end_tags=("V0002_end",)
+            ),
+        ],
+    }
+    self.assertCountEqual(
+        cfr_json.get_all_visit_tags(model),
+        ("foo", "bar", "baz", "V0001_start", "V0002_end"),
     )
 
 
@@ -373,7 +426,7 @@ class ParseTimeStringTest(unittest.TestCase):
     )
 
 
-class MakeTimeStringTest(unittest.TestCase):
+class AsTimeStringTest(unittest.TestCase):
   """Tests for as_time_string."""
 
   maxDiff = None
@@ -516,6 +569,118 @@ class DecodePolylineTest(unittest.TestCase):
   def test_incomplete_varint(self):
     with self.assertRaisesRegex(ValueError, "Invalid varint encoding"):
       cfr_json.decode_polyline("_p~iF~ps")
+
+
+class MakeAllShipmentsOptional(unittest.TestCase):
+  """Tests for make_all_shipments_optional."""
+
+  maxDiff = None
+
+  def test_no_shipments(self):
+    model: cfr_json.ShipmentModel = {}
+    cfr_json.make_all_shipments_optional(model, cost=1000)
+    self.assertEqual(model, {})
+
+  def test_default_num_items(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {"label": "S0001"},
+            {"label": "S0002"},
+            {"label": "S0003,S0004,S0005"},
+        ],
+    }
+    cfr_json.make_all_shipments_optional(model, cost=1000)
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S0001", "penaltyCost": 1000},
+                {"label": "S0002", "penaltyCost": 1000},
+                {"label": "S0003,S0004,S0005", "penaltyCost": 1000},
+            ]
+        },
+    )
+
+  def test_with_num_elements_in_label(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {"label": "S0001"},
+            {"label": "S0002"},
+            {"label": "S0003,S0004,S0005"},
+        ],
+    }
+    cfr_json.make_all_shipments_optional(
+        model, cost=1000, get_num_items=cfr_json.get_num_elements_in_label
+    )
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S0001", "penaltyCost": 1000},
+                {"label": "S0002", "penaltyCost": 1000},
+                {"label": "S0003,S0004,S0005", "penaltyCost": 3000},
+            ]
+        },
+    )
+
+  def test_with_existing_optional_shipments(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {"label": "S0001"},
+            {"label": "S0002", "penaltyCost": 12345},
+            {"label": "S0003,S0004,S0005"},
+        ],
+    }
+    cfr_json.make_all_shipments_optional(model, cost=1000)
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S0001", "penaltyCost": 1000},
+                {"label": "S0002", "penaltyCost": 12345},
+                {"label": "S0003,S0004,S0005", "penaltyCost": 1000},
+            ]
+        },
+    )
+
+
+class RemoveLoadLimitstest(unittest.TestCase):
+  """Tests for remove_load_limits."""
+
+  def test_no_vehicles(self):
+    model: cfr_json.ShipmentModel = {}
+    cfr_json.remove_load_limits(model)
+    self.assertEqual(model, {})
+
+  def test_remove_load_limits(self):
+    model: cfr_json.ShipmentModel = {
+        "vehicles": [
+            {
+                "label": "V0001",
+                "loadLimits": {
+                    "ore": {"maxLoad": "32"},
+                    "wheat": {"maxLoad": "12"},
+                },
+            },
+            {
+                "label": "V0002",
+            },
+        ]
+    }
+    cfr_json.remove_load_limits(model)
+    self.assertEqual(
+        model,
+        {
+            "vehicles": [
+                {
+                    "label": "V0001",
+                },
+                {
+                    "label": "V0002",
+                },
+            ]
+        },
+    )
 
 
 if __name__ == "__main__":

@@ -18,7 +18,6 @@ class PlannerTest(unittest.TestCase):
 
   _OPTIONS = two_step_routing.Options(
       local_model_vehicle_fixed_cost=10000,
-      max_round_duration="1800s",
       min_average_shipments_per_round=2,
   )
 
@@ -126,12 +125,17 @@ class PlannerTest(unittest.TestCase):
           tag="P001",
           travel_duration_multiple=1.1,
           delivery_load_limits={"ore": 2},
+          max_round_duration="1800s",
       ),
       two_step_routing.ParkingLocation(
           coordinates={"latitude": 48.86482, "longitude": 2.34932},
           tag="P002",
           travel_mode=2,
           delivery_load_limits={"ore": 2},
+          arrival_duration="180s",
+          departure_duration="180s",
+          reload_duration="60s",
+          arrival_cost=1000,
       ),
   )
   _PARKING_FOR_SHIPMENT = {
@@ -393,7 +397,6 @@ class PlannerTest(unittest.TestCase):
                           }
                       }
                   },
-                  "routeDurationLimit": {"maxDuration": "1800s"},
                   "travelDurationMultiple": 1.0,
                   "travelMode": 2,
                   "fixedCost": 10000,
@@ -414,7 +417,6 @@ class PlannerTest(unittest.TestCase):
                   },
                   "fixedCost": 10000,
                   "label": "P002 [vehicles=(0,)]/0",
-                  "routeDurationLimit": {"maxDuration": "1800s"},
                   "startWaypoint": {
                       "location": {
                           "latLng": {
@@ -438,7 +440,6 @@ class PlannerTest(unittest.TestCase):
                   "fixedCost": 10000,
                   "label": "P002 [vehicles=(1,)]/0",
                   "loadLimits": {"ore": {"maxLoad": "2"}},
-                  "routeDurationLimit": {"maxDuration": "1800s"},
                   "startWaypoint": {
                       "location": {
                           "latLng": {"latitude": 48.86482, "longitude": 2.34932}
@@ -725,6 +726,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "570s",
+                      "tags": ["parking: P002"],
                   }],
                   "label": "p:3 S006,S005",
                   "loadDemands": {
@@ -744,6 +746,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "419s",
+                      "tags": ["parking: P002"],
                   }],
                   "label": "p:4 S007",
                   "loadDemands": {
@@ -763,6 +766,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "419s",
+                      "tags": ["parking: P002"],
                   }],
                   "label": "p:5 S008",
               },
@@ -817,6 +821,24 @@ class PlannerTest(unittest.TestCase):
                   },
                   "travelDurationMultiple": 1,
                   "travelMode": 1,
+              },
+          ],
+          "transitionAttributes": [
+              {
+                  "cost": 1000,
+                  "delay": "180s",
+                  "dstTag": "parking: P002",
+                  "excludedSrcTag": "parking: P002",
+              },
+              {
+                  "delay": "180s",
+                  "excludedDstTag": "parking: P002",
+                  "srcTag": "parking: P002",
+              },
+              {
+                  "delay": "60s",
+                  "dstTag": "parking: P002",
+                  "srcTag": "parking: P002",
               },
           ],
       },

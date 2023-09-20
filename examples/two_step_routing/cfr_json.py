@@ -6,8 +6,9 @@
 """Data structures and functions for working with CFR JSON requests."""
 
 import collections
-from collections.abc import Collection, Iterable, Mapping, Sequence
+from collections.abc import Callable, Collection, Iterable, Mapping, Sequence, Set
 import datetime
+import itertools
 from typing import TypeAlias, TypedDict
 
 # A duration in a string format following the protocol buffers specification in
@@ -85,6 +86,8 @@ class VisitRequest(TypedDict, total=False):
   timeWindows: list[TimeWindow]
   duration: DurationString
 
+  tags: list[str]
+
 
 class Shipment(TypedDict, total=False):
   """Represents a shipment in the JSON CFR request."""
@@ -128,6 +131,9 @@ class Vehicle(TypedDict, total=False):
   startTimeWindows: list[TimeWindow]
   endTimeWindows: list[TimeWindow]
 
+  startTags: list[str]
+  endTags: list[str]
+
   travelMode: int
   travelDurationMultiple: float
 
@@ -142,11 +148,23 @@ class Vehicle(TypedDict, total=False):
   breakRule: BreakRule
 
 
+class TransitionAttributes(TypedDict, total=False):
+  """Represents transition attributes in the JSON CFR request."""
+
+  srcTag: str
+  excludedSrcTag: str
+  dstTag: str
+  excludedDstTag: str
+  cost: float
+  delay: DurationString
+
+
 class ShipmentModel(TypedDict, total=False):
   """Represents a shipment model in the JSON CFR request."""
 
   shipments: list[Shipment]
   vehicles: list[Vehicle]
+  transitionAttributes: list[TransitionAttributes]
   globalStartTime: TimeString
   globalEndTime: TimeString
 
@@ -501,6 +519,7 @@ def make_optional_visit(
     duration: DurationString | None = None,
     start: TimeString | None = None,
     end: TimeString | None = None,
+    tags: Collection[str] | None = None,
 ) -> VisitRequest | None:
   """Creates a VisitRequest from parameters if possible.
 
@@ -509,6 +528,7 @@ def make_optional_visit(
     duration: An optional duration of the visit.
     start: An optional start of a time window for the visit.
     end: An optional end of a time window for the visit.
+    tags: An optional collection of tags added to the visit.
 
   Returns:
     None when all arguments are None. Otherwise, returns a visit request for the
@@ -517,7 +537,12 @@ def make_optional_visit(
     that uses `start` and `end` as its hard bounds.
   """
   if latlng is None:
-    if duration is not None or start is not None or end is not None:
+    if (
+        duration is not None
+        or start is not None
+        or end is not None
+        or tags is not None
+    ):
       raise ValueError(
           "latlng must be provided when any other argument is not None"
       )
@@ -535,9 +560,11 @@ def make_optional_visit(
   }
   if duration is not None:
     visit["duration"] = duration
-    time_window = make_optional_time_window(start, end)
-    if time_window is not None:
-      visit["timeWindows"] = [time_window]
+  time_window = make_optional_time_window(start, end)
+  if time_window is not None:
+    visit["timeWindows"] = [time_window]
+  if tags is not None:
+    visit["tags"] = list(tags)
   return visit
 
 
@@ -548,10 +575,12 @@ def make_shipment(
     pickup_duration: DurationString | None = None,
     pickup_start: TimeString | None = None,
     pickup_end: TimeString | None = None,
+    pickup_tags: Collection[str] | None = None,
     delivery_latlng: tuple[float, float] | None = None,
     delivery_duration: DurationString | None = None,
     delivery_start: TimeString | None = None,
     delivery_end: TimeString | None = None,
+    delivery_tags: Collection[str] | None = None,
     load_demands: Mapping[str, int] | None = None,
     allowed_vehicle_indices: Sequence[int] | None = None,
     cost_per_vehicle: Mapping[int, float] | None = None,
@@ -576,11 +605,13 @@ def make_shipment(
     pickup_duration: An optional pickup duration of the shipment.
     pickup_start: An optional start time of the pickup time window.
     pickup_end: An optional end time of the pickup time window.
+    pickup_tags: An optional collection of visit tags applied to the pickup.
     delivery_latlng: The (lat, lng) coordinates of the delivery, in degrees.
       Must be provided when any other delivery args are provided.
     delivery_duration: An optional delivery duration of the shipment.
     delivery_start: An optional start of the delivery time window.
     delivery_end: An optional end of the delivery time window.
+    delivery_tags: An optional collection of visit tags applied to the delivery.
     load_demands: Optional load demands of the shipment in the form of a mapping
       from load name to the required amount. When None, the shipment does not
       have any load demands.
@@ -606,6 +637,7 @@ def make_shipment(
         duration=pickup_duration,
         start=pickup_start,
         end=pickup_end,
+        tags=pickup_tags,
     )
     if pickup is not None:
       shipment["pickups"] = [pickup]
@@ -618,6 +650,7 @@ def make_shipment(
         duration=delivery_duration,
         start=delivery_start,
         end=delivery_end,
+        tags=delivery_tags,
     )
     if delivery is not None:
       shipment["deliveries"] = [delivery]
@@ -641,7 +674,9 @@ def make_vehicle(
     label: str,
     depot_latlng: tuple[float, float],
     start_time: tuple[TimeString | None, TimeString | None] | None = None,
+    start_tags: Collection[str] | None = None,
     end_time: tuple[TimeString | None, TimeString | None] | None = None,
+    end_tags: Collection[str] | None = None,
     travel_mode: int = 1,
     cost_per_hour: float = 60,
     cost_per_kilometer: float = 1,
@@ -658,8 +693,10 @@ def make_vehicle(
       the vehicle.
     start_time: The start time window of the vehicle, specified as a pair
       (earliest_start, latest_start); both times are hard constraints.
+    start_tags: The visit tags applied to the vehicle start.
     end_time: The end time window of the vehicle, specified as a pair
       (earliest_end, latest_end); both times are hard constraints.
+    end_tags: The visit tags applied to the vehicle end.
     travel_mode: The travel mode of the vehicle.
     cost_per_hour: The cost per hour of the work of the vehicle.
     cost_per_kilometer: The cost per a kilometer traveled by the vehicle.
@@ -695,9 +732,80 @@ def make_vehicle(
   )
   if start_time_window is not None:
     vehicle["startTimeWindows"] = [start_time_window]
+  if start_tags is not None:
+    vehicle["startTags"] = list(start_tags)
   end_time_window = (
       None if end_time is None else make_optional_time_window(*end_time)
   )
   if end_time_window is not None:
     vehicle["endTimeWindows"] = [end_time_window]
+  if end_tags is not None:
+    vehicle["endTags"] = list(end_tags)
   return vehicle
+
+
+def get_all_visit_tags(model: ShipmentModel) -> Set[str]:
+  """Returns the set of all visit tags that appear in the model."""
+  tags = set()
+  for shipment in model.get("shipments", ()):
+    pickups = shipment.get("pickups", ())
+    deliveries = shipment.get("deliveries", ())
+    for visit in itertools.chain(pickups, deliveries):
+      tags.update(visit.get("tags", ()))
+
+  for vehicle in model.get("vehicles", ()):
+    tags.update(vehicle.get("startTags", ()))
+    tags.update(vehicle.get("endTags", ()))
+
+  return tags
+
+
+def get_num_elements_in_label(shipment: Shipment) -> int:
+  """Returns the number of elements in the label of a shipment.
+
+  Assumes that the label of a shipment contains a comma-separated list of
+  elements.
+
+  Args:
+    shipment: The shipment for which the number of elements is computed.
+
+  Returns:
+    The number of elements in the label. If the shipment doesn't have a label,
+    the label is an empty string or it does not contain a comma, returns 1.
+  """
+  label = shipment.get("label", "")
+  return label.count(",") + 1
+
+
+def make_all_shipments_optional(
+    model: ShipmentModel,
+    cost: float,
+    get_num_items: Callable[[Shipment], int] | None = None,
+) -> None:
+  """Modifies `model` in place by marking all shipments as optional.
+
+  Sets `penaltyCost` of all shipments in the model to `cost * num_items`, where
+  `num_items` is the number of items delivered in a CFR shipment. Shipments that
+  already have a `penaltyCost` set are not modified.
+
+  Args:
+    model: The model to modify.
+    cost: The penalty cost applied to all mandatory shipments in the request.
+    get_num_items: A function that determines the number of items in a CFR
+      shipment. When `None`, a function that returns 1 for all shipments is
+      used.
+  """
+  if get_num_items is None:
+    get_num_items = lambda _: 1
+
+  for shipment in model.get("shipments", ()):
+    if "penaltyCost" not in shipment:
+      num_items = get_num_items(shipment)
+      shipment["penaltyCost"] = num_items * cost
+
+
+def remove_load_limits(model: ShipmentModel) -> None:
+  """Removes load limits from all vehicles in the model."""
+  vehicles = model.get("vehicles", ())
+  for vehicle in vehicles:
+    vehicle.pop("loadLimits", None)
