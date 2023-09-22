@@ -15,12 +15,14 @@ combined driving/walking routes.
 
 ## Example
 
+In the root of the repository, run:
+
 ```
 CLOUD_ACCESS_TOKEN=$(gcloud auth print-access-token)
 CLOUD_PROJECT_ID=...
-python3 two_step_routing_main.py \
-  --request=example_request.json \
-  --parking=example_parking.json \
+python3 -m examples.two_step_routing.two_step_routing_main \
+  --request=examples/two_step_routing/example_request.json \
+  --parking=examples/two_step_routing/example_parking.json \
   --project="${CLOUD_PROJECT_ID}" \
   --token="${CLOUD_ACCESS_TOKEN}"
 ```

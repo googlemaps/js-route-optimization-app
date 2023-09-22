@@ -7,8 +7,8 @@ from collections.abc import Sequence
 import datetime
 import unittest
 
-import cfr_json
-import two_step_routing
+from . import cfr_json
+from . import two_step_routing
 
 
 class PlannerTest(unittest.TestCase):

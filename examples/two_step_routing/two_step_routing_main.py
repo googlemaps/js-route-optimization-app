@@ -42,8 +42,8 @@ import logging
 import os
 import socket
 
-import cfr_json
-import two_step_routing
+from . import cfr_json
+from . import two_step_routing
 
 
 class PlannerError(Exception):

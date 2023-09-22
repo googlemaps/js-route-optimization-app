@@ -6,7 +6,7 @@
 import datetime
 import unittest
 
-import cfr_json
+from . import cfr_json
 
 
 class MakeShipmentTest(unittest.TestCase):
