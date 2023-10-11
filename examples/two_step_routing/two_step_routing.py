@@ -48,9 +48,10 @@ import collections
 from collections.abc import Collection, Mapping, Sequence, Set
 import copy
 import dataclasses
+import enum
 import math
 import re
-from typing import Any, TypeAlias, cast
+from typing import Any, TypeAlias, TypeVar, cast
 
 from . import cfr_json
 
@@ -77,6 +78,28 @@ class _ParkingGroupKey:
   start_time: str | None = None
   end_time: str | None = None
   allowed_vehicle_indices: tuple[int, ...] | None = None
+
+
+@enum.unique
+class LocalModelGrouping(enum.Enum):
+  """Specifies how shipments are grouped in the local model.
+
+  In the local model, the routes are computed for each group separately, i.e.
+  shipments that are in different groups according to the selected strategy can
+  never appear on the same route.
+
+  Values:
+    PARKING_AND_TIME: Shipments are grouped by the assigned parking location and
+      by their time windows. Only shipments delivered from the same parking
+      location in the same time window can be delivered together.
+    PARKING: Shipments are grouped by the assigned parking location. Shipments
+      that are delivered from the same parking location but with different time
+      windows can still be merged together, as long as the time windows overlap
+      or are not too far from each other.
+  """
+
+  PARKING_AND_TIME = 0
+  PARKING = 1
 
 
 # The type of parking location tags. Technically, this is a string, but we use
@@ -162,6 +185,7 @@ class Options:
   """Options for the two-step planner.
 
   Attributes:
+    local_model_grouping: The grouping strategy used in the local model.
     local_model_vehicle_fixed_cost: The fixed cost of the vehicles in the local
       model. This should be a high number to make the solver use as few vehicles
       as possible.
@@ -175,6 +199,8 @@ class Options:
       that is delivered from a parking location without returning to the parking
       location. This is used to estimate the number of vehicles in the plan.
   """
+
+  local_model_grouping: LocalModelGrouping = LocalModelGrouping.PARKING_AND_TIME
 
   # TODO(ondrasej): Do we actually need these? Perhaps they can be filled in on
   # the user side.
@@ -269,7 +295,9 @@ class Planner:
         )
       shipment = self._shipments[shipment_index]
       parking = self._parking_locations[parking_tag]
-      parking_group_key = _parking_delivery_group_key(shipment, parking)
+      parking_group_key = _parking_delivery_group_key(
+          self._options, shipment, parking
+      )
       parking_groups[parking_group_key].append(shipment_index)
     self._parking_groups: Mapping[_ParkingGroupKey, Sequence[int]] = (
         parking_groups
@@ -299,6 +327,14 @@ class Planner:
         "shipments": local_shipments,
         "vehicles": local_vehicles,
     }
+    # Preserve transition attributes from the original request. This might add
+    # unused transition attributes to the local model, but it does not disturb
+    # the request validation so we keep it for now.
+    # TODO(ondrasej): Restrict the preserved transition attributes only to tags
+    # that are actually used in the model, to make the model smaller.
+    transition_attributes = self._model.get("transitionAttributes")
+    if transition_attributes is not None:
+      local_model["transitionAttributes"] = transition_attributes
 
     for parking_key, group_shipment_indices in self._parking_groups.items():
       assert parking_key.parking_tag is not None
@@ -332,6 +368,9 @@ class Planner:
             "fixedCost": self._options.local_model_vehicle_fixed_cost,
             "costPerHour": self._options.local_model_vehicle_per_hour_cost,
             "costPerKilometer": self._options.local_model_vehicle_per_km_cost,
+            # Transition attribute tags.
+            "startTags": [parking_key.parking_tag],
+            "endTags": [parking_key.parking_tag],
         }
         if parking.max_round_duration is not None:
           vehicle["routeDurationLimit"] = {
@@ -342,14 +381,6 @@ class Planner:
               unit: {"maxLoad": str(max_load)}
               for unit, max_load in parking.delivery_load_limits.items()
           }
-        if parking_key.start_time is not None:
-          vehicle["startTimeWindows"] = [{
-              "startTime": parking_key.start_time,
-          }]
-        if parking_key.end_time is not None:
-          vehicle["endTimeWindows"] = [{
-              "endTime": parking_key.end_time,
-          }]
         local_vehicles.append(vehicle)
 
       # Add shipments from the group. From each shipment, we preserve only the
@@ -357,11 +388,20 @@ class Planner:
       for shipment_index in group_shipment_indices:
         shipment = self._shipments[shipment_index]
         delivery = shipment["deliveries"][0]
+        local_delivery = {
+            "arrivalWaypoint": delivery["arrivalWaypoint"],
+            "duration": delivery["duration"],
+        }
+        # Preserve tags in the local shipment.
+        tags = delivery.get("tags")
+        if tags is not None:
+          local_delivery["tags"] = tags
+        # Preserve time windows in the local shipment.
+        time_windows = delivery.get("timeWindows")
+        if time_windows is not None:
+          local_delivery["timeWindows"] = time_windows
         local_shipment: cfr_json.Shipment = {
-            "deliveries": [{
-                "arrivalWaypoint": delivery["arrivalWaypoint"],
-                "duration": delivery["duration"],
-            }],
+            "deliveries": [local_delivery],
             "label": f"{shipment_index}: {shipment['label']}",
             "allowedVehicleIndices": group_vehicle_indices,
         }
@@ -410,10 +450,6 @@ class Planner:
         # Vehicles are the same as in the original request.
         "vehicles": self._model["vehicles"],
     }
-    global_start_time = cfr_json.parse_time_string(
-        self._model["globalStartTime"]
-    )
-    global_end_time = cfr_json.parse_time_string(self._model["globalEndTime"])
 
     # TODO(ondrasej): Honor transition attributes from the input request.
     transition_attributes = _ParkingTransitionAttributeManager(self._model)
@@ -452,9 +488,6 @@ class Planner:
           self._shipments[shipment_index] for shipment_index in shipment_indices
       )
       assert shipments
-      # We need one shipment to determine the time window of the parking
-      # location visit (if there is one).
-      shipment = shipments[0]
 
       global_delivery: cfr_json.VisitRequest = {
           # We use the coordinates of the parking location for the waypoint.
@@ -462,49 +495,12 @@ class Planner:
           # The duration of the delivery at the parking location is the total
           # duration of the local route for this round.
           "duration": route["metrics"]["totalDuration"],
+          "tags": [parking_tag],
       }
-      # The delivery time windows of all the shipments on the local route are
-      # either the same, or none of them has a delivery time window. We just
-      # take the time windows definition of one of them and if present, we use
-      # it as the time window of the delivery in the global model.
-      time_windows = shipment["deliveries"][0].get("timeWindows")
-      if time_windows is not None:
-        global_time_windows = []
-        local_route_duration = cfr_json.parse_duration_string(
-            route["metrics"]["totalDuration"]
-        )
-        duration_to_first_shipment = cfr_json.parse_duration_string(
-            route["transitions"][0]["totalDuration"]
-        )
-        duration_from_last_shipment = cfr_json.parse_duration_string(
-            route["transitions"][-1]["totalDuration"]
-        )
-        for time_window in time_windows:
-          global_time_window = {}
-          if "startTime" in time_window:
-            # Shift the beginning of the time window so that the walking time to
-            # the first delivery on the route from the parking location does not
-            # eat time from the delivery time window.
-            start_time = cfr_json.parse_time_string(time_window["startTime"])
-            global_time_window["startTime"] = cfr_json.as_time_string(
-                max(start_time - duration_to_first_shipment, global_start_time)
-            )
-          if "endTime" in time_window:
-            # Shift the end of the time window so that (1) the driver has enough
-            # time to do all deliveries within the time window, and (2) the time
-            # to walk from the last shipment back to the parking location does
-            # not eat from the delivery time window.
-            end_time = cfr_json.parse_time_string(time_window["endTime"])
-            global_time_window["endTime"] = cfr_json.as_time_string(
-                min(
-                    end_time
-                    - local_route_duration
-                    + duration_from_last_shipment,
-                    global_end_time,
-                )
-            )
-          global_time_windows.append(global_time_window)
-
+      global_time_windows = _get_local_model_route_start_time_windows(
+          self._model, route, shipments
+      )
+      if global_time_windows is not None:
         global_delivery["timeWindows"] = global_time_windows
 
       # Add arrival/departure/reload costs and delays if needed.
@@ -512,7 +508,7 @@ class Planner:
           parking
       )
       if parking_transition_tag is not None:
-        global_delivery["tags"] = [parking_transition_tag]
+        global_delivery["tags"].append(parking_transition_tag)
 
       shipment_labels = ",".join(shipment["label"] for shipment in shipments)
       global_shipment: cfr_json.Shipment = {
@@ -548,7 +544,14 @@ class Planner:
 
       global_shipments.append(global_shipment)
 
-    global_transition_attributes = transition_attributes.transition_attributes
+    # TODO(ondrasej): Restrict the preserved transition attributes only to tags
+    # that are actually used in the model, to make the model smaller.
+    global_transition_attributes = list(
+        self._model.get("transitionAttributes", ())
+    )
+    global_transition_attributes.extend(
+        transition_attributes.transition_attributes
+    )
     if global_transition_attributes:
       global_model["transitionAttributes"] = global_transition_attributes
 
@@ -558,6 +561,15 @@ class Planner:
         "parent": self._request.get("parent"),
     }
     self._add_options_from_original_request(request)
+    consider_road_traffic = self._request.get("considerRoadTraffic")
+    if consider_road_traffic is not None:
+      request["considerRoadTraffic"] = consider_road_traffic
+    # TODO(ondrasej): Consider applying internal parameters also to the local
+    # request; potentially, add separate internal parameters for the local and
+    # the global models to the configuration of the planner.
+    internal_parameters = self._request.get("internalParameters")
+    if internal_parameters is not None:
+      request["internalParameters"] = internal_parameters
     return request
 
   def merge_local_and_global_result(
@@ -628,6 +640,10 @@ class Planner:
         "routes": merged_routes,
     }
 
+    transition_attributes = self._model.get("transitionAttributes")
+    if transition_attributes is not None:
+      merged_model["transitionAttributes"] = transition_attributes
+
     local_routes = local_response["routes"]
     populate_polylines = self._request.get("populatePolylines", False)
 
@@ -659,6 +675,11 @@ class Planner:
               # TODO(ondrasej): metrics, detailed costs, ...
           }
       )
+
+      # Copy breaks from the global route, if present.
+      global_breaks = global_route.get("breaks")
+      if global_breaks is not None:
+        merged_routes[-1]["breaks"] = global_breaks
 
       if not global_visits:
         # We add empty routes, but there is no additional work to do on them.
@@ -804,7 +825,7 @@ class Planner:
           # Shipments delivered directly can be added directly to the list.
           merged_skipped_shipments.append({
               "index": int(index),
-              "label": self._model["shipments"][index].get("label", "")
+              "label": self._model["shipments"][index].get("label", ""),
           })
         case "p":
           # For parking locations, we need to add all shipments delivered from
@@ -1038,6 +1059,183 @@ class _ParkingTransitionAttributeManager:
 _GLOBAL_SHIPEMNT_LABEL = re.compile(r"^([ps]):(\d+) .*")
 
 
+T = TypeVar("T")
+
+
+def _interval_intersection(
+    intervals_a: Sequence[tuple[T, T]], intervals_b: Sequence[tuple[T, T]]
+) -> Sequence[tuple[T, T]]:
+  """Computes intersection of two sets of intervals.
+
+  Each element of the input sequences is an interval represented as a tuple
+  [start, end] (inclusive on both sides), and that the intervals in each of the
+  inputs are disjoint (they may not even touch) and sorted by their start value.
+
+  The function works for any value type that supports comparison and ordering.
+
+  Args:
+    intervals_a: The first input.
+    intervals_b: The second input.
+
+  Returns:
+    The intersection of the two inputs, represented as a sequence of disjoint
+    intervals ordered by their start value. Returns an empty sequence when the
+    intersection is empty.
+  """
+  out_intervals = []
+  a_iter = iter(intervals_a)
+  b_iter = iter(intervals_b)
+
+  try:
+    a_start, a_end = next(a_iter)
+    b_start, b_end = next(b_iter)
+    while True:
+      while a_end < b_start:
+        # Skip all intervals from a_iter that do not overlap the current
+        # interval from b.
+        a_start, a_end = next(a_iter)
+      while b_end < a_start:
+        # Skip all intervals from b_iter that do not overlap the current
+        # interval from a.
+        b_start, b_end = next(b_iter)
+      if a_end >= b_start and b_end >= a_start:
+        # We stopped because we have an overlap here. Compute the intersection
+        # of the two intervals and fetch a new interval from the input whose
+        # interval ends at the end of the intersection interval.
+        out_start = max(a_start, b_start)
+        out_end = min(b_end, a_end)
+        out_intervals.append((out_start, out_end))
+        if out_end == a_end:
+          a_start, a_end = next(a_iter)
+        if out_end == b_end:
+          b_start, b_end = next(b_iter)
+  except StopIteration:
+    pass
+  return out_intervals
+
+
+def _get_local_model_route_start_time_windows(
+    model: cfr_json.ShipmentModel,
+    route: cfr_json.ShipmentRoute,
+    shipments: Sequence[cfr_json.Shipment],
+) -> list[cfr_json.TimeWindow] | None:
+  """Computes global time windows for starting a local route.
+
+  Computes a list of time windows for the start of the local route that are
+  compatible with time windows of all visits on the local route. The output list
+  contains only hard time windows, soft time windows are not taken into account
+  by this algorithm. Returns None when the route can start at any time within
+  the global start/end time interval of the model.
+
+  The function always returns either None to signal that any start time is
+  possible or returns at least one time window that contains the original
+  vehicle start time of the route.
+
+  Args:
+    model: The model in which the route is computed.
+    route: The local route for which the time window is computed.
+    shipments: The list of shipments from the model that appear on the route, in
+      the order in which they appear.
+
+  Returns:
+    A list of time windows for the start of the route. The time windows account
+    for the time needed to walk to the first visit, and the time needed to
+    return from the last visit back to the parking. When the local route can
+    start at any time within the global start/end interval of the model, returns
+    None.
+  """
+  if not shipments:
+    return None
+
+  visits = route["visits"]
+  if len(shipments) != len(visits):
+    raise ValueError(
+        "The number of shipments does not match the number of visits."
+    )
+
+  global_start_time = cfr_json.get_global_start_time(model)
+  global_end_time = cfr_json.get_global_end_time(model)
+
+  route_start_time = cfr_json.parse_time_string(route["vehicleStartTime"])
+
+  # The start time window for the route is computed as the intersection of
+  # "route start time windows" of all visits in the route. A "route start time
+  # window" of a visit is the time window of the visit, shifted by the time
+  # since the start of the route needed to get to the vist (including all visits
+  # that precede it on the route).
+  # By starting the route in the intersection of these time windows, we
+  # guarantee that each visit will start within its own time time window.
+
+  # Start by allowing any start time for the local route.
+  overall_route_start_time_intervals = ((global_start_time, global_end_time),)
+
+  for shipment, visit in zip(shipments, visits):
+    visit_type = "pickups" if visit.get("isPickup", False) else "deliveries"
+    visit_request_index = visit.get("visitRequestIndex", 0)
+    time_windows = shipment[visit_type][visit_request_index].get("timeWindows")
+    if not time_windows:
+      # This shipment can be delivered at any time. No refinement of the route
+      # delivery time interval is needed.
+      continue
+
+    # The time needed to get to this visit since the start of the local route.
+    # This includes both the time needed for transit and the time needed to
+    # handle any shipments that come on the route before this one.
+    # TODO(ondrasej): Verify that the translation of the time windows is correct
+    # in the presence of wait times.
+    visit_start_time = cfr_json.parse_time_string(visit["startTime"])
+    visit_start_offset = visit_start_time - route_start_time
+
+    # Refine `route_start_time` using the route start times computed from time
+    # windows of all visits on the route.
+    shipment_route_start_time_intervals = []
+    for time_window in time_windows:
+      time_window_start = time_window.get("startTime")
+      time_window_end = time_window.get("endTime")
+
+      # Compute the start time window for this shipment, adjusted by the time
+      # needed to process all shipments that come before this one and to arrive
+      # to the delivery location.
+      # All times are clamped by the (global_start_time, global_end_time)
+      # interval that we start with, so there's no need to worry about clamping
+      # any times for an individual time window.
+      shipment_route_start_time_intervals.append((
+          cfr_json.parse_time_string(time_window_start) - visit_start_offset
+          if time_window_start is not None
+          else global_start_time,
+          cfr_json.parse_time_string(time_window_end) - visit_start_offset
+          if time_window_end is not None
+          else global_end_time,
+      ))
+
+    overall_route_start_time_intervals = _interval_intersection(
+        overall_route_start_time_intervals, shipment_route_start_time_intervals
+    )
+
+  if not overall_route_start_time_intervals:
+    raise ValueError(
+        "The shipments have incompatible time windows. Arrived an an empty time"
+        " window intersection."
+    )
+
+  # Transform intervals into time window data structures.
+  global_time_windows = []
+  for start, end in overall_route_start_time_intervals:
+    global_time_window = {}
+    if start > global_start_time:
+      global_time_window["startTime"] = cfr_json.as_time_string(start)
+    if end < global_end_time:
+      global_time_window["endTime"] = cfr_json.as_time_string(end)
+    if global_time_window:
+      global_time_windows.append(global_time_window)
+
+  if not global_time_windows:
+    # We might have dropped a single time window that spans from the global
+    # start time to the global end time, and that is OK.
+    return None
+  return global_time_windows
+
+
 def _parse_global_shipment_label(label: str) -> tuple[str, int]:
   match = _GLOBAL_SHIPEMNT_LABEL.match(label)
   if not match:
@@ -1117,17 +1315,23 @@ def _make_local_model_vehicle_label(group_key: _ParkingGroupKey) -> str:
 
 
 def _parking_delivery_group_key(
-    shipment: cfr_json.Shipment, parking: ParkingLocation | None
+    options: Options,
+    shipment: cfr_json.Shipment,
+    parking: ParkingLocation | None,
 ) -> _ParkingGroupKey:
   """Creates a key that groups shipments with the same time window and parking."""
   if parking is None:
     return _ParkingGroupKey()
+  group_by_time = (
+      options.local_model_grouping == LocalModelGrouping.PARKING_AND_TIME
+  )
   parking_tag = parking.tag
   start_time = None
   end_time = None
   delivery = shipment["deliveries"][0]
+  # TODO(ondrasej): Allow using multiple time windows here.
   time_window = next(iter(delivery.get("timeWindows", ())), None)
-  if time_window is not None:
+  if group_by_time and time_window is not None:
     start_time = time_window.get("startTime")
     end_time = time_window.get("endTime")
   allowed_vehicle_indices = shipment.get("allowedVehicleIndices")

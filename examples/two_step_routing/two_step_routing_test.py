@@ -20,6 +20,10 @@ class PlannerTest(unittest.TestCase):
       local_model_vehicle_fixed_cost=10000,
       min_average_shipments_per_round=2,
   )
+  _OPTIONS_GROUP_BY_PARKING = two_step_routing.Options(
+      local_model_vehicle_fixed_cost=0,
+      local_model_grouping=two_step_routing.LocalModelGrouping.PARKING,
+  )
 
   _REQUEST_JSON: cfr_json.OptimizeToursRequest = {
       "model": {
@@ -30,12 +34,14 @@ class PlannerTest(unittest.TestCase):
                   delivery_duration="120s",
                   allowed_vehicle_indices=[0],
                   cost_per_vehicle={0: 100, 1: 200},
+                  delivery_tags=("S001",),
               ),
               cfr_json.make_shipment(  # 1
                   "S002",
                   delivery_latlng=(48.86593, 2.34886),
                   delivery_duration="150s",
                   allowed_vehicle_indices=[0],
+                  delivery_tags=("S002",),
               ),
               cfr_json.make_shipment(  # 2
                   "S003",
@@ -111,11 +117,17 @@ class PlannerTest(unittest.TestCase):
                   ),
               ),
           ],
+          "transitionAttributes": [{
+              "srcTag": "S001",
+              "dstTag": "S002",
+              "cost": 1,
+          }],
           "globalStartTime": "2023-08-11T00:00:00.000Z",
           "globalEndTime": "2023-08-12T00:00:00.000Z",
       },
       "searchMode": 1,
       "allowLargeDeadlineDespiteInterruptionRisk": True,
+      "considerRoadTraffic": True,
       "label": "my_little_model",
       "parent": "my_awesome_project",
   }
@@ -168,6 +180,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "120s",
+                      "tags": ["S001"],
                   }],
                   "label": "0: S001",
                   "allowedVehicleIndices": [0],
@@ -183,6 +196,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "150s",
+                      "tags": ["S002"],
                   }],
                   "label": "1: S002",
                   "allowedVehicleIndices": [0],
@@ -197,6 +211,9 @@ class PlannerTest(unittest.TestCase):
                               }
                           }
                       },
+                      "timeWindows": [
+                          {"startTime": "2023-08-11T12:00:00.000Z"}
+                      ],
                       "duration": "60s",
                   }],
                   "label": "2: S003",
@@ -212,6 +229,10 @@ class PlannerTest(unittest.TestCase):
                               }
                           }
                       },
+                      "timeWindows": [{
+                          "endTime": "2023-08-11T16:00:00.000Z",
+                          "startTime": "2023-08-11T14:00:00.000Z",
+                      }],
                       "duration": "60s",
                   }],
                   "label": "3: S004",
@@ -305,6 +326,8 @@ class PlannerTest(unittest.TestCase):
                           }
                       }
                   },
+                  "startTags": ["P001"],
+                  "endTags": ["P001"],
                   "routeDurationLimit": {"maxDuration": "1800s"},
                   "travelDurationMultiple": 1.1,
                   "travelMode": 1,
@@ -333,9 +356,8 @@ class PlannerTest(unittest.TestCase):
                           }
                       }
                   },
-                  "startTimeWindows": [{
-                      "startTime": "2023-08-11T12:00:00.000Z",
-                  }],
+                  "startTags": ["P001"],
+                  "endTags": ["P001"],
                   "routeDurationLimit": {"maxDuration": "1800s"},
                   "travelDurationMultiple": 1.1,
                   "travelMode": 1,
@@ -365,12 +387,8 @@ class PlannerTest(unittest.TestCase):
                           }
                       }
                   },
-                  "startTimeWindows": [{
-                      "startTime": "2023-08-11T14:00:00.000Z",
-                  }],
-                  "endTimeWindows": [{
-                      "endTime": "2023-08-11T16:00:00.000Z",
-                  }],
+                  "startTags": ["P001"],
+                  "endTags": ["P001"],
                   "routeDurationLimit": {"maxDuration": "1800s"},
                   "travelDurationMultiple": 1.1,
                   "travelMode": 1,
@@ -397,6 +415,8 @@ class PlannerTest(unittest.TestCase):
                           }
                       }
                   },
+                  "startTags": ["P002"],
+                  "endTags": ["P002"],
                   "travelDurationMultiple": 1.0,
                   "travelMode": 2,
                   "fixedCost": 10000,
@@ -425,6 +445,8 @@ class PlannerTest(unittest.TestCase):
                           }
                       }
                   },
+                  "startTags": ["P002"],
+                  "endTags": ["P002"],
                   "travelDurationMultiple": 1.0,
                   "travelMode": 2,
                   "loadLimits": {"ore": {"maxLoad": "2"}},
@@ -445,8 +467,17 @@ class PlannerTest(unittest.TestCase):
                           "latLng": {"latitude": 48.86482, "longitude": 2.34932}
                       }
                   },
+                  "startTags": ["P002"],
+                  "endTags": ["P002"],
                   "travelDurationMultiple": 1.0,
                   "travelMode": 2,
+              },
+          ],
+          "transitionAttributes": [
+              {
+                  "cost": 1,
+                  "dstTag": "S002",
+                  "srcTag": "S001",
               },
           ],
       },
@@ -638,6 +669,333 @@ class PlannerTest(unittest.TestCase):
       "totalCost": 60724.506666666661,
   }
 
+  _EXPECTED_LOCAL_REQUEST_GROUP_BY_PARKING_JSON = {
+      "allowLargeDeadlineDespiteInterruptionRisk": True,
+      "label": "my_little_model/local",
+      "model": {
+          "globalEndTime": "2023-08-12T00:00:00.000Z",
+          "globalStartTime": "2023-08-11T00:00:00.000Z",
+          "shipments": [
+              {
+                  "allowedVehicleIndices": [0, 1, 2, 3],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86471,
+                                  "longitude": 2.34901,
+                              }
+                          }
+                      },
+                      "duration": "120s",
+                      "tags": ["S001"],
+                  }],
+                  "label": "0: S001",
+              },
+              {
+                  "allowedVehicleIndices": [0, 1, 2, 3],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86593,
+                                  "longitude": 2.34886,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                      "tags": ["S002"],
+                  }],
+                  "label": "1: S002",
+              },
+              {
+                  "allowedVehicleIndices": [0, 1, 2, 3],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86594,
+                                  "longitude": 2.34887,
+                              }
+                          }
+                      },
+                      "duration": "60s",
+                      "timeWindows": [
+                          {"startTime": "2023-08-11T12:00:00.000Z"}
+                      ],
+                  }],
+                  "label": "2: S003",
+              },
+              {
+                  "allowedVehicleIndices": [0, 1, 2, 3],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86595,
+                                  "longitude": 2.34888,
+                              }
+                          }
+                      },
+                      "duration": "60s",
+                      "timeWindows": [{
+                          "endTime": "2023-08-11T16:00:00.000Z",
+                          "startTime": "2023-08-11T14:00:00.000Z",
+                      }],
+                  }],
+                  "label": "3: S004",
+              },
+              {
+                  "allowedVehicleIndices": [4, 5],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86596,
+                                  "longitude": 2.34889,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                  }],
+                  "label": "4: S005",
+              },
+              {
+                  "allowedVehicleIndices": [4, 5],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86597,
+                                  "longitude": 2.3489,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                  }],
+                  "label": "5: S006",
+                  "loadDemands": {
+                      "ore": {"amount": "2"},
+                      "wheat": {"amount": "3"},
+                  },
+              },
+              {
+                  "allowedVehicleIndices": [6],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86597,
+                                  "longitude": 2.3489,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                  }],
+                  "label": "6: S007",
+                  "loadDemands": {
+                      "ore": {"amount": "1"},
+                      "wood": {"amount": "5"},
+                  },
+              },
+              {
+                  "allowedVehicleIndices": [7],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86597,
+                                  "longitude": 2.3489,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                  }],
+                  "label": "7: S008",
+              },
+          ],
+          "vehicles": [
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 0,
+                  "label": "P001 [vehicles=(0,)]/0",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "routeDurationLimit": {"maxDuration": "1800s"},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.1,
+                  "travelMode": 1,
+                  "startTags": ["P001"],
+                  "endTags": ["P001"],
+              },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 0,
+                  "label": "P001 [vehicles=(0,)]/1",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "routeDurationLimit": {"maxDuration": "1800s"},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.1,
+                  "travelMode": 1,
+                  "startTags": ["P001"],
+                  "endTags": ["P001"],
+              },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 0,
+                  "label": "P001 [vehicles=(0,)]/2",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "routeDurationLimit": {"maxDuration": "1800s"},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.1,
+                  "travelMode": 1,
+                  "startTags": ["P001"],
+                  "endTags": ["P001"],
+              },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 0,
+                  "label": "P001 [vehicles=(0,)]/3",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "routeDurationLimit": {"maxDuration": "1800s"},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.1,
+                  "travelMode": 1,
+                  "startTags": ["P001"],
+                  "endTags": ["P001"],
+              },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 0,
+                  "label": "P002 [vehicles=(0, 1)]/0",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.0,
+                  "travelMode": 2,
+                  "startTags": ["P002"],
+                  "endTags": ["P002"],
+              },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 0,
+                  "label": "P002 [vehicles=(0, 1)]/1",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.0,
+                  "travelMode": 2,
+                  "startTags": ["P002"],
+                  "endTags": ["P002"],
+              },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 0,
+                  "label": "P002 [vehicles=(0,)]/0",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.0,
+                  "travelMode": 2,
+                  "startTags": ["P002"],
+                  "endTags": ["P002"],
+              },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 0,
+                  "label": "P002 [vehicles=(1,)]/0",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.0,
+                  "travelMode": 2,
+                  "startTags": ["P002"],
+                  "endTags": ["P002"],
+              },
+          ],
+          "transitionAttributes": [
+              {"cost": 1, "dstTag": "S002", "srcTag": "S001"},
+          ],
+      },
+      "parent": "my_awesome_project",
+      "searchMode": 1,
+  }
+
   # The expected global model request created by the two-step planner for the
   # base request defined above, using _EXPECTED_LOCAL_REQUEST_JSON as the
   # solution of the local model.
@@ -674,6 +1032,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "932s",
+                      "tags": ["P001"],
                   }],
                   "costsPerVehicle": [100, 200],
                   "costsPerVehicleIndices": [0, 1],
@@ -692,6 +1051,7 @@ class PlannerTest(unittest.TestCase):
                       },
                       "duration": "724s",
                       "timeWindows": [{"startTime": "2023-08-11T11:51:04Z"}],
+                      "tags": ["P001"],
                   }],
                   "label": "p:1 S003",
               },
@@ -708,9 +1068,10 @@ class PlannerTest(unittest.TestCase):
                       },
                       "duration": "724s",
                       "timeWindows": [{
-                          "endTime": "2023-08-11T15:50:04Z",
+                          "endTime": "2023-08-11T15:51:04Z",
                           "startTime": "2023-08-11T13:51:04Z",
                       }],
+                      "tags": ["P001"],
                   }],
                   "label": "p:2 S004",
               },
@@ -726,7 +1087,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "570s",
-                      "tags": ["parking: P002"],
+                      "tags": ["P002", "parking: P002"],
                   }],
                   "label": "p:3 S006,S005",
                   "loadDemands": {
@@ -746,7 +1107,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "419s",
-                      "tags": ["parking: P002"],
+                      "tags": ["P002", "parking: P002"],
                   }],
                   "label": "p:4 S007",
                   "loadDemands": {
@@ -766,7 +1127,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "419s",
-                      "tags": ["parking: P002"],
+                      "tags": ["P002", "parking: P002"],
                   }],
                   "label": "p:5 S008",
               },
@@ -825,6 +1186,11 @@ class PlannerTest(unittest.TestCase):
           ],
           "transitionAttributes": [
               {
+                  "cost": 1,
+                  "dstTag": "S002",
+                  "srcTag": "S001",
+              },
+              {
                   "cost": 1000,
                   "delay": "180s",
                   "dstTag": "parking: P002",
@@ -845,6 +1211,7 @@ class PlannerTest(unittest.TestCase):
       "parent": "my_awesome_project",
       "searchMode": 1,
       "allowLargeDeadlineDespiteInterruptionRisk": True,
+      "considerRoadTraffic": True,
   }
 
   # An example response from the CFR solver for _EXPECTED_GLOBAL_REQUEST_JSON.
@@ -974,6 +1341,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "120s",
+                      "tags": ["S001"],
                   }],
                   "label": "S001",
                   "costsPerVehicle": [100, 200],
@@ -991,6 +1359,7 @@ class PlannerTest(unittest.TestCase):
                           }
                       },
                       "duration": "150s",
+                      "tags": ["S002"],
                   }],
                   "label": "S002",
               },
@@ -1334,6 +1703,9 @@ class PlannerTest(unittest.TestCase):
                   "travelDurationMultiple": 1,
                   "travelMode": 1,
               },
+          ],
+          "transitionAttributes": [
+              {"cost": 1, "dstTag": "S002", "srcTag": "S001"},
           ],
       },
       "parent": "my_awesome_project",
@@ -1688,6 +2060,18 @@ class PlannerTestLocalModel(PlannerTest):
         self._EXPECTED_LOCAL_REQUEST_JSON,
     )
 
+  def test_make_local_model_group_by_parking(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS_GROUP_BY_PARKING,
+    )
+    self.assertEqual(
+        planner.make_local_request(),
+        self._EXPECTED_LOCAL_REQUEST_GROUP_BY_PARKING_JSON,
+    )
+
 
 class PlannerTestGlobalModel(PlannerTest):
   """Tests for Planner.make_global_request()."""
@@ -1990,6 +2374,7 @@ class PlannerTestMergedModel(PlannerTest):
                           }
                       },
                       "duration": "120s",
+                      "tags": ["S001"],
                   }],
                   "label": "S001",
               },
@@ -2005,6 +2390,7 @@ class PlannerTestMergedModel(PlannerTest):
                           }
                       },
                       "duration": "150s",
+                      "tags": ["S002"],
                   }],
                   "label": "S002",
               },
@@ -2292,6 +2678,9 @@ class PlannerTestMergedModel(PlannerTest):
                   "travelDurationMultiple": 1,
                   "travelMode": 1,
               },
+          ],
+          "transitionAttributes": [
+              {"cost": 1, "dstTag": "S002", "srcTag": "S001"},
           ],
       },
       "parent": "my_awesome_project",
@@ -2655,6 +3044,13 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
 
   maxDiff = None
 
+  _OPTIONS_GROUP_BY_PARKING_AND_TIME = two_step_routing.Options(
+      local_model_grouping=two_step_routing.LocalModelGrouping.PARKING_AND_TIME
+  )
+  _OPTIONS_GROUP_BY_PARKING = two_step_routing.Options(
+      local_model_grouping=two_step_routing.LocalModelGrouping.PARKING
+  )
+
   _START_TIME = "2023-08-09T12:12:00.000Z"
   _END_TIME = "2023-08-09T12:45:32.000Z"
   _SHIPMENT_NO_TIME_WINDOW: cfr_json.Shipment = {
@@ -2725,14 +3121,32 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
         self._SHIPMENT_ALLOWED_VEHICLES,
     ):
       self.assertEqual(
-          two_step_routing._parking_delivery_group_key(shipment, None),
+          two_step_routing._parking_delivery_group_key(
+              self._OPTIONS_GROUP_BY_PARKING_AND_TIME, shipment, None
+          ),
+          two_step_routing._ParkingGroupKey(),
+      )
+      self.assertEqual(
+          two_step_routing._parking_delivery_group_key(
+              self._OPTIONS_GROUP_BY_PARKING, shipment, None
+          ),
           two_step_routing._ParkingGroupKey(),
       )
 
   def test_with_parking_and_no_time_window(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._SHIPMENT_NO_TIME_WINDOW, self._PARKING_LOCATION
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._SHIPMENT_NO_TIME_WINDOW,
+            self._PARKING_LOCATION,
+        ),
+        two_step_routing._ParkingGroupKey("P1234"),
+    )
+    self.assertEqual(
+        two_step_routing._parking_delivery_group_key(
+            self._OPTIONS_GROUP_BY_PARKING,
+            self._SHIPMENT_NO_TIME_WINDOW,
+            self._PARKING_LOCATION,
         ),
         two_step_routing._ParkingGroupKey("P1234"),
     )
@@ -2740,33 +3154,65 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
   def test_with_parking_and_time_window_start(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._SHIPMENT_TIME_WINDOW_START, self._PARKING_LOCATION
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._SHIPMENT_TIME_WINDOW_START,
+            self._PARKING_LOCATION,
         ),
         two_step_routing._ParkingGroupKey("P1234", self._START_TIME, None),
+    )
+    self.assertEqual(
+        two_step_routing._parking_delivery_group_key(
+            self._OPTIONS_GROUP_BY_PARKING,
+            self._SHIPMENT_TIME_WINDOW_START,
+            self._PARKING_LOCATION,
+        ),
+        two_step_routing._ParkingGroupKey("P1234", None, None),
     )
 
   def test_with_parking_and_time_window_end(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._SHIPMENT_TIME_WINDOW_END, self._PARKING_LOCATION
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._SHIPMENT_TIME_WINDOW_END,
+            self._PARKING_LOCATION,
         ),
         two_step_routing._ParkingGroupKey("P1234", None, self._END_TIME),
+    )
+    self.assertEqual(
+        two_step_routing._parking_delivery_group_key(
+            self._OPTIONS_GROUP_BY_PARKING,
+            self._SHIPMENT_TIME_WINDOW_END,
+            self._PARKING_LOCATION,
+        ),
+        two_step_routing._ParkingGroupKey("P1234", None, None),
     )
 
   def test_with_parking_and_time_window_start_end(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._SHIPMENT_TIME_WINDOW_START_END, self._PARKING_LOCATION
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._SHIPMENT_TIME_WINDOW_START_END,
+            self._PARKING_LOCATION,
         ),
         two_step_routing._ParkingGroupKey(
             "P1234", self._START_TIME, self._END_TIME
         ),
     )
+    self.assertEqual(
+        two_step_routing._parking_delivery_group_key(
+            self._OPTIONS_GROUP_BY_PARKING,
+            self._SHIPMENT_TIME_WINDOW_START_END,
+            self._PARKING_LOCATION,
+        ),
+        two_step_routing._ParkingGroupKey("P1234", None, None),
+    )
 
   def test_with_allowed_vehicles(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._SHIPMENT_ALLOWED_VEHICLES, self._PARKING_LOCATION
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._SHIPMENT_ALLOWED_VEHICLES,
+            self._PARKING_LOCATION,
         ),
         two_step_routing._ParkingGroupKey(
             "P1234",
@@ -2775,6 +3221,78 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
             (0, 2, 5),
         ),
     )
+    self.assertEqual(
+        two_step_routing._parking_delivery_group_key(
+            self._OPTIONS_GROUP_BY_PARKING,
+            self._SHIPMENT_ALLOWED_VEHICLES,
+            self._PARKING_LOCATION,
+        ),
+        two_step_routing._ParkingGroupKey(
+            "P1234",
+            None,
+            None,
+            (0, 2, 5),
+        ),
+    )
+
+
+class TestIntervalIntersection(unittest.TestCase):
+  maxDiff = None
+
+  def test_both_empty(self):
+    self.assertSequenceEqual(
+        two_step_routing._interval_intersection((), ()), ()
+    )
+
+  def test_left_empty(self):
+    self.assertSequenceEqual(
+        two_step_routing._interval_intersection((), ((0, 1), (2, 3), (4, 5))),
+        (),
+    )
+
+  def test_right_empty(self):
+    self.assertSequenceEqual(
+        two_step_routing._interval_intersection(((0, 1), (2, 3), (4, 5)), ()),
+        (),
+    )
+
+  def test_overlap(self):
+    self.assertSequenceEqual(
+        two_step_routing._interval_intersection(((0, 10),), ((5, 20),)),
+        ((5, 10),),
+    )
+
+  def test_double_overlap(self):
+    self.assertSequenceEqual(
+        two_step_routing._interval_intersection(
+            ((0, 10), (20, 30)), ((5, 25),)
+        ),
+        ((5, 10), (20, 25)),
+    )
+
+  def test_singular_overlap(self):
+    self.assertSequenceEqual(
+        two_step_routing._interval_intersection(((0, 10),), ((10, 20),)),
+        ((10, 10),),
+    )
+
+  def test_many_singular_overlaps(self):
+    self.assertSequenceEqual(
+        two_step_routing._interval_intersection(
+            ((0, 1), (2, 3), (4, 5), (6, 7)), ((1, 2), (3, 4), (5, 6), (7, 8))
+        ),
+        ((1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)),
+    )
+
+  def test_with_datetime(self):
+    dt = datetime.datetime.fromtimestamp
+    self.assertSequenceEqual(
+        two_step_routing._interval_intersection(
+            ((dt(0), dt(7200)),), ((dt(3600), dt(10000)),)
+        ),
+        ((dt(3600), dt(7200)),),
+    )
+    pass
 
 
 if __name__ == "__main__":

@@ -7,8 +7,11 @@
 
 import collections
 from collections.abc import Callable, Collection, Iterable, Mapping, Sequence, Set
+import copy
 import datetime
 import itertools
+import math
+import re
 from typing import TypeAlias, TypedDict
 
 # A duration in a string format following the protocol buffers specification in
@@ -49,9 +52,11 @@ class TimeWindow(TypedDict, total=False):
   """Represents a time window in the JSON CFR request."""
 
   startTime: TimeString
+  softStartTime: TimeString
   softEndTime: TimeString
   endTime: TimeString
 
+  costPerHourBeforeSoftStartTime: float
   costPerHourAfterSoftEndTime: float
 
 
@@ -85,6 +90,7 @@ class VisitRequest(TypedDict, total=False):
   arrivalWaypoint: Waypoint
   timeWindows: list[TimeWindow]
   duration: DurationString
+  cost: float
 
   tags: list[str]
 
@@ -178,6 +184,9 @@ class OptimizeToursRequest(TypedDict, total=False):
   timeout: DurationString
   searchMode: int
   allowLargeDeadlineDespiteInterruptionRisk: bool
+  internalParameters: str
+
+  considerRoadTraffic: bool
 
   populatePolylines: bool
   populateTransitionPolylines: bool
@@ -217,6 +226,13 @@ class AggregatedMetrics(TypedDict, total=False):
   totalDuration: DurationString
 
 
+class Break(TypedDict):
+  """Represents a break in the JSON CFR results."""
+
+  startTime: TimeString
+  duration: DurationString
+
+
 class ShipmentRoute(TypedDict, total=False):
   """Represents a single route in the JSON CFR result."""
 
@@ -228,6 +244,7 @@ class ShipmentRoute(TypedDict, total=False):
 
   visits: list[Visit]
   transitions: list[Transition]
+  breaks: list[Break]
   metrics: AggregatedMetrics
 
   routeTotalCost: float
@@ -349,6 +366,230 @@ def combined_load_demands(shipments: Collection[Shipment]) -> dict[str, Load]:
   return {unit: {"amount": str(amount)} for unit, amount in demands.items()}
 
 
+_DEFAULT_GLOBAL_START_TIME = datetime.datetime.fromtimestamp(
+    0, tz=datetime.timezone.utc
+)
+_DEFAULT_GLOBAL_END_TIME = datetime.datetime.fromtimestamp(
+    31536000, tz=datetime.timezone.utc
+)
+
+
+def get_global_start_time(model: ShipmentModel) -> datetime.datetime:
+  """Returns the global start time of `model`."""
+  global_start_time = model.get("globalStartTime")
+  if global_start_time is None:
+    return _DEFAULT_GLOBAL_START_TIME
+  return max(_DEFAULT_GLOBAL_START_TIME, parse_time_string(global_start_time))
+
+
+def get_global_end_time(model: ShipmentModel) -> datetime.datetime:
+  """Returns the global end time of `model`."""
+  global_end_time = model.get("globalEndTime")
+  if global_end_time is None:
+    return _DEFAULT_GLOBAL_END_TIME
+  return parse_time_string(global_end_time)
+
+
+def get_time_windows_start(
+    model: ShipmentModel, time_windows: Sequence[TimeWindow] | None
+) -> datetime.datetime:
+  """Returns the earliest timestamp that is inside `time_windows`.
+
+  Assumes that the time windows in `time_windows` are sorted and disjoint. If
+  `time_windows` is not None, not empty, and the earliest time window has an
+  explicit start time, returns the maximum of this time and the global start
+  time. Otherwise, returns the global start time.
+
+  Args:
+    model: The model, in which the earliest start time is determined.
+    time_windows: The collection of time windows, for which the earliest start
+      time is determined.
+
+  Returns:
+    The earliest timestamp that is inside the time windows.
+  """
+  global_start_time = get_global_start_time(model)
+  if not time_windows:  # Covers an empty sequence and None.
+    return global_start_time
+  start_time = time_windows[0].get("startTime")
+  if start_time is None:
+    return global_start_time
+  return max(global_start_time, parse_time_string(start_time))
+
+
+def get_time_windows_end(
+    model: ShipmentModel, time_windows: Sequence[TimeWindow] | None
+) -> datetime.datetime:
+  """Returns the latest timestamp that is inside `time_windows`.
+
+  Assumes that the time windows in `time_windows` are sorted and disjoint. If
+  `time_windows` is not None, not empty, and the latest time window has an
+  explicit end time, returns the minimum of this time and the global end time.
+  Otherwise, returns the global end time.
+
+  Args:
+    model: The model, in which the latest end time is determined.
+    time_windows: The collection of time windows, for which the latest end time
+      is determined.
+
+  Returns:
+    The latest timestamp that is inside the time windows.
+  """
+  global_end_time = get_global_end_time(model)
+  if not time_windows:  # Covers an empty sequence and None.
+    return global_end_time
+  end_time = time_windows[-1].get("endTime")
+  if end_time is None:
+    return global_end_time
+  return min(global_end_time, parse_time_string(end_time))
+
+
+def get_shipment_earliest_pickup(
+    model: ShipmentModel, shipment: Shipment, include_duration: bool = False
+) -> datetime.datetime:
+  """Returns the earliest pickup time of a shipment.
+
+  When the shipment doesn't have a pickup, assumes that the shipment has been
+  picked up at/before the global start, and returns global start.
+
+  Args:
+    model: The model, in which the earliest pickup time is determined.
+    shipment: The shipment, for which the earliest pickup time is determined.
+    include_duration: When True, returns the earliest end time of a pickup visit
+      for the shipment. Otherwise, returns the earliest start time of a pickup
+      visit.
+  """
+  pickups = shipment.get("pickups")
+  if not pickups:
+    return get_global_start_time(model)
+
+  earliest_pickup_start = get_global_end_time(model)
+  for pickup in pickups:
+    pickup_start = get_time_windows_start(model, pickup.get("timeWindows"))
+    if include_duration:
+      pickup_start += parse_duration_string(pickup.get("duration", "0s"))
+    earliest_pickup_start = min(earliest_pickup_start, pickup_start)
+
+  return earliest_pickup_start
+
+
+def get_shipment_load_demand(shipment: Shipment, load_key: str) -> int:
+  """Returns the load demand of a particular load type."""
+  load_demands = shipment.get("loadDemands")
+  if load_demands is None:
+    return 0
+  unit_demands = load_demands.get(load_key)
+  if unit_demands is None:
+    return 0
+  return int(unit_demands.get("amount", 0))
+
+
+def get_vehicle_earliest_start(
+    model: ShipmentModel, vehicle: Vehicle
+) -> datetime.datetime:
+  """Returns the earliest start time of `vehicle` in `model`.
+
+  The function follows the algorithm for determining the earliest start time by
+  taking the maximum of the following three times:
+    1. the hard start time of the first start time window of `vehicle`, if
+       defined,
+    2. the global start time in `model`, if defined,
+    3. Jan 1, 1970, 00:00:00 UTC.
+
+  Args:
+    model: The model, in which the earliest start time is determined.
+    vehicle: The vehicle, for which the earliest start time is determined.
+
+  Returns:
+    The earliest vehicle start time.
+  """
+  return get_time_windows_start(model, vehicle.get("startTimeWindows"))
+
+
+def get_vehicle_latest_end(
+    model: ShipmentModel, vehicle: Vehicle
+) -> datetime.datetime:
+  """Returns the latest end time of `vehicle` in `model`.
+
+  The function follows the algorithm for determining the latest end time by
+  taking the minimum of the following:
+    1. the hard end time of the last end time window of `vehicle`,
+    2. the global end time in `model`.
+  If neither of the two above is defined, Jan 1, 1971, 00:00:00 UTC is used.
+
+  Args:
+    model: The model, in which the latest end time is determined.
+    vehicle: The vehicle, for which the latest end time is determined.
+
+  Returns:
+    The latest vehicle end time.
+  """
+  return get_time_windows_end(model, vehicle.get("endTimeWindows"))
+
+
+def get_vehicle_max_working_hours(
+    model: ShipmentModel, vehicle: Vehicle
+) -> datetime.timedelta:
+  """Computes the total working hours of `vehicle` in `model`.
+
+  As of 2023-10-04, only breaks that happen completely between the earliest
+  start and the latest end of the vehicle working hours are supported.
+
+  Args:
+    model: The model in which the working hours are computed.
+    vehicle: The vehicle for which the working hours are computed.
+
+  Returns:
+    The maximal working hours of the vehicle, obtained by taking using the
+    earliest possible start time, the latest possible end time, and the minimal
+    durations of all breaks.
+
+  Raises:
+    ValueError: When any of the breaks may start before the earliest vehicle
+      start or end after the latest vehicle end time.
+  """
+  start_time = get_vehicle_earliest_start(model, vehicle)
+  end_time = get_vehicle_latest_end(model, vehicle)
+  working_hours = end_time - start_time
+  break_rule = vehicle.get("breakRule")
+  if break_rule is None:
+    return working_hours
+  break_requests = break_rule.get("breakRequests", ())
+  for break_request in break_requests:
+    # TODO(ondrasej): Relax the requirements that the breaks happen entirely
+    # within the working hours of the vehicle.
+    earliest_break_start = parse_time_string(break_request["earliestStartTime"])
+    latest_break_start = parse_time_string(break_request["latestStartTime"])
+    min_duration = parse_duration_string(break_request["minDuration"])
+    if earliest_break_start < start_time:
+      raise ValueError("Unsupported case: break may start before vehicle start")
+    if latest_break_start + min_duration > end_time:
+      raise ValueError("Unsupported case: break ends after vehicle end")
+    working_hours -= min_duration
+  return working_hours
+
+
+def get_vehicle_actual_working_hours(
+    route: ShipmentRoute,
+) -> datetime.timedelta:
+  """Returns the duration of the given route, minus all the breaks."""
+  visits = route.get("visits", ())
+  if not visits:
+    # Unused vehicle.
+    return datetime.timedelta()
+  start_time = parse_time_string(route["vehicleStartTime"])
+  end_time = parse_time_string(route["vehicleEndTime"])
+  working_hours = end_time - start_time
+  for route_break in route.get("breaks", ()):
+    break_start = parse_time_string(route_break["startTime"])
+    break_duration = parse_duration_string(route_break["duration"])
+    break_end = break_start + break_duration
+    if break_end <= start_time or break_start >= end_time:
+      continue
+    working_hours -= break_duration
+  return working_hours
+
+
 def update_time_string(
     time_string: TimeString, delta: datetime.timedelta
 ) -> TimeString:
@@ -361,17 +602,28 @@ def update_time_string(
 def parse_time_string(time_string: TimeString) -> datetime.datetime:
   """Parses the time string and converts it into a datetime."""
   if time_string.endswith("Z") or time_string.endswith("z"):
-    # Drop the 'Z', we do not need it for parsing.
-    time_string = time_string[:-1]
-  return datetime.datetime.fromisoformat(time_string)
+    # datetime.fromisoformat() doesn't understand the Zulu suffix; replace it
+    # with an explicit UTC time zone suffix.
+    time_string = time_string[:-1] + "+00:00"
+  timestamp = datetime.datetime.fromisoformat(time_string)
+  if timestamp.tzinfo is None:
+    # If the timestamp did not have an explicit time zone, assume that it is in
+    # the local time zone, convert it to UTC and add an explicit time zone.
+    timestamp = timestamp.astimezone(datetime.timezone.utc)
+  return timestamp
 
 
 def as_time_string(timestamp: datetime.datetime) -> TimeString:
   """Formats timestampt to a string format used in the CFR JSON API."""
+  if timestamp.tzinfo is None:
+    # If `timestamp` is a naive time, assume that it is in the local time zone,
+    # convert it to UTC, and add explicit time zone information.
+    timestamp = timestamp.astimezone(datetime.timezone.utc)
   date_string = timestamp.isoformat()
-  if "+" not in date_string:
-    # There is no time zone offset. We need to add the "Z" terminator.
-    date_string += "Z"
+  if date_string.endswith("+00:00"):
+    # If the time is in UTC, replace the numeric time zone suffix with the Zulu
+    # suffix.
+    date_string = date_string[:-6] + "Z"
   return date_string
 
 
@@ -391,6 +643,11 @@ def parse_duration_string(duration: DurationString) -> datetime.timedelta:
     raise ValueError(f"Unexpected duration string format: '{duration}'")
   seconds = float(duration[:-1])
   return datetime.timedelta(seconds=seconds)
+
+
+def as_duration_string(delta: datetime.timedelta) -> DurationString:
+  """Converts a timedelta to a duration string."""
+  return f"{delta.total_seconds():g}s"
 
 
 def encode_polyline(polyline: Sequence[LatLng]) -> str:
@@ -809,3 +1066,239 @@ def remove_load_limits(model: ShipmentModel) -> None:
   vehicles = model.get("vehicles", ())
   for vehicle in vehicles:
     vehicle.pop("loadLimits", None)
+
+
+def remove_pickups(model: ShipmentModel) -> None:
+  """Removes pickups from shipments that have both pickups and deliveries.
+
+  Determines the earliest possible pickup time of the shipment and adds or
+  updates delivery time windows so that the shipment can be delivered only after
+  this earliest pickup time.
+
+  When there are pickup visit costs, adds the minimal pickup visit cost to all
+  delivery visit costs to preserve the pickup costs in the relaxed model to some
+  extent.
+
+  The result of the function is a relaxed version of the original model that is
+  not necessarily equivalent to the original model, but is very likely easier to
+  solve.
+
+  Args:
+    model: The input model. The model is modified in place.
+
+  Raises:
+    ValueError: When a shipment is proved to be infeasible by the function.
+  """
+  global_start = get_global_start_time(model)
+
+  for shipment_index, shipment in enumerate(model.get("shipments", ())):
+    pickups = shipment.get("pickups")
+    deliveries = shipment.get("deliveries")
+    if not pickups or not deliveries:
+      continue
+
+    earliest_pickup_time = get_shipment_earliest_pickup(
+        model, shipment, include_duration=True
+    )
+    min_pickup_cost = min(pickup.get("cost", 0) for pickup in pickups)
+
+    del shipment["pickups"]
+
+    if earliest_pickup_time == global_start:
+      continue
+    earliest_pickup_time_string = as_time_string(earliest_pickup_time)
+
+    new_deliveries = []
+    for delivery in deliveries:
+      original_delivery_cost = delivery.get("cost", 0)
+      new_delivery_cost = original_delivery_cost + min_pickup_cost
+      time_windows = delivery.get("timeWindows")
+      if time_windows is None:
+        time_windows = [{}]
+      new_time_windows = []
+      min_soft_end_time_cost_increase = math.inf
+      for time_window in time_windows:
+        end_time = get_time_windows_end(model, (time_window,))
+        if end_time < earliest_pickup_time:
+          # The time window ends before the pickup time. We can just drop it.
+          continue
+        start_time = get_time_windows_start(model, (time_window,))
+        soft_end_time_cost_increase = 0
+        if start_time < earliest_pickup_time:
+          # The earliest pickup time is inside this time window. We need to
+          # adjust the start time.
+          new_time_window = copy.deepcopy(time_window)
+          new_time_window["startTime"] = earliest_pickup_time_string
+          # If the soft start time is before the earliest pickup, we drop the
+          # soft start time and the associated cost. In this case, the delivery
+          # would always happen _after_ the soft start time, and the soft start
+          # time would thus not add any costs to the solution.
+          soft_start_time_string = new_time_window.get("softStartTime")
+          if soft_start_time_string is not None:
+            soft_start_time = parse_time_string(soft_start_time_string)
+            if soft_start_time < earliest_pickup_time:
+              del new_time_window["softStartTime"]
+              new_time_window.pop("costPerHourBeforeSoftStartTime", None)
+          # Adjust the soft end time, if it is before the earliest pickup. We
+          # align the soft end time with the start time. Shifting the soft end
+          # time would in practice decrease the cost of ending late. To
+          # compensate for this potential decrease, we take the smallest such
+          # decrease over all possible time windows of the delivery, and add it
+          # to the fixed cost of the delivery visit.
+          # By taking the minimum, we do not add a cost in case the solver has
+          # an option to pick a time window that does not incur a cost, but we
+          # still preserve the cost in case there is only one time window.
+          # TODO(ondrasej): An alternative solution would replace the single
+          # delivery request that has multiple time windows with multiple visit
+          # requests that have a single time window, and a correctly adjusted
+          # fixed cost. But as of 2023-10-05, requests that use multiple time
+          # windows with soft bounds are rejected, so the current solution is
+          # precise for all valid inputs.
+          soft_end_time_string = new_time_window.get("softEndTime")
+          if soft_end_time_string is not None:
+            soft_end_time = parse_time_string(soft_end_time_string)
+            if soft_end_time < earliest_pickup_time:
+              new_time_window["softEndTime"] = earliest_pickup_time_string
+              soft_end_cost_per_hour = float(
+                  new_time_window.get("costPerHourAfterSoftEndTime", 0)
+              )
+              soft_end_time_cost_increase = (
+                  soft_end_cost_per_hour
+                  * (earliest_pickup_time - soft_end_time).total_seconds()
+                  / 3600
+              )
+          new_time_windows.append(new_time_window)
+        else:
+          # Otherwise leave the time window unchanged.
+          new_time_windows.append(time_window)
+        min_soft_end_time_cost_increase = min(
+            min_soft_end_time_cost_increase, soft_end_time_cost_increase
+        )
+
+      if not new_time_windows:
+        # No time windows are left, meaning that this delivery request is
+        # infeasible.
+        continue
+      new_delivery_cost += min_soft_end_time_cost_increase
+      if new_delivery_cost != original_delivery_cost:
+        delivery["cost"] = new_delivery_cost
+      delivery["timeWindows"] = new_time_windows
+      new_deliveries.append(delivery)
+    if not new_deliveries:
+      raise ValueError(f"Shipment {shipment_index} is infeasible.")
+    shipment["deliveries"] = new_deliveries
+
+
+_SPLIT_BY_COMMA = re.compile(r"\s*,\s*")
+
+
+def split_shipment(
+    shipment: Shipment, num_items_load_type: str, max_items: int
+) -> Iterable[Shipment]:
+  """Splits `shipment` into multiple smaller shipments if needed.
+
+  Assumes that `shipment` is a CFR shipment that contains multiple items that
+  need to be delivered, and that
+  - the label contains a comma-separated list of items in the shipment,
+  - the number of shipments is recorded in `loadDemands` of the shipment under
+    the name `num_items_key`,
+  - all other load demands specify different types of items in the shipment, and
+    their sum is smaller or equal to the number of items in the shipment.
+
+  When the number of items in the shipment is greater than `max_items`, returns
+  multiple shipments that each contain at most `max_items` items. The item
+  labels from the original shipment label are distributed across these shipments
+  and so are the item type load demands. The function has no way of knowing
+  which item type corresponds to which item label, so it assigns them
+  arbitrarily and it's thus recommended only for experimental use.
+
+  Note that the function modifies `shipment` in place and yields only newly
+  created shipments. This way, the original shipment object can be kept in the
+  list of shipments at its original spot (so that its shipment index is
+  preserved), while the new shipments can be added at the end of the list with
+  new shipment indices (i.e. they do not disturb shipment indices of other
+  shipments).
+
+  Also note that the function may change objects that it already yielded until
+  it stops iteration.
+
+  Args:
+    shipment: The shipment to (maybe) split. The shipment is modified in place.
+    num_items_load_type: The name of the key in `loadDemands` of the shipment
+      that contains the number of items in the shipment.
+    max_items: The maximal number of items per shipment.
+
+  Yields:
+    New shipments created while splitting the original shipment.
+
+  Raises:
+    ValueError: When the assumptions outlined above do not hold.
+  """
+  num_items = get_shipment_load_demand(shipment, num_items_load_type)
+  items = _SPLIT_BY_COMMA.split(shipment.get("label", ""))
+  if num_items != len(items):
+    raise ValueError(
+        f"The number of items in the shipment label ({len(items)}) is"
+        " inconsistent with the number of items in load demands"
+        f" ({num_items})."
+    )
+
+  load_demands = shipment.get("loadDemands")
+  if load_demands is None:
+    load_demands = {}
+
+  num_typed_items = sum(
+      int(load.get("amount", 0))
+      for load_type, load in load_demands.items()
+      if load_type != num_items_load_type
+  )
+  if num_typed_items > num_items:
+    raise ValueError(
+        "The sum of load demands other than {num_items_key!r}"
+        " ({num_typed_items}) is greater than the number of items ({num_items})"
+    )
+
+  if num_items <= max_items:
+    return ()
+
+  while num_items > max_items:
+    # We will split the items in `shipment` into `max_items` items that will
+    # remain in `shipment` and we move the rest into `shipment_rest` to be
+    # processed in the next iteration.
+    shipment_rest = copy.deepcopy(shipment)
+
+    shipment["label"] = ", ".join(items[:max_items])
+    del items[:max_items]
+
+    shipment_demands = {num_items_load_type: {"amount": str(max_items)}}
+    shipment["loadDemands"] = shipment_demands
+
+    num_items -= max_items
+    if num_items <= max_items:
+      # If the next shipment will be the last, we need to set the label also for
+      # `shipment_rest`.
+      shipment_rest["label"] = ", ".join(items)
+
+    shipment_rest_demands = shipment_rest["loadDemands"]
+    shipment_rest_demands[num_items_load_type]["amount"] = str(num_items)
+
+    remaining_items_to_drop = max_items
+    for load_type, rest_demand in list(shipment_rest_demands.items()):
+      if load_type == num_items_load_type:
+        continue
+      original_amount = int(rest_demand.get("amount", 0))
+      removed_amount = min(remaining_items_to_drop, original_amount)
+      shipment_demands[load_type] = {"amount": str(removed_amount)}
+      rest_amount = original_amount - removed_amount
+      if rest_amount > 0:
+        rest_demand["amount"] = str(rest_amount)
+      else:
+        # Remove load demands that dropped to zero.
+        del shipment_rest_demands[load_type]
+
+      remaining_items_to_drop -= removed_amount
+      if remaining_items_to_drop == 0:
+        break
+
+    yield shipment_rest
+    shipment = shipment_rest
