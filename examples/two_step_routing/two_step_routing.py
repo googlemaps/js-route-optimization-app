@@ -1428,6 +1428,7 @@ def _get_local_model_route_start_time_windows(
   global_end_time = cfr_json.get_global_end_time(model)
 
   route_start_time = cfr_json.parse_time_string(route["vehicleStartTime"])
+  shipments = cfr_json.get_shipments(model)
 
   # The start time window for the route is computed as the intersection of
   # "route start time windows" of all visits in the route. A "route start time
@@ -1441,8 +1442,20 @@ def _get_local_model_route_start_time_windows(
   overall_route_start_time_intervals = ((global_start_time, global_end_time),)
 
   for visit in visits:
-    visit_request = cfr_json.get_visit_request(model, visit)
-    time_windows = visit_request.get("timeWindows")
+    # NOTE(ondrasej): We can't use `visit["shipmentIndex"]` to get the shipment;
+    # `visit` is from the local model, while `model` is the global model. To
+    # get the expected results, we need to use the shipment label from the visit
+    # to get the shipment index in the base model.
+    shipment_label = visit.get("shipmentLabel")
+    shipment_index = _get_shipment_index_from_local_label(shipment_label)
+    shipment = shipments[shipment_index]
+    deliveries = shipment.get("deliveries", ())
+    if len(deliveries) != 1:
+      raise ValueError(
+          "Only shipments with one delivery request are supported."
+      )
+
+    time_windows = deliveries[0].get("timeWindows")
     if not time_windows:
       # This shipment can be delivered at any time. No refinement of the route
       # delivery time interval is needed.

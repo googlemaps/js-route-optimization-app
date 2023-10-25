@@ -3286,6 +3286,135 @@ class PlannerTestRefinedLocalModel(PlannerTest):
     )
 
 
+class GetLocalModelRouteStartTimeWindowsTest(unittest.TestCase):
+  """Tests for _get_local_model_route_start_time_windows."""
+
+  maxDiff = None
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "globalStartTime": "2023-10-25T00:00:00Z",
+      "globalEndTime": "2023-10-25T23:59:59Z",
+      "shipments": [
+          {
+              "deliveries": [
+                  {
+                      "timeWindows": [{
+                          "startTime": "2023-10-25T09:00:00Z",
+                          "endTime": "2023-10-25T12:00:00Z",
+                      }]
+                  }
+              ],
+              "label": "S001",
+          },
+          {
+              "deliveries": [
+                  {
+                      "timeWindows": [{
+                          "startTime": "2023-10-25T09:00:00Z",
+                          "endTime": "2023-10-25T12:00:00Z",
+                      }]
+                  }
+              ],
+              "label": "S002",
+          },
+          {
+              "deliveries": [
+                  {
+                      "timeWindows": [{
+                          "startTime": "2023-10-25T14:00:00Z",
+                          "endTime": "2023-10-25T16:00:00Z",
+                      }]
+                  }
+              ],
+              "label": "S003",
+          },
+          {
+              "deliveries": [
+                  {
+                      "timeWindows": [{
+                          "startTime": "2023-10-25T12:00:00Z",
+                          "endTime": "2023-10-25T15:00:00Z",
+                      }]
+                  }
+              ],
+              "label": "S004",
+          },
+          {
+              "deliveries": [{}],
+              "label": "S005",
+          },
+          {
+              "deliveries": [{}],
+              "label": "S006",
+          },
+      ],
+  }
+
+  def test_empty_route(self):
+    self.assertIsNone(
+        two_step_routing._get_local_model_route_start_time_windows({}, {})
+    )
+
+  def test_with_invalid_route(self):
+    local_route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-25T11:00:00Z",
+        "vehicleLabel": "P001 []",
+        "visits": [
+            {
+                "startTime": "2023-10-25T11:10:00Z",
+                "shipmentIndex": 3,
+                "shipmentLabel": "0: S001",
+            },
+            {
+                "startTime": "2023-10-25T11:20:00Z",
+                "shipmentIndex": 1,
+                "shipmentLabel": "2: S004",
+            },
+        ],
+    }
+    with self.assertRaisesRegex(ValueError, "incompatible time windows"):
+      two_step_routing._get_local_model_route_start_time_windows(
+          self._MODEL, local_route
+      )
+
+  def test_with_some_shipments(self):
+    local_route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-25T11:00:00Z",
+        "vehicleLabel": "P001 []",
+        "visits": [
+            {
+                "startTime": "2023-10-25T11:10:00Z",
+                "shipmentIndex": 3,
+                "shipmentLabel": "0: S001",
+            },
+            {
+                "startTime": "2023-10-25T11:20:00Z",
+                "shipmentIndex": 1,
+                "shipmentLabel": "4: S005",
+            },
+            {
+                "startTime": "2023-10-25T11:45:00Z",
+                "shipmentIndex": 2,
+                "shipmentLabel": "1: S002",
+            },
+            {
+                "startTime": "2023-10-25T12:50:00Z",
+                "shipmentIndex": 0,
+                "shipmentLabel": "3: S004",
+            },
+        ],
+    }
+    self.assertSequenceEqual(
+        two_step_routing._get_local_model_route_start_time_windows(
+            self._MODEL, local_route
+        ),
+        [{
+            "startTime": "2023-10-25T10:10:00Z",
+            "endTime": "2023-10-25T11:15:00Z",
+        }],
+    )
+
+
 class GetConsecutiveParkingLocationVisits(unittest.TestCase):
   """Tests for _get_consecutive_parking_location_visits."""
 
