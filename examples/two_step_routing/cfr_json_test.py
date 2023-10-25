@@ -5,6 +5,7 @@
 
 import copy
 import datetime
+from typing import Sequence
 import unittest
 
 from . import cfr_json
@@ -394,6 +395,138 @@ class CombinedLoadDemandsTest(unittest.TestCase):
             "wood": {"amount": "6"},
             "ore": {"amount": "2"},
         },
+    )
+
+
+class GetShipmentsTest(unittest.TestCase):
+  """Tests for get_shipments."""
+
+  def test_no_shipments(self):
+    self.assertSequenceEqual(cfr_json.get_shipments({}), ())
+
+  def test_empty_shipments(self):
+    self.assertSequenceEqual(cfr_json.get_shipments({"shipments": []}), ())
+
+  def test_some_shipments(self):
+    shipments = ({"label": "S001"}, {"label": "S002"}, {"label": "S003"})
+    model: cfr_json.ShipmentModel = {
+        "shipments": list(shipments),
+    }
+    self.assertSequenceEqual(cfr_json.get_shipments(model), shipments)
+
+
+class GetRoutesTest(unittest.TestCase):
+  """Tests for get_routes."""
+
+  def test_no_routes(self):
+    self.assertSequenceEqual(cfr_json.get_routes({}), ())
+
+  def test_empty_routes(self):
+    self.assertSequenceEqual(cfr_json.get_routes({"routes": []}), ())
+
+  def test_some_routes(self):
+    routes = ({"vehicleIndex": 0}, {"vehicleIndex": 1})
+    self.assertSequenceEqual(
+        cfr_json.get_routes({
+            "routes": list(routes),
+        }),
+        routes,
+    )
+
+
+class GetVisitsTest(unittest.TestCase):
+  """Tests for get_visits."""
+
+  def test_no_route(self):
+    self.assertSequenceEqual(cfr_json.get_visits({}), ())
+
+  def test_empty_visits(self):
+    self.assertSequenceEqual(cfr_json.get_visits({"visits": []}), ())
+
+  def test_some_visits(self):
+    visits = ({"shipmentIndex": 0}, {"shipmentIndex": 1})
+    self.assertSequenceEqual(
+        cfr_json.get_visits({"visits": list(visits)}), visits
+    )
+
+
+class GetTransitionsTest(unittest.TestCase):
+  """Tests for get_transitions."""
+
+  def test_no_route(self):
+    self.assertSequenceEqual(cfr_json.get_transitions({}), ())
+
+  def test_empty_transitions(self):
+    self.assertSequenceEqual(cfr_json.get_transitions({"transitions": []}), ())
+
+  def test_some_transitions(self):
+    transitions = (
+        {"startTime": "2023-10-20T12:00:00Z"},
+        {"startTime": "2023-10-20T14:00:01Z"},
+    )
+    self.assertSequenceEqual(
+        cfr_json.get_transitions({"transitions": list(transitions)}),
+        transitions,
+    )
+
+
+class GetVisitRequestTest(unittest.TestCase):
+  """Tests for get_visit_request."""
+
+  def test_default_everything(self):
+    visit_request: cfr_json.VisitRequest = {}
+    model: cfr_json.ShipmentModel = {
+        "shipments": [{"deliveries": [visit_request]}]
+    }
+    visit: cfr_json.Visit = {}
+    self.assertIs(cfr_json.get_visit_request(model, visit), visit_request)
+
+  def test_multiple_pickups(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [{"pickups": [{"duration": "30s"}, {"duration": "123s"}]}]
+    }
+    visit: cfr_json.Visit = {
+        "shipmentIndex": 0,
+        "isPickup": True,
+        "visitRequestIndex": 1,
+    }
+    self.assertEqual(
+        cfr_json.get_visit_request(model, visit),
+        {"duration": "123s"},
+    )
+
+  def test_multiple_deliveries(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {"label": "S001"},
+            {
+                "label": "S002",
+                "deliveries": [{"duration": "10s"}, {"duration": "30s"}],
+            },
+        ]
+    }
+    visit: cfr_json.Visit = {
+        "shipmentIndex": 1,
+        "isPickup": False,
+    }
+    self.assertEqual(
+        cfr_json.get_visit_request(model, visit),
+        {"duration": "10s"},
+    )
+
+
+class GetVisitRequestDurationTest(unittest.TestCase):
+  """Tests for get_visit_request_duration."""
+
+  def test_no_duration(self):
+    self.assertEqual(
+        cfr_json.get_visit_request_duration({}), datetime.timedelta(0)
+    )
+
+  def test_some_duration(self):
+    self.assertEqual(
+        cfr_json.get_visit_request_duration({"duration": "123s"}),
+        datetime.timedelta(seconds=123),
     )
 
 
@@ -899,6 +1032,182 @@ class GetVehicleActualWorkingHoursTest(unittest.TestCase):
     )
 
 
+class GetNumDecreasingVisitTimesTest(unittest.TestCase):
+  """Tests for get_num_decreasing_visit_times."""
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {"deliveries": [{"duration": "120s"}]},
+          {
+              "deliveries": [{"duration": "600s"}, {"duration": "30s"}],
+              "pickups": [{"duration": "150s"}, {}],
+          },
+          {"pickups": [{"duration": "30s"}]},
+      ]
+  }
+
+  def test_empty_route(self):
+    self.assertEqual(cfr_json.get_num_decreasing_visit_times({}, {}, False), 0)
+    self.assertEqual(cfr_json.get_num_decreasing_visit_times({}, {}, True), 0)
+
+  def test_only_start_and_end_non_decreasing(self):
+    # NOTE(ondrasej): The case when the end time is before the start time can't
+    # happen in a valid CFR response.
+    route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-10T11:00:00Z",
+        "vehicleEndTime": "2023-10-10T12:00:00Z",
+    }
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, False),
+        0,
+    )
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, True),
+        0,
+    )
+
+  def test_non_decreasing_visit_times(self):
+    route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-10T11:00:00Z",
+        "vehicleEndTime": "2023-10-10T12:00:00Z",
+        "visits": [
+            {"shipmentIndex": 0, "startTime": "2023-10-10T11:02:00Z"},
+            {
+                "shipmentIndex": 2,
+                "isPickup": True,
+                "startTime": "2023-10-10T11:04:00Z",
+            },
+            {
+                "shipmentIndex": 1,
+                "isPickup": True,
+                "visitRequestIndex": 1,
+                "startTime": "2023-10-10T11:06:00Z",
+            },
+            {
+                "shipmentIndex": 1,
+                "isPickup": False,
+                "visitRequestIndex": 1,
+                "startTime": "2023-10-10T11:07:00Z",
+            },
+        ],
+    }
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, True), 0
+    )
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, False), 0
+    )
+
+  def test_decreasing_relative_to_vehicle_start(self):
+    route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-10T11:00:00Z",
+        "vehicleEndTime": "2023-10-10T12:00:00Z",
+        "visits": [
+            {"shipmentIndex": 0, "startTime": "2023-10-10T10:59:00Z"},
+        ],
+    }
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, True), 1
+    )
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, False), 1
+    )
+
+  def test_decreasing_relative_to_vehicle_end(self):
+    route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-10T11:00:00Z",
+        "vehicleEndTime": "2023-10-10T12:00:00Z",
+        "visits": [
+            {"shipmentIndex": 0, "startTime": "2023-10-10T12:15:00Z"},
+        ],
+    }
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, True), 1
+    )
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, False), 1
+    )
+
+  def test_decreasing_relative_to_vehicle_end_only_with_duration(self):
+    route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-10T11:00:00Z",
+        "vehicleEndTime": "2023-10-10T12:00:00Z",
+        "visits": [
+            {"shipmentIndex": 0, "startTime": "2023-10-10T11:59:00Z"},
+        ],
+    }
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, True), 1
+    )
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, False), 0
+    )
+
+  def test_decreasing_only_with_duration(self):
+    route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-10T11:00:00Z",
+        "vehicleEndTime": "2023-10-10T12:00:00Z",
+        "visits": [
+            {"shipmentIndex": 0, "startTime": "2023-10-10T11:02:00Z"},
+            {
+                "shipmentIndex": 2,
+                "isPickup": True,
+                "startTime": "2023-10-10T11:04:00Z",
+            },
+            {
+                "shipmentIndex": 1,
+                "isPickup": True,
+                "visitRequestIndex": 0,
+                "startTime": "2023-10-10T11:06:00Z",
+            },
+            {
+                "shipmentIndex": 1,
+                "isPickup": False,
+                "visitRequestIndex": 1,
+                "startTime": "2023-10-10T11:07:00Z",
+            },
+        ],
+    }
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, True), 1
+    )
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, False), 0
+    )
+
+  def test_decreasing_multiple_times(self):
+    route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-10T11:00:00Z",
+        "vehicleEndTime": "2023-10-10T12:00:00Z",
+        "visits": [
+            {"shipmentIndex": 0, "startTime": "2023-10-10T10:59:59Z"},
+            {
+                "shipmentIndex": 2,
+                "isPickup": True,
+                "startTime": "2023-10-10T11:00:10Z",
+            },
+            {
+                "shipmentIndex": 1,
+                "isPickup": True,
+                "visitRequestIndex": 0,
+                "startTime": "2023-10-10T11:00:00Z",
+            },
+            {
+                "shipmentIndex": 1,
+                "isPickup": False,
+                "visitRequestIndex": 1,
+                "startTime": "2023-10-10T11:07:00Z",
+            },
+        ],
+    }
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, True), 3
+    )
+    self.assertEqual(
+        cfr_json.get_num_decreasing_visit_times(self._MODEL, route, False), 2
+    )
+
+
 class ParseTimeStringTest(unittest.TestCase):
   """Tests for parse_time_string."""
 
@@ -971,6 +1280,236 @@ class AsTimeStringTest(unittest.TestCase):
     )
 
 
+class UpdateRouteStartEndTimeFromTransitionsTest(unittest.TestCase):
+  """Tests for update_route_start_end_time_from_transitions."""
+
+  maxDiff = None
+
+  def test_empty_route(self):
+    with self.assertRaisesRegex(ValueError, "The route is empty"):
+      cfr_json.update_route_start_end_time_from_transitions({}, None)
+    with self.assertRaisesRegex(ValueError, "The route is empty"):
+      cfr_json.update_route_start_end_time_from_transitions({}, "30s")
+
+  def test_no_removed_delay(self):
+    input_route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {"startTime": "2023-10-17T13:00:00Z", "totalDuration": "120s"},
+            {"startTime": "2023-10-17T13:02:00Z", "totalDuration": "30s"},
+            {"startTime": "2023-10-17T13:02:30Z", "totalDuration": "180s"},
+        ]
+    }
+    route = copy.deepcopy(input_route)
+    cfr_json.update_route_start_end_time_from_transitions(route, None)
+    self.assertEqual(
+        route,
+        {
+            "transitions": [
+                {"startTime": "2023-10-17T13:00:00Z", "totalDuration": "120s"},
+                {"startTime": "2023-10-17T13:02:00Z", "totalDuration": "30s"},
+                {"startTime": "2023-10-17T13:02:30Z", "totalDuration": "180s"},
+            ],
+            "vehicleStartTime": "2023-10-17T13:00:00Z",
+            "vehicleEndTime": "2023-10-17T13:05:30Z",
+        },
+    )
+
+  def test_with_removed_delay(self):
+    input_route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {"startTime": "2023-10-17T13:00:00Z", "totalDuration": "120s"},
+            {"startTime": "2023-10-17T13:02:00Z", "totalDuration": "30s"},
+            {
+                "startTime": "2023-10-17T13:02:30Z",
+                "totalDuration": "180s",
+                "delayDuration": "60s",
+            },
+        ]
+    }
+    route = copy.deepcopy(input_route)
+    cfr_json.update_route_start_end_time_from_transitions(route, "30s")
+    self.assertEqual(
+        route,
+        {
+            "transitions": [
+                {"startTime": "2023-10-17T13:00:00Z", "totalDuration": "120s"},
+                {"startTime": "2023-10-17T13:02:00Z", "totalDuration": "30s"},
+                {
+                    "startTime": "2023-10-17T13:02:30Z",
+                    "totalDuration": "150s",
+                    "delayDuration": "30s",
+                },
+            ],
+            "vehicleStartTime": "2023-10-17T13:00:00Z",
+            "vehicleEndTime": "2023-10-17T13:05:00Z",
+        },
+    )
+
+  def test_not_enough_delay_to_remove(self):
+    route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {"startTime": "2023-10-17T13:00:00Z", "totalDuration": "120s"},
+            {"startTime": "2023-10-17T13:02:00Z", "totalDuration": "30s"},
+            {"startTime": "2023-10-17T13:02:30Z", "totalDuration": "180s"},
+        ]
+    }
+    with self.assertRaisesRegex(
+        ValueError, "delay duration of the last transition"
+    ):
+      cfr_json.update_route_start_end_time_from_transitions(route, "30s")
+
+
+class RecomputeRouteMetricsTest(unittest.TestCase):
+  """Tests for recompute_route_metrics."""
+
+  maxDiff = None
+
+  _MODEL = {
+      "shipments": [
+          {
+              "deliveries": [{"duration": "15s"}],
+              "label": "S001",
+          },
+          {
+              "deliveries": [
+                  {"duration": "45s"},
+                  {"duration": "5s"},
+              ],
+              "penaltyCost": 100,
+              "label": "S002",
+          },
+          {
+              "pickups": [{"duration": "300s"}],
+              "deliveries": [{"duration": "120s"}],
+              "label": "S003",
+          },
+          {
+              "pickups": [{}],
+              "label": "S004",
+          },
+      ],
+      "vehicles": [{
+          "label": "V001",
+      }],
+      "globalStartTime": "2023-10-19T22:00:00.000Z",
+      "globalEndTime": "2023-10-20T22:00:00.000Z",
+  }
+  _ROUTE: cfr_json.ShipmentRoute = {
+      "vehicleIndex": 0,
+      "vehicleLabel": "V001",
+      "vehicleStartTime": "2023-10-19T22:00:00.000Z",
+      "vehicleEndTime": "2023-10-19T22:21:23.000Z",
+      "visits": [
+          {
+              "shipmentIndex": 1,
+              "isPickup": False,
+              "visitRequestIndex": 1,
+              "startTime": "2023-10-19T22:01:58.000Z",
+              "detour": "0s",
+              "shipmentLabel": "S002",
+          },
+          {
+              "shipmentIndex": 0,
+              "isPickup": False,
+              "visitRequestIndex": 0,
+              "startTime": "2023-10-19T22:02:19.000Z",
+              "detour": "6s",
+              "shipmentLabel": "S001",
+          },
+          {
+              "shipmentIndex": 2,
+              "isPickup": True,
+              "visitRequestIndex": 0,
+              "startTime": "2023-10-19T22:05:02.000Z",
+              "detour": "21s",
+              "shipmentLabel": "S003",
+          },
+          {
+              "shipmentIndex": 3,
+              "isPickup": True,
+              "visitRequestIndex": 0,
+              "startTime": "2023-10-19T22:12:37.000Z",
+              "detour": "512s",
+              "shipmentLabel": "S004",
+          },
+          {
+              "shipmentIndex": 2,
+              "isPickup": False,
+              "visitRequestIndex": 0,
+              "startTime": "2023-10-19T22:17:47.000Z",
+              "detour": "0s",
+              "shipmentLabel": "S003",
+          },
+      ],
+      "transitions": [
+          {
+              "travelDuration": "118s",
+              "travelDistanceMeters": 360,
+              "waitDuration": "0s",
+              "totalDuration": "118s",
+              "startTime": "2023-10-19T22:00:00.000Z",
+          },
+          {
+              "travelDuration": "16s",
+              "travelDistanceMeters": 51,
+              "waitDuration": "0s",
+              "totalDuration": "16s",
+              "startTime": "2023-10-19T22:02:03.000Z",
+          },
+          {
+              "travelDuration": "148s",
+              "travelDistanceMeters": 557,
+              "waitDuration": "0s",
+              "totalDuration": "148s",
+              "startTime": "2023-10-19T22:02:34.000Z",
+          },
+          {
+              "travelDuration": "155s",
+              "travelDistanceMeters": 635,
+              "waitDuration": "0s",
+              "totalDuration": "155s",
+              "startTime": "2023-10-19T22:10:02.000Z",
+          },
+          {
+              "travelDuration": "310s",
+              "travelDistanceMeters": 1079,
+              "waitDuration": "0s",
+              "totalDuration": "310s",
+              "startTime": "2023-10-19T22:12:37.000Z",
+          },
+          {
+              "travelDuration": "96s",
+              "travelDistanceMeters": 353,
+              "waitDuration": "0s",
+              "totalDuration": "96s",
+              "startTime": "2023-10-19T22:19:47.000Z",
+          },
+      ],
+      "routeTotalCost": 24.418333333333333,
+  }
+  _EXPECTED_METRICS: cfr_json.AggregatedMetrics = {
+      "performedShipmentCount": 4,
+      "travelDuration": "843s",
+      "waitDuration": "0s",
+      "delayDuration": "0s",
+      "breakDuration": "0s",
+      "visitDuration": "440s",
+      "totalDuration": "1283s",
+      "travelDistanceMeters": 3035,
+      "performedMandatoryShipmentCount": 3,
+  }
+
+  def test_empty_route(self):
+    route = {}
+    cfr_json.recompute_route_metrics(self._MODEL, route)
+    self.assertEqual(route, {})
+
+  def test_non_empty_route(self):
+    route = copy.deepcopy(self._ROUTE)
+    cfr_json.recompute_route_metrics(self._MODEL, route)
+    self.assertEqual(route["metrics"], self._EXPECTED_METRICS)
+
+
 class UpdateTimeStringTest(unittest.TestCase):
   """Tests of update_time_string."""
 
@@ -1007,6 +1546,9 @@ class ParseDurationStringTest(unittest.TestCase):
       cfr_json.parse_duration_string("ABCs")
 
   def test_valid_parse(self):
+    self.assertEqual(
+        cfr_json.parse_duration_string(None), datetime.timedelta(seconds=0)
+    )
     self.assertEqual(
         cfr_json.parse_duration_string("0s"),
         datetime.timedelta(seconds=0),
@@ -1101,6 +1643,101 @@ class DecodePolylineTest(unittest.TestCase):
       cfr_json.decode_polyline("_p~iF~ps")
 
 
+class MergePolylinesFromTransitionsTest(unittest.TestCase):
+  """Tests for merge_polylines_from_transitions."""
+
+  maxDiff = None
+
+  def test_no_transitions(self):
+    self.assertIsNone(cfr_json.merge_polylines_from_transitions(()))
+
+  def test_no_polylines(self):
+    transitions: Sequence[cfr_json.Transition] = (
+        {"travelDistanceMeters": 120},
+        {"travelDistanceMeters": 50},
+        {"travelDistanceMeters": 0},
+        {"travelDistanceMeters": 32},
+    )
+    self.assertIsNone(cfr_json.merge_polylines_from_transitions(transitions))
+
+  def test_with_some_polylines(self):
+    points = (
+        {"latitude": 38.5, "longitude": -120.2},
+        {"latitude": 40.7, "longitude": -120.95},
+        {"latitude": 40.7, "longitude": -122.31},
+        {"latitude": 40.4, "longitude": -122.31},
+        {"latitude": 43.252, "longitude": -126.453},
+    )
+    transitions: Sequence[cfr_json.Transition] = (
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[0:2])}},
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[2:3])}},
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[3:])}},
+    )
+    self.assertEqual(
+        cfr_json.merge_polylines_from_transitions(transitions),
+        {"points": cfr_json.encode_polyline(points)},
+    )
+
+  def test_with_some_polylines_and_zero_travel(self):
+    points = (
+        {"latitude": 38.5, "longitude": -120.2},
+        {"latitude": 40.7, "longitude": -120.95},
+        {"latitude": 40.7, "longitude": -122.31},
+        {"latitude": 40.4, "longitude": -122.31},
+        {"latitude": 43.252, "longitude": -126.453},
+    )
+    transitions: Sequence[cfr_json.Transition] = (
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[0:2])}},
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[2:3])}},
+        {"routePolyline": {}},
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[3:])}},
+    )
+    self.assertEqual(
+        cfr_json.merge_polylines_from_transitions(transitions),
+        {"points": cfr_json.encode_polyline(points)},
+    )
+
+  def test_with_some_polylines_but_not_all(self):
+    points = (
+        {"latitude": 38.5, "longitude": -120.2},
+        {"latitude": 40.7, "longitude": -120.95},
+        {"latitude": 40.7, "longitude": -122.31},
+        {"latitude": 40.4, "longitude": -122.31},
+        {"latitude": 43.252, "longitude": -126.453},
+    )
+    transitions: Sequence[cfr_json.Transition] = (
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[0:2])}},
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[2:3])}},
+        {"travelDistanceMeters": 123},
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[3:])}},
+    )
+    with self.assertRaisesRegex(
+        ValueError, "Either all transitions with non-zero traveled distance"
+    ):
+      cfr_json.merge_polylines_from_transitions(transitions)
+
+  def test_with_some_polylines_and_duplicate_points(self):
+    points = (
+        {"latitude": 38.5, "longitude": -120.2},
+        {"latitude": 40.7, "longitude": -120.95},
+        {"latitude": 40.7, "longitude": -122.31},
+        {"latitude": 40.4, "longitude": -122.31},
+        {"latitude": 43.252, "longitude": -126.453},
+    )
+    transitions: Sequence[cfr_json.Transition] = (
+        # NOTE(ondrasej): In the code below, the index ranges overlap and the
+        # end of each transition polyline is the start of the following
+        # transition polyline.
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[0:3])}},
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[2:3])}},
+        {"routePolyline": {"points": cfr_json.encode_polyline(points[2:])}},
+    )
+    self.assertEqual(
+        cfr_json.merge_polylines_from_transitions(transitions),
+        {"points": cfr_json.encode_polyline(points)},
+    )
+
+
 class MakeAllShipmentsOptional(unittest.TestCase):
   """Tests for make_all_shipments_optional."""
 
@@ -1170,6 +1807,76 @@ class MakeAllShipmentsOptional(unittest.TestCase):
                 {"label": "S0002", "penaltyCost": 12345},
                 {"label": "S0003,S0004,S0005", "penaltyCost": 1000},
             ]
+        },
+    )
+
+
+class RelaxAllowedVehicleIndicesTest(unittest.TestCase):
+  """Tests for relax_allowed_vehicle_indices."""
+
+  maxDiff = None
+
+  def test_negative_cost(self):
+    with self.assertRaises(ValueError):
+      cfr_json.relax_allowed_vehicle_indices({}, -1)
+
+  def test_no_allowed_vehicle_indices(self):
+    shipment: cfr_json.Shipment = {"label": "S002"}
+    cfr_json.relax_allowed_vehicle_indices(shipment, 100)
+    self.assertEqual(shipment, {"label": "S002"})
+
+  def test_zero_cost(self):
+    shipment: cfr_json.Shipment = {
+        "label": "S001",
+        "allowedVehicleIndices": [0, 1, 2, 3],
+    }
+    cfr_json.relax_allowed_vehicle_indices(shipment, 0)
+    self.assertEqual(shipment, {"label": "S001"})
+
+  def test_with_cost_and_no_existing_costs(self):
+    shipment: cfr_json.Shipment = {
+        "label": "S003",
+        "allowedVehicleIndices": [2, 3, 10],
+    }
+    cfr_json.relax_allowed_vehicle_indices(shipment, 10)
+    self.assertEqual(
+        shipment,
+        {
+            "label": "S003",
+            "costsPerVehicle": [10, 10, 10],
+            "costsPerVehicleIndices": [2, 3, 10],
+        },
+    )
+
+  def test_with_cost_and_existing_costs_with_indices(self):
+    shipment: cfr_json.Shipment = {
+        "label": "S003",
+        "allowedVehicleIndices": [2, 3, 5],
+        "costsPerVehicle": [100, 300, 400],
+        "costsPerVehicleIndices": [1, 3, 4],
+    }
+    cfr_json.relax_allowed_vehicle_indices(shipment, 10)
+    self.assertEqual(
+        shipment,
+        {
+            "label": "S003",
+            "costsPerVehicle": [100, 310, 400, 10, 10],
+            "costsPerVehicleIndices": [1, 3, 4, 2, 5],
+        },
+    )
+
+  def test_with_cost_and_existing_costs_without_indices(self):
+    shipment: cfr_json.Shipment = {
+        "label": "S003",
+        "allowedVehicleIndices": [2, 3],
+        "costsPerVehicle": [100, 200, 300, 400, 500],
+    }
+    cfr_json.relax_allowed_vehicle_indices(shipment, 10)
+    self.assertEqual(
+        shipment,
+        {
+            "label": "S003",
+            "costsPerVehicle": [100, 200, 310, 410, 500],
         },
     )
 

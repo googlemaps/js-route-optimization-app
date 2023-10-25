@@ -1847,6 +1847,17 @@ class PlannerTest(unittest.TestCase):
                       "startTime": "2023-08-11T15:57:18Z",
                   },
               ],
+              "metrics": {
+                  "breakDuration": "0s",
+                  "delayDuration": "0s",
+                  "performedMandatoryShipmentCount": 14,
+                  "performedShipmentCount": 14,
+                  "totalDuration": "28800s",
+                  "travelDistanceMeters": 0,
+                  "travelDuration": "0s",
+                  "visitDuration": "690s",
+                  "waitDuration": "0s",
+              },
           },
           {
               "routeTotalCost": 721.965,
@@ -1919,6 +1930,17 @@ class PlannerTest(unittest.TestCase):
                       "startTime": "2023-08-11T19:57:18Z",
                   },
               ],
+              "metrics": {
+                  "breakDuration": "0s",
+                  "delayDuration": "0s",
+                  "performedMandatoryShipmentCount": 7,
+                  "performedShipmentCount": 7,
+                  "totalDuration": "43200s",
+                  "travelDistanceMeters": 0,
+                  "travelDuration": "0s",
+                  "visitDuration": "450s",
+                  "waitDuration": "0s",
+              },
           },
       ]
   }
@@ -2874,6 +2896,17 @@ class PlannerTestMergedModel(PlannerTest):
                       "startTime": "2023-08-11T15:57:21Z",
                   },
               ],
+              "metrics": {
+                  "breakDuration": "0s",
+                  "delayDuration": "0s",
+                  "performedMandatoryShipmentCount": 15,
+                  "performedShipmentCount": 15,
+                  "totalDuration": "28800s",
+                  "travelDistanceMeters": 0,
+                  "travelDuration": "0s",
+                  "visitDuration": "840s",
+                  "waitDuration": "0s",
+              },
           },
           {"vehicleIndex": 1, "vehicleLabel": "V002"},
       ],
@@ -2893,6 +2926,12 @@ class PlannerTestMergedModel(PlannerTest):
     merged_request, merged_response = planner.merge_local_and_global_result(
         self._LOCAL_RESPONSE_JSON,
         self._GLOBAL_RESPONSE_JSON,
+        # TODO(ondrasej): Earlier during development, we removed some of the
+        # durations from the local and global responses for brevity, and now the
+        # timing in the responses is not self-consistent. Regenerate the test
+        # data with all timing information and enable the consistency checks in
+        # the tests.
+        check_consistency=False,
     )
     self.assertEqual(merged_request, self._EXPECTED_MERGED_REQUEST_JSON)
     self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
@@ -2907,6 +2946,12 @@ class PlannerTestMergedModel(PlannerTest):
     merged_request, merged_response = planner.merge_local_and_global_result(
         self._LOCAL_RESPONSE_WITH_SKIPPED_SHIPMENTS_JSON,
         self._GLOBAL_RESPONSE_WITH_SKIPPED_SHIPMENTS_JSON,
+        # TODO(ondrasej): Earlier during development, we removed some of the
+        # durations from the local and global responses for brevity, and now the
+        # timing in the responses is not self-consistent. Regenerate the test
+        # data with all timing information and enable the consistency checks in
+        # the tests.
+        check_consistency=False,
     )
     self.assertEqual(
         merged_request,
@@ -2915,6 +2960,663 @@ class PlannerTestMergedModel(PlannerTest):
     self.assertEqual(
         merged_response,
         self._EXPECTED_MERGED_RESPONSE_WITH_SKIPPED_SHIPMENTS_JSON,
+    )
+
+
+class PlannerTestRefinedLocalModel(PlannerTest):
+  _EXPECTED_LOCAL_REFINEMENT_REQUEST: cfr_json.OptimizeToursRequest = {
+      "allowLargeDeadlineDespiteInterruptionRisk": True,
+      "label": "my_little_model/local_refinement",
+      "injectedFirstSolutionRoutes": [
+          {
+              "vehicleIndex": 0,
+              "visits": [
+                  {"isPickup": True, "shipmentIndex": 0},
+                  {"isPickup": False, "shipmentIndex": 0},
+                  {"isPickup": True, "shipmentIndex": 1},
+                  {"isPickup": True, "shipmentIndex": 2},
+                  {"isPickup": False, "shipmentIndex": 1},
+                  {"isPickup": False, "shipmentIndex": 2},
+                  {"isPickup": True, "shipmentIndex": 3},
+                  {"isPickup": False, "shipmentIndex": 3},
+              ],
+          },
+          {
+              "vehicleIndex": 1,
+              "visits": [
+                  {"isPickup": True, "shipmentIndex": 4},
+                  {"isPickup": False, "shipmentIndex": 4},
+                  {"isPickup": True, "shipmentIndex": 5},
+                  {"isPickup": True, "shipmentIndex": 6},
+                  {"isPickup": False, "shipmentIndex": 5},
+                  {"isPickup": False, "shipmentIndex": 6},
+              ],
+          },
+      ],
+      "model": {
+          "globalEndTime": "2023-08-12T00:00:00.000Z",
+          "globalStartTime": "2023-08-11T00:00:00.000Z",
+          "shipments": [
+              {
+                  "allowedVehicleIndices": [0],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86595,
+                                  "longitude": 2.34888,
+                              }
+                          }
+                      },
+                      "duration": "60s",
+                      "tags": ["P001 delivery"],
+                      "timeWindows": [{
+                          "endTime": "2023-08-11T16:00:00.000Z",
+                          "startTime": "2023-08-11T14:00:00.000Z",
+                      }],
+                  }],
+                  "label": "3: S004",
+                  "pickups": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "tags": ["P001", "P001 pickup"],
+                  }],
+              },
+              {
+                  "allowedVehicleIndices": [0],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86471,
+                                  "longitude": 2.34901,
+                              }
+                          }
+                      },
+                      "duration": "120s",
+                      "tags": ["S001", "P001 delivery"],
+                  }],
+                  "label": "0: S001",
+                  "pickups": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "tags": ["P001", "P001 pickup"],
+                  }],
+              },
+              {
+                  "allowedVehicleIndices": [0],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86593,
+                                  "longitude": 2.34886,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                      "tags": ["S002", "P001 delivery"],
+                  }],
+                  "label": "1: S002",
+                  "pickups": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "tags": ["P001", "P001 pickup"],
+                  }],
+              },
+              {
+                  "allowedVehicleIndices": [0],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86594,
+                                  "longitude": 2.34887,
+                              }
+                          }
+                      },
+                      "duration": "60s",
+                      "tags": ["P001 delivery"],
+                      "timeWindows": [
+                          {"startTime": "2023-08-11T12:00:00.000Z"}
+                      ],
+                  }],
+                  "label": "2: S003",
+                  "pickups": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "tags": ["P001", "P001 pickup"],
+                  }],
+              },
+              {
+                  "allowedVehicleIndices": [1],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86597,
+                                  "longitude": 2.3489,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                      "tags": ["P002 delivery"],
+                  }],
+                  "label": "7: S008",
+                  "pickups": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "tags": ["P002", "P002 pickup"],
+                  }],
+              },
+              {
+                  "allowedVehicleIndices": [1],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86597,
+                                  "longitude": 2.3489,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                      "tags": ["P002 delivery"],
+                  }],
+                  "label": "5: S006",
+                  "loadDemands": {
+                      "ore": {"amount": "2"},
+                      "wheat": {"amount": "3"},
+                  },
+                  "pickups": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "tags": ["P002", "P002 pickup"],
+                  }],
+              },
+              {
+                  "allowedVehicleIndices": [1],
+                  "deliveries": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86596,
+                                  "longitude": 2.34889,
+                              }
+                          }
+                      },
+                      "duration": "150s",
+                      "tags": ["P002 delivery"],
+                  }],
+                  "label": "4: S005",
+                  "pickups": [{
+                      "arrivalWaypoint": {
+                          "location": {
+                              "latLng": {
+                                  "latitude": 48.86482,
+                                  "longitude": 2.34932,
+                              }
+                          }
+                      },
+                      "tags": ["P002", "P002 pickup"],
+                  }],
+              },
+          ],
+          "transitionAttributes": [
+              {"cost": 1, "dstTag": "S002", "srcTag": "S001"},
+              {
+                  "delay": "60s",
+                  "dstTag": "P002 pickup",
+                  "srcTag": "P002 delivery",
+              },
+          ],
+          "vehicles": [
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endTags": ["P001"],
+                  "endTimeWindows": [{
+                      "costPerHourAfterSoftEndTime": 10000,
+                      "softEndTime": "2023-08-11T15:50:19Z",
+                  }],
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 10000,
+                  "label": "global_route:0 start:1 size:3",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "routeDurationLimit": {"maxDuration": "1800s"},
+                  "startTags": ["P001"],
+                  "startTimeWindows": [{
+                      "costPerHourBeforeSoftStartTime": 10000,
+                      "softStartTime": "2023-08-11T15:10:39Z",
+                  }],
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.1,
+                  "travelMode": 1,
+              },
+              {
+                  "costPerHour": 300,
+                  "costPerKilometer": 60,
+                  "endTags": ["P002"],
+                  "endTimeWindows": [{
+                      "costPerHourAfterSoftEndTime": 10000,
+                      "softEndTime": "2023-08-11T19:57:18Z",
+                  }],
+                  "endWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "fixedCost": 10000,
+                  "label": "global_route:1 start:0 size:2",
+                  "loadLimits": {"ore": {"maxLoad": "2"}},
+                  "startTags": ["P002"],
+                  "startTimeWindows": [{
+                      "costPerHourBeforeSoftStartTime": 10000,
+                      "softStartTime": "2023-08-11T19:40:49Z",
+                  }],
+                  "startWaypoint": {
+                      "location": {
+                          "latLng": {"latitude": 48.86482, "longitude": 2.34932}
+                      }
+                  },
+                  "travelDurationMultiple": 1.0,
+                  "travelMode": 2,
+              },
+          ],
+      },
+      "searchMode": 1,
+  }
+
+  def test_local_refinement_model(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+    local_refinement_request = planner.make_local_refinement_request(
+        self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+    self.assertEqual(
+        local_refinement_request, self._EXPECTED_LOCAL_REFINEMENT_REQUEST
+    )
+
+
+class GetConsecutiveParkingLocationVisits(unittest.TestCase):
+  """Tests for _get_consecutive_parking_location_visits."""
+
+  maxDiff = None
+
+  def test_empty_route(self):
+    local_response: cfr_json.OptimizeToursResponse = {}
+    global_route: cfr_json.ShipmentRoute = {}
+    self.assertSequenceEqual(
+        two_step_routing._get_consecutive_parking_location_visits(
+            local_response, global_route
+        ),
+        (),
+    )
+
+  def test_only_shipments(self):
+    local_response: cfr_json.OptimizeToursResponse = {}
+    global_route: cfr_json.ShipmentRoute = {
+        "visits": [
+            {"shipmentLabel": "s:1 S002"},
+            {"shipmentLabel": "s:5 SOO6"},
+            {"shipmentLabel": "s:6 S007"},
+        ]
+    }
+    self.assertSequenceEqual(
+        two_step_routing._get_consecutive_parking_location_visits(
+            local_response, global_route
+        ),
+        (),
+    )
+
+  def test_different_parkings_and_shipments(self):
+    local_response: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "vehicleLabel": "P001 [vehicles=(0,)]/0",
+                "visits": [
+                    {"shipmentLabel": "3: S003"},
+                    {"shipmentLabel": "5: S005"},
+                ],
+            },
+            {
+                "vehicleLabel": "P001 [vehicles=(0,)]/1",
+                "visits": [
+                    {"shipmentLabel": "1: S001"},
+                    {"shipmentLabel": "12: S012"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/0",
+                "visits": [
+                    {"shipmentLabel": "2: S002"},
+                    {"shipmentLabel": "8: S008"},
+                ],
+            },
+        ],
+    }
+    global_route: cfr_json.ShipmentRoute = {
+        "vehicleIndex": 1,
+        "visits": [
+            {"shipmentLabel": "s:0 S001"},
+            {"shipmentLabel": "p:1 P001"},
+            {"shipmentLabel": "p:2 P002"},
+            {"shipmentLabel": "p:0 P001"},
+        ],
+    }
+    self.assertSequenceEqual(
+        two_step_routing._get_consecutive_parking_location_visits(
+            local_response, global_route
+        ),
+        (),
+    )
+
+  def test_consecutive_visits(self):
+    local_response: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "vehicleLabel": "P001 [vehicles=(0,)]/0",
+                "visits": [
+                    {"shipmentLabel": "3: S003"},
+                    {"shipmentLabel": "5: S005"},
+                ],
+            },
+            {
+                "vehicleLabel": "P001 [vehicles=(0,)]/1",
+                "visits": [
+                    {"shipmentLabel": "1: S001"},
+                    {"shipmentLabel": "12: S012"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/0",
+                "visits": [
+                    {"shipmentLabel": "2: S002"},
+                    {"shipmentLabel": "8: S008"},
+                    {"shipmentLabel": "0: S000"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/1",
+                "visits": [
+                    {"shipmentLabel": "4: S004"},
+                    {"shipmentLabel": "6: S006"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/2",
+                "visits": [
+                    {"shipmentLabel": "9: S009"},
+                    {"shipmentLabel": "10: S010"},
+                ],
+            },
+        ],
+    }
+    global_route: cfr_json.ShipmentRoute = {
+        "vehicleIndex": 2,
+        "visits": [
+            {"shipmentLabel": "s:0 S001"},
+            {"shipmentLabel": "p:0 P001"},
+            {"shipmentLabel": "p:1 P001"},
+            {"shipmentLabel": "s:10 S011"},
+            {"shipmentLabel": "p:3 P002"},
+            {"shipmentLabel": "p:2 P002"},
+            {"shipmentLabel": "p:4 P002"},
+        ],
+    }
+    self.assertSequenceEqual(
+        two_step_routing._get_consecutive_parking_location_visits(
+            local_response, global_route
+        ),
+        (
+            two_step_routing._ConsecutiveParkingLocationVisits(
+                parking_tag="P001",
+                global_route=global_route,
+                first_global_visit_index=1,
+                num_global_visits=2,
+                local_route_indices=[0, 1],
+                shipment_indices=[[3, 5], [1, 12]],
+            ),
+            two_step_routing._ConsecutiveParkingLocationVisits(
+                parking_tag="P002",
+                global_route=global_route,
+                first_global_visit_index=4,
+                num_global_visits=3,
+                local_route_indices=[3, 2, 4],
+                shipment_indices=[[4, 6], [2, 8, 0], [9, 10]],
+            ),
+        ),
+    )
+
+  def test_only_parking(self):
+    local_response: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "vehicleLabel": "P001 [vehicles=(0,)]/0",
+                "visits": [
+                    {"shipmentLabel": "3: S003"},
+                    {"shipmentLabel": "5: S005"},
+                ],
+            },
+            {
+                "vehicleLabel": "P001 [vehicles=(0,)]/1",
+                "visits": [
+                    {"shipmentLabel": "1: S001"},
+                    {"shipmentLabel": "12: S012"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/0",
+                "visits": [
+                    {"shipmentLabel": "2: S002"},
+                    {"shipmentLabel": "8: S008"},
+                    {"shipmentLabel": "0: S000"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/1",
+                "visits": [
+                    {"shipmentLabel": "4: S004"},
+                    {"shipmentLabel": "6: S006"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/2",
+                "visits": [
+                    {"shipmentLabel": "9: S009"},
+                    {"shipmentLabel": "10: S010"},
+                ],
+            },
+        ],
+    }
+    global_route: cfr_json.ShipmentRoute = {
+        "visits": [
+            {"shipmentLabel": "p:4 P002"},
+            {"shipmentLabel": "p:0 P001"},
+            {"shipmentLabel": "p:1 P001"},
+            {"shipmentLabel": "p:3 P002"},
+            {"shipmentLabel": "p:2 P002"},
+        ]
+    }
+    self.assertSequenceEqual(
+        two_step_routing._get_consecutive_parking_location_visits(
+            local_response, global_route
+        ),
+        (
+            two_step_routing._ConsecutiveParkingLocationVisits(
+                parking_tag="P001",
+                global_route=global_route,
+                first_global_visit_index=1,
+                num_global_visits=2,
+                local_route_indices=[0, 1],
+                shipment_indices=[[3, 5], [1, 12]],
+            ),
+            two_step_routing._ConsecutiveParkingLocationVisits(
+                parking_tag="P002",
+                global_route=global_route,
+                first_global_visit_index=3,
+                num_global_visits=2,
+                local_route_indices=[3, 2],
+                shipment_indices=[[4, 6], [2, 8, 0]],
+            ),
+        ),
+    )
+
+
+class SplitRefinedLocalRouteTest(unittest.TestCase):
+  """Tests for _split_refined_local_route."""
+
+  maxDiff = None
+
+  def test_empty_route(self):
+    self.assertSequenceEqual(
+        two_step_routing._split_refined_local_route({}), ()
+    )
+    self.assertSequenceEqual(
+        two_step_routing._split_refined_local_route(
+            {"visits": [], "transitions": []}
+        ),
+        (),
+    )
+
+  def test_single_round(self):
+    visits: list[cfr_json.Visit] = [
+        {"shipmentIndex": 0, "isPickup": True},
+        {"shipmentIndex": 2, "isPickup": True},
+        {"shipmentIndex": 8, "isPickup": True},
+        {"shipmentIndex": 5, "isPickup": True},
+        {"shipmentIndex": 2, "isPickup": False},
+        {"shipmentIndex": 5, "isPickup": False},
+        {"shipmentIndex": 0, "isPickup": False},
+        {"shipmentIndex": 8, "isPickup": False},
+    ]
+    transitions = [
+        {"totalDuration": "0s"},
+        {"totalDuration": "0s"},
+        {"totalDuration": "0s"},
+        {"totalDuration": "0s"},
+        {"totalDuration": "30s"},
+        {"totalDuration": "45s"},
+        {"totalDuration": "60s"},
+        {"totalDuration": "72s"},
+        {"totalDuration": "18s"},
+    ]
+    route: cfr_json.ShipmentRoute = {
+        "visits": visits,
+        "transitions": transitions,
+    }
+    self.assertSequenceEqual(
+        two_step_routing._split_refined_local_route(route),
+        ((visits[4:], transitions[4:]),),
+    )
+
+  def test_multiple_rounds(self):
+    visits: list[cfr_json.Visit] = [
+        {"shipmentIndex": 0, "isPickup": True},
+        {"shipmentIndex": 2, "isPickup": False},
+        {"shipmentIndex": 2, "isPickup": True},
+        {"shipmentIndex": 8, "isPickup": True},
+        {"shipmentIndex": 5, "isPickup": False},
+        {"shipmentIndex": 0, "isPickup": False},
+        {"shipmentIndex": 5, "isPickup": True},
+        {"shipmentIndex": 8, "isPickup": False},
+    ]
+    transitions = [
+        {"totalDuration": "0s"},
+        {"totalDuration": "14s"},
+        {"totalDuration": "16s"},
+        {"totalDuration": "0s"},
+        {"totalDuration": "32s"},
+        {"totalDuration": "45s"},
+        {"totalDuration": "27s"},
+        {"totalDuration": "72s"},
+        {"totalDuration": "18s"},
+    ]
+    route: cfr_json.ShipmentRoute = {
+        "visits": visits,
+        "transitions": transitions,
+    }
+    self.assertSequenceEqual(
+        two_step_routing._split_refined_local_route(route),
+        (
+            (visits[1:2], transitions[1:3]),
+            (visits[4:6], transitions[4:7]),
+            (visits[7:], transitions[7:]),
+        ),
+    )
+
+
+class ParseRefinementVehicleLabelTest(unittest.TestCase):
+  """Tests for _parse_refinement_vehicle_label."""
+
+  def test_empty_label(self):
+    with self.assertRaisesRegex(
+        ValueError, "Invalid vehicle label in refinement model"
+    ):
+      two_step_routing._parse_refinement_vehicle_label("")
+
+  def test_invalid_label(self):
+    with self.assertRaisesRegex(
+        ValueError, "Invalid vehicle label in refinement model"
+    ):
+      two_step_routing._parse_refinement_vehicle_label(
+          "global_route:foo start:1 size:2"
+      )
+
+  def test_valid_label(self):
+    self.assertEqual(
+        two_step_routing._parse_refinement_vehicle_label(
+            "global_route:32 start:1 size:2"
+        ),
+        (32, 1, 2),
     )
 
 

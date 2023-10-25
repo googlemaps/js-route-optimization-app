@@ -62,6 +62,8 @@ class Flags:
     reuse_existing: When a file with a response exists, load it instead of
       resolving the request.
     local_grouping: The value of the --local_grouping flag or the default value.
+    travel_mode_in_merged_transitions: The value of the
+      --travel_mode_in_merged_transitions flag.
     local_timeout: The value of the --local_timeout flag or the default value.
     global_timeout: The value of the --global_timeout flag or the default value.
   """
@@ -72,6 +74,7 @@ class Flags:
   google_cloud_token: str
   reuse_existing: bool
   local_grouping: two_step_routing.LocalModelGrouping
+  travel_mode_in_merged_transitions: bool
   local_timeout: cfr_json.DurationString
   global_timeout: cfr_json.DurationString
 
@@ -110,6 +113,12 @@ def _parse_flags() -> Flags:
       default="PARKING_AND_TIME",
   )
   parser.add_argument(
+      "--travel_mode_in_merged_transitions",
+      help="Add travel mode information to transitions in the merged solution.",
+      default=False,
+      action="store_true",
+  )
+  parser.add_argument(
       "--local_timeout",
       help=(
           "The timeout used for the local model. Uses the duration string"
@@ -137,6 +146,7 @@ def _parse_flags() -> Flags:
       google_cloud_token=flags.token,
       local_timeout=flags.local_timeout,
       local_grouping=two_step_routing.LocalModelGrouping[flags.local_grouping],
+      travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
       global_timeout=flags.global_timeout,
       reuse_existing=flags.reuse_existing,
   )
@@ -270,9 +280,12 @@ def _run_two_step_planner() -> None:
       options = two_step_routing.Options(
           local_model_grouping=two_step_routing.LocalModelGrouping.PARKING,
           local_model_vehicle_fixed_cost=0,
+          travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
       )
     case two_step_routing.LocalModelGrouping.PARKING_AND_TIME:
-      options = two_step_routing.Options()
+      options = two_step_routing.Options(
+          travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions
+      )
     case _:
       raise ValueError(
           "Unexpected value of --local_grouping: {flags.local_grouping!r}"

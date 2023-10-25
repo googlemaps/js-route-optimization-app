@@ -175,23 +175,6 @@ class ShipmentModel(TypedDict, total=False):
   globalEndTime: TimeString
 
 
-class OptimizeToursRequest(TypedDict, total=False):
-  """Represents the JSON CFR request."""
-
-  label: str
-  model: ShipmentModel
-  parent: str
-  timeout: DurationString
-  searchMode: int
-  allowLargeDeadlineDespiteInterruptionRisk: bool
-  internalParameters: str
-
-  considerRoadTraffic: bool
-
-  populatePolylines: bool
-  populateTransitionPolylines: bool
-
-
 class Visit(TypedDict, total=False):
   """Represents a single visit on a route in the JSON CFR results."""
 
@@ -200,6 +183,7 @@ class Visit(TypedDict, total=False):
   startTime: TimeString
   detour: str
   isPickup: bool
+  visitRequestIndex: int
 
 
 class EncodedPolyline(TypedDict, total=False):
@@ -212,18 +196,34 @@ class Transition(TypedDict, total=False):
   """Represents a single transition on a route in the JSON CFR results."""
 
   travelDuration: DurationString
-  travelDistanceMeters: int
+  travelDistanceMeters: float
+  delayDuration: DurationString
   waitDuration: DurationString
+  breakDuration: DurationString
   totalDuration: DurationString
   startTime: TimeString
   routePolyline: EncodedPolyline
+
+  # The following two fields are optionally added to the merged routes by the
+  # two_step_routing library, but they are not part of the official CFR API, and
+  # they may break conversion of the JSON data to a proto or cause input
+  # validation when used with tools that do not recognize them.
+  travelMode: int
+  travelDurationMultiple: float
 
 
 class AggregatedMetrics(TypedDict, total=False):
   """Represents aggregated route metrics in the JSON CFR results."""
 
   performedShipmentCount: int
+  performedMandatoryShipmentCount: int
+  travelDuration: DurationString
+  waitDuration: DurationString
+  delayDuration: DurationString
+  breakDuration: DurationString
+  visitDuration: DurationString
   totalDuration: DurationString
+  travelDistanceMeters: float
 
 
 class Break(TypedDict):
@@ -258,6 +258,22 @@ class SkippedShipment(TypedDict, total=False):
   index: int
   penaltyCost: float
   label: str
+
+
+class OptimizeToursRequest(TypedDict, total=False):
+  """Represents the JSON CFR request."""
+
+  allowLargeDeadlineDespiteInterruptionRisk: bool
+  considerRoadTraffic: bool
+  injectedFirstSolutionRoutes: list[ShipmentRoute]
+  internalParameters: str
+  label: str
+  model: ShipmentModel
+  parent: str
+  populatePolylines: bool
+  populateTransitionPolylines: bool
+  searchMode: int
+  timeout: DurationString
 
 
 class OptimizeToursResponse(TypedDict, total=False):
@@ -374,6 +390,43 @@ _DEFAULT_GLOBAL_END_TIME = datetime.datetime.fromtimestamp(
 )
 
 
+def get_shipments(model: ShipmentModel) -> Sequence[Shipment]:
+  """Returns the list of shipments of a model or an empty sequence."""
+  return model.get("shipments", ())
+
+
+def get_routes(response: OptimizeToursResponse) -> Sequence[ShipmentRoute]:
+  """Returns the list of routes from a response or an empty sequence."""
+  return response.get("routes", ())
+
+
+def get_visits(route: ShipmentRoute) -> Sequence[Visit]:
+  """Returns the list of visits on a route or an empty sequence."""
+  return route.get("visits", ())
+
+
+def get_transitions(route: ShipmentRoute) -> Sequence[Transition]:
+  """Returns the list of transitions on a route or an empty sequence."""
+  return route.get("transitions", ())
+
+
+def get_visit_request(model: ShipmentModel, visit: Visit) -> VisitRequest:
+  """Returns the visit request used in `visit`."""
+  shipment_index = visit.get("shipmentIndex", 0)
+  shipment = model["shipments"][shipment_index]
+  visit_request_index = visit.get("visitRequestIndex", 0)
+  is_pickup = visit.get("isPickup", False)
+  visit_requests = shipment["pickups"] if is_pickup else shipment["deliveries"]
+  return visit_requests[visit_request_index]
+
+
+def get_visit_request_duration(
+    visit_request: VisitRequest,
+) -> datetime.timedelta:
+  """Returns the duration of a visit on a route."""
+  return parse_duration_string(visit_request.get("duration"))
+
+
 def get_global_start_time(model: ShipmentModel) -> datetime.datetime:
   """Returns the global start time of `model`."""
   global_start_time = model.get("globalStartTime")
@@ -467,7 +520,7 @@ def get_shipment_earliest_pickup(
   for pickup in pickups:
     pickup_start = get_time_windows_start(model, pickup.get("timeWindows"))
     if include_duration:
-      pickup_start += parse_duration_string(pickup.get("duration", "0s"))
+      pickup_start += get_visit_request_duration(pickup)
     earliest_pickup_start = min(earliest_pickup_start, pickup_start)
 
   return earliest_pickup_start
@@ -573,7 +626,7 @@ def get_vehicle_actual_working_hours(
     route: ShipmentRoute,
 ) -> datetime.timedelta:
   """Returns the duration of the given route, minus all the breaks."""
-  visits = route.get("visits", ())
+  visits = get_visits(route)
   if not visits:
     # Unused vehicle.
     return datetime.timedelta()
@@ -588,6 +641,192 @@ def get_vehicle_actual_working_hours(
       continue
     working_hours -= break_duration
   return working_hours
+
+
+def update_route_start_end_time_from_transitions(
+    route: ShipmentRoute, remove_delay_at_end: DurationString | None
+) -> None:
+  """Updates start and end time of `route` based on times from transitions.
+
+  Sets `vehicleStartTime` to the start of the first transition. Sets
+  `vehicleEndTime` to the end time of the last transition.
+
+  When `remove_delay_at_end` is not None, removes this amount of time from the
+  delay duration of the last transition. This is reflected both in the vehicle
+  end time set by this function, but also the last transition of the route is
+  itself modified.
+
+  Args:
+    route: The route to be modified.
+    remove_delay_at_end: An optional delay duration that is subtracted from the
+      last transition. It is an error if the last transition does not have at
+      least this amount of delay.
+
+  Raises:
+    ValueError: When the route is empty or when `remove_delay_at_end` is greater
+      than the delay duration of the last transition of the route.
+  """
+  transitions = route.get("transitions", ())
+  if not transitions:
+    raise ValueError("The route is empty")
+
+  route["vehicleStartTime"] = transitions[0]["startTime"]
+
+  last_transition = transitions[-1]
+  last_transition_start_time = parse_time_string(last_transition["startTime"])
+  last_transition_total_duration = parse_duration_string(
+      last_transition.get("totalDuration")
+  )
+  if remove_delay_at_end is not None:
+    removed_delay = parse_duration_string(remove_delay_at_end)
+    last_transition_delay_duration = parse_duration_string(
+        last_transition.get("delayDuration")
+    )
+    if last_transition_delay_duration < removed_delay:
+      raise ValueError(
+          "The delay duration of the last transition is smaller than"
+          " remove_delay_at_end."
+      )
+    last_transition["delayDuration"] = as_duration_string(
+        last_transition_delay_duration - removed_delay
+    )
+    last_transition_total_duration -= removed_delay
+    last_transition["totalDuration"] = as_duration_string(
+        last_transition_total_duration
+    )
+  route["vehicleEndTime"] = as_time_string(
+      last_transition_start_time + last_transition_total_duration
+  )
+
+
+def recompute_route_metrics(
+    model: ShipmentModel, route: ShipmentRoute, check_consistency: bool = True
+) -> None:
+  """Updates aggregate metrics of a route from its transitions and visits.
+
+  Args:
+    model: The model, to which the route belongs.
+    route: The route to update.
+    check_consistency: When True, also checks the consistency of the computed
+      times and timestamps.
+  """
+  visits = get_visits(route)
+  if not visits:
+    route.pop("metrics", None)
+    return
+
+  shipments = get_shipments(model)
+  performed_shipments = set()
+  performed_mandatory_shipments = set()
+
+  travel_distance_meters = 0
+  route_travel_duration = datetime.timedelta(0)
+  route_delay_duration = datetime.timedelta(0)
+  route_wait_duration = datetime.timedelta(0)
+  route_break_duration = datetime.timedelta(0)
+  route_visit_duration = datetime.timedelta(0)
+  route_total_duration = datetime.timedelta(0)
+
+  for visit in visits:
+    shipment_index = visit.get("shipmentIndex", 0)
+    performed_shipments.add(shipment_index)
+    shipment = shipments[shipment_index]
+    if shipment.get("penaltyCost") is None:
+      performed_mandatory_shipments.add(shipment_index)
+
+    visit_duration = get_visit_request_duration(get_visit_request(model, visit))
+    route_visit_duration += visit_duration
+    route_total_duration += visit_duration
+
+  for transition in get_transitions(route):
+    travel_distance_meters += transition.get("travelDistanceMeters", 0)
+    route_travel_duration += parse_duration_string(
+        transition.get("travelDuration")
+    )
+    route_delay_duration += parse_duration_string(
+        transition.get("delayDuration")
+    )
+    route_break_duration += parse_duration_string(
+        transition.get("breakDuration")
+    )
+    route_wait_duration += parse_duration_string(transition.get("waitDuration"))
+    route_total_duration += parse_duration_string(
+        transition.get("totalDuration")
+    )
+
+  if check_consistency:
+    if (
+        route_total_duration
+        != route_travel_duration
+        + route_delay_duration
+        + route_wait_duration
+        + route_break_duration
+        + route_visit_duration
+    ):
+      raise ValueError(
+          "The durations in the transitions and visits are inconsistent."
+      )
+    # Check that the total time corresponds to the difference between vehicle
+    # start and end times.
+    start_time = parse_time_string(route["vehicleStartTime"])
+    end_time = parse_time_string(route["vehicleEndTime"])
+    if route_total_duration != end_time - start_time:
+      raise ValueError(
+          "The total duration is inconsistent with vehicle start and end times"
+      )
+
+  route["metrics"] = {
+      "performedShipmentCount": len(performed_shipments),
+      "performedMandatoryShipmentCount": len(performed_mandatory_shipments),
+      "travelDuration": as_duration_string(route_travel_duration),
+      "travelDistanceMeters": travel_distance_meters,
+      "waitDuration": as_duration_string(route_wait_duration),
+      "delayDuration": as_duration_string(route_delay_duration),
+      "breakDuration": as_duration_string(route_break_duration),
+      "visitDuration": as_duration_string(route_visit_duration),
+      "totalDuration": as_duration_string(route_total_duration),
+  }
+
+
+def get_num_decreasing_visit_times(
+    model: ShipmentModel,
+    route: ShipmentRoute,
+    consider_visit_duration: bool,
+) -> int:
+  """Computes the number of occurrences of decreasing visit time on a route.
+
+  A decreasing visit time happens when the start time of visit N is smaller than
+  the start time of visit N - 1 + the duration of visit N - 1. This is typically
+  a consequence of injecting live traffic information into a solution, where a
+  previously feasible solution becomes infeasible due to increased travel times.
+
+  Args:
+    model: The model in which the computation is done.
+    route: The route for which the computation is done.
+    consider_visit_duration: When True, the start of visit N is compared with
+      the start of visit N - 1 + its duration; when False, only the starts of
+      both visits are compared.
+
+  Returns:
+    The number of occurrences of decreasing visit time on the route.
+  """
+  visits = get_visits(route)
+  if not visits:
+    return 0
+  last_visit_time = parse_time_string(route["vehicleStartTime"])
+  num_decreasing_visit_times = 0
+  for visit in visits:
+    visit_time = parse_time_string(visit["startTime"])
+    if visit_time < last_visit_time:
+      num_decreasing_visit_times += 1
+    last_visit_time = visit_time
+    if consider_visit_duration:
+      last_visit_time += get_visit_request_duration(
+          get_visit_request(model, visit)
+      )
+  if parse_time_string(route["vehicleEndTime"]) < last_visit_time:
+    num_decreasing_visit_times += 1
+  return num_decreasing_visit_times
 
 
 def update_time_string(
@@ -627,18 +866,23 @@ def as_time_string(timestamp: datetime.datetime) -> TimeString:
   return date_string
 
 
-def parse_duration_string(duration: DurationString) -> datetime.timedelta:
+def parse_duration_string(
+    duration: DurationString | None,
+) -> datetime.timedelta:
   """Parses the duration string and converts it to a timedelta.
 
   Args:
-    duration: The duration in the string format "{number_of_seconds}s".
+    duration: The duration in the string format "{number_of_seconds}s" or None.
 
   Returns:
-    The duration as a timedelta object.
+    The duration as a timedelta object. Returns a zero timedelta if `duration`
+    is None.
 
   Raises:
     ValueError: When the duration string does not have the right format.
   """
+  if duration is None:
+    return datetime.timedelta(0)
   if not duration.endswith("s"):
     raise ValueError(f"Unexpected duration string format: '{duration}'")
   seconds = float(duration[:-1])
@@ -746,6 +990,72 @@ def decode_polyline(encoded_polyline: str) -> Sequence[LatLng]:
     raise
 
   return lat_lngs
+
+
+def _get_route_polyline_points(
+    transition: Transition,
+) -> Sequence[LatLng] | None:
+  route_polyline = transition.get("routePolyline")
+  if route_polyline is None:
+    return None
+  polyline_points = route_polyline.get("points")
+  if polyline_points is None:
+    return None
+  return decode_polyline(polyline_points)
+
+
+def merge_polylines_from_transitions(
+    transitions: Sequence[Transition],
+) -> EncodedPolyline | None:
+  """Returns an encoded polyline that merges polylines from `transitions`.
+
+  The merged polyline is a polyline that contains points from all the polylines
+  of `transitions`, in the order in which they appear in `transitions`. Removes
+  duplicate points from the merged polylines (i.e. it is safe that the end of
+  the polyline of transitions[i] has the same coordinates as the start of the
+  polyline of transitions[i+1]).
+
+  Requires that either all transitions with non-zero traveled distance have a
+  polyline (and in this case returns a merged polyline) or that none has it (and
+  returns None).
+
+  Args:
+    transitions: The sequence of transitions to merge polylines from.
+
+  Returns:
+    When all transitions have a polyline, returns an encoded merged polyline for
+    all the transitions. When neither of them has it, returns None.
+
+  Raises:
+    ValueError: When some but not all transitions with non-zero traveled
+      distance have a polyline.
+  """
+  merged_points: list[LatLng] = []
+  num_present_polylines = 0
+  num_absent_polylines = 0
+  for transition in transitions:
+    route_points = _get_route_polyline_points(transition)
+    transition_distance = transition.get("travelDistanceMeters", 0)
+    if route_points is None and transition_distance == 0:
+      # When the next visit is at the same location, there is no polyline even
+      # if all other transitions have one. Just move on to the next transition.
+      continue
+    if route_points is None:
+      num_absent_polylines += 1
+      continue
+    assert route_points is not None
+    num_present_polylines += 1
+    for lat_lng in route_points:
+      if not merged_points or merged_points[-1] != lat_lng:
+        merged_points.append(lat_lng)
+  if num_present_polylines > 0 and num_absent_polylines > 0:
+    raise ValueError(
+        "Either all transitions with non-zero traveled distance must have a"
+        " polyline or none may have it."
+    )
+  if not merged_points:
+    return None
+  return {"points": encode_polyline(merged_points)}
 
 
 def make_optional_time_window(
@@ -1004,7 +1314,7 @@ def make_vehicle(
 def get_all_visit_tags(model: ShipmentModel) -> Set[str]:
   """Returns the set of all visit tags that appear in the model."""
   tags = set()
-  for shipment in model.get("shipments", ()):
+  for shipment in get_shipments(model):
     pickups = shipment.get("pickups", ())
     deliveries = shipment.get("deliveries", ())
     for visit in itertools.chain(pickups, deliveries):
@@ -1055,10 +1365,50 @@ def make_all_shipments_optional(
   if get_num_items is None:
     get_num_items = lambda _: 1
 
-  for shipment in model.get("shipments", ()):
+  for shipment in get_shipments(model):
     if "penaltyCost" not in shipment:
       num_items = get_num_items(shipment)
       shipment["penaltyCost"] = num_items * cost
+
+
+def relax_allowed_vehicle_indices(shipment: Shipment, cost: float) -> None:
+  """Relaxes the hard vehicle-shipment constraints in the model.
+
+  When `cost > 0`, replaces the hard constraints with equivalent soft
+  constraints where the cost of violating the vehicle-shipment constraint is
+  `cost`. When `cost == 0`, just removes `allowedVehicleIndices` from the model.
+
+  Args:
+    shipment: The shipment in which the allowed vehicle indices are relaxed.
+    cost: The cost of violating a vehicle-shipment constraint.
+
+  Raises:
+    ValueError: When `cost < 0`.
+  """
+  if cost < 0:
+    raise ValueError("cost must be non-negative.")
+  allowed_vehicles = shipment.get("allowedVehicleIndices")
+  shipment.pop("allowedVehicleIndices", None)
+  if allowed_vehicles is None or cost == 0:
+    return
+  costs_per_vehicle = shipment.get("costsPerVehicle", ())
+  costs_per_vehicle_indices = shipment.get("costsPerVehicleIndices", ())
+  all_vehicles_have_cost = costs_per_vehicle and not costs_per_vehicle_indices
+  if all_vehicles_have_cost:
+    costs_per_vehicle_indices = range(len(costs_per_vehicle))
+  costs_per_vehicle_map = collections.defaultdict(
+      float, zip(costs_per_vehicle_indices, costs_per_vehicle)
+  )
+  for vehicle in allowed_vehicles:
+    costs_per_vehicle_map[vehicle] += cost
+  # NOTE(ondrasej): The following relies on Python's deterministic iteration
+  # order in dicts, where both keys() and values() iterate return the items from
+  # the dict in insertion order.
+  if all_vehicles_have_cost:
+    shipment["costsPerVehicle"] = list(costs_per_vehicle_map.values())
+  else:
+    shipment["costsPerVehicleIndices"] = list(costs_per_vehicle_map.keys())
+    shipment["costsPerVehicle"] = list(costs_per_vehicle_map.values())
 
 
 def remove_load_limits(model: ShipmentModel) -> None:
@@ -1091,7 +1441,7 @@ def remove_pickups(model: ShipmentModel) -> None:
   """
   global_start = get_global_start_time(model)
 
-  for shipment_index, shipment in enumerate(model.get("shipments", ())):
+  for shipment_index, shipment in enumerate(get_shipments(model)):
     pickups = shipment.get("pickups")
     deliveries = shipment.get("deliveries")
     if not pickups or not deliveries:
