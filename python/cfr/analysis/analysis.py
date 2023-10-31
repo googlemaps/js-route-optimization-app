@@ -134,6 +134,14 @@ class Scenario:
     return self.solution.get("skippedShipments", ())
 
   @functools.cached_property
+  def skipped_shipment_indices(self) -> Set[int]:
+    """Returns the set of skipped shipment indices in the solution."""
+    return set(
+        skipped_shipment.get("index", 0)
+        for skipped_shipment in self.skipped_shipments
+    )
+
+  @functools.cached_property
   def vehicle_for_shipment(self) -> Mapping[int, int]:
     """Returns a mapping from a shipment to the vehicle that serves it.
 
@@ -240,6 +248,48 @@ def get_parking_location_aggregate_data(
       non_consecutive_visits=vehicle_non_consecutive_visits,
       shipments_by_parking=shipments_by_parking,
   )
+
+
+def get_vehicle_shipment_groups(
+    model: cfr_json.ShipmentModel,
+) -> Sequence[tuple[Set[int], Set[int]]]:
+  """Returns grouping of vehicles and shipments by vehicle-shipment constraints.
+
+  Uses `Shipment.allowedVehicleIndices` to group shipments by the vehicles that
+  can serve them. The output of the function is a collection of pairs
+  `(vehicles, shipments)` where `shipments` is a set of shipment indices, and
+  `vehicles` is a set of vehicle indices such that for each shipment in
+  `shipments`, its `allowedVehicleIndices` are exactly `vehicles`.
+
+  As a consequence of this computation:
+  - each shipment in the model appears in exactly one group.
+  - each vehicle appears can appear in zero or more groups.
+
+  Args:
+    model: The model for which the grouping is computed.
+
+  Returns:
+    A collection of vehicle group/shipment group pairs. See above for a detailed
+    description.
+  """
+  shipments = cfr_json.get_shipments(model)
+  vehicles = cfr_json.get_vehicles(model)
+
+  all_vehicles = frozenset(range(len(vehicles)))
+
+  shipments_by_allowed_vehicles = collections.defaultdict(set)
+  for shipment_index, shipment in enumerate(shipments):
+    shipment_label = shipment.get("label", "")
+    if shipment_label.endswith(" arrival") or shipment_label.endswith(
+        " departure"
+    ):
+      continue
+    allowed_vehicles = frozenset(
+        shipment.get("allowedVehicleIndices", all_vehicles)
+    )
+    shipments_by_allowed_vehicles[allowed_vehicles].add(shipment_index)
+
+  return tuple(shipments_by_allowed_vehicles.items())
 
 
 def consume_suffix(text: str, suffix: str) -> str | None:
