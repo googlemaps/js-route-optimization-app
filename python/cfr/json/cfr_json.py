@@ -87,7 +87,10 @@ class Waypoint(TypedDict):
 class VisitRequest(TypedDict, total=False):
   """Represents a delivery in the JSON CFR request."""
 
+  arrivalLocation: LatLng
   arrivalWaypoint: Waypoint
+  departureLocation: LatLng
+  departureWaypoint: Waypoint
   timeWindows: list[TimeWindow]
   duration: DurationString
   cost: float
@@ -131,7 +134,9 @@ class Vehicle(TypedDict, total=False):
 
   label: str
 
+  startLocation: LatLng
   startWaypoint: Waypoint
+  endLocation: LatLng
   endWaypoint: Waypoint
 
   startTimeWindows: list[TimeWindow]
@@ -398,6 +403,11 @@ def get_shipments(model: ShipmentModel) -> Sequence[Shipment]:
 def get_routes(response: OptimizeToursResponse) -> Sequence[ShipmentRoute]:
   """Returns the list of routes from a response or an empty sequence."""
   return response.get("routes", ())
+
+
+def get_vehicles(model: ShipmentModel) -> Sequence[Vehicle]:
+  """Returns the list of vehicles of a model or an empty sequence."""
+  return model.get("vehicles", ())
 
 
 def get_visits(route: ShipmentRoute) -> Sequence[Visit]:
@@ -1404,6 +1414,158 @@ def make_all_shipments_optional(
     if "penaltyCost" not in shipment:
       num_items = get_num_items(shipment)
       shipment["penaltyCost"] = num_items * cost
+
+
+def duplicate_vehicle(model: ShipmentModel, vehicle_index: int) -> int:
+  """Duplicates a vehicle in the model.
+
+  The new vehicle has exactly the same parameters as the original vehicle and a
+  slightly modified label, and is subject to the same constraints as the
+  original vehicle (Shipment.allowedVehicleIndices, Shipment.costsPerVehicle).
+
+  Args:
+    model: The model in which the vehicle is modified. Modified in place.
+    vehicle_index: The index of the duplicated vehicle.
+
+  Returns:
+    The index of the duplicate vehicle.
+  """
+  vehicles: list[Vehicle] | None = model.get("vehicles")
+  if not vehicles:
+    raise ValueError("model has no vehicles")
+
+  if vehicle_index < 0 or vehicle_index >= len(vehicles):
+    raise ValueError(
+        f"Invalid vehicle_index {vehicle_index}. Max vehicle index is"
+        f" {len(vehicles) - 1}"
+    )
+
+  new_vehicle_index = len(vehicles)
+  new_vehicle = copy.deepcopy(vehicles[vehicle_index])
+
+  vehicle_label = new_vehicle.get("label", "")
+  vehicle_labels = {vehicle.get("label", ()) for vehicle in vehicles}
+
+  i = 1
+  while True:
+    new_vehicle_label = f"{vehicle_label} #{i}"
+    if new_vehicle_label not in vehicle_labels:
+      break
+    i += 1
+  new_vehicle["label"] = new_vehicle_label
+
+  vehicles.append(new_vehicle)
+
+  for shipment in get_shipments(model):
+    # Update allowed vehicle indices. If the old vehicle was allowed, allow it
+    # too. Otherwise, leave it unchanged.
+    allowed_vehicle_indices = shipment.get("allowedVehicleIndices")
+    if (
+        allowed_vehicle_indices is not None
+        and vehicle_index in allowed_vehicle_indices
+    ):
+      allowed_vehicle_indices.append(new_vehicle_index)
+
+    # Update costs per vehicle. If the old vehicle had a cost, use the same cost
+    # for the new vehicle.
+    costs_per_vehicle = shipment.get("costsPerVehicle")
+    if costs_per_vehicle is None:
+      continue
+
+    costs_per_vehicle_indices = shipment.get("costsPerVehicleIndices")
+    if costs_per_vehicle_indices is not None:
+      # `costsPerVehicle` is sparse, and has a parallel array of vehicle
+      # indices. We need to update both.
+      try:
+        cost_index = costs_per_vehicle_indices.index(vehicle_index)
+      except ValueError:
+        # list.index() raises ValueError when the searched value is not present.
+        # In this case, there is no special cost for the old vehicle in this
+        # shipment and we can just move on to the next one.
+        continue
+      costs_per_vehicle.append(costs_per_vehicle[cost_index])
+      costs_per_vehicle_indices.append(new_vehicle_index)
+
+      # TODO(ondrasej): Also support costsPerVehicleNames.
+    else:
+      # `costsPervehicle` is dense. We just need to append at the end.
+      assert len(costs_per_vehicle) == new_vehicle_index
+      costs_per_vehicle.append(costs_per_vehicle[vehicle_index])
+
+  return new_vehicle_index
+
+
+def remove_vehicles(
+    model: ShipmentModel, vehicle_indices: Collection[int]
+) -> None:
+  """Removes vehicles with the given indices from the model.
+
+  Removes the vehicles from the list and updates vehicle indices in the other
+  parts of the model.
+
+  Args:
+    model: The model to update.
+    vehicle_indices: The set of vehicle indices to remove.
+  """
+  old_vehicles = get_vehicles(model)
+  num_old_vehicles = len(old_vehicles)
+  removed_vehicle_indices = frozenset(vehicle_indices)
+  new_vehicle_for_old_vehicle = {}
+  new_vehicles = []
+
+  for old_vehicle_index, vehicle in enumerate(old_vehicles):
+    if old_vehicle_index in removed_vehicle_indices:
+      continue
+    new_vehicle_index = len(new_vehicles)
+    new_vehicle_for_old_vehicle[old_vehicle_index] = new_vehicle_index
+    new_vehicles.append(vehicle)
+  model["vehicles"] = new_vehicles
+
+  for shipment_index, shipment in enumerate(get_shipments(model)):
+    allowed_vehicle_indices = shipment.get("allowedVehicleIndices")
+    if allowed_vehicle_indices is not None:
+      new_allowed_indices = [
+          new_vehicle_for_old_vehicle[vehicle_index]
+          for vehicle_index in allowed_vehicle_indices
+          if vehicle_index not in removed_vehicle_indices
+      ]
+      if not new_allowed_indices:
+        # TODO(ondrasej): Perhaps also remove trivially infeasible shipments?
+        raise ValueError(f"Shipment {shipment_index} becomes infeasible")
+      shipment["allowedVehicleIndices"] = new_allowed_indices
+
+    costs_per_vehicle = shipment.get("costsPerVehicle")
+    if costs_per_vehicle is None:
+      continue
+
+    costs_per_vehicle_indices = shipment.get("costsPerVehicleIndices")
+    if costs_per_vehicle_indices is not None:
+      # `costsPerVehicle` is sparse, and has a parallel array of vehicle
+      # indices. We need to update both.
+      new_costs_per_vehicles = {}
+      for vehicle_index, cost in zip(
+          costs_per_vehicle_indices, costs_per_vehicle
+      ):
+        if vehicle_index in removed_vehicle_indices:
+          continue
+        new_vehicle_index = new_vehicle_for_old_vehicle[vehicle_index]
+        new_costs_per_vehicles[new_vehicle_index] = cost
+      if new_costs_per_vehicles:
+        shipment["costsPerVehicle"] = list(new_costs_per_vehicles.values())
+        shipment["costsPerVehicleIndices"] = list(new_costs_per_vehicles.keys())
+      else:
+        del shipment["costsPerVehicle"]
+        del shipment["costsPerVehicleIndices"]
+
+      # TODO(ondrasej): Also support costsPerVehicleNames.
+    else:
+      # `costsPervehicle` is dense. We just remove the removed values.
+      assert len(costs_per_vehicle) == num_old_vehicles
+      shipment["costsPerVehicle"] = [
+          cost
+          for vehicle_index, cost in enumerate(costs_per_vehicle)
+          if vehicle_index not in removed_vehicle_indices
+      ]
 
 
 def relax_allowed_vehicle_indices(shipment: Shipment, cost: float) -> None:

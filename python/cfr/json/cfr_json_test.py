@@ -434,6 +434,22 @@ class GetRoutesTest(unittest.TestCase):
     )
 
 
+class GetVehiclesTest(unittest.TestCase):
+  """Tests for get_vehicles."""
+
+  def test_no_vehicles(self):
+    return self.assertSequenceEqual(cfr_json.get_vehicles({}), ())
+
+  def test_empty_vehicles(self):
+    return self.assertSequenceEqual(cfr_json.get_vehicles({"vehicles": []}), ())
+
+  def test_some_vehicles(self):
+    vehicles = ({"label": "V001"}, {"label": "V002"})
+    self.assertSequenceEqual(
+        cfr_json.get_vehicles({"vehicles": list(vehicles)}), vehicles
+    )
+
+
 class GetVisitsTest(unittest.TestCase):
   """Tests for get_visits."""
 
@@ -1893,6 +1909,257 @@ class MakeAllShipmentsOptional(unittest.TestCase):
             ]
         },
     )
+
+
+class DuplicateVehicleTest(unittest.TestCase):
+  """Tests for duplicate_vehicle."""
+
+  maxDiff = None
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {"label": "S001", "allowedVehicleIndices": [1]},
+          {
+              "label": "S002",
+              "costsPerVehicle": [100],
+              "costsPerVehicleIndices": [1],
+          },
+      ],
+      "vehicles": [
+          {
+              "label": "V001",
+              "costPerKilometer": 5,
+              "costPerHour": 180,
+          },
+          {
+              "label": "V002",
+              "costPerHour": 60,
+          },
+      ],
+  }
+
+  def test_duplicate_simple_vehicle(self):
+    model = copy.deepcopy(self._MODEL)
+
+    cfr_json.duplicate_vehicle(model, 0)
+    cfr_json.duplicate_vehicle(model, 0)
+    self.assertEqual(model["shipments"], self._MODEL["shipments"])
+    self.assertSequenceEqual(
+        model["vehicles"],
+        (
+            *self._MODEL["vehicles"],
+            {
+                "label": "V001 #1",
+                "costPerKilometer": 5,
+                "costPerHour": 180,
+            },
+            {
+                "label": "V001 #2",
+                "costPerKilometer": 5,
+                "costPerHour": 180,
+            },
+        ),
+    )
+
+  def test_duplicate_with_allowed_vehicle_indices_and_sparse_costs(self):
+    model = copy.deepcopy(self._MODEL)
+
+    cfr_json.duplicate_vehicle(model, 1)
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [1, 2]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100, 100],
+                    "costsPerVehicleIndices": [1, 2],
+                },
+            ],
+            "vehicles": [
+                {
+                    "label": "V001",
+                    "costPerKilometer": 5,
+                    "costPerHour": 180,
+                },
+                {
+                    "label": "V002",
+                    "costPerHour": 60,
+                },
+                {
+                    "label": "V002 #1",
+                    "costPerHour": 60,
+                },
+            ],
+        },
+    )
+
+  def test_duplicate_with_dense_costs(self):
+    original_model = copy.deepcopy(self._MODEL)
+    original_model["shipments"].append(
+        {"label": "S003", "costsPerVehicle": [30, 50]}
+    )
+    model = copy.deepcopy(original_model)
+
+    cfr_json.duplicate_vehicle(model, 0)
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [1]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [1],
+                },
+                {"label": "S003", "costsPerVehicle": [30, 50, 30]},
+            ],
+            "vehicles": [
+                {
+                    "label": "V001",
+                    "costPerKilometer": 5,
+                    "costPerHour": 180,
+                },
+                {"label": "V002", "costPerHour": 60},
+                {
+                    "label": "V001 #1",
+                    "costPerKilometer": 5,
+                    "costPerHour": 180,
+                },
+            ],
+        },
+    )
+
+
+class RemoveVehiclesTest(unittest.TestCase):
+  """Tests for remove_vehicles."""
+
+  maxDiff = None
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {"label": "S001", "allowedVehicleIndices": [1]},
+          {
+              "label": "S002",
+              "costsPerVehicle": [100],
+              "costsPerVehicleIndices": [0],
+              "allowedVehicleIndices": [1, 2],
+          },
+          {
+              "label": "S003",
+              "costsPerVehicle": [100, 200, 300],
+          },
+      ],
+      "vehicles": [
+          {
+              "label": "V001",
+              "costPerKilometer": 5,
+              "costPerHour": 180,
+          },
+          {
+              "label": "V002",
+              "costPerHour": 60,
+          },
+          {
+              "label": "V003",
+              "costPerHour": 80,
+          },
+      ],
+  }
+
+  def test_remove_one_vehicle(self):
+    model = copy.deepcopy(self._MODEL)
+    cfr_json.remove_vehicles(model, (0,))
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [0]},
+                {
+                    "label": "S002",
+                    "allowedVehicleIndices": [0, 1],
+                },
+                {
+                    "label": "S003",
+                    "costsPerVehicle": [200, 300],
+                },
+            ],
+            "vehicles": [
+                {
+                    "label": "V002",
+                    "costPerHour": 60,
+                },
+                {
+                    "label": "V003",
+                    "costPerHour": 80,
+                },
+            ],
+        },
+    )
+
+  def test_remove_another_vehicle(self):
+    model = copy.deepcopy(self._MODEL)
+    cfr_json.remove_vehicles(model, (2,))
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [1]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [0],
+                    "allowedVehicleIndices": [1],
+                },
+                {
+                    "label": "S003",
+                    "costsPerVehicle": [100, 200],
+                },
+            ],
+            "vehicles": [
+                {
+                    "label": "V001",
+                    "costPerKilometer": 5,
+                    "costPerHour": 180,
+                },
+                {
+                    "label": "V002",
+                    "costPerHour": 60,
+                },
+            ],
+        },
+    )
+
+  def test_remove_multiple_vehicles(self):
+    model = copy.deepcopy(self._MODEL)
+    cfr_json.remove_vehicles(model, (0, 2))
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [0]},
+                {
+                    "label": "S002",
+                    "allowedVehicleIndices": [0],
+                },
+                {
+                    "label": "S003",
+                    "costsPerVehicle": [200],
+                },
+            ],
+            "vehicles": [
+                {
+                    "label": "V002",
+                    "costPerHour": 60,
+                },
+            ],
+        },
+    )
+
+  def test_infeasible_shipment(self):
+    model = copy.deepcopy(self._MODEL)
+    with self.assertRaisesRegex(ValueError, "becomes infeasible"):
+      cfr_json.remove_vehicles(model, (1,))
 
 
 class RelaxAllowedVehicleIndicesTest(unittest.TestCase):
