@@ -444,7 +444,10 @@ def get_global_end_time(model: ShipmentModel) -> datetime.datetime:
 
 
 def get_time_windows_start(
-    model: ShipmentModel, time_windows: Sequence[TimeWindow] | None
+    model: ShipmentModel,
+    time_windows: Sequence[TimeWindow] | None,
+    *,
+    soft_limit: bool = False,
 ) -> datetime.datetime:
   """Returns the earliest timestamp that is inside `time_windows`.
 
@@ -457,6 +460,10 @@ def get_time_windows_start(
     model: The model, in which the earliest start time is determined.
     time_windows: The collection of time windows, for which the earliest start
       time is determined.
+    soft_limit: When True and when the first time window has a soft start time,
+      returns the soft end time. Otherwise, returns the "hard" end time as
+      described above. Note that soft start time is allowed only when there is a
+      single time window.
 
   Returns:
     The earliest timestamp that is inside the time windows.
@@ -464,6 +471,10 @@ def get_time_windows_start(
   global_start_time = get_global_start_time(model)
   if not time_windows:  # Covers an empty sequence and None.
     return global_start_time
+  if soft_limit:
+    soft_start_time = time_windows[0].get("softStartTime")
+    if soft_start_time is not None:
+      return parse_time_string(soft_start_time)
   start_time = time_windows[0].get("startTime")
   if start_time is None:
     return global_start_time
@@ -471,7 +482,10 @@ def get_time_windows_start(
 
 
 def get_time_windows_end(
-    model: ShipmentModel, time_windows: Sequence[TimeWindow] | None
+    model: ShipmentModel,
+    time_windows: Sequence[TimeWindow] | None,
+    *,
+    soft_limit: bool = False,
 ) -> datetime.datetime:
   """Returns the latest timestamp that is inside `time_windows`.
 
@@ -484,6 +498,10 @@ def get_time_windows_end(
     model: The model, in which the latest end time is determined.
     time_windows: The collection of time windows, for which the latest end time
       is determined.
+    soft_limit: When True and when the last time window has a soft end time,
+      returns the soft end time. Otherwise, returns the "hard" end time as
+      described above. Note that soft end time is allowed only when there is a
+      single time window.
 
   Returns:
     The latest timestamp that is inside the time windows.
@@ -491,6 +509,10 @@ def get_time_windows_end(
   global_end_time = get_global_end_time(model)
   if not time_windows:  # Covers an empty sequence and None.
     return global_end_time
+  if soft_limit:
+    soft_end_time = time_windows[-1].get("softEndTime")
+    if soft_end_time is not None:
+      return parse_time_string(soft_end_time)
   end_time = time_windows[-1].get("endTime")
   if end_time is None:
     return global_end_time
@@ -538,7 +560,7 @@ def get_shipment_load_demand(shipment: Shipment, load_key: str) -> int:
 
 
 def get_vehicle_earliest_start(
-    model: ShipmentModel, vehicle: Vehicle
+    model: ShipmentModel, vehicle: Vehicle, *, soft_limit: bool = False
 ) -> datetime.datetime:
   """Returns the earliest start time of `vehicle` in `model`.
 
@@ -552,15 +574,19 @@ def get_vehicle_earliest_start(
   Args:
     model: The model, in which the earliest start time is determined.
     vehicle: The vehicle, for which the earliest start time is determined.
+    soft_limit: When True and the vehicle has a soft start time, returns the
+      soft start time of the vehicle. Otherwise, returns the "hard" start time.
 
   Returns:
     The earliest vehicle start time.
   """
-  return get_time_windows_start(model, vehicle.get("startTimeWindows"))
+  return get_time_windows_start(
+      model, vehicle.get("startTimeWindows"), soft_limit=soft_limit
+  )
 
 
 def get_vehicle_latest_end(
-    model: ShipmentModel, vehicle: Vehicle
+    model: ShipmentModel, vehicle: Vehicle, *, soft_limit: bool = False
 ) -> datetime.datetime:
   """Returns the latest end time of `vehicle` in `model`.
 
@@ -573,15 +599,19 @@ def get_vehicle_latest_end(
   Args:
     model: The model, in which the latest end time is determined.
     vehicle: The vehicle, for which the latest end time is determined.
+    soft_limit: When True and the vehicle has a soft end time, returns the soft
+      end time of the vehicle. Otherwise, returns the "hard" end time.
 
   Returns:
     The latest vehicle end time.
   """
-  return get_time_windows_end(model, vehicle.get("endTimeWindows"))
+  return get_time_windows_end(
+      model, vehicle.get("endTimeWindows"), soft_limit=soft_limit
+  )
 
 
 def get_vehicle_max_working_hours(
-    model: ShipmentModel, vehicle: Vehicle
+    model: ShipmentModel, vehicle: Vehicle, *, soft_limit: bool = False
 ) -> datetime.timedelta:
   """Computes the total working hours of `vehicle` in `model`.
 
@@ -591,6 +621,10 @@ def get_vehicle_max_working_hours(
   Args:
     model: The model in which the working hours are computed.
     vehicle: The vehicle for which the working hours are computed.
+    soft_limit: When True and the vehicle has a soft start time or soft end
+      time, returns the total hours between the (potentially soft) start time
+      and the (potentially soft) end time of the vehicle. Otherwise, returns the
+      maximal working hours.
 
   Returns:
     The maximal working hours of the vehicle, obtained by taking using the
@@ -601,8 +635,9 @@ def get_vehicle_max_working_hours(
     ValueError: When any of the breaks may start before the earliest vehicle
       start or end after the latest vehicle end time.
   """
-  start_time = get_vehicle_earliest_start(model, vehicle)
-  end_time = get_vehicle_latest_end(model, vehicle)
+  # TODO(ondrasej): Also take into account Vehicle.routeDurationLimit.
+  start_time = get_vehicle_earliest_start(model, vehicle, soft_limit=soft_limit)
+  end_time = get_vehicle_latest_end(model, vehicle, soft_limit=soft_limit)
   working_hours = end_time - start_time
   break_rule = vehicle.get("breakRule")
   if break_rule is None:

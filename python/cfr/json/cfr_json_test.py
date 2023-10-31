@@ -823,6 +823,14 @@ class GetVehicleEarliestStartTest(unittest.TestCase):
                   "endTime": "2023-09-26T10:00:00Z",
               }],
           },
+          {
+              "label": "soft start time",
+              "startTimeWindows": [{
+                  "startTime": "2023-09-26T07:00:00Z",
+                  "softStartTime": "2023-09-26T08:15:00Z",
+                  "endTime": "2023-09-26T10:00:00Z",
+              }],
+          },
       ],
   }
   _VEHICLES = _SHIPMENT_MODEL["vehicles"]
@@ -857,6 +865,26 @@ class GetVehicleEarliestStartTest(unittest.TestCase):
         _datetime_utc(2023, 9, 26, 0, 0, 0),
     )
 
+  def test_with_soft_start_time(self):
+    self.assertEqual(
+        cfr_json.get_vehicle_earliest_start(
+            self._SHIPMENT_MODEL, self._VEHICLES[3], soft_limit=True
+        ),
+        _datetime_utc(2023, 9, 26, 8, 15, 0),
+    )
+    self.assertEqual(
+        cfr_json.get_vehicle_earliest_start(
+            self._SHIPMENT_MODEL, self._VEHICLES[3], soft_limit=False
+        ),
+        _datetime_utc(2023, 9, 26, 7, 0, 0),
+    )
+    self.assertEqual(
+        cfr_json.get_vehicle_earliest_start(
+            self._SHIPMENT_MODEL, self._VEHICLES[3]
+        ),
+        _datetime_utc(2023, 9, 26, 7, 0, 0),
+    )
+
 
 class GetLatestVehicleEndTest(unittest.TestCase):
   _SHIPMENT_MODEL: cfr_json.ShipmentModel = {
@@ -883,6 +911,14 @@ class GetLatestVehicleEndTest(unittest.TestCase):
               "label": "end time window without end time",
               "endTimeWindows": [{
                   "startTime": "2023-09-26T18:00:00Z",
+              }],
+          },
+          {
+              "label": "soft end time",
+              "endTimeWindows": [{
+                  "startTime": "2023-09-26T18:00:00Z",
+                  "softEndTime": "2023-09-26T19:30:00Z",
+                  "endTime": "2023-09-26T21:00:00Z",
               }],
           },
       ],
@@ -921,6 +957,26 @@ class GetLatestVehicleEndTest(unittest.TestCase):
         datetime.datetime(
             2023, 9, 26, 23, 59, 59, tzinfo=datetime.timezone.utc
         ),
+    )
+
+  def test_with_soft_end_time(self):
+    self.assertEqual(
+        cfr_json.get_vehicle_latest_end(
+            self._SHIPMENT_MODEL, self._VEHICLES[3], soft_limit=True
+        ),
+        _datetime_utc(2023, 9, 26, 19, 30, 0),
+    )
+    self.assertEqual(
+        cfr_json.get_vehicle_latest_end(
+            self._SHIPMENT_MODEL, self._VEHICLES[3], soft_limit=False
+        ),
+        _datetime_utc(2023, 9, 26, 21, 0, 0),
+    )
+    self.assertEqual(
+        cfr_json.get_vehicle_latest_end(
+            self._SHIPMENT_MODEL, self._VEHICLES[3]
+        ),
+        _datetime_utc(2023, 9, 26, 21, 0, 0),
     )
 
 
@@ -992,6 +1048,34 @@ class GetVehicleMaxWorkingHoursTest(unittest.TestCase):
     }
     with self.assertRaisesRegex(ValueError, "Unsupported case"):
       cfr_json.get_vehicle_max_working_hours(self._SHIPMENT_MODEL, vehicle)
+
+  def test_with_soft_time_limit(self):
+    vehicle: cfr_json.Vehicle = {
+        "startTimeWindows": [{
+            "startTime": "2023-10-04T08:00:00Z",
+            "softStartTime": "2023-10-04T09:00:00Z",
+        }],
+        "endTimeWindows": [{
+            "softEndTime": "2023-10-04T16:00:00Z",
+            "endTime": "2023-10-04T17:30:00Z",
+        }],
+    }
+    self.assertEqual(
+        cfr_json.get_vehicle_max_working_hours(
+            self._SHIPMENT_MODEL, vehicle, soft_limit=True
+        ),
+        datetime.timedelta(hours=7),
+    )
+    self.assertEqual(
+        cfr_json.get_vehicle_max_working_hours(
+            self._SHIPMENT_MODEL, vehicle, soft_limit=False
+        ),
+        datetime.timedelta(hours=9, minutes=30),
+    )
+    self.assertEqual(
+        cfr_json.get_vehicle_max_working_hours(self._SHIPMENT_MODEL, vehicle),
+        datetime.timedelta(hours=9, minutes=30),
+    )
 
 
 class GetVehicleActualWorkingHoursTest(unittest.TestCase):
