@@ -3,6 +3,7 @@
 import collections
 from collections.abc import Mapping, Sequence, Set
 import dataclasses
+import datetime
 import functools
 from typing import Any
 
@@ -255,3 +256,23 @@ def consume_suffix(text: str, suffix: str) -> str | None:
   if not text.endswith(suffix):
     return None
   return text[: -len(suffix)]
+
+
+def get_vehicle_wait_hours(route: cfr_json.ShipmentRoute) -> datetime.timedelta:
+  """Returns the amount of time the vehicle spends waiting along the route."""
+  # NOTE(ondrasej): The two-step routing library did not always fill in metrics.
+  # We need to be careful before reporting a zero if we don't see the metrics.
+  # TODO(ondrasej): Raise an exception instead of this workaround, once we know
+  # that the routes without metrics are rare enough.
+  metrics = route.get("metrics")
+  if metrics is not None:
+    wait_duration = metrics.get("waitDuration")
+    if wait_duration is not None:
+      return cfr_json.parse_duration_string(wait_duration)
+
+  wait_time = datetime.timedelta(0)
+  for transition in cfr_json.get_transitions(route):
+    wait_duration = transition.get("waitDuration", "0s")
+    wait_time += cfr_json.parse_duration_string(wait_duration)
+
+  return wait_time
