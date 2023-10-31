@@ -7,7 +7,7 @@ from collections.abc import Sequence
 import datetime
 import unittest
 
-from . import cfr_json
+from ..json import cfr_json
 from . import two_step_routing
 
 

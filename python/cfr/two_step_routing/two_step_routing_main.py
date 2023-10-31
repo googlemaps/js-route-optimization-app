@@ -42,7 +42,7 @@ import logging
 import os
 import socket
 
-from . import cfr_json
+from ..json import cfr_json
 from . import two_step_routing
 
 

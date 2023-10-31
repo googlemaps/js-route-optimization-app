@@ -53,7 +53,7 @@ import math
 import re
 from typing import Any, TypeAlias, TypeVar, cast
 
-from . import cfr_json
+from ..json import cfr_json
 
 
 @dataclasses.dataclass(frozen=True)
