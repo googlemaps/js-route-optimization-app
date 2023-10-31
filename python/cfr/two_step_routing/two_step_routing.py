@@ -180,6 +180,61 @@ class ParkingLocation:
   reload_cost: float = 0.0
 
 
+def load_parking_from_json(
+    parking_json: Any,
+) -> tuple[Sequence[ParkingLocation], Mapping[int, ParkingTag]]:
+  """Loads parking location data from a JSON data structure.
+
+  Expects that `parking_json` is a JSON-like data structure that contains the
+  definitions of the parking locations and the mapping from shipments to parking
+  locations.
+
+  `parking_json` must be a dict that contains the following two keys:
+  - "parking_locations":
+      Contains the list of parking location definitions. Each element of the
+      list is a dict that will be passed as keyword args to the constructor of
+      `ParkingLocation`.
+  - "parking_for_shipment":
+      Contains the mapping from shipment indices to parking location tags for
+      shipments that are delivered through a parking location.
+
+  Args:
+    parking_json: The JSON data structure that contains the parking data.
+
+  Returns:
+    A tuple (parking_locations, parking_for_shipment) where parking_locations
+    is the list of parking location definitions, and parking_for_shipment is a
+    mapping from shipment indices to parking tags.
+
+  Raises:
+    ValueError: When the format of the input file is invalid.
+  """
+  try:
+    parking_for_shipment: Mapping[int, str] = {
+        int(shipment): parking
+        for shipment, parking in parking_json["parking_for_shipment"].items()
+    }
+  except KeyError:
+    raise ValueError(
+        "parking_json doesn't have the key 'parking_for_shipment'"
+    ) from None
+
+  parking_location_json = None
+  try:
+    parking_locations: list[ParkingLocation] = []
+    for parking_location_json in parking_json["parking_locations"]:
+      parking_locations.append(ParkingLocation(**parking_location_json))
+  except KeyError:
+    raise ValueError(
+        "parking_json doesn't have the key 'parking_locations'"
+    ) from None
+  except TypeError:
+    raise ValueError(
+        f"Invalid parking location specification: {parking_location_json!r}"
+    ) from None
+  return parking_locations, parking_for_shipment
+
+
 @dataclasses.dataclass
 class Options:
   """Options for the two-step planner.

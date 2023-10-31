@@ -1,0 +1,340 @@
+{
+  "allowLargeDeadlineDespiteInterruptionRisk": true,
+  "label": "my_little_model/local",
+  "model": {
+    "globalEndTime": "2023-08-12T00:00:00.000Z",
+    "globalStartTime": "2023-08-11T00:00:00.000Z",
+    "shipments": [
+      {
+        "allowedVehicleIndices": [0, 1, 2, 3],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86471,
+                  "longitude": 2.34901
+                }
+              }
+            },
+            "duration": "120s",
+            "tags": ["S001"]
+          }
+        ],
+        "label": "0: S001"
+      },
+      {
+        "allowedVehicleIndices": [0, 1, 2, 3],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86593,
+                  "longitude": 2.34886
+                }
+              }
+            },
+            "duration": "150s",
+            "tags": ["S002"]
+          }
+        ],
+        "label": "1: S002"
+      },
+      {
+        "allowedVehicleIndices": [0, 1, 2, 3],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86594,
+                  "longitude": 2.34887
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [{ "startTime": "2023-08-11T12:00:00.000Z" }]
+          }
+        ],
+        "label": "2: S003"
+      },
+      {
+        "allowedVehicleIndices": [0, 1, 2, 3],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86595,
+                  "longitude": 2.34888
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "endTime": "2023-08-11T16:00:00.000Z",
+                "startTime": "2023-08-11T14:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "3: S004"
+      },
+      {
+        "allowedVehicleIndices": [4, 5],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86596,
+                  "longitude": 2.34889
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "4: S005"
+      },
+      {
+        "allowedVehicleIndices": [4, 5],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "5: S006",
+        "loadDemands": {
+          "ore": { "amount": "2" },
+          "wheat": { "amount": "3" }
+        }
+      },
+      {
+        "allowedVehicleIndices": [6],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "6: S007",
+        "loadDemands": {
+          "ore": { "amount": "1" },
+          "wood": { "amount": "5" }
+        }
+      },
+      {
+        "allowedVehicleIndices": [7],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "7: S008"
+      }
+    ],
+    "vehicles": [
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 0,
+        "label": "P001 [vehicles=(0,)]/0",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "routeDurationLimit": { "maxDuration": "1800s" },
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.1,
+        "travelMode": 1,
+        "startTags": ["P001"],
+        "endTags": ["P001"]
+      },
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 0,
+        "label": "P001 [vehicles=(0,)]/1",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "routeDurationLimit": { "maxDuration": "1800s" },
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.1,
+        "travelMode": 1,
+        "startTags": ["P001"],
+        "endTags": ["P001"]
+      },
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 0,
+        "label": "P001 [vehicles=(0,)]/2",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "routeDurationLimit": { "maxDuration": "1800s" },
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.1,
+        "travelMode": 1,
+        "startTags": ["P001"],
+        "endTags": ["P001"]
+      },
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 0,
+        "label": "P001 [vehicles=(0,)]/3",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "routeDurationLimit": { "maxDuration": "1800s" },
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.1,
+        "travelMode": 1,
+        "startTags": ["P001"],
+        "endTags": ["P001"]
+      },
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 0,
+        "label": "P002 [vehicles=(0, 1)]/0",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.0,
+        "travelMode": 2,
+        "startTags": ["P002"],
+        "endTags": ["P002"]
+      },
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 0,
+        "label": "P002 [vehicles=(0, 1)]/1",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.0,
+        "travelMode": 2,
+        "startTags": ["P002"],
+        "endTags": ["P002"]
+      },
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 0,
+        "label": "P002 [vehicles=(0,)]/0",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.0,
+        "travelMode": 2,
+        "startTags": ["P002"],
+        "endTags": ["P002"]
+      },
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 0,
+        "label": "P002 [vehicles=(1,)]/0",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.0,
+        "travelMode": 2,
+        "startTags": ["P002"],
+        "endTags": ["P002"]
+      }
+    ],
+    "transitionAttributes": [{ "cost": 1, "dstTag": "S002", "srcTag": "S001" }]
+  },
+  "parent": "my_awesome_project",
+  "searchMode": 1
+}

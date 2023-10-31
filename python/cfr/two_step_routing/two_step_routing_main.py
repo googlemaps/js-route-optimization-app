@@ -8,14 +8,7 @@ r"""End-to-end example of running the two-step delivery planner.
 Reads a CFR request and parking location data from JSON file and runs the
 two-step delivery planner on by making requests to the CFR service. The CFR
 request is a CFR request in the JSON format; the parking data is stored in
-a JSON file that contains an object with the following keys:
-- "parking_locations":
-    Contains the list of parking location definitions. Each element of the list
-    is a dict that contains the attributes of the class
-    two_step_routing.ParkingLocation.
-- "parking_for_shipment":
-    Contains the mapping from shipment indices to parking location tags for
-    shipments that are delivered through a parking location.
+a JSON file that can be parsed with `two_step_routing.load_parking_from_json()`.
 
 To run this, you need to have a Google cloud project with the CFR API enabled,
 and have an access token for using the HTTP API:
@@ -43,6 +36,7 @@ import os
 import socket
 
 from ..json import cfr_json
+from ..json import io_utils
 from . import two_step_routing
 
 
@@ -234,20 +228,13 @@ def _optimize_tours_and_write_response(
       status, explanation, and the body of the response.
   """
   if flags.reuse_existing and os.path.isfile(output_filename):
-    with open(output_filename, "rb") as f:
-      return json.load(f)
+    return io_utils.read_json_from_file(output_filename)
   response = _run_optimize_tours(request, flags, timeout)
-  _write_json_to_file(
+  io_utils.write_json_to_file(
       output_filename,
       response,
   )
   return response
-
-
-def _write_json_to_file(filename: str, value) -> None:
-  """Writes JSON data to a utf-8 text file."""
-  with open(filename, "wt", encoding="utf-8") as f:
-    json.dump(value, f, ensure_ascii=False, indent=2)
 
 
 def _run_two_step_planner() -> None:
@@ -255,24 +242,18 @@ def _run_two_step_planner() -> None:
   flags = _parse_flags()
 
   logging.info("Parsing %s", flags.request_file)
-  with open(flags.request_file, "rb") as f:
-    request_json: cfr_json.OptimizeToursRequest = json.load(f)
+  request_json: cfr_json.OptimizeToursRequest = io_utils.read_json_from_file(
+      flags.request_file
+  )
   logging.info("Parsing %s", flags.parking_file)
-  with open(flags.parking_file, "rb") as f:
-    parking_json = json.load(f)
+  parking_json = io_utils.read_json_from_file(flags.parking_file)
 
   base_filename, _ = os.path.splitext(flags.request_file)
 
   logging.info("Extracting parking locations")
-  parking_for_shipment: Mapping[int, str] = {
-      int(shipment): parking
-      for shipment, parking in parking_json["parking_for_shipment"].items()
-  }
-  parking_locations: list[two_step_routing.ParkingLocation] = []
-  for parking_location_json in parking_json["parking_locations"]:
-    parking_locations.append(
-        two_step_routing.ParkingLocation(**parking_location_json)
-    )
+  parking_locations, parking_for_shipment = (
+      two_step_routing.load_parking_from_json(parking_json)
+  )
 
   logging.info("Creating local model")
   match flags.local_grouping:
@@ -297,7 +278,9 @@ def _run_two_step_planner() -> None:
 
   local_request = planner.make_local_request()
   local_request["searchMode"] = 2
-  _write_json_to_file(base_filename + ".local_request.json", local_request)
+  io_utils.write_json_to_file(
+      f"{base_filename}.local_request.json", local_request
+  )
 
   logging.info("Solving local model")
   local_response_filename = (
@@ -313,7 +296,7 @@ def _run_two_step_planner() -> None:
   logging.info("Creating global model")
   global_request = planner.make_global_request(local_response)
   global_request["searchMode"] = 2
-  _write_json_to_file(
+  io_utils.write_json_to_file(
       f"{base_filename}.global_request.{flags.local_timeout}.json",
       global_request,
   )
@@ -333,12 +316,12 @@ def _run_two_step_planner() -> None:
   )
 
   logging.info("Writing merged request")
-  _write_json_to_file(
+  io_utils.write_json_to_file(
       f"{base_filename}.merged_request.{timeout_suffix}.json",
       merged_request,
   )
   logging.info("Writing merged response")
-  _write_json_to_file(
+  io_utils.write_json_to_file(
       f"{base_filename}.merged_response.{timeout_suffix}.json",
       merged_response,
   )

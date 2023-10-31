@@ -1,0 +1,208 @@
+{
+  "routes": [
+    {
+      "routeTotalCost": 481.965,
+      "transitions": [
+        {
+          "routePolyline": {
+            "points": "ctfiHiniMj@~D@DBP@D@@?B?@?@@B?@?@?@?B?@?@?B?@?@?@?BABCDABA@CBCBIDQL]Pi@XKDq@\\_A`@]Na@REZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQj@qEZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          },
+          "startTime": "2023-08-11T08:00:00Z",
+          "totalDuration": "25544s"
+        },
+        {
+          "routePolyline": {
+            "points": "c|fiHgziM?B?@Ir@Ir@It@a@Qi@WKGQG{@[a@MCP"
+          },
+          "startTime": "2023-08-11T15:05:44Z",
+          "totalDuration": "135s"
+        },
+        {
+          "routePolyline": {},
+          "startTime": "2023-08-11T15:10:29Z",
+          "totalDuration": "0s"
+        },
+        {
+          "routePolyline": { "points": "mcgiHuwiM?@" },
+          "startTime": "2023-08-11T15:12:59Z",
+          "totalDuration": "0s"
+        },
+        {
+          "routePolyline": {
+            "points": "mcgiHswiMBS`@Lz@ZPFJFh@V`@PHu@Hs@Hs@?A?C"
+          },
+          "startTime": "2023-08-11T15:15:29Z",
+          "totalDuration": "135s"
+        },
+        {
+          "routePolyline": {},
+          "startTime": "2023-08-11T15:17:44Z",
+          "totalDuration": "0s"
+        },
+        {
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@O~@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          },
+          "startTime": "2023-08-11T15:17:44Z",
+          "totalDuration": "535s"
+        },
+        {
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          },
+          "startTime": "2023-08-11T15:27:39Z",
+          "totalDuration": "128s"
+        },
+        {
+          "routePolyline": {},
+          "startTime": "2023-08-11T15:29:47Z",
+          "totalDuration": "0s"
+        },
+        {
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@"
+          },
+          "startTime": "2023-08-11T15:29:47Z",
+          "totalDuration": "156s"
+        },
+        {
+          "routePolyline": {
+            "points": "yvfiHyuiMKr@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          },
+          "startTime": "2023-08-11T15:34:23Z",
+          "totalDuration": "377s"
+        },
+        {
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          },
+          "startTime": "2023-08-11T15:43:10Z",
+          "totalDuration": "128s"
+        },
+        {
+          "routePolyline": {},
+          "startTime": "2023-08-11T15:45:18Z",
+          "totalDuration": "0s"
+        },
+        {
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@O~@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          },
+          "startTime": "2023-08-11T15:45:18Z",
+          "totalDuration": "535s"
+        },
+        {
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          },
+          "startTime": "2023-08-11T15:55:13Z",
+          "totalDuration": "128s"
+        },
+        {
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@DLDH@F@FHt@F^BF@DDFDDBDNXBFDDDJ"
+          },
+          "startTime": "2023-08-11T15:57:21Z",
+          "totalDuration": "159s"
+        }
+      ],
+      "vehicleEndTime": "2023-08-11T16:00:00Z",
+      "vehicleIndex": 0,
+      "vehicleLabel": "V001",
+      "vehicleStartTime": "2023-08-11T08:00:00Z",
+      "visits": [
+        {
+          "shipmentIndex": 9,
+          "shipmentLabel": "P002 arrival",
+          "startTime": "2023-08-11T15:05:44Z"
+        },
+        {
+          "shipmentIndex": 7,
+          "shipmentLabel": "S008",
+          "startTime": "2023-08-11T15:07:59Z"
+        },
+        {
+          "shipmentIndex": 6,
+          "shipmentLabel": "S007",
+          "startTime": "2023-08-11T15:10:29Z"
+        },
+        {
+          "shipmentIndex": 4,
+          "shipmentLabel": "S005",
+          "startTime": "2023-08-11T15:12:59Z"
+        },
+        {
+          "shipmentIndex": 10,
+          "shipmentLabel": "P002 departure",
+          "startTime": "2023-08-11T15:17:44Z"
+        },
+        {
+          "shipmentIndex": 11,
+          "shipmentLabel": "P001 arrival",
+          "startTime": "2023-08-11T15:17:44Z"
+        },
+        {
+          "shipmentIndex": 3,
+          "shipmentLabel": "S004",
+          "startTime": "2023-08-11T15:26:39Z"
+        },
+        {
+          "shipmentIndex": 12,
+          "shipmentLabel": "P001 departure",
+          "startTime": "2023-08-11T15:29:47Z"
+        },
+        {
+          "shipmentIndex": 13,
+          "shipmentLabel": "P001 arrival",
+          "startTime": "2023-08-11T15:29:47Z"
+        },
+        {
+          "shipmentIndex": 0,
+          "shipmentLabel": "S001",
+          "startTime": "2023-08-11T15:32:23Z"
+        },
+        {
+          "shipmentIndex": 1,
+          "shipmentLabel": "S002",
+          "startTime": "2023-08-11T15:40:40Z"
+        },
+        {
+          "shipmentIndex": 14,
+          "shipmentLabel": "P001 departure",
+          "startTime": "2023-08-11T15:45:18Z"
+        },
+        {
+          "shipmentIndex": 15,
+          "shipmentLabel": "P001 arrival",
+          "startTime": "2023-08-11T15:45:18Z"
+        },
+        {
+          "shipmentIndex": 2,
+          "shipmentLabel": "S003",
+          "startTime": "2023-08-11T15:54:13Z"
+        },
+        {
+          "shipmentIndex": 16,
+          "shipmentLabel": "P001 departure",
+          "startTime": "2023-08-11T15:57:21Z"
+        }
+      ],
+      "metrics": {
+        "breakDuration": "0s",
+        "delayDuration": "0s",
+        "performedMandatoryShipmentCount": 15,
+        "performedShipmentCount": 15,
+        "totalDuration": "28800s",
+        "travelDistanceMeters": 0,
+        "travelDuration": "0s",
+        "visitDuration": "840s",
+        "waitDuration": "0s"
+      }
+    },
+    { "vehicleIndex": 1, "vehicleLabel": "V002" }
+  ],
+  "skippedShipments": [
+    { "index": 5, "label": "S006" },
+    { "index": 8, "label": "S009" }
+  ]
+}

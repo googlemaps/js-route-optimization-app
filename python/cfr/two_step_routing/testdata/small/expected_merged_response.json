@@ -1,0 +1,230 @@
+{
+  "routes": [
+    {
+      "routeTotalCost": 481.985,
+      "transitions": [
+        {
+          "startTime": "2023-08-11T08:00:00Z",
+          "totalDuration": "25573s"
+        },
+        {
+          "startTime": "2023-08-11T15:08:43Z",
+          "totalDuration": "116s"
+        },
+        {
+          "startTime": "2023-08-11T15:10:39Z",
+          "totalDuration": "536s"
+        },
+        {
+          "startTime": "2023-08-11T15:20:35Z",
+          "totalDuration": "128s"
+        },
+        { "startTime": "2023-08-11T15:22:43Z", "totalDuration": "0s" },
+        {
+          "startTime": "2023-08-11T15:22:43Z",
+          "totalDuration": "157s"
+        },
+        {
+          "startTime": "2023-08-11T15:27:20Z",
+          "totalDuration": "377s"
+        },
+        {
+          "startTime": "2023-08-11T15:36:07Z",
+          "totalDuration": "128s"
+        },
+        { "startTime": "2023-08-11T15:38:15Z", "totalDuration": "0s" },
+        {
+          "startTime": "2023-08-11T15:38:15Z",
+          "totalDuration": "536s"
+        },
+        {
+          "startTime": "2023-08-11T15:48:11Z",
+          "totalDuration": "128s"
+        },
+        { "startTime": "2023-08-11T15:50:19Z", "totalDuration": "0s" },
+        {
+          "startTime": "2023-08-11T15:50:19Z",
+          "totalDuration": "135s"
+        },
+        {
+          "startTime": "2023-08-11T15:55:04Z",
+          "totalDuration": "134s"
+        },
+        {
+          "startTime": "2023-08-11T15:57:18Z",
+          "totalDuration": "162s"
+        }
+      ],
+      "vehicleEndTime": "2023-08-11T16:00:00Z",
+      "vehicleIndex": 0,
+      "vehicleLabel": "V001",
+      "vehicleStartTime": "2023-08-11T08:00:00Z",
+      "visits": [
+        {
+          "shipmentIndex": 8,
+          "shipmentLabel": "S009",
+          "startTime": "2023-08-11T15:06:13Z"
+        },
+        {
+          "shipmentIndex": 9,
+          "shipmentLabel": "P001 arrival",
+          "startTime": "2023-08-11T15:10:39Z"
+        },
+        {
+          "shipmentIndex": 3,
+          "shipmentLabel": "S004",
+          "startTime": "2023-08-11T15:19:35Z"
+        },
+        {
+          "shipmentIndex": 10,
+          "shipmentLabel": "P001 departure",
+          "startTime": "2023-08-11T15:22:43Z"
+        },
+        {
+          "shipmentIndex": 11,
+          "shipmentLabel": "P001 arrival",
+          "startTime": "2023-08-11T15:22:43Z"
+        },
+        {
+          "shipmentIndex": 0,
+          "shipmentLabel": "S001",
+          "startTime": "2023-08-11T15:25:20Z"
+        },
+        {
+          "shipmentIndex": 1,
+          "shipmentLabel": "S002",
+          "startTime": "2023-08-11T15:33:37Z"
+        },
+        {
+          "shipmentIndex": 12,
+          "shipmentLabel": "P001 departure",
+          "startTime": "2023-08-11T15:38:15Z"
+        },
+        {
+          "shipmentIndex": 13,
+          "shipmentLabel": "P001 arrival",
+          "startTime": "2023-08-11T15:38:15Z"
+        },
+        {
+          "shipmentIndex": 2,
+          "shipmentLabel": "S003",
+          "startTime": "2023-08-11T15:47:11Z"
+        },
+        {
+          "shipmentIndex": 14,
+          "shipmentLabel": "P001 departure",
+          "startTime": "2023-08-11T15:50:19Z"
+        },
+        {
+          "shipmentIndex": 15,
+          "shipmentLabel": "P002 arrival",
+          "startTime": "2023-08-11T15:50:19Z"
+        },
+        {
+          "shipmentIndex": 6,
+          "shipmentLabel": "S007",
+          "startTime": "2023-08-11T15:52:34Z"
+        },
+        {
+          "shipmentIndex": 16,
+          "shipmentLabel": "P002 departure",
+          "startTime": "2023-08-11T15:57:18Z"
+        }
+      ],
+      "metrics": {
+        "breakDuration": "0s",
+        "delayDuration": "0s",
+        "performedMandatoryShipmentCount": 14,
+        "performedShipmentCount": 14,
+        "totalDuration": "28800s",
+        "travelDistanceMeters": 0,
+        "travelDuration": "0s",
+        "visitDuration": "690s",
+        "waitDuration": "0s"
+      }
+    },
+    {
+      "routeTotalCost": 721.965,
+      "transitions": [
+        {
+          "startTime": "2023-08-11T08:00:00Z",
+          "totalDuration": "42049s"
+        },
+        {
+          "startTime": "2023-08-11T19:40:49Z",
+          "totalDuration": "135s"
+        },
+        {
+          "startTime": "2023-08-11T19:45:34Z",
+          "totalDuration": "134s"
+        },
+        { "startTime": "2023-08-11T19:47:48Z", "totalDuration": "0s" },
+        {
+          "startTime": "2023-08-11T19:47:48Z",
+          "totalDuration": "135s"
+        },
+        { "startTime": "2023-08-11T19:52:33Z", "totalDuration": "0s" },
+        {
+          "startTime": "2023-08-11T19:55:03Z",
+          "totalDuration": "135s"
+        },
+        {
+          "startTime": "2023-08-11T19:57:18Z",
+          "totalDuration": "162s"
+        }
+      ],
+      "vehicleEndTime": "2023-08-11T20:00:00Z",
+      "vehicleIndex": 1,
+      "vehicleLabel": "V002",
+      "vehicleStartTime": "2023-08-11T08:00:00Z",
+      "visits": [
+        {
+          "shipmentIndex": 17,
+          "shipmentLabel": "P002 arrival",
+          "startTime": "2023-08-11T19:40:49Z"
+        },
+        {
+          "shipmentIndex": 7,
+          "shipmentLabel": "S008",
+          "startTime": "2023-08-11T19:43:04Z"
+        },
+        {
+          "shipmentIndex": 18,
+          "shipmentLabel": "P002 departure",
+          "startTime": "2023-08-11T19:47:48Z"
+        },
+        {
+          "shipmentIndex": 19,
+          "shipmentLabel": "P002 arrival",
+          "startTime": "2023-08-11T19:47:48Z"
+        },
+        {
+          "shipmentIndex": 5,
+          "shipmentLabel": "S006",
+          "startTime": "2023-08-11T19:50:03Z"
+        },
+        {
+          "shipmentIndex": 4,
+          "shipmentLabel": "S005",
+          "startTime": "2023-08-11T19:52:33Z"
+        },
+        {
+          "shipmentIndex": 20,
+          "shipmentLabel": "P002 departure",
+          "startTime": "2023-08-11T19:57:18Z"
+        }
+      ],
+      "metrics": {
+        "breakDuration": "0s",
+        "delayDuration": "0s",
+        "performedMandatoryShipmentCount": 7,
+        "performedShipmentCount": 7,
+        "totalDuration": "43200s",
+        "travelDistanceMeters": 0,
+        "travelDuration": "0s",
+        "visitDuration": "450s",
+        "waitDuration": "0s"
+      }
+    }
+  ]
+}

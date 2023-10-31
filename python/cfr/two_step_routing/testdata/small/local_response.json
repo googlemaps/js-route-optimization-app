@@ -1,0 +1,183 @@
+{
+  "routes": [
+    {
+      "vehicleLabel": "P001 [vehicles=(0,)]/0",
+      "vehicleStartTime": "2023-08-11T00:00:00Z",
+      "vehicleEndTime": "2023-08-11T00:15:32Z",
+      "visits": [
+        {
+          "startTime": "2023-08-11T00:02:37Z",
+          "shipmentLabel": "0: S001"
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2023-08-11T00:10:54Z",
+          "shipmentLabel": "1: S002"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "157s",
+          "startTime": "2023-08-11T00:00:00Z"
+        },
+        {
+          "totalDuration": "377s",
+          "startTime": "2023-08-11T00:04:37Z"
+        },
+        {
+          "totalDuration": "128s",
+          "startTime": "2023-08-11T00:13:24Z"
+        }
+      ],
+      "metrics": {
+        "totalDuration": "932s"
+      },
+      "routeTotalCost": 10191.306666666665
+    },
+    {
+      "vehicleIndex": 1,
+      "vehicleLabel": "P001 [start=2023-08-11T12:00:00.000Z vehicles=(0,)]/0",
+      "vehicleStartTime": "2023-08-11T12:00:00Z",
+      "vehicleEndTime": "2023-08-11T12:12:04Z",
+      "visits": [
+        {
+          "shipmentIndex": 2,
+          "startTime": "2023-08-11T12:08:56Z",
+          "shipmentLabel": "2: S003"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "536s",
+          "startTime": "2023-08-11T12:00:00Z"
+        },
+        {
+          "totalDuration": "128s",
+          "startTime": "2023-08-11T12:09:56Z"
+        }
+      ],
+      "metrics": {
+        "totalDuration": "724s"
+      },
+      "routeTotalCost": 10174.273333333333
+    },
+    {
+      "vehicleIndex": 2,
+      "vehicleLabel": "P001 [start=2023-08-11T14:00:00.000Z end=2023-08-11T16:00:00.000Z vehicles=(0,)]/0",
+      "vehicleStartTime": "2023-08-11T14:00:00Z",
+      "vehicleEndTime": "2023-08-11T14:12:04Z",
+      "visits": [
+        {
+          "shipmentIndex": 3,
+          "startTime": "2023-08-11T14:08:56Z",
+          "shipmentLabel": "3: S004"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "536s",
+          "startTime": "2023-08-11T14:00:00Z"
+        },
+        {
+          "totalDuration": "128s",
+          "startTime": "2023-08-11T14:09:56Z"
+        }
+      ],
+      "metrics": {
+        "totalDuration": "724s"
+      },
+      "routeTotalCost": 10174.273333333334
+    },
+    {
+      "vehicleIndex": 3,
+      "vehicleLabel": "P002 [vehicles=(0, 1)]/0",
+      "vehicleStartTime": "2023-08-11T00:00:00Z",
+      "vehicleEndTime": "2023-08-11T00:09:30Z",
+      "visits": [
+        {
+          "shipmentIndex": 5,
+          "startTime": "2023-08-11T00:02:15Z",
+          "shipmentLabel": "5: S006"
+        },
+        {
+          "shipmentIndex": 4,
+          "startTime": "2023-08-11T00:04:45Z",
+          "shipmentLabel": "4: S005"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "135s",
+          "startTime": "2023-08-11T00:00:00Z"
+        },
+        {
+          "totalDuration": "0s",
+          "startTime": "2023-08-11T00:04:45Z"
+        },
+        {
+          "totalDuration": "135s",
+          "startTime": "2023-08-11T00:07:15Z"
+        }
+      ],
+      "metrics": {
+        "totalDuration": "570s"
+      },
+      "routeTotalCost": 10069.94
+    },
+    {
+      "vehicleIndex": 4,
+      "vehicleLabel": "P002 [vehicles=(0,)]/0",
+      "vehicleStartTime": "2023-08-11T00:00:00Z",
+      "vehicleEndTime": "2023-08-11T00:06:59Z",
+      "visits": [
+        {
+          "shipmentIndex": 6,
+          "startTime": "2023-08-11T00:02:15Z",
+          "shipmentLabel": "6: S007"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "135s",
+          "startTime": "2023-08-11T00:00:00Z"
+        },
+        {
+          "totalDuration": "134s",
+          "startTime": "2023-08-11T00:04:45Z"
+        }
+      ],
+      "metrics": {
+        "totalDuration": "419s"
+      },
+      "routeTotalCost": 10057.356666666667
+    },
+    {
+      "vehicleIndex": 5,
+      "vehicleLabel": "P002 [vehicles=(1,)]/0",
+      "vehicleStartTime": "2023-08-11T00:00:00Z",
+      "vehicleEndTime": "2023-08-11T00:06:59Z",
+      "visits": [
+        {
+          "shipmentIndex": 7,
+          "startTime": "2023-08-11T00:02:15Z",
+          "shipmentLabel": "7: S008"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "135s",
+          "startTime": "2023-08-11T00:00:00Z"
+        },
+        {
+          "totalDuration": "134s",
+          "startTime": "2023-08-11T00:04:45Z"
+        }
+      ],
+      "metrics": {
+        "totalDuration": "419s"
+      },
+      "routeTotalCost": 10057.356666666667
+    }
+  ],
+  "totalCost": 60724.506666666661
+}

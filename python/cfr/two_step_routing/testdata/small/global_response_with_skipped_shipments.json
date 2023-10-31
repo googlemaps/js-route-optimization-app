@@ -1,0 +1,76 @@
+{
+  "routes": [
+    {
+      "vehicleLabel": "V001",
+      "vehicleStartTime": "2023-08-11T08:00:00Z",
+      "vehicleEndTime": "2023-08-11T16:00:00Z",
+      "visits": [
+        {
+          "shipmentIndex": 4,
+          "startTime": "2023-08-11T15:05:44Z",
+          "shipmentLabel": "p:7 S008,S007,S005"
+        },
+        {
+          "shipmentIndex": 3,
+          "startTime": "2023-08-11T15:17:44Z",
+          "shipmentLabel": "p:3 S004"
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2023-08-11T15:29:47Z",
+          "shipmentLabel": "p:1 S001,S002"
+        },
+        {
+          "shipmentIndex": 2,
+          "startTime": "2023-08-11T15:45:18Z",
+          "shipmentLabel": "p:2 S003"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "25544s",
+          "startTime": "2023-08-11T08:00:00Z",
+          "routePolyline": {
+            "points": "ctfiHiniMj@~D@DBP@D@@?B?@?@@B?@?@?@?B?@?@?B?@?@?@?BABCDABA@CBCBIDQL]Pi@XKDq@\\_A`@]Na@REZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQj@qEZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          }
+        },
+        {
+          "totalDuration": "0s",
+          "startTime": "2023-08-11T15:17:44Z",
+          "routePolyline": {}
+        },
+        {
+          "totalDuration": "0s",
+          "startTime": "2023-08-11T15:29:47Z",
+          "routePolyline": {}
+        },
+        {
+          "totalDuration": "0s",
+          "startTime": "2023-08-11T15:45:18Z",
+          "routePolyline": {}
+        },
+        {
+          "totalDuration": "159s",
+          "startTime": "2023-08-11T15:57:21Z",
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@DLDH@F@FHt@F^BF@DDFDDBDNXBFDDDJ"
+          }
+        }
+      ],
+      "routePolyline": {
+        "points": "ctfiHiniMj@~D@DBP@D@@?B?@?@@B?@?@?@?B?@?@?B?@?@?@?BABCDABA@CBCBIDQL]Pi@XKDq@\\_A`@]Na@REZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQj@qEZaCDDDDd@XVNl@Vr@\\d@RdA`@IiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@DLDH@F@FHt@F^BF@DDFDDBDNXBFDDDJ"
+      },
+      "metrics": {
+        "totalDuration": "28800s"
+      },
+      "routeTotalCost": 481.965
+    },
+    { "vehicleIndex": 1, "vehicleLabel": "V002" }
+  ],
+  "totalCost": 481.965,
+  "skippedShipments": [
+    {
+      "label": "s:8 S009"
+    }
+  ]
+}

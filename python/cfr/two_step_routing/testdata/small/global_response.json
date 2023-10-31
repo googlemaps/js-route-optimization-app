@@ -1,0 +1,102 @@
+{
+  "routes": [
+    {
+      "vehicleLabel": "V001",
+      "vehicleStartTime": "2023-08-11T08:00:00Z",
+      "vehicleEndTime": "2023-08-11T16:00:00Z",
+      "visits": [
+        {
+          "startTime": "2023-08-11T15:06:13Z",
+          "shipmentLabel": "s:8 S009"
+        },
+        {
+          "shipmentIndex": 3,
+          "startTime": "2023-08-11T15:10:39Z",
+          "shipmentLabel": "p:2 S004"
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2023-08-11T15:22:43Z",
+          "shipmentLabel": "p:0 S001,S002"
+        },
+        {
+          "shipmentIndex": 2,
+          "startTime": "2023-08-11T15:38:15Z",
+          "shipmentLabel": "p:1 S003"
+        },
+        {
+          "shipmentIndex": 5,
+          "startTime": "2023-08-11T15:50:19Z",
+          "shipmentLabel": "p:4 S007"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "25573s",
+          "startTime": "2023-08-11T08:00:00Z"
+        },
+        {
+          "totalDuration": "116s",
+          "startTime": "2023-08-11T15:08:43Z"
+        },
+        {
+          "totalDuration": "0s",
+          "startTime": "2023-08-11T15:22:43Z"
+        },
+        {
+          "totalDuration": "0s",
+          "startTime": "2023-08-11T15:38:15Z"
+        },
+        {
+          "totalDuration": "0s",
+          "startTime": "2023-08-11T15:50:19Z"
+        },
+        {
+          "totalDuration": "162s",
+          "startTime": "2023-08-11T15:57:18Z"
+        }
+      ],
+      "metrics": {
+        "totalDuration": "28800s"
+      },
+      "routeTotalCost": 481.985
+    },
+    {
+      "vehicleIndex": 1,
+      "vehicleLabel": "V002",
+      "vehicleStartTime": "2023-08-11T08:00:00Z",
+      "vehicleEndTime": "2023-08-11T20:00:00Z",
+      "visits": [
+        {
+          "shipmentIndex": 6,
+          "startTime": "2023-08-11T19:40:49Z",
+          "shipmentLabel": "p:5 S008"
+        },
+        {
+          "shipmentIndex": 4,
+          "startTime": "2023-08-11T19:47:48Z",
+          "shipmentLabel": "p:3 S006,S005"
+        }
+      ],
+      "transitions": [
+        {
+          "totalDuration": "42049s",
+          "startTime": "2023-08-11T08:00:00Z"
+        },
+        {
+          "totalDuration": "0s",
+          "startTime": "2023-08-11T19:47:48Z"
+        },
+        {
+          "totalDuration": "162s",
+          "startTime": "2023-08-11T19:57:18Z"
+        }
+      ],
+      "metrics": {
+        "totalDuration": "43200s"
+      },
+      "routeTotalCost": 721.965
+    }
+  ],
+  "totalCost": 1203.95
+}

@@ -1,0 +1,435 @@
+{
+  "label": "my_little_model/merged",
+  "model": {
+    "globalEndTime": "2023-08-12T00:00:00.000Z",
+    "globalStartTime": "2023-08-11T00:00:00.000Z",
+    "shipments": [
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86471,
+                  "longitude": 2.34901
+                }
+              }
+            },
+            "duration": "120s",
+            "tags": ["S001"]
+          }
+        ],
+        "label": "S001",
+        "costsPerVehicle": [100, 200],
+        "costsPerVehicleIndices": [0, 1]
+      },
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86593,
+                  "longitude": 2.34886
+                }
+              }
+            },
+            "duration": "150s",
+            "tags": ["S002"]
+          }
+        ],
+        "label": "S002"
+      },
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86594,
+                  "longitude": 2.34887
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [{ "startTime": "2023-08-11T12:00:00.000Z" }]
+          }
+        ],
+        "label": "S003"
+      },
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86595,
+                  "longitude": 2.34888
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "endTime": "2023-08-11T16:00:00.000Z",
+                "startTime": "2023-08-11T14:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "S004"
+      },
+      {
+        "allowedVehicleIndices": [0, 1],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86596,
+                  "longitude": 2.34889
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "S005"
+      },
+      {
+        "allowedVehicleIndices": [0, 1],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "S006",
+        "loadDemands": {
+          "ore": { "amount": "2" },
+          "wheat": { "amount": "3" }
+        }
+      },
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "S007",
+        "loadDemands": {
+          "ore": { "amount": "1" },
+          "wood": { "amount": "5" }
+        }
+      },
+      {
+        "allowedVehicleIndices": [1],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "S008"
+      },
+      {
+        "allowedVehicleIndices": [0, 1],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "label": "S009"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P001 arrival"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P001 departure"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P001 arrival"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P001 departure"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P001 arrival"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P001 departure"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P002 arrival"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P002 departure"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P002 arrival"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P002 departure"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P002 arrival"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ],
+        "label": "P002 departure"
+      }
+    ],
+    "vehicles": [
+      {
+        "costPerHour": 60,
+        "costPerKilometer": 1,
+        "endTimeWindows": [
+          {
+            "endTime": "2023-08-11T21:00:00.000Z",
+            "startTime": "2023-08-11T16:00:00.000Z"
+          }
+        ],
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86321, "longitude": 2.34767 }
+          }
+        },
+        "label": "V001",
+        "startTimeWindows": [
+          {
+            "endTime": "2023-08-11T08:00:00.000Z",
+            "startTime": "2023-08-11T08:00:00.000Z"
+          }
+        ],
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86321, "longitude": 2.34767 }
+          }
+        },
+        "travelDurationMultiple": 1,
+        "travelMode": 1
+      },
+      {
+        "costPerHour": 60,
+        "costPerKilometer": 1,
+        "endTimeWindows": [
+          {
+            "endTime": "2023-08-11T21:00:00.000Z",
+            "startTime": "2023-08-11T20:00:00.000Z"
+          }
+        ],
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86321, "longitude": 2.34767 }
+          }
+        },
+        "label": "V002",
+        "startTimeWindows": [
+          {
+            "endTime": "2023-08-11T08:00:00.000Z",
+            "startTime": "2023-08-11T08:00:00.000Z"
+          }
+        ],
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86321, "longitude": 2.34767 }
+          }
+        },
+        "travelDurationMultiple": 1,
+        "travelMode": 1
+      }
+    ],
+    "transitionAttributes": [{ "cost": 1, "dstTag": "S002", "srcTag": "S001" }]
+  },
+  "parent": "my_awesome_project"
+}
