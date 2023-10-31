@@ -486,6 +486,149 @@ class GetTransitionsTest(unittest.TestCase):
     )
 
 
+class GetBreakPropertiesTest(unittest.TestCase):
+  """Tests for accessor functions for BreakRequest."""
+
+  _BREAK_REQUEST: cfr_json.BreakRequest = {
+      "earliestStartTime": "2023-10-31T11:23:45Z",
+      "latestStartTime": "2023-10-31T15:10:00Z",
+      "minDuration": "180s",
+  }
+
+  def test_get_earliest_start(self):
+    self.assertEqual(
+        cfr_json.get_break_earliest_start_time(self._BREAK_REQUEST),
+        _datetime_utc(2023, 10, 31, 11, 23, 45),
+    )
+
+  def test_get_latest_start(self):
+    self.assertEqual(
+        cfr_json.get_break_latest_start_time(self._BREAK_REQUEST),
+        _datetime_utc(2023, 10, 31, 15, 10, 00),
+    )
+
+  def test_get_min_duration(self):
+    self.assertEqual(
+        cfr_json.get_break_min_duration(self._BREAK_REQUEST),
+        datetime.timedelta(minutes=3),
+    )
+
+
+class GetUnavoidableBreaksTest(unittest.TestCase):
+  """Tests for get_unavoidable_breaks."""
+
+  _BREAKS: Sequence[cfr_json.BreakRequest] = (
+      {
+          "earliestStartTime": "2023-10-31T08:00:00Z",
+          "latestStartTime": "2023-10-31T21:00:00Z",
+          "minDuration": "3600s",
+      },
+      {
+          "earliestStartTime": "2023-10-31T08:00:00Z",
+          "latestStartTime": "2023-10-31T21:00:00Z",
+          "minDuration": "3600s",
+      },
+      {
+          "earliestStartTime": "2023-10-31T08:00:00Z",
+          "latestStartTime": "2023-10-31T21:00:00Z",
+          "minDuration": "1800s",
+      },
+      {
+          "earliestStartTime": "2023-10-31T08:00:00Z",
+          "latestStartTime": "2023-10-31T21:00:00Z",
+          "minDuration": "1800s",
+      },
+  )
+
+  def test_empty_breaks(self):
+    self.assertIsNone(
+        cfr_json.get_unavoidable_breaks(
+            (),
+            _datetime_utc(2023, 10, 31, 12, 0, 0),
+            _datetime_utc(2023, 10, 31, 16, 0, 0),
+        )
+    )
+
+  def test_all_pushed_before(self):
+    # Case 1: there is a safety buffer between the end of the last break and the
+    # start time.
+    self.assertIsNone(
+        cfr_json.get_unavoidable_breaks(
+            self._BREAKS,
+            _datetime_utc(2023, 10, 31, 14, 0, 0),
+            _datetime_utc(2023, 10, 31, 23, 0, 0),
+        )
+    )
+    # Case 2: the start time is right at the end of the second break.
+    self.assertIsNone(
+        cfr_json.get_unavoidable_breaks(
+            self._BREAKS,
+            _datetime_utc(2023, 10, 31, 11, 0, 0),
+            _datetime_utc(2023, 10, 31, 22, 0, 0),
+        )
+    )
+
+  def test_some_pushed_before_some_pushed_after(self):
+    # Case 1: there is a safety buffer between the end of the last break and the
+    # start time.
+    self.assertIsNone(
+        cfr_json.get_unavoidable_breaks(
+            self._BREAKS,
+            _datetime_utc(2023, 10, 31, 12, 0, 0),
+            _datetime_utc(2023, 10, 31, 20, 0, 0),
+        )
+    )
+    # Case 2: the start time is right at the end of the second break.
+    self.assertIsNone(
+        cfr_json.get_unavoidable_breaks(
+            self._BREAKS,
+            _datetime_utc(2023, 10, 31, 10, 0, 0),
+            _datetime_utc(2023, 10, 31, 20, 0, 0),
+        )
+    )
+
+  def test_all_are_unavoidable(self):
+    self.assertEqual(
+        cfr_json.get_unavoidable_breaks(
+            self._BREAKS,
+            _datetime_utc(2023, 10, 31, 5, 0, 0),
+            _datetime_utc(2023, 10, 31, 23, 0, 0),
+        ),
+        (0, 3),
+    )
+    self.assertEqual(
+        cfr_json.get_unavoidable_breaks(
+            self._BREAKS,
+            _datetime_utc(2023, 10, 31, 8, 0, 0),
+            _datetime_utc(2023, 10, 31, 22, 0, 0),
+        ),
+        (0, 3),
+    )
+
+  def test_some_avoidable_some_not(self):
+    # No overlap: _BREAKS[0] ends right before the start time, _BREAKS[3] starts
+    # right after the end time.
+    self.assertEqual(
+        cfr_json.get_unavoidable_breaks(
+            self._BREAKS,
+            _datetime_utc(2023, 10, 31, 9, 0, 0),
+            _datetime_utc(2023, 10, 31, 21, 0, 0),
+        ),
+        (1, 2),
+    )
+    # Small overlap. _BREAKS[1] can't end entirely before the start time, and
+    # _BREAKS[2] can't end entirely after the end time, even though there is
+    # some slack.
+    self.assertEqual(
+        cfr_json.get_unavoidable_breaks(
+            self._BREAKS,
+            _datetime_utc(2023, 10, 31, 9, 30, 0),
+            _datetime_utc(2023, 10, 31, 20, 45, 0),
+        ),
+        (1, 2),
+    )
+
+
 class GetVisitRequestTest(unittest.TestCase):
   """Tests for get_visit_request."""
 
@@ -1049,7 +1192,7 @@ class GetVehicleMaxWorkingHoursTest(unittest.TestCase):
         datetime.timedelta(hours=9, minutes=20),
     )
 
-  def test_with_unsupported_breaks(self):
+  def test_with_avoidable_breaks(self):
     vehicle: cfr_json.Vehicle = {
         "startTimeWindows": [{
             "startTime": "2023-10-04T12:00:00Z",
@@ -1062,8 +1205,28 @@ class GetVehicleMaxWorkingHoursTest(unittest.TestCase):
             }]
         },
     }
-    with self.assertRaisesRegex(ValueError, "Unsupported case"):
-      cfr_json.get_vehicle_max_working_hours(self._SHIPMENT_MODEL, vehicle)
+    self.assertEqual(
+        cfr_json.get_vehicle_max_working_hours(self._SHIPMENT_MODEL, vehicle),
+        datetime.timedelta(hours=6),
+    )
+
+  def test_with_breaks_overlaping_start(self):
+    vehicle: cfr_json.Vehicle = {
+        "startTimeWindows": [{
+            "startTime": "2023-10-04T11:00:00Z",
+        }],
+        "breakRule": {
+            "breakRequests": [{
+                "earliestStartTime": "2023-10-04T10:00:00Z",
+                "latestStartTime": "2023-10-04T12:00:00Z",
+                "minDuration": "7200s",
+            }]
+        },
+    }
+    self.assertEqual(
+        cfr_json.get_vehicle_max_working_hours(self._SHIPMENT_MODEL, vehicle),
+        datetime.timedelta(hours=5),
+    )
 
   def test_with_soft_time_limit(self):
     vehicle: cfr_json.Vehicle = {

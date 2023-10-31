@@ -420,6 +420,25 @@ def get_transitions(route: ShipmentRoute) -> Sequence[Transition]:
   return route.get("transitions", ())
 
 
+def get_break_earliest_start_time(
+    break_request: BreakRequest,
+) -> datetime.datetime:
+  """Returns the earliest start time of a break request."""
+  return parse_time_string(break_request["earliestStartTime"])
+
+
+def get_break_latest_start_time(
+    break_request: BreakRequest,
+) -> datetime.datetime:
+  """Returns the latest start time of a break request."""
+  return parse_time_string(break_request["latestStartTime"])
+
+
+def get_break_min_duration(break_request: BreakRequest) -> datetime.timedelta:
+  """Returns the minimal duration of a break request."""
+  return parse_duration_string(break_request["minDuration"])
+
+
 def get_visit_request(model: ShipmentModel, visit: Visit) -> VisitRequest:
   """Returns the visit request used in `visit`."""
   shipment_index = visit.get("shipmentIndex", 0)
@@ -620,13 +639,101 @@ def get_vehicle_latest_end(
   )
 
 
+def get_unavoidable_breaks(
+    break_requests: Sequence[BreakRequest],
+    start_time: datetime.datetime,
+    end_time: datetime.datetime,
+) -> tuple[int, int] | None:
+  """Finds the smallest set of breaks that fall into (start_time, end_time).
+
+  Computes which breaks can be pushed outside of working hours, either by having
+  them start and end before `start_time`, or by having them start after
+  `end_time`. Respects the CFR invariant that breaks must be scheduled in the
+  order in which they appear in `break_requests` and that they can't overlap.
+  Uses the shortest possible duration for all breaks.
+
+  Args:
+    break_requests: The sequence of break requests.
+    start_time: The start time of the interval.
+    end_time: The end time of the interval. Must be greater or equal to
+      start_time.
+
+  Returns:
+    None when all breaks can be avoided. Otherwise, returns a tuple
+    `(first_break, last_break)` where `first_break`, resp. `last_break`, are the
+    indices of the first, resp. last, break that intersect the interval.
+  """
+  if not break_requests:
+    return None
+  num_break_requests = len(break_requests)
+
+  first_break_index = 0
+  earliest_break_start = get_break_earliest_start_time(break_requests[0])
+  while first_break_index < num_break_requests:
+    break_request = break_requests[first_break_index]
+    earliest_break_start = max(
+        get_break_earliest_start_time(break_request),
+        earliest_break_start,
+    )
+    min_duration = get_break_min_duration(break_request)
+    break_end_time = earliest_break_start + min_duration
+
+    if break_end_time > start_time:
+      break
+    first_break_index += 1
+    earliest_break_start = break_end_time
+
+  if first_break_index == num_break_requests:
+    # All breaks can end before `start_time`.
+    return None
+
+  last_break_index = num_break_requests - 1
+  latest_break_start = get_break_latest_start_time(
+      break_requests[last_break_index]
+  )
+  latest_break_end = latest_break_start + get_break_min_duration(
+      break_requests[last_break_index]
+  )
+  while last_break_index >= first_break_index:
+    break_request = break_requests[last_break_index]
+    min_duration = get_break_min_duration(break_request)
+    latest_break_start = min(
+        get_break_latest_start_time(break_request),
+        latest_break_end - min_duration,
+    )
+    if latest_break_start < end_time:
+      break
+    last_break_index -= 1
+    latest_break_end = latest_break_start
+
+  if last_break_index < first_break_index:
+    # All breaks can end before `start_time` or start after `end_time`.
+    return None
+
+  return first_break_index, last_break_index
+
+
 def get_vehicle_max_working_hours(
     model: ShipmentModel, vehicle: Vehicle, *, soft_limit: bool = False
 ) -> datetime.timedelta:
-  """Computes the total working hours of `vehicle` in `model`.
+  """Computes the maximal total working hours of `vehicle` in `model`.
 
-  As of 2023-10-04, only breaks that happen completely between the earliest
-  start and the latest end of the vehicle working hours are supported.
+  First determines the earliest start time and the latest end time of the
+  vehicle; then considers all breaks that overlap with this time interval, and
+  subtracts their full min duration from the length of the interval.
+
+  Limitations of this algorithm (as of 2023-10-30):
+  - it doesn't take into account the max route length of the vehicle, the
+    computation is based only on the start/end time. When the route has a
+    flexible start but a fixed maximal duration, this function will overestimate
+    the maximal working time.
+  - when a break request may overlap with the start time or the end time, it
+    assumes that the break is taken in full within the working hours of the
+    vehicle. This may underestimate the maximal working hours in case where the
+    start time or end time are flexible and some breaks may be avoided by moving
+    them.
+  Both limitations would require solving an optimization problem to determine
+  the max working hours correctly.
 
   Args:
     model: The model in which the working hours are computed.
@@ -646,24 +753,29 @@ def get_vehicle_max_working_hours(
       start or end after the latest vehicle end time.
   """
   # TODO(ondrasej): Also take into account Vehicle.routeDurationLimit.
+  # TODO(ondrasej): It is hard to make this function really correct and precise.
+  # Perhaps we should side-step the issue by counting considering breaks to be
+  # part of the work and avoid getting into all of this complexity.
   start_time = get_vehicle_earliest_start(model, vehicle, soft_limit=soft_limit)
   end_time = get_vehicle_latest_end(model, vehicle, soft_limit=soft_limit)
   working_hours = end_time - start_time
   break_rule = vehicle.get("breakRule")
   if break_rule is None:
     return working_hours
-  break_requests = break_rule.get("breakRequests", ())
-  for break_request in break_requests:
-    # TODO(ondrasej): Relax the requirements that the breaks happen entirely
-    # within the working hours of the vehicle.
-    earliest_break_start = parse_time_string(break_request["earliestStartTime"])
-    latest_break_start = parse_time_string(break_request["latestStartTime"])
-    min_duration = parse_duration_string(break_request["minDuration"])
-    if earliest_break_start < start_time:
-      raise ValueError("Unsupported case: break may start before vehicle start")
-    if latest_break_start + min_duration > end_time:
-      raise ValueError("Unsupported case: break ends after vehicle end")
-    working_hours -= min_duration
+  break_requests = break_rule.get("breakRequests")
+  if break_requests is None:
+    return working_hours
+  unavoidable_breaks = get_unavoidable_breaks(
+      break_requests, start_time, end_time
+  )
+  if unavoidable_breaks is None:
+    return working_hours
+
+  first_break_index, last_break_index = unavoidable_breaks
+
+  for break_index in range(first_break_index, last_break_index + 1):
+    break_request = break_requests[break_index]
+    working_hours -= get_break_min_duration(break_request)
   return working_hours
 
 
