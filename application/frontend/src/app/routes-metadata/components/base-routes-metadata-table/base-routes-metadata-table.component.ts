@@ -18,7 +18,10 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DataSource } from 'src/app/shared/models';
-import { formatDuration, getCapacityQuantityUnit, getUnitAbbreviation } from 'src/app/util';
+import {
+  getCapacityQuantityUnit,
+  getUnitAbbreviation,
+} from 'src/app/util';
 import { RouteMetadata } from '../../models';
 import { selectAllowExperimentalFeatures } from '../../../../app/core/selectors/config.selectors';
 import { Store } from '@ngrx/store';
@@ -44,7 +47,6 @@ export class BaseRoutesMetadataTableComponent implements OnInit {
   @Output() sortChange = new EventEmitter<{ active: string; direction: string }>();
   allowExperimentalFeatures: boolean;
 
-  durationFormatter = formatDuration;
   objectKeys = Object.keys;
 
   constructor(private store: Store, private zone: NgZone) {}
@@ -82,5 +84,11 @@ export class BaseRoutesMetadataTableComponent implements OnInit {
 
   onSortChange(value: { active: string; direction: string }): void {
     this.zone.run(() => this.sortChange.emit(value));
+  }
+
+  formattedTravelTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds - hours * 3600) / 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
 }
