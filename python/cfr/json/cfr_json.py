@@ -253,8 +253,9 @@ class ShipmentRoute(TypedDict, total=False):
   vehicleIndex: int
   vehicleLabel: str
 
-  vehicleStartTime: str
-  vehicleEndTime: str
+  vehicleStartTime: TimeString
+  vehicleEndTime: TimeString
+  vehicleDetour: DurationString
 
   visits: list[Visit]
   transitions: list[Transition]
@@ -464,6 +465,11 @@ def get_visit_request_duration(
 ) -> datetime.timedelta:
   """Returns the duration of a visit on a route."""
   return parse_duration_string(visit_request.get("duration"))
+
+
+def get_visit_detour(visit: Visit) -> datetime.timedelta:
+  """Returns the detour of a visit on a route."""
+  return parse_duration_string(visit.get("detour", "0s"))
 
 
 def get_global_start_time(model: ShipmentModel) -> datetime.datetime:

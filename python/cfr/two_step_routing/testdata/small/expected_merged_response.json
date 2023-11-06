@@ -5,6 +5,7 @@
       "vehicleLabel": "V001",
       "vehicleStartTime": "2023-08-11T08:00:00Z",
       "vehicleEndTime": "2023-08-11T16:00:00Z",
+      "vehicleDetour": "28800s",
       "visits": [
         {
           "startTime": "2023-08-11T08:07:01Z",
@@ -37,67 +38,80 @@
         {
           "shipmentIndex": 9,
           "shipmentLabel": "P001 arrival",
-          "startTime": "2023-08-11T13:51:14Z"
+          "startTime": "2023-08-11T13:51:14Z",
+          "detour": "20574s"
         },
         {
           "shipmentIndex": 3,
           "shipmentLabel": "S004",
-          "startTime": "2023-08-11T14:00:00Z"
+          "startTime": "2023-08-11T14:00:00Z",
+          "detour": "20574s"
         },
         {
           "shipmentIndex": 10,
           "shipmentLabel": "P001 departure",
-          "startTime": "2023-08-11T14:05:37Z"
+          "startTime": "2023-08-11T14:05:37Z",
+          "detour": "863s"
         },
         {
           "shipmentIndex": 11,
           "shipmentLabel": "P001 arrival",
-          "startTime": "2023-08-11T14:05:37Z"
+          "startTime": "2023-08-11T14:05:37Z",
+          "detour": "21437s"
         },
         {
           "shipmentIndex": 0,
           "shipmentLabel": "S001",
-          "startTime": "2023-08-11T14:08:11Z"
+          "startTime": "2023-08-11T14:08:11Z",
+          "detour": "21437s"
         },
         {
           "shipmentIndex": 1,
           "shipmentLabel": "S002",
-          "startTime": "2023-08-11T14:16:22Z"
+          "startTime": "2023-08-11T14:16:22Z",
+          "detour": "21556s"
         },
         {
           "shipmentIndex": 12,
           "shipmentLabel": "P001 departure",
-          "startTime": "2023-08-11T14:23:29Z"
+          "startTime": "2023-08-11T14:23:29Z",
+          "detour": "1072s"
         },
         {
           "shipmentIndex": 13,
           "shipmentLabel": "P001 arrival",
-          "startTime": "2023-08-11T14:23:29Z"
+          "startTime": "2023-08-11T14:23:29Z",
+          "detour": "22509s"
         },
         {
           "shipmentIndex": 2,
           "shipmentLabel": "S003",
-          "startTime": "2023-08-11T14:32:15Z"
+          "startTime": "2023-08-11T14:32:15Z",
+          "detour": "22509s"
         },
         {
           "shipmentIndex": 14,
           "shipmentLabel": "P001 departure",
-          "startTime": "2023-08-11T14:37:52Z"
+          "startTime": "2023-08-11T14:37:52Z",
+          "detour": "863s"
         },
         {
           "shipmentIndex": 15,
           "shipmentLabel": "P002 arrival",
-          "startTime": "2023-08-11T14:40:52Z"
+          "startTime": "2023-08-11T14:40:52Z",
+          "detour": "23372s"
         },
         {
           "shipmentIndex": 6,
           "shipmentLabel": "S007",
-          "startTime": "2023-08-11T14:43:22Z"
+          "startTime": "2023-08-11T14:43:22Z",
+          "detour": "23372s"
         },
         {
           "shipmentIndex": 16,
           "shipmentLabel": "P002 departure",
-          "startTime": "2023-08-11T14:48:21Z"
+          "startTime": "2023-08-11T14:48:21Z",
+          "detour": "449s"
         }
       ],
       "transitions": [
@@ -339,41 +353,49 @@
       "vehicleLabel": "V002",
       "vehicleStartTime": "2023-08-11T08:00:00Z",
       "vehicleEndTime": "2023-08-11T20:00:00Z",
+      "vehicleDetour": "43200s",
       "visits": [
         {
           "shipmentIndex": 17,
           "shipmentLabel": "P002 arrival",
-          "startTime": "2023-08-11T08:10:53Z"
+          "startTime": "2023-08-11T08:10:53Z",
+          "detour": "0s"
         },
         {
           "shipmentIndex": 7,
           "shipmentLabel": "S008",
-          "startTime": "2023-08-11T08:13:23Z"
+          "startTime": "2023-08-11T08:13:23Z",
+          "detour": "0s"
         },
         {
           "shipmentIndex": 18,
           "shipmentLabel": "P002 departure",
-          "startTime": "2023-08-11T08:18:22Z"
+          "startTime": "2023-08-11T08:18:22Z",
+          "detour": "449s"
         },
         {
           "shipmentIndex": 19,
           "shipmentLabel": "P002 arrival",
-          "startTime": "2023-08-11T08:19:22Z"
+          "startTime": "2023-08-11T08:19:22Z",
+          "detour": "482s"
         },
         {
           "shipmentIndex": 5,
           "shipmentLabel": "S006",
-          "startTime": "2023-08-11T08:21:52Z"
+          "startTime": "2023-08-11T08:21:52Z",
+          "detour": "482s"
         },
         {
           "shipmentIndex": 4,
           "shipmentLabel": "S005",
-          "startTime": "2023-08-11T08:24:23Z"
+          "startTime": "2023-08-11T08:24:23Z",
+          "detour": "633s"
         },
         {
           "shipmentIndex": 20,
           "shipmentLabel": "P002 departure",
-          "startTime": "2023-08-11T08:29:22Z"
+          "startTime": "2023-08-11T08:29:22Z",
+          "detour": "600s"
         }
       ],
       "transitions": [

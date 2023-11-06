@@ -876,24 +876,27 @@ class Planner:
       merged_visits: list[cfr_json.Visit] = []
       merged_transitions: list[cfr_json.Transition] = []
       merged_travel_steps: list[cfr_json.TravelStep] = []
-      merged_routes.append(
-          {
-              "routeTotalCost": global_route["routeTotalCost"],
-              "transitions": merged_transitions,
-              "travelSteps": merged_travel_steps,
-              "vehicleEndTime": global_route["vehicleEndTime"],
-              "vehicleIndex": global_route.get("vehicleIndex", 0),
-              "vehicleLabel": global_route["vehicleLabel"],
-              "vehicleStartTime": global_route["vehicleStartTime"],
-              "visits": merged_visits,
-              # TODO(ondrasej): metrics, detailed costs, ...
-          }
-      )
+      merged_route: cfr_json.ShipmentRoute = {
+          "routeTotalCost": global_route["routeTotalCost"],
+          "transitions": merged_transitions,
+          "travelSteps": merged_travel_steps,
+          "vehicleEndTime": global_route["vehicleEndTime"],
+          "vehicleIndex": global_route.get("vehicleIndex", 0),
+          "vehicleLabel": global_route["vehicleLabel"],
+          "vehicleStartTime": global_route["vehicleStartTime"],
+          "visits": merged_visits,
+          # TODO(ondrasej): metrics, detailed costs, ...
+      }
 
       # Copy breaks from the global route, if present.
-      global_breaks = global_route.get("breaks")
-      if global_breaks is not None:
-        merged_routes[-1]["breaks"] = global_breaks
+      if (global_breaks := global_route.get("breaks")) is not None:
+        merged_route["breaks"] = global_breaks
+
+      # Copy vehicle detour from the global route, if present.
+      if (global_detour := global_route.get("vehicleDetour")) is not None:
+        merged_route["vehicleDetour"] = global_detour
+
+      merged_routes.append(merged_route)
 
       def add_parking_location_shipment(
           parking: ParkingLocation, arrival: bool
@@ -922,6 +925,7 @@ class Planner:
             vehicle=global_vehicle,
         )
         global_visit_label = global_visit["shipmentLabel"]
+        global_visit_detour = cfr_json.get_visit_detour(global_visit)
         visit_type, index = _parse_global_shipment_label(global_visit_label)
         match visit_type:
           case "s":
@@ -953,6 +957,10 @@ class Planner:
                 "shipmentIndex": arrival_shipment_index,
                 "shipmentLabel": arrival_shipment["label"],
                 "startTime": global_visit["startTime"],
+                # NOTE(ondrasej): The detour of the parking arrival visit is the
+                # difference from a plan where the vehicle drives directly to
+                # this parking location.
+                "detour": cfr_json.as_duration_string(global_visit_detour),
             })
 
             # Transfer all visits and transitions from the local route. Update
@@ -976,11 +984,21 @@ class Planner:
               shipment_index = _get_shipment_index_from_local_route_visit(
                   local_visit
               )
+              local_visit_detour = cfr_json.get_visit_detour(local_visit)
               merged_visit: cfr_json.Visit = {
                   "shipmentIndex": shipment_index,
                   "shipmentLabel": self._shipments[shipment_index]["label"],
                   "startTime": cfr_json.update_time_string(
                       local_visit["startTime"], local_to_global_delta
+                  ),
+                  # NOTE(ondrasej): The computation of the detour works with the
+                  # assumption that all visits on the local route are for
+                  # delivery-only shipments. The sum of the local and global
+                  # detours is equivalent to the detour from a route where the
+                  # vehicle drivers straight to the current parking location and
+                  # where the driver then goes directly to this visit.
+                  "detour": cfr_json.as_duration_string(
+                      global_visit_detour + local_visit_detour
                   ),
               }
               merged_visits.append(merged_visit)
@@ -1002,12 +1020,19 @@ class Planner:
             departure_shipment_index, departure_shipment = (
                 add_parking_location_shipment(parking, arrival=False)
             )
+            local_route_duration = cfr_json.parse_duration_string(
+                local_route["metrics"]["totalDuration"]
+            )
             merged_visits.append({
                 "shipmentIndex": departure_shipment_index,
                 "shipmentLabel": departure_shipment["label"],
                 "startTime": cfr_json.update_time_string(
                     local_route["vehicleEndTime"], local_to_global_delta
                 ),
+                # NOTE(ondrasej): The detour of the parking departure visit is
+                # the time spent in the parking (the delta between the arrival
+                # to the parking and the departure from the parking).
+                "detour": cfr_json.as_duration_string(local_route_duration),
             })
           case _:
             raise ValueError(f"Unexpected visit type: '{visit_type}'")
