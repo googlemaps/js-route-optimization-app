@@ -18,10 +18,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DataSource } from 'src/app/shared/models';
-import {
-  getCapacityQuantityUnit,
-  getUnitAbbreviation,
-} from 'src/app/util';
+import { getCapacityQuantityUnit, getUnitAbbreviation } from 'src/app/util';
 import { RouteMetadata } from '../../models';
 import { selectAllowExperimentalFeatures } from '../../../../app/core/selectors/config.selectors';
 import { Store } from '@ngrx/store';
