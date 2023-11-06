@@ -52,4 +52,15 @@ describe('BaseRoutesMetadataTableComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should format traveled time', () => {
+    expect(component.formattedTravelTime(0)).toBe('00:00');
+    expect(component.formattedTravelTime(61)).toBe('00:01');
+    expect(component.formattedTravelTime(1910)).toBe('00:31');
+    expect(component.formattedTravelTime(3600)).toBe('01:00');
+    expect(component.formattedTravelTime(7260)).toBe('02:01');
+    expect(component.formattedTravelTime(7300)).toBe('02:01');
+    expect(component.formattedTravelTime(86400)).toBe('24:00');
+    expect(component.formattedTravelTime(90120)).toBe('25:02');
+  });
 });
