@@ -262,6 +262,65 @@
           }
         }
       ],
+      "travelSteps": [
+        {
+          "distanceMeters": 1249,
+          "duration": "421s"
+        },
+        {
+          "distanceMeters": 719,
+          "duration": "238s"
+        },
+        {
+          "distanceMeters": 1597,
+          "duration": "521s"
+        },
+        {
+          "distanceMeters": 719,
+          "duration": "277s"
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "distanceMeters": 360,
+          "duration": "151s"
+        },
+        {
+          "distanceMeters": 1233,
+          "duration": "370s"
+        },
+        {
+          "distanceMeters": 719,
+          "duration": "277s"
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "distanceMeters": 1597,
+          "duration": "521s"
+        },
+        {
+          "distanceMeters": 719,
+          "duration": "277s"
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "distanceMeters": 186,
+          "duration": "149s"
+        },
+        {
+          "distanceMeters": 186,
+          "duration": "149s"
+        },
+        {
+          "distanceMeters": 436,
+          "duration": "156s"
+        }
+      ],
       "routeTotalCost": 1582.404,
       "metrics": {
         "performedShipmentCount": 14,
@@ -410,6 +469,38 @@
             "wheat": {},
             "ore": {}
           }
+        }
+      ],
+      "travelSteps": [
+        {
+          "distanceMeters": 1552,
+          "duration": "473s"
+        },
+        {
+          "distanceMeters": 186,
+          "duration": "149s"
+        },
+        {
+          "distanceMeters": 186,
+          "duration": "149s"
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "distanceMeters": 186,
+          "duration": "149s"
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "distanceMeters": 187,
+          "duration": "149s"
+        },
+        {
+          "distanceMeters": 436,
+          "duration": "149s"
         }
       ],
       "routeTotalCost": 1721.988,

@@ -106,6 +106,94 @@
           "totalDuration": "159s"
         }
       ],
+      "travelSteps": [
+        {
+          "routePolyline": {
+            "points": "ctfiHiniMj@~D@DBP@D@@?B?@?@@B?@?@?@?B?@?@?B?@?@?@?BABCDABA@CBCBIDQL]Pi@XKDq@\\_A`@]Na@REZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQj@qEZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          },
+          "duration": "25544s"
+        },
+        {
+          "routePolyline": {
+            "points": "c|fiHgziM?B?@Ir@Ir@It@a@Qi@WKGQG{@[a@MCP"
+          },
+          "duration": "135s"
+        },
+        {
+          "routePolyline": {},
+          "duration": "0s"
+        },
+        {
+          "routePolyline": { "points": "mcgiHuwiM?@" },
+          "duration": "0s"
+        },
+        {
+          "routePolyline": {
+            "points": "mcgiHswiMBS`@Lz@ZPFJFh@V`@PHu@Hs@Hs@?A?C"
+          },
+          "duration": "135s"
+        },
+        {
+          "routePolyline": {},
+          "duration": "0s"
+        },
+        {
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@O~@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          },
+          "duration": "535s"
+        },
+        {
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          },
+          "duration": "128s"
+        },
+        {
+          "routePolyline": {},
+          "duration": "0s"
+        },
+        {
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@"
+          },
+          "duration": "156s"
+        },
+        {
+          "routePolyline": {
+            "points": "yvfiHyuiMKr@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          },
+          "duration": "377s"
+        },
+        {
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          },
+          "duration": "128s"
+        },
+        {
+          "routePolyline": {},
+          "duration": "0s"
+        },
+        {
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@O~@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          },
+          "duration": "535s"
+        },
+        {
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          },
+          "duration": "128s"
+        },
+        {
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@DLDH@F@FHt@F^BF@DDFDDBDNXBFDDDJ"
+          },
+          "duration": "159s"
+        }
+      ],
       "vehicleEndTime": "2023-08-11T16:00:00Z",
       "vehicleIndex": 0,
       "vehicleLabel": "V001",

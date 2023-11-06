@@ -197,6 +197,15 @@ class EncodedPolyline(TypedDict, total=False):
   points: str
 
 
+class TravelStep(TypedDict, total=False):
+  """Represents a single travel step of a route in the JSON CFR results."""
+
+  duration: DurationString
+  distanceMeters: float
+  trafficInfoUnavailable: bool
+  routePolyline: EncodedPolyline
+
+
 class Transition(TypedDict, total=False):
   """Represents a single transition on a route in the JSON CFR results."""
 
@@ -249,6 +258,7 @@ class ShipmentRoute(TypedDict, total=False):
 
   visits: list[Visit]
   transitions: list[Transition]
+  travelSteps: list[TravelStep]
   breaks: list[Break]
   metrics: AggregatedMetrics
 

@@ -833,18 +833,21 @@ class Planner:
     global_routes = cfr_json.get_routes(global_response)
     populate_polylines = self._request.get("populatePolylines", False)
 
-    # We defined merged_transitions and add_merged_transition outside of the
-    # loop to avoid a lint warning (and to avoid redefining the function for
-    # each iteration of the loop).
+    # We defined merged_transitions, merged_travel_steps, and
+    # add_merged_transition outside of the loop to avoid a lint warning (and to
+    # avoid redefining the function for each iteration of the loop).
     merged_transitions = None
+    merged_travel_steps = None
 
     def add_merged_transition(
         transition: cfr_json.Transition,
+        travel_step: cfr_json.TravelStep,
         at_parking: ParkingLocation | None = None,
         vehicle: cfr_json.Vehicle | None = None,
     ):
       assert (at_parking is None) != (vehicle is None)
       assert merged_transitions is not None
+      assert merged_travel_steps is not None
       if self._options.travel_mode_in_merged_transitions:
         if at_parking is not None:
           transition["travelMode"] = at_parking.travel_mode
@@ -857,6 +860,7 @@ class Planner:
               "travelDurationMultiple", 1
           )
       merged_transitions.append(transition)
+      merged_travel_steps.append(travel_step)
 
     for global_route_index, global_route in enumerate(global_routes):
       global_visits = cfr_json.get_visits(global_route)
@@ -868,17 +872,20 @@ class Planner:
         continue
 
       global_transitions = global_route["transitions"]
+      global_travel_steps = global_route["travelSteps"]
       merged_visits: list[cfr_json.Visit] = []
       merged_transitions: list[cfr_json.Transition] = []
+      merged_travel_steps: list[cfr_json.TravelStep] = []
       merged_routes.append(
           {
+              "routeTotalCost": global_route["routeTotalCost"],
+              "transitions": merged_transitions,
+              "travelSteps": merged_travel_steps,
+              "vehicleEndTime": global_route["vehicleEndTime"],
               "vehicleIndex": global_route.get("vehicleIndex", 0),
               "vehicleLabel": global_route["vehicleLabel"],
               "vehicleStartTime": global_route["vehicleStartTime"],
-              "vehicleEndTime": global_route["vehicleEndTime"],
               "visits": merged_visits,
-              "transitions": merged_transitions,
-              "routeTotalCost": global_route["routeTotalCost"],
               # TODO(ondrasej): metrics, detailed costs, ...
           }
       )
@@ -911,6 +918,7 @@ class Planner:
         # always by vehicle.
         add_merged_transition(
             copy.deepcopy(global_transitions[global_visit_index]),
+            copy.deepcopy(global_travel_steps[global_visit_index]),
             vehicle=global_vehicle,
         )
         global_visit_label = global_visit["shipmentLabel"]
@@ -951,13 +959,19 @@ class Planner:
             # the timestamps as needed.
             local_visits = cfr_json.get_visits(local_route)
             local_transitions = local_route["transitions"]
+            local_travel_steps = local_route["travelSteps"]
             for local_visit_index, local_visit in enumerate(local_visits):
               local_transition_in = local_transitions[local_visit_index]
               merged_transition = copy.deepcopy(local_transition_in)
               merged_transition["startTime"] = cfr_json.update_time_string(
                   merged_transition["startTime"], local_to_global_delta
               )
-              add_merged_transition(merged_transition, at_parking=parking)
+              merged_travel_step = copy.deepcopy(
+                  local_travel_steps[local_visit_index]
+              )
+              add_merged_transition(
+                  merged_transition, merged_travel_step, at_parking=parking
+              )
 
               shipment_index = _get_shipment_index_from_local_route_visit(
                   local_visit
@@ -976,7 +990,12 @@ class Planner:
             transition_to_parking["startTime"] = cfr_json.update_time_string(
                 transition_to_parking["startTime"], local_to_global_delta
             )
-            add_merged_transition(transition_to_parking, at_parking=parking)
+            travel_step_to_parking = copy.deepcopy(local_travel_steps[-1])
+            add_merged_transition(
+                transition_to_parking,
+                travel_step_to_parking,
+                at_parking=parking,
+            )
 
             # Add a virtual shipment and a visit for the departure from the
             # parking location.
@@ -995,7 +1014,9 @@ class Planner:
 
       # Add the transition back to the depot.
       add_merged_transition(
-          copy.deepcopy(global_transitions[-1]), vehicle=global_vehicle
+          copy.deepcopy(global_transitions[-1]),
+          copy.deepcopy(global_travel_steps[-1]),
+          vehicle=global_vehicle,
       )
       if populate_polylines:
         route_polyline = cfr_json.merge_polylines_from_transitions(

@@ -40,6 +40,26 @@
           }
         }
       ],
+      "travelSteps": [
+        {
+          "duration": "156s",
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@"
+          }
+        },
+        {
+          "duration": "377s",
+          "routePolyline": {
+            "points": "yvfiHyuiMKr@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          }
+        },
+        {
+          "duration": "128s",
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          }
+        }
+      ],
       "routePolyline": {
         "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@CJKr@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
       },
@@ -76,6 +96,20 @@
           }
         }
       ],
+      "travelSteps": [
+        {
+          "duration": "535s",
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@O~@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          }
+        },
+        {
+          "duration": "128s",
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          }
+        }
+      ],
       "routePolyline": {
         "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@O~@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
       },
@@ -107,6 +141,20 @@
         {
           "totalDuration": "128s",
           "startTime": "2023-08-11T14:09:55Z",
+          "routePolyline": {
+            "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          }
+        }
+      ],
+      "travelSteps": [
+        {
+          "duration": "535s",
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@Il@O~@a@nCk@zD_AjGKl@EZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQTJ"
+          }
+        },
+        {
+          "duration": "128s",
           "routePolyline": {
             "points": "mhgiHwziMd@yD?C?CAC?AMUZaCDDDDd@XVNl@Vr@\\d@RdA`@"
           }
@@ -167,6 +215,28 @@
         {
           "totalDuration": "135s",
           "startTime": "2023-08-11T00:09:45Z",
+          "routePolyline": {
+            "points": "mcgiHswiMBS`@Lz@ZPFJFh@V`@PHu@Hs@Hs@?A?C"
+          }
+        }
+      ],
+      "travelSteps": [
+        {
+          "duration": "135s",
+          "routePolyline": {
+            "points": "c|fiHgziM?B?@Ir@Ir@It@a@Qi@WKGQG{@[a@MCP"
+          }
+        },
+        {
+          "duration": "0s",
+          "routePolyline": {}
+        },
+        {
+          "duration": "0s",
+          "routePolyline": { "points": "mcgiHuwiM?@" }
+        },
+        {
+          "duration": "135s",
           "routePolyline": {
             "points": "mcgiHswiMBS`@Lz@ZPFJFh@V`@PHu@Hs@Hs@?A?C"
           }

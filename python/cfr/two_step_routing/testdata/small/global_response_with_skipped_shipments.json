@@ -57,6 +57,32 @@
           }
         }
       ],
+      "travelSteps": [
+        {
+          "duration": "25544s",
+          "routePolyline": {
+            "points": "ctfiHiniMj@~D@DBP@D@@?B?@?@@B?@?@?@?B?@?@?B?@?@?@?BABCDABA@CBCBIDQL]Pi@XKDq@\\_A`@]Na@REZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQj@qEZaCDDDDd@XVNl@Vr@\\d@RdA`@"
+          }
+        },
+        {
+          "duration": "0s",
+          "routePolyline": {}
+        },
+        {
+          "duration": "0s",
+          "routePolyline": {}
+        },
+        {
+          "duration": "0s",
+          "routePolyline": {}
+        },
+        {
+          "duration": "159s",
+          "routePolyline": {
+            "points": "c~fiHu`jMIiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@DLDH@F@FHt@F^BF@DDFDDBDNXBFDDDJ"
+          }
+        }
+      ],
       "routePolyline": {
         "points": "ctfiHiniMj@~D@DBP@D@@?B?@?@@B?@?@?@?B?@?@?B?@?@?@?BABCDABA@CBCBIDQL]Pi@XKDq@\\_A`@]Na@REZY~AIh@UtAE\\]~Bc@Uo@[i@QiAg@oAm@MEsBWi@PIDe@NmAd@Hc@Fk@NgAj@iE@MBSJm@L}@Js@@Kf@yDL{@P{AJu@^uCJs@DQj@qEZaCDDDDd@XVNl@Vr@\\d@RdA`@IiBC_AAM?GBSjCrAh@PL`ATzARrAJv@H`@F\\Gd@DLDH@F@FHt@F^BF@DDFDDBDNXBFDDDJ"
       },
