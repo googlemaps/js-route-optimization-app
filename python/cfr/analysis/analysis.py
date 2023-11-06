@@ -711,3 +711,98 @@ def get_vehicle_wait_hours(route: cfr_json.ShipmentRoute) -> datetime.timedelta:
     wait_time += cfr_json.parse_duration_string(wait_duration)
 
   return wait_time
+
+
+def get_percentile_visit_time(
+    model: cfr_json.ShipmentModel,
+    route: cfr_json.ShipmentRoute,
+    percent_rank: float,
+    include_virtual_shipments: bool = False,
+) -> tuple[datetime.datetime, datetime.datetime]:
+  """Computes a percentile of shipment delivery times for a route.
+
+  The percentile is computed both for CFR shipments (visits) and actual
+  shipments.
+
+  The percentile is the time by which at least `percent_rank`% of the shipments
+  of the route are delivered (resp. at least `percent_rank`% of the visits of
+  the route are made). Tracks the number of shipments delivered at each visit
+  and returns the visit end time (i.e. the visit start time + duration) of the
+  visit at which the last required shipment(s) (resp. visits) were performed.
+
+  Note that for `percentile_rank` == 0, returns the start time of the route; for
+  `percentile_rank` == 100, returns the end time of the last visit.
+
+  Args:
+    model: The model in which the percentile is computed.
+    route: The route for which the percentile is computed.
+    percent_rank: The rank of the computed percentile. This is a percent value
+      that must be between 1 and 100.
+    include_virtual_shipments: When False, the virtual "arrival" and "departure"
+      shipments created by the two_step_routing library are not included in the
+      stats; when True, they are included.
+
+  Returns:
+    A tuple `(visit_percentile_time, shipment_percentile_time)` where
+    `visit_percentile_time` is the time when the vehicle completed at least
+    `percentile_rank`% of visits on the route (i.e. CFR shipments), and
+    `shipment_percentile_time` is the time when the vehicle delivered at least
+    `percentile_rank`% of actual shipments (as determined by the number of
+    comma-separated elements of shipment labels).
+
+  Raises:
+    ValueError: When percent_rank is outside of the interval [0, 100].
+  """
+  visits = cfr_json.get_visits(route)
+  if not include_virtual_shipments:
+    filtered_visits = []
+    for visit in visits:
+      shipment_label = visit.get("ShipmentLabel", "")
+      if shipment_label.endswith(" arrival") or shipment_label.endswith(
+          " departure"
+      ):
+        continue
+      filtered_visits.append(visit)
+    visits = filtered_visits
+
+  if percent_rank == 0:
+    start_time = cfr_json.parse_time_string(route["vehicleStartTime"])
+    return start_time, start_time
+  if percent_rank < 0 or percent_rank > 100:
+    raise ValueError(f"Invalid percent rank {percent_rank}")
+
+  num_visits = len(visits)
+  num_shipments = 0
+  for visit in visits:
+    shipment_label = visit.get("label", "")
+    num_shipments += shipment_label.count(",") + 1
+
+  shipment_percentile = math.ceil(percent_rank * num_shipments / 100)
+  visit_percentile = math.ceil(percent_rank * num_visits / 100)
+
+  shipment_percentile_time = None
+  visit_percentile_time = None
+  seen_visits = 0
+  seen_shipments = 0
+  for visit in visits:
+    seen_visits += 1
+    shipment_label = visit.get("label", "")
+    seen_shipments += shipment_label.count(",") + 1
+    if seen_visits >= visit_percentile and visit_percentile_time is None:
+      visit_request = cfr_json.get_visit_request(model, visit)
+      visit_percentile_time = cfr_json.parse_time_string(
+          visit["startTime"]
+      ) + cfr_json.get_visit_request_duration(visit_request)
+    if (
+        seen_shipments >= shipment_percentile
+        and shipment_percentile_time is None
+    ):
+      visit_request = cfr_json.get_visit_request(model, visit)
+      shipment_percentile_time = cfr_json.parse_time_string(
+          visit["startTime"]
+      ) + cfr_json.get_visit_request_duration(visit_request)
+
+  assert shipment_percentile_time is not None
+  assert visit_percentile_time is not None
+
+  return visit_percentile_time, shipment_percentile_time
