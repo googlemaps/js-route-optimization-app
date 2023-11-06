@@ -16,11 +16,15 @@
               }
             },
             "duration": "120s",
-            "tags": ["S001"]
+            "tags": [
+              "S001"
+            ]
           }
         ],
         "label": "0: S001",
-        "allowedVehicleIndices": [0]
+        "allowedVehicleIndices": [
+          0
+        ]
       },
       {
         "deliveries": [
@@ -34,11 +38,15 @@
               }
             },
             "duration": "150s",
-            "tags": ["S002"]
+            "tags": [
+              "S002"
+            ]
           }
         ],
         "label": "1: S002",
-        "allowedVehicleIndices": [0]
+        "allowedVehicleIndices": [
+          0
+        ]
       },
       {
         "deliveries": [
@@ -51,12 +59,18 @@
                 }
               }
             },
-            "timeWindows": [{ "startTime": "2023-08-11T12:00:00.000Z" }],
-            "duration": "60s"
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-08-11T12:00:00.000Z"
+              }
+            ]
           }
         ],
         "label": "2: S003",
-        "allowedVehicleIndices": [1]
+        "allowedVehicleIndices": [
+          1
+        ]
       },
       {
         "deliveries": [
@@ -69,17 +83,19 @@
                 }
               }
             },
+            "duration": "60s",
             "timeWindows": [
               {
-                "endTime": "2023-08-11T16:00:00.000Z",
-                "startTime": "2023-08-11T14:00:00.000Z"
+                "startTime": "2023-08-11T14:00:00.000Z",
+                "endTime": "2023-08-11T16:00:00.000Z"
               }
-            ],
-            "duration": "60s"
+            ]
           }
         ],
         "label": "3: S004",
-        "allowedVehicleIndices": [2]
+        "allowedVehicleIndices": [
+          2
+        ]
       },
       {
         "deliveries": [
@@ -96,10 +112,11 @@
           }
         ],
         "label": "4: S005",
-        "allowedVehicleIndices": [3]
+        "allowedVehicleIndices": [
+          3
+        ]
       },
       {
-        "allowedVehicleIndices": [3],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -114,13 +131,19 @@
           }
         ],
         "label": "5: S006",
+        "allowedVehicleIndices": [
+          3
+        ],
         "loadDemands": {
-          "ore": { "amount": "2" },
-          "wheat": { "amount": "3" }
+          "wheat": {
+            "amount": "3"
+          },
+          "ore": {
+            "amount": "2"
+          }
         }
       },
       {
-        "allowedVehicleIndices": [4],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -135,13 +158,19 @@
           }
         ],
         "label": "6: S007",
+        "allowedVehicleIndices": [
+          4
+        ],
         "loadDemands": {
-          "ore": { "amount": "1" },
-          "wood": { "amount": "5" }
+          "ore": {
+            "amount": "1"
+          },
+          "wood": {
+            "amount": "5"
+          }
         }
       },
       {
-        "allowedVehicleIndices": [5],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -155,7 +184,10 @@
             "duration": "150s"
           }
         ],
-        "label": "7: S008"
+        "label": "7: S008",
+        "allowedVehicleIndices": [
+          5
+        ]
       }
     ],
     "vehicles": [
@@ -177,15 +209,25 @@
             }
           }
         },
-        "startTags": ["P001"],
-        "endTags": ["P001"],
-        "routeDurationLimit": { "maxDuration": "1800s" },
         "travelDurationMultiple": 1.1,
         "travelMode": 1,
         "fixedCost": 10000,
         "costPerHour": 300,
         "costPerKilometer": 60,
-        "loadLimits": { "ore": { "maxLoad": "2" } }
+        "startTags": [
+          "P001"
+        ],
+        "endTags": [
+          "P001"
+        ],
+        "routeDurationLimit": {
+          "maxDuration": "1800s"
+        },
+        "loadLimits": {
+          "ore": {
+            "maxLoad": "2"
+          }
+        }
       },
       {
         "label": "P001 [start=2023-08-11T12:00:00.000Z vehicles=(0,)]/0",
@@ -205,15 +247,25 @@
             }
           }
         },
-        "startTags": ["P001"],
-        "endTags": ["P001"],
-        "routeDurationLimit": { "maxDuration": "1800s" },
         "travelDurationMultiple": 1.1,
         "travelMode": 1,
         "fixedCost": 10000,
         "costPerHour": 300,
         "costPerKilometer": 60,
-        "loadLimits": { "ore": { "maxLoad": "2" } }
+        "startTags": [
+          "P001"
+        ],
+        "endTags": [
+          "P001"
+        ],
+        "routeDurationLimit": {
+          "maxDuration": "1800s"
+        },
+        "loadLimits": {
+          "ore": {
+            "maxLoad": "2"
+          }
+        }
       },
       {
         "label": "P001 [start=2023-08-11T14:00:00.000Z end=2023-08-11T16:00:00.000Z vehicles=(0,)]/0",
@@ -233,15 +285,25 @@
             }
           }
         },
-        "startTags": ["P001"],
-        "endTags": ["P001"],
-        "routeDurationLimit": { "maxDuration": "1800s" },
         "travelDurationMultiple": 1.1,
         "travelMode": 1,
         "fixedCost": 10000,
         "costPerHour": 300,
         "costPerKilometer": 60,
-        "loadLimits": { "ore": { "maxLoad": "2" } }
+        "startTags": [
+          "P001"
+        ],
+        "endTags": [
+          "P001"
+        ],
+        "routeDurationLimit": {
+          "maxDuration": "1800s"
+        },
+        "loadLimits": {
+          "ore": {
+            "maxLoad": "2"
+          }
+        }
       },
       {
         "label": "P002 [vehicles=(0, 1)]/0",
@@ -261,28 +323,33 @@
             }
           }
         },
-        "startTags": ["P002"],
-        "endTags": ["P002"],
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
         "fixedCost": 10000,
         "costPerHour": 300,
         "costPerKilometer": 60,
-        "loadLimits": { "ore": { "maxLoad": "2" } }
+        "startTags": [
+          "P002"
+        ],
+        "endTags": [
+          "P002"
+        ],
+        "loadLimits": {
+          "ore": {
+            "maxLoad": "2"
+          }
+        }
       },
       {
-        "costPerHour": 300,
-        "costPerKilometer": 60,
-        "endWaypoint": {
-          "location": {
-            "latLng": {
-              "latitude": 48.86482,
-              "longitude": 2.34932
-            }
-          }
-        },
-        "fixedCost": 10000,
         "label": "P002 [vehicles=(0,)]/0",
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86482,
+              "longitude": 2.34932
+            }
+          }
+        },
         "startWaypoint": {
           "location": {
             "latLng": {
@@ -291,39 +358,64 @@
             }
           }
         },
-        "startTags": ["P002"],
-        "endTags": ["P002"],
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "loadLimits": { "ore": { "maxLoad": "2" } }
-      },
-      {
+        "fixedCost": 10000,
         "costPerHour": 300,
         "costPerKilometer": 60,
+        "startTags": [
+          "P002"
+        ],
+        "endTags": [
+          "P002"
+        ],
+        "loadLimits": {
+          "ore": {
+            "maxLoad": "2"
+          }
+        }
+      },
+      {
+        "label": "P002 [vehicles=(1,)]/0",
         "endWaypoint": {
           "location": {
-            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+            "latLng": {
+              "latitude": 48.86482,
+              "longitude": 2.34932
+            }
           }
         },
-        "fixedCost": 10000,
-        "label": "P002 [vehicles=(1,)]/0",
-        "loadLimits": { "ore": { "maxLoad": "2" } },
         "startWaypoint": {
           "location": {
-            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+            "latLng": {
+              "latitude": 48.86482,
+              "longitude": 2.34932
+            }
           }
         },
-        "startTags": ["P002"],
-        "endTags": ["P002"],
         "travelDurationMultiple": 1.0,
-        "travelMode": 2
+        "travelMode": 2,
+        "fixedCost": 10000,
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "startTags": [
+          "P002"
+        ],
+        "endTags": [
+          "P002"
+        ],
+        "loadLimits": {
+          "ore": {
+            "maxLoad": "2"
+          }
+        }
       }
     ],
     "transitionAttributes": [
       {
-        "cost": 1,
+        "srcTag": "S001",
         "dstTag": "S002",
-        "srcTag": "S001"
+        "cost": 1
       }
     ]
   },

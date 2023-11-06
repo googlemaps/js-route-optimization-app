@@ -276,7 +276,7 @@
         "endTimeWindows": [
           {
             "costPerHourAfterSoftEndTime": 10000,
-            "softEndTime": "2023-08-11T15:50:19Z"
+            "softEndTime": "2023-08-11T14:37:52Z"
           }
         ],
         "endWaypoint": {
@@ -292,7 +292,7 @@
         "startTimeWindows": [
           {
             "costPerHourBeforeSoftStartTime": 10000,
-            "softStartTime": "2023-08-11T15:10:39Z"
+            "softStartTime": "2023-08-11T13:51:14Z"
           }
         ],
         "startWaypoint": {
@@ -310,7 +310,7 @@
         "endTimeWindows": [
           {
             "costPerHourAfterSoftEndTime": 10000,
-            "softEndTime": "2023-08-11T19:57:18Z"
+            "softEndTime": "2023-08-11T08:29:22Z"
           }
         ],
         "endWaypoint": {
@@ -325,7 +325,7 @@
         "startTimeWindows": [
           {
             "costPerHourBeforeSoftStartTime": 10000,
-            "softStartTime": "2023-08-11T19:40:49Z"
+            "softStartTime": "2023-08-11T08:10:53Z"
           }
         ],
         "startWaypoint": {
