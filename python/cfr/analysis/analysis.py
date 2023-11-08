@@ -21,6 +21,7 @@ class ParkingLocationData:
       the solution. Note that parking locations that are not visited by any
       vehicle do not appear in the solution and by consequence, do not appear in
       this set.
+    num_visits_to_parking: The number of times each parking is visited.
     vehicles_by_parking: For each parking tag, contains a mapping from vehicle
       indices to the list of indices of the visits made by this vehicle.
     consecutive_visits: The per-vehicle list of consecutive visits to a parking
@@ -49,9 +50,12 @@ class ParkingLocationData:
       to the "departure from parking" virtual shipment. When there are multiple
       visits to the same parking location (a "parking ping-pong"), each delivery
       round has its own entry in the list.
+    num_all_visits_to_parking: The number of times any parking location in the
+      solution is visited.
   """
 
   all_parking_tags: Set[str]
+  num_visits_to_parking: Mapping[str, int]
   vehicles_by_parking: Mapping[str, Mapping[int, Sequence[int]]]
   consecutive_visits: Mapping[int, Sequence[tuple[str, int]]]
   non_consecutive_visits: Mapping[int, Sequence[tuple[str, int]]]
@@ -59,6 +63,10 @@ class ParkingLocationData:
   global_visits: Mapping[
       int, Sequence[tuple[two_step_routing.ParkingTag | None, int, int]]
   ]
+
+  @functools.cached_property
+  def num_all_visits_to_parking(self):
+    return sum(self.num_visits_to_parking.values())
 
 
 @dataclasses.dataclass
@@ -187,6 +195,7 @@ def get_parking_location_aggregate_data(
 
   routes = scenario.routes
   all_parking_tags = set()
+  num_visits_to_parking = collections.defaultdict(int)
   # The number of visits to each parking location by each vehicle.
   visits_by_vehicle = collections.defaultdict(
       functools.partial(collections.defaultdict, int)
@@ -226,6 +235,7 @@ def get_parking_location_aggregate_data(
               f" {current_parking_tag!r}, found {departure_tag!r}."
           )
         all_parking_tags.add(departure_tag)
+        num_visits_to_parking[departure_tag] += 1
         global_visits.append(
             (current_parking_tag, current_parking_arrival_visit, visit_index)
         )
@@ -273,6 +283,7 @@ def get_parking_location_aggregate_data(
 
   return ParkingLocationData(
       all_parking_tags=all_parking_tags,
+      num_visits_to_parking=num_visits_to_parking,
       vehicles_by_parking=vehicles_by_parking,
       consecutive_visits=vehicle_consecutive_visits,
       non_consecutive_visits=vehicle_non_consecutive_visits,
