@@ -1,7 +1,7 @@
 import unittest
 
-from google3.third_party.cfr.python.cfr.analysis import analysis
-from google3.third_party.cfr.python.cfr.json import cfr_json
+from . import analysis
+from ..json import cfr_json
 
 
 class VehicleShipmentGroupsTest(unittest.TestCase):
