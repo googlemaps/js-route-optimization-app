@@ -4,6 +4,7 @@
 # in the LICENSE file or at https://opensource.org/licenses/MIT.
 
 from collections.abc import Sequence
+import copy
 import datetime
 from importlib import resources
 import json
@@ -15,7 +16,9 @@ from . import two_step_routing
 
 # Provides easy access to files under `./testdata`. See `_json()` below for
 # example use.
-_TESTDATA = resources.files(__package__).joinpath("testdata")
+_TESTDATA = resources.files(
+    "google3.third_party.cfr.python.cfr.two_step_routing"
+).joinpath("testdata")
 
 
 def _json(path: str):
@@ -322,6 +325,20 @@ class PlannerTestGlobalModel(PlannerTest):
     global_request = planner.make_global_request(self._LOCAL_RESPONSE_JSON)
     self.assertEqual(global_request, self._EXPECTED_GLOBAL_REQUEST_JSON)
 
+  def test_make_global_request_with_traffic_override(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+    global_request = planner.make_global_request(
+        self._LOCAL_RESPONSE_JSON, consider_road_traffic_override=False
+    )
+    expected_request = copy.deepcopy(self._EXPECTED_GLOBAL_REQUEST_JSON)
+    expected_request["considerRoadTraffic"] = False
+    self.assertEqual(global_request, expected_request)
+
 
 class PlannerTestMergedModel(PlannerTest):
   """Tests for Planner.merge_local_and_global_result()."""
@@ -403,6 +420,49 @@ class PlannerTestRefinedLocalModel(PlannerTest):
     )
     self.assertEqual(
         local_refinement_request, self._EXPECTED_LOCAL_REFINEMENT_REQUEST
+    )
+
+
+class PlannerTestIntegratedModels(PlannerTest):
+  _LOCAL_REFINEMENT_RESPONSE: cfr_json.OptimizeToursResponse = _json(
+      "small/local_refinement_response.json"
+  )
+  _EXPECTED_INTEGRATED_LOCAL_REQUEST: cfr_json.OptimizeToursRequest = _json(
+      "small/expected_integrated_local_request.json"
+  )
+  _EXPECTED_INTEGRATED_LOCAL_RESPONSE: cfr_json.OptimizeToursResponse = _json(
+      "small/expected_integrated_local_response.json"
+  )
+  _EXPECTED_INTEGRATED_GLOBAL_REQUEST: cfr_json.OptimizeToursRequest = _json(
+      "small/expected_integrated_global_request.json"
+  )
+
+  def test_integrated_models(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+    (
+        integrated_local_request,
+        integrated_local_response,
+        integrated_global_request,
+    ) = planner.integrate_local_refinement(
+        local_request=self._EXPECTED_LOCAL_REQUEST_JSON,
+        local_response=self._LOCAL_RESPONSE_JSON,
+        global_request=self._EXPECTED_GLOBAL_REQUEST_JSON,
+        global_response=self._GLOBAL_RESPONSE_JSON,
+        refinement_response=self._LOCAL_REFINEMENT_RESPONSE,
+    )
+    self.assertEqual(
+        integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
+    )
+    self.assertEqual(
+        integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
+    )
+    self.assertEqual(
+        integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
     )
 
 
@@ -557,7 +617,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {"shipmentLabel": "s:1 S002"},
             {"shipmentLabel": "s:5 SOO6"},
             {"shipmentLabel": "s:6 S007"},
-        ]
+        ],
+        "transitions": [{}, {}, {}, {}],
     }
     self.assertSequenceEqual(
         two_step_routing._get_consecutive_parking_location_visits(
@@ -600,6 +661,7 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {"shipmentLabel": "p:2 P002"},
             {"shipmentLabel": "p:0 P001"},
         ],
+        "transitions": [{}, {}, {}, {}, {}],
     }
     self.assertSequenceEqual(
         two_step_routing._get_consecutive_parking_location_visits(
@@ -660,6 +722,7 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {"shipmentLabel": "p:2 P002"},
             {"shipmentLabel": "p:4 P002"},
         ],
+        "transitions": [{}, {}, {}, {}, {}, {}, {}, {}],
     }
     self.assertSequenceEqual(
         two_step_routing._get_consecutive_parking_location_visits(
@@ -681,6 +744,88 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
                 num_global_visits=3,
                 local_route_indices=[3, 2, 4],
                 shipment_indices=[[4, 6], [2, 8, 0], [9, 10]],
+            ),
+        ),
+    )
+
+  def test_consecutive_visits_with_breaks(self):
+    local_response: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "vehicleLabel": "P001 [vehicles=(0,)]/0",
+                "visits": [
+                    {"shipmentLabel": "3: S003"},
+                    {"shipmentLabel": "5: S005"},
+                ],
+            },
+            {
+                "vehicleLabel": "P001 [vehicles=(0,)]/1",
+                "visits": [
+                    {"shipmentLabel": "1: S001"},
+                    {"shipmentLabel": "12: S012"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/0",
+                "visits": [
+                    {"shipmentLabel": "2: S002"},
+                    {"shipmentLabel": "8: S008"},
+                    {"shipmentLabel": "0: S000"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/1",
+                "visits": [
+                    {"shipmentLabel": "4: S004"},
+                    {"shipmentLabel": "6: S006"},
+                ],
+            },
+            {
+                "vehicleLabel": "P002 [vehicles=(0,)]/2",
+                "visits": [
+                    {"shipmentLabel": "9: S009"},
+                    {"shipmentLabel": "10: S010"},
+                ],
+            },
+        ],
+    }
+    global_route: cfr_json.ShipmentRoute = {
+        "vehicleIndex": 2,
+        "visits": [
+            {"shipmentLabel": "s:0 S001"},
+            {"shipmentLabel": "p:0 P001"},
+            {"shipmentLabel": "p:1 P001"},
+            {"shipmentLabel": "s:10 S011"},
+            {"shipmentLabel": "p:3 P002"},
+            {"shipmentLabel": "p:2 P002"},
+            # There is a break between the visit above and the one below. This
+            # breaks splits this sequence into two; the one above has
+            # consecutive visits, the one below does not. Only the part above is
+            # returned by _get_consecutive_parking_location_visits().
+            {"shipmentLabel": "p:4 P002"},
+        ],
+        "transitions": [{}, {}, {}, {}, {}, {}, {"breakDuration": "600s"}, {}],
+    }
+    self.assertSequenceEqual(
+        two_step_routing._get_consecutive_parking_location_visits(
+            local_response, global_route
+        ),
+        (
+            two_step_routing._ConsecutiveParkingLocationVisits(
+                parking_tag="P001",
+                global_route=global_route,
+                first_global_visit_index=1,
+                num_global_visits=2,
+                local_route_indices=[0, 1],
+                shipment_indices=[[3, 5], [1, 12]],
+            ),
+            two_step_routing._ConsecutiveParkingLocationVisits(
+                parking_tag="P002",
+                global_route=global_route,
+                first_global_visit_index=4,
+                num_global_visits=2,
+                local_route_indices=[3, 2],
+                shipment_indices=[[4, 6], [2, 8, 0]],
             ),
         ),
     )
@@ -733,7 +878,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {"shipmentLabel": "p:1 P001"},
             {"shipmentLabel": "p:3 P002"},
             {"shipmentLabel": "p:2 P002"},
-        ]
+        ],
+        "transitions": [{}, {}, {}, {}, {}, {}],
     }
     self.assertSequenceEqual(
         two_step_routing._get_consecutive_parking_location_visits(
@@ -798,13 +944,15 @@ class SplitRefinedLocalRouteTest(unittest.TestCase):
         {"totalDuration": "72s"},
         {"totalDuration": "18s"},
     ]
+    travel_steps = [{} for _ in transitions]
     route: cfr_json.ShipmentRoute = {
         "visits": visits,
         "transitions": transitions,
+        "travelSteps": travel_steps,
     }
     self.assertSequenceEqual(
         two_step_routing._split_refined_local_route(route),
-        ((visits[4:], transitions[4:]),),
+        ((visits[4:], transitions[4:], travel_steps[4:]),),
     )
 
   def test_multiple_rounds(self):
@@ -829,16 +977,18 @@ class SplitRefinedLocalRouteTest(unittest.TestCase):
         {"totalDuration": "72s"},
         {"totalDuration": "18s"},
     ]
+    travel_steps = [{} for _ in transitions]
     route: cfr_json.ShipmentRoute = {
         "visits": visits,
         "transitions": transitions,
+        "travelSteps": travel_steps,
     }
     self.assertSequenceEqual(
         two_step_routing._split_refined_local_route(route),
         (
-            (visits[1:2], transitions[1:3]),
-            (visits[4:6], transitions[4:7]),
-            (visits[7:], transitions[7:]),
+            (visits[1:2], transitions[1:3], travel_steps[1:3]),
+            (visits[4:6], transitions[4:7], travel_steps[4:7]),
+            (visits[7:], transitions[7:], travel_steps[7:]),
         ),
     )
 
@@ -857,15 +1007,15 @@ class ParseRefinementVehicleLabelTest(unittest.TestCase):
         ValueError, "Invalid vehicle label in refinement model"
     ):
       two_step_routing._parse_refinement_vehicle_label(
-          "global_route:foo start:1 size:2"
+          "global_route:foo start:1 size:2 PARKING:P001"
       )
 
   def test_valid_label(self):
     self.assertEqual(
         two_step_routing._parse_refinement_vehicle_label(
-            "global_route:32 start:1 size:2"
+            "global_route:32 start:1 size:2 parking:P002"
         ),
-        (32, 1, 2),
+        (32, 1, 2, "P002"),
     )
 
 
@@ -1244,6 +1394,166 @@ class TestIntervalIntersection(unittest.TestCase):
         ((dt(3600), dt(7200)),),
     )
     pass
+
+
+class TestAssertGlobalModelRoutesHandleSameShipments(unittest.TestCase):
+  """Tests for _assert_global_model_routes_handle_same_shipments."""
+
+  def test_no_routes(self):
+    two_step_routing._assert_global_model_routes_handle_same_shipments({}, {})
+
+  def test_empty_routes(self):
+    response_a: cfr_json.OptimizeToursResponse = {"routes": []}
+    response_b: cfr_json.OptimizeToursResponse = {"routes": []}
+    two_step_routing._assert_global_model_routes_handle_same_shipments(
+        response_a, response_b
+    )
+
+  def test_different_number_of_routes(self):
+    response_a: cfr_json.OptimizeToursResponse = {
+        "routes": [{"visits": []}, {"vehicleIndex": 1, "visits": []}]
+    }
+    response_b: cfr_json.OptimizeToursResponse = {"routes": [{"visits": []}]}
+    with self.assertRaisesRegex(
+        AssertionError, "The number of routes is different"
+    ):
+      two_step_routing._assert_global_model_routes_handle_same_shipments(
+          response_a, response_b
+      )
+
+  def test_multiple_routes_same_shipments(self):
+    response_a: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "visits": [
+                    {"shipmentLabel": "s:32 S001"},
+                    {"shipmentLabel": "p:0 S002,S003,S007"},
+                    {"shipmentLabel": "p:3 S004,S117,S231"},
+                    {"shipmentLabel": "p:12 S032,S078"},
+                ]
+            },
+            {
+                "vehicleIndex": 1,
+                "visits": [
+                    {"shipmentLabel": "s:12 S005"},
+                    {"shipmentLabel": "p:11 S008"},
+                    {"shipmentLabel": "p:3 S006,S011"},
+                ],
+            },
+        ]
+    }
+    response_b: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "vehicleIndex": 1,
+                "visits": [
+                    {"shipmentLabel": "s:12 S005"},
+                    {"shipmentLabel": "p:1 S008,S006,S011"},
+                ],
+            },
+            {
+                "visits": [
+                    {"shipmentLabel": "s:32 S001"},
+                    {"shipmentLabel": "p:2 S002,S003,S007,S004,S117,S231"},
+                    {"shipmentLabel": "p:0 S032,S078"},
+                ]
+            },
+        ]
+    }
+    two_step_routing._assert_global_model_routes_handle_same_shipments(
+        response_a, response_b
+    )
+
+  def test_multiple_routes_same_shipments_different_vehicles(self):
+    response_a: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "visits": [
+                    {"shipmentLabel": "s:32 S001"},
+                    {"shipmentLabel": "p:0 S002,S003,S007"},
+                    {"shipmentLabel": "p:3 S004,S117,S231"},
+                    {"shipmentLabel": "p:12 S032,S078"},
+                ]
+            },
+            {
+                "vehicleIndex": 1,
+                "visits": [
+                    {"shipmentLabel": "s:12 S005"},
+                    {"shipmentLabel": "p:11 S008"},
+                    {"shipmentLabel": "p:3 S006,S011"},
+                ],
+            },
+        ]
+    }
+    response_b: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "vehicleIndex": 1,
+                "visits": [
+                    {"shipmentLabel": "s:32 S001"},
+                    {"shipmentLabel": "p:2 S002,S003,S007,S004,S117,S231"},
+                    {"shipmentLabel": "p:0 S032,S078"},
+                ],
+            },
+            {
+                "vehicleIndex": 0,
+                "visits": [
+                    {"shipmentLabel": "s:12 S005"},
+                    {"shipmentLabel": "p:1 S008,S006,S011"},
+                ],
+            },
+        ]
+    }
+    with self.assertRaisesRegex(
+        AssertionError, "Shipment label counts for vehicle 0 are different"
+    ):
+      two_step_routing._assert_global_model_routes_handle_same_shipments(
+          response_a, response_b
+      )
+
+  def test_multiple_routes_different_shipments(self):
+    response_a: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "visits": [
+                    {"shipmentLabel": "s:32 S001"},
+                    {"shipmentLabel": "p:0 S002,S003,S007"},
+                    {"shipmentLabel": "p:3 S004,S117,S231"},
+                    {"shipmentLabel": "p:12 S032,S078"},
+                ]
+            },
+            {
+                "vehicleIndex": 1,
+                "visits": [
+                    {"shipmentLabel": "s:12 S005"},
+                    {"shipmentLabel": "p:11 S008,S009"},
+                    {"shipmentLabel": "p:3 S006,S011"},
+                ],
+            },
+        ]
+    }
+    response_b: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "visits": [
+                    {"shipmentLabel": "s:32 S001"},
+                    {"shipmentLabel": "p:2 S002,S003,S007,S004,S117,S231"},
+                    {"shipmentLabel": "p:0 S032,S078"},
+                ]
+            },
+            {
+                "vehicleIndex": 1,
+                "visits": [
+                    {"shipmentLabel": "s:12 S005"},
+                    {"shipmentLabel": "p:1 S008,S006,S011"},
+                ],
+            },
+        ]
+    }
+    with self.assertRaisesRegex(AssertionError, ""):
+      two_step_routing._assert_global_model_routes_handle_same_shipments(
+          response_a, response_b
+      )
 
 
 if __name__ == "__main__":

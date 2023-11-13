@@ -285,7 +285,7 @@
           }
         },
         "fixedCost": 10000,
-        "label": "global_route:0 start:1 size:3",
+        "label": "global_route:0 start:1 size:3 parking:P001",
         "loadLimits": { "ore": { "maxLoad": "2" } },
         "routeDurationLimit": { "maxDuration": "1800s" },
         "startTags": ["P001"],
@@ -319,7 +319,7 @@
           }
         },
         "fixedCost": 10000,
-        "label": "global_route:1 start:0 size:2",
+        "label": "global_route:1 start:0 size:2 parking:P002",
         "loadLimits": { "ore": { "maxLoad": "2" } },
         "startTags": ["P002"],
         "startTimeWindows": [

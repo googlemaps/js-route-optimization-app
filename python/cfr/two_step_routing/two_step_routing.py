@@ -45,7 +45,7 @@ On a high level, the solver does the following:
 """
 
 import collections
-from collections.abc import Collection, Mapping, Sequence, Set
+from collections.abc import Collection, Mapping, MutableMapping, Sequence, Set
 import copy
 import dataclasses
 import enum
@@ -459,13 +459,18 @@ class Planner:
     return request
 
   def make_global_request(
-      self, local_response: cfr_json.OptimizeToursResponse
+      self,
+      local_response: cfr_json.OptimizeToursResponse,
+      consider_road_traffic_override: bool | None = None,
   ) -> cfr_json.OptimizeToursRequest:
     """Creates a request for the global model.
 
     Args:
       local_response: A solution to the local model created by
         self.make_local_request() in the JSON format.
+      consider_road_traffic_override: When True or False, the
+        `considerRoadTraffic` option of the global model is set to this value.
+        When None, the value is taken from the base request.
 
     Returns:
       A JSON CFR request for the global model based on a solution of the local
@@ -544,9 +549,12 @@ class Planner:
         "parent": self._request.get("parent"),
     }
     self._add_options_from_original_request(request)
-    consider_road_traffic = self._request.get("considerRoadTraffic")
-    if consider_road_traffic is not None:
-      request["considerRoadTraffic"] = consider_road_traffic
+    if consider_road_traffic_override is not None:
+      request["considerRoadTraffic"] = consider_road_traffic_override
+    else:
+      consider_road_traffic = self._request.get("considerRoadTraffic")
+      if consider_road_traffic is not None:
+        request["considerRoadTraffic"] = consider_road_traffic
     # TODO(ondrasej): Consider applying internal parameters also to the local
     # request; potentially, add separate internal parameters for the local and
     # the global models to the configuration of the planner.
@@ -648,6 +656,7 @@ class Planner:
           f"global_route:{consecutive_visit_sequence.vehicle_index}"
           f" start:{consecutive_visit_sequence.first_global_visit_index}"
           f" size:{consecutive_visit_sequence.num_global_visits}"
+          f" parking:{consecutive_visit_sequence.parking_tag}"
       )
       refinement_vehicle = _make_local_model_vehicle(
           self._options, parking, refinement_vehicle_label
@@ -753,6 +762,71 @@ class Planner:
     }
     self._add_options_from_original_request(request)
     return request
+
+  def integrate_local_refinement(
+      self,
+      local_request: cfr_json.OptimizeToursRequest,
+      local_response: cfr_json.OptimizeToursResponse,
+      global_request: cfr_json.OptimizeToursRequest,
+      global_response: cfr_json.OptimizeToursResponse,
+      refinement_response: cfr_json.OptimizeToursResponse,
+  ) -> tuple[
+      cfr_json.OptimizeToursRequest,
+      cfr_json.OptimizeToursResponse,
+      cfr_json.OptimizeToursRequest,
+  ]:
+    """Integrates a refined local plan into the base local and global models.
+
+    Takes the base local and global requests and responses, and a response to a
+    local refinement model, and creates:
+
+    1. an integrated local request and response; the local model is created by
+      replacing the refined parts of the base local model with the refinement.
+      The integrated local model covers all shipments delivered from a parking
+      location, and can be used as a local model with
+      Planner.merge_local_and_global_result.
+    2. an integrated global request; the global request is similar to the base
+      global request, but it is based on the integrated local model rather than
+      on the base local model.
+    3. a first solution hint for the integrated global request; this first
+      solution is created from the solution of the base global model by
+      replacing the refined parts.
+
+    The integrated global model needs to be re-solved via CFR to (1) update
+    arrival and departure times in the solution, (2) inject road traffic
+    information if requested, and (3) use any time saved by the refinement to
+    deliver more shipments. The solution of the integrated global model can be
+    used together with the solution of the integrated local model to obtain a
+    merged request+response via `Planner.merge_local_and_global_result()`.
+
+    Args:
+      local_request: A local request created by `self.make_local_request()`.
+      local_response: A solution for `local_request`.
+      global_request: A global request created by
+        `self.make_global_request(local_response)`.
+      global_response: A solution for `global_request`.
+      refinement_response: A solution for a request created by
+        `self.make_local_refinement_request(local_response, global_response)`.
+
+    Returns:
+      A triple `(integrated_local_request, integrated_local_response,
+      integrated_global_request)` that contains the results of the integration
+      as described above.
+
+    Raises:
+      ValueError: If the inputs are invalid or inconsistent.
+    """
+    integration = _RefinedRouteIntegration(
+        options=self._options,
+        parking_locations=self._parking_locations,
+        request=self._request,
+        local_request=local_request,
+        local_response=local_response,
+        global_request=global_request,
+        global_response=global_response,
+        refinement_response=refinement_response,
+    )
+    return integration.integrate()
 
   def merge_local_and_global_result(
       self,
@@ -1231,6 +1305,545 @@ def validate_request(
   return None
 
 
+def _shipment_label_counts_in_global_route(
+    route: cfr_json.ShipmentRoute,
+) -> Mapping[str, int]:
+  r"""Counts base shipment labels in the visits on a global model route.
+
+  Assumes that the labels of the shipments on the route follow the format of
+  shipment labels in the global model "[ds]:\d+ (?<labels>.*)" where the
+  group <labels> contains a comma-separated list of shipment labels from the
+  base model.
+
+  Note that when shipment labels in the base model contain commas, the counts
+  might not match but the results will be comparable in terms of the comparisons
+  done in `_assert_global_model_routes_handle_same_shipments()`.
+
+  Args:
+    route: A route from the global model.
+
+  Returns:
+    A mapping from shipment labels in the base model to the count of their
+    appearances on the route.
+  """
+  label_count = collections.defaultdict(int)
+  for visit in cfr_json.get_visits(route):
+    global_shipment_label = visit["shipmentLabel"]
+    _, base_shipment_labels = global_shipment_label.split(" ", maxsplit=1)
+    for label in base_shipment_labels.split(","):
+      label_count[label] += 1
+  return label_count
+
+
+def _routes_by_unique_vehicle_indices(
+    response: cfr_json.OptimizeToursResponse,
+) -> Mapping[int, cfr_json.ShipmentRoute]:
+  routes = {}
+  for route in cfr_json.get_routes(response):
+    vehicle = route.get("vehicleIndex", 0)
+    assert vehicle not in routes, f"Duplicate vehicle index {vehicle}"
+    routes[vehicle] = route
+  return routes
+
+
+def _assert_global_model_routes_handle_same_shipments(
+    response_a: cfr_json.OptimizeToursResponse,
+    response_b: cfr_json.OptimizeToursResponse,
+) -> None:
+  """Checks that routes in `response_a` and `response_b` serve same shipments.
+
+  Assumes that `response_a` and `response_b` are two different solutions of
+  equivalent global models in a two-step routing model. They may be either two
+  different solutions of the same global model, or the solution of a base global
+  model and an integrated global model.
+
+  Checks that the routes in `response_a` and `response_b` are similar in the
+  sense that:
+  - both responses have the same number of routes,
+  - the shipment labels on the routes are the same. This is done by extracting
+    the "original shipment labels" part of the the shipment labels on both
+    routes and checking that their numbers are the same.
+
+  Args:
+    response_a: The first response to compare.
+    response_b: The second response to compare.
+
+  Raises:
+    AssertionError: When the routes are not equivalent.
+  """
+  routes_a = _routes_by_unique_vehicle_indices(response_a)
+  routes_b = _routes_by_unique_vehicle_indices(response_b)
+
+  assert len(routes_a) == len(routes_b), (
+      f"The number of routes is different. Found {len(routes_a)} routes in"
+      f" response_a, {len(routes_b)} in response_b."
+  )
+  vehicle_indices_a = set(routes_a)
+  vehicle_indices_b = set(routes_b)
+  assert vehicle_indices_a == vehicle_indices_b, (
+      "The vehicle indices of the routes are different. Found"
+      f" {vehicle_indices_a} in response_a and {vehicle_indices_b} in"
+      " response_b."
+  )
+
+  for vehicle_index in vehicle_indices_a:
+    route_a = routes_a[vehicle_index]
+    route_b = routes_b[vehicle_index]
+    label_count_a = _shipment_label_counts_in_global_route(route_a)
+    label_count_b = _shipment_label_counts_in_global_route(route_b)
+    assert label_count_a == label_count_b, (
+        f"Shipment label counts for vehicle {vehicle_index} are different:\n"
+        f"response_a: {label_count_a},\n"
+        f"response_b: {label_count_b}"
+    )
+
+
+class _RefinedRouteIntegration:
+  """The integration of a refined local solution into the base models.
+
+  This is the implementation of `Planner.integrate_local_refinement()`. See the
+  docstring of the method for more details of the algorithm.
+  """
+
+  def __init__(
+      self,
+      options: Options,
+      parking_locations: Mapping[str, ParkingLocation],
+      request: cfr_json.OptimizeToursRequest,
+      local_request: cfr_json.OptimizeToursRequest,
+      local_response: cfr_json.OptimizeToursResponse,
+      global_request: cfr_json.OptimizeToursRequest,
+      global_response: cfr_json.OptimizeToursResponse,
+      refinement_response: cfr_json.OptimizeToursResponse,
+  ):
+    """Initializes the integration algorithm.
+
+    Args:
+      options: The options of the planner that uses this class.
+      parking_locations: The list of parking locations used in the planner.
+      request: The base request passed to the planner by the user.
+      local_request: A local request created by `planner.make_local_request()`.
+      local_response: A solution for `local_request`.
+      global_request: A global request created by
+        `planner.make_global_request(local_response)`.
+      global_response: A solution for `global_request`.
+      refinement_response: A solution for a request created by
+        `self.make_local_refinement_request(local_response, global_response)`.
+    """
+    self._options = options
+    self._parking_locations = parking_locations
+    self._request = request
+    self._model = request["model"]
+
+    self._local_request = local_request
+    local_model = local_request["model"]
+    self._local_vehicles = cfr_json.get_vehicles(local_model)
+
+    self._local_response = local_response
+    self._local_routes = cfr_json.get_routes(local_response)
+
+    self._global_request = global_request
+    global_model = self._global_request["model"]
+    self._global_shipments = cfr_json.get_shipments(global_model)
+
+    self._global_response = global_response
+    self._global_routes = cfr_json.get_routes(global_response)
+
+    refinement_routes = cfr_json.get_routes(refinement_response)
+
+    # Shipments in the integrated local model are the same as in the base local
+    # model, only the vehicles are redefined based on the new routes. This is
+    # not 100% correct, as any fields based on vehicle indices
+    # (allowedVehicleIndices, costsPerVehicle) will be invalid in the integrated
+    # local model, but it is OK for use with merge_local_and_global_result().
+    # TODO(ondrasej): Update vehicle-index based fields in the integrated local
+    # model to make it consistent with the rest of the request and the response.
+    integrated_local_shipments = list(cfr_json.get_shipments(local_model))
+    self._integrated_local_vehicles: list[cfr_json.Vehicle] = []
+    self._integrated_local_model: cfr_json.ShipmentModel = copy.copy(
+        local_model
+    )
+    self._integrated_local_model["shipments"] = integrated_local_shipments
+    self._integrated_local_model["vehicles"] = self._integrated_local_vehicles
+
+    self._integrated_local_routes: list[cfr_json.ShipmentRoute] = []
+    self._integrated_local_request: cfr_json.OptimizeToursRequest | None = None
+    self._integrated_local_response: cfr_json.OptimizeToursResponse | None = (
+        None
+    )
+
+    self._integrated_global_shipments: list[cfr_json.Shipment] = []
+    self._integrated_global_model = copy.copy(global_model)
+    self._integrated_global_model["shipments"] = (
+        self._integrated_global_shipments
+    )
+    self._integrated_global_routes: list[cfr_json.ShipmentRoute] = []
+    self._integrated_global_request: cfr_json.OptimizeToursRequest | None = None
+
+    self._transition_attributes = _ParkingTransitionAttributeManager(
+        self._model
+    )
+
+    # Map routes from `refinement_routes` to the original global routes.
+    self._refinements_for_global_route: MutableMapping[
+        int, MutableMapping[int, tuple[int, cfr_json.ShipmentRoute]]
+    ] = collections.defaultdict(dict)
+    for refinement_route in refinement_routes:
+      global_route_index, start_visit, num_visits, _ = (
+          _parse_refinement_vehicle_label(
+              refinement_route.get("vehicleLabel", "")
+          )
+      )
+      self._refinements_for_global_route[global_route_index][start_visit] = (
+          num_visits,
+          refinement_route,
+      )
+
+    self._local_shipment_for_original_shipment = (
+        _make_local_shipment_from_shipment_map(
+            cfr_json.get_shipments(local_model)
+        )
+    )
+
+  def integrate(
+      self,
+  ) -> tuple[
+      cfr_json.OptimizeToursRequest,
+      cfr_json.OptimizeToursResponse,
+      cfr_json.OptimizeToursRequest,
+  ]:
+    """Integrates the refinement result into the base local and global models.
+
+    Replaces the vehicles and routes in the base local model with the refined
+    ones and creates a new global model that uses the data from the refined
+    local model instead. At the global level, only the refined request is
+    created; it contains the updated virtual shipments, and it comes with a
+    first solution hint corresponding to the solution of the base global model.
+
+    This method can be called multiple times. Subsequent calls just return the
+    same values as the first call.
+
+    Returns:
+      A triple (local_request, local_response, global_request) where
+      local_request and local_response contain the integrated local model and
+      its solution, and global_request contains a global model adapted to the
+      integrated local model and injected routes based on the solution of the
+      base global model.
+    """
+    if self._integrated_local_request is None:
+      self._integrate_global_routes()
+      self._integrate_global_skipped_shipments()
+
+      # Create the integrated local request. We only need the request-level
+      # attributes, no need to copy also details of the model.
+      self._integrated_local_request = copy.copy(self._local_request)
+      self._integrated_local_request["model"] = self._integrated_local_model
+      self._integrated_local_request["label"] = (
+          f"{self._request.get('label', '')}/refined_local"
+      )
+      self._integrated_local_request.pop("injectedFirstSolutionRoutes", None)
+
+      # Create the integrated local response.
+      self._integrated_local_response: cfr_json.OptimizeToursResponse = {
+          "routes": self._integrated_local_routes,
+      }
+      local_skipped_shipments = self._local_response.get("skippedShipments")
+      if local_skipped_shipments is not None:
+        self._integrated_local_response["skippedShipments"] = (
+            local_skipped_shipments
+        )
+
+      # Create the integrated global request.
+      self._integrated_global_request = copy.copy(self._global_request)
+      self._integrated_global_request["model"] = self._integrated_global_model
+      self._integrated_global_request["injectedFirstSolutionRoutes"] = (
+          self._integrated_global_routes
+      )
+      consider_road_traffic = self._request.get("considerRoadTraffic")
+      if consider_road_traffic is not None:
+        self._integrated_global_request["considerRoadTraffic"] = (
+            consider_road_traffic
+        )
+
+      _assert_global_model_routes_handle_same_shipments(
+          self._global_response, {"routes": self._integrated_global_routes}
+      )
+
+    assert self._integrated_local_request is not None
+    assert self._integrated_local_response is not None
+    assert self._integrated_global_request is not None
+    return (
+        self._integrated_local_request,
+        self._integrated_local_response,
+        self._integrated_global_request,
+    )
+
+  def _integrate_global_skipped_shipments(self) -> None:
+    """Integrates skipped shipments from the global plan."""
+    # NOTE(ondrasej): We'll be re-solving the global model with a warm start.
+    # The global skipped shipments were not part of the base global routes, so
+    # we only need to add the shipment definitions to the integrated global
+    # model, but we do not need to register them as "skipped" anywhere.
+    global_skipped_shipments = self._global_response.get("skippedShipments", ())
+    for global_skipped_shipment in global_skipped_shipments:
+      global_shipment_index = global_skipped_shipment.get("index", 0)
+      global_shipment = self._global_shipments[global_shipment_index]
+      visit_type, index = _parse_global_shipment_label(
+          global_skipped_shipment["label"]
+      )
+      match visit_type:
+        case "s":
+          # The visit is for a shipment delivered directly. It refers only to
+          # the shipment in the base model which did not change with
+          # integration, so we can reuse it in the integrate model without any
+          # changes.
+          self._add_integrated_global_shipment(
+              global_shipment, add_to_visits=None
+          )
+        case "p":
+          # The visit is for a round of deliveries from a parking location. It
+          # was skipped in the base global model, and so it could not have been
+          # part of a refinement.
+          self._integrate_unmodified_local_route(
+              global_shipment, local_route_index=index, add_to_visits=None
+          )
+        case _:
+          raise ValueError("Unexpected global visit type: {visit_type!r}")
+
+  def _integrate_global_routes(self) -> None:
+    """Integrates visits from the global routes to the refined models.
+
+    Goes through the routes in the solution of the base global model, and moves
+    them to the integrated local and global models. Shipments delivered directly
+    and local routes that did not go through the refinement are carried over
+    unmodified; local routes that were subject to refinement are replaced with
+    their refined versions.
+    """
+    no_refinements = {}
+    for global_route_index, global_route in enumerate(self._global_routes):
+      refinements: Mapping[int, tuple[int, cfr_json.ShipmentRoute]] = (
+          self._refinements_for_global_route.get(
+              global_route_index, no_refinements
+          )
+      )
+
+      integrated_global_visits: list[cfr_json.Visit] = []
+      self._integrated_global_routes.append({
+          "vehicleIndex": global_route_index,
+          "visits": integrated_global_visits,
+      })
+
+      global_visits = cfr_json.get_visits(global_route)
+      num_visits_to_skip = 0
+      for global_visit_index, global_visit in enumerate(global_visits):
+        if num_visits_to_skip > 0:
+          num_visits_to_skip -= 1
+          continue
+        global_shipment_label = global_visit.get("shipmentLabel", "")
+        global_shipment_index = global_visit.get("shipmentIndex", 0)
+        global_shipment = self._global_shipments[global_shipment_index]
+        visit_type, index = _parse_global_shipment_label(global_shipment_label)
+        visit_refinement = refinements.get(global_visit_index)
+        if visit_refinement is not None:
+          if visit_type != "p":
+            raise ValueError(
+                "Expected a parking location visit, found"
+                f" {global_shipment_label!r}"
+            )
+          num_refined_visits, refined_local_route = visit_refinement
+          self._integrate_refined_local_route(
+              refined_local_route, add_to_visits=integrated_global_visits
+          )
+          # Skip all following visits that were part of the refined route that
+          # we just integrated.
+          num_visits_to_skip = num_refined_visits - 1
+        else:
+          # This global visit was not part of the refinement, we just need to
+          # carry over the shipment or local delivery round from the base model.
+          match visit_type:
+            case "s":
+              self._add_integrated_global_shipment(
+                  global_shipment, add_to_visits=integrated_global_visits
+              )
+            case "p":
+              self._integrate_unmodified_local_route(
+                  global_shipment,
+                  local_route_index=index,
+                  add_to_visits=integrated_global_visits,
+              )
+            case _:
+              raise ValueError(f"Unexpected global visit type: {visit_type!r}")
+      assert num_visits_to_skip == 0
+
+  def _integrate_refined_local_route(
+      self,
+      refined_local_route: cfr_json.ShipmentRoute,
+      add_to_visits: list[cfr_json.Visit] | None,
+  ) -> None:
+    """Integrates a refined local route to the refined models and solutions.
+
+    Splits the refined local route into delivery rounds, and creates a new
+    vehicle and route in the integrated local model and solution. Adds virtual
+    shipments and visits to the integrated global model and initial solution.
+
+    Args:
+      refined_local_route: The route from the refinement local model that
+        represents the new delivery rounds for the parking location.
+      add_to_visits: When not None, visits for the shipments that represent the
+        new delivery rounds in the integrated global model are added to this
+        list.
+    """
+    refined_route_splits = _split_refined_local_route(refined_local_route)
+    num_refined_route_splits = len(refined_route_splits)
+    refined_route_label = refined_local_route.get("vehicleLabel", "")
+    assert refined_route_splits, "Refined local routes are never empty."
+
+    _, _, _, parking_tag = _parse_refinement_vehicle_label(refined_route_label)
+    parking = self._parking_locations[parking_tag]
+
+    for refined_split_index, refined_split in enumerate(refined_route_splits):
+      (
+          integrated_route_visits,
+          integrated_route_transitions,
+          integrated_route_travel_steps,
+      ) = copy.deepcopy(refined_split)
+      assert integrated_route_visits
+      assert (
+          len(integrated_route_transitions) == len(integrated_route_visits) + 1
+      )
+
+      # Update shipment indices in the integrated local route.
+      for visit in integrated_route_visits:
+        # We first extract the index of the shipment in the original model and
+        # then map it to a shipment index in the base local model. Since the
+        # visits are already a local copy, we can safely update it in place.
+        shipment_index = _get_shipment_index_from_local_route_visit(visit)
+        visit["shipmentIndex"] = self._local_shipment_for_original_shipment[
+            shipment_index
+        ]
+
+      # Add a new vehicle for the delivery round to the integrated local model.
+      integrated_local_vehicle_index = len(self._integrated_local_vehicles)
+      integrated_local_vehicle_label = (
+          f"{parking_tag} [refinement]/{refined_split_index}"
+      )
+      self._integrated_local_vehicles.append(
+          _make_local_model_vehicle(
+              self._options, parking, integrated_local_vehicle_label
+          )
+      )
+
+      # Create the integrated local route for the delivery round.
+      integrated_local_route: cfr_json.ShipmentRoute = {
+          "vehicleIndex": integrated_local_vehicle_index,
+          "vehicleLabel": integrated_local_vehicle_label,
+          # TODO(ondrasej): See if this list conversion is really needed.
+          "visits": list(integrated_route_visits),
+          "transitions": list(integrated_route_transitions),
+          "travelSteps": list(integrated_route_travel_steps),
+      }
+      is_last_split = refined_split_index == num_refined_route_splits - 1
+      remove_delay = None if is_last_split else parking.reload_duration
+      cfr_json.update_route_start_end_time_from_transitions(
+          integrated_local_route,
+          remove_delay_at_end=remove_delay,
+      )
+      cfr_json.recompute_route_metrics(
+          self._integrated_local_model, integrated_local_route
+      )
+      integrated_local_route_index = len(self._integrated_local_routes)
+      self._integrated_local_routes.append(integrated_local_route)
+
+      # Add a global shipment for the local delivery round.
+      integrated_global_shipment = _make_global_model_shipment_for_local_route(
+          self._model,
+          integrated_local_route_index,
+          integrated_local_route,
+          parking,
+          transition_attributes=self._transition_attributes,
+      )
+      self._add_integrated_global_shipment(
+          integrated_global_shipment, add_to_visits
+      )
+
+  def _integrate_unmodified_local_route(
+      self,
+      global_shipment: cfr_json.Shipment,
+      local_route_index: int,
+      add_to_visits: list[cfr_json.Visit] | None,
+  ) -> None:
+    """Integrates a local route into the refined models and solutions.
+
+    Takes one local route (delivery round from a parking location) that was not
+    touched by the refinement process and integrates it into the refined global
+    and local models and their solutions.
+
+    Args:
+      global_shipment: The shipment in the global model that represents the
+        local route.
+      local_route_index: The index of the local route in the base local model.
+      add_to_visits: When not none, a visit for the shipment that represents the
+        local route in the refined global model is added to this list.
+    """
+    # Copy the original local vehicle and route to the integrated local request
+    # and response. We preserve the indices of shipments in the local model, so
+    # we can copy this route as is, except for the vehicle index in the route
+    # object.
+    integrated_local_vehicle_index = len(self._integrated_local_vehicles)
+    self._integrated_local_vehicles.append(
+        self._local_vehicles[local_route_index]
+    )
+    # NOTE(ondrasej): We're going to change only the vehicle index of the route,
+    # a deep copy is not needed and would be inefficient.
+    integrated_local_route = copy.copy(self._local_routes[local_route_index])
+    integrated_local_route["vehicleIndex"] = integrated_local_vehicle_index
+    self._integrated_local_routes.append(integrated_local_route)
+
+    # Copy the virtual shipment for the parking location visit to the integrated
+    # global model. Most of the information in the shipment holds, we just need
+    # to update the index of the local route in the label.
+    integrated_global_shipment = copy.deepcopy(global_shipment)
+    _, original_shipment_label = integrated_global_shipment["label"].split(
+        " ", maxsplit=1
+    )
+    integrated_global_shipment["label"] = (
+        f"p:{integrated_local_vehicle_index} {original_shipment_label}"
+    )
+    self._add_integrated_global_shipment(
+        integrated_global_shipment, add_to_visits
+    )
+
+  def _add_integrated_global_shipment(
+      self,
+      shipment: cfr_json.Shipment,
+      add_to_visits: list[cfr_json.Visit] | None,
+  ) -> int:
+    """Adds `shipment` to the integrated request and returns its index.
+
+    Args:
+      shipment: The shipment to be added.
+      add_to_visits: When not None, the method adds a delivery visit to the
+        newly added shipment to this list.
+
+    Returns:
+      The index of the newly added integrated shipment.
+    """
+    # NOTE(ondrasej): This method works only for shipments with a single
+    # delivery option and no pickups.
+    assert len(shipment["deliveries"]) == 1
+    assert not shipment.get("pickups")
+
+    shipment_index = len(self._integrated_global_shipments)
+    self._integrated_global_shipments.append(shipment)
+    if add_to_visits is not None:
+      add_to_visits.append({
+          "shipmentIndex": shipment_index,
+          "shipmentLabel": shipment.get("label", ""),
+          "isPickup": False,
+      })
+    return shipment_index
+
+
 class _ParkingTransitionAttributeManager:
   """Manages transition attributes for parking locations in the global model."""
 
@@ -1371,8 +1984,6 @@ def _make_global_model_shipment_for_local_route(
   """
   visits = cfr_json.get_visits(local_route)
 
-  parking_tag = _get_parking_tag_from_local_route(local_route)
-
   # Get all shipments from the original model that are delivered in this
   # parking location route.
   shipment_indices = _get_shipment_indices_from_local_route_visits(visits)
@@ -1381,13 +1992,14 @@ def _make_global_model_shipment_for_local_route(
   )
   assert shipments
 
+  global_delivery_tags: list[str] = [parking.tag]
   global_delivery: cfr_json.VisitRequest = {
       # We use the coordinates of the parking location for the waypoint.
       "arrivalWaypoint": {"location": {"latLng": parking.coordinates}},
       # The duration of the delivery at the parking location is the total
       # duration of the local route for this round.
       "duration": local_route["metrics"]["totalDuration"],
-      "tags": [parking_tag],
+      "tags": global_delivery_tags,
   }
   global_time_windows = _get_local_model_route_start_time_windows(
       model, local_route
@@ -1400,7 +2012,7 @@ def _make_global_model_shipment_for_local_route(
       parking
   )
   if parking_transition_tag is not None:
-    global_delivery["tags"].append(parking_transition_tag)
+    global_delivery_tags.append(parking_transition_tag)
 
   shipment_labels = ",".join(shipment["label"] for shipment in shipments)
   global_shipment: cfr_json.Shipment = {
@@ -1435,7 +2047,7 @@ def _make_global_model_shipment_for_local_route(
 
 _GLOBAL_SHIPEMNT_LABEL = re.compile(r"^([ps]):(\d+) .*")
 _REFINEMENT_VEHICLE_LABEL = re.compile(
-    r"^global_route:(\d+) start:(\d+) size:(\d+)$"
+    r"^global_route:(\d+) start:(\d+) size:(\d+) parking:(.*)$"
 )
 
 
@@ -1598,8 +2210,9 @@ def _get_local_model_route_start_time_windows(
 
   if not overall_route_start_time_intervals:
     raise ValueError(
-        "The shipments have incompatible time windows. Arrived an an empty time"
-        " window intersection."
+        f"The shipments in local route {route['vehicleLabel']!r} have"
+        " incompatible time windows. Arrived at an empty time window"
+        " intersection."
     )
 
   # Transform intervals into time window data structures.
@@ -1696,6 +2309,7 @@ def _get_consecutive_parking_location_visits(
   """
   local_routes = cfr_json.get_routes(local_response)
   global_visits = cfr_json.get_visits(global_route)
+  global_transitions = cfr_json.get_transitions(global_route)
   consecutive_visits = []
   local_route_indices = []
   sequence_start = None
@@ -1716,9 +2330,8 @@ def _get_consecutive_parking_location_visits(
       local_visits = cfr_json.get_visits(local_route)
       shipment_indices.append([])
       for local_visit in local_visits:
-        local_shipment_label = local_visit.get("shipmentLabel", "")
         shipment_indices[-1].append(
-            _get_shipment_index_from_local_label(local_shipment_label)
+            _get_shipment_index_from_local_route_visit(local_visit)
         )
 
     consecutive_visits.append(
@@ -1742,9 +2355,15 @@ def _get_consecutive_parking_location_visits(
       local_route_indices = []
       continue
     assert visit_type == "p"
+    transition_in = global_transitions[global_visit_index]
+    break_duration = transition_in.get("breakDuration", "0s")
     local_route = local_routes[index]
     parking_tag = _get_parking_tag_from_local_route(local_route)
-    if parking_tag != previous_parking_tag:
+    if parking_tag != previous_parking_tag or break_duration != "0s":
+      # The sequence ends when the vehicle moves to another parking location or
+      # when there is a break scheduled between the two visits. As of 2023-11-06
+      # we do not support breaks in local routes, and so we need to keep the
+      # part before the break and the part after the break separate.
       add_sequence_if_needed(global_visit_index)
       previous_parking_tag = parking_tag
       sequence_start = global_visit_index
@@ -1756,23 +2375,29 @@ def _get_consecutive_parking_location_visits(
 
 def _split_refined_local_route(
     route: cfr_json.ShipmentRoute,
-) -> Sequence[tuple[Sequence[cfr_json.Visit], Sequence[cfr_json.Transition]]]:
+) -> Sequence[
+    tuple[
+        Sequence[cfr_json.Visit],
+        Sequence[cfr_json.Transition],
+        Sequence[cfr_json.TravelStep],
+    ]
+]:
   """Extracts delivery rounds from a local refinement model route.
 
   In the local refinement model, a route may contain more than one delivery
   round. Each delivery round consists of a sequence of delivery visits, and the
   rounds in a route are separated by sequences of pickup visits (at the address
-  of the parking location). This function returns the visits and transitions
-  corresponding to each of the delivery rounds.
+  of the parking location). This function returns the visits, transitions, and
+  travel steps corresponding to each of the delivery rounds.
 
   Args:
     route: A route from the local delivery model to be split.
 
   Returns:
     A sequence of splits of the current route. Each split is returned as a list
-    of visits and transitions that belong to the segment. Only delivery visits
-    are returned, and the first (resp. last) transition in each group is from
-    (resp. to) the parking location.
+    of visits, transitions, and travel steps that belong to the segment. Only
+    delivery visits are returned, and the first (resp. last) transition in each
+    group is from (resp. to) the parking location.
   """
   if route.get("breaks", ()):
     raise ValueError("Breaks in the local routes are not supported.")
@@ -1784,6 +2409,7 @@ def _split_refined_local_route(
 
   visits = iter(enumerate(cfr_json.get_visits(route)))
   transitions = route.get("transitions", ())
+  travel_steps = route.get("travelSteps", ())
   indexed_visit = next(visits, None)
   visit_index = None
   while True:
@@ -1800,6 +2426,7 @@ def _split_refined_local_route(
 
     split_visits = []
     split_transitions = []
+    split_travel_steps = []
 
     # Extract visits and transitions from the current split.
     while indexed_visit is not None:
@@ -1810,6 +2437,7 @@ def _split_refined_local_route(
         break
       split_visits.append(visit)
       split_transitions.append(transitions[visit_index])
+      split_travel_steps.append(travel_steps[visit_index])
       indexed_visit = next(visits, None)
 
     # Add the transition back to the parking location. We can just add the next
@@ -1819,21 +2447,23 @@ def _split_refined_local_route(
     if indexed_visit is None:
       visit_index += 1
     split_transitions.append(transitions[visit_index])
+    split_travel_steps.append(travel_steps[visit_index])
 
     # If the algorithm is correct, there must be at least one split. Otherwise,
     # we'd exit the parent while loop right at the beginning.
     assert split_visits, "Unexpected empty visit list"
     assert split_transitions, "Unexpected empty transition list"
+    assert split_travel_steps, "Unexpected empty travel step list"
 
-    splits.append((split_visits, split_transitions))
+    splits.append((split_visits, split_transitions, split_travel_steps))
 
 
-def _parse_refinement_vehicle_label(label: str) -> tuple[int, int, int]:
+def _parse_refinement_vehicle_label(label: str) -> tuple[int, int, int, str]:
   """Parses the label of a vehicle in the local refinement model."""
   match = _REFINEMENT_VEHICLE_LABEL.match(label)
   if not match:
     raise ValueError("Invalid vehicle label in refinement model: {label!r}")
-  return int(match[1]), int(match[2]), int(match[3])
+  return int(match[1]), int(match[2]), int(match[3]), match[4]
 
 
 def _parse_global_shipment_label(label: str) -> tuple[str, int]:
@@ -1843,6 +2473,32 @@ def _parse_global_shipment_label(label: str) -> tuple[str, int]:
   return match[1], int(match[2])
 
 
+def _make_local_shipment_from_shipment_map(
+    local_shipments: Sequence[cfr_json.Shipment],
+) -> Mapping[int, int]:
+  """Returns a map from shipment indices in the base model to the local model.
+
+  Args:
+    local_shipments: The list of shipments from a local model in the two-step
+      routing library.
+
+  Returns:
+    A mapping where the keys are the indices of the shipment in the base model,
+    and the value for a key is the index of the corresponding shipment in the
+    local model. If a shipment is not delivered through a parking location, the
+    shipment index is not present in the returned mapping.
+  """
+  local_shipment_for_base_shipment = {}
+  for local_index, local_shipment in enumerate(local_shipments):
+    shipment_index = _get_shipment_index_from_local_shipment(local_shipment)
+    if shipment_index in local_shipment_for_base_shipment:
+      raise ValueError(
+          "Duplicate shipment indices in the local shipment labels"
+      )
+    local_shipment_for_base_shipment[shipment_index] = local_index
+  return local_shipment_for_base_shipment
+
+
 def _get_shipment_index_from_local_label(label: str) -> int:
   shipment_index, _ = label.split(":")
   return int(shipment_index)
@@ -1850,6 +2506,13 @@ def _get_shipment_index_from_local_label(label: str) -> int:
 
 def _get_shipment_index_from_local_route_visit(visit: cfr_json.Visit) -> int:
   return _get_shipment_index_from_local_label(visit["shipmentLabel"])
+
+
+def _get_shipment_index_from_local_shipment(
+    local_shipment: cfr_json.Shipment,
+) -> int:
+  local_shipment_label = local_shipment.get("label", "")
+  return _get_shipment_index_from_local_label(local_shipment_label)
 
 
 def _get_shipment_indices_from_local_route_visits(
