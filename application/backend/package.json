@@ -31,7 +31,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
-    "axios": "^0.26.1",
+    "axios": "^1.6.0",
     "concurrently": "^7.0.0",
     "eslint": "^8.10.0",
     "http-proxy-middleware": "^2.0.4",
