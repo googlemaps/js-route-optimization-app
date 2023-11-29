@@ -71,6 +71,12 @@ export const shipmentFilterOptions: ShipmentFilterOption[] = [
     predicate: ({ shipment }, params) => applyStringFilter(shipment.label, params),
   } as ShipmentFilterOption<StringFilterParams>,
   {
+    id: 'shipmentType',
+    label: 'Shipment Type',
+    form: () => FilterStringFormComponent,
+    predicate: ({ shipment }, params) => applyStringFilter(shipment.shipmentType, params),
+  } as ShipmentFilterOption<StringFilterParams>,
+  {
     id: 'visitRequest.label',
     label: 'Visit Label',
     form: () => FilterStringFormComponent,
