@@ -74,9 +74,9 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="traveledTime">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Traveled time</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Traveled time (hh:mm)</th>
     <td mat-cell *matCellDef="let item">
-      {{ durationFormatter(item.traveledTime) }}
+      {{ formattedTravelTime(item.traveledTime) }}
     </td>
   </ng-container>
   <ng-container matColumnDef="cost">
