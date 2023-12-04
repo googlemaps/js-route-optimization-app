@@ -23,13 +23,14 @@ class ParkingLocationData:
       this set.
     num_visits_to_parking: The number of times each parking is visited.
     vehicles_by_parking: For each parking tag, contains a mapping from vehicle
-      indices to the list of indices of the visits made by this vehicle.
+      indices to the list of indices of the visits made by this vehicle in
+      global_visits.
     consecutive_visits: The per-vehicle list of consecutive visits to a parking
       location. The key of the mapping is the vehicle index, values are lists of
       visits to a parking location. Each element of this list is a pair
       (parking_tag, visit_index) such that
-      `shipments_by_parking[parking_tag][visit_index]` is the visit that
-      generated the entry.
+      `global_visits[vehicle_index][visit_index]` is the visit that generated
+      the entry.
     non_consecutive_visits: The per-vehicle list of non-consecutive visits to a
       parking location. The format is the same as for consecutive_visits.
     shipments_by_parking: The list of parking location visits, indexed by the
@@ -54,12 +55,20 @@ class ParkingLocationData:
       solution is visited.
   """
 
-  all_parking_tags: Set[str]
-  num_visits_to_parking: Mapping[str, int]
-  vehicles_by_parking: Mapping[str, Mapping[int, Sequence[int]]]
-  consecutive_visits: Mapping[int, Sequence[tuple[str, int]]]
-  non_consecutive_visits: Mapping[int, Sequence[tuple[str, int]]]
-  shipments_by_parking: Mapping[str, Sequence[Sequence[int]]]
+  all_parking_tags: Set[two_step_routing.ParkingTag]
+  num_visits_to_parking: Mapping[two_step_routing.ParkingTag, int]
+  vehicles_by_parking: Mapping[
+      two_step_routing.ParkingTag, Mapping[int, Sequence[int]]
+  ]
+  consecutive_visits: Mapping[
+      int, Sequence[tuple[two_step_routing.ParkingTag, int]]
+  ]
+  non_consecutive_visits: Mapping[
+      int, Sequence[tuple[two_step_routing.ParkingTag, int]]
+  ]
+  shipments_by_parking: Mapping[
+      two_step_routing.ParkingTag, Sequence[Sequence[int]]
+  ]
   global_visits: Mapping[
       int, Sequence[tuple[two_step_routing.ParkingTag | None, int, int]]
   ]
@@ -152,6 +161,16 @@ class Scenario:
   def routes(self) -> Sequence[cfr_json.ShipmentRoute]:
     """Returns the list of routes in the scenario."""
     return self.solution.get("routes", ())
+
+  @functools.cached_property
+  def shipments_for_parking(
+      self,
+  ) -> Mapping[two_step_routing.ParkingTag, Collection[int]]:
+    """Returns a map from parking tags to shipment indices delivered from there."""
+    shipments_for_parking = collections.defaultdict(set)
+    for shipment_index, parking_tag in self.parking_for_shipment.items():
+      shipments_for_parking[parking_tag].add(shipment_index)
+    return dict(shipments_for_parking)
 
   @property
   def skipped_shipments(self) -> Sequence[cfr_json.SkippedShipment]:
@@ -251,7 +270,11 @@ def get_parking_location_aggregate_data(
           )
         current_parking_tag = arrival_tag
         current_parking_arrival_visit = visit_index
-        parking_visit_index = len(shipments_by_parking[arrival_tag])
+        # NOTE(ondrasej): At this point, the entry in global_visits doesn't
+        # exist yet, it will be added only at the departure from this parking.
+        # But this is OK, because there will be no other parking arrival before
+        # that departure.
+        parking_visit_index = len(global_visits)
         parking_visit_tuple = (arrival_tag, parking_visit_index)
 
         parking_vehicles = vehicles_by_parking[arrival_tag]
@@ -352,6 +375,7 @@ def get_num_shipments_in_visit_range(
 def group_global_visits(
     scenario: Scenario,
     vehicle_index: int,
+    split_by_breaks: bool = False,
 ) -> Iterable[
     tuple[two_step_routing.ParkingTag, int, Sequence[cfr_json.Shipment]]
 ]:
@@ -364,6 +388,14 @@ def group_global_visits(
   Args:
     scenario: The scenario from which this data is taken.
     vehicle_index: The index of the vehicle for which the iteration is done.
+    split_by_breaks: When True, a break between two visits to the same parking
+      breaks them up into two groups. When False, breaks are ignored by the
+      algorithm. For example, when a vehicle visits parking P123 twice, has a
+      break of 10 minutes, and then visits P123 once more, with `split_by_breaks
+      == True`, the function would return two global visits for P123 - one for
+      the first two visits, and another one for the third visit. With
+      `split_by_breaks == False`, it would return just a single group for all
+      three visits to the parking.
 
   Yields:
     A sequence of triples `(parking_tag, num_rounds, shipments)` where each
@@ -382,6 +414,7 @@ def group_global_visits(
   parking_data = scenario.parking_location_data
   route = scenario.routes[vehicle_index]
   visits = cfr_json.get_visits(route)
+  transitions = cfr_json.get_transitions(route)
   shipments = scenario.shipments
 
   global_visits = parking_data.global_visits.get(vehicle_index, ())
@@ -414,6 +447,10 @@ def group_global_visits(
       )
       if next_parking_tag != parking_tag:
         break
+      if split_by_breaks:
+        transition = transitions[arrival_visit_index]
+        if bool(cfr_json.get_transition_break_duration(transition)):
+          break
       group_shipments.extend(
           get_shipments_in_visit_range(
               scenario.model,
@@ -435,6 +472,7 @@ def group_global_visits(
 def get_num_ping_pongs(
     scenario: Scenario,
     vehicle_index: int,
+    split_by_breaks: bool = False,
 ) -> tuple[int, int]:
   """Computes the number of "parking ping-pongs" on a single route.
 
@@ -454,6 +492,10 @@ def get_num_ping_pongs(
     scenario: The scenario in which the number of ping-pongs is computed.
     vehicle_index: The index of the vehicle for which the number of ping-pongs
       is computed.
+    split_by_breaks: When True, a break between two visits to the same parking
+      breaks them up into two groups, and parking ping-pongs are looked up in
+      these two groups independently. When False, breaks are not considered in
+      parking ping-pong detection.
 
   Returns:
     A tuple `(num_ping_pongs, num_bad_ping_pongs)` where `num_ping_pongs` is the
@@ -463,7 +505,7 @@ def get_num_ping_pongs(
   num_ping_pongs = 0
   num_bad_ping_pongs = 0
   for parking_tag, num_rounds, group_shipments in group_global_visits(
-      scenario, vehicle_index
+      scenario, vehicle_index, split_by_breaks=split_by_breaks
   ):
     if num_rounds == 1:
       # Not a ping-pong: either a shipment delivered directly from the vehicle,
@@ -644,6 +686,218 @@ def get_num_sandwiches(
       num_bad_sandwiches += 1
 
   return num_sandwiches, num_bad_sandwiches
+
+
+def _get_parking_visit_timestamps(
+    routes: Sequence[cfr_json.ShipmentRoute],
+    visits_by_vehicle: Mapping[int, Sequence[int]],
+    global_visits: Mapping[
+        int,
+        Sequence[tuple[two_step_routing.ParkingTag | None, int, int]],
+    ],
+    buffer_time: datetime.timedelta,
+    expected_parking_tag: two_step_routing.ParkingTag | None = None,
+) -> Iterable[tuple[datetime.datetime, int, int]]:
+  """Iterates over all the arrival and departure times for a parking location.
+
+  Args:
+    routes: The list of all visits to the parking.
+    visits_by_vehicle: Mapping from vehicles to the indices of their global
+      visits.
+    global_visits: The list of all global visits, in the same format as
+      ParkingLocationData.global_visits.
+    buffer_time: The amount of time added at the beginning and and the end of
+      each visit. This is subtracted from arrival times, and added to departure
+      times.
+    expected_parking_tag: The expected parking tag of all the global visits.
+      Used only for internal consistency checks.
+
+  Yields:
+    Tuples (timestamp, vehicle_index, delta) for each arrival and departure to
+    a parking location, where `timestamp` is the timestamp of the arrival or
+    departure, `vehicle_index` is the index of the vehicle visiting the parking,
+    and `delta` is 1 for arrivals and -1 for departures.
+  """
+  for vehicle_index, vehicle_global_visits in visits_by_vehicle.items():
+    visits = cfr_json.get_visits(routes[vehicle_index])
+    for global_visit_index in vehicle_global_visits:
+      parking_tag, arrival_visit_index, departure_visit_index = global_visits[
+          vehicle_index
+      ][global_visit_index]
+
+      assert (
+          expected_parking_tag is None or expected_parking_tag == parking_tag
+      ), (
+          f"expected_parking_tag = {expected_parking_tag!r}, parking_tag ="
+          f" {parking_tag!r}"
+      )
+
+      # The arrival and departure visits have zero duration, so it is OK to take
+      # their timestamps for the arrival and departure time for the parking.
+      arrival_visit = visits[arrival_visit_index]
+      arrival_time = cfr_json.parse_time_string(arrival_visit["startTime"])
+      departure_visit = visits[departure_visit_index]
+      departure_time = cfr_json.parse_time_string(departure_visit["startTime"])
+      yield (arrival_time - buffer_time, vehicle_index, 1)
+      yield (departure_time + buffer_time, vehicle_index, -1)
+
+
+@dataclasses.dataclass
+class OverlappingParkingVisit:
+  """Represents a time interval when a parking is visited by multiple vehicles.
+
+  Note that this represents the time when exactly `self.vehicles` are in the
+  parking. When there are more than two vehicles, and unless they all arrive and
+  leave at the same time, there would be multiple instances of this class
+  representing the different sets of vehicles at the parking.
+
+  Attributes:
+    parking_tag: The tag of the parking location in question.
+    start_time: The start of the interval. This is the time when the last
+      vehicle of `vehicles` arrives to the parking.
+    end_time: The end of the interval. This is the time when the first of
+      `vehicles` leaves the parking.
+    vehicles: The list of vehicles in the parking.
+  """
+
+  parking_tag: two_step_routing.ParkingTag
+  start_time: datetime.datetime
+  end_time: datetime.datetime
+  vehicles: Collection[int]
+
+
+@dataclasses.dataclass(frozen=True)
+class ParkingPartyStats:
+  """Contains parking party statistics for a scenario.
+
+  Attributes:
+    num_parkings_with_multiple_vehicles: The number of parking locations served
+      by more than one vehicle.
+    num_party_visits: The number of local delivery rounds from a parking that
+      are done by "other" vehicles. For each parking, the algorithm takes the
+      vehicle with most delivery round and considers it to be the "canonical"
+      vehicle for this parking. Delivery rounds from all other vehicles are
+      counted in this statistic.
+    max_vehicles_at_parking_at_once: The maximal number of vehicles that are
+      visiting a parking location at any given time.
+    num_overlapping_visit_pairs: The number of pairs of visits to a parking
+      location that overlap in time.
+    overlapping_visits: The list of overlapping visits to a parking location.
+  """
+
+  num_parkings_with_multiple_vehicles: int
+  num_party_visits: int
+  max_vehicles_at_parking_at_once: int
+  num_overlapping_visit_pairs: int
+  overlapping_visits: Collection[OverlappingParkingVisit]
+
+
+def get_parking_party_stats(
+    scenario: Scenario, buffer_time: datetime.timedelta
+) -> ParkingPartyStats:
+  """Computes statistics for "parking parties" in the scenario.
+
+  A "parking party" is the situation where multiple vehicles visit the same
+  parking location in the same solution. This is generally not desired for two
+  reasons: the drivers may perceive this as inefficient, and depending on the
+  situation, there might not be enough space for multiple vehicles in the
+  parking. However, parking parties may be inevitable in case there are too many
+  shipments to be delivered from the parking - or too many shipments that need
+  to be delivered within a certain time window.
+
+  See the documentation of attributes of ParkingPartyStats for the list of
+  statistics computed by this function.
+
+  Args:
+    scenario: The scenario for which the stats are computed.
+    buffer_time: The amount of time added before and after each visit to a
+      parking location. This can be used to compute a more conservative version
+      of overlapping visits where we ensure that small delays on the route would
+      not put multiple vehicles at the same parking.
+
+  Returns:
+    Parking party stats for this scenario.
+  """
+  # TODO(ondrasej): Find parking locations that use more vehicles than needed.
+  num_parkings_with_multiple_vehicles = 0
+  num_party_visits = 0
+  num_overlapping_visit_pairs = 0
+  max_vehicles_at_parking_at_once = 0
+  overlapping_visits = []
+
+  parking_data = scenario.parking_location_data
+  for parking_tag, vehicles in parking_data.vehicles_by_parking.items():
+    if len(vehicles) == 1:
+      continue
+
+    # Count parking locations visited by multiple vehicles.
+    num_parkings_with_multiple_vehicles += 1
+
+    # Count parking party visits.
+    num_all_visits_by_vehicle = 0
+    max_num_visits_by_vehicle = 0
+    for vehicle_visits in vehicles.values():
+      num_visits_by_vehicle = len(vehicle_visits)
+      max_num_visits_by_vehicle = max(
+          max_num_visits_by_vehicle, num_visits_by_vehicle
+      )
+      num_all_visits_by_vehicle += num_visits_by_vehicle
+    num_party_visits += num_all_visits_by_vehicle - max_num_visits_by_vehicle
+
+    # Parking arrivals and departures, sorted by timestamp.
+    visit_timestamps = sorted(
+        _get_parking_visit_timestamps(
+            scenario.routes,
+            parking_data.vehicles_by_parking[parking_tag],
+            global_visits=parking_data.global_visits,
+            buffer_time=buffer_time,
+            expected_parking_tag=parking_tag,
+        )
+    )
+    # NOTE(ondrasej): With buffer time and repeated visits of the same vehicle
+    # to the same parking, we might see a vehicle "arrive" to a parking location
+    # multiple times before its first departure. Since this does not create any
+    # issues with parking availability, we do not count this as an overlapping
+    # visit. Only overlaps of different vehicles are counted.
+    present_vehicles = {}
+    previous_timestamp = None
+
+    for timestamp, vehicle_index, delta in visit_timestamps:
+      max_vehicles_at_parking_at_once = max(
+          max_vehicles_at_parking_at_once, len(present_vehicles)
+      )
+      if len(present_vehicles) > 1:
+        assert previous_timestamp is not None
+        overlapping_visits.append(
+            OverlappingParkingVisit(
+                parking_tag=parking_tag,
+                start_time=previous_timestamp,
+                end_time=timestamp,
+                vehicles=frozenset(present_vehicles),
+            )
+        )
+      if delta > 0:
+        old_vehicle_count = present_vehicles.get(vehicle_index, 0)
+        present_vehicles[vehicle_index] = old_vehicle_count + 1
+        if len(present_vehicles) > 1:
+          num_overlapping_visit_pairs += len(present_vehicles) - 1
+      else:
+        old_vehicle_count = present_vehicles.get(vehicle_index, 0)
+        if old_vehicle_count == 1:
+          del present_vehicles[vehicle_index]
+        else:
+          present_vehicles[vehicle_index] = old_vehicle_count - 1
+
+      previous_timestamp = timestamp
+    assert not present_vehicles
+
+  return ParkingPartyStats(
+      num_parkings_with_multiple_vehicles=num_parkings_with_multiple_vehicles,
+      num_party_visits=num_party_visits,
+      num_overlapping_visit_pairs=num_overlapping_visit_pairs,
+      max_vehicles_at_parking_at_once=max_vehicles_at_parking_at_once,
+      overlapping_visits=overlapping_visits,
+  )
 
 
 def get_vehicle_shipment_groups(
