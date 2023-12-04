@@ -1,5 +1,7 @@
 """Provides functions for formatting CFR JSON objects to human-readable form."""
 
+from collections.abc import Iterable
+
 from . import cfr_json
 
 
@@ -10,6 +12,66 @@ def lat_lng(latlng: cfr_json.LatLng) -> str:
   if not latitude and not longitude:
     return ""
   return f"{latitude}, {longitude}"
+
+
+def time_window(window: cfr_json.TimeWindow | None) -> str:
+  """Formats a time window as a human readable string.
+
+  Args:
+    window: The time window to format.
+
+  Returns:
+    A human-readable string representation of the time window. Returns an empty
+    string when `window` is None.
+  """
+  if window is None:
+    return ""
+  parts = []
+  start = window.get("startTime")
+  end = window.get("endTime")
+  if start is not None or end is not None:
+    parts.append(
+        f"{timestring_or_default(start, '...')} -"
+        f" {timestring_or_default(end, '...')}"
+    )
+  soft_start = window.get("softStartTime")
+  soft_end = window.get("softEndTime")
+  if soft_start is not None or soft_end is not None:
+    parts.append(
+        f"soft: {timestring_or_default(soft_start, '...')} -"
+        f" {timestring_or_default(soft_end, '...')}"
+    )
+  return " ".join(parts)
+
+
+def time_windows(
+    windows: Iterable[cfr_json.TimeWindow] | None, separator: str = " | "
+) -> str:
+  """Formats a collection of time windows as a human readable string.
+
+  Args:
+    windows: The collection of time windows to be formatted.
+    separator: The separator string placed between the time windows.
+
+  Returns:
+    A human-readable string representation of the time windows. Returns an empty
+    string when `windows` is None or empty.
+  """
+  if not windows:
+    return ""
+  return separator.join(time_window(window) for window in windows)
+
+
+def timestring_or_default(
+    value: cfr_json.TimeString | None, default: str
+) -> str:
+  """Returns a formatted timestamp or `default`, if `value` is `None`."""
+  # TODO(ondrasej): If the global span of the scenario is <= 24 hours, do not
+  # show the date. Also, normalize all timestamps to the same timezone and do
+  # not show the timezone suffix.
+  if value is not None:
+    return str(cfr_json.parse_time_string(value))
+  return default
 
 
 def transition_duration(transition: cfr_json.Transition) -> str:

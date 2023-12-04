@@ -14,6 +14,132 @@ class LatLngTest(unittest.TestCase):
     )
 
 
+class TimeWindowTest(unittest.TestCase):
+  """Tests for time_window."""
+
+  def test_none(self):
+    self.assertEqual(human_readable.time_window(None), "")
+
+  def test_start_and_end(self):
+    self.assertEqual(
+        human_readable.time_window({
+            "startTime": "2023-11-21T12:00:32Z",
+            "endTime": "2023-11-21T17:00:00Z",
+        }),
+        "2023-11-21 12:00:32+00:00 - 2023-11-21 17:00:00+00:00",
+    )
+
+  def test_start_only(self):
+    self.assertEqual(
+        human_readable.time_window({"startTime": "2023-11-21T08:00:00Z"}),
+        "2023-11-21 08:00:00+00:00 - ...",
+    )
+
+  def test_end_only(self):
+    self.assertEqual(
+        human_readable.time_window({"endTime": "2023-11-21T18:15:00Z"}),
+        "... - 2023-11-21 18:15:00+00:00",
+    )
+
+  def test_soft_start_end(self):
+    self.assertEqual(
+        human_readable.time_window({
+            "softStartTime": "2023-11-21T12:00:32Z",
+            "softEndTime": "2023-11-21T17:00:00Z",
+        }),
+        "soft: 2023-11-21 12:00:32+00:00 - 2023-11-21 17:00:00+00:00",
+    )
+
+  def test_soft_start_only(self):
+    self.assertEqual(
+        human_readable.time_window({
+            "softStartTime": "2023-11-21T12:00:32Z",
+        }),
+        "soft: 2023-11-21 12:00:32+00:00 - ...",
+    )
+
+  def test_soft_end_only(self):
+    self.assertEqual(
+        human_readable.time_window({
+            "softEndTime": "2023-11-21T21:00:00Z",
+        }),
+        "soft: ... - 2023-11-21 21:00:00+00:00",
+    )
+
+  def test_hard_and_soft(self):
+    self.assertEqual(
+        human_readable.time_window({
+            "startTime": "2023-11-21T08:00:00Z",
+            "endTime": "2023-11-21T22:00:00Z",
+            "softStartTime": "2023-11-21T12:00:32Z",
+            "softEndTime": "2023-11-21T19:00:00Z",
+        }),
+        "2023-11-21 08:00:00+00:00 - 2023-11-21 22:00:00+00:00"
+        " soft: 2023-11-21 12:00:32+00:00 - 2023-11-21 19:00:00+00:00",
+    )
+
+
+class TimeWindowsTest(unittest.TestCase):
+  """Tests for time_windows."""
+
+  def test_none(self):
+    self.assertEqual(human_readable.time_windows(None), "")
+
+  def test_empty(self):
+    self.assertEqual(human_readable.time_windows(()), "")
+
+  def test_one_time_window(self):
+    self.assertEqual(
+        human_readable.time_windows(({"startTime": "2023-11-21T08:00:00Z"},)),
+        "2023-11-21 08:00:00+00:00 - ...",
+    )
+
+  def test_multiple_time_windows(self):
+    self.assertEqual(
+        human_readable.time_windows((
+            {
+                "startTime": "2023-11-21T12:00:32Z",
+                "endTime": "2023-11-21T17:00:00Z",
+            },
+            {
+                "softStartTime": "2023-11-21T12:00:32Z",
+            },
+        )),
+        "2023-11-21 12:00:32+00:00 - 2023-11-21 17:00:00+00:00"
+        " | soft: 2023-11-21 12:00:32+00:00 - ...",
+    )
+
+  def test_non_default_separator(self):
+    self.assertEqual(
+        human_readable.time_windows(
+            (
+                {
+                    "startTime": "2023-11-21T12:00:32Z",
+                    "endTime": "2023-11-21T17:00:00Z",
+                },
+                {
+                    "softStartTime": "2023-11-21T12:00:32Z",
+                },
+            ),
+            separator="\n",
+        ),
+        "2023-11-21 12:00:32+00:00 - 2023-11-21 17:00:00+00:00"
+        "\nsoft: 2023-11-21 12:00:32+00:00 - ...",
+    )
+
+
+class TimeStringOrDefault(unittest.TestCase):
+
+  def test_default(self):
+    self.assertEqual(human_readable.timestring_or_default(None, "..."), "...")
+
+  def test_not_default(self):
+    self.assertEqual(
+        human_readable.timestring_or_default("2023-12-21T16:32:00Z", "..."),
+        "2023-12-21 16:32:00+00:00",
+    )
+
+
 class TransitionDurationTest(unittest.TestCase):
   """Tests for transition_duration."""
 
