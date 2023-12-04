@@ -334,18 +334,20 @@ class RemoveVehiclesTest(unittest.TestCase):
       transforms.remove_vehicles(model, (1,))
 
 
-class RelaxAllowedVehicleIndicesTest(unittest.TestCase):
-  """Tests for relax_allowed_vehicle_indices."""
+class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
+  """Tests for soften_allowed_vehicle_indices."""
 
   maxDiff = None
 
   def test_negative_cost(self):
     with self.assertRaises(ValueError):
-      transforms.relax_allowed_vehicle_indices({}, -1)
+      transforms.soften_allowed_vehicle_indices({}, cost=-1, num_vehicles=2)
 
   def test_no_allowed_vehicle_indices(self):
     shipment: cfr_json.Shipment = {"label": "S002"}
-    transforms.relax_allowed_vehicle_indices(shipment, 100)
+    transforms.soften_allowed_vehicle_indices(
+        shipment, cost=100, num_vehicles=2
+    )
     self.assertEqual(shipment, {"label": "S002"})
 
   def test_zero_cost(self):
@@ -353,21 +355,21 @@ class RelaxAllowedVehicleIndicesTest(unittest.TestCase):
         "label": "S001",
         "allowedVehicleIndices": [0, 1, 2, 3],
     }
-    transforms.relax_allowed_vehicle_indices(shipment, 0)
+    transforms.soften_allowed_vehicle_indices(shipment, cost=0, num_vehicles=10)
     self.assertEqual(shipment, {"label": "S001"})
 
   def test_with_cost_and_no_existing_costs(self):
     shipment: cfr_json.Shipment = {
         "label": "S003",
-        "allowedVehicleIndices": [2, 3, 10],
+        "allowedVehicleIndices": [2, 3],
     }
-    transforms.relax_allowed_vehicle_indices(shipment, 10)
+    transforms.soften_allowed_vehicle_indices(shipment, cost=10, num_vehicles=5)
     self.assertEqual(
         shipment,
         {
             "label": "S003",
             "costsPerVehicle": [10, 10, 10],
-            "costsPerVehicleIndices": [2, 3, 10],
+            "costsPerVehicleIndices": [0, 1, 4],
         },
     )
 
@@ -378,13 +380,13 @@ class RelaxAllowedVehicleIndicesTest(unittest.TestCase):
         "costsPerVehicle": [100, 300, 400],
         "costsPerVehicleIndices": [1, 3, 4],
     }
-    transforms.relax_allowed_vehicle_indices(shipment, 10)
+    transforms.soften_allowed_vehicle_indices(shipment, cost=10, num_vehicles=7)
     self.assertEqual(
         shipment,
         {
             "label": "S003",
-            "costsPerVehicle": [100, 310, 400, 10, 10],
-            "costsPerVehicleIndices": [1, 3, 4, 2, 5],
+            "costsPerVehicle": [10, 110, 300, 410, 10],
+            "costsPerVehicleIndices": [0, 1, 3, 4, 6],
         },
     )
 
@@ -394,12 +396,28 @@ class RelaxAllowedVehicleIndicesTest(unittest.TestCase):
         "allowedVehicleIndices": [2, 3],
         "costsPerVehicle": [100, 200, 300, 400, 500],
     }
-    transforms.relax_allowed_vehicle_indices(shipment, 10)
+    transforms.soften_allowed_vehicle_indices(shipment, cost=10, num_vehicles=5)
     self.assertEqual(
         shipment,
         {
             "label": "S003",
-            "costsPerVehicle": [100, 200, 310, 410, 500],
+            "costsPerVehicle": [110, 210, 300, 400, 510],
+        },
+    )
+
+  def test_adding_cost_to_all_vehicles(self):
+    shipment: cfr_json.Shipment = {
+        "label": "S003",
+        "allowedVehicleIndices": [2, 3],
+        "costsPerVehicle": [200, 300, 400],
+        "costsPerVehicleIndices": [2, 3, 4],
+    }
+    transforms.soften_allowed_vehicle_indices(shipment, cost=10, num_vehicles=5)
+    self.assertEqual(
+        shipment,
+        {
+            "label": "S003",
+            "costsPerVehicle": [10, 10, 200, 300, 410],
         },
     )
 

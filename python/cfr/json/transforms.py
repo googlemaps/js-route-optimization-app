@@ -193,46 +193,51 @@ def remove_vehicles(
       ]
 
 
-def relax_allowed_vehicle_indices(
-    shipment: cfr_json.Shipment, cost: float
+def soften_allowed_vehicle_indices(
+    shipment: cfr_json.Shipment, cost: float, num_vehicles: int
 ) -> None:
-  """Relaxes the hard vehicle-shipment constraints in the model.
+  """Softens the hard vehicle-shipment constraints in the model.
 
   When `cost > 0`, replaces the hard constraints with equivalent soft
   constraints where the cost of violating the vehicle-shipment constraint is
-  `cost`. When `cost == 0`, just removes `allowedVehicleIndices` from the model.
+  `cost`. When `cost == 0`, removes `allowedVehicleIndices` from the model.
 
   Args:
-    shipment: The shipment in which the allowed vehicle indices are relaxed.
+    shipment: The shipment in which the allowed vehicle indices are softened.
     cost: The cost of violating a vehicle-shipment constraint.
+    num_vehicles: The number of vehicles in the model.
 
   Raises:
     ValueError: When `cost < 0`.
   """
   if cost < 0:
     raise ValueError("cost must be non-negative.")
-  allowed_vehicles = shipment.get("allowedVehicleIndices")
-  shipment.pop("allowedVehicleIndices", None)
+  allowed_vehicles = shipment.pop("allowedVehicleIndices", None)
   if allowed_vehicles is None or cost == 0:
     return
   costs_per_vehicle = shipment.get("costsPerVehicle", ())
   costs_per_vehicle_indices = shipment.get("costsPerVehicleIndices", ())
-  all_vehicles_have_cost = costs_per_vehicle and not costs_per_vehicle_indices
-  if all_vehicles_have_cost:
+  if costs_per_vehicle and not costs_per_vehicle_indices:
+    if len(costs_per_vehicle) != num_vehicles:
+      raise ValueError(
+          "`shipment['costsPerVehicleIndices']` is not used, but `num_vehicles`"
+          " is different from`len(shipment['costsPerVehicle'])`."
+      )
     costs_per_vehicle_indices = range(len(costs_per_vehicle))
   costs_per_vehicle_map = collections.defaultdict(
       float, zip(costs_per_vehicle_indices, costs_per_vehicle)
   )
-  for vehicle in allowed_vehicles:
-    costs_per_vehicle_map[vehicle] += cost
-  # NOTE(ondrasej): The following relies on Python's deterministic iteration
-  # order in dicts, where both keys() and values() iterate return the items from
-  # the dict in insertion order.
-  if all_vehicles_have_cost:
-    shipment["costsPerVehicle"] = list(costs_per_vehicle_map.values())
+  for vehicle in range(num_vehicles):
+    if vehicle not in allowed_vehicles:
+      costs_per_vehicle_map[vehicle] += cost
+
+  indices, costs = zip(*sorted(costs_per_vehicle_map.items()))
+  if num_vehicles == len(costs_per_vehicle_map):
+    shipment["costsPerVehicle"] = list(costs)
+    shipment.pop("costsPerVehicleIndices", None)
   else:
-    shipment["costsPerVehicleIndices"] = list(costs_per_vehicle_map.keys())
-    shipment["costsPerVehicle"] = list(costs_per_vehicle_map.values())
+    shipment["costsPerVehicleIndices"] = list(indices)
+    shipment["costsPerVehicle"] = list(costs)
 
 
 def remove_load_limits(model: cfr_json.ShipmentModel) -> None:
@@ -250,10 +255,10 @@ def remove_pickups(model: cfr_json.ShipmentModel) -> None:
   this earliest pickup time.
 
   When there are pickup visit costs, adds the minimal pickup visit cost to all
-  delivery visit costs to preserve the pickup costs in the relaxed model to some
-  extent.
+  delivery visit costs to preserve the pickup costs in the modified model to
+  some extent.
 
-  The result of the function is a relaxed version of the original model that is
+  The result of the function is a modified version of the original model that is
   not necessarily equivalent to the original model, but is very likely easier to
   solve.
 
