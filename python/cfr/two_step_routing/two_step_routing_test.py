@@ -16,9 +16,7 @@ from . import two_step_routing
 
 # Provides easy access to files under `./testdata`. See `_json()` below for
 # example use.
-_TESTDATA = resources.files(
-    "google3.third_party.cfr.python.cfr.two_step_routing"
-).joinpath("testdata")
+_TESTDATA = resources.files(__package__).joinpath("testdata")
 
 
 def _json(path: str):
