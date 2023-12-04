@@ -167,6 +167,13 @@ class TransitionAttributes(TypedDict, total=False):
   delay: DurationString
 
 
+class ShipmentTypeIncompatibility(TypedDict, total=False):
+  """Represents a shipment type incompatibility in the JSON CFR request."""
+
+  types: list[str]
+  incompatibilityMode: int
+
+
 class ShipmentModel(TypedDict, total=False):
   """Represents a shipment model in the JSON CFR request."""
 
@@ -175,6 +182,8 @@ class ShipmentModel(TypedDict, total=False):
   transitionAttributes: list[TransitionAttributes]
   globalStartTime: TimeString
   globalEndTime: TimeString
+
+  shipmentTypeIncompatibilities: list[ShipmentTypeIncompatibility]
 
 
 class Visit(TypedDict, total=False):
@@ -289,12 +298,25 @@ class OptimizeToursRequest(TypedDict, total=False):
   timeout: DurationString
 
 
+class Metrics(TypedDict, total=False):
+  """Represents the metrics in the JSON CFR response."""
+
+  aggregatedRouteMetrics: AggregatedMetrics
+  skippedMandatoryShipmentCount: int
+  usedVehicleCount: int
+  earliestVehicleStartTime: TimeString
+  latestVehicleEndTime: TimeString
+  costs: dict[str, float]
+  totalCost: float
+
+
 class OptimizeToursResponse(TypedDict, total=False):
   """Represents the JSON CFR result."""
 
   routes: list[ShipmentRoute]
   skippedShipments: list[SkippedShipment]
   totalCost: float
+  metrics: Metrics
 
 
 # pylint: enable=invalid-name
@@ -445,6 +467,22 @@ def get_break_latest_start_time(
 def get_break_min_duration(break_request: BreakRequest) -> datetime.timedelta:
   """Returns the minimal duration of a break request."""
   return parse_duration_string(break_request["minDuration"])
+
+
+def get_transition_break_duration(transition: Transition) -> datetime.timedelta:
+  """Returns the break time of a transition.
+
+  Args:
+    transition: The transition for which the break duration is computed.
+
+  Returns:
+    When there is a break over the given transition, returns its duration. When
+    there is no break, returns zero duration.
+  """
+  duration_string = transition.get("breakDuration")
+  if duration_string is None:
+    return datetime.timedelta()
+  return parse_duration_string(duration_string)
 
 
 def get_visit_request(model: ShipmentModel, visit: Visit) -> VisitRequest:
@@ -942,7 +980,9 @@ def recompute_route_metrics(
     end_time = parse_time_string(route["vehicleEndTime"])
     if route_total_duration != end_time - start_time:
       raise ValueError(
-          "The total duration is inconsistent with vehicle start and end times"
+          "The total duration is inconsistent with vehicle start and end"
+          f" times. Start time: {start_time}, end time: {end_time}, total"
+          f" duration: {route_total_duration}"
       )
 
   route["metrics"] = {

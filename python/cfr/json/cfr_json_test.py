@@ -514,6 +514,28 @@ class GetBreakPropertiesTest(unittest.TestCase):
     )
 
 
+class GetTransitionPropertiesTest(unittest.TestCase):
+  """Tests for accessor functions for Transition."""
+
+  def test_get_break_duration_no_break(self):
+    self.assertEqual(
+        cfr_json.get_transition_break_duration(
+            {"travelDuration": "32s", "totalDuration": "32s"}
+        ),
+        datetime.timedelta(),
+    )
+
+  def test_get_break_duration_with_break(self):
+    self.assertEqual(
+        cfr_json.get_transition_break_duration({
+            "travelDuration": "16s",
+            "breakDuration": "3600s",
+            "totalDuration": "3616s",
+        }),
+        datetime.timedelta(hours=1),
+    )
+
+
 class GetUnavoidableBreaksTest(unittest.TestCase):
   """Tests for get_unavoidable_breaks."""
 
