@@ -53,6 +53,7 @@ import math
 import re
 from typing import Any, TypeAlias, TypeVar, cast
 
+from .. import utils
 from ..json import cfr_json
 
 
@@ -81,7 +82,7 @@ class _ParkingGroupKey:
 
 
 @enum.unique
-class LocalModelGrouping(enum.Enum):
+class LocalModelGrouping(utils.EnumForArgparse):
   """Specifies how shipments are grouped in the local model.
 
   In the local model, the routes are computed for each group separately, i.e.
@@ -429,8 +430,9 @@ class Planner:
         delivery = shipment["deliveries"][0]
         local_delivery = {
             "arrivalWaypoint": delivery["arrivalWaypoint"],
-            "duration": delivery["duration"],
         }
+        if (delivery_duration := delivery.get("duration")) is not None:
+          local_delivery["duration"] = delivery_duration
         # Preserve tags in the local shipment.
         tags = delivery.get("tags")
         if tags is not None:
@@ -441,7 +443,7 @@ class Planner:
           local_delivery["timeWindows"] = time_windows
         local_shipment: cfr_json.Shipment = {
             "deliveries": [local_delivery],
-            "label": f"{shipment_index}: {shipment['label']}",
+            "label": f"{shipment_index}: {shipment.get('label', '')}",
             "allowedVehicleIndices": group_vehicle_indices,
         }
         # Copy load demands from the original shipment, if present.

@@ -27,7 +27,6 @@ and have an access token for using the HTTP API:
 """
 
 import argparse
-from collections.abc import Mapping
 import dataclasses
 from http import client
 import json
@@ -55,6 +54,7 @@ class Flags:
     google_cloud_token: The value of the --token flag.
     reuse_existing: The value of the --reuse_existing flag. When a file with a
       response exists, load it instead of resolving the request.
+    num_refinements: The value of the --use_refinements flag.
     use_refinement: The value of the --use_refinement flag. When True, the
       planner uses a third solve to reoptimize local routes from the same
       parking if they are performed in a sequence (allowing the planner to merge
@@ -76,7 +76,7 @@ class Flags:
   google_cloud_project: str
   google_cloud_token: str
   reuse_existing: bool
-  use_refinement: bool
+  num_refinements: int
   local_grouping: two_step_routing.LocalModelGrouping
   travel_mode_in_merged_transitions: bool
   local_timeout: cfr_json.DurationString
@@ -112,11 +112,11 @@ def _parse_flags() -> Flags:
   parser.add_argument(
       "--token", required=True, help="The Google Cloud auth key."
   )
-  parser.add_argument(
+  two_step_routing.LocalModelGrouping.add_as_argument(
+      parser,
       "--local_grouping",
       help="Controls the grouping mode in the local model.",
-      choices=tuple(two_step_routing.LocalModelGrouping.__members__),
-      default="PARKING_AND_TIME",
+      default=two_step_routing.LocalModelGrouping.PARKING_AND_TIME,
   )
   parser.add_argument(
       "--travel_mode_in_merged_transitions",
@@ -154,10 +154,18 @@ def _parse_flags() -> Flags:
       default="240s",
   )
   parser.add_argument(
-      "--use_refinement",
-      help="Use the refinement models to clean up parking location visits.",
-      default=False,
-      action="store_true",
+      "--num_refinements",
+      help=(
+          "The number of refinement rounds applied to the solution. In each"
+          " refinement round, the solver first re-optimizes local routes when"
+          " there are two or more visits to the parking in a sequence, and then"
+          " updates the global solution to reflect and take advantage of the"
+          " potentially more optimized local routes. When 0, no refinement is"
+          " applied."
+      ),
+      default=0,
+      type=int,
+      action="store",
   )
   parser.add_argument(
       "--reuse_existing",
@@ -173,12 +181,12 @@ def _parse_flags() -> Flags:
       google_cloud_project=flags.project,
       google_cloud_token=flags.token,
       local_timeout=flags.local_timeout,
-      local_grouping=two_step_routing.LocalModelGrouping[flags.local_grouping],
+      local_grouping=flags.local_grouping,
       travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
       global_timeout=flags.global_timeout,
       local_refinement_timeout=flags.local_refinement_timeout,
       global_refinement_timeout=flags.global_refinement_timeout,
-      use_refinement=flags.use_refinement,
+      num_refinements=flags.num_refinements,
       reuse_existing=flags.reuse_existing,
   )
 
@@ -313,16 +321,27 @@ def _run_two_step_planner() -> None:
       request_json, parking_locations, parking_for_shipment, options
   )
 
+  refinement_index = None
+  timeout_suffix = f"{flags.local_timeout}.{flags.global_timeout}"
+
+  def make_filename(stem, timeout_string=None):
+    if timeout_string is None:
+      timeout_string = timeout_suffix
+    parts = [base_filename]
+    if refinement_index is not None:
+      parts.append(f"refined_{refinement_index}")
+    parts.append(stem)
+    if timeout_string:
+      parts.append(timeout_string)
+    parts.append("json")
+    return ".".join(parts)
+
   local_request = planner.make_local_request()
   local_request["searchMode"] = 2
-  io_utils.write_json_to_file(
-      f"{base_filename}.local_request.json", local_request
-  )
+  io_utils.write_json_to_file(make_filename("local_request", ""), local_request)
 
   logging.info("Solving local model")
-  local_response_filename = (
-      f"{base_filename}.local_response.{flags.local_timeout}.json"
-  )
+  local_response_filename = make_filename("local_response", flags.local_timeout)
   local_response = _optimize_tours_and_write_response(
       local_request,
       flags,
@@ -335,24 +354,23 @@ def _run_two_step_planner() -> None:
   # global model. We will be injecting the solution from the base global model
   # into a refined global model, and for this to work correctly, we need to use
   # the same duration/distance matrices in both solves.
-  global_request_traffic_override = False if flags.use_refinement else None
+  global_request_traffic_override = False if flags.num_refinements > 0 else None
   global_request = planner.make_global_request(
       local_response,
       consider_road_traffic_override=global_request_traffic_override,
   )
   global_request["searchMode"] = 2
   io_utils.write_json_to_file(
-      f"{base_filename}.global_request.{flags.local_timeout}.json",
+      make_filename("global_request", flags.local_timeout),
       global_request,
   )
 
   logging.info("Solving global model")
-  timeout_suffix = f"{flags.local_timeout}.{flags.global_timeout}"
-  global_response_filename = (
-      f"{base_filename}.global_response.{timeout_suffix}.json"
-  )
   global_response = _optimize_tours_and_write_response(
-      global_request, flags, flags.global_timeout, global_response_filename
+      global_request,
+      flags,
+      flags.global_timeout,
+      make_filename("global_response"),
   )
 
   # NOTE(ondrasej): Create the merged request+response from the first two phases
@@ -367,37 +385,31 @@ def _run_two_step_planner() -> None:
   )
 
   logging.info("Writing merged request")
-  io_utils.write_json_to_file(
-      f"{base_filename}.merged_request.{timeout_suffix}.json",
-      merged_request,
-  )
+  io_utils.write_json_to_file(make_filename("merged_request"), merged_request)
   logging.info("Writing merged response")
-  io_utils.write_json_to_file(
-      f"{base_filename}.merged_response.{timeout_suffix}.json",
-      merged_response,
+  io_utils.write_json_to_file(make_filename("merged_response"), merged_response)
+
+  # Add the refinement timeouts to the file names produced by make_filename().
+  timeout_suffix += (
+      f".{flags.local_refinement_timeout}.{flags.global_refinement_timeout}"
   )
-  if flags.use_refinement:
+  for refinement_index in range(1, flags.num_refinements + 1):
+    logging.info("Refinement round #%d", refinement_index)
     logging.info("Creating local refinement model")
-    local_refinement_request_filename = (
-        f"{base_filename}.local_refinement_request.{timeout_suffix}.json"
-    )
     local_refinement_request = planner.make_local_refinement_request(
         local_response, global_response
     )
     io_utils.write_json_to_file(
-        local_refinement_request_filename,
+        make_filename("local_request"),
         local_refinement_request,
     )
 
     logging.info("Solving local refinement model")
-    local_refinement_response_filename = (
-        f"{base_filename}.local_refinement_response.{timeout_suffix}.json"
-    )
     local_refinement_response = _optimize_tours_and_write_response(
         local_refinement_request,
         flags,
         flags.local_refinement_timeout,
-        local_refinement_response_filename,
+        make_filename("local_response"),
     )
 
     logging.info("Integrating the refinement")
@@ -412,28 +424,28 @@ def _run_two_step_planner() -> None:
         global_response,
         local_refinement_response,
     )
+    if refinement_index != flags.num_refinements:
+      # Override the live traffic option for all but the last global request.
+      integrated_global_request["considerRoadTraffic"] = False
     io_utils.write_json_to_file(
-        f"{base_filename}.integrated_local_request.{timeout_suffix}.json",
+        make_filename("integrated_local_request"),
         integrated_local_request,
     )
     io_utils.write_json_to_file(
-        f"{base_filename}.integrated_local_response.{timeout_suffix}.json",
+        make_filename("integrated_local_response"),
         integrated_local_response,
     )
     io_utils.write_json_to_file(
-        f"{base_filename}.integrated_global_request.{timeout_suffix}.json",
+        make_filename("integrated_global_request"),
         integrated_global_request,
     )
 
     logging.info("Solving the integrated global model")
-    integrated_global_response_filename = (
-        f"{base_filename}.integrated_global_response.{timeout_suffix}.json"
-    )
     integrated_global_response = _optimize_tours_and_write_response(
         integrated_global_request,
         flags,
         flags.global_refinement_timeout,
-        integrated_global_response_filename,
+        make_filename("integrated_global_response"),
     )
 
     logging.info("Merging the results")
@@ -444,14 +456,19 @@ def _run_two_step_planner() -> None:
 
     logging.info("Writing merged integrated request")
     io_utils.write_json_to_file(
-        f"{base_filename}.merged_integrated_request.{timeout_suffix}.json",
+        make_filename("merged_integrated_request"),
         merged_request,
     )
     logging.info("Writing merged integrated response")
     io_utils.write_json_to_file(
-        f"{base_filename}.merged_integrated_response.{timeout_suffix}.json",
+        make_filename("merged_integrated_response"),
         merged_response,
     )
+
+    local_request = integrated_local_request
+    local_response = integrated_local_response
+    global_request = integrated_global_request
+    global_response = integrated_global_response
 
 
 if __name__ == "__main__":

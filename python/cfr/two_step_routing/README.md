@@ -4,7 +4,7 @@ This directory contains a Python library that uses the Cloud Fleet Routing (CFR)
 API to optimize routes with two-step deliveries: under this model, shipments can
 be handled in two ways:
 - delivered directly: the vehicle handling the shipment arrives directly to the
-  final delivery addres.
+  final delivery address.
 - delivered through a parking location: when handling the shipment, the vehicle
   parks at a specified parking location, while the driver delivers the shipment
   by foot.

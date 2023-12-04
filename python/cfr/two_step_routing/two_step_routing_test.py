@@ -3,7 +3,6 @@
 # Use of this source code is governed by an MIT-style license that can be found
 # in the LICENSE file or at https://opensource.org/licenses/MIT.
 
-from collections.abc import Sequence
 import copy
 import datetime
 from importlib import resources
@@ -474,47 +473,39 @@ class GetLocalModelRouteStartTimeWindowsTest(unittest.TestCase):
       "globalEndTime": "2023-10-25T23:59:59Z",
       "shipments": [
           {
-              "deliveries": [
-                  {
-                      "timeWindows": [{
-                          "startTime": "2023-10-25T09:00:00Z",
-                          "endTime": "2023-10-25T12:00:00Z",
-                      }]
-                  }
-              ],
+              "deliveries": [{
+                  "timeWindows": [{
+                      "startTime": "2023-10-25T09:00:00Z",
+                      "endTime": "2023-10-25T12:00:00Z",
+                  }]
+              }],
               "label": "S001",
           },
           {
-              "deliveries": [
-                  {
-                      "timeWindows": [{
-                          "startTime": "2023-10-25T09:00:00Z",
-                          "endTime": "2023-10-25T12:00:00Z",
-                      }]
-                  }
-              ],
+              "deliveries": [{
+                  "timeWindows": [{
+                      "startTime": "2023-10-25T09:00:00Z",
+                      "endTime": "2023-10-25T12:00:00Z",
+                  }]
+              }],
               "label": "S002",
           },
           {
-              "deliveries": [
-                  {
-                      "timeWindows": [{
-                          "startTime": "2023-10-25T14:00:00Z",
-                          "endTime": "2023-10-25T16:00:00Z",
-                      }]
-                  }
-              ],
+              "deliveries": [{
+                  "timeWindows": [{
+                      "startTime": "2023-10-25T14:00:00Z",
+                      "endTime": "2023-10-25T16:00:00Z",
+                  }]
+              }],
               "label": "S003",
           },
           {
-              "deliveries": [
-                  {
-                      "timeWindows": [{
-                          "startTime": "2023-10-25T12:00:00Z",
-                          "endTime": "2023-10-25T15:00:00Z",
-                      }]
-                  }
-              ],
+              "deliveries": [{
+                  "timeWindows": [{
+                      "startTime": "2023-10-25T12:00:00Z",
+                      "endTime": "2023-10-25T15:00:00Z",
+                  }]
+              }],
               "label": "S004",
           },
           {
