@@ -646,6 +646,10 @@ class Planner:
           _get_consecutive_parking_location_visits(local_response, route)
       )
 
+    # The list of parking tags for which the model already added reload
+    # transition attributes.
+    visited_parking_tags = set()
+
     for consecutive_visit_sequence in consecutive_visit_sequences:
       parking = self._parking_locations[consecutive_visit_sequence.parking_tag]
 
@@ -671,12 +675,22 @@ class Planner:
       # interfere with this modeling.
       parking_pickup_tag = get_non_existent_tag(f"{parking.tag} pickup")
       parking_delivery_tag = get_non_existent_tag(f"{parking.tag} delivery")
-      if parking.reload_duration:
-        refinement_transition_attributes.append({
+      if parking.tag not in visited_parking_tags and (
+          parking.reload_duration or parking.reload_cost
+      ):
+        # Each srcTag/dstTag can be used in the list of transition attributes
+        # only once.
+        transition_attribute: cfr_json.TransitionAttributes = {
             "srcTag": parking_delivery_tag,
             "dstTag": parking_pickup_tag,
-            "delay": parking.reload_duration,
-        })
+        }
+        if parking.reload_duration:
+          transition_attribute["delay"] = parking.reload_duration
+        if parking.reload_cost:
+          transition_attribute["cost"] = parking.reload_cost
+        refinement_transition_attributes.append(transition_attribute)
+
+      visited_parking_tags.add(parking.tag)
 
       # NOTE(ondrasej): We use soft start time windows with steep costs instead
       # of a hard time window here. The time window is exactly the total time of

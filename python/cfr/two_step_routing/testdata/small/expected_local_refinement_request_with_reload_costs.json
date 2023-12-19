@@ -1,0 +1,344 @@
+{
+  "allowLargeDeadlineDespiteInterruptionRisk": true,
+  "label": "my_little_model/local_refinement",
+  "injectedFirstSolutionRoutes": [
+    {
+      "vehicleIndex": 0,
+      "visits": [
+        { "isPickup": true, "shipmentIndex": 0 },
+        { "isPickup": false, "shipmentIndex": 0 },
+        { "isPickup": true, "shipmentIndex": 1 },
+        { "isPickup": true, "shipmentIndex": 2 },
+        { "isPickup": false, "shipmentIndex": 1 },
+        { "isPickup": false, "shipmentIndex": 2 },
+        { "isPickup": true, "shipmentIndex": 3 },
+        { "isPickup": false, "shipmentIndex": 3 }
+      ]
+    },
+    {
+      "vehicleIndex": 1,
+      "visits": [
+        { "isPickup": true, "shipmentIndex": 4 },
+        { "isPickup": false, "shipmentIndex": 4 },
+        { "isPickup": true, "shipmentIndex": 5 },
+        { "isPickup": true, "shipmentIndex": 6 },
+        { "isPickup": false, "shipmentIndex": 5 },
+        { "isPickup": false, "shipmentIndex": 6 }
+      ]
+    }
+  ],
+  "model": {
+    "globalEndTime": "2023-08-12T00:00:00.000Z",
+    "globalStartTime": "2023-08-11T00:00:00.000Z",
+    "shipments": [
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86595,
+                  "longitude": 2.34888
+                }
+              }
+            },
+            "duration": "60s",
+            "tags": ["P001 delivery"],
+            "timeWindows": [
+              {
+                "endTime": "2023-08-11T16:00:00.000Z",
+                "startTime": "2023-08-11T14:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "3: S004",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "tags": ["P001", "P001 pickup"]
+          }
+        ]
+      },
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86471,
+                  "longitude": 2.34901
+                }
+              }
+            },
+            "duration": "120s",
+            "tags": ["S001", "P001 delivery"]
+          }
+        ],
+        "label": "0: S001",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "tags": ["P001", "P001 pickup"]
+          }
+        ]
+      },
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86593,
+                  "longitude": 2.34886
+                }
+              }
+            },
+            "duration": "150s",
+            "tags": ["S002", "P001 delivery"]
+          }
+        ],
+        "label": "1: S002",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "tags": ["P001", "P001 pickup"]
+          }
+        ]
+      },
+      {
+        "allowedVehicleIndices": [0],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86594,
+                  "longitude": 2.34887
+                }
+              }
+            },
+            "duration": "60s",
+            "tags": ["P001 delivery"],
+            "timeWindows": [{ "startTime": "2023-08-11T12:00:00.000Z" }]
+          }
+        ],
+        "label": "2: S003",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "tags": ["P001", "P001 pickup"]
+          }
+        ]
+      },
+      {
+        "allowedVehicleIndices": [1],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s",
+            "tags": ["P002 delivery"]
+          }
+        ],
+        "label": "7: S008",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "tags": ["P002", "P002 pickup"]
+          }
+        ]
+      },
+      {
+        "allowedVehicleIndices": [1],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s",
+            "tags": ["P002 delivery"]
+          }
+        ],
+        "label": "5: S006",
+        "loadDemands": {
+          "ore": { "amount": "2" },
+          "wheat": { "amount": "3" }
+        },
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "tags": ["P002", "P002 pickup"]
+          }
+        ]
+      },
+      {
+        "allowedVehicleIndices": [1],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86596,
+                  "longitude": 2.34889
+                }
+              }
+            },
+            "duration": "150s",
+            "tags": ["P002 delivery"]
+          }
+        ],
+        "label": "4: S005",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              }
+            },
+            "tags": ["P002", "P002 pickup"]
+          }
+        ]
+      }
+    ],
+    "transitionAttributes": [
+      { "cost": 1, "dstTag": "S002", "srcTag": "S001" },
+      { "cost": 20, "dstTag": "P001 pickup", "srcTag": "P001 delivery" },
+      {
+        "delay": "60s",
+        "cost": 20,
+        "dstTag": "P002 pickup",
+        "srcTag": "P002 delivery"
+      }
+    ],
+    "vehicles": [
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endTags": ["P001"],
+        "endTimeWindows": [
+          {
+            "costPerHourAfterSoftEndTime": 10000,
+            "softEndTime": "2023-08-11T14:37:52Z"
+          }
+        ],
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 10000,
+        "label": "global_route:0 start:1 size:3 parking:P001",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "routeDurationLimit": { "maxDuration": "1800s" },
+        "startTags": ["P001"],
+        "startTimeWindows": [
+          {
+            "costPerHourBeforeSoftStartTime": 10000,
+            "softStartTime": "2023-08-11T13:51:14Z"
+          }
+        ],
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.1,
+        "travelMode": 1
+      },
+      {
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "endTags": ["P002"],
+        "endTimeWindows": [
+          {
+            "costPerHourAfterSoftEndTime": 10000,
+            "softEndTime": "2023-08-11T08:29:22Z"
+          }
+        ],
+        "endWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "fixedCost": 10000,
+        "label": "global_route:1 start:0 size:2 parking:P002",
+        "loadLimits": { "ore": { "maxLoad": "2" } },
+        "startTags": ["P002"],
+        "startTimeWindows": [
+          {
+            "costPerHourBeforeSoftStartTime": 10000,
+            "softStartTime": "2023-08-11T08:10:53Z"
+          }
+        ],
+        "startWaypoint": {
+          "location": {
+            "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+          }
+        },
+        "travelDurationMultiple": 1.0,
+        "travelMode": 2
+      }
+    ]
+  },
+  "searchMode": 1
+}

@@ -4,6 +4,7 @@
 # in the LICENSE file or at https://opensource.org/licenses/MIT.
 
 import copy
+import dataclasses
 import datetime
 from importlib import resources
 import json
@@ -404,6 +405,9 @@ class PlannerTestRefinedLocalModel(PlannerTest):
   _EXPECTED_LOCAL_REFINEMENT_REQUEST: cfr_json.OptimizeToursRequest = _json(
       "small/expected_local_refinement_request.json"
   )
+  _EXPECTED_LOCAL_REFINEMENT_REQUEST_WITH_RELOAD_COST: (
+      cfr_json.OptimizeToursRequest
+  ) = _json("small/expected_local_refinement_request_with_reload_costs.json")
 
   def test_local_refinement_model(self):
     planner = two_step_routing.Planner(
@@ -417,6 +421,25 @@ class PlannerTestRefinedLocalModel(PlannerTest):
     )
     self.assertEqual(
         local_refinement_request, self._EXPECTED_LOCAL_REFINEMENT_REQUEST
+    )
+
+  def test_local_refinement_model_with_reload_cost(self):
+    parking_locations = [
+        dataclasses.replace(parking, reload_cost=20)
+        for parking in self._PARKING_LOCATIONS
+    ]
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=parking_locations,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+    local_refinement_request = planner.make_local_refinement_request(
+        self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+    self.assertEqual(
+        local_refinement_request,
+        self._EXPECTED_LOCAL_REFINEMENT_REQUEST_WITH_RELOAD_COST,
     )
 
 
