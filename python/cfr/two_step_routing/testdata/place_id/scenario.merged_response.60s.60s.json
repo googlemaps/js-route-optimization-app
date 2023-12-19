@@ -1,0 +1,417 @@
+{
+  "routes": [
+    {
+      "routeTotalCost": 295.9166666666667,
+      "transitions": [
+        {
+          "travelDuration": "1148s",
+          "travelDistanceMeters": 4521,
+          "waitDuration": "0s",
+          "totalDuration": "1148s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {
+            "points": "eliiHcdfMo@XEBo@ZSJiAl@kAl@w@`@IDQHMFKB]Le@PEc@C[AKO_CCWASCc@AQKaBAI?I?M@UNCB@D@J?`A?t@AX?D?D?B?BADAJCj@Q^KJCRGXIRIl@QLEBAJENEjA]XIb@Of@OFCB?BAD@F@HBXZBHBFBF@FBLBNBNDC`@K`A]FCtBs@XIb@OhA_@ZKXKFEt@UFA`@ODAp@UPE@AZMFERGRITIC\\Gr@UpDEbA@j@CBADCL?D?D?B?B?B@@?@@B?@@B@@Qb@CJANABALEp@APGx@ANGbAc@jGQzBOpBEp@Z?j@HL?JAPHNJhAt@jCfB~AdAvA~@`@TVv@Or@CPAF@F?D@D@BDHFJDFr@f@v@j@d@\\JXRx@XSNKFCFGFGHEHGLILKJKNMDEj@^B@tBrAn@b@jBnAt@f@vA~@l@`@s@pCERHd@FRDLBLHNXb@FDd@XJDp@b@JFTRRL\\R~AfAFBDBF@D@T?@z@@h@?PARCf@EXCXIPABABAB?D?BAJ@h@BxG@p@@|A@|CBbC?^@z@|@FZB^?N@PB`@Bt@D@?N@fAH^@L@P@XBH?hAHbBHrDTb@BfAFnBLF@lDRn@B?T@N@JBHBHDFBDDBDBJDLBL@?OBkAB_B?IDcAH_ABU@I@K?E@CBE@C@C@ADCg@]wAGKAmAIEN"
+          }
+        },
+        {
+          "travelDuration": "983s",
+          "travelDistanceMeters": 1175,
+          "waitDuration": "0s",
+          "totalDuration": "983s",
+          "startTime": "2023-12-18T09:19:08Z",
+          "routePolyline": {
+            "points": "qyeiHmacMw@EIGu@G?DC?SCC?Di@@{B?yAAWB{C@W?M@WPsD@UD?DYD[F_@Jm@H[BMDMBK@KBINi@HUd@iBDUFQJc@~@mDVcANg@Pk@DQFUHQV{@k@k@C@c@_@BCuAsAUSGEABKK@EQOQQi@i@eAcACJACIIBOYQc@a@iAiAPw@Hi@Py@ReAZsA"
+          }
+        },
+        {
+          "travelDuration": "1061s",
+          "travelDistanceMeters": 1248,
+          "waitDuration": "0s",
+          "totalDuration": "1061s",
+          "startTime": "2023-12-18T09:40:31Z",
+          "routePolyline": {
+            "points": "u_fiHmmeM[rASdAQx@Ih@Qv@hAhAb@`@XPCNJLBKdAbAh@h@PPPNADJJ@CFDTRtArACBB@^\\BAj@j@?BJJ@Cz@x@ADNP@Gh@j@`B~ANR|AxAAFJF@EbEvCJHx@l@VP]bCCPw@`Fw@zECACRB@ABWbBMz@LDXD~@N"
+          }
+        },
+        {
+          "travelDuration": "955s",
+          "travelDistanceMeters": 1154,
+          "waitDuration": "0s",
+          "totalDuration": "955s",
+          "startTime": "2023-12-18T10:03:12Z",
+          "routePolyline": {
+            "points": "oaeiHiicM_AOYE?BADETGb@O~@CLMCCPKAI??NEhAP?tCPJ@dAFD@\\@BIV@R@|@Dp@DTA@?@ABC@CFBNDC`@ERGhDA^CjAIrA?NQABmA@_@WAElB{AIOAI?{AKOA_Co@Kk@GOgASGUAKH??FIACBqAXILEn@?D?P"
+          }
+        },
+        {
+          "travelDuration": "1106s",
+          "travelDistanceMeters": 1365,
+          "waitDuration": "0s",
+          "totalDuration": "1106s",
+          "startTime": "2023-12-18T10:24:07Z",
+          "routePolyline": {
+            "points": "_keiHyubM?Q?EDo@HMpAYBCH@?GI?@JFTfARFNJj@~Bn@N@zAJH?N@zAHDmBV@A^ClAP@?OHsABkA@_@FiDDg@BMOEGCCDA@A@A?U@q@E}@ESAWACH]AEAeAGKAuCQO?gBMI?IAWAKAmBMQAE@G?M@EGAFAFALCZEA[KAFCDABGD]UI^sAGA?UB_AG"
+          }
+        },
+        {
+          "travelDuration": "591s",
+          "travelDistanceMeters": 3169,
+          "waitDuration": "0s",
+          "totalDuration": "591s",
+          "startTime": "2023-12-18T10:42:33Z",
+          "routePolyline": {
+            "points": "aweiHyacMFoB?K?C@A?A?A@?@A@?F?LB|@FpAJCj@ALAHAJC\\AFCBCFCDMNEBA@ABABCDAB?DAJAHCTI~@EbA?Ha@CKDE@EDEFEJEJALALALo@CmDSGAoBMgAGc@CsDUcBIiAII?YCQAMA_@AgAIOAA?u@Ea@CQCOA_@?[C?u@CcDAu@AmB?AAs@Aw@?u@Au@AuCAS?C@CAgA?S?M?I@I@Q@IHY?C^gB@C?E?A?AACACX}@^uAHc@Ja@F[@GBWZqAVaABKPm@p@qCDO~@yDH]FKVaAb@oBRy@ZqAJg@jCqLBMx@sD|AgHHa@F]ZcBf@sDDWv@eGF_@D]DQDk@@IBKNgAl@iEJq@PkAD[XkBBSBO@K@IB_@?I@SDkADy@Bu@Bg@HwAHqA?EFo@Bo@J}@u@]m@WDWJq@OIIC"
+          }
+        },
+        {
+          "travelDuration": "722s",
+          "travelDistanceMeters": 869,
+          "waitDuration": "0s",
+          "totalDuration": "722s",
+          "startTime": "2023-12-18T10:52:24Z",
+          "routePolyline": {
+            "points": "c{eiHychM[KMGCAMEGCOUGEOKMIECGg@KB@DIZCLGZENOEg@UGCGEAFOj@AFI\\GCWQCAJ]ECSIOGUI_Aa@Mz@ETG\\DBGTACQdACRKl@A^CJBBG`@AFECMh@AJETETa@bCANADADc@tBALUMAA?AqB}@KG}@a@[MCPCPAFQIIf@Gd@}CqA"
+          }
+        },
+        {
+          "travelDuration": "1229s",
+          "travelDistanceMeters": 1469,
+          "waitDuration": "0s",
+          "totalDuration": "1229s",
+          "startTime": "2023-12-18T11:09:26Z",
+          "routePolyline": {
+            "points": "u|fiHcqgMHFHBVLnBx@Kl@E^PJCTCVEPd@PZL?^EVCA?@ER?@DB?@ADLJANGVA^QH?@KD?DHp@?FFCBDFLDFTZNPYp@TJCDzA`A?AB@\\VKPW`AKb@[vAKv@S`AJHADMl@KGOr@CNJHDBDDRLDDFFBL@L?HMn@fAp@AD?@?@?@?@?@?@?@?@?@?@?@?@@@?@?@@@?@?@@??@@@@@BBo@pCt@d@CJAH?H?H?H@H@F@HBFBFBFDDDBi@jCaAdESv@_@`BOp@GZ_@`Bw@xD^TBLLhAh@^ZRMf@FDBCBKBBAFAFDBBBUhAEPBF?HADMh@"
+          }
+        },
+        {
+          "travelDuration": "961s",
+          "travelDistanceMeters": 1186,
+          "waitDuration": "0s",
+          "totalDuration": "961s",
+          "startTime": "2023-12-18T11:34:55Z",
+          "routePolyline": {
+            "points": "mvfiHgtdMLi@@E?ICGDQTiACCEC@G@GCCENCAECLg@[SlAsFf@_C~@kE`AeE`AwE{@k@@I@I?I@IAIAIAIAGCGCGEEIIb@iBReA@ALq@BMDMPw@f@_CZyANq@H_@CC?AAAAA?AAAAA?A?CAA?A?CAA?C?A?A?C?A?C@C@G@E@A@A?A@A@A@A@A@?@A@?@?@?@?@?@?@?@@@@Ls@LBL@LALCLGJIJMHM@KHg@@IF[RuAoAm@\\}BJs@"
+          }
+        },
+        {
+          "travelDuration": "165s",
+          "travelDistanceMeters": 200,
+          "waitDuration": "0s",
+          "totalDuration": "165s",
+          "startTime": "2023-12-18T11:55:56Z",
+          "routePolyline": {
+            "points": "udfiHqdgMZPn@_@i@eCLw@\\{BBKDYFe@"
+          }
+        },
+        {
+          "travelDuration": "273s",
+          "travelDistanceMeters": 333,
+          "waitDuration": "0s",
+          "totalDuration": "273s",
+          "startTime": "2023-12-18T12:03:41Z",
+          "routePolyline": {
+            "points": "uafiHeqgMHe@XqBB@@?@?@?@?@A@??A@?@A@A?A@??A@A?A@A@C?E?A?A?A?A?A?A?A?A?AAA?A?AAA?A?AA??AAA?AA??ACAXsBFc@Fc@VgB?Et@XZNLy@Fa@BQ@EQE"
+          }
+        },
+        {
+          "travelDuration": "1011s",
+          "travelDistanceMeters": 3743,
+          "waitDuration": "0s",
+          "totalDuration": "1011s",
+          "startTime": "2023-12-18T12:08:14Z",
+          "routePolyline": {
+            "points": "e{eiHqchMHBNHKp@EVl@Vt@\\BW\\}CHy@Da@LmANwALiAJi@h@sCt@mEFYp@oDHYNy@RgAHk@TyARgAAUCKCIGKACAACAACYMo@W_D}Ag@[}CwAeBy@kBy@AAGEA?UKyAq@MIqCoA}Au@_Bu@}As@uCsAw@]QKoCoAqB}@qAo@wAo@iAi@aAc@MGe@Ww@]q@Yi@Y}@_@q@[kAi@e@QeCiAgAe@OIQKaAe@c@SeB}@oAe@OMKKyCmAOGs@_@SQWMi@Qo@]yAs@]YUISESN]XIHSPk@h@QLUZYXYVWROLi@b@IDEDEBEBGFOLe@^_@Z_@Zq@h@uBhBa@^OJEDKLq@f@SPURON_Az@MJMLc@^]XcA~@uAjAC@OLYVAI?G?Gi@MyE{@?XC\\ATATC\\CZ"
+          }
+        },
+        {
+          "travelDuration": "800s",
+          "travelDistanceMeters": 854,
+          "waitDuration": "0s",
+          "totalDuration": "800s",
+          "startTime": "2023-12-18T12:25:05Z",
+          "routePolyline": {
+            "points": "chjiH}jjM?HEh@?`@APAPADAFAFBL@P@FBCBEBIDJGFSRYTSPURg@b@SP]XURUTUPa@\\OJBNJb@BLA@EBEDA?@NS?@D@j@BVT`EHhAFbA@D[J?COBC??F?D@?A?C?GASCIAAZIRSv@WdAI\\I\\CFI`@Kn@Kh@Ox@AH?@G??D?\\F?@N@d@@r@E??D?RD@?PE@QT@DDH@H@L?P@P?NGd@AJCD?@EJIDC?"
+          }
+        },
+        {
+          "travelDuration": "562s",
+          "travelDistanceMeters": 574,
+          "waitDuration": "0s",
+          "totalDuration": "562s",
+          "startTime": "2023-12-18T12:43:25Z",
+          "routePolyline": {
+            "points": "gxjiH_shMC?E?EAAAEGCECGAM@_@G?K??VGBM@a@FE@K@a@FG?AN@b@AB?@?@A@A@A@C?MDI?AAAKAM?C?AAA?AACAAAEA]OBO@a@DBbA?R?F]EI?K@UBk@Bu@DO?@T@@?DADCN?DALEVAJAPC\\CZEf@QGUIUGEAGAE?A@GBCHAL?F?F@J@RAh@?F?PAJAN?@CN"
+          }
+        },
+        {
+          "travelDuration": "282s",
+          "travelDistanceMeters": 336,
+          "waitDuration": "0s",
+          "totalDuration": "282s",
+          "startTime": "2023-12-18T13:12:47Z",
+          "routePolyline": {
+            "points": "akkiHedhMBO?A@O@K?Q?G@i@ASAK?G?G@MBIFC@AD?F@D@TFTHPFHHHs@AWBYDQBKBW@M@G@M@G?I?WKCG?C?MMIOCIAECKAI@S@K@G@GDIFIBGBKNAZCVA"
+          }
+        },
+        {
+          "travelDuration": "996s",
+          "travelDistanceMeters": 1191,
+          "waitDuration": "0s",
+          "totalDuration": "996s",
+          "startTime": "2023-12-18T13:27:29Z",
+          "routePolyline": {
+            "points": "gekiHouhMW@[BO@EM?K?CAICGK_@AECGOm@OMQs@AE@??G?SAGOoA?E?GB?LC?UGA@?@C@C@AFGDGHO@I@M?K?IAi@GS?I?[?K?c@A]Aa@?K?GAKAIAm@?M\\OJENIHEPEHGDE@?LE?BB?t@HLBL@`@?p@HRBb@D?FJ@?Ed@FJB^DJ@XD@[Hg@Ls@PiAF[DWDYHc@?CHWHg@F[BUO??I?g@?G\\Az@@N@B?X?BA?ABALC@LF?PCF?AQ@?LAFCLK`@]TQTUTS\\YRQf@c@TSRQXURSFGEKCHCDCBAGAQCM@G@G@E@Q@Q?a@Di@?I"
+          }
+        },
+        {
+          "travelDuration": "710s",
+          "travelDistanceMeters": 2547,
+          "waitDuration": "0s",
+          "totalDuration": "710s",
+          "startTime": "2023-12-18T13:44:05Z",
+          "routePolyline": {
+            "points": "qgjiHwjjM?HEt@Ef@AN?HAFIRCBA@C?A?C?kCI}AGE?CAA??AUCS?QAo@A?BBn@@X?J@FDtA?NF`BBp@@^@F@DDp@@VB\\@TF~@@VNhCFv@B^?BBNHfAB^Jz@Jv@BTD^Lr@BRZfCFd@@NHh@Hr@Fr@Hz@Fl@Hp@Jv@Fb@BZBHBZDZDZVrBBv@Hn@Hd@Jr@Jv@@N?J?F?RGXCR_@tEMxAEV?DQhBG`@GZOz@ELOp@CPm@zCUbAOv@Mt@Or@CPg@|Bm@tCWrAl@ZFCBABCBCBEFORHjA^ZJb@LNDj@Pp@RRFRHPDJDF?D@\\D`@Fr@HF?pBVb@DF@H?n@?NCB@D@J?`A?t@AX?D?D?B?BADAJCj@Q^KJCRGXIRIl@QLEBAJENE@PHt@@LABCFAH?DAD?D?F@H?F@F?BBF@B?BBDDFJH@F?D@HBRBV@H@F@F"
+          }
+        }
+      ],
+      "travelSteps": [
+        {
+          "duration": "1147s",
+          "distanceMeters": 4521,
+          "routePolyline": {
+            "points": "eliiHcdfMo@XEBo@ZSJiAl@kAl@w@`@IDQHMFKB]Le@PEc@C[AKO_CCWASCc@AQKaBAI?I?M@UNCB@D@J?`A?t@AX?D?D?B?BADAJCj@Q^KJCRGXIRIl@QLEBAJENEjA]XIb@Of@OFCB?BAD@F@HBXZBHBFBF@FBLBNBNDC`@K`A]FCtBs@XIb@OhA_@ZKXKFEt@UFA`@ODAp@UPE@AZMFERGRITIC\\Gr@UpDEbA@j@CBADCL?D?D?B?B?B@@?@@B?@@B@@Qb@CJANABALEp@APGx@ANGbAc@jGQzBOpBEp@Z?j@HL?JAPHNJhAt@jCfB~AdAvA~@`@TVv@Or@CPAF@F?D@D@BDHFJDFr@f@v@j@d@\\JXRx@XSNKFCFGFGHEHGLILKJKNMDEj@^B@tBrAn@b@jBnAt@f@vA~@l@`@s@pCERHd@FRDLBLHNXb@FDd@XJDp@b@JFTRRL\\R~AfAFBDBF@D@T?@z@@h@?PARCf@EXCXIPABABAB?D?BAJ@h@BxG@p@@|A@|CBbC?^@z@|@FZB^?N@PB`@Bt@D@?N@fAH^@L@P@XBH?hAHbBHrDTb@BfAFnBLF@lDRn@B?T@N@JBHBHDFBDDBDBJDLBL@?OBkAB_B?IDcAH_ABU@I@K?E@CBE@C@C@ADCg@]wAGKAmAIEN"
+          }
+        },
+        {
+          "duration": "983s",
+          "distanceMeters": 1174,
+          "routePolyline": {
+            "points": "qyeiHmacMw@EIGu@G?DC?SCC?Di@@{B?yAAWB{C@W?M@WPsD@UD?DYD[F_@Jm@H[BMDMBK@KBINi@HUd@iBDUFQJc@~@mDVcANg@Pk@DQFUHQV{@k@k@C@c@_@BCuAsAUSGEABKK@EQOQQi@i@eAcACJACIIBOYQc@a@iAiAPw@Hi@Py@ReAZsA"
+          }
+        },
+        {
+          "duration": "1061s",
+          "distanceMeters": 1245,
+          "routePolyline": {
+            "points": "u_fiHmmeM[rASdAQx@Ih@Qv@hAhAb@`@XPCNJLBKdAbAh@h@PPPNADJJ@CFDTRtArACBB@^\\BAj@j@?BJJ@Cz@x@ADNP@Gh@j@`B~ANR|AxAAFJF@EbEvCJHx@l@VP]bCCPw@`Fw@zECACRB@ABWbBMz@LDXD~@N"
+          }
+        },
+        {
+          "duration": "955s",
+          "distanceMeters": 1107,
+          "routePolyline": {
+            "points": "oaeiHiicM_AOYE?BADETGb@O~@CLMCCPKAI??NEhAP?tCPJ@dAFD@\\@BIV@R@|@Dp@DTA@?@ABC@CFBNDC`@ERGhDA^CjAIrA?NQABmA@_@WAElB{AIOAI?{AKOA_Co@Kk@GOgASGUAKH??FIACBqAXILEn@?D?P"
+          }
+        },
+        {
+          "duration": "1106s",
+          "distanceMeters": 1318,
+          "routePolyline": {
+            "points": "_keiHyubM?Q?EDo@HMpAYBCH@?GI?@JFTfARFNJj@~Bn@N@zAJH?N@zAHDmBV@A^ClAP@?OHsABkA@_@FiDDg@BMOEGCCDA@A@A?U@q@E}@ESAWACH]AEAeAGKAuCQO?gBMI?IAWAKAmBMQAE@G?M@EGAFAFALCZEA[KAFCDABGD]UI^sAGA?UB_AG"
+          }
+        },
+        {
+          "duration": "590s",
+          "distanceMeters": 3169,
+          "routePolyline": {
+            "points": "aweiHyacMFoB?K?C@A?A?A@?@A@?F?LB|@FpAJCj@ALAHAJC\\AFCBCFCDMNEBA@ABABCDAB?DAJAHCTI~@EbA?Ha@CKDE@EDEFEJEJALALALo@CmDSGAoBMgAGc@CsDUcBIiAII?YCQAMA_@AgAIOAA?u@Ea@CQCOA_@?[C?u@CcDAu@AmB?AAs@Aw@?u@Au@AuCAS?C@CAgA?S?M?I@I@Q@IHY?C^gB@C?E?A?AACACX}@^uAHc@Ja@F[@GBWZqAVaABKPm@p@qCDO~@yDH]FKVaAb@oBRy@ZqAJg@jCqLBMx@sD|AgHHa@F]ZcBf@sDDWv@eGF_@D]DQDk@@IBKNgAl@iEJq@PkAD[XkBBSBO@K@IB_@?I@SDkADy@Bu@Bg@HwAHqA?EFo@Bo@J}@u@]m@WDWJq@OIIC"
+          }
+        },
+        {
+          "duration": "722s",
+          "distanceMeters": 869,
+          "routePolyline": {
+            "points": "c{eiHychM[KMGCAMEGCOUGEOKMIECGg@KB@DIZCLGZENOEg@UGCGEAFOj@AFI\\GCWQCAJ]ECSIOGUI_Aa@Mz@ETG\\DBGTACQdACRKl@A^CJBBG`@AFECMh@AJETETa@bCANADADc@tBALUMAA?AqB}@KG}@a@[MCPCPAFQIIf@Gd@}CqA"
+          }
+        },
+        {
+          "duration": "1228s",
+          "distanceMeters": 1467,
+          "routePolyline": {
+            "points": "u|fiHcqgMHFHBVLnBx@Kl@E^PJCTCVEPd@PZL?^EVCA?@ER?@DB?@ADLJANGVA^QH?@KD?DHp@?FFCBDFLDFTZNPYp@TJCDzA`A?AB@\\VKPW`AKb@[vAKv@S`AJHADMl@KGOr@CNJHDBDDRLDDFFBL@L?HMn@fAp@AD?@?@?@?@?@?@?@?@?@?@?@?@@@?@?@@@?@?@@??@@@@@BBo@pCt@d@CJAH?H?H?H@H@F@HBFBFBFDDDBi@jCaAdESv@_@`BOp@GZ_@`Bw@xD^TBLLhAh@^ZRMf@FDBCBKBBAFAFDBBBUhAEPBF?HADMh@"
+          }
+        },
+        {
+          "duration": "960s",
+          "distanceMeters": 1181,
+          "routePolyline": {
+            "points": "mvfiHgtdMLi@@E?ICGDQTiACCEC@G@GCCENCAECLg@[SlAsFf@_C~@kE`AeE`AwE{@k@@I@I?I@IAIAIAIAGCGCGEEIIb@iBReA@ALq@BMDMPw@f@_CZyANq@H_@CC?AAAAA?AAAAA?A?CAA?A?CAA?C?A?A?C?A?C@C@G@E@A@A?A@A@A@A@A@?@A@?@?@?@?@?@?@?@@@@Ls@LBL@LALCLGJIJMHM@KHg@@IF[RuAoAm@\\}BJs@"
+          }
+        },
+        {
+          "duration": "165s",
+          "distanceMeters": 200,
+          "routePolyline": {
+            "points": "udfiHqdgMZPn@_@i@eCLw@\\{BBKDYFe@"
+          }
+        },
+        {
+          "duration": "272s",
+          "distanceMeters": 334,
+          "routePolyline": {
+            "points": "uafiHeqgMHe@XqBB@@?@?@?@?@A@??A@?@A@A?A@??A@A?A@A@C?E?A?A?A?A?A?A?A?A?AAA?A?AAA?A?AA??AAA?AA??ACAXsBFc@Fc@VgB?Et@XZNLy@Fa@BQ@EQE"
+          }
+        },
+        {
+          "duration": "1005s",
+          "distanceMeters": 3743,
+          "routePolyline": {
+            "points": "e{eiHqchMHBNHKp@EVl@Vt@\\BW\\}CHy@Da@LmANwALiAJi@h@sCt@mEFYp@oDHYNy@RgAHk@TyARgAAUCKCIGKACAACAACYMo@W_D}Ag@[}CwAeBy@kBy@AAGEA?UKyAq@MIqCoA}Au@_Bu@}As@uCsAw@]QKoCoAqB}@qAo@wAo@iAi@aAc@MGe@Ww@]q@Yi@Y}@_@q@[kAi@e@QeCiAgAe@OIQKaAe@c@SeB}@oAe@OMKKyCmAOGs@_@SQWMi@Qo@]yAs@]YUISESN]XIHSPk@h@QLUZYXYVWROLi@b@IDEDEBEBGFOLe@^_@Z_@Zq@h@uBhBa@^OJEDKLq@f@SPURON_Az@MJMLc@^]XcA~@uAjAC@OLYVAI?G?Gi@MyE{@?XC\\ATATC\\CZ"
+          }
+        },
+        {
+          "duration": "799s",
+          "distanceMeters": 853,
+          "routePolyline": {
+            "points": "chjiH}jjM?HEh@?`@APAPADAFAFBL@P@FBCBEBIDJGFSRYTSPURg@b@SP]XURUTUPa@\\OJBNJb@BLA@EBEDA?@NS?@D@j@BVT`EHhAFbA@D[J?COBC??F?D@?A?C?GASCIAAZIRSv@WdAI\\I\\CFI`@Kn@Kh@Ox@AH?@G??D?\\F?@N@d@@r@E??D?RD@?PE@QT@DDH@H@L?P@P?NGd@AJCD?@EJIDC?"
+          }
+        },
+        {
+          "duration": "561s",
+          "distanceMeters": 574,
+          "routePolyline": {
+            "points": "gxjiH_shMC?E?EAAAEGCECGAM@_@G?K??VGBM@a@FE@K@a@FG?AN@b@AB?@?@A@A@A@C?MDI?AAAKAM?C?AAA?AACAAAEA]OBO@a@DBbA?R?F]EI?K@UBk@Bu@DO?@T@@?DADCN?DALEVAJAPC\\CZEf@QGUIUGEAGAE?A@GBCHAL?F?F@J@RAh@?F?PAJAN?@CN"
+          }
+        },
+        {
+          "duration": "281s",
+          "distanceMeters": 337,
+          "routePolyline": {
+            "points": "akkiHedhMBO?A@O@K?Q?G@i@ASAK?G?G@MBIFC@AD?F@D@TFTHPFHHHs@AWBYDQBKBW@M@G@M@G?I?WKCG?C?MMIOCIAECKAI@S@K@G@GDIFIBGBKNAZCVA"
+          }
+        },
+        {
+          "duration": "996s",
+          "distanceMeters": 1192,
+          "routePolyline": {
+            "points": "gekiHouhMW@[BO@EM?K?CAICGK_@AECGOm@OMQs@AE@??G?SAGOoA?E?GB?LC?UGA@?@C@C@AFGDGHO@I@M?K?IAi@GS?I?[?K?c@A]Aa@?K?GAKAIAm@?M\\OJENIHEPEHGDE@?LE?BB?t@HLBL@`@?p@HRBb@D?FJ@?Ed@FJB^DJ@XD@[Hg@Ls@PiAF[DWDYHc@?CHWHg@F[BUO??I?g@?G\\Az@@N@B?X?BA?ABALC@LF?PCF?AQ@?LAFCLK`@]TQTUTS\\YRQf@c@TSRQXURSFGEKCHCDCBAGAQCM@G@G@E@Q@Q?a@Di@?I"
+          }
+        },
+        {
+          "duration": "709s",
+          "distanceMeters": 2547,
+          "routePolyline": {
+            "points": "qgjiHwjjM?HEt@Ef@AN?HAFIRCBA@C?A?C?kCI}AGE?CAA??AUCS?QAo@A?BBn@@X?J@FDtA?NF`BBp@@^@F@DDp@@VB\\@TF~@@VNhCFv@B^?BBNHfAB^Jz@Jv@BTD^Lr@BRZfCFd@@NHh@Hr@Fr@Hz@Fl@Hp@Jv@Fb@BZBHBZDZDZVrBBv@Hn@Hd@Jr@Jv@@N?J?F?RGXCR_@tEMxAEV?DQhBG`@GZOz@ELOp@CPm@zCUbAOv@Mt@Or@CPg@|Bm@tCWrAl@ZFCBABCBCBEFORHjA^ZJb@LNDj@Pp@RRFRHPDJDF?D@\\D`@Fr@HF?pBVb@DF@H?n@?NCB@D@J?`A?t@AX?D?D?B?BADAJCj@Q^KJCRGXIRIl@QLEBAJENE@PHt@@LABCFAH?DAD?D?F@H?F@F?BBF@B?BBDDFJH@F?D@HBRBV@H@F@F"
+          }
+        }
+      ],
+      "vehicleEndTime": "2023-12-18T13:55:55Z",
+      "vehicleIndex": 0,
+      "vehicleLabel": "V001",
+      "vehicleStartTime": "2023-12-18T09:00:00Z",
+      "visits": [
+        {
+          "shipmentIndex": 10,
+          "shipmentLabel": "P003 arrival",
+          "startTime": "2023-12-18T09:19:08Z",
+          "detour": "0s"
+        },
+        {
+          "shipmentIndex": 8,
+          "shipmentLabel": "Musee d'Orsay",
+          "startTime": "2023-12-18T09:35:31Z",
+          "detour": "0s"
+        },
+        {
+          "shipmentIndex": 9,
+          "shipmentLabel": "Musee Rodin",
+          "startTime": "2023-12-18T09:58:12Z",
+          "detour": "1891s"
+        },
+        {
+          "shipmentIndex": 7,
+          "shipmentLabel": "Hotel des Invalids",
+          "startTime": "2023-12-18T10:19:07Z",
+          "detour": "2457s"
+        },
+        {
+          "shipmentIndex": 11,
+          "shipmentLabel": "P003 departure",
+          "startTime": "2023-12-18T10:42:33Z",
+          "detour": "5005s"
+        },
+        {
+          "shipmentIndex": 12,
+          "shipmentLabel": "P002 arrival",
+          "startTime": "2023-12-18T10:52:24Z",
+          "detour": "5740s"
+        },
+        {
+          "shipmentIndex": 4,
+          "shipmentLabel": "Jardin du Palais Royal",
+          "startTime": "2023-12-18T11:04:26Z",
+          "detour": "5740s"
+        },
+        {
+          "shipmentIndex": 5,
+          "shipmentLabel": "Musee de l'Orangerie",
+          "startTime": "2023-12-18T11:29:55Z",
+          "detour": "6717s"
+        },
+        {
+          "shipmentIndex": 3,
+          "shipmentLabel": "Pyramide de Louvre",
+          "startTime": "2023-12-18T11:50:56Z",
+          "detour": "8819s"
+        },
+        {
+          "shipmentIndex": 6,
+          "shipmentLabel": "Musee du Louvre",
+          "startTime": "2023-12-18T11:58:41Z",
+          "detour": "9446s"
+        },
+        {
+          "shipmentIndex": 13,
+          "shipmentLabel": "P002 departure",
+          "startTime": "2023-12-18T12:08:14Z",
+          "detour": "4550s"
+        },
+        {
+          "shipmentIndex": 14,
+          "shipmentLabel": "P001 arrival",
+          "startTime": "2023-12-18T12:25:05Z",
+          "detour": "11482s"
+        },
+        {
+          "shipmentIndex": 2,
+          "shipmentLabel": "Carrousel de Saint-Pierre",
+          "startTime": "2023-12-18T12:38:25Z",
+          "detour": "11482s"
+        },
+        {
+          "shipmentIndex": 1,
+          "shipmentLabel": "Musee de Montmartre",
+          "startTime": "2023-12-18T12:52:47Z",
+          "detour": "11834s"
+        },
+        {
+          "shipmentIndex": 0,
+          "shipmentLabel": "Basilique du Sacre-Coeur",
+          "startTime": "2023-12-18T13:17:29Z",
+          "detour": "13462s"
+        },
+        {
+          "shipmentIndex": 15,
+          "shipmentLabel": "P001 departure",
+          "startTime": "2023-12-18T13:44:05Z",
+          "detour": "4740s"
+        }
+      ],
+      "vehicleDetour": "17755s",
+      "routePolyline": {
+        "points": "eliiHcdfMo@XEBo@ZSJiAl@kAl@w@`@IDQHMFKB]Le@PEc@C[AKO_CCWASCc@AQKaBAI?I?M@UNCB@D@J?`A?t@AX?D?D?B?BADAJCj@Q^KJCRGXIRIl@QLEBAJENEjA]XIb@Of@OFCB?BAD@F@HBXZBHBFBF@FBLBNBNDC`@K`A]FCtBs@XIb@OhA_@ZKXKFEt@UFA`@ODAp@UPE@AZMFERGRITIC\\Gr@UpDEbA@j@CBADCL?D?D?B?B?B@@?@@B?@@B@@Qb@CJANABALEp@APGx@ANGbAc@jGQzBOpBEp@Z?j@HL?JAPHNJhAt@jCfB~AdAvA~@`@TVv@Or@CPAF@F?D@D@BDHFJDFr@f@v@j@d@\\JXRx@XSNKFCFGFGHEHGLILKJKNMDEj@^B@tBrAn@b@jBnAt@f@vA~@l@`@s@pCERHd@FRDLBLHNXb@FDd@XJDp@b@JFTRRL\\R~AfAFBDBF@D@T?@z@@h@?PARCf@EXCXIPABABAB?D?BAJ@h@BxG@p@@|A@|CBbC?^@z@|@FZB^?N@PB`@Bt@D@?N@fAH^@L@P@XBH?hAHbBHrDTb@BfAFnBLF@lDRn@B?T@N@JBHBHDFBDDBDBJDLBL@?OBkAB_B?IDcAH_ABU@I@K?E@CBE@C@C@ADCg@]wAGKAmAIENBDw@EIGu@G?DC?SCC?Di@@{B?yAAWB{C@W?M@WPsD@UD?DYD[F_@Jm@H[BMDMBK@KBINi@HUd@iBDUFQJc@~@mDVcANg@Pk@DQFUHQV{@k@k@C@c@_@BCuAsAUSGEABKK@EQOQQi@i@eAcACJACIIBOYQc@a@iAiAPw@Hi@Py@ReAZsA[rASdAQx@Ih@Qv@hAhAb@`@XPCNJLBKdAbAh@h@PPPNADJJ@CFDTRtArACBB@^\\BAj@j@?BJJ@Cz@x@ADNP@Gh@j@`B~ANR|AxAAFJF@EbEvCJHx@l@VP]bCCPw@`Fw@zECACRB@ABWbBMz@LDXD~@N_AOYE?BADETGb@O~@CLMCCPKAI??NEhAP?tCPJ@dAFD@\\@BIV@R@|@Dp@DTA@?@ABC@CFBNDC`@ERGhDA^CjAIrA?NQABmA@_@WAElB{AIOAI?{AKOA_Co@Kk@GOgASGUAKH??FIACBqAXILEn@?D?P?Q?EDo@HMpAYBCH@?GI?@JFTfARFNJj@~Bn@N@zAJH?N@zAHDmBV@A^ClAP@?OHsABkA@_@FiDDg@BMOEGCCDA@A@A?U@q@E}@ESAWACH]AEAeAGKAuCQO?gBMI?IAWAKAmBMQAE@G?M@EGAFAFALCZEA[KAFCDABGD]UI^sAGA?UB_AGhAKFoB?K?C@A?A?A@?@A@?F?LB|@FpAJCj@ALAHAJC\\AFCBCFCDMNEBA@ABABCDAB?DAJAHCTI~@EbA?Ha@CKDE@EDEFEJEJALALALo@CmDSGAoBMgAGc@CsDUcBIiAII?YCQAMA_@AgAIOAA?u@Ea@CQCOA_@?[C?u@CcDAu@AmB?AAs@Aw@?u@Au@AuCAS?C@CAgA?S?M?I@I@Q@IHY?C^gB@C?E?A?AACACX}@^uAHc@Ja@F[@GBWZqAVaABKPm@p@qCDO~@yDH]FKVaAb@oBRy@ZqAJg@jCqLBMx@sD|AgHHa@F]ZcBf@sDDWv@eGF_@D]DQDk@@IBKNgAl@iEJq@PkAD[XkBBSBO@K@IB_@?I@SDkADy@Bu@Bg@HwAHqA?EFo@Bo@J}@u@]m@WDWJq@OIIC@G[KMGCAMEGCOUGEOKMIECGg@KB@DIZCLGZENOEg@UGCGEAFOj@AFI\\GCWQCAJ]ECSIOGUI_Aa@Mz@ETG\\DBGTACQdACRKl@A^CJBBG`@AFECMh@AJETETa@bCANADADc@tBALUMAA?AqB}@KG}@a@[MCPCPAFQIIf@Gd@}CqAKv@HFHBVLnBx@Kl@E^PJCTCVEPd@PZL?^EVCA?@ER?@DB?@ADLJANGVA^QH?@KD?DHp@?FFCBDFLDFTZNPYp@TJCDzA`A?AB@\\VKPW`AKb@[vAKv@S`AJHADMl@KGOr@CNJHDBDDRLDDFFBL@L?HMn@fAp@AD?@?@?@?@?@?@?@?@?@?@?@?@@@?@?@@@?@?@@??@@@@@BBo@pCt@d@CJAH?H?H?H@H@F@HBFBFBFDDDBi@jCaAdESv@_@`BOp@GZ_@`Bw@xD^TBLLhAh@^ZRMf@FDBCBKBBAFAFDBBBUhAEPBF?HADMh@Li@@E?ICGDQTiACCEC@G@GCCENCAECLg@[SlAsFf@_C~@kE`AeE`AwE{@k@@I@I?I@IAIAIAIAGCGCGEEIIb@iBReA@ALq@BMDMPw@f@_CZyANq@H_@CC?AAAAA?AAAAA?A?CAA?A?CAA?C?A?A?C?A?C@C@G@E@A@A?A@A@A@A@A@?@A@?@?@?@?@?@?@?@@@@Ls@LBL@LALCLGJIJMHM@KHg@@IF[RuAoAm@\\}BJs@ZPn@_@i@eCLw@\\{BBKDYFe@He@XqBB@@?@?@?@?@A@??A@?@A@A?A@??A@A?A@A@C?E?A?A?A?A?A?A?A?A?AAA?A?AAA?A?AA??AAA?AA??ACAXsBFc@Fc@VgB?Et@XZNLy@Fa@BQ@EQEAFHBNHKp@EVl@Vt@\\BW\\}CHy@Da@LmANwALiAJi@h@sCt@mEFYp@oDHYNy@RgAHk@TyARgAAUCKCIGKACAACAACYMo@W_D}Ag@[}CwAeBy@kBy@AAGEA?UKyAq@MIqCoA}Au@_Bu@}As@uCsAw@]QKoCoAqB}@qAo@wAo@iAi@aAc@MGe@Ww@]q@Yi@Y}@_@q@[kAi@e@QeCiAgAe@OIQKaAe@c@SeB}@oAe@OMKKyCmAOGs@_@SQWMi@Qo@]yAs@]YUISESN]XIHSPk@h@QLUZYXYVWROLi@b@IDEDEBEBGFOLe@^_@Z_@Zq@h@uBhBa@^OJEDKLq@f@SPURON_Az@MJMLc@^]XcA~@uAjAC@OLYVAI?G?Gi@MyE{@?XC\\ATATC\\CZQE?HEh@?`@APAPADAFAFBL@P@FBCBEBIDJGFSRYTSPURg@b@SP]XURUTUPa@\\OJBNJb@BLA@EBEDA?@NS?@D@j@BVT`EHhAFbA@D[J?COBC??F?D@?A?C?GASCIAAZIRSv@WdAI\\I\\CFI`@Kn@Kh@Ox@AH?@G??D?\\F?@N@d@@r@E??D?RD@?PE@QT@DDH@H@L?P@P?NGd@AJCD?@EJIDC?C?E?EAAAEGCECGAM@_@G?K??VGBM@a@FE@K@a@FG?AN@b@AB?@?@A@A@A@C?MDI?AAAKAM?C?AAA?AACAAAEA]OBO@a@DBbA?R?F]EI?K@UBk@Bu@DO?@T@@?DADCN?DALEVAJAPC\\CZEf@QGUIUGEAGAE?A@GBCHAL?F?F@J@RAh@?F?PAJAN?@CNBO?A@O@K?Q?G@i@ASAK?G?G@MBIFC@AD?F@D@TFTHPFHHHs@AWBYDQBKBW@M@G@M@G?I?WKCG?C?MMIOCIAECKAI@S@K@G@GDIFIBGBKNAZCVAW@[BO@EM?K?CAICGK_@AECGOm@OMQs@AE@??G?SAGOoA?E?GB?LC?UGA@?@C@C@AFGDGHO@I@M?K?IAi@GS?I?[?K?c@A]Aa@?K?GAKAIAm@?M\\OJENIHEPEHGDE@?LE?BB?t@HLBL@`@?p@HRBb@D?FJ@?Ed@FJB^DJ@XD@[Hg@Ls@PiAF[DWDYHc@?CHWHg@F[BUO??I?g@?G\\Az@@N@B?X?BA?ABALC@LF?PCF?AQ@?LAFCLK`@]TQTUTS\\YRQf@c@TSRQXURSFGEKCHCDCBAGAQCM@G@G@E@Q@Q?a@Di@?IPD?HEt@Ef@AN?HAFIRCBA@C?A?C?kCI}AGE?CAA??AUCS?QAo@A?BBn@@X?J@FDtA?NF`BBp@@^@F@DDp@@VB\\@TF~@@VNhCFv@B^?BBNHfAB^Jz@Jv@BTD^Lr@BRZfCFd@@NHh@Hr@Fr@Hz@Fl@Hp@Jv@Fb@BZBHBZDZDZVrBBv@Hn@Hd@Jr@Jv@@N?J?F?RGXCR_@tEMxAEV?DQhBG`@GZOz@ELOp@CPm@zCUbAOv@Mt@Or@CPg@|Bm@tCWrAl@ZFCBABCBCBEFORHjA^ZJb@LNDj@Pp@RRFRHPDJDF?D@\\D`@Fr@HF?pBVb@DF@H?n@?NCB@D@J?`A?t@AX?D?D?B?BADAJCj@Q^KJCRGXIRIl@QLEBAJENE@PHt@@LABCFAH?DAD?D?F@H?F@F?BBF@B?BBDDFJH@F?D@HBRBV@H@F@F"
+      },
+      "metrics": {
+        "performedShipmentCount": 16,
+        "performedMandatoryShipmentCount": 6,
+        "travelDuration": "13555s",
+        "travelDistanceMeters": 25934,
+        "waitDuration": "0s",
+        "delayDuration": "0s",
+        "breakDuration": "0s",
+        "visitDuration": "4200s",
+        "totalDuration": "17755s"
+      }
+    }
+  ]
+}

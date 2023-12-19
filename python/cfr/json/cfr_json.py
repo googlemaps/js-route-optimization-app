@@ -69,16 +69,19 @@ class LoadLimit(TypedDict):
   maxLoad: Int64String
 
 
-class Location(TypedDict):
+class Location(TypedDict, total=False):
   """Represents a location in the JSON CFR request."""
 
   latLng: LatLng
+  heading: int
 
 
-class Waypoint(TypedDict):
+class Waypoint(TypedDict, total=False):
   """Represents a waypoint in the JSON CFR request."""
 
+  sideOfRoad: bool
   location: Location
+  placeId: str
 
 
 class VisitRequest(TypedDict, total=False):

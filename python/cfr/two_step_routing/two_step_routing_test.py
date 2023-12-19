@@ -31,6 +31,68 @@ def _json(path: str):
   return json.loads(_TESTDATA.joinpath(path).read_bytes())
 
 
+class ParkingLocationTest(unittest.TestCase):
+  """Tests for ParkingLocation."""
+
+  maxDiff = None
+
+  def test_initialize_from_waypoint(self):
+    parking = two_step_routing.ParkingLocation(
+        tag="P002",
+        waypoint={
+            "sideOfRoad": True,
+            "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",  # Google Paris.
+        },
+    )
+    self.assertEqual(
+        parking.waypoint,
+        {
+            "sideOfRoad": True,
+            "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",  # Google Paris.
+        },
+    )
+
+  def test_initialize_from_coordinates(self):
+    parking = two_step_routing.ParkingLocation(
+        tag="P002",
+        coordinates={
+            "latitude": 48.87739500192329,
+            "longitude": 2.3299770592243916,
+        },
+    )
+    self.assertEqual(
+        parking.waypoint,
+        {
+            "location": {
+                "latLng": {
+                    "latitude": 48.87739500192329,
+                    "longitude": 2.3299770592243916,
+                }
+            }
+        },
+    )
+
+  def test_initialize_from_waypoint_and_coordinates(self):
+    with self.assertRaisesRegex(ValueError, "`waypoint` and `coordinates`"):
+      two_step_routing.ParkingLocation(
+          tag="P003",
+          waypoint={
+              "sideOfRoad": True,
+              "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",  # Google Paris.
+          },
+          coordinates={
+              "latitude": 48.87739500192329,
+              "longitude": 2.3299770592243916,
+          },
+      )
+
+  def test_initialize_from_nothing(self):
+    with self.assertRaisesRegex(ValueError, "`waypoint` and `coordinates`"):
+      two_step_routing.ParkingLocation(
+          tag="P003",
+      )
+
+
 class LoadParkingFromJsonTest(unittest.TestCase):
   """Tests for load_parking_from_json."""
 
@@ -63,16 +125,26 @@ class LoadParkingFromJsonTest(unittest.TestCase):
 
   def test_parse(self):
     parking_json = {
-        "parking_locations": [{
-            "coordinates": {"latitude": 48.86482, "longitude": 2.34932},
-            "tag": "P002",
-            "travel_mode": 2,
-            "delivery_load_limits": {"ore": 2},
-            "arrival_duration": "180s",
-            "departure_duration": "180s",
-            "reload_duration": "60s",
-            "arrival_cost": 1000,
-        }],
+        "parking_locations": [
+            {
+                "coordinates": {"latitude": 48.86482, "longitude": 2.34932},
+                "tag": "P002",
+                "travel_mode": 2,
+                "delivery_load_limits": {"ore": 2},
+                "arrival_duration": "180s",
+                "departure_duration": "180s",
+                "reload_duration": "60s",
+                "arrival_cost": 1000,
+            },
+            {
+                "waypoint": {
+                    "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",
+                    "sideOfRoad": True,
+                },
+                "tag": "P007",
+                "travel_mode": 2,
+            },
+        ],
         "parking_for_shipment": {"6": "P002", "7": "P002"},
     }
     parkings, parking_for_shipment = two_step_routing.load_parking_from_json(
@@ -90,6 +162,14 @@ class LoadParkingFromJsonTest(unittest.TestCase):
                 departure_duration="180s",
                 reload_duration="60s",
                 arrival_cost=1000,
+            ),
+            two_step_routing.ParkingLocation(
+                waypoint={
+                    "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",
+                    "sideOfRoad": True,
+                },
+                tag="P007",
+                travel_mode=2,
             ),
         ),
     )
@@ -484,6 +564,74 @@ class PlannerTestIntegratedModels(PlannerTest):
     self.assertEqual(
         integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
     )
+
+
+class PlannerTestWithPlaceId(unittest.TestCase):
+  maxDiff = None
+
+  _OPTIONS = two_step_routing.Options(
+      local_model_vehicle_fixed_cost=10000,
+      min_average_shipments_per_round=1,
+  )
+
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = _json("place_id/scenario.json")
+  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
+      two_step_routing.load_parking_from_json(_json("place_id/parking.json"))
+  )
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursResponse = _json(
+      "place_id/scenario.local_request.json"
+  )
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+      "place_id/scenario.local_response.60s.json"
+  )
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+      "place_id/scenario.global_request.60s.json"
+  )
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+      "place_id/scenario.global_response.60s.60s.json"
+  )
+  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+      "place_id/scenario.merged_request.60s.60s.json"
+  )
+  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+      "place_id/scenario.merged_response.60s.60s.json"
+  )
+
+  def test_local_model(self):
+    planner = two_step_routing.Planner(
+        options=self._OPTIONS,
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+    )
+    self.assertEqual(
+        planner.make_local_request(), self._EXPECTED_LOCAL_REQUEST_JSON
+    )
+
+  def test_global_model(self):
+    planner = two_step_routing.Planner(
+        options=self._OPTIONS,
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+    )
+    self.assertEqual(
+        planner.make_global_request(self._LOCAL_RESPONSE_JSON),
+        self._EXPECTED_GLOBAL_REQUEST_JSON,
+    )
+
+  def test_merged_request(self):
+    planner = two_step_routing.Planner(
+        options=self._OPTIONS,
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+    )
+    merged_request, merged_response = planner.merge_local_and_global_result(
+        self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+    self.assertEqual(merged_request, self._EXPECTED_MERGED_REQUEST_JSON)
+    self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
 
 
 class GetLocalModelRouteStartTimeWindowsTest(unittest.TestCase):

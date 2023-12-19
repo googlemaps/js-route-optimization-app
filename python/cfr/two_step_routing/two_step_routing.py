@@ -30,7 +30,7 @@ On a high level, the solver does the following:
 
    All shipments that are delivered through a parking location are represented
    by one (or more) "virtual" shipments that represent the parking location and
-   its shipments. This shipment has has the coordinates of the parking location
+   its shipments. This shipment has has the waypoint of the parking location
    and the visit duration is equivalent to the time needed to deliver the
    shipments from the parking location.
 
@@ -109,15 +109,27 @@ class LocalModelGrouping(utils.EnumForArgparse):
 ParkingTag: TypeAlias = str
 
 
+# A dummy waypoint used when no other waypoint is provided during the
+# construction of a ParkingLocation. We can't use None for the initialization,
+# because that would require adding `| None` to the type annotation, and then
+# checking for None everywhere even though we always have a valid waypoint.
+_PARKING_WAYPOINT_SENTINEL: cfr_json.Waypoint = {
+    "location": {"latLng": {"latitude": 0, "longitude": 0}}
+}
+
+
 @dataclasses.dataclass(frozen=True)
 class ParkingLocation:
   """Defines one parking location for the planner.
 
   Attributes:
-    coordinates: The coordinates of the parking location. When delivering a
-      shipment using the two-step delivery, the driver first drives to these
-      coordinates and then uses a different mode of transport to the final
-      delivery location.
+    coordinates: Only for initialization & deprecated. The coordinates of the
+      parking location. Converted to `waypoint` during the construction of the
+      object. Exactly one of `coordinates` and `waypoint` must be provided.
+    waypoint: The waypoint for the parking location. When delivering a shipment
+      using the two-step delivery, the driver first parks at this waypoint, and
+      then uses a different mode of transport to the final delivery locations.
+      Exactly one of `coordinates` and `waypoint` must be provided.
     tag: A unique name used for the parking location. Used to match parking
       locations in `ShipmentParkingMap`, and it is also used in the labels of
       the virtual shipments generated for parking locations by the planner.
@@ -162,8 +174,12 @@ class ParkingLocation:
       consecutive delivery rounds from the parking location.
   """
 
-  coordinates: cfr_json.LatLng
   tag: str
+
+  waypoint: cfr_json.Waypoint = dataclasses.field(
+      default_factory=lambda: _PARKING_WAYPOINT_SENTINEL
+  )
+  coordinates: dataclasses.InitVar[cfr_json.LatLng | None] = None
 
   travel_mode: int = 1
   travel_duration_multiple: float = 1.0
@@ -179,6 +195,19 @@ class ParkingLocation:
   arrival_cost: float = 0.0
   departure_cost: float = 0.0
   reload_cost: float = 0.0
+
+  def __post_init__(self, coordinates: cfr_json.LatLng | None):
+    has_waypoint = self.waypoint is not _PARKING_WAYPOINT_SENTINEL
+    has_coordinates = coordinates is not None
+    if has_waypoint == has_coordinates:
+      raise ValueError(
+          "Exactly one of `waypoint` and `coordinates` must be provided."
+      )
+
+    if has_coordinates:
+      object.__setattr__(
+          self, "waypoint", {"location": {"latLng": coordinates}}
+      )
 
 
 def load_parking_from_json(
@@ -225,13 +254,13 @@ def load_parking_from_json(
     parking_locations: list[ParkingLocation] = []
     for parking_location_json in parking_json["parking_locations"]:
       parking_locations.append(ParkingLocation(**parking_location_json))
+  except (TypeError, ValueError):
+    raise ValueError(
+        f"Invalid parking location specification: {parking_location_json!r}"
+    ) from None
   except KeyError:
     raise ValueError(
         "parking_json doesn't have the key 'parking_locations'"
-    ) from None
-  except TypeError:
-    raise ValueError(
-        f"Invalid parking location specification: {parking_location_json!r}"
     ) from None
   return parking_locations, parking_for_shipment
 
@@ -653,9 +682,7 @@ class Planner:
     for consecutive_visit_sequence in consecutive_visit_sequences:
       parking = self._parking_locations[consecutive_visit_sequence.parking_tag]
 
-      parking_waypoint: cfr_json.Waypoint = {
-          "location": {"latLng": parking.coordinates}
-      }
+      parking_waypoint = parking.waypoint
 
       refinement_vehicle_index = len(refinement_vehicles)
       refinement_vehicle_label = (
@@ -862,7 +889,7 @@ class Planner:
     a virtual shipment that represents the arrival to the parking location, then
     all shipments delivered from the parking location, and then another virtual
     shipment that represents the departure from the parking location. The
-    virtual shipments use the coordinates of the parking location as their
+    virtual shipments use the waypoint of the parking location as their
     position; the actual shipments delivered through the parking location and
     transitions between them are taken from the local plan.
 
@@ -996,9 +1023,7 @@ class Planner:
         shipment: cfr_json.Shipment = {
             "label": f"{parking.tag} {arrival_or_departure}",
             "deliveries": [{
-                "arrivalWaypoint": {
-                    "location": {"latLng": parking.coordinates}
-                },
+                "arrivalWaypoint": parking.waypoint,
                 "duration": "0s",
             }],
             # TODO(ondrasej): Vehicle costs and allowed vehicle indices.
@@ -1228,14 +1253,11 @@ def _make_local_model_vehicle(
   Returns:
     The newly created vehicle.
   """
-  parking_waypoint: cfr_json.Waypoint = {
-      "location": {"latLng": parking.coordinates}
-  }
   vehicle: cfr_json.Vehicle = {
       "label": label,
       # Start and end waypoints.
-      "endWaypoint": parking_waypoint,
-      "startWaypoint": parking_waypoint,
+      "endWaypoint": parking.waypoint,
+      "startWaypoint": parking.waypoint,
       # Limits and travel speed.
       "travelDurationMultiple": parking.travel_duration_multiple,
       "travelMode": parking.travel_mode,
@@ -2010,8 +2032,8 @@ def _make_global_model_shipment_for_local_route(
 
   global_delivery_tags: list[str] = [parking.tag]
   global_delivery: cfr_json.VisitRequest = {
-      # We use the coordinates of the parking location for the waypoint.
-      "arrivalWaypoint": {"location": {"latLng": parking.coordinates}},
+      # We use the waypoint of the parking location for the waypoint.
+      "arrivalWaypoint": parking.waypoint,
       # The duration of the delivery at the parking location is the total
       # duration of the local route for this round.
       "duration": local_route["metrics"]["totalDuration"],
