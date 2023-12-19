@@ -670,7 +670,7 @@ class Planner:
       # Set up delays for the parking location reload delays. We model the delay
       # using transition attributes, by adding a delay whenever the vehicle
       # does a pickup (from the parking location) after a delivery.
-      # These pickup tags need to be different from any ohter tag used in the
+      # These pickup tags need to be different from any other tag used in the
       # model. Otherwise, other transition attributes or existing tags might
       # interfere with this modeling.
       parking_pickup_tag = get_non_existent_tag(f"{parking.tag} pickup")
@@ -700,12 +700,12 @@ class Planner:
       # happens; if, in the end, the refined solution is worse than the original
       # we preserve the original solution.
       refinement_vehicle["startTimeWindows"] = [{
-          "softStartTime": consecutive_visit_sequence.start_time,
-          "costPerHourBeforeSoftStartTime": 10000,
+          "startTime": consecutive_visit_sequence.start_time,
+          "endTime": consecutive_visit_sequence.start_time,
       }]
       refinement_vehicle["endTimeWindows"] = [{
           "softEndTime": consecutive_visit_sequence.end_time,
-          "costPerHourAfterSoftEndTime": 10000,
+          "costPerHourAfterSoftEndTime": 1000000,
       }]
       refinement_vehicles.append(refinement_vehicle)
 
