@@ -473,7 +473,7 @@ def get_num_ping_pongs(
     scenario: Scenario,
     vehicle_index: int,
     split_by_breaks: bool = False,
-) -> tuple[int, int]:
+) -> tuple[int, Sequence[str]]:
   """Computes the number of "parking ping-pongs" on a single route.
 
   A "parking ping-pong" is the situation where the vehicle visits a parking
@@ -498,12 +498,15 @@ def get_num_ping_pongs(
       parking ping-pong detection.
 
   Returns:
-    A tuple `(num_ping_pongs, num_bad_ping_pongs)` where `num_ping_pongs` is the
-    total number of ping-pong cases on the route, and `num_bad_ping_pongs` is
-    the number of bad ping-pongs on the route.
+    A tuple `(num_ping_pongs, bad_ping_pong_tags)` where `num_ping_pongs` is the
+    total number of ping-pong cases on the route, and `bad_ping_pong_tags` is
+    the list of parking tags of parking locations where bad ping-pongs happen.
+    Note that if there are multiple different bad ping-pongs at the same parking
+    location, then the parking tag of this location will appear in the list
+    multiple times.
   """
   num_ping_pongs = 0
-  num_bad_ping_pongs = 0
+  bad_ping_pong_parking_tags = []
   for parking_tag, num_rounds, group_shipments in group_global_visits(
       scenario, vehicle_index, split_by_breaks=split_by_breaks
   ):
@@ -531,9 +534,9 @@ def get_num_ping_pongs(
     )
     max_allowed_rounds = math.ceil(num_shipments / max_shipments_per_round)
     if num_rounds > max_allowed_rounds:
-      num_bad_ping_pongs += 1
+      bad_ping_pong_parking_tags.append(parking_tag)
 
-  return num_ping_pongs, num_bad_ping_pongs
+  return num_ping_pongs, bad_ping_pong_parking_tags
 
 
 def get_time_windows_end(
@@ -621,7 +624,7 @@ def get_time_windows_start(
 
 def get_num_sandwiches(
     scenario: Scenario, vehicle_index: int
-) -> tuple[int, int]:
+) -> tuple[int, Sequence[str]]:
   """Returns the number of "parking sandwiches" on a single route.
 
   A "parking sandwich" is the situation where the vehicle visits a parking
@@ -656,9 +659,17 @@ def get_num_sandwiches(
     scenario: The scenario in which the number of sandwiches is computed.
     vehicle_index: The index of the vehicle for which the number of sandwiches
       is computed.
+
+  Returns:
+    A tuple `(num_sandwiches, bad_sandwich_tags)` where `num_sandwiches` is the
+    number of all parking sandwiches on the route, and `bad_sandwich_tags` is a
+    sequence of parking location tags of the location where bad sandwiches
+    happen on this route. Note that when the route contains multiple bad
+    sandwiches on the same parking, then the tag of this parking will appear in
+    the list multiple times.
   """
   num_sandwiches = 0
-  num_bad_sandwiches = 0
+  bad_sandwich_tags = []
   last_visit_to_parking = {}
 
   for parking_tag, _, group_shipments in group_global_visits(
@@ -683,9 +694,9 @@ def get_num_sandwiches(
       # overlap.
       # TODO(ondrasej): Replace this with a more precise computation based on
       # the possibility to shift the visit to the parking.
-      num_bad_sandwiches += 1
+      bad_sandwich_tags.append(parking_tag)
 
-  return num_sandwiches, num_bad_sandwiches
+  return num_sandwiches, bad_sandwich_tags
 
 
 def _get_parking_visit_timestamps(

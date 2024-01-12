@@ -122,35 +122,62 @@ class GetNumPingPongsTest(unittest.TestCase):
     )
 
   def test_with_breaks_vehicle_0(self):
-    num_ping_pongs, num_bad_ping_pongs = analysis.get_num_ping_pongs(
+    num_ping_pongs, bad_ping_pong_tags = analysis.get_num_ping_pongs(
         self._scenario, vehicle_index=0, split_by_breaks=True
     )
     self.assertEqual(num_ping_pongs, 1)
-    self.assertEqual(num_bad_ping_pongs, 1)
+    self.assertSequenceEqual(bad_ping_pong_tags, ("P0012",))
 
   def test_without_breaks_vehicle_0(self):
     # Vehicle 0 uses breaks, and one of them is in the middle of a bad parking
     # ping-pong.
-    num_ping_pongs, num_bad_ping_pongs = analysis.get_num_ping_pongs(
+    num_ping_pongs, bad_ping_pong_tags = analysis.get_num_ping_pongs(
         self._scenario, vehicle_index=0, split_by_breaks=False
     )
     self.assertEqual(num_ping_pongs, 2)
-    self.assertEqual(num_bad_ping_pongs, 2)
+    self.assertSequenceEqual(bad_ping_pong_tags, ("P0012", "P0007"))
 
   def test_with_breaks_vehicle_1(self):
-    num_ping_pongs, num_bad_ping_pongs = analysis.get_num_ping_pongs(
+    num_ping_pongs, bad_ping_pong_tags = analysis.get_num_ping_pongs(
         self._scenario, vehicle_index=1, split_by_breaks=True
     )
     self.assertEqual(num_ping_pongs, 2)
-    self.assertEqual(num_bad_ping_pongs, 1)
+    self.assertSequenceEqual(bad_ping_pong_tags, ("P0004",))
 
   def test_without_breaks_vehicle_1(self):
     # Vehicle 1 does not use breaks.
-    num_ping_pongs, num_bad_ping_pongs = analysis.get_num_ping_pongs(
+    num_ping_pongs, bad_ping_pong_tags = analysis.get_num_ping_pongs(
         self._scenario, vehicle_index=1, split_by_breaks=False
     )
     self.assertEqual(num_ping_pongs, 2)
-    self.assertEqual(num_bad_ping_pongs, 1)
+    self.assertSequenceEqual(bad_ping_pong_tags, ("P0004",))
+
+
+class GetNumSandwichesTest(unittest.TestCase):
+  """Tests for get_num_sandwiches."""
+
+  def setUp(self):
+    super().setUp()
+    self._scenario = analysis.Scenario(
+        name="moderate",
+        scenario=_SCENARIO,
+        solution=_SOLUTION,
+        parking_json=_PARKING_JSON,
+    )
+
+  def test_bad_sandwiches_v0001(self):
+    num_sandwiches, bad_sandwich_tags = analysis.get_num_sandwiches(
+        self._scenario, 0
+    )
+    self.assertEqual(num_sandwiches, 2)
+    self.assertSequenceEqual(bad_sandwich_tags, ("P0001",))
+
+  def test_bad_sandwiches_v0008(self):
+    num_sandwiches, bad_sandwich_tags = analysis.get_num_sandwiches(
+        self._scenario, 7
+    )
+    self.assertEqual(num_sandwiches, 2)
+    self.assertSequenceEqual(bad_sandwich_tags, ("P0005",))
 
 
 class GetParkingPartyStats(unittest.TestCase):
