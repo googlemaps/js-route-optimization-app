@@ -5,13 +5,24 @@
     {
       "vehicleIndex": 0,
       "visits": [
-        { "isPickup": false, "shipmentIndex": 0, "shipmentLabel": "s:8 S009" },
+        {
+          "isPickup": false,
+          "shipmentIndex": 0,
+          "shipmentLabel": "s:8 S009",
+          "startTime": "2023-08-11T08:07:01Z"
+        },
         {
           "isPickup": false,
           "shipmentIndex": 1,
-          "shipmentLabel": "p:0 S001,S004,S003,S002"
+          "shipmentLabel": "p:0 S001,S004,S003,S002",
+          "startTime": "2023-08-11T13:51:14Z"
         },
-        { "isPickup": false, "shipmentIndex": 2, "shipmentLabel": "p:1 S007" }
+        {
+          "isPickup": false,
+          "shipmentIndex": 2,
+          "shipmentLabel": "p:1 S007",
+          "startTime": "2023-08-11T14:40:52Z"
+        }
       ]
     },
     {
@@ -20,7 +31,8 @@
         {
           "isPickup": false,
           "shipmentIndex": 3,
-          "shipmentLabel": "p:2 S006,S008,S005"
+          "shipmentLabel": "p:2 S006,S008,S005",
+          "startTime": "2023-08-11T08:10:53Z"
         }
       ]
     }

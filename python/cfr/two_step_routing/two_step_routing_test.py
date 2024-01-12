@@ -554,6 +554,7 @@ class PlannerTestIntegratedModels(PlannerTest):
         global_request=self._EXPECTED_GLOBAL_REQUEST_JSON,
         global_response=self._GLOBAL_RESPONSE_JSON,
         refinement_response=self._LOCAL_REFINEMENT_RESPONSE,
+        inject_visit_times_to_global_request=True,
     )
     self.assertEqual(
         integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
@@ -730,6 +731,7 @@ class PlannerTestWithBreaks(unittest.TestCase):
         self._EXPECTED_GLOBAL_REQUEST_JSON,
         self._GLOBAL_RESPONSE_JSON,
         self._LOCAL_REFINEMENT_RESPONSE_JSON,
+        inject_visit_times_to_global_request=True,
     )
     self.assertEqual(
         integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
@@ -739,6 +741,37 @@ class PlannerTestWithBreaks(unittest.TestCase):
     )
     self.assertEqual(
         integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+
+  def test_global_refinement_model_no_visit_start_times(self):
+    (
+        integrated_local_request,
+        integrated_local_response,
+        integrated_global_request,
+    ) = self._planner.integrate_local_refinement(
+        self._EXPECTED_LOCAL_REQUEST_JSON,
+        self._LOCAL_RESPONSE_JSON,
+        self._EXPECTED_GLOBAL_REQUEST_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+        self._LOCAL_REFINEMENT_RESPONSE_JSON,
+        inject_visit_times_to_global_request=False,
+    )
+    self.assertEqual(
+        integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
+    )
+    self.assertEqual(
+        integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
+    )
+    expected_integrated_global_request = copy.deepcopy(
+        self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    for route in expected_integrated_global_request[
+        "injectedFirstSolutionRoutes"
+    ]:
+      for visit in route["visits"]:
+        del visit["startTime"]
+    self.assertEqual(
+        integrated_global_request, expected_integrated_global_request
     )
 
 
