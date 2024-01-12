@@ -1671,6 +1671,15 @@ class _RefinedRouteIntegration:
           "visits": integrated_global_visits,
       })
 
+      # Visit time intervals in the refined plan are a subset of visit time
+      # intervals in the original plan. As a consequence, break start times and
+      # durations can be safely carried over to the refined plan to bootstrap
+      # the solver.
+      if (global_breaks := global_route.get("breaks")) is not None:
+        self._integrated_global_routes[-1]["breaks"] = copy.deepcopy(
+            global_breaks
+        )
+
       global_visits = cfr_json.get_visits(global_route)
       num_visits_to_skip = 0
       for global_visit_index, global_visit in enumerate(global_visits):

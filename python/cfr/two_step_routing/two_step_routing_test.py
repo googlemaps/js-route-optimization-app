@@ -634,6 +634,114 @@ class PlannerTestWithPlaceId(unittest.TestCase):
     self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
 
 
+class PlannerTestWithBreaks(unittest.TestCase):
+  maxDiff = None
+
+  _OPTIONS = two_step_routing.Options(
+      local_model_vehicle_fixed_cost=10000,
+      min_average_shipments_per_round=1,
+  )
+
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = _json("breaks/scenario.json")
+  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
+      two_step_routing.load_parking_from_json(_json("breaks/parking.json"))
+  )
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+      "breaks/scenario.local_request.json"
+  )
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+      "breaks/scenario.local_response.120s.json"
+  )
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+      "breaks/scenario.global_request.120s.json"
+  )
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+      "breaks/scenario.global_response.120s.240s.json"
+  )
+  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+      "breaks/scenario.merged_request.120s.240s.json"
+  )
+  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+      "breaks/scenario.merged_response.120s.240s.json"
+  )
+  _EXPECTED_LOCAL_REFINEMENT_REQUEST_JSON: cfr_json.OptimizeToursRequest = (
+      _json("breaks/scenario.refined_1.local_request.120s.240s.120s.120s.json")
+  )
+  _LOCAL_REFINEMENT_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+      "breaks/scenario.refined_1.local_response.120s.240s.120s.120s.json"
+  )
+  _EXPECTED_INTEGRATED_LOCAL_REQUEST: cfr_json.OptimizeToursRequest = _json(
+      "breaks/scenario.refined_1.integrated_local_request.120s.240s.120s.120s.json"
+  )
+  _EXPECTED_INTEGRATED_LOCAL_RESPONSE: cfr_json.OptimizeToursResponse = _json(
+      "breaks/scenario.refined_1.integrated_local_response.120s.240s.120s.120s.json"
+  )
+  _EXPECTED_INTEGRATED_GLOBAL_REQUEST: cfr_json.OptimizeToursRequest = _json(
+      "breaks/scenario.refined_1.integrated_global_request.120s.240s.120s.120s.json"
+  )
+
+  def setUp(self):
+    super().setUp()
+    self._planner = two_step_routing.Planner(
+        options=self._OPTIONS,
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+    )
+
+  def test_local_model(self):
+    self.assertEqual(
+        self._planner.make_local_request(), self._EXPECTED_LOCAL_REQUEST_JSON
+    )
+
+  def test_global_model(self):
+    self.assertEqual(
+        self._planner.make_global_request(
+            self._LOCAL_RESPONSE_JSON, consider_road_traffic_override=False
+        ),
+        self._EXPECTED_GLOBAL_REQUEST_JSON,
+    )
+
+  def test_merged_request(self):
+    merged_request, merged_response = (
+        self._planner.merge_local_and_global_result(
+            self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+        )
+    )
+    self.assertEqual(merged_request, self._EXPECTED_MERGED_REQUEST_JSON)
+    self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
+
+  def test_local_refinement_model(self):
+    local_refinement_request = self._planner.make_local_refinement_request(
+        self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+    self.assertEqual(
+        local_refinement_request, self._EXPECTED_LOCAL_REFINEMENT_REQUEST_JSON
+    )
+
+  def test_global_refinement_model(self):
+    (
+        integrated_local_request,
+        integrated_local_response,
+        integrated_global_request,
+    ) = self._planner.integrate_local_refinement(
+        self._EXPECTED_LOCAL_REQUEST_JSON,
+        self._LOCAL_RESPONSE_JSON,
+        self._EXPECTED_GLOBAL_REQUEST_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+        self._LOCAL_REFINEMENT_RESPONSE_JSON,
+    )
+    self.assertEqual(
+        integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
+    )
+    self.assertEqual(
+        integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
+    )
+    self.assertEqual(
+        integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+
+
 class GetLocalModelRouteStartTimeWindowsTest(unittest.TestCase):
   """Tests for _get_local_model_route_start_time_windows."""
 

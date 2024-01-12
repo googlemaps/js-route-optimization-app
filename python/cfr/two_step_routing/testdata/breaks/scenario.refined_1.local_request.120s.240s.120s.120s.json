@@ -1,0 +1,299 @@
+{
+  "label": "/local_refinement",
+  "model": {
+    "globalEndTime": "2024-01-04T19:00:00Z",
+    "globalStartTime": "2024-01-04T08:00:00Z",
+    "shipments": [
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88961286137252,
+                  "longitude": 2.335890071102119
+                }
+              }
+            },
+            "tags": ["P0007", "P0007 pickup"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88888779646127,
+                  "longitude": 2.3314757249148594
+                }
+              }
+            },
+            "duration": "600s",
+            "timeWindows": [
+              {
+                "startTime": "2024-01-04T13:00:00Z",
+                "endTime": "2024-01-04T15:00:00Z"
+              }
+            ],
+            "tags": ["P0007 delivery"]
+          }
+        ],
+        "allowedVehicleIndices": [0],
+        "label": "17: S0018",
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88961286137252,
+                  "longitude": 2.335890071102119
+                }
+              }
+            },
+            "tags": ["P0007", "P0007 pickup"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88817971839287,
+                  "longitude": 2.3366269487762943
+                }
+              }
+            },
+            "duration": "150s",
+            "tags": ["P0007 delivery"]
+          }
+        ],
+        "allowedVehicleIndices": [0],
+        "label": "18: S0019",
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.876301660547924,
+                  "longitude": 2.349388130830844
+                }
+              }
+            },
+            "tags": ["P0001", "P0001 pickup"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.872698001125144,
+                  "longitude": 2.3513170971878563
+                }
+              }
+            },
+            "duration": "600s",
+            "timeWindows": [
+              {
+                "startTime": "2024-01-04T13:00:00Z",
+                "endTime": "2024-01-04T15:00:00Z"
+              }
+            ],
+            "tags": ["P0001 delivery"]
+          }
+        ],
+        "allowedVehicleIndices": [1],
+        "label": "6: S0007",
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.876301660547924,
+                  "longitude": 2.349388130830844
+                }
+              }
+            },
+            "tags": ["P0001", "P0001 pickup"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87468172950718,
+                  "longitude": 2.349357992573602
+                }
+              }
+            },
+            "duration": "600s",
+            "tags": ["P0001 delivery"]
+          }
+        ],
+        "allowedVehicleIndices": [1],
+        "label": "7: S0008",
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "global_route:0 start:8 size:2 parking:P0007",
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.88961286137252,
+              "longitude": 2.335890071102119
+            }
+          }
+        },
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.88961286137252,
+              "longitude": 2.335890071102119
+            }
+          }
+        },
+        "travelDurationMultiple": 1.0,
+        "travelMode": 1,
+        "fixedCost": 10000,
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "startTags": ["P0007"],
+        "endTags": ["P0007"],
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "5"
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2024-01-04T13:09:24Z",
+            "endTime": "2024-01-04T13:09:24Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "softEndTime": "2024-01-04T13:36:00Z",
+            "costPerHourAfterSoftEndTime": 1000000
+          }
+        ]
+      },
+      {
+        "label": "global_route:0 start:13 size:2 parking:P0001",
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.876301660547924,
+              "longitude": 2.349388130830844
+            }
+          }
+        },
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.876301660547924,
+              "longitude": 2.349388130830844
+            }
+          }
+        },
+        "travelDurationMultiple": 1.0,
+        "travelMode": 1,
+        "fixedCost": 10000,
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "startTags": ["P0001"],
+        "endTags": ["P0001"],
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "5"
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2024-01-04T14:53:16Z",
+            "endTime": "2024-01-04T14:53:16Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "softEndTime": "2024-01-04T15:32:32Z",
+            "costPerHourAfterSoftEndTime": 1000000
+          }
+        ]
+      }
+    ],
+    "transitionAttributes": []
+  },
+  "injectedFirstSolutionRoutes": [
+    {
+      "vehicleIndex": 0,
+      "visits": [
+        {
+          "shipmentIndex": 0,
+          "isPickup": true
+        },
+        {
+          "shipmentIndex": 0,
+          "isPickup": false
+        },
+        {
+          "shipmentIndex": 1,
+          "isPickup": true
+        },
+        {
+          "shipmentIndex": 1,
+          "isPickup": false
+        }
+      ]
+    },
+    {
+      "vehicleIndex": 1,
+      "visits": [
+        {
+          "shipmentIndex": 2,
+          "isPickup": true
+        },
+        {
+          "shipmentIndex": 2,
+          "isPickup": false
+        },
+        {
+          "shipmentIndex": 3,
+          "isPickup": true
+        },
+        {
+          "shipmentIndex": 3,
+          "isPickup": false
+        }
+      ]
+    }
+  ],
+  "searchMode": 2
+}

@@ -1,0 +1,941 @@
+{
+  "routes": [
+    {
+      "vehicleLabel": "V0001",
+      "vehicleStartTime": "2024-01-04T08:00:00Z",
+      "vehicleEndTime": "2024-01-04T17:40:09Z",
+      "visits": [
+        {
+          "shipmentIndex": 18,
+          "startTime": "2024-01-04T08:13:38Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "0s",
+          "shipmentLabel": "p:15 S0021",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "20"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 13,
+          "startTime": "2024-01-04T08:34:51Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-2"
+            }
+          ],
+          "detour": "1219s",
+          "shipmentLabel": "p:9 S0014,S0015",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "19"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-2"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 19,
+          "startTime": "2024-01-04T09:06:00Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "2998s",
+          "shipmentLabel": "p:16 S0022",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "17"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 17,
+          "startTime": "2024-01-04T09:30:53Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "4430s",
+          "shipmentLabel": "p:14 S0020",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "16"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 11,
+          "startTime": "2024-01-04T10:01:34Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "6768s",
+          "shipmentLabel": "p:6 S0012",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "15"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 12,
+          "startTime": "2024-01-04T10:53:16Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "9870s",
+          "shipmentLabel": "p:7 S0013",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "14"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 8,
+          "startTime": "2024-01-04T11:23:40Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "12115s",
+          "shipmentLabel": "p:3 S0009",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "13"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 4,
+          "startTime": "2024-01-04T11:58:15Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "13418s",
+          "shipmentLabel": "s:4 S0005",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "12"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 15,
+          "startTime": "2024-01-04T13:09:24Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "18019s",
+          "shipmentLabel": "p:12 S0018",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "11"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 16,
+          "startTime": "2024-01-04T13:26:42Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "19057s",
+          "shipmentLabel": "p:13 S0019",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "10"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 2,
+          "startTime": "2024-01-04T13:54:05Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "20421s",
+          "shipmentLabel": "s:2 S0003",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "9"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 3,
+          "startTime": "2024-01-04T14:06:07Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "21273s",
+          "shipmentLabel": "s:3 S0004",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "8"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 10,
+          "startTime": "2024-01-04T14:23:31Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "22619s",
+          "shipmentLabel": "p:5 S0011",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "7"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 6,
+          "startTime": "2024-01-04T14:53:16Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "24421s",
+          "shipmentLabel": "p:1 S0007",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "6"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 7,
+          "startTime": "2024-01-04T15:15:24Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "25749s",
+          "shipmentLabel": "p:2 S0008",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "5"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2024-01-04T15:49:31Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "27388s",
+          "shipmentLabel": "s:1 S0002",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "4"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 14,
+          "startTime": "2024-01-04T15:54:33Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-2"
+            }
+          ],
+          "detour": "27616s",
+          "shipmentLabel": "p:11 S0016,S0017",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "3"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-2"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 5,
+          "startTime": "2024-01-04T17:15:20Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "32945s",
+          "shipmentLabel": "p:0 S0006",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "1"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": "818s",
+          "travelDistanceMeters": 3161,
+          "waitDuration": "0s",
+          "totalDuration": "818s",
+          "startTime": "2024-01-04T08:00:00Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "20"
+            }
+          }
+        },
+        {
+          "travelDuration": "115s",
+          "travelDistanceMeters": 260,
+          "waitDuration": "0s",
+          "totalDuration": "115s",
+          "startTime": "2024-01-04T08:32:56Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "19"
+            }
+          }
+        },
+        {
+          "travelDuration": "300s",
+          "travelDistanceMeters": 1305,
+          "waitDuration": "0s",
+          "totalDuration": "300s",
+          "startTime": "2024-01-04T09:01:00Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "17"
+            }
+          }
+        },
+        {
+          "travelDuration": "464s",
+          "travelDistanceMeters": 1497,
+          "waitDuration": "0s",
+          "totalDuration": "464s",
+          "startTime": "2024-01-04T09:23:09Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "16"
+            }
+          }
+        },
+        {
+          "travelDuration": "579s",
+          "travelDistanceMeters": 1948,
+          "waitDuration": "0s",
+          "totalDuration": "579s",
+          "startTime": "2024-01-04T09:51:55Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "15"
+            }
+          }
+        },
+        {
+          "travelDuration": "0s",
+          "breakDuration": "1800s",
+          "waitDuration": "0s",
+          "totalDuration": "1800s",
+          "startTime": "2024-01-04T10:23:16Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "14"
+            }
+          }
+        },
+        {
+          "travelDuration": "547s",
+          "travelDistanceMeters": 1793,
+          "waitDuration": "219s",
+          "totalDuration": "766s",
+          "startTime": "2024-01-04T11:10:54Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "13"
+            }
+          }
+        },
+        {
+          "travelDuration": "848s",
+          "travelDistanceMeters": 3044,
+          "waitDuration": "0s",
+          "totalDuration": "848s",
+          "startTime": "2024-01-04T11:44:07Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "12"
+            }
+          }
+        },
+        {
+          "travelDuration": "519s",
+          "travelDistanceMeters": 2201,
+          "breakDuration": "3600s",
+          "waitDuration": "0s",
+          "totalDuration": "4119s",
+          "startTime": "2024-01-04T12:00:45Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "11"
+            }
+          }
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2024-01-04T13:26:42Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "10"
+            }
+          }
+        },
+        {
+          "travelDuration": "1085s",
+          "travelDistanceMeters": 4507,
+          "waitDuration": "0s",
+          "totalDuration": "1085s",
+          "startTime": "2024-01-04T13:36:00Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "9"
+            }
+          }
+        },
+        {
+          "travelDuration": "572s",
+          "travelDistanceMeters": 2201,
+          "waitDuration": "0s",
+          "totalDuration": "572s",
+          "startTime": "2024-01-04T13:56:35Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "8"
+            }
+          }
+        },
+        {
+          "travelDuration": "444s",
+          "travelDistanceMeters": 1621,
+          "waitDuration": "0s",
+          "totalDuration": "444s",
+          "startTime": "2024-01-04T14:16:07Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "7"
+            }
+          }
+        },
+        {
+          "travelDuration": "401s",
+          "travelDistanceMeters": 1323,
+          "waitDuration": "0s",
+          "totalDuration": "401s",
+          "startTime": "2024-01-04T14:46:35Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "6"
+            }
+          }
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2024-01-04T15:15:24Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "5"
+            }
+          }
+        },
+        {
+          "travelDuration": "1019s",
+          "travelDistanceMeters": 3365,
+          "waitDuration": "0s",
+          "totalDuration": "1019s",
+          "startTime": "2024-01-04T15:32:32Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "4"
+            }
+          }
+        },
+        {
+          "travelDuration": "152s",
+          "travelDistanceMeters": 618,
+          "waitDuration": "0s",
+          "totalDuration": "152s",
+          "startTime": "2024-01-04T15:52:01Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "3"
+            }
+          }
+        },
+        {
+          "travelDuration": "1303s",
+          "travelDistanceMeters": 4785,
+          "breakDuration": "1800s",
+          "waitDuration": "0s",
+          "totalDuration": "3103s",
+          "startTime": "2024-01-04T16:23:37Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "356s",
+          "travelDistanceMeters": 1078,
+          "waitDuration": "0s",
+          "totalDuration": "356s",
+          "startTime": "2024-01-04T17:34:13Z",
+          "vehicleLoads": {
+            "shipment_count": {}
+          }
+        }
+      ],
+      "breaks": [
+        {
+          "startTime": "2024-01-04T10:23:16Z",
+          "duration": "1800s"
+        },
+        {
+          "startTime": "2024-01-04T12:00:45Z",
+          "duration": "3600s"
+        },
+        {
+          "startTime": "2024-01-04T16:23:37Z",
+          "duration": "1800s"
+        }
+      ],
+      "metrics": {
+        "performedShipmentCount": 18,
+        "travelDuration": "9522s",
+        "waitDuration": "219s",
+        "delayDuration": "0s",
+        "breakDuration": "7200s",
+        "visitDuration": "17868s",
+        "totalDuration": "34809s",
+        "travelDistanceMeters": 34707,
+        "maxLoads": {
+          "shipment_count": {
+            "amount": "20"
+          }
+        }
+      },
+      "endLoads": [
+        {
+          "type": "shipment_count"
+        }
+      ],
+      "travelSteps": [
+        {
+          "duration": "826s",
+          "distanceMeters": 3075
+        },
+        {
+          "duration": "116s",
+          "distanceMeters": 260
+        },
+        {
+          "duration": "303s",
+          "distanceMeters": 1306
+        },
+        {
+          "duration": "468s",
+          "distanceMeters": 1493
+        },
+        {
+          "duration": "585s",
+          "distanceMeters": 1948
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "duration": "548s",
+          "distanceMeters": 1791
+        },
+        {
+          "duration": "853s",
+          "distanceMeters": 3046
+        },
+        {
+          "duration": "518s",
+          "distanceMeters": 2203
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "duration": "1091s",
+          "distanceMeters": 4506
+        },
+        {
+          "duration": "655s",
+          "distanceMeters": 2158
+        },
+        {
+          "duration": "446s",
+          "distanceMeters": 1619
+        },
+        {
+          "duration": "403s",
+          "distanceMeters": 1324
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "duration": "988s",
+          "distanceMeters": 3272
+        },
+        {
+          "duration": "155s",
+          "distanceMeters": 618
+        },
+        {
+          "duration": "1317s",
+          "distanceMeters": 4787
+        },
+        {
+          "duration": "359s",
+          "distanceMeters": 1079
+        }
+      ],
+      "vehicleDetour": "34809s",
+      "routeCosts": {
+        "model.vehicles.cost_per_kilometer": 34.707,
+        "model.vehicles.cost_per_hour": 580.15,
+        "model.vehicles.fixed_cost": 1000
+      },
+      "routeTotalCost": 1614.857
+    },
+    {
+      "vehicleIndex": 1,
+      "vehicleLabel": "V0002",
+      "vehicleStartTime": "2024-01-04T08:00:00Z",
+      "vehicleEndTime": "2024-01-04T08:49:53Z",
+      "visits": [
+        {
+          "shipmentIndex": 9,
+          "startTime": "2024-01-04T08:01:45Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "0s",
+          "shipmentLabel": "p:4 S0010",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "2"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "startTime": "2024-01-04T08:29:43Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "-1"
+            }
+          ],
+          "detour": "1346s",
+          "shipmentLabel": "s:0 S0001",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "1"
+            }
+          ],
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": "105s",
+          "travelDistanceMeters": 438,
+          "waitDuration": "0s",
+          "totalDuration": "105s",
+          "startTime": "2024-01-04T08:00:00Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "2"
+            }
+          }
+        },
+        {
+          "travelDuration": "501s",
+          "travelDistanceMeters": 1686,
+          "waitDuration": "0s",
+          "totalDuration": "501s",
+          "startTime": "2024-01-04T08:21:22Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "610s",
+          "travelDistanceMeters": 1907,
+          "waitDuration": "0s",
+          "totalDuration": "610s",
+          "startTime": "2024-01-04T08:39:43Z",
+          "vehicleLoads": {
+            "shipment_count": {}
+          }
+        }
+      ],
+      "breaks": [
+        {
+          "startTime": "2024-01-04T10:00:00Z",
+          "duration": "1800s"
+        },
+        {
+          "startTime": "2024-01-04T12:00:00Z",
+          "duration": "3600s"
+        },
+        {
+          "startTime": "2024-01-04T16:00:00Z",
+          "duration": "1800s"
+        }
+      ],
+      "metrics": {
+        "performedShipmentCount": 2,
+        "travelDuration": "1216s",
+        "waitDuration": "0s",
+        "delayDuration": "0s",
+        "breakDuration": "0s",
+        "visitDuration": "1777s",
+        "totalDuration": "2993s",
+        "travelDistanceMeters": 4031,
+        "maxLoads": {
+          "shipment_count": {
+            "amount": "2"
+          }
+        }
+      },
+      "endLoads": [
+        {
+          "type": "shipment_count"
+        }
+      ],
+      "travelSteps": [
+        {
+          "duration": "105s",
+          "distanceMeters": 437
+        },
+        {
+          "duration": "501s",
+          "distanceMeters": 1689
+        },
+        {
+          "duration": "613s",
+          "distanceMeters": 1905
+        }
+      ],
+      "vehicleDetour": "2993s",
+      "routeCosts": {
+        "model.vehicles.cost_per_kilometer": 4.031,
+        "model.vehicles.cost_per_hour": 49.88333333333333,
+        "model.vehicles.fixed_cost": 1000
+      },
+      "routeTotalCost": 1053.9143333333334
+    }
+  ],
+  "totalCost": 2668.771333333333,
+  "requestLabel": "/global",
+  "metrics": {
+    "aggregatedRouteMetrics": {
+      "performedShipmentCount": 20,
+      "travelDuration": "10738s",
+      "waitDuration": "219s",
+      "delayDuration": "0s",
+      "breakDuration": "7200s",
+      "visitDuration": "19645s",
+      "totalDuration": "37802s",
+      "travelDistanceMeters": 38738,
+      "maxLoads": {
+        "shipment_count": {
+          "amount": "20"
+        }
+      }
+    },
+    "usedVehicleCount": 2,
+    "earliestVehicleStartTime": "2024-01-04T08:00:00Z",
+    "latestVehicleEndTime": "2024-01-04T17:40:09Z",
+    "totalCost": 2668.771333333333,
+    "costs": {
+      "model.vehicles.cost_per_kilometer": 38.738,
+      "model.vehicles.cost_per_hour": 630.0333333333333,
+      "model.vehicles.fixed_cost": 2000
+    }
+  }
+}

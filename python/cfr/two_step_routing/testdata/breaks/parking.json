@@ -1,0 +1,253 @@
+{
+  "parking_locations": [
+    {
+      "tag": "P0001",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.876301660547924,
+            "longitude": 2.349388130830844
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0002",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.878896743823766,
+            "longitude": 2.345315644596649
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0003",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.87358140362513,
+            "longitude": 2.3575427961465145
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0004",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.86959247473453,
+            "longitude": 2.3342220491432064
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0005",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.879529214588096,
+            "longitude": 2.3113355338108836
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0006",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.888304267263145,
+            "longitude": 2.3122590869294593
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0007",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.88961286137252,
+            "longitude": 2.335890071102119
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0008",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.86942707364737,
+            "longitude": 2.314022251318649
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0009",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.87951530450882,
+            "longitude": 2.312743962924562
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0010",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.87834664125264,
+            "longitude": 2.3087576249099384
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "delivery_load_limits": {
+        "shipment_count": 5
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    }
+  ],
+  "parking_for_shipment": {
+    "5": "P0001",
+    "6": "P0001",
+    "7": "P0001",
+    "8": "P0002",
+    "9": "P0002",
+    "10": "P0003",
+    "11": "P0004",
+    "12": "P0004",
+    "13": "P0005",
+    "14": "P0005",
+    "15": "P0006",
+    "16": "P0006",
+    "17": "P0007",
+    "18": "P0007",
+    "19": "P0008",
+    "20": "P0009",
+    "21": "P0010"
+  }
+}
