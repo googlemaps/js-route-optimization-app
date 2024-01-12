@@ -989,6 +989,28 @@ def get_vehicle_wait_hours(route: cfr_json.ShipmentRoute) -> datetime.timedelta:
   return wait_time
 
 
+def get_vehicle_travel_hours(
+    route: cfr_json.ShipmentRoute,
+) -> datetime.timedelta:
+  """Returns the amount of time the vehicle spends traveling."""
+  # NOTE(ondrasej): The two-step routing library did not always fill in metrics.
+  # We need to be careful before reporting a zero if we don't see the metrics.
+  # TODO(ondrasej): Raise an exception instead of this workaround, once we know
+  # that the routes without metrics are rare enough.
+  metrics = route.get("metrics")
+  if metrics is not None:
+    travel_duration = metrics.get("travelDuration")
+    if travel_duration is not None:
+      return cfr_json.parse_duration_string(travel_duration)
+
+  travel_time = datetime.timedelta(0)
+  for transition in cfr_json.get_transitions(route):
+    travel_duration = transition.get("travelDuration", "0s")
+    travel_time += cfr_json.parse_duration_string(travel_duration)
+
+  return travel_time
+
+
 def get_percentile_visit_time(
     model: cfr_json.ShipmentModel,
     route: cfr_json.ShipmentRoute,
