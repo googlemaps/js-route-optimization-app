@@ -1,0 +1,390 @@
+from collections.abc import Sequence
+from os import path
+import tempfile
+import unittest
+
+from . import cfr_json
+from . import io_utils
+from . import transform_request
+
+
+class TransformRequestTest(unittest.TestCase):
+  """Tests for the transform_request utility."""
+
+  maxDiff = None
+
+  def run_transform_request_main(
+      self, input_request: cfr_json.OptimizeToursRequest, args: Sequence[str]
+  ) -> cfr_json.OptimizeToursRequest:
+    """Runs the transform_request main function with the given parameters.
+
+    Invokes the transform_request utility by simulating running it from a
+    command line:
+      1. stores `input_request` to a temporary file,
+      2. runs `transform_request.main`, injecting `args` as command-line flags,
+         makes it store the output to another temporary file,
+      3. loads the output from the temporary file, and compares it with
+         `expected_output` via `self.assertEqual()`.
+
+    Args:
+      input_request: The input CFR JSON request, to be transformed by the tool.
+      args: Command-line flags passed to the transform_request utility. The args
+        should not contain `--input` and `--output`, as those are added by the
+        method.
+
+    Returns:
+      The actual output of the transformation script as a parsed CFR JSON
+      request.
+    """
+    with tempfile.TemporaryDirectory() as tmp_dir:
+      input_file = path.join(tmp_dir, "input.json")
+      output_file = path.join(tmp_dir, "output.json")
+
+      io_utils.write_json_to_file(input_file, input_request)
+      transform_request.main(
+          ["--input_file", input_file, "--output_file", output_file, *args]
+      )
+      output_request: cfr_json.OptimizeToursRequest = (
+          io_utils.read_json_from_file(output_file)
+      )
+    return output_request
+
+  def test_no_transforms(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [{"label": "S001"}, {"label": "S002"}],
+            "vehicles": [{"label": "V001"}, {"label": "V002"}],
+        }
+    }
+    self.assertEqual(self.run_transform_request_main(request, ()), request)
+
+  def test_shipment_penalty_cost_per_item__one_item_per_shipment(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [{"label": "S001"}, {"label": "S002, S003, S004"}]
+        }
+    }
+    expected_output_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "penaltyCost": 100000},
+                {"label": "S002, S003, S004", "penaltyCost": 100000},
+            ]
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--shipment_penalty_cost_per_item", "100000")
+        ),
+        expected_output_request,
+    )
+
+  def test_shipment_penalty_cost_per_item__comma_separated(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [{"label": "S001"}, {"label": "S002, S003, S004"}]
+        }
+    }
+    expected_output_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "penaltyCost": 100000},
+                {"label": "S002, S003, S004", "penaltyCost": 300000},
+            ]
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request,
+            (
+                "--shipment_penalty_cost_per_item=100000",
+                "--items_per_shipment=COMMA_SEPARATED_LIST_IN_LABEL",
+            ),
+        ),
+        expected_output_request,
+    )
+
+  def test_remove_pickups(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {
+                    "deliveries": [{
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 48.86595,
+                                    "longitude": 2.34888,
+                                }
+                            }
+                        },
+                        "duration": "60s",
+                    }],
+                    "label": "S001",
+                    "pickups": [{
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 48.86482,
+                                    "longitude": 2.34932,
+                                }
+                            }
+                        },
+                    }],
+                },
+                {
+                    "deliveries": [{
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 48.86471,
+                                    "longitude": 2.34901,
+                                }
+                            }
+                        },
+                        "duration": "120s",
+                    }],
+                    "label": "S002",
+                    "pickups": [{
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 48.86482,
+                                    "longitude": 2.34932,
+                                }
+                            }
+                        },
+                    }],
+                },
+            ]
+        }
+    }
+    expected_output_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {
+                    "deliveries": [{
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 48.86595,
+                                    "longitude": 2.34888,
+                                }
+                            }
+                        },
+                        "duration": "60s",
+                    }],
+                    "label": "S001",
+                },
+                {
+                    "deliveries": [{
+                        "arrivalWaypoint": {
+                            "location": {
+                                "latLng": {
+                                    "latitude": 48.86471,
+                                    "longitude": 2.34901,
+                                }
+                            }
+                        },
+                        "duration": "120s",
+                    }],
+                    "label": "S002",
+                },
+            ]
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(request, ("--remove_pickups",)),
+        expected_output_request,
+    )
+
+  def test_soften_allowed_vehicle_indices(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001"},
+                {"label": "S002", "allowedVehicleIndices": [0, 2]},
+                {"label": "S003", "allowedVehicleIndices": [3]},
+            ],
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+                {"label": "V004"},
+            ],
+        }
+    }
+    expected_output_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001"},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [1500, 1500],
+                    "costsPerVehicleIndices": [1, 3],
+                },
+                {
+                    "label": "S003",
+                    "costsPerVehicle": [1500, 1500, 1500],
+                    "costsPerVehicleIndices": [0, 1, 2],
+                },
+            ],
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+                {"label": "V004"},
+            ],
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--soften_allowed_vehicle_indices", "1500")
+        ),
+        expected_output_request,
+    )
+
+  def test_duplicate_vehicles_by_label(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [0]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [1],
+                },
+            ],
+            "vehicles": [
+                {"label": "V001", "costPerHour": 30},
+                {"label": "V002", "costPerHour": 60},
+            ],
+        }
+    }
+    expected_output_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [0, 2, 3]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100, 100],
+                    "costsPerVehicleIndices": [1, 4],
+                },
+            ],
+            "vehicles": [
+                {"label": "V001", "costPerHour": 30},
+                {"label": "V002", "costPerHour": 60},
+                {"label": "V001 #1", "costPerHour": 30},
+                {"label": "V001 #2", "costPerHour": 30},
+                {"label": "V002 #1", "costPerHour": 60},
+            ],
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--duplicate_vehicles_by_label=V001,V001,V002",)
+        ),
+        expected_output_request,
+    )
+
+  def test_duplicate_vehicles_by_label__invalid_vehicle_label(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [{"label": "S001"}, {"label": "S002"}],
+            "vehicles": [
+                {"label": "V001", "costPerHour": 30},
+                {"label": "V002", "costPerHour": 60},
+            ],
+        }
+    }
+    with self.assertRaisesRegex(
+        ValueError,
+        "Vehicle label from --duplicate_vehicles_by_label does not appear in"
+        " the model: 'V12345'",
+    ):
+      self.run_transform_request_main(
+          request,
+          ("--duplicate_vehicles_by_label=V12345",),
+      )
+
+  def test_remove_vehicles_by_label(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [0, 2]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [1],
+                },
+            ],
+            "vehicles": [
+                {"label": "V001", "costPerHour": 30},
+                {"label": "V002", "costPerHour": 60},
+                {"label": "V003", "costPerHour": 90},
+            ],
+        }
+    }
+    expected_output_request_v001: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [1]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [0],
+                },
+            ],
+            "vehicles": [
+                {"label": "V002", "costPerHour": 60},
+                {"label": "V003", "costPerHour": 90},
+            ],
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--remove_vehicles_by_label=V001",)
+        ),
+        expected_output_request_v001,
+    )
+    expected_output_request_v001_v002: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [0]},
+                {"label": "S002"},
+            ],
+            "vehicles": [
+                {"label": "V003", "costPerHour": 90},
+            ],
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--remove_vehicles_by_label=V001,V002",)
+        ),
+        expected_output_request_v001_v002,
+    )
+
+  def test_remove_vehicles_by_label__invalid_vehicle_label(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [{"label": "S001"}, {"label": "S002"}],
+            "vehicles": [
+                {"label": "V001", "costPerHour": 30},
+                {"label": "V002", "costPerHour": 60},
+            ],
+        }
+    }
+    with self.assertRaisesRegex(
+        ValueError,
+        "Vehicle labels from --remove_vehicles_by_label do not appear in the"
+        " model: 'V12345'",
+    ):
+      self.run_transform_request_main(
+          request,
+          ("--remove_vehicles_by_label=V12345",),
+      )
+
+
+if __name__ == "__main__":
+  unittest.main()
