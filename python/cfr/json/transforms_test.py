@@ -334,18 +334,20 @@ class RemoveVehiclesTest(unittest.TestCase):
       transforms.remove_vehicles(model, (1,))
 
 
-class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
-  """Tests for soften_allowed_vehicle_indices."""
+class SoftenShipmentAllowedVehicleIndicesTest(unittest.TestCase):
+  """Tests for soften_shipment_allowed_vehicle_indices."""
 
   maxDiff = None
 
   def test_negative_cost(self):
     with self.assertRaises(ValueError):
-      transforms.soften_allowed_vehicle_indices({}, cost=-1, num_vehicles=2)
+      transforms.soften_shipment_allowed_vehicle_indices(
+          {}, cost=-1, num_vehicles=2
+      )
 
   def test_no_allowed_vehicle_indices(self):
     shipment: cfr_json.Shipment = {"label": "S002"}
-    transforms.soften_allowed_vehicle_indices(
+    transforms.soften_shipment_allowed_vehicle_indices(
         shipment, cost=100, num_vehicles=2
     )
     self.assertEqual(shipment, {"label": "S002"})
@@ -355,7 +357,9 @@ class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
         "label": "S001",
         "allowedVehicleIndices": [0, 1, 2, 3],
     }
-    transforms.soften_allowed_vehicle_indices(shipment, cost=0, num_vehicles=10)
+    transforms.soften_shipment_allowed_vehicle_indices(
+        shipment, cost=0, num_vehicles=10
+    )
     self.assertEqual(shipment, {"label": "S001"})
 
   def test_with_cost_and_no_existing_costs(self):
@@ -363,7 +367,9 @@ class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
         "label": "S003",
         "allowedVehicleIndices": [2, 3],
     }
-    transforms.soften_allowed_vehicle_indices(shipment, cost=10, num_vehicles=5)
+    transforms.soften_shipment_allowed_vehicle_indices(
+        shipment, cost=10, num_vehicles=5
+    )
     self.assertEqual(
         shipment,
         {
@@ -380,7 +386,9 @@ class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
         "costsPerVehicle": [100, 300, 400],
         "costsPerVehicleIndices": [1, 3, 4],
     }
-    transforms.soften_allowed_vehicle_indices(shipment, cost=10, num_vehicles=7)
+    transforms.soften_shipment_allowed_vehicle_indices(
+        shipment, cost=10, num_vehicles=7
+    )
     self.assertEqual(
         shipment,
         {
@@ -396,7 +404,9 @@ class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
         "allowedVehicleIndices": [2, 3],
         "costsPerVehicle": [100, 200, 300, 400, 500],
     }
-    transforms.soften_allowed_vehicle_indices(shipment, cost=10, num_vehicles=5)
+    transforms.soften_shipment_allowed_vehicle_indices(
+        shipment, cost=10, num_vehicles=5
+    )
     self.assertEqual(
         shipment,
         {
@@ -412,7 +422,9 @@ class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
         "costsPerVehicle": [200, 300, 400],
         "costsPerVehicleIndices": [2, 3, 4],
     }
-    transforms.soften_allowed_vehicle_indices(shipment, cost=10, num_vehicles=5)
+    transforms.soften_shipment_allowed_vehicle_indices(
+        shipment, cost=10, num_vehicles=5
+    )
     self.assertEqual(
         shipment,
         {
@@ -420,6 +432,64 @@ class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
             "costsPerVehicle": [10, 10, 200, 300, 410],
         },
     )
+
+
+class SoftenAllowedVehicleIndicesTest(unittest.TestCase):
+  """Tests for soften_allowed_vehicle_indices."""
+
+  maxDiff = None
+
+  def test_no_shipments(self):
+    model: cfr_json.ShipmentModel = {}
+    transforms.soften_allowed_vehicle_indices(model, 1000)
+    self.assertEqual(model, {})
+
+  def test_soften_allowed_vehicle_indices(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "label": "S001",
+            },
+            {"label": "S002", "allowedVehicleIndices": [0, 3]},
+            {
+                "label": "S003",
+                "allowedVehicleIndices": [0, 1, 3],
+                "costsPerVehicleIndices": [0, 3],
+                "costsPerVehicle": [100, 300],
+            },
+        ],
+        "vehicles": [
+            {"label": "V001"},
+            {"label": "V002"},
+            {"label": "V003"},
+            {"label": "V004"},
+        ],
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "label": "S001",
+            },
+            {
+                "label": "S002",
+                "costsPerVehicleIndices": [1, 2],
+                "costsPerVehicle": [1000, 1000],
+            },
+            {
+                "label": "S003",
+                "costsPerVehicleIndices": [0, 2, 3],
+                "costsPerVehicle": [100, 1000, 300],
+            },
+        ],
+        "vehicles": [
+            {"label": "V001"},
+            {"label": "V002"},
+            {"label": "V003"},
+            {"label": "V004"},
+        ],
+    }
+    transforms.soften_allowed_vehicle_indices(model, 1000)
+    self.assertEqual(model, expected_model)
 
 
 class RemoveLoadLimitstest(unittest.TestCase):
@@ -471,20 +541,18 @@ class RemovePickupsTest(unittest.TestCase):
         "globalStartTime": "2023-10-03T08:00:00Z",
         "globalEndTime": "2023-10-03T18:00:00Z",
         "shipments": [{
-            "deliveries": [
-                {
-                    "timeWindows": [
-                        {
-                            "startTime": "2023-10-03T08:30:00Z",
-                            "endTime": "2023-10-03T08:30:00Z",
-                        },
-                        {
-                            "startTime": "2023-10-03T12:00:00Z",
-                            "endTime": "2023-10-03T14:00:00Z",
-                        },
-                    ]
-                }
-            ],
+            "deliveries": [{
+                "timeWindows": [
+                    {
+                        "startTime": "2023-10-03T08:30:00Z",
+                        "endTime": "2023-10-03T08:30:00Z",
+                    },
+                    {
+                        "startTime": "2023-10-03T12:00:00Z",
+                        "endTime": "2023-10-03T14:00:00Z",
+                    },
+                ]
+            }],
         }],
     }
     original_model = copy.deepcopy(model)
@@ -495,18 +563,14 @@ class RemovePickupsTest(unittest.TestCase):
     model: cfr_json.ShipmentModel = {
         "globalStartTime": "2023-10-03T08:00:00Z",
         "globalEndTime": "2023-10-03T18:00:00Z",
-        "shipments": [
-            {
-                "pickups": [
-                    {
-                        "timeWindows": [{
-                            "startTime": "2023-10-03T09:00:00Z",
-                            "endTime": "2023-10-03T12:00:00Z",
-                        }]
-                    }
-                ]
-            }
-        ],
+        "shipments": [{
+            "pickups": [{
+                "timeWindows": [{
+                    "startTime": "2023-10-03T09:00:00Z",
+                    "endTime": "2023-10-03T12:00:00Z",
+                }]
+            }]
+        }],
     }
     original_model = copy.deepcopy(model)
     transforms.remove_pickups(model)
@@ -667,14 +731,12 @@ class RemovePickupsTest(unittest.TestCase):
                 }],
                 "duration": "7200s",
             }],
-            "deliveries": [
-                {
-                    "timeWindows": [{
-                        "startTime": "2023-10-03T13:00:00Z",
-                        "endTime": "2023-10-03T13:30:00Z",
-                    }]
-                }
-            ],
+            "deliveries": [{
+                "timeWindows": [{
+                    "startTime": "2023-10-03T13:00:00Z",
+                    "endTime": "2023-10-03T13:30:00Z",
+                }]
+            }],
         }],
     }
     with self.assertRaisesRegex(ValueError, "is infeasible"):

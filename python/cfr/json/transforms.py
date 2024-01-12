@@ -193,7 +193,7 @@ def remove_vehicles(
       ]
 
 
-def soften_allowed_vehicle_indices(
+def soften_shipment_allowed_vehicle_indices(
     shipment: cfr_json.Shipment, cost: float, num_vehicles: int
 ) -> None:
   """Softens the hard vehicle-shipment constraints in the model.
@@ -208,7 +208,8 @@ def soften_allowed_vehicle_indices(
     num_vehicles: The number of vehicles in the model.
 
   Raises:
-    ValueError: When `cost < 0`.
+    ValueError: When `cost < 0` or `num_vehicles` does not match the existing
+      costs per vehicle data in the shipment.
   """
   if cost < 0:
     raise ValueError("cost must be non-negative.")
@@ -238,6 +239,27 @@ def soften_allowed_vehicle_indices(
   else:
     shipment["costsPerVehicleIndices"] = list(indices)
     shipment["costsPerVehicle"] = list(costs)
+
+
+def soften_allowed_vehicle_indices(
+    model: cfr_json.ShipmentModel, cost: float
+) -> None:
+  """Softens hard vehicle-shipment constraints in all shipments in the model.
+
+  See `soften_shipment_allowed_vehicle_indices for more details.
+
+  Args:
+    model: The model in which the constraints are softened.
+    cost: The cost of violating a vehicle-shipment constraint.
+
+  Raises:
+    ValueError: When `cost < 0`.
+  """
+  num_vehicles = len(cfr_json.get_vehicles(model))
+  for shipment in cfr_json.get_shipments(model):
+    soften_shipment_allowed_vehicle_indices(
+        shipment, cost=cost, num_vehicles=num_vehicles
+    )
 
 
 def remove_load_limits(model: cfr_json.ShipmentModel) -> None:
@@ -414,12 +436,13 @@ def split_shipment(
     ValueError: When the assumptions outlined above do not hold.
   """
   num_items = cfr_json.get_shipment_load_demand(shipment, num_items_load_type)
-  items = _SPLIT_BY_COMMA.split(shipment.get("label", ""))
+  shipment_label = shipment.get("label", "")
+  items = _SPLIT_BY_COMMA.split(shipment_label)
   if num_items != len(items):
     raise ValueError(
         f"The number of items in the shipment label ({len(items)}) is"
-        " inconsistent with the number of items in load demands"
-        f" ({num_items})."
+        f" inconsistent with the number of items in load demands ({num_items})."
+        f" Shipment label: {shipment_label!r}"
     )
 
   load_demands = shipment.get("loadDemands")
