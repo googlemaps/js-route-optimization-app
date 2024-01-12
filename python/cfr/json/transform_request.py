@@ -68,6 +68,15 @@ def _parse_comma_separated_list(value: str) -> Sequence[str]:
   return value.split(",")
 
 
+def _non_negative_float(value: str) -> float:
+  value_as_float = float(value)
+  if value_as_float < 0:
+    raise argparse.ArgumentTypeError(
+        f"expected a non-negative value, got {value}"
+    )
+  return value_as_float
+
+
 @dataclasses.dataclass(slots=True)
 class Flags:
   """Holds values of command-line flags of this script.
@@ -84,6 +93,7 @@ class Flags:
   shipment_penalty_cost_per_item: float | None
   remove_pickups: bool
   soften_allowed_vehicle_indices_cost: float | None
+  visit_duration_scaling_factor: float | None
 
   duplicate_vehicles_by_label: Sequence[str] | None
   remove_vehicles_by_label: Sequence[str] | None
@@ -135,7 +145,7 @@ class Flags:
     )
     parser.add_argument(
         "--shipment_penalty_cost_per_item",
-        type=float,
+        type=_non_negative_float,
         required=False,
         help=(
             "When provided, turns all mandatory shipments in the request into"
@@ -161,7 +171,7 @@ class Flags:
     )
     parser.add_argument(
         "--soften_allowed_vehicle_indices_cost",
-        type=float,
+        type=_non_negative_float,
         required=False,
         help=(
             "When set, replaces all allowedVehicleIndices in the request with a"
@@ -169,6 +179,16 @@ class Flags:
             " vehicle indices are allowed, but vehicle indices that were"
             " previously not allowed now have a cost specified as the value of"
             " this flag."
+        ),
+    )
+    parser.add_argument(
+        "--visit_duration_scaling_factor",
+        type=_non_negative_float,
+        required=False,
+        help=(
+            "When set, all pickup and delivery request durations in the request"
+            " are scaled by the value of this flag. Must be a non-negative"
+            " floating point number."
         ),
     )
     parser.add_argument(
@@ -275,6 +295,10 @@ def main(args: Sequence[str] | None = None) -> None:
   if flags.soften_allowed_vehicle_indices_cost is not None:
     transforms.soften_allowed_vehicle_indices(
         model, cost=flags.soften_allowed_vehicle_indices_cost
+    )
+  if flags.visit_duration_scaling_factor is not None:
+    transforms.scale_visit_request_durations(
+        model, factor=flags.visit_duration_scaling_factor
     )
   if removed_labels := flags.remove_vehicles_by_label:
     _remove_vehicles_by_label(model, removed_labels)

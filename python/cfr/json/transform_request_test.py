@@ -244,6 +244,54 @@ class TransformRequestTest(unittest.TestCase):
         expected_output_request,
     )
 
+  def test_visit_duration_scaling_factor_nonzero(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{"duration": "10s"}]},
+                {"label": "S002", "deliveries": [{"duration": "60s"}]},
+            ]
+        }
+    }
+    expected_output_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{"duration": "8s"}]},
+                {"label": "S002", "deliveries": [{"duration": "48s"}]},
+            ]
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--visit_duration_scaling_factor=0.8",)
+        ),
+        expected_output_request,
+    )
+
+  def test_visit_duration_scaling_factor_zero(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{"duration": "10s"}]},
+                {"label": "S002", "deliveries": [{"duration": "60s"}]},
+            ]
+        }
+    }
+    expected_output_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{"duration": "0s"}]},
+                {"label": "S002", "deliveries": [{"duration": "0s"}]},
+            ]
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--visit_duration_scaling_factor=0",)
+        ),
+        expected_output_request,
+    )
+
   def test_duplicate_vehicles_by_label(self):
     request: cfr_json.OptimizeToursRequest = {
         "model": {

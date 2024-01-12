@@ -531,6 +531,58 @@ class RemoveLoadLimitstest(unittest.TestCase):
     )
 
 
+class ScaleVisitRequestDurations(unittest.TestCase):
+  """Tests for scale_visit_request_duration."""
+
+  maxDiff = None
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {
+              "pickups": [{"duration": "100s"}, {"duration": "0s"}],
+              "deliveries": [{"duration": "60s"}],
+          },
+          {"pickups": [{"duration": "30s"}]},
+          {"deliveries": [{"duration": "120s"}]},
+      ]
+  }
+
+  def test_negative_factor(self):
+    model: cfr_json.ShipmentModel = {}
+    with self.assertRaisesRegex(ValueError, "non-negative"):
+      transforms.scale_visit_request_durations(model, -0.5)
+
+  def test_zero_factor(self):
+    model: cfr_json.ShipmentModel = copy.deepcopy(self._MODEL)
+    expected_model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "pickups": [{"duration": "0s"}, {"duration": "0s"}],
+                "deliveries": [{"duration": "0s"}],
+            },
+            {"pickups": [{"duration": "0s"}]},
+            {"deliveries": [{"duration": "0s"}]},
+        ]
+    }
+    transforms.scale_visit_request_durations(model, 0)
+    self.assertEqual(model, expected_model)
+
+  def test_non_zero_factor(self):
+    model: cfr_json.ShipmentModel = copy.deepcopy(self._MODEL)
+    expected_model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "pickups": [{"duration": "110s"}, {"duration": "0s"}],
+                "deliveries": [{"duration": "66s"}],
+            },
+            {"pickups": [{"duration": "33s"}]},
+            {"deliveries": [{"duration": "132s"}]},
+        ]
+    }
+    transforms.scale_visit_request_durations(model, 1.1)
+    self.assertEqual(model, expected_model)
+
+
 class RemovePickupsTest(unittest.TestCase):
   """Tests for remove_pickups."""
 

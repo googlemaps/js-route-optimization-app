@@ -8,6 +8,7 @@
 import collections
 from collections.abc import Callable, Collection, Iterable
 import copy
+import itertools
 import math
 import re
 
@@ -267,6 +268,26 @@ def remove_load_limits(model: cfr_json.ShipmentModel) -> None:
   vehicles = model.get("vehicles", ())
   for vehicle in vehicles:
     vehicle.pop("loadLimits", None)
+
+
+def scale_visit_request_durations(
+    model: cfr_json.ShipmentModel, factor: float
+) -> None:
+  """Scales visit durations in the model by the given factor.
+
+  Args:
+    model: The model in which the visit durations are scaled.
+    factor: The scaling factor. Must be non-negative.
+  """
+  if factor < 0:
+    raise ValueError("factor must be a non-negative number")
+  for shipment in cfr_json.get_shipments(model):
+    pickups = shipment.get("pickups", ())
+    deliveries = shipment.get("deliveries", ())
+    for visit_request in itertools.chain(pickups, deliveries):
+      duration = cfr_json.get_visit_request_duration(visit_request)
+      duration *= factor
+      visit_request["duration"] = cfr_json.as_duration_string(duration)
 
 
 def remove_pickups(model: cfr_json.ShipmentModel) -> None:
