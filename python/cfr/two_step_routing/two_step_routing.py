@@ -49,6 +49,7 @@ from collections.abc import Collection, Mapping, MutableMapping, Sequence, Set
 import copy
 import dataclasses
 import enum
+import functools
 import math
 import re
 from typing import Any, TypeAlias, TypeVar, cast
@@ -208,6 +209,26 @@ class ParkingLocation:
       object.__setattr__(
           self, "waypoint", {"location": {"latLng": coordinates}}
       )
+
+  @functools.cached_property
+  def waypoint_for_local_model(self) -> cfr_json.Waypoint:
+    """Returns a waypoint for the parking to be used in local models.
+
+    Local models typically use with travel modes other than DRIVE, which is not
+    compatible with sideOfRoad. To allow using `sideOfRoad` in parking location
+    waypoints (so that it is used in the global model), we need to remove it
+    from the waypoint when it is used in a local model.
+
+    Returns:
+      The waypoint of the parking location. When the travel mode of the parking
+      location is not DRIVE, `sideOfRoad` is removed from the waypoint. The
+      returned object is cached and must not be mutated.
+    """
+    if self.travel_mode == 1:
+      return self.waypoint
+    waypoint = copy.deepcopy(self.waypoint)
+    waypoint.pop("sideOfRoad", None)
+    return waypoint
 
 
 def load_parking_from_json(
@@ -682,7 +703,7 @@ class Planner:
     for consecutive_visit_sequence in consecutive_visit_sequences:
       parking = self._parking_locations[consecutive_visit_sequence.parking_tag]
 
-      parking_waypoint = parking.waypoint
+      parking_waypoint = parking.waypoint_for_local_model
 
       refinement_vehicle_index = len(refinement_vehicles)
       refinement_vehicle_label = (
@@ -1028,7 +1049,7 @@ class Planner:
         shipment: cfr_json.Shipment = {
             "label": f"{parking.tag} {arrival_or_departure}",
             "deliveries": [{
-                "arrivalWaypoint": parking.waypoint,
+                "arrivalWaypoint": parking.waypoint_for_local_model,
                 "duration": "0s",
             }],
             # TODO(ondrasej): Vehicle costs and allowed vehicle indices.
@@ -1261,8 +1282,8 @@ def _make_local_model_vehicle(
   vehicle: cfr_json.Vehicle = {
       "label": label,
       # Start and end waypoints.
-      "endWaypoint": parking.waypoint,
-      "startWaypoint": parking.waypoint,
+      "endWaypoint": parking.waypoint_for_local_model,
+      "startWaypoint": parking.waypoint_for_local_model,
       # Limits and travel speed.
       "travelDurationMultiple": parking.travel_duration_multiple,
       "travelMode": parking.travel_mode,

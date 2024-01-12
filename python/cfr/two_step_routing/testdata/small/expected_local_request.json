@@ -210,7 +210,7 @@
           }
         },
         "travelDurationMultiple": 1.1,
-        "travelMode": 1,
+        "travelMode": 2,
         "fixedCost": 10000,
         "costPerHour": 300,
         "costPerKilometer": 60,
@@ -248,7 +248,7 @@
           }
         },
         "travelDurationMultiple": 1.1,
-        "travelMode": 1,
+        "travelMode": 2,
         "fixedCost": 10000,
         "costPerHour": 300,
         "costPerKilometer": 60,
@@ -286,7 +286,7 @@
           }
         },
         "travelDurationMultiple": 1.1,
-        "travelMode": 1,
+        "travelMode": 2,
         "fixedCost": 10000,
         "costPerHour": 300,
         "costPerKilometer": 60,

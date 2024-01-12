@@ -1,14 +1,25 @@
 {
   "parking_locations": [
     {
-      "coordinates": { "latitude": 48.86482, "longitude": 2.34932 },
+      "waypoint": {
+        "location": {
+          "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+        },
+        "sideOfRoad": true
+      },
       "tag": "P001",
+      "travel_mode": 2,
       "travel_duration_multiple": 1.1,
       "delivery_load_limits": { "ore": 2 },
       "max_round_duration": "1800s"
     },
     {
-      "coordinates": { "latitude": 48.86482, "longitude": 2.34932 },
+      "waypoint": {
+        "location": {
+          "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+        },
+        "sideOfRoad": true
+      },
       "tag": "P002",
       "travel_mode": 2,
       "delivery_load_limits": { "ore": 2 },

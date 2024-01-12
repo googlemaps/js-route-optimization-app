@@ -151,7 +151,7 @@
           }
         },
         "travelDurationMultiple": 1.1,
-        "travelMode": 1
+        "travelMode": 2
       },
       {
         "costPerHour": 300,

@@ -34,7 +34,8 @@
                   "latitude": 48.86482,
                   "longitude": 2.34932
                 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "1072s",
             "tags": [
@@ -64,7 +65,8 @@
                   "latitude": 48.86482,
                   "longitude": 2.34932
                 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "863s",
             "tags": [
@@ -91,7 +93,8 @@
                   "latitude": 48.86482,
                   "longitude": 2.34932
                 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "863s",
             "tags": [
@@ -119,7 +122,8 @@
                   "latitude": 48.86482,
                   "longitude": 2.34932
                 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "600s",
             "tags": [
@@ -151,7 +155,8 @@
                   "latitude": 48.86482,
                   "longitude": 2.34932
                 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "449s",
             "tags": [
@@ -182,7 +187,8 @@
                   "latitude": 48.86482,
                   "longitude": 2.34932
                 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "449s",
             "tags": [

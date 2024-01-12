@@ -65,7 +65,8 @@
             "arrivalWaypoint": {
               "location": {
                 "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "1176s",
             "tags": ["P001"],
@@ -86,7 +87,8 @@
             "arrivalWaypoint": {
               "location": {
                 "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "449s",
             "tags": ["P002", "parking: P002"]
@@ -102,7 +104,8 @@
             "arrivalWaypoint": {
               "location": {
                 "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
-              }
+              },
+              "sideOfRoad": true
             },
             "duration": "750s",
             "tags": ["P002", "parking: P002"]
