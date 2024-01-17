@@ -129,6 +129,15 @@ class BreakRule(TypedDict):
   breakRequests: list[BreakRequest]
 
 
+class RouteModifiers(TypedDict, total=False):
+  """Represents the route modifiers in the JSON CFR request."""
+
+  avoidTolls: bool
+  avoidHighways: bool
+  avoidFerries: bool
+  avoidIndoor: bool
+
+
 class Vehicle(TypedDict, total=False):
   """Represents a vehicle in the JSON CFR request."""
 
@@ -147,6 +156,7 @@ class Vehicle(TypedDict, total=False):
 
   travelMode: int
   travelDurationMultiple: float
+  routeModifiers: RouteModifiers
 
   routeDurationLimit: DurationLimit
 

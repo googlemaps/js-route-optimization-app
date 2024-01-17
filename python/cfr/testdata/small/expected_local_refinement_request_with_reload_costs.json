@@ -303,6 +303,7 @@
           }
         },
         "travelDurationMultiple": 1.1,
+        "routeModifiers": {"avoidIndoor": true},
         "travelMode": 2
       },
       {

@@ -10,6 +10,7 @@
       "tag": "P001",
       "travel_mode": 2,
       "travel_duration_multiple": 1.1,
+      "avoid_indoor": true,
       "delivery_load_limits": { "ore": 2 },
       "max_round_duration": "1800s"
     },

@@ -76,6 +76,27 @@ class ParkingLocationTest(unittest.TestCase):
           tag="P003",
       )
 
+  def test_avoid_indoor_valid_travel_mode(self):
+    for travel_mode, avoid_indoor in ((2, True), (2, False), (1, False)):
+      with self.subTest(travel_mode=travel_mode, avoid_indoor=avoid_indoor):
+        parking = two_step_routing.ParkingLocation(
+            tag="P002",
+            coordinates={"latitude": 48.877, "longitude": 2.3299},
+            travel_mode=travel_mode,
+            avoid_indoor=avoid_indoor,
+        )
+        self.assertEqual(parking.travel_mode, travel_mode)
+        self.assertEqual(parking.avoid_indoor, avoid_indoor)
+
+  def test_avoid_indoor_invalid_travel_mode(self):
+    with self.assertRaisesRegex(ValueError, "travel_mode"):
+      two_step_routing.ParkingLocation(
+          tag="P002",
+          coordinates={"latitude": 48.877, "longitude": 2.3299},
+          travel_mode=1,
+          avoid_indoor=True,
+      )
+
 
 class LoadParkingFromJsonTest(unittest.TestCase):
   """Tests for load_parking_from_json."""

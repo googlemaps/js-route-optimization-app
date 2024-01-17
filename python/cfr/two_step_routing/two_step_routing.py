@@ -142,6 +142,10 @@ class ParkingLocation:
       optimized routes from the parking lot to the final delivery locations.
       Overrides `Vehicle.travel_duration_multiple` for vehicles used in the
       local route optimization plan.
+    avoid_indoor: The value of the `routeModifiers.avoidIndoor` option used in
+      local delivery routes from this parking location. When `None`, the option
+      will not be set. This option can be set to True only for when walking
+      directions are used, i.e. when `travel_mode` == 2.
     delivery_load_limits: The load limits applied when delivering shipments from
       the parking location. This is equivalent to Vehicle.loadLimits, and it
       restricts the number of shipments that can be delivered without returning
@@ -185,6 +189,8 @@ class ParkingLocation:
   travel_mode: int = 1
   travel_duration_multiple: float = 1.0
 
+  avoid_indoor: bool | None = None
+
   delivery_load_limits: Mapping[str, int] | None = None
 
   max_round_duration: cfr_json.DurationString | None = None
@@ -209,6 +215,9 @@ class ParkingLocation:
       object.__setattr__(
           self, "waypoint", {"location": {"latLng": coordinates}}
       )
+
+    if self.avoid_indoor and self.travel_mode != 2:
+      raise ValueError("`avoid_indoor` can be True only when travel_mode == 2.")
 
   @functools.cached_property
   def waypoint_for_local_model(self) -> cfr_json.Waypoint:
@@ -1295,6 +1304,8 @@ def _make_local_model_vehicle(
       "startTags": [parking.tag],
       "endTags": [parking.tag],
   }
+  if parking.avoid_indoor is not None:
+    vehicle["routeModifiers"] = {"avoidIndoor": parking.avoid_indoor}
   if parking.max_round_duration is not None:
     vehicle["routeDurationLimit"] = {
         "maxDuration": parking.max_round_duration,
