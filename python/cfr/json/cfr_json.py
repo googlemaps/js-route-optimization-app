@@ -1001,6 +1001,83 @@ def recompute_route_metrics(
   }
 
 
+def _recompute_one_transition_start_and_durations(
+    transition: Transition,
+    start_time: datetime.datetime,
+    end_time: datetime.datetime,
+) -> None:
+  """Updates `startTime` and `totalDuration` of one transition.
+
+  Updates the transition to fit between `start_time` and `end_time`. Updates
+  `startTime`, `waitDuration` and `totalDuration` of the transition so that the
+  transition starts at `start_time` and the next visit starts at `end_time`.
+  Other durations of the transition are preserved.
+
+  Args:
+    transition: The transition to be updated.
+    start_time: The requested start time of the transition.
+    end_time: The requested end time of the transition.
+
+  Raises:
+    ValueError: When sum of the other durations of the transition is greater
+      than the duration between `start_time` and `end_time`.
+  """
+  non_wait_duration = (
+      parse_duration_string(transition.get("travelDuration", "0s"))
+      + parse_duration_string(transition.get("delayDuration", "0s"))
+      + parse_duration_string(transition.get("breakDuration", "0s"))
+  )
+  total_duration = end_time - start_time
+  if non_wait_duration > total_duration:
+    raise ValueError(
+        "The minimal duration of the transition is greater than the available"
+        " time slot."
+    )
+  wait_duration = total_duration - non_wait_duration
+  transition["startTime"] = as_time_string(start_time)
+  transition["totalDuration"] = as_duration_string(total_duration)
+  transition["waitDuration"] = as_duration_string(wait_duration)
+
+
+def recompute_transition_starts_and_durations(
+    model: ShipmentModel, route: ShipmentRoute
+) -> None:
+  """Recomputes transition start times and wait durations based on visit times.
+
+  Assumes that the list of visits of `route` is complete and that the visit
+  start times are correct. Updates transition start times so that they match the
+  visit start times, and adds wait time as needed for padding.
+
+  Args:
+    model: The model in which the transition times are recomputed.
+    route: The route, for which the transition times are recomputed. Modified in
+      place.
+  """
+  visits = get_visits(route)
+  if not visits:
+    # Unused vehicle.
+    return
+
+  transitions = get_transitions(route)
+
+  previous_visit_end_time = parse_time_string(route["vehicleStartTime"])
+  for visit_index, visit in enumerate(visits):
+    current_visit_start_time = parse_time_string(visit["startTime"])
+    transition_in = transitions[visit_index]
+    _recompute_one_transition_start_and_durations(
+        transition_in, previous_visit_end_time, current_visit_start_time
+    )
+
+    visit_duration = get_visit_request_duration(get_visit_request(model, visit))
+    previous_visit_end_time = current_visit_start_time + visit_duration
+
+  _recompute_one_transition_start_and_durations(
+      transitions[-1],
+      previous_visit_end_time,
+      parse_time_string(route["vehicleEndTime"]),
+  )
+
+
 def get_num_decreasing_visit_times(
     model: ShipmentModel,
     route: ShipmentRoute,

@@ -1,0 +1,7617 @@
+{
+  "label": "/global",
+  "model": {
+    "globalStartTime": "2023-11-17T08:00:00Z",
+    "globalEndTime": "2023-11-17T20:00:00Z",
+    "shipments": [
+      {
+        "label": "s:0 S0001",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89221592484029,
+                  "longitude": 2.3811555131252704
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:1 S0002",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87173600636225,
+                  "longitude": 2.3450367391589317
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:2 S0003",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.882246425524556,
+                  "longitude": 2.3310314804481016
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:3 S0004",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89043801195969,
+                  "longitude": 2.345532341689773
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:4 S0005",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8902428221771,
+                  "longitude": 2.310458654175994
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:5 S0006",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.879118459968346,
+                  "longitude": 2.312053213440512
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:6 S0007",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87513760308939,
+                  "longitude": 2.3413618523376707
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:7 S0008",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88685945105414,
+                  "longitude": 2.351744913694554
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:8 S0009",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87234868291173,
+                  "longitude": 2.385786039414347
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:9 S0010",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88198492852839,
+                  "longitude": 2.363362702462295
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:10 S0011",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87440281667952,
+                  "longitude": 2.3649982878844327
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:11 S0012",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87519905030539,
+                  "longitude": 2.358618648907811
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:12 S0013",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8779404020535,
+                  "longitude": 2.3732903328160173
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:13 S0014",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878121760792695,
+                  "longitude": 2.3313719830496398
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:14 S0015",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.875051587873,
+                  "longitude": 2.318902160865103
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:15 S0016",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88396957523525,
+                  "longitude": 2.328746081918069
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:16 S0017",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88348872884691,
+                  "longitude": 2.3436928375944195
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:17 S0018",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.866417203209735,
+                  "longitude": 2.3342201661369653
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:18 S0019",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87483526133571,
+                  "longitude": 2.37220342852261
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:19 S0020",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8862278677007,
+                  "longitude": 2.362695630408014
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:20 S0021",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878396031476484,
+                  "longitude": 2.313681857808821
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:21 S0022",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88721526737669,
+                  "longitude": 2.3092616946948885
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:22 S0023",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86741144931247,
+                  "longitude": 2.308626254479134
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:23 S0024",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89259305834593,
+                  "longitude": 2.3766102545336203
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:24 S0025",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87232994001103,
+                  "longitude": 2.312364588588378
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:25 S0026",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87261207425273,
+                  "longitude": 2.3772674654783534
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:26 S0027",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.880692152742824,
+                  "longitude": 2.3317916012029434
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:27 S0028",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87932536442164,
+                  "longitude": 2.37908760513569
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:28 S0029",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88076001768698,
+                  "longitude": 2.372788413070703
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:29 S0030",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87284923271396,
+                  "longitude": 2.354263679289924
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:30 S0031",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87717836088734,
+                  "longitude": 2.3513356181690956
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:31 S0032",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89161077475442,
+                  "longitude": 2.3155612128130505
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:32 S0033",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.874572039976655,
+                  "longitude": 2.3676264743075977
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:33 S0034",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88417616022237,
+                  "longitude": 2.3711692467014753
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:34 S0035",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.873151849591466,
+                  "longitude": 2.314490981237993
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:35 S0036",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.891186804069314,
+                  "longitude": 2.3188109068326215
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:36 S0037",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89056893437832,
+                  "longitude": 2.344624259012632
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:37 S0038",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88205528120768,
+                  "longitude": 2.3224771877584622
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:38 S0039",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88805661759035,
+                  "longitude": 2.378344160987555
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:39 S0040",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89273021646606,
+                  "longitude": 2.348463612432414
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:40 S0041",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.891890681858484,
+                  "longitude": 2.334784257926259
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:41 S0042",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.891831544829586,
+                  "longitude": 2.3355068341373744
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:42 S0043",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89153272625555,
+                  "longitude": 2.3416543935638563
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:43 S0044",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88878661113042,
+                  "longitude": 2.3506487260624
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:44 S0045",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87105576663797,
+                  "longitude": 2.3480036550370915
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:45 S0046",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88645065277664,
+                  "longitude": 2.3889505286967685
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:46 S0047",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89252864637546,
+                  "longitude": 2.3643167759015102
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:47 S0048",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86708608663212,
+                  "longitude": 2.3824271198932196
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:48 S0049",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88453212038354,
+                  "longitude": 2.332817669622739
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:49 S0050",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871604387076395,
+                  "longitude": 2.3757060903453606
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:50 S0051",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.889890918510055,
+                  "longitude": 2.3216031015593965
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:51 S0052",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89001670300381,
+                  "longitude": 2.342749916389162
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:52 S0053",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89275362753872,
+                  "longitude": 2.313196981779104
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:53 S0054",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87244647627959,
+                  "longitude": 2.3484295282957
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:54 S0055",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88717473144465,
+                  "longitude": 2.3584905979049964
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:55 S0056",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89206946106724,
+                  "longitude": 2.3600097869681256
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:56 S0057",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88878268565978,
+                  "longitude": 2.3883233624693054
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:57 S0058",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.876746637617316,
+                  "longitude": 2.3236434792367606
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:58 S0059",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88678615765022,
+                  "longitude": 2.3836017546128083
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:59 S0060",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88211325926586,
+                  "longitude": 2.319257501865398
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:60 S0061",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88479668475627,
+                  "longitude": 2.3299140322384253
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:61 S0062",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.889972620501666,
+                  "longitude": 2.3476836866358872
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:62 S0063",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89148723192495,
+                  "longitude": 2.379977216115712
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:63 S0064",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88796134605488,
+                  "longitude": 2.328879082215554
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:64 S0065",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.870741057646676,
+                  "longitude": 2.337195631587763
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:65 S0066",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88889792210603,
+                  "longitude": 2.3593683595490273
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:66 S0067",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88437061041824,
+                  "longitude": 2.3512830589819007
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:67 S0068",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89198951510675,
+                  "longitude": 2.325224910807146
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:68 S0069",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88394172105426,
+                  "longitude": 2.386002865666233
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:69 S0070",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87966095322373,
+                  "longitude": 2.3158196655263215
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:70 S0071",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88147457545537,
+                  "longitude": 2.308849088564075
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:71 S0072",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87643713602864,
+                  "longitude": 2.3576711792698055
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:72 S0073",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871772412469774,
+                  "longitude": 2.3629719473523245
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:73 S0074",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87482997271407,
+                  "longitude": 2.3455676302457777
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:74 S0075",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87283284928849,
+                  "longitude": 2.318939370695849
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:75 S0076",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87600709384281,
+                  "longitude": 2.322125683653314
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:76 S0077",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.869281599496205,
+                  "longitude": 2.364210012823263
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:77 S0078",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.886052194003746,
+                  "longitude": 2.328782186032704
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:78 S0079",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89090223524965,
+                  "longitude": 2.3231669327420477
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:79 S0080",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.883906922652535,
+                  "longitude": 2.371434965066092
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:80 S0081",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.886927024136284,
+                  "longitude": 2.3619672609080875
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:81 S0082",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88153274585663,
+                  "longitude": 2.3487644994251293
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:82 S0083",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88029793988399,
+                  "longitude": 2.359012515199609
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:83 S0084",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86820976634953,
+                  "longitude": 2.3506734612547566
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:84 S0085",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.874574363863374,
+                  "longitude": 2.3650345140865565
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:85 S0086",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.890399459887554,
+                  "longitude": 2.3812770875772453
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:86 S0087",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.882034167475084,
+                  "longitude": 2.30720740675373
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:87 S0088",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.866067736125444,
+                  "longitude": 2.3778111017812225
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:88 S0089",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88434054190928,
+                  "longitude": 2.3254604585053156
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:89 S0090",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88498683689792,
+                  "longitude": 2.353643064029753
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:90 S0091",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88230479776164,
+                  "longitude": 2.326978093829773
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:91 S0092",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89004678254947,
+                  "longitude": 2.3601019738101927
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:92 S0093",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86852163367541,
+                  "longitude": 2.3862742312561003
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:93 S0094",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.882548978114,
+                  "longitude": 2.352639109530213
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:94 S0095",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87978493665909,
+                  "longitude": 2.336709884688031
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:95 S0096",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.883115737526744,
+                  "longitude": 2.322318818957653
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:96 S0097",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89031349069072,
+                  "longitude": 2.3513894160561852
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:97 S0098",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88400371315357,
+                  "longitude": 2.375420270387566
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:98 S0099",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88429444364221,
+                  "longitude": 2.357911270854023
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:99 S0100",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.868766264315866,
+                  "longitude": 2.355334381577726
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:100 S0101",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89220045599906,
+                  "longitude": 2.337152264309957
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:101 S0102",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871885685023955,
+                  "longitude": 2.35431329815589
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:102 S0103",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87426472317782,
+                  "longitude": 2.382690568297772
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:103 S0104",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.869669678503776,
+                  "longitude": 2.314883495177568
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:104 S0105",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87053784161301,
+                  "longitude": 2.348561753848274
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:105 S0106",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.883509748598094,
+                  "longitude": 2.3357802485076804
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:106 S0107",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87332611668737,
+                  "longitude": 2.348253765347153
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:107 S0108",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8921994880815,
+                  "longitude": 2.332201152716635
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:108 S0109",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88167594441614,
+                  "longitude": 2.3457747760345313
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:109 S0110",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87584525011687,
+                  "longitude": 2.332640759828881
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:110 S0111",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.893271521868314,
+                  "longitude": 2.344411392642855
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:111 S0112",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.884241728699905,
+                  "longitude": 2.34559092848153
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:112 S0113",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.891574273110066,
+                  "longitude": 2.3745281906482587
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:113 S0114",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8732143575233,
+                  "longitude": 2.32947848395848
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:114 S0115",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.867103441495686,
+                  "longitude": 2.34481224880199
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:115 S0116",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.884544714083994,
+                  "longitude": 2.3450884549480615
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:116 S0117",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88573616722346,
+                  "longitude": 2.3656362777361917
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:117 S0118",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89122682047939,
+                  "longitude": 2.3639368711344373
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:118 S0119",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87971547357861,
+                  "longitude": 2.3304839252148244
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:119 S0120",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8844339102974,
+                  "longitude": 2.312342943942621
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:120 S0121",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.882287852218,
+                  "longitude": 2.337553386533868
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:121 S0122",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88197799968616,
+                  "longitude": 2.375677575123034
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:122 S0123",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87436937830624,
+                  "longitude": 2.3844054828284955
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:123 S0124",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88867368346426,
+                  "longitude": 2.32086894390764
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:124 S0125",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88745853581376,
+                  "longitude": 2.3540367039609094
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:125 S0126",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89221017678664,
+                  "longitude": 2.3777253667912586
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:126 S0127",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.874756108632674,
+                  "longitude": 2.382342063332139
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:127 S0128",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87482979881357,
+                  "longitude": 2.343334053975915
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:128 S0129",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87459681690769,
+                  "longitude": 2.3103033076017545
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:129 S0130",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88770088666939,
+                  "longitude": 2.3612881478235948
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:130 S0131",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86774358412058,
+                  "longitude": 2.373790003458752
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:131 S0132",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.873551859582236,
+                  "longitude": 2.357909315181923
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:132 S0133",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.893401013374856,
+                  "longitude": 2.3273319936133436
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:133 S0134",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.882998215803795,
+                  "longitude": 2.34288184871368
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:134 S0135",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.868364480539036,
+                  "longitude": 2.354668080644331
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:135 S0136",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87442880575572,
+                  "longitude": 2.3753247992428244
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:136 S0137",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88453292284931,
+                  "longitude": 2.323660013848981
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:137 S0138",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87523658994713,
+                  "longitude": 2.3822117298858987
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:138 S0139",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88856178096359,
+                  "longitude": 2.37837529581176
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:139 S0140",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87514739124394,
+                  "longitude": 2.3892102786629392
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:140 S0141",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88969414644412,
+                  "longitude": 2.3626918481675006
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:141 S0142",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.869953814383706,
+                  "longitude": 2.3421808938181545
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:142 S0143",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87895701326554,
+                  "longitude": 2.331113738078938
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:143 S0144",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88415039899854,
+                  "longitude": 2.3358090358152706
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:144 S0145",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888387134030246,
+                  "longitude": 2.333651692580799
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:145 S0146",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86685485034567,
+                  "longitude": 2.3814372016449417
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:146 S0147",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87347472219563,
+                  "longitude": 2.3687455917234677
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:147 S0148",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.889843940449445,
+                  "longitude": 2.324122481771697
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:148 S0149",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88155016605596,
+                  "longitude": 2.3748951995778826
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:149 S0150",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871238370749005,
+                  "longitude": 2.383519915100158
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:150 S0151",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88271880306205,
+                  "longitude": 2.342802776970319
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:151 S0152",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86942367325735,
+                  "longitude": 2.3840180404405276
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:152 S0153",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86869595446861,
+                  "longitude": 2.3174758599376726
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:153 S0154",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88731630199307,
+                  "longitude": 2.332663409028069
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:154 S0155",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88417251625956,
+                  "longitude": 2.3201532203169033
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:155 S0156",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87907050809598,
+                  "longitude": 2.3161596173675534
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:156 S0157",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88726124164149,
+                  "longitude": 2.3740029422806463
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:157 S0158",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.872865954625226,
+                  "longitude": 2.333562519762657
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:158 S0159",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88528920661956,
+                  "longitude": 2.364587217816822
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:159 S0160",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.880615884158985,
+                  "longitude": 2.3380105082682743
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:160 S0161",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.887115928084796,
+                  "longitude": 2.346498900343977
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:161 S0162",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87454894521907,
+                  "longitude": 2.342447429658087
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:162 S0163",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87906326259546,
+                  "longitude": 2.37618859325307
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:163 S0164",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.891198066742916,
+                  "longitude": 2.3282542858407314
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:164 S0165",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87576142623933,
+                  "longitude": 2.376471618337539
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:165 S0166",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87977049733021,
+                  "longitude": 2.378767823960211
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:166 S0167",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.867680800825774,
+                  "longitude": 2.374691415433389
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:167 S0168",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86907539950068,
+                  "longitude": 2.3367735271321783
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:168 S0169",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88118671910738,
+                  "longitude": 2.311824895139334
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:169 S0170",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88938975396069,
+                  "longitude": 2.3790979639944774
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:170 S0171",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89339581998125,
+                  "longitude": 2.3592719253238057
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:171 S0172",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.876081229504585,
+                  "longitude": 2.3522041659999657
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:172 S0173",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.869193390265764,
+                  "longitude": 2.3655928612916512
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:173 S0174",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88944562169903,
+                  "longitude": 2.314879865667495
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:174 S0175",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89167053334404,
+                  "longitude": 2.3809742334725184
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:175 S0176",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88902935189351,
+                  "longitude": 2.3866202071286553
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:176 S0177",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88873092323067,
+                  "longitude": 2.3825214066064766
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:177 S0178",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87340314745414,
+                  "longitude": 2.3443905469564825
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:178 S0179",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86714830063957,
+                  "longitude": 2.3836211607268774
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:179 S0180",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87239236650444,
+                  "longitude": 2.3253854099728146
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:180 S0181",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871512074202585,
+                  "longitude": 2.321976122743751
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:181 S0182",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88297448717147,
+                  "longitude": 2.3073428713828816
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:182 S0183",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.877170761407505,
+                  "longitude": 2.348299900929047
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:183 S0184",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87496004837459,
+                  "longitude": 2.327739753880438
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:184 S0185",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878536543273334,
+                  "longitude": 2.3470869756824566
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:185 S0186",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8842411718305,
+                  "longitude": 2.341446325367275
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:186 S0187",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87463093765805,
+                  "longitude": 2.3778145594246767
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:187 S0188",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86976612506282,
+                  "longitude": 2.3549440821266803
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:188 S0189",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88284666407095,
+                  "longitude": 2.368723680717678
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T16:00:00Z",
+                "endTime": "2023-11-17T18:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:189 S0190",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87097144599504,
+                  "longitude": 2.3153391427942998
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:190 S0191",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88420280087599,
+                  "longitude": 2.343034464331973
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:191 S0192",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.867475731583276,
+                  "longitude": 2.3275593147359204
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:192 S0193",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878147778170565,
+                  "longitude": 2.3129891167045846
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:193 S0194",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87564020378886,
+                  "longitude": 2.351747498155514
+                }
+              }
+            },
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:194 S0195",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87216161484645,
+                  "longitude": 2.387910077715889
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:195 S0196",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86721637733659,
+                  "longitude": 2.3102991190087425
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:196 S0197",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.869647414085186,
+                  "longitude": 2.3248281341433135
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:197 S0198",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87442716293357,
+                  "longitude": 2.348446978719743
+                }
+              }
+            },
+            "duration": "60s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:198 S0199",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878123343629795,
+                  "longitude": 2.3690753778286315
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T12:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:199 S0200",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8735565379296,
+                  "longitude": 2.332531401122595
+                }
+              }
+            },
+            "duration": "60s",
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T13:00:00Z",
+                "endTime": "2023-11-17T15:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:1 S0204,S0201",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.869699340243145,
+                  "longitude": 2.3724342341489235
+                }
+              }
+            },
+            "duration": "605s",
+            "tags": [
+              "P0001"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:57:24Z",
+                "endTime": "2023-11-17T17:52:58Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "2"
+          }
+        }
+      },
+      {
+        "label": "p:2 S0202",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.869699340243145,
+                  "longitude": 2.3724342341489235
+                }
+              }
+            },
+            "duration": "357s",
+            "tags": [
+              "P0001"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:56:33Z",
+                "endTime": "2023-11-17T11:56:33Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:3 S0203",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.869699340243145,
+                  "longitude": 2.3724342341489235
+                }
+              }
+            },
+            "duration": "588s",
+            "tags": [
+              "P0001"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:10 S0223,S0230,S0228,S0205,S0234,S0225,S0237",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86928189492348,
+                  "longitude": 2.3598743264313997
+                }
+              }
+            },
+            "duration": "1717s",
+            "tags": [
+              "P0002"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:56:23Z",
+                "endTime": "2023-11-17T17:40:49Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "7"
+          }
+        }
+      },
+      {
+        "label": "p:11 S0236,S0219,S0215,S0244,S0241,S0211,S0231,S0238,S0233,S0216,S0214,S0240,S0206,S0217,S0221,S0229,S0243,S0210,S0227",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86928189492348,
+                  "longitude": 2.3598743264313997
+                }
+              }
+            },
+            "duration": "4712s",
+            "tags": [
+              "P0002"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "19"
+          }
+        }
+      },
+      {
+        "label": "p:36 S0232,S0213,S0207,S0218,S0235,S0212,S0239",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86928189492348,
+                  "longitude": 2.3598743264313997
+                }
+              }
+            },
+            "duration": "2867s",
+            "tags": [
+              "P0002"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:55:45Z",
+                "endTime": "2023-11-17T11:15:52Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "7"
+          }
+        }
+      },
+      {
+        "label": "p:37 S0246,S0209,S0226,S0208,S0224,S0245,S0242,S0222,S0220",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86928189492348,
+                  "longitude": 2.3598743264313997
+                }
+              }
+            },
+            "duration": "3022s",
+            "tags": [
+              "P0002"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:56:42Z",
+                "endTime": "2023-11-17T14:16:04Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "9"
+          }
+        }
+      },
+      {
+        "label": "p:46 S0247",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.881586142340005,
+                  "longitude": 2.3113265123264704
+                }
+              }
+            },
+            "duration": "197s",
+            "tags": [
+              "P0003"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:48 S0248,S0254",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.881586142340005,
+                  "longitude": 2.3113265123264704
+                }
+              }
+            },
+            "duration": "467s",
+            "tags": [
+              "P0003"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:58:41Z",
+                "endTime": "2023-11-17T14:56:55Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "2"
+          }
+        }
+      },
+      {
+        "label": "p:54 S0252,S0255,S0251,S0249,S0258,S0253",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.881586142340005,
+                  "longitude": 2.3113265123264704
+                }
+              }
+            },
+            "duration": "1923s",
+            "tags": [
+              "P0003"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:58:28Z",
+                "endTime": "2023-11-17T11:34:26Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "6"
+          }
+        }
+      },
+      {
+        "label": "p:57 S0250,S0256,S0257",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.881586142340005,
+                  "longitude": 2.3113265123264704
+                }
+              }
+            },
+            "duration": "1020s",
+            "tags": [
+              "P0003"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:57:40Z",
+                "endTime": "2023-11-17T17:47:14Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "3"
+          }
+        }
+      },
+      {
+        "label": "p:63 S0259,S0288,S0278,S0263,S0268,S0279",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.890884722848405,
+                  "longitude": 2.3088450726380954
+                }
+              }
+            },
+            "duration": "2097s",
+            "tags": [
+              "P0004"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:53:59Z",
+                "endTime": "2023-11-17T14:32:24Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "6"
+          }
+        }
+      },
+      {
+        "label": "p:75 S0274,S0270,S0283,S0281,S0280,S0269,S0271,S0286,S0276,S0267,S0284,S0260",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.890884722848405,
+                  "longitude": 2.3088450726380954
+                }
+              }
+            },
+            "duration": "2890s",
+            "tags": [
+              "P0004"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "12"
+          }
+        }
+      },
+      {
+        "label": "p:83 S0282,S0264,S0261,S0272,S0273,S0285,S0265,S0262",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.890884722848405,
+                  "longitude": 2.3088450726380954
+                }
+              }
+            },
+            "duration": "2662s",
+            "tags": [
+              "P0004"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:59:39Z",
+                "endTime": "2023-11-17T17:22:40Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "8"
+          }
+        }
+      },
+      {
+        "label": "p:87 S0275,S0277,S0266,S0287",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.890884722848405,
+                  "longitude": 2.3088450726380954
+                }
+              }
+            },
+            "duration": "1104s",
+            "tags": [
+              "P0004"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T10:00:00Z",
+                "endTime": "2023-11-17T11:46:44Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "4"
+          }
+        }
+      },
+      {
+        "label": "p:99 S0298,S0303,S0289,S0304,S0295,S0300,S0308,S0306,S0302,S0301,S0309,S0307",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8751776812848,
+                  "longitude": 2.345568789314354
+                }
+              }
+            },
+            "duration": "2958s",
+            "tags": [
+              "P0005"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "12"
+          }
+        }
+      },
+      {
+        "label": "p:101 S0291,S0290",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8751776812848,
+                  "longitude": 2.345568789314354
+                }
+              }
+            },
+            "duration": "795s",
+            "tags": [
+              "P0005"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:57:28Z",
+                "endTime": "2023-11-17T11:50:48Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "2"
+          }
+        }
+      },
+      {
+        "label": "p:104 S0305,S0292,S0299",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8751776812848,
+                  "longitude": 2.345568789314354
+                }
+              }
+            },
+            "duration": "773s",
+            "tags": [
+              "P0005"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:56:06Z",
+                "endTime": "2023-11-17T17:49:54Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "3"
+          }
+        }
+      },
+      {
+        "label": "p:108 S0297,S0293,S0296,S0294",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8751776812848,
+                  "longitude": 2.345568789314354
+                }
+              }
+            },
+            "duration": "1367s",
+            "tags": [
+              "P0005"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:59:49Z",
+                "endTime": "2023-11-17T14:44:18Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "4"
+          }
+        }
+      },
+      {
+        "label": "p:118 S0359,S0326,S0320,S0348,S0330,S0310,S0327,S0337,S0366,S0317",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888622836305565,
+                  "longitude": 2.3599956286043886
+                }
+              }
+            },
+            "duration": "3160s",
+            "tags": [
+              "P0006"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:59:38Z",
+                "endTime": "2023-11-17T11:11:14Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "10"
+          }
+        }
+      },
+      {
+        "label": "p:120 S0333,S0356,S0316,S0315,S0340,S0342,S0331,S0338,S0361,S0362,S0367,S0311,S0312,S0352,S0329,S0321,S0318,S0355",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888622836305565,
+                  "longitude": 2.3599956286043886
+                }
+              }
+            },
+            "duration": "4611s",
+            "tags": [
+              "P0006"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "18"
+          }
+        }
+      },
+      {
+        "label": "p:121 S0353,S0346,S0365,S0313,S0314,S0323,S0347,S0345,S0332,S0344,S0341,S0343,S0360,S0335,S0324",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888622836305565,
+                  "longitude": 2.3599956286043886
+                }
+              }
+            },
+            "duration": "2959s",
+            "tags": [
+              "P0006"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "15"
+          }
+        }
+      },
+      {
+        "label": "p:156 S0319,S0322,S0350,S0336,S0349",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888622836305565,
+                  "longitude": 2.3599956286043886
+                }
+              }
+            },
+            "duration": "2143s",
+            "tags": [
+              "P0006"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:57:00Z",
+                "endTime": "2023-11-17T14:25:33Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "5"
+          }
+        }
+      },
+      {
+        "label": "p:166 S0325,S0328,S0354,S0339,S0358,S0363,S0351,S0364,S0334,S0357",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888622836305565,
+                  "longitude": 2.3599956286043886
+                }
+              }
+            },
+            "duration": "3553s",
+            "tags": [
+              "P0006"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:58:39Z",
+                "endTime": "2023-11-17T17:05:09Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "10"
+          }
+        }
+      },
+      {
+        "label": "p:172 S0368,S0381,S0385,S0383,S0374,S0378",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.884902018810514,
+                  "longitude": 2.3645295173361047
+                }
+              }
+            },
+            "duration": "2401s",
+            "tags": [
+              "P0007"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:55:51Z",
+                "endTime": "2023-11-17T17:22:46Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "6"
+          }
+        }
+      },
+      {
+        "label": "p:176 S0369,S0375,S0379,S0372",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.884902018810514,
+                  "longitude": 2.3645295173361047
+                }
+              }
+            },
+            "duration": "1409s",
+            "tags": [
+              "P0007"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:59:12Z",
+                "endTime": "2023-11-17T14:41:23Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "4"
+          }
+        }
+      },
+      {
+        "label": "p:182 S0380,S0370,S0382,S0376,S0384,S0377",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.884902018810514,
+                  "longitude": 2.3645295173361047
+                }
+              }
+            },
+            "duration": "1815s",
+            "tags": [
+              "P0007"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:54:48Z",
+                "endTime": "2023-11-17T11:34:17Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "6"
+          }
+        }
+      },
+      {
+        "label": "p:184 S0371,S0373",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.884902018810514,
+                  "longitude": 2.3645295173361047
+                }
+              }
+            },
+            "duration": "1314s",
+            "tags": [
+              "P0007"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "2"
+          }
+        }
+      },
+      {
+        "label": "p:186 S0415,S0394,S0402,S0422,S0424,S0474,S0460,S0432,S0447,S0430,S0450,S0465,S0439,S0435,S0438,S0437,S0476,S0443,S0462,S0481",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88547040365401,
+                  "longitude": 2.3485715198518515
+                }
+              }
+            },
+            "duration": "3663s",
+            "tags": [
+              "P0008"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "20"
+          }
+        }
+      },
+      {
+        "label": "p:187 S0386,S0454,S0457,S0431,S0390,S0445,S0464,S0397,S0477,S0449,S0451,S0459,S0400,S0417,S0468,S0446,S0396,S0455,S0452,S0470",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88547040365401,
+                  "longitude": 2.3485715198518515
+                }
+              }
+            },
+            "duration": "4332s",
+            "tags": [
+              "P0008"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "20"
+          }
+        }
+      },
+      {
+        "label": "p:225 S0484,S0388,S0407,S0478,S0393,S0409,S0401,S0387,S0433,S0482,S0458,S0461,S0411,S0399,S0436,S0475,S0403,S0480",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88547040365401,
+                  "longitude": 2.3485715198518515
+                }
+              }
+            },
+            "duration": "4123s",
+            "tags": [
+              "P0008"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:56:44Z",
+                "endTime": "2023-11-17T16:52:18Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "18"
+          }
+        }
+      },
+      {
+        "label": "p:256 S0398,S0434,S0467,S0440,S0442,S0389,S0404,S0391,S0412,S0408,S0469,S0463,S0405,S0456",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88547040365401,
+                  "longitude": 2.3485715198518515
+                }
+              }
+            },
+            "duration": "4187s",
+            "tags": [
+              "P0008"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:56:39Z",
+                "endTime": "2023-11-17T13:56:36Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "14"
+          }
+        }
+      },
+      {
+        "label": "p:257 S0410,S0473,S0395,S0427,S0444,S0423,S0419",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88547040365401,
+                  "longitude": 2.3485715198518515
+                }
+              }
+            },
+            "duration": "1939s",
+            "tags": [
+              "P0008"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:56:04Z",
+                "endTime": "2023-11-17T11:30:42Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "7"
+          }
+        }
+      },
+      {
+        "label": "p:283 S0420,S0441,S0416,S0429,S0413,S0406,S0479,S0425,S0428,S0418,S0426,S0392,S0472,S0453,S0483,S0466,S0421,S0448,S0414,S0471",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88547040365401,
+                  "longitude": 2.3485715198518515
+                }
+              }
+            },
+            "duration": "4593s",
+            "tags": [
+              "P0008"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:57:21Z",
+                "endTime": "2023-11-17T10:44:28Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "20"
+          }
+        }
+      },
+      {
+        "label": "p:295 S0507,S0485,S0538,S0525,S0543,S0491,S0494,S0531,S0532,S0539,S0526,S0500",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888173626940194,
+                  "longitude": 2.3627941676234916
+                }
+              }
+            },
+            "duration": "3190s",
+            "tags": [
+              "P0009"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:53:19Z",
+                "endTime": "2023-11-17T14:10:24Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "12"
+          }
+        }
+      },
+      {
+        "label": "p:296 S0519,S0506,S0530,S0518,S0505,S0509,S0545,S0546,S0556",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888173626940194,
+                  "longitude": 2.3627941676234916
+                }
+              }
+            },
+            "duration": "1490s",
+            "tags": [
+              "P0009"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "9"
+          }
+        }
+      },
+      {
+        "label": "p:297 S0490,S0523,S0553,S0496,S0495,S0513,S0522,S0557,S0501,S0536,S0549,S0558,S0511,S0534,S0503,S0554,S0521",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888173626940194,
+                  "longitude": 2.3627941676234916
+                }
+              }
+            },
+            "duration": "4057s",
+            "tags": [
+              "P0009"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "17"
+          }
+        }
+      },
+      {
+        "label": "p:338 S0542,S0514,S0502,S0529,S0541,S0486,S0561,S0535,S0489,S0555,S0560,S0524,S0552,S0544,S0498,S0527,S0497",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888173626940194,
+                  "longitude": 2.3627941676234916
+                }
+              }
+            },
+            "duration": "3008s",
+            "tags": [
+              "P0009"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "17"
+          }
+        }
+      },
+      {
+        "label": "p:339 S0515,S0499,S0548,S0512,S0550,S0517,S0516,S0528,S0487,S0488,S0563,S0520",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888173626940194,
+                  "longitude": 2.3627941676234916
+                }
+              }
+            },
+            "duration": "2747s",
+            "tags": [
+              "P0009"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:59:25Z",
+                "endTime": "2023-11-17T11:16:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "12"
+          }
+        }
+      },
+      {
+        "label": "p:362 S0508,S0537,S0551,S0510,S0559,S0562,S0540,S0547,S0493,S0533,S0492,S0504",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888173626940194,
+                  "longitude": 2.3627941676234916
+                }
+              }
+            },
+            "duration": "2975s",
+            "tags": [
+              "P0009"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:59:30Z",
+                "endTime": "2023-11-17T17:13:46Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "12"
+          }
+        }
+      },
+      {
+        "label": "p:365 S0565,S0568,S0564",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88963014397224,
+                  "longitude": 2.350496073392598
+                }
+              }
+            },
+            "duration": "1139s",
+            "tags": [
+              "P0010"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:56:41Z",
+                "endTime": "2023-11-17T14:43:45Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "3"
+          }
+        }
+      },
+      {
+        "label": "p:367 S0567,S0566",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88963014397224,
+                  "longitude": 2.350496073392598
+                }
+              }
+            },
+            "duration": "661s",
+            "tags": [
+              "P0010"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "2"
+          }
+        }
+      },
+      {
+        "label": "p:386 S0604,S0584,S0613,S0577,S0579,S0602,S0570,S0581,S0578,S0614,S0599,S0571,S0580,S0592,S0606,S0611,S0569,S0573,S0597",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89335065606076,
+                  "longitude": 2.357274498981161
+                }
+              }
+            },
+            "duration": "4161s",
+            "tags": [
+              "P0011"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "19"
+          }
+        }
+      },
+      {
+        "label": "p:394 S0591,S0601,S0603,S0588,S0586,S0594,S0598,S0572",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89335065606076,
+                  "longitude": 2.357274498981161
+                }
+              }
+            },
+            "duration": "2330s",
+            "tags": [
+              "P0011"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:59:32Z",
+                "endTime": "2023-11-17T11:25:07Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "8"
+          }
+        }
+      },
+      {
+        "label": "p:408 S0587,S0612,S0607,S0576,S0605,S0609,S0596,S0608,S0574,S0589,S0582,S0585,S0590,S0575",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89335065606076,
+                  "longitude": 2.357274498981161
+                }
+              }
+            },
+            "duration": "2975s",
+            "tags": [
+              "P0011"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:58:44Z",
+                "endTime": "2023-11-17T17:14:55Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "14"
+          }
+        }
+      },
+      {
+        "label": "p:413 S0610,S0583,S0593,S0595,S0600",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89335065606076,
+                  "longitude": 2.357274498981161
+                }
+              }
+            },
+            "duration": "2308s",
+            "tags": [
+              "P0011"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:58:12Z",
+                "endTime": "2023-11-17T14:32:23Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "5"
+          }
+        }
+      },
+      {
+        "label": "p:414 S0619,S0670,S0636,S0645,S0623,S0668,S0654,S0653",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86827681217685,
+                  "longitude": 2.3629956110585866
+                }
+              }
+            },
+            "duration": "880s",
+            "tags": [
+              "P0012"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "8"
+          }
+        }
+      },
+      {
+        "label": "p:435 S0664,S0649,S0622,S0662,S0615,S0666,S0626,S0616,S0667,S0642,S0658,S0651,S0644,S0635",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86827681217685,
+                  "longitude": 2.3629956110585866
+                }
+              }
+            },
+            "duration": "3336s",
+            "tags": [
+              "P0012"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "14"
+          }
+        }
+      },
+      {
+        "label": "p:436 S0634,S0628,S0627,S0639,S0625,S0624,S0633,S0617,S0652,S0659,S0640,S0643",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86827681217685,
+                  "longitude": 2.3629956110585866
+                }
+              }
+            },
+            "duration": "3626s",
+            "tags": [
+              "P0012"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:59:33Z",
+                "endTime": "2023-11-17T11:06:06Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "12"
+          }
+        }
+      },
+      {
+        "label": "p:461 S0660,S0657,S0646,S0630,S0632,S0620,S0672,S0629,S0661,S0641,S0618,S0655,S0650,S0631",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86827681217685,
+                  "longitude": 2.3629956110585866
+                }
+              }
+            },
+            "duration": "3965s",
+            "tags": [
+              "P0012"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:58:29Z",
+                "endTime": "2023-11-17T13:59:01Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "14"
+          }
+        }
+      },
+      {
+        "label": "p:471 S0669,S0665,S0647,S0648,S0621,S0671,S0663,S0637,S0656,S0638",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86827681217685,
+                  "longitude": 2.3629956110585866
+                }
+              }
+            },
+            "duration": "3880s",
+            "tags": [
+              "P0012"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:57:35Z",
+                "endTime": "2023-11-17T16:59:30Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "10"
+          }
+        }
+      },
+      {
+        "label": "p:473 S0726,S0761,S0698,S0758,S0682,S0747,S0716,S0686,S0752,S0762,S0691,S0749,S0673,S0727,S0689,S0732",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871031909507714,
+                  "longitude": 2.3229891892540584
+                }
+              }
+            },
+            "duration": "2975s",
+            "tags": [
+              "P0013"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:58:08Z",
+                "endTime": "2023-11-17T14:13:55Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "16"
+          }
+        }
+      },
+      {
+        "label": "p:475 S0688,S0708,S0760,S0767,S0733,S0700,S0694",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871031909507714,
+                  "longitude": 2.3229891892540584
+                }
+              }
+            },
+            "duration": "1334s",
+            "tags": [
+              "P0013"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:58:45Z",
+                "endTime": "2023-11-17T14:39:55Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "7"
+          }
+        }
+      },
+      {
+        "label": "p:495 S0703,S0743,S0690,S0769,S0770,S0680,S0750,S0753,S0736,S0755,S0677,S0756,S0681,S0697,S0738,S0728,S0711,S0707",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871031909507714,
+                  "longitude": 2.3229891892540584
+                }
+              }
+            },
+            "duration": "3164s",
+            "tags": [
+              "P0013"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "18"
+          }
+        }
+      },
+      {
+        "label": "p:498 S0729,S0765,S0737,S0746,S0751,S0713,S0739,S0720,S0757,S0722,S0742,S0734,S0674,S0714,S0740,S0695,S0678,S0687,S0696,S0710",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871031909507714,
+                  "longitude": 2.3229891892540584
+                }
+              }
+            },
+            "duration": "3360s",
+            "tags": [
+              "P0013"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "20"
+          }
+        }
+      },
+      {
+        "label": "p:550 S0768,S0723,S0731,S0744,S0754,S0684,S0676,S0748,S0741,S0699,S0679,S0764,S0675,S0704,S0724,S0715,S0735,S0709",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871031909507714,
+                  "longitude": 2.3229891892540584
+                }
+              }
+            },
+            "duration": "4727s",
+            "tags": [
+              "P0013"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:57:43Z",
+                "endTime": "2023-11-17T10:44:39Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "18"
+          }
+        }
+      },
+      {
+        "label": "p:570 S0683,S0730,S0692,S0719,S0712,S0745,S0717,S0702,S0725,S0766,S0759,S0693,S0701,S0705,S0706,S0718,S0685,S0763,S0771,S0721",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.871031909507714,
+                  "longitude": 2.3229891892540584
+                }
+              }
+            },
+            "duration": "4671s",
+            "tags": [
+              "P0013"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:58:33Z",
+                "endTime": "2023-11-17T16:46:35Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "20"
+          }
+        }
+      },
+      {
+        "label": "p:571 S0772",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89256538200891,
+                  "longitude": 2.3861769441704777
+                }
+              }
+            },
+            "duration": "1126s",
+            "tags": [
+              "P0014"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:48:23Z",
+                "endTime": "2023-11-17T11:48:23Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:573 S0773,S0778",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89256538200891,
+                  "longitude": 2.3861769441704777
+                }
+              }
+            },
+            "duration": "1335s",
+            "tags": [
+              "P0014"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:53:57Z",
+                "endTime": "2023-11-17T17:45:05Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "2"
+          }
+        }
+      },
+      {
+        "label": "p:577 S0779,S0776,S0774,S0775",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89256538200891,
+                  "longitude": 2.3861769441704777
+                }
+              }
+            },
+            "duration": "1781s",
+            "tags": [
+              "P0014"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "4"
+          }
+        }
+      },
+      {
+        "label": "p:578 S0777",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.89256538200891,
+                  "longitude": 2.3861769441704777
+                }
+              }
+            },
+            "duration": "892s",
+            "tags": [
+              "P0014"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:53:09Z",
+                "endTime": "2023-11-17T14:53:09Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:580 S0780,S0781",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.885923244638995,
+                  "longitude": 2.334664873404322
+                }
+              }
+            },
+            "duration": "683s",
+            "tags": [
+              "P0015"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "2"
+          }
+        }
+      },
+      {
+        "label": "p:590 S0805,S0818,S0791,S0812,S0820,S0798,S0802,S0784,S0782,S0789",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87573855487148,
+                  "longitude": 2.346269788469808
+                }
+              }
+            },
+            "duration": "2851s",
+            "tags": [
+              "P0016"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:55:21Z",
+                "endTime": "2023-11-17T14:17:09Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "10"
+          }
+        }
+      },
+      {
+        "label": "p:591 S0797,S0816,S0804,S0790,S0808,S0819,S0806,S0783,S0792,S0811,S0793,S0817,S0796,S0799,S0810",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87573855487148,
+                  "longitude": 2.346269788469808
+                }
+              }
+            },
+            "duration": "3544s",
+            "tags": [
+              "P0016"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "15"
+          }
+        }
+      },
+      {
+        "label": "p:606 S0795,S0800,S0814,S0801,S0786,S0785,S0807,S0787,S0813,S0794,S0803",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87573855487148,
+                  "longitude": 2.346269788469808
+                }
+              }
+            },
+            "duration": "3414s",
+            "tags": [
+              "P0016"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:57:10Z",
+                "endTime": "2023-11-17T11:05:12Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "11"
+          }
+        }
+      },
+      {
+        "label": "p:619 S0788,S0809,S0815",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87573855487148,
+                  "longitude": 2.346269788469808
+                }
+              }
+            },
+            "duration": "1384s",
+            "tags": [
+              "P0016"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:58:26Z",
+                "endTime": "2023-11-17T17:44:07Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "3"
+          }
+        }
+      },
+      {
+        "label": "p:620 S0827,S0863,S0888,S0846,S0840,S0843,S0881,S0830,S0822,S0824,S0877,S0870,S0854",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88266676266425,
+                  "longitude": 2.32479873606135
+                }
+              }
+            },
+            "duration": "3004s",
+            "tags": [
+              "P0017"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "13"
+          }
+        }
+      },
+      {
+        "label": "p:648 S0880,S0878,S0841,S0884,S0851,S0853,S0844,S0821,S0849,S0833,S0872,S0839,S0866,S0879,S0886,S0837",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88266676266425,
+                  "longitude": 2.32479873606135
+                }
+              }
+            },
+            "duration": "4005s",
+            "tags": [
+              "P0017"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "16"
+          }
+        }
+      },
+      {
+        "label": "p:662 S0831,S0874,S0859,S0858,S0834,S0832,S0890,S0845,S0852,S0875,S0885,S0892,S0823,S0855",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88266676266425,
+                  "longitude": 2.32479873606135
+                }
+              }
+            },
+            "duration": "3875s",
+            "tags": [
+              "P0017"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:58:06Z",
+                "endTime": "2023-11-17T13:58:12Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "14"
+          }
+        }
+      },
+      {
+        "label": "p:673 S0829,S0847,S0825,S0889,S0867,S0848,S0882,S0850,S0873,S0835,S0857",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88266676266425,
+                  "longitude": 2.32479873606135
+                }
+              }
+            },
+            "duration": "2719s",
+            "tags": [
+              "P0017"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:55:33Z",
+                "endTime": "2023-11-17T17:18:10Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "11"
+          }
+        }
+      },
+      {
+        "label": "p:674 S0862,S0828,S0864,S0836,S0826,S0891,S0860,S0876,S0883,S0861,S0856,S0871,S0868,S0869,S0887,S0865,S0842,S0838",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88266676266425,
+                  "longitude": 2.32479873606135
+                }
+              }
+            },
+            "duration": "4340s",
+            "tags": [
+              "P0017"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:56:42Z",
+                "endTime": "2023-11-17T10:50:47Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "18"
+          }
+        }
+      },
+      {
+        "label": "p:692 S0933,S0947,S0903,S0963,S0958,S0948,S0961,S0924,S0959,S0935,S0968,S0908,S0957,S0905",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86637173266327,
+                  "longitude": 2.3451602038206403
+                }
+              }
+            },
+            "duration": "2723s",
+            "tags": [
+              "P0018"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "14"
+          }
+        }
+      },
+      {
+        "label": "p:694 S0956,S0970,S0895,S0912,S0926,S0960,S0950,S0922,S0897,S0930,S0921,S0936,S0942,S0939,S0967,S0893,S0913,S0898,S0911,S0969",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86637173266327,
+                  "longitude": 2.3451602038206403
+                }
+              }
+            },
+            "duration": "3764s",
+            "tags": [
+              "P0018"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "20"
+          }
+        }
+      },
+      {
+        "label": "p:744 S0919,S0931,S0918,S0906,S0965,S0974,S0894,S0899,S0940,S0979,S0928,S0976,S0929,S0934,S0954,S0938,S0902,S0941,S0932",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86637173266327,
+                  "longitude": 2.3451602038206403
+                }
+              }
+            },
+            "duration": "4046s",
+            "tags": [
+              "P0018"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:58:45Z",
+                "endTime": "2023-11-17T13:54:25Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "19"
+          }
+        }
+      },
+      {
+        "label": "p:764 S0980,S0964,S0981,S0955,S0975,S0962,S0920,S0909,S0910,S0917,S0945,S0925,S0907,S0896,S0951,S0927,S0978,S0982",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86637173266327,
+                  "longitude": 2.3451602038206403
+                }
+              }
+            },
+            "duration": "3785s",
+            "tags": [
+              "P0018"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:58:41Z",
+                "endTime": "2023-11-17T10:58:01Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "18"
+          }
+        }
+      },
+      {
+        "label": "p:765 S0923,S0973,S0971",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86637173266327,
+                  "longitude": 2.3451602038206403
+                }
+              }
+            },
+            "duration": "904s",
+            "tags": [
+              "P0018"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:57:08Z",
+                "endTime": "2023-11-17T11:46:44Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "3"
+          }
+        }
+      },
+      {
+        "label": "p:766 S0914,S0901,S0900,S0972,S0916,S0943,S0952,S0904,S0983,S0966,S0946,S0949,S0977,S0953,S0937,S0984,S0915,S0944",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86637173266327,
+                  "longitude": 2.3451602038206403
+                }
+              }
+            },
+            "duration": "3253s",
+            "tags": [
+              "P0018"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:59:50Z",
+                "endTime": "2023-11-17T17:09:02Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "18"
+          }
+        }
+      },
+      {
+        "label": "p:790 S1046,S0986,S0985,S1034,S1026,S1028,S1002",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.887382420509034,
+                  "longitude": 2.312430745120875
+                }
+              }
+            },
+            "duration": "1694s",
+            "tags": [
+              "P0019"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:58:08Z",
+                "endTime": "2023-11-17T11:34:22Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "7"
+          }
+        }
+      },
+      {
+        "label": "p:800 S0990,S1039,S1017,S1033,S1035,S1038,S1012,S0987,S1020,S0991",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.887382420509034,
+                  "longitude": 2.312430745120875
+                }
+              }
+            },
+            "duration": "2404s",
+            "tags": [
+              "P0019"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:52:34Z",
+                "endTime": "2023-11-17T17:22:08Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "10"
+          }
+        }
+      },
+      {
+        "label": "p:801 S1023,S1031,S1019,S1044,S1029,S1036,S0993,S1013,S0996,S1000,S1027,S0988,S1018,S1037,S1011",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.887382420509034,
+                  "longitude": 2.312430745120875
+                }
+              }
+            },
+            "duration": "3238s",
+            "tags": [
+              "P0019"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:57:00Z",
+                "endTime": "2023-11-17T14:09:56Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "15"
+          }
+        }
+      },
+      {
+        "label": "p:846 S0992,S1006,S1001,S1025,S1010,S1043,S1015,S1005,S0999,S1022,S1014,S0998,S0994",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.887382420509034,
+                  "longitude": 2.312430745120875
+                }
+              }
+            },
+            "duration": "2409s",
+            "tags": [
+              "P0019"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "13"
+          }
+        }
+      },
+      {
+        "label": "p:847 S1045,S1042,S1003,S0997,S1040,S1041,S0989,S1032,S1004,S1024,S1021,S1008,S0995,S1030,S1047,S1016,S1007,S1048,S1009",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.887382420509034,
+                  "longitude": 2.312430745120875
+                }
+              }
+            },
+            "duration": "3486s",
+            "tags": [
+              "P0019"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "19"
+          }
+        }
+      },
+      {
+        "label": "p:852 S1049,S1050,S1061,S1051,S1059",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88424051342631,
+                  "longitude": 2.3694669356839566
+                }
+              }
+            },
+            "duration": "1654s",
+            "tags": [
+              "P0020"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T15:57:35Z",
+                "endTime": "2023-11-17T17:36:09Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "5"
+          }
+        }
+      },
+      {
+        "label": "p:857 S1058,S1066,S1062,S1052,S1064",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88424051342631,
+                  "longitude": 2.3694669356839566
+                }
+              }
+            },
+            "duration": "1564s",
+            "tags": [
+              "P0020"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T09:58:45Z",
+                "endTime": "2023-11-17T11:42:17Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "5"
+          }
+        }
+      },
+      {
+        "label": "p:865 S1060,S1063,S1055,S1054,S1067,S1053,S1065,S1057",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88424051342631,
+                  "longitude": 2.3694669356839566
+                }
+              }
+            },
+            "duration": "2423s",
+            "tags": [
+              "P0020"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "8"
+          }
+        }
+      },
+      {
+        "label": "p:866 S1056",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88424051342631,
+                  "longitude": 2.3694669356839566
+                }
+              }
+            },
+            "duration": "702s",
+            "tags": [
+              "P0020"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2023-11-17T12:57:05Z",
+                "endTime": "2023-11-17T14:57:05Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "V0001",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-11-17T08:00:00Z",
+            "endTime": "2023-11-17T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "250"
+          }
+        },
+        "breakRule": {
+          "breakRequests": [
+            {
+              "earliestStartTime": "2023-11-17T12:00:00Z",
+              "latestStartTime": "2023-11-17T12:30:00Z",
+              "minDuration": "900s"
+            },
+            {
+              "earliestStartTime": "2023-11-17T15:00:00Z",
+              "latestStartTime": "2023-11-17T16:00:00Z",
+              "minDuration": "900s"
+            },
+            {
+              "earliestStartTime": "2023-11-17T17:00:00Z",
+              "latestStartTime": "2023-11-17T17:30:00Z",
+              "minDuration": "300s"
+            }
+          ]
+        }
+      },
+      {
+        "label": "V0002",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-11-17T08:00:00Z",
+            "endTime": "2023-11-17T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "250"
+          }
+        }
+      },
+      {
+        "label": "V0003",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-11-17T08:00:00Z",
+            "endTime": "2023-11-17T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "250"
+          }
+        }
+      },
+      {
+        "label": "V0004",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-11-17T08:00:00Z",
+            "endTime": "2023-11-17T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "250"
+          }
+        }
+      },
+      {
+        "label": "V0005",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-11-17T08:00:00Z",
+            "endTime": "2023-11-17T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "250"
+          }
+        }
+      },
+      {
+        "label": "V0006",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-11-17T08:00:00Z",
+            "endTime": "2023-11-17T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "250"
+          }
+        }
+      },
+      {
+        "label": "V0007",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-11-17T08:00:00Z",
+            "endTime": "2023-11-17T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "250"
+          }
+        }
+      },
+      {
+        "label": "V0008",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-11-17T08:00:00Z",
+            "endTime": "2023-11-17T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "250"
+          }
+        }
+      }
+    ]
+  },
+  "parent": null,
+  "considerRoadTraffic": false,
+  "searchMode": 2
+}

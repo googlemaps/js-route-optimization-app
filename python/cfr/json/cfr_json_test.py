@@ -9,6 +9,7 @@ from typing import Sequence
 import unittest
 
 from . import cfr_json
+from ..testdata import testdata
 
 
 class MakeShipmentTest(unittest.TestCase):
@@ -1793,6 +1794,76 @@ class RecomputeRouteMetricsTest(unittest.TestCase):
     route = copy.deepcopy(self._ROUTE)
     cfr_json.recompute_route_metrics(self._MODEL, route)
     self.assertEqual(route["metrics"], self._EXPECTED_METRICS)
+
+
+class RecomputeTransitionStartsAndDurations(unittest.TestCase):
+  """Tests for recompute_transition_starts_and_durations."""
+
+  maxDiff = None
+
+  def recompute_existing_solution(
+      self,
+      request: cfr_json.OptimizeToursRequest,
+      response: cfr_json.OptimizeToursResponse,
+  ) -> None:
+    """Tests the function by restoring start time and durations on a route.
+
+    Takes all routes from a response, removes start time and durations from them
+    and uses `recompute_transition_starts_and_durations` to restore them. Checks
+    that they have all been restored to the original state (which is the only
+    possible).
+    """
+    model = request["model"]
+    expected_routes = cfr_json.get_routes(response)
+
+    # Get routes from the response, but remove transition start times and some
+    # durations.
+    routes = copy.deepcopy(cfr_json.get_routes(response))
+    for route, expected_route in zip(routes, expected_routes):
+      transitions = cfr_json.get_transitions(route)
+      for transition in transitions:
+        transition.pop("startTime", None)
+        transition.pop("totalDuration", None)
+        transition.pop("waitDuration", None)
+
+      if transitions:
+        self.assertNotEqual(route, expected_route)
+      cfr_json.recompute_transition_starts_and_durations(model, route)
+      self.assertEqual(route, expected_route)
+
+  def test_moderate_local(self):
+    self.recompute_existing_solution(
+        testdata.json("moderate/scenario.local_request.json"),
+        testdata.json("moderate/scenario.local_response.60s.json"),
+    )
+
+  def test_moderate_global(self):
+    self.recompute_existing_solution(
+        testdata.json("moderate/scenario.global_request.60s.json"),
+        testdata.json("moderate/scenario.global_response.60s.180s.json"),
+    )
+
+  def test_insufficient_time(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [{"deliveries": [{"duration": "120s"}]}],
+    }
+    route: cfr_json.ShipmentRoute = {
+        "vehicleIndex": 0,
+        "vehicleStartTime": "2024-01-15T10:00:00Z",
+        "vehicleEndTime": "2024-01-15T11:00:00z",
+        "visits": [{
+            "shipmentIndex": 0,
+            "visitRequestIndex": 0,
+            "isPickup": False,
+            "startTime": "2024-01-15T10:10:00Z",
+        }],
+        "transitions": [
+            {},
+            {"breakDuration": "1800s", "travelDuration": "1200s"},
+        ],
+    }
+    with self.assertRaisesRegex(ValueError, "minimal duration"):
+      cfr_json.recompute_transition_starts_and_durations(model, route)
 
 
 class UpdateTimeStringTest(unittest.TestCase):
