@@ -10,25 +10,9 @@ from importlib import resources
 import json
 import unittest
 
+from ..testdata import testdata
 from ..json import cfr_json
 from . import two_step_routing
-
-
-# Provides easy access to files under `./testdata`. See `_json()` below for
-# example use.
-_TESTDATA = resources.files(__package__).joinpath("testdata")
-
-
-def _json(path: str):
-  """Parses a JSON file at `path` and returns it as a dict/list structure.
-
-  Args:
-    path: The path of the JSON file, relative to `./testdata`.
-
-  Returns:
-    The JSON data structure.
-  """
-  return json.loads(_TESTDATA.joinpath(path).read_bytes())
 
 
 class ParkingLocationTest(unittest.TestCase):
@@ -190,54 +174,58 @@ class PlannerTest(unittest.TestCase):
       local_model_grouping=two_step_routing.LocalModelGrouping.PARKING,
   )
 
-  _REQUEST_JSON: cfr_json.OptimizeToursRequest = _json("small/request.json")
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "small/request.json"
+  )
   _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
-      two_step_routing.load_parking_from_json(_json("small/parking.json"))
+      two_step_routing.load_parking_from_json(
+          testdata.json("small/parking.json")
+      )
   )
 
   # The expected local model request created by the two-step planner for the
   # base request defined above.
-  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "small/expected_local_request.json"
   )
 
   # An example response from the CFR solver for _EXPECTED_LOCAL_REQUEST_JSON.
   # Fields that are not needed by the two-step solver were removed from the
   # response to make it shorter.
-  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
       "small/local_response.json"
   )
 
   _EXPECTED_LOCAL_REQUEST_GROUP_BY_PARKING_JSON: (
       cfr_json.OptimizeToursRequest
-  ) = _json("small/expected_local_request_group_by_parking.json")
+  ) = testdata.json("small/expected_local_request_group_by_parking.json")
 
   # The expected global model request created by the two-step planner for the
   # base request defined above, using _EXPECTED_LOCAL_REQUEST_JSON as the
   # solution of the local model.
-  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "small/expected_global_request.json"
   )
 
   # An example response from the CFR solver for _EXPECTED_GLOBAL_REQUEST_JSON.
   # Fields that are not needed by the two-step solver were removed from the
   # response to make it shorter.
-  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
       "small/global_response.json"
   )
 
   # The expected merged model request created by the two-step planner for the
   # base request defined above, using _EXPECTED_LOCAL_REQUEST and
   # _EXPECTED_GLOBAL_REQUEST as the solutions of the local and global models.
-  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "small/expected_merged_request.json"
   )
 
   # The expected merged model response creatd by the two-step planner for the
   # base request defined above, using _EXPECTED_LOCAL_REQUEST and
   # _EXPECTED_GLOBAL_REQUEST as the solutions of the local and global models.
-  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
-      "small/expected_merged_response.json"
+  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json("small/expected_merged_response.json")
   )
 
   def validate_response(
@@ -423,14 +411,14 @@ class PlannerTestMergedModel(PlannerTest):
 
   _LOCAL_RESPONSE_WITH_SKIPPED_SHIPMENTS_JSON: (
       cfr_json.OptimizeToursResponse
-  ) = _json("small/local_response_with_skipped_shipments.json")
+  ) = testdata.json("small/local_response_with_skipped_shipments.json")
   _GLOBAL_RESPONSE_WITH_SKIPPED_SHIPMENTS_JSON: (
       cfr_json.OptimizeToursResponse
-  ) = _json("small/global_response_with_skipped_shipments.json")
+  ) = testdata.json("small/global_response_with_skipped_shipments.json")
   _EXPECTED_MERGED_REQUEST_WITH_SKIPPED_SHIPMENTS_JSON: (
       cfr_json.OptimizeToursRequest
-  ) = _json("small/expected_merged_request_with_skipped_shipments.json")
-  _EXPECTED_MERGED_RESPONSE_WITH_SKIPPED_SHIPMENTS_JSON = _json(
+  ) = testdata.json("small/expected_merged_request_with_skipped_shipments.json")
+  _EXPECTED_MERGED_RESPONSE_WITH_SKIPPED_SHIPMENTS_JSON = testdata.json(
       "small/expected_merged_response_with_skipped_shipments.json"
   )
 
@@ -482,12 +470,14 @@ class PlannerTestMergedModel(PlannerTest):
 
 
 class PlannerTestRefinedLocalModel(PlannerTest):
-  _EXPECTED_LOCAL_REFINEMENT_REQUEST: cfr_json.OptimizeToursRequest = _json(
-      "small/expected_local_refinement_request.json"
+  _EXPECTED_LOCAL_REFINEMENT_REQUEST: cfr_json.OptimizeToursRequest = (
+      testdata.json("small/expected_local_refinement_request.json")
   )
   _EXPECTED_LOCAL_REFINEMENT_REQUEST_WITH_RELOAD_COST: (
       cfr_json.OptimizeToursRequest
-  ) = _json("small/expected_local_refinement_request_with_reload_costs.json")
+  ) = testdata.json(
+      "small/expected_local_refinement_request_with_reload_costs.json"
+  )
 
   def test_local_refinement_model(self):
     planner = two_step_routing.Planner(
@@ -524,17 +514,17 @@ class PlannerTestRefinedLocalModel(PlannerTest):
 
 
 class PlannerTestIntegratedModels(PlannerTest):
-  _LOCAL_REFINEMENT_RESPONSE: cfr_json.OptimizeToursResponse = _json(
+  _LOCAL_REFINEMENT_RESPONSE: cfr_json.OptimizeToursResponse = testdata.json(
       "small/local_refinement_response.json"
   )
-  _EXPECTED_INTEGRATED_LOCAL_REQUEST: cfr_json.OptimizeToursRequest = _json(
-      "small/expected_integrated_local_request.json"
+  _EXPECTED_INTEGRATED_LOCAL_REQUEST: cfr_json.OptimizeToursRequest = (
+      testdata.json("small/expected_integrated_local_request.json")
   )
-  _EXPECTED_INTEGRATED_LOCAL_RESPONSE: cfr_json.OptimizeToursResponse = _json(
-      "small/expected_integrated_local_response.json"
+  _EXPECTED_INTEGRATED_LOCAL_RESPONSE: cfr_json.OptimizeToursResponse = (
+      testdata.json("small/expected_integrated_local_response.json")
   )
-  _EXPECTED_INTEGRATED_GLOBAL_REQUEST: cfr_json.OptimizeToursRequest = _json(
-      "small/expected_integrated_global_request.json"
+  _EXPECTED_INTEGRATED_GLOBAL_REQUEST: cfr_json.OptimizeToursRequest = (
+      testdata.json("small/expected_integrated_global_request.json")
   )
 
   def test_integrated_models(self):
@@ -575,27 +565,31 @@ class PlannerTestWithPlaceId(unittest.TestCase):
       min_average_shipments_per_round=1,
   )
 
-  _REQUEST_JSON: cfr_json.OptimizeToursRequest = _json("place_id/scenario.json")
-  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
-      two_step_routing.load_parking_from_json(_json("place_id/parking.json"))
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "place_id/scenario.json"
   )
-  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursResponse = _json(
+  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
+      two_step_routing.load_parking_from_json(
+          testdata.json("place_id/parking.json")
+      )
+  )
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursResponse = testdata.json(
       "place_id/scenario.local_request.json"
   )
-  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
       "place_id/scenario.local_response.60s.json"
   )
-  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "place_id/scenario.global_request.60s.json"
   )
-  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
       "place_id/scenario.global_response.60s.60s.json"
   )
-  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "place_id/scenario.merged_request.60s.60s.json"
   )
-  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
-      "place_id/scenario.merged_response.60s.60s.json"
+  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json("place_id/scenario.merged_response.60s.60s.json")
   )
 
   def test_local_model(self):
@@ -643,42 +637,56 @@ class PlannerTestWithBreaks(unittest.TestCase):
       min_average_shipments_per_round=1,
   )
 
-  _REQUEST_JSON: cfr_json.OptimizeToursRequest = _json("breaks/scenario.json")
-  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
-      two_step_routing.load_parking_from_json(_json("breaks/parking.json"))
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "breaks/scenario.json"
   )
-  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
+      two_step_routing.load_parking_from_json(
+          testdata.json("breaks/parking.json")
+      )
+  )
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "breaks/scenario.local_request.json"
   )
-  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
       "breaks/scenario.local_response.120s.json"
   )
-  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "breaks/scenario.global_request.120s.json"
   )
-  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
       "breaks/scenario.global_response.120s.240s.json"
   )
-  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = _json(
+  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "breaks/scenario.merged_request.120s.240s.json"
   )
-  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
-      "breaks/scenario.merged_response.120s.240s.json"
+  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json("breaks/scenario.merged_response.120s.240s.json")
   )
   _EXPECTED_LOCAL_REFINEMENT_REQUEST_JSON: cfr_json.OptimizeToursRequest = (
-      _json("breaks/scenario.refined_1.local_request.120s.240s.120s.120s.json")
+      testdata.json(
+          "breaks/scenario.refined_1.local_request.120s.240s.120s.120s.json"
+      )
   )
-  _LOCAL_REFINEMENT_RESPONSE_JSON: cfr_json.OptimizeToursResponse = _json(
-      "breaks/scenario.refined_1.local_response.120s.240s.120s.120s.json"
+  _LOCAL_REFINEMENT_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json(
+          "breaks/scenario.refined_1.local_response.120s.240s.120s.120s.json"
+      )
   )
-  _EXPECTED_INTEGRATED_LOCAL_REQUEST: cfr_json.OptimizeToursRequest = _json(
-      "breaks/scenario.refined_1.integrated_local_request.120s.240s.120s.120s.json"
+  _EXPECTED_INTEGRATED_LOCAL_REQUEST: cfr_json.OptimizeToursRequest = (
+      testdata.json(
+          "breaks/scenario.refined_1.integrated_local_request.120s.240s.120s.120s.json"
+      )
   )
-  _EXPECTED_INTEGRATED_LOCAL_RESPONSE: cfr_json.OptimizeToursResponse = _json(
-      "breaks/scenario.refined_1.integrated_local_response.120s.240s.120s.120s.json"
+  _EXPECTED_INTEGRATED_LOCAL_RESPONSE: cfr_json.OptimizeToursResponse = (
+      testdata.json(
+          "breaks/scenario.refined_1.integrated_local_response.120s.240s.120s.120s.json"
+      )
   )
-  _EXPECTED_INTEGRATED_GLOBAL_REQUEST: cfr_json.OptimizeToursRequest = _json(
-      "breaks/scenario.refined_1.integrated_global_request.120s.240s.120s.120s.json"
+  _EXPECTED_INTEGRATED_GLOBAL_REQUEST: cfr_json.OptimizeToursRequest = (
+      testdata.json(
+          "breaks/scenario.refined_1.integrated_global_request.120s.240s.120s.120s.json"
+      )
   )
 
   def setUp(self):

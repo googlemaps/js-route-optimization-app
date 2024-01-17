@@ -6,25 +6,16 @@ import unittest
 
 from . import analysis
 from ..json import cfr_json
+from ..testdata import testdata
 
 
-# Provides easy access to files under `./testdata`. See `_json()` below for
-# example use.
-# TODO(ondrasej): Move the test data loading code to a separate library.
-_TESTDATA = resources.files(__package__).joinpath("testdata")
-
-
-def _json(path: str):
-  return json.loads(_TESTDATA.joinpath(path).read_bytes())
-
-
-_SCENARIO: cfr_json.OptimizeToursRequest = _json(
+_SCENARIO: cfr_json.OptimizeToursRequest = testdata.json(
     "moderate/scenario.merged_request.60s.180s.json"
 )
-_SOLUTION: cfr_json.OptimizeToursResponse = _json(
+_SOLUTION: cfr_json.OptimizeToursResponse = testdata.json(
     "moderate/scenario.merged_response.60s.180s.json"
 )
-_PARKING_JSON = _json("moderate/parking.json")
+_PARKING_JSON = testdata.json("moderate/parking.json")
 
 
 class GroupGlobalVisits(unittest.TestCase):
