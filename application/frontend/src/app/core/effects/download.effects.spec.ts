@@ -45,7 +45,10 @@ describe('DownloadEffects', () => {
           useValue: jasmine.createSpyObj('matDialog', ['getDialogById', 'open']),
         },
         { provide: FileService, useValue: fileService },
-        { provide: MessageService, useValue: jasmine.createSpyObj(['error']) },
+        {
+          provide: MessageService,
+          useValue: jasmine.createSpyObj('messageService', ['error'], { messages: [] }),
+        },
         provideMockStore({
           selectors: [
             { selector: fromDownload.selectDownload, value: null },
