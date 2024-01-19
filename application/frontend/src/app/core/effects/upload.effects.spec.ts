@@ -38,8 +38,14 @@ describe('UploadEffects', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        MessageService,
-        { provide: MatSnackBar, useValue: jasmine.createSpyObj('snackBar', ['open']) },
+        {
+          provide: MessageService,
+          useValue: jasmine.createSpyObj('messageService', ['error', 'warning'], { messages: [] }),
+        },
+        {
+          provide: MatSnackBar,
+          useValue: jasmine.createSpyObj('snackBar', ['open']),
+        },
         UploadEffects,
         {
           provide: MatDialog,
