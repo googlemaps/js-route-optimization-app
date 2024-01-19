@@ -34,14 +34,16 @@ import { MaterialModule } from 'src/app/material';
   template: '',
 })
 class MockBaseEditShipmentDialogComponent {
-  @Input() abbreviations: { [unit: string]: string };
   @Input() bulkEdit: boolean;
   @Input() bulkNumber: number;
-  @Input() scenarioCapacities: Set<string>;
-  @Input() scenarioDemands: Set<string>;
   @Input() disabled = false;
   @Input() shipment: Shipment;
   @Input() vehicles: Dictionary<Vehicle>;
+  @Input() abbreviations: { [unit: string]: string };
+  @Input() appearance: string;
+  @Input() scenarioCapacities: Set<string>;
+  @Input() scenarioDemands: Set<string>;
+  @Input() scenarioShipmentTypes: Set<string>;
   /**
    * Ids used to map vehicle to index
    * @remarks
@@ -54,6 +56,7 @@ class MockBaseEditShipmentDialogComponent {
   @Input() pickup?: Visit;
   @Input() delivery?: Visit;
   @Input() visitTags?: string[];
+  @Input() visitTypes?: string[];
   @Input() visitCategory?: VisitCategory;
   @Input() nextVisitRequestId = 0;
   @Input() timezoneOffset = 0;

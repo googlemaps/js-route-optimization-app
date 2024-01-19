@@ -10,15 +10,40 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BreakRequestFormComponent } from './break-request-form.component';
-import { ControlContainer, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import {
+  ControlContainer,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MaterialModule } from 'src/app/material';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const formDirective = new FormGroupDirective([], []);
 formDirective.form = new FormGroup({
-  earliestStartDate: new FormControl(''),
-  earliestStateTime: new FormControl(''),
-  latestStartDate: new FormControl(''),
+  earliestStartDate: new FormControl(new Date()),
+  earliestStartTime: new FormControl(''),
+  latestStartDate: new FormControl(new Date()),
   latestStartTime: new FormControl(''),
 });
+
+@Component({
+  selector: 'app-duration-min-sec-form',
+  template: '',
+})
+class MockAppDurationMinSecFormComponent {
+  @Input() appearance = 'legacy';
+  @Input() parentFormGroup: FormGroup;
+  @Input() errorStateMatcher: ErrorStateMatcher;
+  @Input() labelName: string;
+  @Input() showUnset: boolean;
+  @Input() isUnset: boolean;
+  @Input() fieldName: string;
+  @Output() unsetEvent = new EventEmitter<{ field: string }>();
+}
 
 describe('BreakRuleFormComponent', () => {
   let component: BreakRequestFormComponent;
@@ -26,7 +51,8 @@ describe('BreakRuleFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BreakRequestFormComponent],
+      imports: [MaterialModule, ReactiveFormsModule, NoopAnimationsModule],
+      declarations: [BreakRequestFormComponent, MockAppDurationMinSecFormComponent],
       providers: [{ provide: ControlContainer, useValue: formDirective }],
     }).compileComponents();
   });

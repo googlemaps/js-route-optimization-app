@@ -20,7 +20,7 @@ import { VehicleOperatorsKpisComponent } from './vehicle-operators-kpis.componen
   template: '',
 })
 class MockBaseVehicleOperatorsKpisComponent {
-  @Input() vehicleOperatorsKpis: VehicleOperatorsKpis;
+  @Input() vehicleOperatorKpis: VehicleOperatorsKpis;
   @Input() unitAbbreviations: { [unit: string]: string };
 }
 

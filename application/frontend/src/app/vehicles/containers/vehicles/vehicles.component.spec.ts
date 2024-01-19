@@ -26,9 +26,10 @@ import ShipmentModelSelectors from '../../../core/selectors/shipment-model.selec
   template: '',
 })
 class MockBaseVehiclesTableComponent {
-  @Input() sort?: { active: string; direction: string };
   @Input() dataSource: DataSource<Vehicle>;
+  @Input() sort?: { active: string; direction: string };
   @Input() itemsSelected: { [vehicleId: number]: boolean } = {};
+  @Input() itemsDisabled: { [vehicleId: number]: boolean } = {};
   @Input() capacityTypes: string[];
   @Input() columnsToDisplay: string[];
   @Input() totalItems = 0;
@@ -36,11 +37,14 @@ class MockBaseVehiclesTableComponent {
   @Input() relativeTo: Long;
   @Input() unitAbbreviations: { [unit: string]: string };
   @Input() changeDisabled = false;
+  @Output() add = new EventEmitter();
   @Output() selectAll = new EventEmitter<void>();
   @Output() deselectAll = new EventEmitter<void>();
-  @Output() selectedChange = new EventEmitter<{ vehicleId: number; selected: boolean }>();
+  @Output() selectedChange = new EventEmitter<{ id: number; selected: boolean }>();
   @Output() sortChange = new EventEmitter<{ active: string; direction: string }>();
-  @Output() showOnMap = new EventEmitter<number>();
+  @Output() editVehicle = new EventEmitter<number>();
+  @Output() deleteVehicle = new EventEmitter<Vehicle>();
+  @Input() shipmentCount: number;
 }
 
 describe('VehiclesComponent', () => {

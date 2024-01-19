@@ -19,6 +19,19 @@ import { MockMarkersLayerService } from 'src/test/service-mocks';
 import { PlaceAutocompleteComponent } from '../place-autocomplete/place-autocomplete.component';
 import { TimeWindowComponent } from '../time-window/time-window.component';
 import { VisitRequestFormComponent } from './visit-request-form.component';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-load-demands-form',
+  template: '',
+})
+class MockCapacityQuantityFormComponent {
+  @Input() abbreviations: { [unit: string]: string };
+  @Input() appearance: string;
+  @Input() disabled = false;
+  @Input() scenarioCapacities: Set<string>;
+  @Input() scenarioDemands: Set<string>;
+}
 
 describe('VisitRequestFormComponent', () => {
   let component: VisitRequestFormComponent;
@@ -38,6 +51,7 @@ describe('VisitRequestFormComponent', () => {
         PlaceAutocompleteComponent,
         TimeWindowComponent,
         VisitRequestFormComponent,
+        MockCapacityQuantityFormComponent,
       ],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })

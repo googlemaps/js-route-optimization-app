@@ -17,9 +17,10 @@ import { hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
 import { download, downloadFailure, downloadSuccess } from '../actions/download.actions';
 import * as fromDownload from '../selectors/download.selectors';
-import { FileService } from '../services';
+import { FileService, MessageService } from '../services';
 import { DownloadEffects } from './download.effects';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as fromUI from '../selectors/ui.selectors';
 
 describe('DownloadEffects', () => {
   let actions$: Observable<any>;
@@ -44,8 +45,15 @@ describe('DownloadEffects', () => {
           useValue: jasmine.createSpyObj('matDialog', ['getDialogById', 'open']),
         },
         { provide: FileService, useValue: fileService },
+        {
+          provide: MessageService,
+          useValue: jasmine.createSpyObj('messageService', ['error'], { messages: [] }),
+        },
         provideMockStore({
-          selectors: [{ selector: fromDownload.selectDownload, value: null }],
+          selectors: [
+            { selector: fromDownload.selectDownload, value: null },
+            { selector: fromUI.selectModal, value: null },
+          ],
         }),
         provideMockActions(() => actions$),
       ],

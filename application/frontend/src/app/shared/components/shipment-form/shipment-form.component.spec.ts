@@ -7,12 +7,13 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material';
 import { ShipmentFormComponent } from './shipment-form.component';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'app-load-demands-form',
@@ -21,10 +22,24 @@ import { ShipmentFormComponent } from './shipment-form.component';
 class MockCapacityQuantityFormComponent {
   @Input() abbreviations: { [unit: string]: string };
   @Input() appearance: string;
-  @Input() isOnVehicle: boolean;
   @Input() disabled = false;
   @Input() scenarioCapacities: Set<string>;
   @Input() scenarioDemands: Set<string>;
+}
+
+@Component({
+  selector: 'app-duration-min-sec-form',
+  template: '',
+})
+class MockAppDurationMinSecFormComponent {
+  @Input() appearance = 'legacy';
+  @Input() parentFormGroup: FormGroup;
+  @Input() errorStateMatcher: ErrorStateMatcher;
+  @Input() labelName: string;
+  @Input() showUnset: boolean;
+  @Input() isUnset: boolean;
+  @Input() fieldName: string;
+  @Output() unsetEvent = new EventEmitter<{ field: string }>();
 }
 
 describe('ShipmentFormComponent', () => {
@@ -34,7 +49,11 @@ describe('ShipmentFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MaterialModule, ReactiveFormsModule, NoopAnimationsModule],
-      declarations: [MockCapacityQuantityFormComponent, ShipmentFormComponent],
+      declarations: [
+        MockCapacityQuantityFormComponent,
+        ShipmentFormComponent,
+        MockAppDurationMinSecFormComponent,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ShipmentFormComponent);

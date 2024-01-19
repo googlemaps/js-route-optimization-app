@@ -16,6 +16,28 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { ShipmentItem } from '../../models';
 import { BaseShipmentsTableComponent } from './base-shipments-table.component';
+import { TableComponent } from 'src/app/shared/components';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+@Component({
+  selector: 'app-table',
+  template: '',
+})
+class MockTableComponent<T = any> {
+  @Input() mouseOverActive: boolean;
+  @Input() dataSource: DataSource<T>;
+  @Input() itemsSelected: { [id: number]: boolean } = {};
+  @Input() columnsToDisplay: string[];
+  @Input() totalSelectableItems = 0;
+  @Input() itemSize = 49;
+  @Input() selectDisabled = false;
+  @Output() selectAll = new EventEmitter<void>();
+  @Output() deselectAll = new EventEmitter<void>();
+  @Output() selectedChange = new EventEmitter<{ id: number; selected: boolean }>();
+  @Output() mouseEnterRow = new EventEmitter<any>();
+  @Output() mouseExitRow = new EventEmitter<any>();
+  @Input() itemsDisabled: { [id: number]: boolean } = {};
+}
 
 describe('BaseShipmentsTableComponent', () => {
   let component: BaseShipmentsTableComponent;
@@ -28,6 +50,7 @@ describe('BaseShipmentsTableComponent', () => {
       declarations: [BaseShipmentsTableComponent],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .overrideProvider(TableComponent, { useValue: new MockTableComponent() })
       .compileComponents();
 
     dataSource = jasmine.createSpyObj('dataSource', ['attach', 'connect', 'disconnect']);
