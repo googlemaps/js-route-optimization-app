@@ -22,9 +22,9 @@ import {
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   NgControl,
   ValidatorFn,
   NgForm,
@@ -42,7 +42,7 @@ import { CapacityQuantityFormValue } from '../../models/capacity-quantity';
 /**
  * @returns map of validation errors (nonNegativeInteger) if present, otherwise null.
  */
-export const nonNegativeIntegerCapacityQuantityValidator: ValidatorFn = (control: FormControl) => {
+export const nonNegativeIntegerCapacityQuantityValidator: ValidatorFn = (control: UntypedFormControl) => {
   const { value } = (control.value || {}) as CapacityQuantityFormValue;
   if (value != null && !/^\s*\d*\s*$/.test(value.toString())) {
     return { nonNegativeInteger: true };
@@ -150,9 +150,9 @@ export class CapacityQuantityComponent
 
   controlType = 'app-capacity-quantity';
   focused = false;
-  readonly quantityValue: FormControl;
-  readonly quantityTypeRoot: FormControl;
-  readonly quantityTypeUnit: FormControl;
+  readonly quantityValue: UntypedFormControl;
+  readonly quantityTypeRoot: UntypedFormControl;
+  readonly quantityTypeUnit: UntypedFormControl;
   stateChanges = new Subject<void>();
   get typeRoot(): string {
     return this.quantityTypeRoot.value;
@@ -161,7 +161,7 @@ export class CapacityQuantityComponent
     return this.quantityTypeUnit.value;
   }
   unitOptions: string[];
-  private readonly form: FormGroup;
+  private readonly form: UntypedFormGroup;
   private readonly subscriptions: Subscription[] = [];
   // eslint-disable-next-line  @typescript-eslint/no-empty-function
   private onChange = (_value: any): void => {};
@@ -174,7 +174,7 @@ export class CapacityQuantityComponent
     @Optional() _parentForm: NgForm,
     @Optional() _parentFormGroup: FormGroupDirective,
     _defaultErrorStateMatcher: ErrorStateMatcher,
-    fb: FormBuilder,
+    fb: UntypedFormBuilder,
     private fm: FocusMonitor
   ) {
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);

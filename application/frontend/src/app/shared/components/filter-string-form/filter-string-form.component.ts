@@ -17,7 +17,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { setControlDisabled } from 'src/app/util';
 import {
   ActiveFilter,
@@ -45,14 +45,14 @@ export class FilterStringFormComponent implements FilterForm, OnInit {
     return StringFilterOperation;
   }
 
-  readonly form: FormGroup;
-  readonly operationCtrl: FormControl;
-  readonly valueCtrl: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly operationCtrl: UntypedFormControl;
+  readonly valueCtrl: UntypedFormControl;
   readonly operations = Object.entries(StringFilterOperation)
     .map(([_, value]) => value)
     .sort();
 
-  constructor(@Inject(LOCALE_ID) private locale: string, fb: FormBuilder) {
+  constructor(@Inject(LOCALE_ID) private locale: string, fb: UntypedFormBuilder) {
     this.form = fb.group({
       operation: (this.operationCtrl = fb.control(StringFilterOperation.Contains)),
       value: (this.valueCtrl = fb.control('', this.valueValidator)),
@@ -82,7 +82,7 @@ export class FilterStringFormComponent implements FilterForm, OnInit {
     return this.form.value;
   }
 
-  private valueValidator(control: FormControl): { [error: string]: boolean } {
+  private valueValidator(control: UntypedFormControl): { [error: string]: boolean } {
     const value = control.value as string;
     if (!value?.toString().trim().length) {
       return { required: true };

@@ -8,7 +8,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { select, Store } from '@ngrx/store';
@@ -48,8 +48,8 @@ import { take } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PreSolveGlobalSettingsComponent implements OnDestroy {
-  get constraintRelaxations(): FormArray {
-    return this.form.get('constraintRelaxations') as FormArray;
+  get constraintRelaxations(): UntypedFormArray {
+    return this.form.get('constraintRelaxations') as UntypedFormArray;
   }
   get timeout(): AbstractControl {
     return this.form.get('timeout');
@@ -90,12 +90,12 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
   private globalEndSeconds: Long;
   globalSettings: Partial<RequestSettings> = {};
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   private readonly subscriptions: Subscription[] = [];
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private store: Store,
     private changeDetectorRef: ChangeDetectorRef
   ) {

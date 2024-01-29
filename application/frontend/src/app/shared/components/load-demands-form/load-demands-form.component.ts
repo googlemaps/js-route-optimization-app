@@ -17,7 +17,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ControlContainer, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import Long from 'long';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -39,7 +39,7 @@ export class LoadDemandsFormComponent implements OnChanges, OnDestroy, OnInit {
   @Input() scenarioDemands: Set<string>;
 
   addingCapacity = false;
-  control: FormArray;
+  control: UntypedFormArray;
   changeSub: Subscription;
 
   currentFilterIndex: number;
@@ -52,7 +52,7 @@ export class LoadDemandsFormComponent implements OnChanges, OnDestroy, OnInit {
     private changeDetector: ChangeDetectorRef
   ) {}
 
-  static createFormGroup(fb: FormBuilder): FormGroup {
+  static createFormGroup(fb: UntypedFormBuilder): UntypedFormGroup {
     return fb.group({
       type: fb.control(null, [Validators.required]),
       value: fb.control(null, [Validators.required, nonNegativeIntegerValidator]),
@@ -77,7 +77,7 @@ export class LoadDemandsFormComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.control = this.controlContainer.control as FormArray;
+    this.control = this.controlContainer.control as UntypedFormArray;
     this.changeSub = this.control?.valueChanges.subscribe(() => {
       this.changeDetector.detectChanges();
     });

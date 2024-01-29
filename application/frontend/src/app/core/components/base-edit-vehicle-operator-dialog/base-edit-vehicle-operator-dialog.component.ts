@@ -19,7 +19,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { cloneDeep, durationSeconds } from 'src/app/util';
@@ -70,15 +70,15 @@ export class BaseEditVehicleOperatorDialogComponent implements OnInit, OnChanges
     return this.form.get('type');
   }
 
-  get startTimeWindows(): FormArray {
-    return this.form.get('startTimeWindows') as FormArray;
+  get startTimeWindows(): UntypedFormArray {
+    return this.form.get('startTimeWindows') as UntypedFormArray;
   }
 
-  get endTimeWindows(): FormArray {
-    return this.form.get('endTimeWindows') as FormArray;
+  get endTimeWindows(): UntypedFormArray {
+    return this.form.get('endTimeWindows') as UntypedFormArray;
   }
 
-  readonly form: FormGroup;
+  readonly form: UntypedFormGroup;
   labels: string[] = [];
   updatedVehicleOperator: VehicleOperator;
 
@@ -86,7 +86,7 @@ export class BaseEditVehicleOperatorDialogComponent implements OnInit, OnChanges
 
   constructor(
     public overwriteDialog: MatDialog,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private store: Store<fromRoot.State>
   ) {
     this.form = this.createVehicleOperatorsFormGroup(null);
@@ -189,13 +189,13 @@ export class BaseEditVehicleOperatorDialogComponent implements OnInit, OnChanges
     this.updatedVehicleOperator = cloneDeep(this.vehicleOperator);
   }
 
-  private createVehicleOperatorsFormGroup(value: IVehicleOperator = null): FormGroup {
+  private createVehicleOperatorsFormGroup(value: IVehicleOperator = null): UntypedFormGroup {
     return this.fb.group(
       {
         type: [value?.type || [], this.bulkEdit ? [] : [Validators.required]],
         label: [value?.label || []],
-        startTimeWindows: this.fb.array([], (formArray: FormArray) => overlapValidator(formArray)),
-        endTimeWindows: this.fb.array([], (formArray: FormArray) => overlapValidator(formArray)),
+        startTimeWindows: this.fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
+        endTimeWindows: this.fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
       },
       { updateOn: 'blur' }
     );
@@ -214,7 +214,7 @@ export class BaseEditVehicleOperatorDialogComponent implements OnInit, OnChanges
     );
   }
 
-  timeWindowsChanged(timeWindows: FormArray): boolean {
+  timeWindowsChanged(timeWindows: UntypedFormArray): boolean {
     return timeWindows.value.some(
       (window) => window.startTime || window.startDate || window.endTime || window.endDate
     );

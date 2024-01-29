@@ -27,10 +27,10 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -116,8 +116,8 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
   get visitTypes(): AbstractControl {
     return this.form.get('visitTypes');
   }
-  get timeWindows(): FormArray {
-    return this.form.get('timeWindows') as FormArray;
+  get timeWindows(): UntypedFormArray {
+    return this.form.get('timeWindows') as UntypedFormArray;
   }
   get invalid(): boolean {
     return this.form.invalid;
@@ -131,26 +131,26 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
   get setMapActive(): boolean {
     return this.setArrivalLocationSubscription != null;
   }
-  get loadDemands(): FormArray {
-    return this.form.get('loadDemands') as FormArray;
+  get loadDemands(): UntypedFormArray {
+    return this.form.get('loadDemands') as UntypedFormArray;
   }
 
   @ViewChild('timeWindowsPanel', { static: true }) timeWindowsExpansionPanel: MatExpansionPanel;
   @ViewChildren(TimeWindowComponent) timeWindowForms: QueryList<TimeWindowComponent>;
 
-  readonly form: FormGroup;
+  readonly form: UntypedFormGroup;
 
   labels: string[] = [];
-  labelCtrl = new FormControl();
+  labelCtrl = new UntypedFormControl();
   labelSeparatorKeysCodes: number[] = [ENTER, COMMA];
 
   private availableVisitTags: string[] = [];
-  visitTagsCtrl = new FormControl();
+  visitTagsCtrl = new UntypedFormControl();
   visitTagsSeparatorKeysCodes: number[] = [ENTER, COMMA];
   filteredAvailableVisitTags: Observable<string[]>;
 
   private availableVisitTypes: string[] = [];
-  visitTypesCtrl = new FormControl();
+  visitTypesCtrl = new UntypedFormControl();
   visitTypesSeparatorKeysCodes: number[] = [ENTER, COMMA];
   filteredAvailableVisitTypes: Observable<string[]>;
 
@@ -167,7 +167,7 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private changeDetector: ChangeDetectorRef,
     @Optional() private formVisitRequestLayer: FormVisitRequestLayer,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
     this.form = fb.group({
       arrivalLocation: [null, [Validators.required]],
@@ -181,8 +181,8 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
       durationSeconds: [null],
       visitTags: [null],
       visitTypes: [null],
-      timeWindows: fb.array([], (formArray: FormArray) => overlapValidator(formArray)),
-      loadDemands: fb.array([], (formArray: FormArray) =>
+      timeWindows: fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
+      loadDemands: fb.array([], (formArray: UntypedFormArray) =>
         noDuplicateCapacitiesValidator(formArray)
       ),
     });

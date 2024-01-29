@@ -10,14 +10,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExtraVisitDurationFormComponent } from './extra-visit-duration-form.component';
-import { ControlContainer, FormGroup } from '@angular/forms';
+import { ControlContainer, UntypedFormGroup } from '@angular/forms';
 import { MaterialModule } from 'src/app/material';
 import { MatIconRegistry } from '@angular/material/icon';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
 
-const controlContainer = new FormGroup({});
+const controlContainer = new UntypedFormGroup({});
 
 @Component({
   selector: 'app-duration-min-sec-form',
@@ -25,7 +25,7 @@ const controlContainer = new FormGroup({});
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
-  @Input() parentFormGroup: FormGroup;
+  @Input() parentFormGroup: UntypedFormGroup;
   @Input() errorStateMatcher: ErrorStateMatcher;
   @Input() labelName: string;
   @Input() showUnset: boolean;

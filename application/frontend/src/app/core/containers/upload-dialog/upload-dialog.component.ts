@@ -8,7 +8,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ValidationErrors } from '@angular/forms';
 import { MatDialogRef, MatDialogState } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -31,8 +31,8 @@ import { toDispatcherLatLng } from 'src/app/util';
 export class UploadDialogComponent {
   @ViewChild('fileInput', { static: true }) fileInput: ElementRef<HTMLInputElement>;
 
-  readonly form: FormGroup;
-  readonly fileName: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly fileName: UntypedFormControl;
   fileInvalid: boolean;
   validatingUpload: boolean;
   private json: any;
@@ -62,7 +62,7 @@ export class UploadDialogComponent {
     private fileService: FileService,
     private placesService: PlacesService,
     private uploadService: UploadService,
-    fb: FormBuilder
+    fb: UntypedFormBuilder
   ) {
     this.form = fb.group({
       fileName: (this.fileName = fb.control('', [this.fileValidator.bind(this)])),
@@ -220,7 +220,7 @@ export class UploadDialogComponent {
     }
   }
 
-  fileValidator(control: FormControl): ValidationErrors | null {
+  fileValidator(control: UntypedFormControl): ValidationErrors | null {
     if (this.fileInvalid) {
       return { fileFormat: true };
     }
@@ -268,7 +268,7 @@ export class UploadDialogComponent {
    * @remarks
    * Only validates the message/value structure
    */
-  scenarioValidator(_: FormControl): ValidationErrors | null {
+  scenarioValidator(_: UntypedFormControl): ValidationErrors | null {
     try {
       const scenario = this.validateScenario(this.json);
 

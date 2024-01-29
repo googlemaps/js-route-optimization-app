@@ -25,9 +25,9 @@ import {
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgControl,
   NgForm,
@@ -133,10 +133,10 @@ export class PlaceAutocompleteComponent
   controlType = 'app-place-autocomplete';
   focused = false;
   stateChanges = new Subject<void>();
-  readonly form: FormGroup;
-  readonly search: FormControl;
-  private readonly location: FormControl;
-  private readonly placeId: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly search: UntypedFormControl;
+  private readonly location: UntypedFormControl;
+  private readonly placeId: UntypedFormControl;
   private autocomplete: google.maps.places.Autocomplete;
   private subscription: Subscription;
   private autocompleteSelection = true;
@@ -152,7 +152,7 @@ export class PlaceAutocompleteComponent
     @Optional() _parentForm: NgForm,
     @Optional() _parentFormGroup: FormGroupDirective,
     _defaultErrorStateMatcher: ErrorStateMatcher,
-    fb: FormBuilder,
+    fb: UntypedFormBuilder,
     private placesService: PlacesService,
     private fm: FocusMonitor,
     private zone: NgZone

@@ -17,10 +17,10 @@ import {
 } from '@angular/core';
 import {
   ControlContainer,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -36,7 +36,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 class ExtraVisitDurationErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
     const invalid = ngForm?.errors || control?.invalid;
     const show =
       ngForm &&
@@ -57,7 +57,7 @@ export class ExtraVisitDurationFormComponent implements OnInit, OnDestroy {
   @Input() appearance: string;
   @Input() disabled = false;
   @Input() visitTypeOptions?: string[];
-  control: FormArray;
+  control: UntypedFormArray;
   currentFilterIndex: number;
   readonly extraVisitDurationErrorStateMatcher = new ExtraVisitDurationErrorStateMatcher();
   changeSub: Subscription;
@@ -68,7 +68,7 @@ export class ExtraVisitDurationFormComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef
   ) {}
 
-  static createFormGroup(fb: FormBuilder): FormGroup {
+  static createFormGroup(fb: UntypedFormBuilder): UntypedFormGroup {
     return fb.group({
       visitType: fb.control(null, [Validators.required]),
       extraDuration: fb.group(
@@ -121,7 +121,7 @@ export class ExtraVisitDurationFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.control = this.controlContainer.control as FormArray;
+    this.control = this.controlContainer.control as UntypedFormArray;
     this.changeSub = this.control?.valueChanges.subscribe(() => {
       this.changeDetector.detectChanges();
     });

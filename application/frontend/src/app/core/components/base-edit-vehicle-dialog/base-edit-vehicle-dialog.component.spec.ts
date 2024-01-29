@@ -22,7 +22,7 @@ import { FormMapService, VehicleLayer } from '../../services';
 import { PlacesService } from '../../services/places.service';
 import { BaseEditVehicleDialogComponent } from './base-edit-vehicle-dialog.component';
 import { provideMockStore } from '@ngrx/store/testing';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { DurationMinSecFormComponent } from 'src/app/shared/components/duration-min-sec-form/duration-min-sec-form.component';
 
@@ -38,7 +38,7 @@ class MockFormMapComponent {}
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
-  @Input() parentFormGroup: FormGroup;
+  @Input() parentFormGroup: UntypedFormGroup;
   @Input() errorStateMatcher: ErrorStateMatcher;
   @Input() labelName: string;
   @Input() showUnset: boolean;

@@ -15,7 +15,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActiveFilter, FilterForm, FilterOption, SelectFilterParams } from '../../models';
 
 type Option<TValue> = { label: string; value: TValue };
@@ -36,10 +36,10 @@ export class FilterSelectFormComponent<TValue = any> implements FilterForm, OnIn
     return this.form.invalid;
   }
 
-  readonly form: FormGroup;
-  readonly optionCtrl: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly optionCtrl: UntypedFormControl;
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: UntypedFormBuilder) {
     this.form = fb.group({
       option: (this.optionCtrl = fb.control(null, this.valueValidator)),
     });
@@ -69,7 +69,7 @@ export class FilterSelectFormComponent<TValue = any> implements FilterForm, OnIn
     this.optionCtrl.setValue(option);
   }
 
-  private valueValidator(control: FormControl): { [error: string]: boolean } {
+  private valueValidator(control: UntypedFormControl): { [error: string]: boolean } {
     if (control.value == null) {
       return { required: true };
     }

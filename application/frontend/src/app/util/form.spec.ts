@@ -8,12 +8,12 @@
  */
 
 import { setControlDisabled, showError } from './form';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 describe('form', () => {
-  let control: FormControl;
+  let control: UntypedFormControl;
   beforeEach(() => {
-    control = new FormControl('');
+    control = new UntypedFormControl('');
   });
 
   it('should disable control', () => {
