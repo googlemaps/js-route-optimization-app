@@ -146,7 +146,9 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
     return this.form.get('shipmentTypeRequirements') as UntypedFormArray;
   }
 
-  private createShipmentTypeReqsFormGroup(value: IShipmentTypeRequirement = null): UntypedFormGroup {
+  private createShipmentTypeReqsFormGroup(
+    value: IShipmentTypeRequirement = null
+  ): UntypedFormGroup {
     return this.fb.group(
       {
         requiredShipmentTypeAlternatives: [

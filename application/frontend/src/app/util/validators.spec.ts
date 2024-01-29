@@ -7,7 +7,12 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+} from '@angular/forms';
 import {
   aLessThanB,
   aRequiredIfB,
@@ -285,7 +290,9 @@ describe('form', () => {
     a = new UntypedFormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
     b = new UntypedFormControl({ types: ['type1', 'type2'], incompatibilityMode: 2 }, []);
     formGroup = new UntypedFormGroup({
-      a: fb.array([a, b], (formArray: UntypedFormArray) => noDuplicateFormArrayValuesValidator(formArray)),
+      a: fb.array([a, b], (formArray: UntypedFormArray) =>
+        noDuplicateFormArrayValuesValidator(formArray)
+      ),
     });
     expect(formGroup.invalid).toBe(false);
   });
@@ -294,7 +301,9 @@ describe('form', () => {
     a = new UntypedFormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
     b = new UntypedFormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
     formGroup = new UntypedFormGroup({
-      a: fb.array([a, b], (formArray: UntypedFormArray) => noDuplicateFormArrayValuesValidator(formArray)),
+      a: fb.array([a, b], (formArray: UntypedFormArray) =>
+        noDuplicateFormArrayValuesValidator(formArray)
+      ),
     });
     expect(formGroup.invalid).toBe(true);
   });

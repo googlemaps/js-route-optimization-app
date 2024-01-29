@@ -42,7 +42,9 @@ import { CapacityQuantityFormValue } from '../../models/capacity-quantity';
 /**
  * @returns map of validation errors (nonNegativeInteger) if present, otherwise null.
  */
-export const nonNegativeIntegerCapacityQuantityValidator: ValidatorFn = (control: UntypedFormControl) => {
+export const nonNegativeIntegerCapacityQuantityValidator: ValidatorFn = (
+  control: UntypedFormControl
+) => {
   const { value } = (control.value || {}) as CapacityQuantityFormValue;
   if (value != null && !/^\s*\d*\s*$/.test(value.toString())) {
     return { nonNegativeInteger: true };
@@ -52,6 +54,8 @@ export const nonNegativeIntegerCapacityQuantityValidator: ValidatorFn = (control
 
 /** Mimic the Angular material error state implementation to play nice with the material stepper */
 class CapacityQuantityComponentBase {
+  stateChanges: Subject<void>;
+
   constructor(
     public _defaultErrorStateMatcher: ErrorStateMatcher,
     public _parentForm: NgForm,

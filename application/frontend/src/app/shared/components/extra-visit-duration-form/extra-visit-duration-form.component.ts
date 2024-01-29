@@ -36,7 +36,10 @@ import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 class ExtraVisitDurationErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors || control?.invalid;
     const show =
       ngForm &&

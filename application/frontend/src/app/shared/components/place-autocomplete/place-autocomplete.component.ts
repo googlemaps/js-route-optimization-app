@@ -41,6 +41,7 @@ import { isLatLngString, stringToLatLng, toDispatcherLatLng } from 'src/app/util
 
 /** Mimic the Angular material error state implementation to play nice with the material stepper */
 class PlaceAutocompleteComponentBase {
+  stateChanges: Subject<void>;
   constructor(
     public _defaultErrorStateMatcher: ErrorStateMatcher,
     public _parentForm: NgForm,

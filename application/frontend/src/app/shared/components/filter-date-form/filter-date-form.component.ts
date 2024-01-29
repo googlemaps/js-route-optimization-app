@@ -75,7 +75,11 @@ export class FilterDateFormComponent implements FilterForm, OnInit, OnDestroy {
   private timezoneOffset = 0;
   private subscription: Subscription;
 
-  constructor(@Inject(LOCALE_ID) private locale: string, private store: Store, fb: UntypedFormBuilder) {
+  constructor(
+    @Inject(LOCALE_ID) private locale: string,
+    private store: Store,
+    fb: UntypedFormBuilder
+  ) {
     this.form = fb.group({
       operation: (this.operationCtrl = fb.control(DateFilterOperation.Equal)),
       date: (this.dateCtrl = fb.control(null, this.valueValidator)),

@@ -33,7 +33,10 @@ import { Subscription } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class FrequencyConstraintErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors || control?.invalid;
     const show =
       ngForm &&

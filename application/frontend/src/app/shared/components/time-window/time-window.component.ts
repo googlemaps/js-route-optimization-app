@@ -48,7 +48,10 @@ import {
 import { timeStringValidator } from 'src/app/util/validators';
 
 class StartErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid = ngForm?.errors && ngForm.errors.startIncomplete;
     const invalid = control?.invalid || groupInvalid;
     const show =
@@ -61,7 +64,10 @@ class StartErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class EndErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid =
       ngForm?.errors &&
       (ngForm.errors.endDate || ngForm.errors.endTime || ngForm.errors.endIncomplete);
@@ -78,7 +84,10 @@ class EndErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class SoftStartErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid =
       ngForm?.errors && (ngForm.errors.softStart || ngForm.errors.softStartIncomplete);
     const invalid = control?.invalid || groupInvalid;
@@ -94,7 +103,10 @@ class SoftStartErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class SoftEndErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid =
       ngForm?.errors &&
       (ngForm.errors.softEnd ||
@@ -187,7 +199,11 @@ export class TimeWindowComponent implements OnChanges, OnInit, OnDestroy {
 
   constructor(public controlContainer: ControlContainer) {}
 
-  static createFormGroup(fb: UntypedFormBuilder, timezoneOffset?: number, timeWindows?: any): UntypedFormGroup {
+  static createFormGroup(
+    fb: UntypedFormBuilder,
+    timezoneOffset?: number,
+    timeWindows?: any
+  ): UntypedFormGroup {
     return fb.group({
       startDate: timeWindows?.startTime
         ? timeToDate(Long.fromValue(timeWindows.startTime.seconds), timezoneOffset)

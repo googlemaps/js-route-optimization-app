@@ -7,7 +7,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
+import { ApplicationRef, EnvironmentInjector, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import { mapVehicleClicked } from '../actions/ui.actions';
@@ -22,13 +22,12 @@ import { MapService } from './map.service';
 })
 export class VehicleInfoWindowService extends BaseInfoWindowService<VehicleInfoWindowComponent> {
   constructor(
-    injector: Injector,
-    resolver: ComponentFactoryResolver,
+    injector: EnvironmentInjector,
     applicationRef: ApplicationRef,
     private mapService: MapService,
     private store: Store<State>
   ) {
-    super(injector, resolver, applicationRef);
+    super(injector, applicationRef);
 
     this.store.pipe(select(selectInfoWindowVehicle)).subscribe((vehicle) => this.open(vehicle));
   }

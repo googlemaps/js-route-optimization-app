@@ -7,7 +7,12 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, ValidatorFn } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  ValidatorFn,
+} from '@angular/forms';
 import Long from 'long';
 import { localDateTimeToUtcSeconds } from './time-translation';
 import { RelaxationLevel } from '../core/models/dispatcher.model';

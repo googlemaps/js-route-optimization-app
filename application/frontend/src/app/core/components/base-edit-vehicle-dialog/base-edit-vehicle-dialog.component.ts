@@ -106,7 +106,10 @@ enum EditState {
 }
 
 class DurationMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.softMaxLessThanMax ||
       ngForm?.errors?.quadraticMaxLessThanMax ||
@@ -122,7 +125,10 @@ class DurationMaxErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DurationSoftMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.softMaxLessThanMax || control?.invalid;
     const show =
       ngForm &&
@@ -134,7 +140,10 @@ class DurationSoftMaxErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DurationSoftCostErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.softCostRequired || control?.invalid;
     const show =
       ngForm &&
@@ -146,7 +155,10 @@ class DurationSoftCostErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DurationQuadraticCostErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.quadraticCostRequired || control?.invalid;
     const show =
       ngForm &&
@@ -158,7 +170,10 @@ class DurationQuadraticCostErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DurationQuadraticMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.quadraticMaxLessThanMax || control?.invalid;
     const show =
       ngForm &&
@@ -170,7 +185,10 @@ class DurationQuadraticMaxErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DistanceSoftMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.durationALessThanB || control?.invalid;
     const show =
       ngForm &&
@@ -182,7 +200,10 @@ class DistanceSoftMaxErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DistanceSoftCostErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.aRequiredIfB || control?.invalid;
     const show =
       ngForm &&
@@ -412,7 +433,9 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     private store: Store<fromRoot.State>
   ) {
     this.form = fb.group({
-      loadLimits: fb.array([], (formArray: UntypedFormArray) => noDuplicateCapacitiesValidator(formArray)),
+      loadLimits: fb.array([], (formArray: UntypedFormArray) =>
+        noDuplicateCapacitiesValidator(formArray)
+      ),
       startLocation: [null],
       startLocationHeading: [null],
       startLocationSideOfRoad: [null],

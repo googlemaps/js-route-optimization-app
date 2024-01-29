@@ -44,7 +44,10 @@ import { IBreakRequest } from '../../../core/models';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class BreakRequestErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors || control?.invalid;
     const show = ngForm && (ngForm.submitted || showError(ngForm.form.get('minDuration')));
     return !!(invalid && show);
@@ -52,7 +55,10 @@ class BreakRequestErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class EarliestErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid = ngForm?.errors && ngForm.errors.earliestIncomplete;
     const invalid = control?.invalid || groupInvalid;
     const show =
@@ -65,7 +71,10 @@ class EarliestErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class LatestErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: UntypedFormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid =
       ngForm?.errors &&
       (ngForm.errors.latestStartDate ||

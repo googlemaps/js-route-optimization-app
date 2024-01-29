@@ -19,7 +19,13 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { cloneDeep, durationSeconds } from 'src/app/util';
@@ -194,8 +200,12 @@ export class BaseEditVehicleOperatorDialogComponent implements OnInit, OnChanges
       {
         type: [value?.type || [], this.bulkEdit ? [] : [Validators.required]],
         label: [value?.label || []],
-        startTimeWindows: this.fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
-        endTimeWindows: this.fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
+        startTimeWindows: this.fb.array([], (formArray: UntypedFormArray) =>
+          overlapValidator(formArray)
+        ),
+        endTimeWindows: this.fb.array([], (formArray: UntypedFormArray) =>
+          overlapValidator(formArray)
+        ),
       },
       { updateOn: 'blur' }
     );
