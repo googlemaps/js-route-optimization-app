@@ -1,31 +1,66 @@
 <form [formGroup]="form" autocomplete="off" novalidate (ngSubmit)="solve()">
-  <h1 mat-dialog-title>Upload an existing scenario or solution</h1>
+  <h1 mat-dialog-title class="d-flex flex-column">
+    <button
+      mat-icon-button
+      class="small-close-button"
+      type="button"
+      title="Cancel"
+      (click)="cancel()">
+      <mat-icon svgIcon="clear"></mat-icon>
+    </button>
+    <span> Upload a scenario or solution </span>
+  </h1>
   <div mat-dialog-content>
-    <p>
-      Have an existing vehicle routing problem you want to solve? You can upload a JSON description
-      of the problem to see the routes that Cloud Fleet Routing recommends, and then download the
-      generated routes if you wish.
-    </p>
-    <p>
-      You may also upload a zip file containing a scenario and its matching solution. In order to do
-      this, please adhere to the following requirements:
-    </p>
-    <ul>
-      <li>The zip file contains two files named <i>scenario.json</i> and <i>solution.json</i></li>
-      <li>The provided solution is for the provided scenario</li>
-    </ul>
-    <div class="file-input">
-      <div class="file-input__form-field">
-        <mat-form-field>
+    <mat-divider class="mb-4"></mat-divider>
+    <h3 class="strong">What file types can I use?</h3>
+    <h4 class="strong d-flex mb-2">
+      Load scenario and solution files
+      <a
+        (click)="openScenarioSolutionHelp()"
+        class="ml-1 scenario-solution-help-icon blue-svg-icon">
+        <mat-icon svgIcon="help-filled"></mat-icon>
+      </a>
+    </h4>
+    <div class="upload-container json-upload-container d-flex flex-column">
+      <div class="d-flex flex-row justify-content-between w-100 json-description-container">
+        <div class="d-flex flex-column json-description">
+          <div class="align-items-center d-flex">
+            <div>
+              <mat-icon svgIcon="csv" class="json-icon"></mat-icon>
+            </div>
+            <span class="ml-1 mat-body-strong">.json file</span>
+          </div>
+          <p class="description-text">
+            Use this option when you have a .json file that contains a VRP scenario you want to
+            solve.
+          </p>
+        </div>
+        <div class="d-flex flex-column json-description">
+          <div class="align-items-center d-flex">
+            <div class="blue-svg-icon">
+              <mat-icon svgIcon="zip"></mat-icon>
+            </div>
+            <span class="ml-1 mat-body-strong">.zip file</span>
+          </div>
+          <p class="description-text">
+            Use this option when you have a .zip file that contains both the .json and VRP scenario
+            files. The .zip file must contain the <span class="strong">scenario.json</span> and
+            <span class="strong">solution.json</span>
+          </p>
+        </div>
+      </div>
+      <div class="file-input">
+        <mat-form-field class="w-100 mb-3">
           <input
             matInput
             [readonly]="true"
             [formControl]="fileName"
             (click)="selectFile()"
+            [errorStateMatcher]="fileUploadErrorStateMatcher"
             required />
           <mat-error
             *ngIf="
-              fileName.errors?.required && (fileName.touched || fileName.dirty) && !validatingUpload
+              fileName.errors?.required && fileName.touched && fileName.dirty && !validatingUpload
             ">
             {{ (messages$ | async)?.formFileRequired || 'File is required' }}
           </mat-error>
@@ -38,69 +73,84 @@
           <mat-error *ngIf="fileName.errors?.requestFormat && (fileName.touched || fileName.dirty)">
             {{ (messages$ | async)?.formInvalidRequestFormat || 'Invalid request format' }}
           </mat-error>
+          <mat-hint>.json or .zip</mat-hint>
         </mat-form-field>
         <button
           type="button"
           mat-raised-button
-          cdkFocusInitial
+          color="primary"
           (click)="selectFile()"
           [disabled]="validatingUpload">
-          Choose a File
+          {{ validatingUpload ? 'Validating...' : 'Choose a File' }}
+        </button>
+        <!-- resolve place ids -->
+        <div
+          *ngIf="scenarioHasPlaceIds && placeIdProgress < placeIdCount"
+          class="d-flex flex-column mat-small mt-3">
+          <div *ngIf="!resolvingPlaceIds" class="d-flex flex-column align-items-center">
+            <p>
+              ⚠️ This scenario contains Place ID waypoints. Some features of the application require
+              lat/lng locations. Click the button below to request the lat/lng location of all Place
+              IDs in the scenario (it will take a few minutes). You may continue with just the Place
+              IDs, but some parts of the application may not work properly.
+            </p>
+            <button
+              type="button"
+              mat-stroked-button
+              color="primary"
+              class="white-button"
+              (click)="resolveWaypointPlaceIds()">
+              Get Place ID Locations
+            </button>
+          </div>
+
+          <div *ngIf="resolvingPlaceIds">
+            <mat-progress-bar [value]="(placeIdProgress / placeIdCount) * 100"></mat-progress-bar>
+            <mat-label
+              >Requesting Place ID locations... ({{ placeIdProgress | number }} of
+              {{ placeIdCount | number }})</mat-label
+            >
+          </div>
+
+          <mat-error *ngIf="placeIdError">
+            {{ placeIdError }}
+          </mat-error>
+        </div>
+        <!-- file input browser (not visible) -->
+        <input
+          #fileInput
+          type="file"
+          accept=".json,.zip"
+          (cancel)="onCancelSelectFile()"
+          (click)="fileUploadClicked($event)"
+          (change)="fileSelected($event)" />
+      </div>
+    </div>
+    <h4 class="strong d-flex mt-4 mb-2">
+      Load shipment, vehicle, and operator data individually
+      <a (click)="openCsvHelp()" class="ml-1 scenario-solution-help-icon blue-svg-icon">
+        <mat-icon svgIcon="help-filled"></mat-icon>
+      </a>
+    </h4>
+    <div class="upload-container csv-upload-container d-flex flex-column">
+      <div class="align-items-center d-flex">
+        <mat-icon svgIcon="csv2"></mat-icon>
+        <span class="ml-1 mat-body-strong">.csv files</span>
+      </div>
+      <p class="description-text">
+        Use this option when you have a CSV files that contain shipment, vehicle and/or vehicle
+        operator data.
+      </p>
+      <div>
+        <button
+          type="button"
+          mat-stroked-button
+          color="primary"
+          class="white-button"
+          (click)="loadFromCsv()">
+          Continue
         </button>
       </div>
-      <p *ngIf="validatingUpload" class="mat-small">Validating upload</p>
-      <!-- resolve place ids -->
-      <div
-        *ngIf="scenarioHasPlaceIds && placeIdProgress < placeIdCount"
-        class="d-flex flex-column mat-small">
-        <div *ngIf="!resolvingPlaceIds" class="d-flex flex-column align-items-center">
-          <p>
-            ⚠️ This scenario contains Place ID waypoints. Some features of the application require
-            lat/lng locations. Click the button below to request the lat/lng location of all Place
-            IDs in the scenario (it will take a few minutes). You may continue with just the Place
-            IDs, but some parts of the application may not work properly.
-          </p>
-          <button type="button" mat-stroked-button (click)="resolveWaypointPlaceIds()">
-            Get Place ID Locations
-          </button>
-        </div>
-
-        <div *ngIf="resolvingPlaceIds">
-          <mat-progress-bar [value]="(placeIdProgress / placeIdCount) * 100"></mat-progress-bar>
-          <mat-label
-            >Requesting Place ID locations... ({{ placeIdProgress | number }} of
-            {{ placeIdCount | number }})</mat-label
-          >
-        </div>
-
-        <mat-error *ngIf="placeIdError">
-          {{ placeIdError }}
-        </mat-error>
-      </div>
-      <!-- file input browser (not visible) -->
-      <input
-        #fileInput
-        type="file"
-        accept=".json,.zip"
-        (click)="fileUploadClicked($event)"
-        (change)="fileSelected($event)" />
     </div>
-  </div>
-  <div mat-dialog-actions>
-    <a
-      class="secondary-link mr-4"
-      tabindex="0"
-      (click)="cancel()"
-      (keydown.enter)="cancel()"
-      (keydown.space)="cancel()"
-      >Cancel</a
-    >
-    <button
-      type="submit"
-      mat-raised-button
-      color="primary"
-      [disabled]="form.invalid || validatingUpload || resolvingPlaceIds">
-      OK
-    </button>
   </div>
 </form>

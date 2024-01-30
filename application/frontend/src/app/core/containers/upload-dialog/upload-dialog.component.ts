@@ -9,12 +9,14 @@
 
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import {
+  FormGroupDirective,
+  NgForm,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
   ValidationErrors,
 } from '@angular/forms';
-import { MatDialogRef, MatDialogState } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MatDialogState } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { merge } from 'lodash';
@@ -26,16 +28,37 @@ import { IWaypoint } from '../../models/dispatcher.model';
 import * as fromConfig from '../../selectors/config.selectors';
 import { DispatcherService, FileService, PlacesService, UploadService } from '../../services';
 import { toDispatcherLatLng } from 'src/app/util';
+import { ScenarioSolutionHelpDialogComponent } from 'src/app/core/containers/scenario-solution-help-dialog/scenario-solution-help-dialog.component';
+import { UploadActions } from '../../actions';
+import { CsvHelpDialogComponent } from '../csv-help-dialog/csv-help-dialog.component';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+class FileUploadErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
+    const invalid =
+      ngForm?.errors?.required ||
+      ngForm.errors?.zipContents ||
+      ngForm.errors?.fileFormat ||
+      ngForm.errors?.requestFormat ||
+      control?.invalid;
+    const show = ngForm?.touched && ngForm?.dirty;
+    return !!(invalid && show);
+  }
+}
 
 @Component({
   selector: 'app-upload-dialog',
   templateUrl: './upload-dialog.component.html',
-  styleUrls: ['./upload-dialog.component.css'],
+  styleUrls: ['./upload-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UploadDialogComponent {
   @ViewChild('fileInput', { static: true }) fileInput: ElementRef<HTMLInputElement>;
 
+  readonly fileUploadErrorStateMatcher = new FileUploadErrorStateMatcher();
   readonly form: UntypedFormGroup;
   readonly fileName: UntypedFormControl;
   fileInvalid: boolean;
@@ -63,6 +86,7 @@ export class UploadDialogComponent {
   constructor(
     private store: Store<fromRoot.State>,
     private dialogRef: MatDialogRef<UploadDialogComponent>,
+    private dialog: MatDialog,
     private dispatcherService: DispatcherService,
     private fileService: FileService,
     private placesService: PlacesService,
@@ -73,6 +97,23 @@ export class UploadDialogComponent {
       fileName: (this.fileName = fb.control('', [this.fileValidator.bind(this)])),
     });
     this.messages$ = this.store.pipe(select(fromConfig.selectMessagesConfig));
+  }
+
+  openScenarioSolutionHelp(): void {
+    this.dialog.open(ScenarioSolutionHelpDialogComponent, {
+      maxWidth: '600px',
+    });
+  }
+
+  openCsvHelp(): void {
+    this.dialog.open(CsvHelpDialogComponent, {
+      maxWidth: '600px',
+    });
+  }
+
+  loadFromCsv(): void {
+    this.dialogRef.close();
+    this.store.dispatch(UploadActions.openCsvDialog({ openUploadDialogOnClose: true }));
   }
 
   cancel(): void {
@@ -90,7 +131,6 @@ export class UploadDialogComponent {
     if (!this.fileInput) {
       return;
     }
-
     this.fileInput.nativeElement.click();
     this.fileName.markAsTouched();
   }
@@ -99,7 +139,12 @@ export class UploadDialogComponent {
     (e.target as HTMLInputElement).value = null;
   }
 
+  onCancelSelectFile(): void {
+    this.fileName.markAsDirty();
+  }
+
   async fileSelected(e: Event): Promise<void> {
+    this.fileName.markAsDirty();
     const target = e.target as HTMLInputElement;
     const file = target && target.files && target.files[0];
     if (!file) {
@@ -125,6 +170,11 @@ export class UploadDialogComponent {
       this.scenario = null;
       this.fileName.setValue(file.name);
       this.validatingUpload = false;
+
+      if (!this.scenarioHasPlaceIds) {
+        this.solve();
+      }
+
       return;
     }
 
@@ -150,6 +200,10 @@ export class UploadDialogComponent {
     }
     this.validatingUpload = false;
     this.fileName.setValue(file.name);
+
+    if (!this.zipContentsInvalid && !this.fileInvalid && !this.scenarioHasPlaceIds) {
+      this.solve();
+    }
   }
 
   get scenarioHasPlaceIds(): boolean {
@@ -222,6 +276,10 @@ export class UploadDialogComponent {
       }
 
       this.resolvingPlaceIds = false;
+
+      if (!this.placeIdError) {
+        this.solve();
+      }
     }
   }
 
