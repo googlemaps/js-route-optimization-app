@@ -985,3 +985,12 @@ app-post-solve-map-legend .legend-panel mat-checkbox label .mat-checkbox-label {
   font-size: 16px;
   line-height: 24px;
 }
+
+.play-button .mat-button-wrapper {
+  position: relative;
+  top: -8px;
+
+  mat-icon svg {
+    height: 22px;
+  }
+}

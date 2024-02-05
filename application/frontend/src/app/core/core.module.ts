@@ -98,6 +98,7 @@ import { TransitionAttributesDialogComponent } from './components/transition-att
 import { PrecedenceRulesDialogComponent } from './components/precedence-rules-dialog/precedence-rules-dialog.component';
 import { ShipmentModelSettingsComponent } from './containers/shipment-model-settings/shipment-model-settings.component';
 import { PostSolveMapLegendComponent } from './components/post-solve-map-legend/post-solve-map-legend.component';
+import { TravelSimulatorComponent } from './containers/travel-simulator/travel-simulator.component';
 
 export const COMPONENTS = [
   BaseDocumentationDialogComponent,
@@ -155,6 +156,7 @@ export const CONTAINERS = [
   ShipmentsControlBarComponent,
   ShipmentsKpisComponent,
   StorageApiSaveLoadDialogComponent,
+  TravelSimulatorComponent,
   UploadDialogComponent,
   ValidationResultDialogComponent,
   VehicleInfoWindowComponent,

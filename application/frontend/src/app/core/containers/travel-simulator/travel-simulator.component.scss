@@ -1,0 +1,42 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 10px;
+}
+
+.simulator-toggle {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.simulator-contents {
+  margin-left: 20px;
+  gap: 20px;
+}
+
+.divider {
+  height: 24px;
+}
+
+.play-button {
+  box-shadow: none;
+  height: 24px;
+  width: 24px;
+
+  .mat-button-wrapper {
+    position: relative;
+    top: -4px;
+  }
+}
+
+.speed-container {
+  gap: 10px;
+
+  mat-radio-group {
+    display: flex;
+    gap: 10px;
+  }
+}

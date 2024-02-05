@@ -20,3 +20,4 @@
   (activeChange)="onToggleSelectMapItems($event)">
 </app-select-map-items-button>
 <app-zoom-home-button (zoomToHome)="onZoomToHome()" [disabled]="!bounds"></app-zoom-home-button>
+<app-travel-simulator *ngIf="travelSimulatorVisible$ | async"></app-travel-simulator>

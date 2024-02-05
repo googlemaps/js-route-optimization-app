@@ -45,6 +45,7 @@ import * as fromPostSolve from '../../selectors/post-solve.selectors';
 import * as fromPreSolve from '../../selectors/pre-solve.selectors';
 import * as fromUI from '../../selectors/ui.selectors';
 import { selectPage } from '../../selectors/ui.selectors';
+import TravelSimulatorSelectors from '../../selectors/travel-simulator.selectors';
 import {
   MATERIAL_COLORS,
   VehicleInfoWindowService,
@@ -71,6 +72,7 @@ export class MapComponent implements OnInit, OnDestroy {
   selectionFilterActive$: Observable<boolean>;
   timezoneOffset$: Observable<number>;
   layers$: Observable<{ [id in MapLayerId]?: MapLayer }>;
+  travelSimulatorVisible$: Observable<boolean>;
 
   get bounds(): google.maps.LatLngBounds {
     return this.mapService.bounds;
@@ -100,6 +102,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapSelectionToolsVisible$ = this.store.pipe(select(selectMapSelectionToolsVisible));
     this.selectionFilterActive$ = this.store.pipe(select(selectSelectionFilterActive));
     this.layers$ = this.store.pipe(select(fromMap.selectPostSolveMapLayers));
+    this.travelSimulatorVisible$ = this.store.pipe(
+      select(TravelSimulatorSelectors.selectTravelSimulatorVisible)
+    );
 
     this.subscriptions.push(
       this.store

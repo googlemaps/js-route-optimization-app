@@ -12,6 +12,24 @@
             </ng-container>
           </div>
         </div>
+        <div
+          #simulatorHandleContainer
+          class="simulator-handle-container"
+          [style.top]="top"
+          *ngIf="hasTravelSimulator">
+          <div class="relative-position-container">
+            <div
+              #simulatorHandle
+              class="simulator-handle"
+              [ngClass]="{ 'simulator-handle-drag': isDraggingSimulator }"
+              [style.left]="getSimulatorHandleLeft(simulatorHandle)"
+              (mousedown)="onSimulatorMouseDown($event)"></div>
+            <div
+              #simulatorHandleLine
+              class="simulator-handle-line"
+              [style.left]="getSimulatorHandleLeft(simulatorHandleLine)"></div>
+          </div>
+        </div>
         <div *ngIf="hasMarker" class="marker-handle-container" [style.top]="top">
           <div class="relative-position-container">
             <div
@@ -46,6 +64,14 @@
             #markerLine
             class="marker-line"
             [style.left]="getMarkerElementLeft(markerLine)"></div>
+        </div>
+      </div>
+      <div *ngIf="hasTravelSimulator" class="simulator-line-container">
+        <div class="relative-position-container">
+          <div
+            #simulatorLine
+            class="simulator-line"
+            [style.left]="getSimulatorHandleLeft(simulatorLine)"></div>
         </div>
       </div>
     </div>

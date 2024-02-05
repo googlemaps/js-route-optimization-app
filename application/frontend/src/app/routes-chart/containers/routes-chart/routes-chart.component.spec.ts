@@ -28,6 +28,7 @@ import { ChartColumnLabelFormatter, UnitStep } from 'src/app/shared/models';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { RoutesChartComponent } from './routes-chart.component';
+import TravelSimulatorSelectors from 'src/app/core/selectors/travel-simulator.selectors';
 
 @Component({
   selector: 'app-point-of-interest-drag',
@@ -48,6 +49,8 @@ class MockBaseRoutesChartComponent {
   @Input() nextRangeOffset: number;
   @Input() previousRangeOffset: number;
   @Input() timezoneOffset: number;
+  @Input() travelSimulatorActive: boolean;
+  @Input() travelSimulatorValue: number;
   @Output() selectPreviousRangeOffset = new EventEmitter<number>();
   @Output() selectNextRangeOffset = new EventEmitter<number>();
 }
@@ -91,6 +94,8 @@ describe('RoutesChartComponent', () => {
             },
             { selector: fromConfig.selectTimezoneOffset, value: 0 },
             { selector: fromPointsOfInterest.selectIsDragging, value: null },
+            { selector: TravelSimulatorSelectors.selectActive, value: false },
+            { selector: TravelSimulatorSelectors.selectTime, value: 0 },
           ],
         }),
       ],

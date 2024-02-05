@@ -1,0 +1,30 @@
+<div class="d-flex align-items-center">
+  <mat-slide-toggle [checked]="active$ | async" (change)="onToggleActive($event)" color="primary">
+    Travel simulator
+  </mat-slide-toggle>
+  <div *ngIf="active$ | async" class="d-flex align-items-center simulator-contents">
+    <mat-divider [vertical]="true" class="divider"></mat-divider>
+    <button
+      mat-mini-fab
+      color="primary"
+      class="play-button"
+      type="button"
+      [disabled]="!(active$ | async)"
+      (click)="animating ? onEndAnimate() : onBeginAnimate()">
+      <mat-icon [svgIcon]="animating ? 'pause' : 'play'"></mat-icon>
+    </button>
+    <mat-divider [vertical]="true" class="divider"></mat-divider>
+    <div class="d-flex align-items-center speed-container">
+      <div>Speed:</div>
+      <mat-radio-group
+        aria-label="Animation speed"
+        color="primary"
+        [(ngModel)]="animationSpeedMultiple">
+        <mat-radio-button [value]="0.5">0.5x</mat-radio-button>
+        <mat-radio-button [value]="1">1x</mat-radio-button>
+        <mat-radio-button [value]="3">3x</mat-radio-button>
+        <mat-radio-button [value]="5">5x</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+</div>

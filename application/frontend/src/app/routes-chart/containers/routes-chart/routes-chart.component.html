@@ -7,8 +7,11 @@
   [previousRangeOffset]="previousRangeOffset$ | async"
   [nextRangeOffset]="nextRangeOffset$ | async"
   [timezoneOffset]="timezoneOffset$ | async"
+  [travelSimulatorActive]="travelSimulatorActive$ | async"
+  [travelSimulatorValue]="travelSimulatorValue$ | async"
   (selectPreviousRangeOffset)="onSelectPreviousRangeOffset($event)"
   (selectNextRangeOffset)="onSelectNextRangeOffset($event)"
+  (setTravelSimulatorValue)="onSetTravelSimulatorValue($event)"
   #routesChart>
 </app-base-routes-chart>
 <div class="footer-container">

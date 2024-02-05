@@ -22,6 +22,7 @@ import { MockInfoWindowService, MockLayerService } from 'src/test/service-mocks'
 import * as fromConfig from '../../selectors/config.selectors';
 import * as fromMap from '../../selectors/map.selectors';
 import * as fromUI from '../../selectors/ui.selectors';
+import TravelSimulatorSelectors from '../../selectors/travel-simulator.selectors';
 import {
   DepotLayer,
   MapService,
@@ -81,6 +82,12 @@ class MockPostSolveMapLegendComponent {
   @Output() setLayerVisibility = new EventEmitter<{ layerId: MapLayerId; visible: boolean }>();
 }
 
+@Component({
+  selector: 'app-travel-simulator',
+  template: '',
+})
+class MockTravelSimulatorComponent {}
+
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
@@ -99,6 +106,7 @@ describe('MapComponent', () => {
         MockMapWrapperComponent,
         MockZoomHomeButtonComponent,
         MockPostSolveMapLegendComponent,
+        MockTravelSimulatorComponent,
         MapComponent,
       ],
       providers: [
@@ -119,6 +127,7 @@ describe('MapComponent', () => {
             { selector: fromUI.selectPage, value: null },
             { selector: fromUI.selectHasMap, value: false },
             { selector: fromConfig.selectTimezoneOffset, value: 0 },
+            { selector: TravelSimulatorSelectors.selectTravelSimulatorVisible, value: false },
           ],
         }),
       ],
