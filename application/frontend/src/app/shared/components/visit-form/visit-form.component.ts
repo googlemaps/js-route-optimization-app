@@ -19,7 +19,12 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import * as Long from 'long';
 import { asyncScheduler, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith, throttleTime } from 'rxjs/operators';
@@ -55,17 +60,17 @@ export class VisitFormComponent implements OnChanges, OnInit, OnDestroy {
   @Input() timezoneOffset = 0;
   @Input() globalDuration: [Long, Long];
 
-  readonly form: FormGroup;
+  readonly form: UntypedFormGroup;
   readonly optionItemSize = 48;
-  readonly pickupStartDateCtrl: FormControl;
-  readonly pickupStartTimeCtrl: FormControl;
-  readonly pickupEndDateCtrl: FormControl;
-  readonly pickupEndTimeCtrl: FormControl;
-  readonly deliveryStartDateCtrl: FormControl;
-  readonly deliveryStartTimeCtrl: FormControl;
-  readonly deliveryEndDateCtrl: FormControl;
-  readonly deliveryEndTimeCtrl: FormControl;
-  readonly vehicleCtrl: FormControl;
+  readonly pickupStartDateCtrl: UntypedFormControl;
+  readonly pickupStartTimeCtrl: UntypedFormControl;
+  readonly pickupEndDateCtrl: UntypedFormControl;
+  readonly pickupEndTimeCtrl: UntypedFormControl;
+  readonly deliveryStartDateCtrl: UntypedFormControl;
+  readonly deliveryStartTimeCtrl: UntypedFormControl;
+  readonly deliveryEndDateCtrl: UntypedFormControl;
+  readonly deliveryEndTimeCtrl: UntypedFormControl;
+  readonly vehicleCtrl: UntypedFormControl;
 
   pickupWarnings: VisitValidationResult;
   deliveryWarnings: VisitValidationResult;
@@ -82,7 +87,7 @@ export class VisitFormComponent implements OnChanges, OnInit, OnDestroy {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     @Optional() private validationService: ValidationService
   ) {
     this.form = this.fb.group({
@@ -320,7 +325,7 @@ export class VisitFormComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  private vehicleValidator(control: FormControl): { [error: string]: boolean } {
+  private vehicleValidator(control: UntypedFormControl): { [error: string]: boolean } {
     return typeof control.value === 'string' ? { invalid: true } : null;
   }
 }

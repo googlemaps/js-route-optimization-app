@@ -8,7 +8,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
@@ -18,7 +18,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 })
 export class DurationMinSecFormComponent {
   @Input() appearance = 'legacy';
-  @Input() parentFormGroup: FormGroup;
+  @Input() parentFormGroup: UntypedFormGroup;
   @Input() errorStateMatcher: ErrorStateMatcher;
   @Input() labelName: string;
   @Input() showUnset: boolean;

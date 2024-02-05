@@ -14,7 +14,7 @@ RUN npm install -g json-merger && \
 
 COPY frontend/ .
 ARG configuration=production
-RUN npm run build -- --outputPath=./dist/out --configuration $configuration
+RUN npm run build -- --output-path=./dist/out --configuration $configuration
 
 # build backend
 FROM node:16-alpine

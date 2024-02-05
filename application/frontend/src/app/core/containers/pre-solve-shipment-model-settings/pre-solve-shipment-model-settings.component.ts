@@ -10,10 +10,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
@@ -94,26 +94,26 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
 
   updatedShipmentModelSettings: NormalizedShipmentModel = {};
 
-  get globalDurationCostPerHourControl(): FormControl {
-    return this.form.get('globalDurationCostPerHour') as FormControl;
+  get globalDurationCostPerHourControl(): UntypedFormControl {
+    return this.form.get('globalDurationCostPerHour') as UntypedFormControl;
   }
-  get maxActiveVehicles(): FormControl {
-    return this.form.get('maxActiveVehicles') as FormControl;
+  get maxActiveVehicles(): UntypedFormControl {
+    return this.form.get('maxActiveVehicles') as UntypedFormControl;
   }
-  get globalStartDate(): FormControl {
-    return this.form.get('globalStartDate') as FormControl;
+  get globalStartDate(): UntypedFormControl {
+    return this.form.get('globalStartDate') as UntypedFormControl;
   }
-  get globalStartTime(): FormControl {
-    return this.form.get('globalStartTime') as FormControl;
+  get globalStartTime(): UntypedFormControl {
+    return this.form.get('globalStartTime') as UntypedFormControl;
   }
-  get globalEndDate(): FormControl {
-    return this.form.get('globalEndDate') as FormControl;
+  get globalEndDate(): UntypedFormControl {
+    return this.form.get('globalEndDate') as UntypedFormControl;
   }
-  get globalEndTime(): FormControl {
-    return this.form.get('globalEndTime') as FormControl;
+  get globalEndTime(): UntypedFormControl {
+    return this.form.get('globalEndTime') as UntypedFormControl;
   }
-  get shipmentTypeIncompatsControl(): FormArray {
-    return this.form.get('shipmentTypeIncompatibilities') as FormArray;
+  get shipmentTypeIncompatsControl(): UntypedFormArray {
+    return this.form.get('shipmentTypeIncompatibilities') as UntypedFormArray;
   }
 
   startAt(): { startAt: Date } {
@@ -132,7 +132,7 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
 
   private createShipmentTypeIncompatsFormGroup(
     value: IShipmentTypeIncompatibility = null
-  ): FormGroup {
+  ): UntypedFormGroup {
     return this.fb.group(
       {
         types: [value?.types || [], [Validators.required, Validators.minLength(2)]],
@@ -142,11 +142,13 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
     );
   }
 
-  get shipmentTypeReqsControl(): FormArray {
-    return this.form.get('shipmentTypeRequirements') as FormArray;
+  get shipmentTypeReqsControl(): UntypedFormArray {
+    return this.form.get('shipmentTypeRequirements') as UntypedFormArray;
   }
 
-  private createShipmentTypeReqsFormGroup(value: IShipmentTypeRequirement = null): FormGroup {
+  private createShipmentTypeReqsFormGroup(
+    value: IShipmentTypeRequirement = null
+  ): UntypedFormGroup {
     return this.fb.group(
       {
         requiredShipmentTypeAlternatives: [
@@ -160,11 +162,11 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
     );
   }
 
-  get precedenceRulesControl(): FormArray {
-    return this.form.get('precedenceRules') as FormArray;
+  get precedenceRulesControl(): UntypedFormArray {
+    return this.form.get('precedenceRules') as UntypedFormArray;
   }
 
-  private createPrecedenceRulesFormGroup(value: IPrecedenceRule = null): FormGroup {
+  private createPrecedenceRulesFormGroup(value: IPrecedenceRule = null): UntypedFormGroup {
     return this.fb.group(
       {
         firstIndex: [value?.firstIndex, Validators.required],
@@ -177,11 +179,11 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
     );
   }
 
-  get transitionAttributesControl(): FormArray {
-    return this.form.get('transitionAttributes') as FormArray;
+  get transitionAttributesControl(): UntypedFormArray {
+    return this.form.get('transitionAttributes') as UntypedFormArray;
   }
 
-  private createTransitionAttributesFormGroup(value?: ITransitionAttributes): FormGroup {
+  private createTransitionAttributesFormGroup(value?: ITransitionAttributes): UntypedFormGroup {
     const durationMinSec = durationMinutesSeconds(value?.delay);
 
     return this.fb.group(
@@ -226,7 +228,7 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
   parseInt = parseInt;
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   private readonly subscriptions: Subscription[] = [];
   scenarioShipmentTypes: string[] = []; // shipment types anywhere in the scenario
@@ -234,7 +236,7 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
 
   scenarioShipments$ = new BehaviorSubject<Shipment[]>([]);
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor(private fb: UntypedFormBuilder, private store: Store) {
     this.initForm();
 
     // global duration cost per hour
@@ -368,13 +370,13 @@ export class PreSolveShipmentModelSettingsComponent implements OnInit, OnDestroy
       globalStartTime: [null, [Validators.required, timeStringValidator]],
       globalEndDate: [null, Validators.required],
       globalEndTime: [null, [Validators.required, timeStringValidator]],
-      precedenceRules: this.fb.array([], (formArray: FormArray) =>
+      precedenceRules: this.fb.array([], (formArray: UntypedFormArray) =>
         noDuplicateFormArrayValuesValidator(formArray)
       ),
-      shipmentTypeIncompatibilities: this.fb.array([], (formArray: FormArray) =>
+      shipmentTypeIncompatibilities: this.fb.array([], (formArray: UntypedFormArray) =>
         noDuplicateFormArrayValuesValidator(formArray)
       ),
-      shipmentTypeRequirements: this.fb.array([], (formArray: FormArray) =>
+      shipmentTypeRequirements: this.fb.array([], (formArray: UntypedFormArray) =>
         noDuplicateFormArrayValuesValidator(formArray)
       ),
       transitionAttributes: this.fb.array([]),

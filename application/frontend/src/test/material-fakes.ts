@@ -20,7 +20,7 @@ export class FakeMatIconRegistry {
     return EMPTY;
   }
 
-  getDefaultFontSetClass(): string {
-    return '';
+  getDefaultFontSetClass(): string[] {
+    return [];
   }
 }
