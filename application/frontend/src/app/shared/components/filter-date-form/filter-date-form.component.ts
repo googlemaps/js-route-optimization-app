@@ -18,7 +18,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as Long from 'long';
 import { Subscription } from 'rxjs';
@@ -63,19 +63,23 @@ export class FilterDateFormComponent implements FilterForm, OnInit, OnDestroy {
     return this.operationCtrl.value !== DateFilterOperation.Between ? 'Date' : 'Min Date';
   }
 
-  readonly form: FormGroup;
-  readonly operationCtrl: FormControl;
-  readonly dateCtrl: FormControl;
-  readonly timeCtrl: FormControl;
-  readonly date2Ctrl: FormControl;
-  readonly time2Ctrl: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly operationCtrl: UntypedFormControl;
+  readonly dateCtrl: UntypedFormControl;
+  readonly timeCtrl: UntypedFormControl;
+  readonly date2Ctrl: UntypedFormControl;
+  readonly time2Ctrl: UntypedFormControl;
   readonly operations = Object.entries(DateFilterOperation)
     .map(([_, value]) => value)
     .sort();
   private timezoneOffset = 0;
   private subscription: Subscription;
 
-  constructor(@Inject(LOCALE_ID) private locale: string, private store: Store, fb: FormBuilder) {
+  constructor(
+    @Inject(LOCALE_ID) private locale: string,
+    private store: Store,
+    fb: UntypedFormBuilder
+  ) {
     this.form = fb.group({
       operation: (this.operationCtrl = fb.control(DateFilterOperation.Equal)),
       date: (this.dateCtrl = fb.control(null, this.valueValidator)),
@@ -228,7 +232,7 @@ export class FilterDateFormComponent implements FilterForm, OnInit, OnDestroy {
     });
   }
 
-  private valueValidator(control: FormControl): { [error: string]: boolean } {
+  private valueValidator(control: UntypedFormControl): { [error: string]: boolean } {
     const value = control.value as number;
     if (!value?.toString().trim().length) {
       return { required: true };

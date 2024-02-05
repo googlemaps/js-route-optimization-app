@@ -20,10 +20,10 @@ import {
 } from '@angular/core';
 import {
   ControlContainer,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
 } from '@angular/forms';
@@ -48,7 +48,10 @@ import {
 import { timeStringValidator } from 'src/app/util/validators';
 
 class StartErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid = ngForm?.errors && ngForm.errors.startIncomplete;
     const invalid = control?.invalid || groupInvalid;
     const show =
@@ -61,7 +64,10 @@ class StartErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class EndErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid =
       ngForm?.errors &&
       (ngForm.errors.endDate || ngForm.errors.endTime || ngForm.errors.endIncomplete);
@@ -78,7 +84,10 @@ class EndErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class SoftStartErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid =
       ngForm?.errors && (ngForm.errors.softStart || ngForm.errors.softStartIncomplete);
     const invalid = control?.invalid || groupInvalid;
@@ -94,7 +103,10 @@ class SoftStartErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class SoftEndErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid =
       ngForm?.errors &&
       (ngForm.errors.softEnd ||
@@ -142,21 +154,21 @@ export class TimeWindowComponent implements OnChanges, OnInit, OnDestroy {
   @Input() hideHeader = false;
   @Output() remove = new EventEmitter<void>();
 
-  get form(): FormGroup {
+  get form(): UntypedFormGroup {
     return this._form;
   }
-  private _form: FormGroup;
+  private _form: UntypedFormGroup;
 
-  startDate: FormControl;
-  startTime: FormControl;
-  endDate: FormControl;
-  endTime: FormControl;
-  softStartDate: FormControl;
-  softStartTime: FormControl;
-  softEndDate: FormControl;
-  softEndTime: FormControl;
-  earlinessPenalty: FormControl;
-  latenessPenalty: FormControl;
+  startDate: UntypedFormControl;
+  startTime: UntypedFormControl;
+  endDate: UntypedFormControl;
+  endTime: UntypedFormControl;
+  softStartDate: UntypedFormControl;
+  softStartTime: UntypedFormControl;
+  softEndDate: UntypedFormControl;
+  softEndTime: UntypedFormControl;
+  earlinessPenalty: UntypedFormControl;
+  latenessPenalty: UntypedFormControl;
   readonly startErrorStateMatcher = new StartErrorStateMatcher();
   readonly endErrorStateMatcher = new EndErrorStateMatcher();
   readonly softStartErrorStateMatcher = new SoftStartErrorStateMatcher();
@@ -187,7 +199,11 @@ export class TimeWindowComponent implements OnChanges, OnInit, OnDestroy {
 
   constructor(public controlContainer: ControlContainer) {}
 
-  static createFormGroup(fb: FormBuilder, timezoneOffset?: number, timeWindows?: any): FormGroup {
+  static createFormGroup(
+    fb: UntypedFormBuilder,
+    timezoneOffset?: number,
+    timeWindows?: any
+  ): UntypedFormGroup {
     return fb.group({
       startDate: timeWindows?.startTime
         ? timeToDate(Long.fromValue(timeWindows.startTime.seconds), timezoneOffset)
@@ -243,14 +259,14 @@ export class TimeWindowComponent implements OnChanges, OnInit, OnDestroy {
    * Only produces time windows that have some time specification, and sorts them
    * ascending.
    */
-  static createTimeWindows(formArray: FormArray, timezoneOffset: number): ITimeWindow[] {
+  static createTimeWindows(formArray: UntypedFormArray, timezoneOffset: number): ITimeWindow[] {
     return formArray.controls
-      .map((form: FormGroup) => TimeWindowComponent.createTimeWindow(form, timezoneOffset))
+      .map((form: UntypedFormGroup) => TimeWindowComponent.createTimeWindow(form, timezoneOffset))
       .filter(timeWindowHasTime)
       .sort(compareTimeWindows);
   }
 
-  static createTimeWindow(form: FormGroup, timezoneOffset: number): ITimeWindow {
+  static createTimeWindow(form: UntypedFormGroup, timezoneOffset: number): ITimeWindow {
     const startTime = localDateTimeToUtcSeconds(
       form.get('startDate').value,
       form.get('startTime').value,
@@ -298,17 +314,17 @@ export class TimeWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._form = this.controlContainer.control as FormGroup;
-    this.startDate = this.form.get('startDate') as FormControl;
-    this.startTime = this.form.get('startTime') as FormControl;
-    this.endDate = this.form.get('endDate') as FormControl;
-    this.endTime = this.form.get('endTime') as FormControl;
-    this.softStartDate = this.form.get('softStartDate') as FormControl;
-    this.softStartTime = this.form.get('softStartTime') as FormControl;
-    this.softEndDate = this.form.get('softEndDate') as FormControl;
-    this.softEndTime = this.form.get('softEndTime') as FormControl;
-    this.earlinessPenalty = this.form.get('earlinessPenalty') as FormControl;
-    this.latenessPenalty = this.form.get('latenessPenalty') as FormControl;
+    this._form = this.controlContainer.control as UntypedFormGroup;
+    this.startDate = this.form.get('startDate') as UntypedFormControl;
+    this.startTime = this.form.get('startTime') as UntypedFormControl;
+    this.endDate = this.form.get('endDate') as UntypedFormControl;
+    this.endTime = this.form.get('endTime') as UntypedFormControl;
+    this.softStartDate = this.form.get('softStartDate') as UntypedFormControl;
+    this.softStartTime = this.form.get('softStartTime') as UntypedFormControl;
+    this.softEndDate = this.form.get('softEndDate') as UntypedFormControl;
+    this.softEndTime = this.form.get('softEndTime') as UntypedFormControl;
+    this.earlinessPenalty = this.form.get('earlinessPenalty') as UntypedFormControl;
+    this.latenessPenalty = this.form.get('latenessPenalty') as UntypedFormControl;
     this.form.setValidators(this.timeWindowValidator.bind(this));
     this.updateDisabledState();
 
@@ -366,7 +382,7 @@ export class TimeWindowComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
-  private timeWindowValidator(control: FormGroup): { [error: string]: boolean } {
+  private timeWindowValidator(control: UntypedFormGroup): { [error: string]: boolean } {
     const errors: { [key: string]: boolean } = {};
     const startDate = control.get('startDate').value as Date;
     const endDate = control.get('endDate').value as Date;

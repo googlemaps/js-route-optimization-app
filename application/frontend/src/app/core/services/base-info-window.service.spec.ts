@@ -7,13 +7,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import {
-  ApplicationRef,
-  Component,
-  ComponentFactoryResolver,
-  Injectable,
-  Injector,
-} from '@angular/core';
+import { ApplicationRef, Component, EnvironmentInjector, Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { BaseInfoWindowService } from './base-info-window.service';
@@ -28,12 +22,8 @@ class MockComponent {}
   providedIn: 'root',
 })
 class MockBaseInfoWindowService extends BaseInfoWindowService<MockComponent> {
-  constructor(
-    injector: Injector,
-    resolver: ComponentFactoryResolver,
-    applicationRef: ApplicationRef
-  ) {
-    super(injector, resolver, applicationRef);
+  constructor(injector: EnvironmentInjector, applicationRef: ApplicationRef) {
+    super(injector, applicationRef);
   }
 }
 

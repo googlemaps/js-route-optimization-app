@@ -14,7 +14,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { take, withLatestFrom } from 'rxjs/operators';
@@ -43,12 +43,12 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditGlobalRelaxationConstraintsDialogComponent implements OnInit, OnChanges {
-  get formConstraintRelaxations(): FormArray {
-    return this.form.get('constraintRelaxations') as FormArray;
+  get formConstraintRelaxations(): UntypedFormArray {
+    return this.form.get('constraintRelaxations') as UntypedFormArray;
   }
 
   currentTimezoneOffset: number;
-  form: FormGroup;
+  form: UntypedFormGroup;
   globalStartSeconds: Long;
   globalEndSeconds: Long;
 
@@ -56,7 +56,7 @@ export class EditGlobalRelaxationConstraintsDialogComponent implements OnInit, O
 
   constructor(
     private dialogRef: MatDialogRef<EditGlobalRelaxationConstraintsDialogComponent>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private store: Store
   ) {
     this.form = this.fb.group({

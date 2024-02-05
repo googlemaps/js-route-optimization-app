@@ -9,7 +9,7 @@
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material';
 import { ShipmentFormComponent } from './shipment-form.component';
@@ -33,7 +33,7 @@ class MockCapacityQuantityFormComponent {
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
-  @Input() parentFormGroup: FormGroup;
+  @Input() parentFormGroup: UntypedFormGroup;
   @Input() errorStateMatcher: ErrorStateMatcher;
   @Input() labelName: string;
   @Input() showUnset: boolean;

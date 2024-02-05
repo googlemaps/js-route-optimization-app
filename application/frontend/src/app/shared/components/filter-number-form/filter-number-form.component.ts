@@ -17,7 +17,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { setControlDisabled } from 'src/app/util';
 import {
   ActiveFilter,
@@ -48,15 +48,15 @@ export class FilterNumberFormComponent implements FilterForm, OnInit {
     return this.operationCtrl.value !== NumberFilterOperation.Between ? 'Value' : 'Min Value';
   }
 
-  readonly form: FormGroup;
-  readonly operationCtrl: FormControl;
-  readonly valueCtrl: FormControl;
-  readonly value2Ctrl: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly operationCtrl: UntypedFormControl;
+  readonly valueCtrl: UntypedFormControl;
+  readonly value2Ctrl: UntypedFormControl;
   readonly operations = Object.entries(NumberFilterOperation)
     .map(([_, value]) => value)
     .sort();
 
-  constructor(@Inject(LOCALE_ID) private locale: string, fb: FormBuilder) {
+  constructor(@Inject(LOCALE_ID) private locale: string, fb: UntypedFormBuilder) {
     this.form = fb.group({
       operation: (this.operationCtrl = fb.control(NumberFilterOperation.Equal)),
       value: (this.valueCtrl = fb.control(null, this.valueValidator)),
@@ -91,7 +91,7 @@ export class FilterNumberFormComponent implements FilterForm, OnInit {
     return this.form.value;
   }
 
-  private valueValidator(control: FormControl): { [error: string]: boolean } {
+  private valueValidator(control: UntypedFormControl): { [error: string]: boolean } {
     const value = control.value as number;
     if (!value?.toString().trim().length) {
       return { required: true };

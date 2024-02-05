@@ -17,7 +17,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ControlContainer, FormArray } from '@angular/forms';
+import { ControlContainer, UntypedFormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { RelaxationLevel } from 'src/app/core/models';
 import { RelaxationLevelNames } from 'src/app/util';
@@ -38,7 +38,7 @@ export class InjectedRelaxationConstraintsFormComponent implements OnDestroy, On
   RelaxationLevelNames = RelaxationLevelNames;
   relaxationLevelKeys = Object.keys(this.RelaxationLevelNames).slice(1);
 
-  control: FormArray;
+  control: UntypedFormArray;
   changeSub: Subscription;
 
   constructor(
@@ -47,7 +47,7 @@ export class InjectedRelaxationConstraintsFormComponent implements OnDestroy, On
   ) {}
 
   ngOnInit(): void {
-    this.control = this.controlContainer?.control as FormArray;
+    this.control = this.controlContainer?.control as UntypedFormArray;
     this.changeSub = this.control?.valueChanges.subscribe(() => {
       this.changeDetector.detectChanges();
     });

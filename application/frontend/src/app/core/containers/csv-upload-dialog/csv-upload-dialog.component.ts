@@ -19,9 +19,9 @@ import {
   OnDestroy,
 } from '@angular/core';
 import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl,
+  UntypedFormBuilder,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -53,7 +53,10 @@ import { CsvVisitRequestLayer } from '../../services/csv-visit-request-layer.ser
 import { CsvService } from '../../services/csv.service';
 
 class ShipmentPickupLocationErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.missingPickupLocation ||
       ngForm?.errors?.pickupOrDeliveryRequired ||
@@ -64,7 +67,10 @@ class ShipmentPickupLocationErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentDeliveryLocationErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.missingDeliveryLocation ||
       ngForm?.errors?.pickupOrDeliveryRequired ||
@@ -75,7 +81,10 @@ class ShipmentDeliveryLocationErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentPickupSoftStartTimeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.pickupSoftStartTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -83,7 +92,10 @@ class ShipmentPickupSoftStartTimeErrorStateMatcher implements ErrorStateMatcher 
 }
 
 class ShipmentPickupSoftEndTimeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.pickupSoftEndTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -91,7 +103,10 @@ class ShipmentPickupSoftEndTimeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentDeliverySoftStartTimeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.deliverySoftStartTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -99,7 +114,10 @@ class ShipmentDeliverySoftStartTimeErrorStateMatcher implements ErrorStateMatche
 }
 
 class ShipmentDeliverySoftEndTimeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.deliverySoftEndTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -107,7 +125,10 @@ class ShipmentDeliverySoftEndTimeErrorStateMatcher implements ErrorStateMatcher 
 }
 
 class ShipmentLoadDemand1TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand1Type || control?.invalid || ngForm?.errors?.loadDemand1Value;
     const show = ngForm;
@@ -116,7 +137,10 @@ class ShipmentLoadDemand1TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand2TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand2Type || control?.invalid || ngForm?.errors?.loadDemand2Value;
     const show = ngForm;
@@ -125,7 +149,10 @@ class ShipmentLoadDemand2TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand3TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand3Type || control?.invalid || ngForm?.errors?.loadDemand3Value;
     const show = ngForm;
@@ -134,7 +161,10 @@ class ShipmentLoadDemand3TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand4TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand4Type || control?.invalid || ngForm?.errors?.loadDemand4Value;
     const show = ngForm;
@@ -143,7 +173,10 @@ class ShipmentLoadDemand4TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand1ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand1Value || control?.invalid || ngForm?.errors?.loadDemand1Type;
     const show = ngForm;
@@ -152,7 +185,10 @@ class ShipmentLoadDemand1ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand2ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand2Value || control?.invalid || ngForm?.errors?.loadDemand2Type;
     const show = ngForm;
@@ -161,7 +197,10 @@ class ShipmentLoadDemand2ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand3ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand3Value || control?.invalid || ngForm?.errors?.loadDemand3Type;
     const show = ngForm;
@@ -170,7 +209,10 @@ class ShipmentLoadDemand3ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand4ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand4Value || control?.invalid || ngForm?.errors?.loadDemand4Type;
     const show = ngForm;
@@ -179,7 +221,10 @@ class ShipmentLoadDemand4ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit1TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit1Type || control?.invalid || ngForm?.errors?.loadLimit1Value;
     const show = ngForm;
@@ -188,7 +233,10 @@ class VehicleLoadLimit1TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit2TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit2Type || control?.invalid || ngForm?.errors?.loadLimit2Value;
     const show = ngForm;
@@ -197,7 +245,10 @@ class VehicleLoadLimit2TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit3TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit3Type || control?.invalid || ngForm?.errors?.loadLimit3Value;
     const show = ngForm;
@@ -206,7 +257,10 @@ class VehicleLoadLimit3TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit4TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit4Type || control?.invalid || ngForm?.errors?.loadLimit4Value;
     const show = ngForm;
@@ -215,7 +269,10 @@ class VehicleLoadLimit4TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit1ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit1Value || control?.invalid || ngForm?.errors?.loadLimit1Type;
     const show = ngForm;
@@ -224,7 +281,10 @@ class VehicleLoadLimit1ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit2ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit2Value || control?.invalid || ngForm?.errors?.loadLimit2Type;
     const show = ngForm;
@@ -233,7 +293,10 @@ class VehicleLoadLimit2ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit3ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit3Value || control?.invalid || ngForm?.errors?.loadLimit3Type;
     const show = ngForm;
@@ -242,7 +305,10 @@ class VehicleLoadLimit3ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit4ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit4Value || control?.invalid || ngForm?.errors?.loadLimit4Type;
     const show = ngForm;
@@ -251,7 +317,10 @@ class VehicleLoadLimit4ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleStartTimeWindowSoftStartErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.startWindowSoftStartTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -259,7 +328,10 @@ class VehicleStartTimeWindowSoftStartErrorStateMatcher implements ErrorStateMatc
 }
 
 class VehicleStartTimeWindowSoftEndErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.startWindowSoftEndTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -267,7 +339,10 @@ class VehicleStartTimeWindowSoftEndErrorStateMatcher implements ErrorStateMatche
 }
 
 class VehicleEndTimeWindowSoftStartErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.endWindowSoftStartTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -275,7 +350,10 @@ class VehicleEndTimeWindowSoftStartErrorStateMatcher implements ErrorStateMatche
 }
 
 class VehicleEndTimeWindowSoftEndErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.endWindowSoftEndTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -283,7 +361,10 @@ class VehicleEndTimeWindowSoftEndErrorStateMatcher implements ErrorStateMatcher 
 }
 
 class VehicleRequiredOperatorType1ErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.requiredOperatorType1 || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -291,7 +372,10 @@ class VehicleRequiredOperatorType1ErrorStateMatcher implements ErrorStateMatcher
 }
 
 class VehicleRequiredOperatorType2ErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.requiredOperatorType2 || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -299,7 +383,10 @@ class VehicleRequiredOperatorType2ErrorStateMatcher implements ErrorStateMatcher
 }
 
 class VehicleRequiredOperatorType3ErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.requiredOperatorType3 || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -307,7 +394,10 @@ class VehicleRequiredOperatorType3ErrorStateMatcher implements ErrorStateMatcher
 }
 
 class VehicleOperatorTypeRequiredErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.Type || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -328,18 +418,18 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
   vehicleOperatorFileInput: ElementRef<HTMLInputElement>;
   @ViewChild('stepper') stepper: MatStepper;
 
-  get shipmentFilename(): FormControl {
-    return this.uploadForm.get('shipmentFilename') as FormControl;
+  get shipmentFilename(): UntypedFormControl {
+    return this.uploadForm.get('shipmentFilename') as UntypedFormControl;
   }
-  get vehicleFilename(): FormControl {
-    return this.uploadForm.get('vehicleFilename') as FormControl;
+  get vehicleFilename(): UntypedFormControl {
+    return this.uploadForm.get('vehicleFilename') as UntypedFormControl;
   }
-  get vehicleOperatorFilename(): FormControl {
-    return this.uploadForm.get('vehicleOperatorFilename') as FormControl;
+  get vehicleOperatorFilename(): UntypedFormControl {
+    return this.uploadForm.get('vehicleOperatorFilename') as UntypedFormControl;
   }
 
   readonly previewRows = 5;
-  readonly uploadForm: FormGroup;
+  readonly uploadForm: UntypedFormGroup;
 
   readonly shipmentPickupLocationErrorStateMatcher = new ShipmentPickupLocationErrorStateMatcher();
   readonly shipmentDeliveryLocationErrorStateMatcher =
@@ -419,9 +509,9 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
   isGeocoding: boolean;
   isLoadingCsv: boolean;
   isValidatingWithApi: boolean;
-  mappingFormShipments: FormGroup;
-  mappingFormVehicles: FormGroup;
-  mappingFormVehicleOperators: FormGroup;
+  mappingFormShipments: UntypedFormGroup;
+  mappingFormVehicles: UntypedFormGroup;
+  mappingFormVehicleOperators: UntypedFormGroup;
   shipmentPreviewCsvColumns: string[] = [];
   vehiclePreviewCsvColumns: string[] = [];
   vehicleOperatorPreviewCsvColumns: string[] = [];
@@ -440,7 +530,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
     private changeRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<CsvUploadDialogComponent>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private formMapService: FormMapService,
     private messageService: MessageService,
     private store: Store,

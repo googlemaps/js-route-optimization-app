@@ -8,7 +8,12 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material';
 import { DurationMinSecFormComponent } from './duration-min-sec-form.component';
@@ -25,9 +30,9 @@ describe('DurationMinSecFormComponent', () => {
 
     fixture = TestBed.createComponent(DurationMinSecFormComponent);
     component = fixture.componentInstance;
-    component.parentFormGroup = new FormGroup({
-      min: new FormControl([null, [Validators.min(0)]]),
-      sec: new FormControl([null, [Validators.min(0)]]),
+    component.parentFormGroup = new UntypedFormGroup({
+      min: new UntypedFormControl([null, [Validators.min(0)]]),
+      sec: new UntypedFormControl([null, [Validators.min(0)]]),
     });
     fixture.detectChanges();
   });

@@ -174,9 +174,10 @@
       }
     }
   },
-  "defaultProject": "fleetrouting-app",
   "cli": {
     "analytics": "4719daa3-cef3-48df-9165-97bc569220b4",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

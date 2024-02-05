@@ -8,14 +8,14 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlContainer, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { ControlContainer, UntypedFormArray, ReactiveFormsModule } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MaterialModule } from 'src/app/material';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 import { LoadLimitsFormComponent } from './load-limits-form.component';
 
-const controlContainer = new FormArray([]);
+const controlContainer = new UntypedFormArray([]);
 
 describe('LoadLimitsFormComponent', () => {
   let component: LoadLimitsFormComponent;

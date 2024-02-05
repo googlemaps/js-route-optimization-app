@@ -7,11 +7,11 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { FormArray } from '@angular/forms';
+import { UntypedFormArray } from '@angular/forms';
 import { detectTimeWindowOverlap, localDateTimeToUtcSeconds } from 'src/app/util';
 
 /** Overlap validator for form array of {@link TimeWindowComponent} time window form groups */
-export function overlapValidator(control: FormArray): { [error: string]: boolean } {
+export function overlapValidator(control: UntypedFormArray): { [error: string]: boolean } {
   if (control.length < 2) {
     return null;
   }

@@ -11,11 +11,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoadDemandsFormComponent } from './load-demands-form.component';
 import { MaterialModule } from 'src/app/material';
-import { ControlContainer, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { ControlContainer, UntypedFormArray, ReactiveFormsModule } from '@angular/forms';
 import { MatIconRegistry } from '@angular/material/icon';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
-const controlContainer = new FormArray([]);
+const controlContainer = new UntypedFormArray([]);
 
 describe('LoadDemandsFormComponent', () => {
   let component: LoadDemandsFormComponent;

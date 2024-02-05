@@ -18,7 +18,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
@@ -55,7 +55,7 @@ export class BaseVisitRequestInfoWindowComponent {
   @Output() vehicleAssignmentChange = new EventEmitter<Vehicle>();
 
   readonly VisitCategory = VisitCategory;
-  readonly vehicleCtrl: FormControl;
+  readonly vehicleCtrl: UntypedFormControl;
   readonly optionItemSize = 48;
 
   get visitCategory(): number {
@@ -78,7 +78,7 @@ export class BaseVisitRequestInfoWindowComponent {
 
   constructor(
     @Inject(LOCALE_ID) private locale: string,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public dialog: MatDialog
   ) {
     this.vehicleCtrl = this.fb.control(undefined);

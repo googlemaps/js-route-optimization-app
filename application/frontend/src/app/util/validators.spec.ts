@@ -7,7 +7,12 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+} from '@angular/forms';
 import {
   aLessThanB,
   aRequiredIfB,
@@ -28,27 +33,27 @@ import {
 import { RelaxationLevel } from '../core/models';
 
 describe('form', () => {
-  let formGroup: FormGroup;
-  let date: FormControl;
-  let time: FormControl;
-  let a: FormControl;
-  let b: FormControl;
-  let fb: FormBuilder;
-  let capacitiesControl: FormControl;
-  let extraDurationControl: FormControl;
-  let level: FormControl;
+  let formGroup: UntypedFormGroup;
+  let date: UntypedFormControl;
+  let time: UntypedFormControl;
+  let a: UntypedFormControl;
+  let b: UntypedFormControl;
+  let fb: UntypedFormBuilder;
+  let capacitiesControl: UntypedFormControl;
+  let extraDurationControl: UntypedFormControl;
+  let level: UntypedFormControl;
 
   beforeEach(() => {
-    fb = new FormBuilder();
-    a = new FormControl('');
-    b = new FormControl('');
+    fb = new UntypedFormBuilder();
+    a = new UntypedFormControl('');
+    b = new UntypedFormControl('');
   });
   it('should not have error if duration is within global start and end time - durationWithinGlobalStartEndTime', () => {
-    date = new FormControl('');
-    time = new FormControl('');
+    date = new UntypedFormControl('');
+    time = new UntypedFormControl('');
     date.setValue(new Date('July 14, 2019 00:00:00'));
     time.setValue('05:00');
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       {
         date,
         time,
@@ -61,11 +66,11 @@ describe('form', () => {
   });
 
   it('should have error if duration is not within global start and end time - durationWithinGlobalStartEndTime', () => {
-    date = new FormControl('');
-    time = new FormControl('');
+    date = new UntypedFormControl('');
+    time = new UntypedFormControl('');
     date.setValue(new Date('July 14, 2019 00:00:00'));
     time.setValue('05:00');
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       {
         date,
         time,
@@ -78,10 +83,10 @@ describe('form', () => {
   });
 
   it('should have error if no date / time / startTime / endTime - durationWithinGlobalStartEndTime', () => {
-    date = new FormControl('');
-    time = new FormControl('');
+    date = new UntypedFormControl('');
+    time = new UntypedFormControl('');
     time.setValue('05:00');
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       {
         date,
         time,
@@ -94,7 +99,7 @@ describe('form', () => {
   });
 
   it('should not have error if duration A less than B - durationALessThanB', () => {
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       {
         a: fb.group({
           min: [10],
@@ -113,7 +118,7 @@ describe('form', () => {
   });
 
   it('should have error if duration B less than A - durationALessThanB', () => {
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       {
         a: fb.group({
           min: [12],
@@ -133,7 +138,7 @@ describe('form', () => {
 
   it('should not have error if A is Required If Duration B - aRequiredIfDurationB', () => {
     a.setValue('aValue');
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       {
         a,
         b: fb.group({
@@ -150,7 +155,7 @@ describe('form', () => {
 
   it('should have error if A is Required If Duration B - aRequiredIfDurationB', () => {
     a.setValue(null);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       {
         a,
         b: fb.group({
@@ -168,7 +173,7 @@ describe('form', () => {
   it('should not have error if A is less than B - aLessThanB', () => {
     a.setValue(8);
     b.setValue(9);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [aLessThanB('a', 'b', 'aLessThanB', true)],
@@ -180,7 +185,7 @@ describe('form', () => {
   it('should have error if A is not less than B - aLessThanB', () => {
     a.setValue(9);
     b.setValue(8);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [aLessThanB('a', 'b', 'aLessThanB', true)],
@@ -192,7 +197,7 @@ describe('form', () => {
   it('should not have error if A has value if B - aRequiredIfB', () => {
     a.setValue(8);
     b.setValue(9);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [aRequiredIfB('a', 'b', 'aRequiredIfB')],
@@ -204,7 +209,7 @@ describe('form', () => {
   it('should have error if A is null if B - aRequiredIfB', () => {
     a.setValue(null);
     b.setValue(9);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [aRequiredIfB('a', 'b', 'aRequiredIfB')],
@@ -214,7 +219,7 @@ describe('form', () => {
   });
 
   it('should not have error if no duplicate capacities - noDuplicateCapacitiesValidator', () => {
-    capacitiesControl = new FormControl(
+    capacitiesControl = new UntypedFormControl(
       [
         { type: 'weight_kilograms', value: 100 },
         { type: 'volume_liters', value: 20 },
@@ -225,7 +230,7 @@ describe('form', () => {
   });
 
   it('should have error if duplicate capacities - noDuplicateCapacitiesValidator', () => {
-    capacitiesControl = new FormControl(
+    capacitiesControl = new UntypedFormControl(
       [
         { type: 'weight_kilograms', value: 100 },
         { type: 'volume_liters', value: 20 },
@@ -237,7 +242,7 @@ describe('form', () => {
   });
 
   it('should not have error if no duplicate extra duration - noDuplicateExtraDurationValidator', () => {
-    extraDurationControl = new FormControl(
+    extraDurationControl = new UntypedFormControl(
       [
         { visitType: 'Test', extraDuration: { min: 12, sec: 3 } },
         { visitType: 'New', extraDuration: { min: 11, sec: 4 } },
@@ -248,7 +253,7 @@ describe('form', () => {
   });
 
   it('should have error if duplicate extra duration - noDuplicateExtraDurationValidator', () => {
-    extraDurationControl = new FormControl(
+    extraDurationControl = new UntypedFormControl(
       [
         { visitType: 'Test', extraDuration: { min: 12, sec: 3 } },
         { visitType: 'New', extraDuration: { min: 11, sec: 4 } },
@@ -260,7 +265,7 @@ describe('form', () => {
   });
 
   it('should not have error if no duplicate Values - noDuplicateValuesValidator', () => {
-    a = new FormControl(
+    a = new UntypedFormControl(
       [
         { cost: 12, vehicles: 'Vehicle #2' },
         { cost: 13, vehicles: 'Vehicle #1' },
@@ -271,7 +276,7 @@ describe('form', () => {
   });
 
   it('should have error if duplicate Values - noDuplicateValuesValidator', () => {
-    a = new FormControl(
+    a = new UntypedFormControl(
       [
         { cost: 12, vehicles: 'Vehicle #1' },
         { cost: 12, vehicles: 'Vehicle #1' },
@@ -282,61 +287,65 @@ describe('form', () => {
   });
 
   it('should not have error if form array does not have duplicate Values - noDuplicateFormArrayValuesValidator', () => {
-    a = new FormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
-    b = new FormControl({ types: ['type1', 'type2'], incompatibilityMode: 2 }, []);
-    formGroup = new FormGroup({
-      a: fb.array([a, b], (formArray: FormArray) => noDuplicateFormArrayValuesValidator(formArray)),
+    a = new UntypedFormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
+    b = new UntypedFormControl({ types: ['type1', 'type2'], incompatibilityMode: 2 }, []);
+    formGroup = new UntypedFormGroup({
+      a: fb.array([a, b], (formArray: UntypedFormArray) =>
+        noDuplicateFormArrayValuesValidator(formArray)
+      ),
     });
     expect(formGroup.invalid).toBe(false);
   });
 
   it('should have error if form array has duplicate Values - noDuplicateFormArrayValuesValidator', () => {
-    a = new FormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
-    b = new FormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
-    formGroup = new FormGroup({
-      a: fb.array([a, b], (formArray: FormArray) => noDuplicateFormArrayValuesValidator(formArray)),
+    a = new UntypedFormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
+    b = new UntypedFormControl({ types: ['type1', 'type2'], incompatibilityMode: 1 }, []);
+    formGroup = new UntypedFormGroup({
+      a: fb.array([a, b], (formArray: UntypedFormArray) =>
+        noDuplicateFormArrayValuesValidator(formArray)
+      ),
     });
     expect(formGroup.invalid).toBe(true);
   });
 
   it('should not have error if non negative Integer value - nonNegativeIntegerValidator', () => {
-    a = new FormControl(3, [nonNegativeIntegerValidator]);
+    a = new UntypedFormControl(3, [nonNegativeIntegerValidator]);
     expect(a.hasError('nonNegativeInteger')).toBe(false);
   });
 
   it('should have error if negative Integer value - nonNegativeIntegerValidator', () => {
-    a = new FormControl(-3, [nonNegativeIntegerValidator]);
+    a = new UntypedFormControl(-3, [nonNegativeIntegerValidator]);
     expect(a.hasError('nonNegativeInteger')).toBe(true);
   });
 
   it('should not have error if relaxation level other than unspecified - noUnspecifiedRelaxationLevelValidator', () => {
-    level = new FormControl(RelaxationLevel.RELAX_VISIT_TIMES_AFTER_THRESHOLD, [
+    level = new UntypedFormControl(RelaxationLevel.RELAX_VISIT_TIMES_AFTER_THRESHOLD, [
       noUnspecifiedRelaxationLevelValidator,
     ]);
     expect(level.hasError('noUnspecifiedRelaxationLevel')).toBe(false);
   });
 
   it('should have error if relaxation level is unspecified - noUnspecifiedRelaxationLevelValidator', () => {
-    level = new FormControl(RelaxationLevel.LEVEL_UNSPECIFIED, [
+    level = new UntypedFormControl(RelaxationLevel.LEVEL_UNSPECIFIED, [
       noUnspecifiedRelaxationLevelValidator,
     ]);
     expect(level.hasError('noUnspecifiedRelaxationLevel')).toBe(true);
   });
 
   it('should not have error if time string valid - timeStringValidator', () => {
-    time = new FormControl('05:00', [timeStringValidator]);
+    time = new UntypedFormControl('05:00', [timeStringValidator]);
     expect(time.hasError('timeString')).toBe(false);
   });
 
   it('should have error if time string is not valid - timeStringValidator', () => {
-    time = new FormControl('test', [timeStringValidator]);
+    time = new UntypedFormControl('test', [timeStringValidator]);
     expect(time.hasError('timeString')).toBe(true);
   });
 
   it('should not have error if any of the controls have value -requireAny ', () => {
     a.setValue(8);
     b.setValue(9);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [requireAny(['a', 'b'])],
@@ -346,7 +355,7 @@ describe('form', () => {
   });
 
   it('should have error if none of the controls have value -requireAny ', () => {
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [requireAny(['a', 'b'])],
@@ -358,7 +367,7 @@ describe('form', () => {
   it('should not have error if both A and B - requireAandB', () => {
     a.setValue(8);
     b.setValue(9);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [requireAandB('a', 'b')],
@@ -370,7 +379,7 @@ describe('form', () => {
   it('should have error if either A or B - requireAandB', () => {
     a.setValue(null);
     b.setValue(9);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [requireAandB('a', 'b')],
@@ -382,7 +391,7 @@ describe('form', () => {
   it('should not have error if either A or B has value - requireAxorB ', () => {
     a.setValue(8);
     b.setValue(null);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [requireAxorB('a', 'b')],
@@ -394,7 +403,7 @@ describe('form', () => {
   it('should have error if both A and B have value - requireAxorB', () => {
     a.setValue(8);
     b.setValue(9);
-    formGroup = new FormGroup(
+    formGroup = new UntypedFormGroup(
       { a, b },
       {
         validators: [requireAxorB('a', 'b')],

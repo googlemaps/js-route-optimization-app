@@ -7,13 +7,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import {
-  ApplicationRef,
-  ComponentFactoryResolver,
-  Injectable,
-  Injector,
-  OnDestroy,
-} from '@angular/core';
+import { ApplicationRef, EnvironmentInjector, Injectable, OnDestroy } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/reducers';
@@ -34,13 +28,12 @@ export class VisitRequestInfoWindowService
   closeSubscription: Subscription;
 
   constructor(
-    injector: Injector,
-    resolver: ComponentFactoryResolver,
+    injector: EnvironmentInjector,
     applicationRef: ApplicationRef,
     private mapService: MapService,
     private store: Store<State>
   ) {
-    super(injector, resolver, applicationRef);
+    super(injector, applicationRef);
 
     this.store
       .pipe(select(selectInfoWindowVisitRequest))
