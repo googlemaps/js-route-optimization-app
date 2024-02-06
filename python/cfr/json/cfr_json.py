@@ -285,6 +285,7 @@ class ShipmentRoute(TypedDict, total=False):
   routeTotalCost: float
 
   routePolyline: EncodedPolyline
+  hasTrafficInfeasibilities: bool
 
 
 class SkippedShipment(TypedDict, total=False):
@@ -326,6 +327,7 @@ class Metrics(TypedDict, total=False):
 class OptimizeToursResponse(TypedDict, total=False):
   """Represents the JSON CFR result."""
 
+  requestLabel: str
   routes: list[ShipmentRoute]
   skippedShipments: list[SkippedShipment]
   totalCost: float
@@ -1037,15 +1039,15 @@ def _recompute_one_transition_start_and_durations(
       + parse_duration_string(transition.get("delayDuration", "0s"))
       + parse_duration_string(transition.get("breakDuration", "0s"))
   )
-  total_duration = end_time - start_time
-  if non_wait_duration > total_duration:
+  required_total_duration = end_time - start_time
+  if non_wait_duration > required_total_duration:
     raise ValueError(
-        "The minimal duration of the transition is greater than the available"
-        " time slot."
+        f"The minimal duration of the transition ({non_wait_duration}) is"
+        f" greater than the available time slot ({required_total_duration})."
     )
-  wait_duration = total_duration - non_wait_duration
+  wait_duration = required_total_duration - non_wait_duration
   transition["startTime"] = as_time_string(start_time)
-  transition["totalDuration"] = as_duration_string(total_duration)
+  transition["totalDuration"] = as_duration_string(required_total_duration)
   transition["waitDuration"] = as_duration_string(wait_duration)
 
 
@@ -1071,21 +1073,32 @@ def recompute_transition_starts_and_durations(
   transitions = get_transitions(route)
 
   previous_visit_end_time = parse_time_string(route["vehicleStartTime"])
-  for visit_index, visit in enumerate(visits):
-    current_visit_start_time = parse_time_string(visit["startTime"])
-    transition_in = transitions[visit_index]
+  transition_index = None
+  try:
+    for transition_index, visit in enumerate(visits):
+      current_visit_start_time = parse_time_string(visit["startTime"])
+      transition_in = transitions[transition_index]
+      _recompute_one_transition_start_and_durations(
+          transition_in, previous_visit_end_time, current_visit_start_time
+      )
+
+      visit_duration = get_visit_request_duration(
+          get_visit_request(model, visit)
+      )
+      previous_visit_end_time = current_visit_start_time + visit_duration
+
+    transition_index = len(visits)
     _recompute_one_transition_start_and_durations(
-        transition_in, previous_visit_end_time, current_visit_start_time
+        transitions[-1],
+        previous_visit_end_time,
+        parse_time_string(route["vehicleEndTime"]),
     )
-
-    visit_duration = get_visit_request_duration(get_visit_request(model, visit))
-    previous_visit_end_time = current_visit_start_time + visit_duration
-
-  _recompute_one_transition_start_and_durations(
-      transitions[-1],
-      previous_visit_end_time,
-      parse_time_string(route["vehicleEndTime"]),
-  )
+  except ValueError as err:
+    raise ValueError(
+        "Recomputing transition failed for transition_index ="
+        f" {transition_index}, vehicle_index = {route.get('vehicleIndex', 0)}:"
+        f" {err}"
+    ) from err
 
 
 def recompute_travel_steps_from_transitions(route: ShipmentRoute) -> None:

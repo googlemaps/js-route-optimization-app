@@ -4,20 +4,26 @@
   "injectedFirstSolutionRoutes": [
     {
       "vehicleIndex": 0,
+      "vehicleLabel": "V001",
+      "vehicleStartTime": "2023-08-11T08:00:00Z",
+      "vehicleEndTime": "2023-08-11T16:00:00Z",
       "visits": [
         {
+          "detour": "56s",
           "isPickup": false,
           "shipmentIndex": 0,
           "shipmentLabel": "s:8 S009",
           "startTime": "2023-08-11T08:07:01Z"
         },
         {
+          "detour": "20574s",
           "isPickup": false,
           "shipmentIndex": 1,
           "shipmentLabel": "p:0 S001,S004,S003,S002",
           "startTime": "2023-08-11T13:51:14Z"
         },
         {
+          "detour": "23372s",
           "isPickup": false,
           "shipmentIndex": 2,
           "shipmentLabel": "p:1 S007",
@@ -27,8 +33,12 @@
     },
     {
       "vehicleIndex": 1,
+      "vehicleLabel": "V002",
+      "vehicleStartTime": "2023-08-11T08:00:00Z",
+      "vehicleEndTime": "2023-08-11T20:00:00Z",
       "visits": [
         {
+          "detour": "0s",
           "isPickup": false,
           "shipmentIndex": 3,
           "shipmentLabel": "p:2 S006,S008,S005",
@@ -37,7 +47,7 @@
       ]
     }
   ],
-  "label": "my_little_model/global",
+  "label": "my_little_model/refined_global",
   "model": {
     "globalEndTime": "2023-08-12T00:00:00.000Z",
     "globalStartTime": "2023-08-11T00:00:00.000Z",

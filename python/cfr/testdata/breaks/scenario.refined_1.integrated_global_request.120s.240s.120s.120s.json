@@ -1,5 +1,5 @@
 {
-  "label": "/global",
+  "label": "/refined_global",
   "model": {
     "globalStartTime": "2024-01-04T08:00:00Z",
     "globalEndTime": "2024-01-04T19:00:00Z",
@@ -563,98 +563,118 @@
   "injectedFirstSolutionRoutes": [
     {
       "vehicleIndex": 0,
+      "vehicleLabel": "V0001",
+      "vehicleStartTime": "2024-01-04T08:00:00Z",
+      "vehicleEndTime": "2024-01-04T17:40:09Z",
       "visits": [
         {
+          "detour": "0s",
+
           "shipmentIndex": 0,
           "shipmentLabel": "p:0 S0021",
           "isPickup": false,
           "startTime": "2024-01-04T08:13:38Z"
         },
         {
+          "detour": "1219s",
           "shipmentIndex": 1,
           "shipmentLabel": "p:1 S0014,S0015",
           "isPickup": false,
           "startTime": "2024-01-04T08:34:51Z"
         },
         {
+          "detour": "2998s",
           "shipmentIndex": 2,
           "shipmentLabel": "p:2 S0022",
           "isPickup": false,
           "startTime": "2024-01-04T09:06:00Z"
         },
         {
+          "detour": "4430s",
           "shipmentIndex": 3,
           "shipmentLabel": "p:3 S0020",
           "isPickup": false,
           "startTime": "2024-01-04T09:30:53Z"
         },
         {
+          "detour": "6768s",
           "shipmentIndex": 4,
           "shipmentLabel": "p:4 S0012",
           "isPickup": false,
           "startTime": "2024-01-04T10:01:34Z"
         },
         {
+          "detour": "9870s",
           "shipmentIndex": 5,
           "shipmentLabel": "p:5 S0013",
           "isPickup": false,
           "startTime": "2024-01-04T10:53:16Z"
         },
         {
+          "detour": "12115s",
           "shipmentIndex": 6,
           "shipmentLabel": "p:6 S0009",
           "isPickup": false,
           "startTime": "2024-01-04T11:23:40Z"
         },
         {
+          "detour": "13418s",
           "shipmentIndex": 7,
           "shipmentLabel": "s:4 S0005",
           "isPickup": false,
           "startTime": "2024-01-04T11:58:15Z"
         },
         {
+          "detour": "18019s",
           "shipmentIndex": 8,
           "shipmentLabel": "p:7 S0018,S0019",
           "isPickup": false,
           "startTime": "2024-01-04T13:09:24Z"
         },
         {
+          "detour": "20421s",
           "shipmentIndex": 9,
           "shipmentLabel": "s:2 S0003",
           "isPickup": false,
           "startTime": "2024-01-04T13:54:05Z"
         },
         {
+          "detour": "21273s",
           "shipmentIndex": 10,
           "shipmentLabel": "s:3 S0004",
           "isPickup": false,
           "startTime": "2024-01-04T14:06:07Z"
         },
         {
+          "detour": "22619s",
           "shipmentIndex": 11,
           "shipmentLabel": "p:8 S0011",
           "isPickup": false,
           "startTime": "2024-01-04T14:23:31Z"
         },
         {
+          "detour": "24421s",
           "shipmentIndex": 12,
           "shipmentLabel": "p:9 S0007,S0008",
           "isPickup": false,
           "startTime": "2024-01-04T14:53:16Z"
         },
         {
+          "detour": "27388s",
           "shipmentIndex": 13,
           "shipmentLabel": "s:1 S0002",
           "isPickup": false,
           "startTime": "2024-01-04T15:49:31Z"
         },
         {
+          "detour": "27616s",
           "shipmentIndex": 14,
           "shipmentLabel": "p:10 S0016,S0017",
           "isPickup": false,
           "startTime": "2024-01-04T15:54:33Z"
         },
         {
+          "detour": "32945s",
           "shipmentIndex": 15,
           "shipmentLabel": "p:11 S0006",
           "isPickup": false,
@@ -678,14 +698,19 @@
     },
     {
       "vehicleIndex": 1,
+      "vehicleLabel": "V0002",
+      "vehicleStartTime": "2024-01-04T08:00:00Z",
+      "vehicleEndTime": "2024-01-04T08:49:53Z",
       "visits": [
         {
+          "detour": "0s",
           "shipmentIndex": 16,
           "shipmentLabel": "p:12 S0010",
           "isPickup": false,
           "startTime": "2024-01-04T08:01:45Z"
         },
         {
+          "detour": "1346s",
           "shipmentIndex": 17,
           "shipmentLabel": "s:0 S0001",
           "isPickup": false,

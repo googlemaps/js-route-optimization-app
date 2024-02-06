@@ -55,14 +55,13 @@ class Flags:
     reuse_existing: The value of the --reuse_existing flag. When a file with a
       response exists, load it instead of resolving the request.
     num_refinements: The value of the --use_refinements flag.
-    use_refinement: The value of the --use_refinement flag. When True, the
-      planner uses a third solve to reoptimize local routes from the same
-      parking if they are performed in a sequence (allowing the planner to merge
-      and reorganize them) and a fourth phase to clean up the global routes with
-      the updated local routes.
+    end_with_local_refinement: The value of the --end_with_local_refinement
+      flag.
     local_grouping: The value of the --local_grouping flag or the default value.
     travel_mode_in_merged_transitions: The value of the
       --travel_mode_in_merged_transitions flag.
+    inject_start_times_to_refinement_first_solution: The value of the
+      --inject_start_times_to_refinement_first_solution flag.
     local_timeout: The value of the --local_timeout flag or the default value.
     global_timeout: The value of the --global_timeout flag or the default value.
     local_refinement_timeout: The value of the --local_refinement_timeout flag
@@ -77,8 +76,10 @@ class Flags:
   google_cloud_token: str
   reuse_existing: bool
   num_refinements: int
+  end_with_local_refinement: bool
   local_grouping: two_step_routing.LocalModelGrouping
   travel_mode_in_merged_transitions: bool
+  inject_start_times_to_refinement_first_solution: bool
   local_timeout: cfr_json.DurationString
   global_timeout: cfr_json.DurationString
   local_refinement_timeout: cfr_json.DurationString
@@ -122,7 +123,20 @@ def _parse_flags() -> Flags:
       "--travel_mode_in_merged_transitions",
       help="Add travel mode information to transitions in the merged solution.",
       default=False,
-      action="store_true",
+      action=argparse.BooleanOptionalAction,
+  )
+  parser.add_argument(
+      "--inject_start_times_to_refinement_first_solution",
+      help=(
+          "Use visit start times in the first solution injected to the request"
+          " in the global refinement request. This can make the solver more"
+          " efficient when loading the solution; however, it can also make the"
+          " refinement request infeasible when the travel times change, e.g."
+          " because of map data update between the original request and the"
+          " refinement."
+      ),
+      default=False,
+      action=argparse.BooleanOptionalAction,
   )
   parser.add_argument(
       "--local_timeout",
@@ -168,10 +182,20 @@ def _parse_flags() -> Flags:
       action="store",
   )
   parser.add_argument(
+      "--end_with_local_refinement",
+      help=(
+          "End the refinement with a local refinement phase. The last global"
+          " refinement is obtained only by integrating the local refinement"
+          " response."
+      ),
+      default=False,
+      action=argparse.BooleanOptionalAction,
+  )
+  parser.add_argument(
       "--reuse_existing",
       help="Reuse existing solution files, if they exist.",
       default=False,
-      action="store_true",
+      action=argparse.BooleanOptionalAction,
   )
   flags = parser.parse_args()
 
@@ -183,10 +207,12 @@ def _parse_flags() -> Flags:
       local_timeout=flags.local_timeout,
       local_grouping=flags.local_grouping,
       travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
+      inject_start_times_to_refinement_first_solution=flags.inject_start_times_to_refinement_first_solution,
       global_timeout=flags.global_timeout,
       local_refinement_timeout=flags.local_refinement_timeout,
       global_refinement_timeout=flags.global_refinement_timeout,
       num_refinements=flags.num_refinements,
+      end_with_local_refinement=flags.end_with_local_refinement,
       reuse_existing=flags.reuse_existing,
   )
 
@@ -412,21 +438,41 @@ def _run_two_step_planner() -> None:
         make_filename("local_response"),
     )
 
+    is_last_refinement = refinement_index == flags.num_refinements
+    is_last_global_cfr_request = (
+        refinement_index == flags.num_refinements - 1
+        if flags.end_with_local_refinement
+        else is_last_refinement
+    )
+    integration_mode = (
+        two_step_routing.IntegrationMode.VISITS_AND_START_TIMES
+        if flags.inject_start_times_to_refinement_first_solution
+        else two_step_routing.IntegrationMode.VISITS_ONLY
+    )
+    if flags.end_with_local_refinement and is_last_refinement:
+      integration_mode = two_step_routing.IntegrationMode.FULL_ROUTES
+
     logging.info("Integrating the refinement")
     (
         integrated_local_request,
         integrated_local_response,
         integrated_global_request,
+        integrated_global_response,
     ) = planner.integrate_local_refinement(
         local_request,
         local_response,
         global_request,
         global_response,
         local_refinement_response,
+        integration_mode=integration_mode,
     )
-    if refinement_index != flags.num_refinements:
+    if not is_last_global_cfr_request or flags.end_with_local_refinement:
       # Override the live traffic option for all but the last global request.
+      # TODO(ondrasej): Remove the override for the last global CFR request with
+      # local refinement once we support routes with live traffic in the
+      # refinement and integration process.
       integrated_global_request["considerRoadTraffic"] = False
+
     io_utils.write_json_to_file(
         make_filename("integrated_local_request"),
         integrated_local_request,
@@ -441,12 +487,13 @@ def _run_two_step_planner() -> None:
     )
 
     logging.info("Solving the integrated global model")
-    integrated_global_response = _optimize_tours_and_write_response(
-        integrated_global_request,
-        flags,
-        flags.global_refinement_timeout,
-        make_filename("integrated_global_response"),
-    )
+    if integrated_global_response is None:
+      integrated_global_response = _optimize_tours_and_write_response(
+          integrated_global_request,
+          flags,
+          flags.global_refinement_timeout,
+          make_filename("integrated_global_response"),
+      )
 
     logging.info("Merging the results")
     merged_request, merged_response = planner.merge_local_and_global_result(

@@ -104,6 +104,26 @@ class LocalModelGrouping(utils.EnumForArgparse):
   PARKING = 1
 
 
+@enum.unique
+class IntegrationMode(enum.Enum):
+  """Specifies how integration of the local refinement response is done.
+
+  Values:
+    VISITS_ONLY: The injected first solution routes contain only shipment and
+      visit request indices and break start times.
+    VISITS_AND_START_TIMES: The injected first solution routes contain shipment
+      and visit request indices as well as visit start times from the initial
+      solution.
+    FULL_ROUTES: The injected first solution routes are fully integrated,
+      including transitions and aggregated metrics. The routes can be used in a
+      call to `Planner.merge_local_and_global_result()`.
+  """
+
+  VISITS_ONLY = 0
+  VISITS_AND_START_TIMES = 1
+  FULL_ROUTES = 2
+
+
 # The type of parking location tags. Technically, this is a string, but we use
 # an alias with a different name to make this apparent from type annotations
 # alone.
@@ -737,6 +757,9 @@ class Planner:
       ):
         # Each srcTag/dstTag can be used in the list of transition attributes
         # only once.
+        # TODO(ondrasej): There might also be tag-based delays coming from
+        # transition attributes in the original request. We need to find if any
+        # applies, and add them.
         transition_attribute: cfr_json.TransitionAttributes = {
             "srcTag": parking_delivery_tag,
             "dstTag": parking_pickup_tag,
@@ -843,11 +866,12 @@ class Planner:
       global_request: cfr_json.OptimizeToursRequest,
       global_response: cfr_json.OptimizeToursResponse,
       refinement_response: cfr_json.OptimizeToursResponse,
-      inject_visit_times_to_global_request: bool = False,
+      integration_mode: IntegrationMode,
   ) -> tuple[
       cfr_json.OptimizeToursRequest,
       cfr_json.OptimizeToursResponse,
       cfr_json.OptimizeToursRequest,
+      cfr_json.OptimizeToursResponse | None,
   ]:
     """Integrates a refined local plan into the base local and global models.
 
@@ -865,13 +889,25 @@ class Planner:
     3. a first solution hint for the integrated global request; this first
       solution is created from the solution of the base global model by
       replacing the refined parts.
+    4. an optional integrated global response. This response is created by
+      reusing the routes in the previous global model, accounting for the
+      refined local routes. Any time saved by the local refinement is
+      transformed into wait time in the global model.
+      This approach always yields a feasible solution because the local
+      refinement either preserves the duration of the delivery rounds or makes
+      them shorter. The result may, however, contain trivial inefficiencies
+      because of the wait time used as padding.
+      The full response is returned only when integration_mode is
+      IntegrationMode.FULL_ROUTE; otherwise, it is None.
 
-    The integrated global model needs to be re-solved via CFR to (1) update
-    arrival and departure times in the solution, (2) inject road traffic
-    information if requested, and (3) use any time saved by the refinement to
-    deliver more shipments. The solution of the integrated global model can be
-    used together with the solution of the integrated local model to obtain a
-    merged request+response via `Planner.merge_local_and_global_result()`.
+    When the integrated global response is not requested, it needs to be
+    re-solved via CFR to (1) update arrival and departure times in the solution,
+    (2) inject road traffic information if requested, and (3) use any time saved
+    by the refinement to deliver more shipments.
+
+    The solution of the integrated global model can be used together with the
+    solution of the integrated local model to obtain a merged request+response
+    via `Planner.merge_local_and_global_result()`.
 
     Args:
       local_request: A local request created by `self.make_local_request()`.
@@ -881,14 +917,13 @@ class Planner:
       global_response: A solution for `global_request`.
       refinement_response: A solution for a request created by
         `self.make_local_refinement_request(local_response, global_response)`.
-      inject_visit_times_to_global_request: When True, the injected first
-        solution in the integrated global request will contain visit times based
-        on visit times in `global_response`.
+      integration_mode: Determines the level of integration of the local
+        solution into the global refinement request injected first solution.
 
     Returns:
-      A triple `(integrated_local_request, integrated_local_response,
-      integrated_global_request)` that contains the results of the integration
-      as described above.
+      A tuple `(integrated_local_request, integrated_local_response,
+      integrated_global_request, integrated_global_response)` that contains the
+      results of the integration as described above.
 
     Raises:
       ValueError: If the inputs are invalid or inconsistent.
@@ -902,7 +937,7 @@ class Planner:
         global_request=global_request,
         global_response=global_response,
         refinement_response=refinement_response,
-        inject_visit_times_to_global_request=inject_visit_times_to_global_request,
+        integration_mode=integration_mode,
     )
     return integration.integrate()
 
@@ -1490,7 +1525,7 @@ class _RefinedRouteIntegration:
       global_request: cfr_json.OptimizeToursRequest,
       global_response: cfr_json.OptimizeToursResponse,
       refinement_response: cfr_json.OptimizeToursResponse,
-      inject_visit_times_to_global_request: bool,
+      integration_mode: IntegrationMode,
   ):
     """Initializes the integration algorithm.
 
@@ -1505,9 +1540,8 @@ class _RefinedRouteIntegration:
       global_response: A solution for `global_request`.
       refinement_response: A solution for a request created by
         `self.make_local_refinement_request(local_response, global_response)`.
-      inject_visit_times_to_global_request: When True, the injected first
-        solution in the integrated global request will contain visit times based
-        on visit times in `global_response`.
+      integration_mode: Specifies the amount of detail used when integrating the
+        local solution routes.
     """
     self._options = options
     self._parking_locations = parking_locations
@@ -1528,9 +1562,7 @@ class _RefinedRouteIntegration:
     self._global_response = global_response
     self._global_routes = cfr_json.get_routes(global_response)
 
-    self._inject_visit_times_to_global_request = (
-        inject_visit_times_to_global_request
-    )
+    self._integration_mode = integration_mode
 
     refinement_routes = cfr_json.get_routes(refinement_response)
 
@@ -1561,7 +1593,13 @@ class _RefinedRouteIntegration:
         self._integrated_global_shipments
     )
     self._integrated_global_routes: list[cfr_json.ShipmentRoute] = []
+    self._integrated_global_skipped_shipments: list[
+        cfr_json.SkippedShipment
+    ] = []
     self._integrated_global_request: cfr_json.OptimizeToursRequest | None = None
+    self._integrated_global_response: cfr_json.OptimizeToursResponse | None = (
+        None
+    )
 
     self._transition_attributes = _ParkingTransitionAttributeManager(
         self._model
@@ -1594,6 +1632,7 @@ class _RefinedRouteIntegration:
       cfr_json.OptimizeToursRequest,
       cfr_json.OptimizeToursResponse,
       cfr_json.OptimizeToursRequest,
+      cfr_json.OptimizeToursResponse | None,
   ]:
     """Integrates the refinement result into the base local and global models.
 
@@ -1607,11 +1646,13 @@ class _RefinedRouteIntegration:
     same values as the first call.
 
     Returns:
-      A triple (local_request, local_response, global_request) where
-      local_request and local_response contain the integrated local model and
-      its solution, and global_request contains a global model adapted to the
+      A tuple (local_request, local_response, global_request, global_response)
+      where local_request and local_response contain the integrated local model
+      and its solution, global_request contains a global model adapted to the
       integrated local model and injected routes based on the solution of the
-      base global model.
+      base global model, and global response contains an optional solution of
+      the refined global model created during the integration process. It is not
+      None only when integration_mode is IntegrationMode.FULL_ROUTES.
     """
     if self._integrated_local_request is None:
       self._integrate_global_routes()
@@ -1639,6 +1680,10 @@ class _RefinedRouteIntegration:
       # Create the integrated global request.
       self._integrated_global_request = copy.copy(self._global_request)
       self._integrated_global_request["model"] = self._integrated_global_model
+      integrated_global_request_label = (
+          f"{self._request.get('label', '')}/refined_global"
+      )
+      self._integrated_global_request["label"] = integrated_global_request_label
       self._integrated_global_request["injectedFirstSolutionRoutes"] = (
           self._integrated_global_routes
       )
@@ -1652,13 +1697,30 @@ class _RefinedRouteIntegration:
           self._global_response, {"routes": self._integrated_global_routes}
       )
 
+      if self._integration_mode == IntegrationMode.FULL_ROUTES:
+        self._integrated_global_response = {
+            "routes": self._integrated_global_routes,
+            "requestLabel": integrated_global_request_label,
+        }
+        if self._integrated_global_skipped_shipments:
+          self._integrated_global_response["skippedShipments"] = (
+              self._integrated_global_skipped_shipments
+          )
+        # TODO(ondrasej): Add costs.
+        # TODO(ondrasej): Add metrics and aggregated route metrics.
+
     assert self._integrated_local_request is not None
     assert self._integrated_local_response is not None
     assert self._integrated_global_request is not None
+    assert (
+        self._integration_mode != IntegrationMode.FULL_ROUTES
+        or self._integrated_global_response is not None
+    )
     return (
         self._integrated_local_request,
         self._integrated_local_response,
         self._integrated_global_request,
+        self._integrated_global_response,
     )
 
   def _integrate_global_skipped_shipments(self) -> None:
@@ -1680,23 +1742,37 @@ class _RefinedRouteIntegration:
           # the shipment in the base model which did not change with
           # integration, so we can reuse it in the integrate model without any
           # changes.
-          self._add_integrated_global_shipment(
-              global_shipment,
-              add_to_visits=None,
-              visit_start_time=None,
+          integrated_global_shipment_index = (
+              self._add_integrated_global_shipment(
+                  global_shipment,
+                  add_to_visits=None,
+                  visit_start_time=None,
+                  visit_detour=None,
+              )
           )
         case "p":
           # The visit is for a round of deliveries from a parking location. It
           # was skipped in the base global model, and so it could not have been
           # part of a refinement.
-          self._integrate_unmodified_local_route(
-              global_shipment,
-              local_route_index=index,
-              add_to_visits=None,
-              visit_start_time=None,
+          integrated_global_shipment_index = (
+              self._integrate_unmodified_local_route(
+                  global_shipment,
+                  local_route_index=index,
+                  add_to_visits=None,
+                  visit_start_time=None,
+                  visit_detour=None,
+              )
           )
         case _:
           raise ValueError("Unexpected global visit type: {visit_type!r}")
+      if self._integration_mode == IntegrationMode.FULL_ROUTES:
+        integrated_global_shipment = self._integrated_global_shipments[
+            integrated_global_shipment_index
+        ]
+        self._integrated_global_skipped_shipments.append({
+            "index": integrated_global_shipment_index,
+            "label": integrated_global_shipment["label"],
+        })
 
   def _integrate_global_routes(self) -> None:
     """Integrates visits from the global routes to the refined models.
@@ -1709,33 +1785,80 @@ class _RefinedRouteIntegration:
     """
     no_refinements = {}
     for global_route_index, global_route in enumerate(self._global_routes):
-      refinements: Mapping[int, tuple[int, cfr_json.ShipmentRoute]] = (
-          self._refinements_for_global_route.get(
-              global_route_index, no_refinements
-          )
-      )
+      global_visits = cfr_json.get_visits(global_route)
+      global_transitions = cfr_json.get_transitions(global_route)
 
-      integrated_global_visits: list[cfr_json.Visit] = []
-      self._integrated_global_routes.append({
+      integrated_global_route: cfr_json.ShipmentRoute = {
           "vehicleIndex": global_route_index,
-          "visits": integrated_global_visits,
-      })
+      }
+      if (global_vehicle_label := global_route.get("vehicleLabel")) is not None:
+        integrated_global_route["vehicleLabel"] = global_vehicle_label
+      self._integrated_global_routes.append(integrated_global_route)
+
+      if not global_visits:
+        continue
+
+      integrated_global_visits = integrated_global_route["visits"] = []
+
+      integrated_global_transitions: list[cfr_json.Transition] | None = None
+      if self._integration_mode == IntegrationMode.FULL_ROUTES:
+        if (route_polyline := global_route.get("routePolyline")) is not None:
+          integrated_global_route["routePolyline"] = route_polyline
+        has_infeasibilities = global_route.get(
+            "hasTrafficInfeasibilities", False
+        )
+        if has_infeasibilities is not None:
+          integrated_global_route["hasTrafficInfeasibilities"] = (
+              has_infeasibilities
+          )
+        integrated_global_transitions = []
+        integrated_global_route["transitions"] = integrated_global_transitions
+
+      if self._integration_mode != IntegrationMode.VISITS_ONLY:
+        # TODO(ondrasej): These could be theoretically adjusted based on the
+        # saved time, but we need to respect all the constrants in the model. To
+        # avoid the complexity of the full constraint model, we just keep the
+        # original start/end times, and pad them with wait time where needed.
+        integrated_global_route["vehicleStartTime"] = global_route[
+            "vehicleStartTime"
+        ]
+        integrated_global_route["vehicleEndTime"] = global_route[
+            "vehicleEndTime"
+        ]
 
       # Visit time intervals in the refined plan are a subset of visit time
       # intervals in the original plan. As a consequence, break start times and
       # durations can be safely carried over to the refined plan to bootstrap
       # the solver.
       if (global_breaks := global_route.get("breaks")) is not None:
-        self._integrated_global_routes[-1]["breaks"] = copy.deepcopy(
-            global_breaks
-        )
+        integrated_global_route["breaks"] = copy.deepcopy(global_breaks)
 
-      global_visits = cfr_json.get_visits(global_route)
+      refinements: Mapping[int, tuple[int, cfr_json.ShipmentRoute]] = (
+          self._refinements_for_global_route.get(
+              global_route_index, no_refinements
+          )
+      )
+
       num_visits_to_skip = 0
       for global_visit_index, global_visit in enumerate(global_visits):
         if num_visits_to_skip > 0:
           num_visits_to_skip -= 1
           continue
+        if integrated_global_transitions is not None:
+          global_transition = global_transitions[global_visit_index]
+          transition = copy.deepcopy(global_transition)
+          # The transition start time in the previous global response might be
+          # later than the end of the last visit, because the local refinement
+          # may have shortened the last visit duration. To make sure that all
+          # invariants of the solution are preserved, we remove the start time
+          # here and recompute it later once we have start times and durations
+          # of all visits on the route.
+          transition.pop("startTime", None)
+          # TODO(ondrasej): We may need to keep the waitDuration in case there
+          # are negative wait times (because of traffic infeasibilities).
+          transition.pop("waitDuration", None)
+          integrated_global_transitions.append(transition)
+
         global_shipment_label = global_visit.get("shipmentLabel", "")
         global_shipment_index = global_visit.get("shipmentIndex", 0)
         global_shipment = self._global_shipments[global_shipment_index]
@@ -1749,7 +1872,10 @@ class _RefinedRouteIntegration:
             )
           num_refined_visits, refined_local_route = visit_refinement
           self._integrate_refined_local_route(
-              refined_local_route, add_to_visits=integrated_global_visits
+              refined_local_route,
+              add_to_visits=integrated_global_visits,
+              add_to_transitions=integrated_global_transitions,
+              visit_detour=global_visit["detour"],
           )
           # Skip all following visits that were part of the refined route that
           # we just integrated.
@@ -1758,12 +1884,14 @@ class _RefinedRouteIntegration:
           # This global visit was not part of the refinement, we just need to
           # carry over the shipment or local delivery round from the base model.
           visit_start_time = global_visit["startTime"]
+          visit_detour = global_visit["detour"]
           match visit_type:
             case "s":
               self._add_integrated_global_shipment(
                   global_shipment,
                   add_to_visits=integrated_global_visits,
                   visit_start_time=visit_start_time,
+                  visit_detour=visit_detour,
               )
             case "p":
               self._integrate_unmodified_local_route(
@@ -1771,15 +1899,56 @@ class _RefinedRouteIntegration:
                   local_route_index=index,
                   add_to_visits=integrated_global_visits,
                   visit_start_time=visit_start_time,
+                  visit_detour=visit_detour,
               )
             case _:
               raise ValueError(f"Unexpected global visit type: {visit_type!r}")
+
       assert num_visits_to_skip == 0
+
+      if integrated_global_transitions is not None:
+        # Add the transition back to the depot.
+        transition_to_depot: cfr_json.Transition = copy.deepcopy(
+            global_transitions[-1]
+        )
+        # Remove the start time and wait duration of the transition to have them
+        # adjusted later. See the comments on the other transition.pop() line
+        # above for the explanation.
+        transition_to_depot.pop("startTime", None)
+        transition_to_depot.pop("waitDuration", None)
+        integrated_global_transitions.append(transition_to_depot)
+
+        # Fix transition start times, and pad the transitions with waitTime as
+        # needed to make all the invariants work.
+        cfr_json.recompute_transition_starts_and_durations(
+            self._integrated_global_model, integrated_global_route
+        )
+        cfr_json.recompute_travel_steps_from_transitions(
+            integrated_global_route
+        )
+        cfr_json.recompute_route_metrics(
+            self._integrated_global_model,
+            integrated_global_route,
+            check_consistency=True,
+        )
+        # TODO(ondrasej): Recompute other visit and transition metadata. As of
+        # 2024-01-18, this concerns mainly vehicle load metadata. Those copied
+        # from the previous global solution are still valid as long as we do not
+        # change the shipments delivered from the local rounds during the
+        # refinement, but we are missing them on the visits and transitions
+        # added when integrating refined local routes.
+        # TODO(ondrasej): Integrate or recompute route costs. Most of the costs
+        # can probably be carried over from the previous global response.
+        integrated_global_route["routeTotalCost"] = global_route[
+            "routeTotalCost"
+        ]
 
   def _integrate_refined_local_route(
       self,
       refined_local_route: cfr_json.ShipmentRoute,
       add_to_visits: list[cfr_json.Visit],
+      add_to_transitions: list[cfr_json.Transition] | None,
+      visit_detour: cfr_json.DurationString,
   ) -> None:
     """Integrates a refined local route to the refined models and solutions.
 
@@ -1792,6 +1961,12 @@ class _RefinedRouteIntegration:
         represents the new delivery rounds for the parking location.
       add_to_visits: Visits for the shipments that represent the new delivery
         rounds in the integrated global model are added to this list.
+      add_to_transitions: Transitions for the integrated global route are added
+        to this list. These transitions are added only when there are multiple
+        local delivery rounds, and the transitions are added only between those
+        local delivery rounds.
+      visit_detour: The detour of the delivery visit for the first delivery
+        round of the refined local model.
     """
     refined_route_splits = _split_refined_local_route(refined_local_route)
     num_refined_route_splits = len(refined_route_splits)
@@ -1801,6 +1976,8 @@ class _RefinedRouteIntegration:
     _, _, _, parking_tag = _parse_refinement_vehicle_label(refined_route_label)
     parking = self._parking_locations[parking_tag]
 
+    integrated_detour = cfr_json.parse_duration_string(visit_detour)
+    previous_split_start_time = None
     for refined_split_index, refined_split in enumerate(refined_route_splits):
       (
           integrated_route_visits,
@@ -1811,6 +1988,24 @@ class _RefinedRouteIntegration:
       assert (
           len(integrated_route_transitions) == len(integrated_route_visits) + 1
       )
+
+      if refined_split_index > 0 and add_to_transitions is not None:
+        # TODO(ondrasej): There might also be tag-based delays coming from
+        # transition attributes. We need to find if any applies, and add them.
+        # We need to analyze all tags on the parking location shipment to get a
+        # precise delay between the two delivery rounds.
+        reload_delay = parking.reload_duration or "0s"
+        reload_transition: cfr_json.Transition = {
+            "travelDuration": "0s",
+            "travelDistanceMeters": 0,
+            "delayDuration": reload_delay,
+            "waitDuration": "0s",
+            # Breaks can't appear at this stage.
+            "breakDuration": "0s",
+            "totalDuration": reload_delay,
+            "routePolyline": {},
+        }
+        add_to_transitions.append(reload_transition)
 
       # Update shipment indices in the integrated local route.
       for visit in integrated_route_visits:
@@ -1862,12 +2057,28 @@ class _RefinedRouteIntegration:
           parking,
           transition_attributes=self._transition_attributes,
       )
+
+      # Update the detour for the integrated global visit for this split. For
+      # the first split, we can take the detour of the original split; for all
+      # other splits, we need to extend the detour by the duration of the
+      # previous splits.
+      current_split_start_time = cfr_json.parse_time_string(
+          integrated_local_route["vehicleStartTime"]
+      )
+      if previous_split_start_time is None:
+        previous_split_start_time = current_split_start_time
+      else:
+        integrated_detour += (
+            current_split_start_time - previous_split_start_time
+        )
+
       self._add_integrated_global_shipment(
           integrated_global_shipment,
           add_to_visits,
           # In the integrated local model, the vehicle start/end times are
           # exactly the start/end times of the local delivery rounds.
           visit_start_time=integrated_local_route["vehicleStartTime"],
+          visit_detour=cfr_json.as_duration_string(integrated_detour),
       )
 
   def _integrate_unmodified_local_route(
@@ -1876,7 +2087,8 @@ class _RefinedRouteIntegration:
       local_route_index: int,
       add_to_visits: list[cfr_json.Visit] | None,
       visit_start_time: cfr_json.TimeString | None,
-  ) -> None:
+      visit_detour: cfr_json.DurationString | None,
+  ) -> int:
     """Integrates a local route into the refined models and solutions.
 
     Takes one local route (delivery round from a parking location) that was not
@@ -1893,6 +2105,13 @@ class _RefinedRouteIntegration:
       visit_start_time: The start time of the delivery visit for the new
         shipment in the integrated global model. Must be None when
         `add_to_visits` is None.
+      visit_detour: The detour of the delivery visit for the new shipment in the
+        integrated global model. Must be None exactly when `add_to_visits` is
+        None.
+
+    Returns:
+      The index of the global shipment that represents the integrated local
+      route.
     """
     # Copy the original local vehicle and route to the integrated local request
     # and response. We preserve the indices of shipments in the local model, so
@@ -1918,8 +2137,11 @@ class _RefinedRouteIntegration:
     integrated_global_shipment["label"] = (
         f"p:{integrated_local_vehicle_index} {original_shipment_label}"
     )
-    self._add_integrated_global_shipment(
-        integrated_global_shipment, add_to_visits, visit_start_time
+    return self._add_integrated_global_shipment(
+        integrated_global_shipment,
+        add_to_visits,
+        visit_start_time=visit_start_time,
+        visit_detour=visit_detour,
     )
 
   def _add_integrated_global_shipment(
@@ -1927,6 +2149,7 @@ class _RefinedRouteIntegration:
       shipment: cfr_json.Shipment,
       add_to_visits: list[cfr_json.Visit] | None,
       visit_start_time: cfr_json.TimeString | None,
+      visit_detour: cfr_json.DurationString | None,
   ) -> int:
     """Adds `shipment` to the integrated request and returns its index.
 
@@ -1938,6 +2161,9 @@ class _RefinedRouteIntegration:
       visit_start_time: The start time of the delivery visit for the new
         shipment in the integrated global model. Must be None when
         `add_to_visits` is None.
+      visit_detour: The detour of the delivery visit for the new shipment in the
+        integrated global model. Must be None exactly when `add_to_visits` is
+        None.
 
     Returns:
       The index of the newly added integrated shipment.
@@ -1948,7 +2174,11 @@ class _RefinedRouteIntegration:
     assert not shipment.get("pickups")
     # Visit start time must be provided when creating a visit for the integrated
     # global shipment, even if it is not included in the initial solution.
-    assert (visit_start_time is None) == (add_to_visits is None)
+    assert (
+        (visit_start_time is None)
+        == (add_to_visits is None)
+        == (visit_detour is None)
+    )
 
     shipment_index = len(self._integrated_global_shipments)
     self._integrated_global_shipments.append(shipment)
@@ -1958,8 +2188,9 @@ class _RefinedRouteIntegration:
           "shipmentLabel": shipment.get("label", ""),
           "isPickup": False,
       }
-      if self._inject_visit_times_to_global_request:
+      if self._integration_mode != IntegrationMode.VISITS_ONLY:
         visit["startTime"] = visit_start_time
+        visit["detour"] = visit_detour
       add_to_visits.append(visit)
     return shipment_index
 

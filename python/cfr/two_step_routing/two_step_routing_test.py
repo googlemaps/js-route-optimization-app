@@ -6,8 +6,6 @@
 import copy
 import dataclasses
 import datetime
-from importlib import resources
-import json
 import unittest
 
 from ..testdata import testdata
@@ -547,6 +545,9 @@ class PlannerTestIntegratedModels(PlannerTest):
   _EXPECTED_INTEGRATED_GLOBAL_REQUEST: cfr_json.OptimizeToursRequest = (
       testdata.json("small/expected_integrated_global_request.json")
   )
+  _EXPECTED_INTEGRATED_GLOBAL_RESPONSE = cfr_json.OptimizeToursResponse = (
+      testdata.json("small/expected_integrated_global_response.json")
+  )
 
   def test_integrated_models(self):
     planner = two_step_routing.Planner(
@@ -559,13 +560,14 @@ class PlannerTestIntegratedModels(PlannerTest):
         integrated_local_request,
         integrated_local_response,
         integrated_global_request,
+        integrated_global_response,
     ) = planner.integrate_local_refinement(
         local_request=self._EXPECTED_LOCAL_REQUEST_JSON,
         local_response=self._LOCAL_RESPONSE_JSON,
         global_request=self._EXPECTED_GLOBAL_REQUEST_JSON,
         global_response=self._GLOBAL_RESPONSE_JSON,
         refinement_response=self._LOCAL_REFINEMENT_RESPONSE,
-        inject_visit_times_to_global_request=True,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_AND_START_TIMES,
     )
     self.assertEqual(
         integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
@@ -575,6 +577,46 @@ class PlannerTestIntegratedModels(PlannerTest):
     )
     self.assertEqual(
         integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    self.assertIsNone(integrated_global_response)
+
+  def test_integrate_full_route(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+    (
+        integrated_local_request,
+        integrated_local_response,
+        integrated_global_request,
+        integrated_global_response,
+    ) = planner.integrate_local_refinement(
+        local_request=self._EXPECTED_LOCAL_REQUEST_JSON,
+        local_response=self._LOCAL_RESPONSE_JSON,
+        global_request=self._EXPECTED_GLOBAL_REQUEST_JSON,
+        global_response=self._GLOBAL_RESPONSE_JSON,
+        refinement_response=self._LOCAL_REFINEMENT_RESPONSE,
+        integration_mode=two_step_routing.IntegrationMode.FULL_ROUTES,
+    )
+    self.assertEqual(
+        integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
+    )
+    self.assertEqual(
+        integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
+    )
+    expected_integrated_global_request = copy.deepcopy(
+        self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    expected_integrated_global_request["injectedFirstSolutionRoutes"] = list(
+        cfr_json.get_routes(self._EXPECTED_INTEGRATED_GLOBAL_RESPONSE)
+    )
+    # self.assertEqual(
+    #     integrated_global_request, expected_integrated_global_request
+    # )
+    self.assertEqual(
+        integrated_global_response, self._EXPECTED_INTEGRATED_GLOBAL_RESPONSE
     )
 
 
@@ -709,6 +751,11 @@ class PlannerTestWithBreaks(unittest.TestCase):
           "breaks/scenario.refined_1.integrated_global_request.120s.240s.120s.120s.json"
       )
   )
+  _EXPECTED_INTEGRATED_GLOBAL_RESPONSE: cfr_json.OptimizeToursResponse = (
+      testdata.json(
+          "breaks/scenario.refined_1.expected_integrated_global_response.120s.240s.120s.120s.json"
+      )
+  )
 
   def setUp(self):
     super().setUp()
@@ -754,13 +801,14 @@ class PlannerTestWithBreaks(unittest.TestCase):
         integrated_local_request,
         integrated_local_response,
         integrated_global_request,
+        integrated_global_response,
     ) = self._planner.integrate_local_refinement(
         self._EXPECTED_LOCAL_REQUEST_JSON,
         self._LOCAL_RESPONSE_JSON,
         self._EXPECTED_GLOBAL_REQUEST_JSON,
         self._GLOBAL_RESPONSE_JSON,
         self._LOCAL_REFINEMENT_RESPONSE_JSON,
-        inject_visit_times_to_global_request=True,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_AND_START_TIMES,
     )
     self.assertEqual(
         integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
@@ -771,19 +819,21 @@ class PlannerTestWithBreaks(unittest.TestCase):
     self.assertEqual(
         integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
     )
+    self.assertIsNone(integrated_global_response)
 
   def test_global_refinement_model_no_visit_start_times(self):
     (
         integrated_local_request,
         integrated_local_response,
         integrated_global_request,
+        integrated_global_response,
     ) = self._planner.integrate_local_refinement(
         self._EXPECTED_LOCAL_REQUEST_JSON,
         self._LOCAL_RESPONSE_JSON,
         self._EXPECTED_GLOBAL_REQUEST_JSON,
         self._GLOBAL_RESPONSE_JSON,
         self._LOCAL_REFINEMENT_RESPONSE_JSON,
-        inject_visit_times_to_global_request=False,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_ONLY,
     )
     self.assertEqual(
         integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
@@ -797,10 +847,41 @@ class PlannerTestWithBreaks(unittest.TestCase):
     for route in expected_integrated_global_request[
         "injectedFirstSolutionRoutes"
     ]:
+      del route["vehicleStartTime"]
+      del route["vehicleEndTime"]
       for visit in route["visits"]:
         del visit["startTime"]
+        del visit["detour"]
     self.assertEqual(
         integrated_global_request, expected_integrated_global_request
+    )
+    self.assertIsNone(integrated_global_response)
+
+  def test_integrated_global_response(self):
+    (
+        integrated_local_request,
+        integrated_local_response,
+        integrated_global_request,
+        integrated_global_response,
+    ) = self._planner.integrate_local_refinement(
+        self._EXPECTED_LOCAL_REQUEST_JSON,
+        self._LOCAL_RESPONSE_JSON,
+        self._EXPECTED_GLOBAL_REQUEST_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+        self._LOCAL_REFINEMENT_RESPONSE_JSON,
+        integration_mode=two_step_routing.IntegrationMode.FULL_ROUTES,
+    )
+    self.assertEqual(
+        integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
+    )
+    self.assertEqual(
+        integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
+    )
+    # self.assertEqual(
+    #     integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    # )
+    self.assertEqual(
+        integrated_global_response, self._EXPECTED_INTEGRATED_GLOBAL_RESPONSE
     )
 
 
