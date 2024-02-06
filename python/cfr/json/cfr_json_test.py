@@ -1318,6 +1318,72 @@ class GetVehicleActualWorkingHoursTest(unittest.TestCase):
     )
 
 
+class RecomputeTravelStepsFromTransitions(unittest.TestCase):
+  """Tests for recompute_travel_steps_from_transitions."""
+
+  maxDiff = None
+
+  def test_unused_vehicle(self):
+    route: cfr_json.ShipmentRoute = {}
+    cfr_json.recompute_travel_steps_from_transitions(route)
+    self.assertEqual(route, {})
+
+  def test_with_some_transitions(self):
+    route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {
+                "travelDuration": "421s",
+                "travelDistanceMeters": 1249,
+                "waitDuration": "0s",
+                "totalDuration": "421s",
+                "startTime": "2023-08-11T08:00:00Z",
+                "routePolyline": {"points": "not_a_real_polyline"},
+            },
+            {
+                "travelDuration": "238s",
+                "travelDistanceMeters": 719,
+                "waitDuration": "20265s",
+                "totalDuration": "20503s",
+                "startTime": "2023-08-11T08:09:31Z",
+            },
+            {
+                "travelDuration": "0s",
+                "waitDuration": "0s",
+                "totalDuration": "0s",
+                "startTime": "2023-08-11T14:05:37Z",
+            },
+        ]
+    }
+    expected_travel_steps: list[cfr_json.TravelStep] = [
+        {
+            "duration": "421s",
+            "distanceMeters": 1249,
+            "routePolyline": {"points": "not_a_real_polyline"},
+        },
+        {"duration": "238s", "distanceMeters": 719},
+        {"duration": "0s", "distanceMeters": 0},
+    ]
+    expected_route = copy.deepcopy(route)
+    expected_route["travelSteps"] = expected_travel_steps
+    cfr_json.recompute_travel_steps_from_transitions(route)
+    self.assertEqual(route, expected_route)
+
+  def test_remove_unnecessary_travel_steps(self):
+    route: cfr_json.ShipmentRoute = {
+        "travelSteps": [
+            {
+                "duration": "421s",
+                "distanceMeters": 1249,
+                "routePolyline": {"points": "not_a_real_polyline"},
+            },
+            {"duration": "238s", "distanceMeters": 719},
+            {"duration": "0s", "distanceMeters": 0},
+        ]
+    }
+    cfr_json.recompute_travel_steps_from_transitions(route)
+    self.assertEqual(route, {})
+
+
 class GetNumDecreasingVisitTimesTest(unittest.TestCase):
   """Tests for get_num_decreasing_visit_times."""
 

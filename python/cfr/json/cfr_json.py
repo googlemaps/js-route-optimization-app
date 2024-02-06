@@ -1088,6 +1088,26 @@ def recompute_transition_starts_and_durations(
   )
 
 
+def recompute_travel_steps_from_transitions(route: ShipmentRoute) -> None:
+  """Re-creates travel steps in `route` from its transitions."""
+  transitions = get_transitions(route)
+  if not transitions:
+    # Unused vehicle. Remove previous travelSteps if there were any.
+    route.pop("travelSteps", None)
+    return
+  travel_steps: list[TravelStep] = []
+  route["travelSteps"] = travel_steps
+
+  for transition in transitions:
+    travel_step = {
+        "duration": transition.get("travelDuration", "0s"),
+        "distanceMeters": transition.get("travelDistanceMeters", 0),
+    }
+    if (polyline := transition.get("routePolyline")) is not None:
+      travel_step["routePolyline"] = polyline
+    travel_steps.append(travel_step)
+
+
 def get_num_decreasing_visit_times(
     model: ShipmentModel,
     route: ShipmentRoute,
