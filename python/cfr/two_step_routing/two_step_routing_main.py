@@ -58,6 +58,8 @@ class Flags:
     end_with_local_refinement: The value of the --end_with_local_refinement
       flag.
     local_grouping: The value of the --local_grouping flag or the default value.
+    local_model_vehicle_fixed_cost: The value of the
+      --local_model_vehicle_fixed_cost flag.
     travel_mode_in_merged_transitions: The value of the
       --travel_mode_in_merged_transitions flag.
     inject_start_times_to_refinement_first_solution: The value of the
@@ -78,6 +80,7 @@ class Flags:
   num_refinements: int
   end_with_local_refinement: bool
   local_grouping: two_step_routing.LocalModelGrouping
+  local_model_vehicle_fixed_cost: float | None
   travel_mode_in_merged_transitions: bool
   inject_start_times_to_refinement_first_solution: bool
   local_timeout: cfr_json.DurationString
@@ -118,6 +121,15 @@ def _parse_flags() -> Flags:
       "--local_grouping",
       help="Controls the grouping mode in the local model.",
       default=two_step_routing.LocalModelGrouping.PARKING_AND_TIME,
+  )
+  parser.add_argument(
+      "--local_model_vehicle_fixed_cost",
+      default=None,
+      type=float,
+      help=(
+          "The cost of a vehicle in the initial local model. When None, the"
+          " default cost determined by the solver is used."
+      ),
   )
   parser.add_argument(
       "--travel_mode_in_merged_transitions",
@@ -206,6 +218,7 @@ def _parse_flags() -> Flags:
       google_cloud_token=flags.token,
       local_timeout=flags.local_timeout,
       local_grouping=flags.local_grouping,
+      local_model_vehicle_fixed_cost=flags.local_model_vehicle_fixed_cost,
       travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
       inject_start_times_to_refinement_first_solution=flags.inject_start_times_to_refinement_first_solution,
       global_timeout=flags.global_timeout,
@@ -342,6 +355,10 @@ def _run_two_step_planner() -> None:
       raise ValueError(
           "Unexpected value of --local_grouping: {flags.local_grouping!r}"
       )
+  if flags.local_model_vehicle_fixed_cost is not None:
+    options.local_model_vehicle_fixed_cost = (
+        flags.local_model_vehicle_fixed_cost
+    )
 
   planner = two_step_routing.Planner(
       request_json, parking_locations, parking_for_shipment, options
