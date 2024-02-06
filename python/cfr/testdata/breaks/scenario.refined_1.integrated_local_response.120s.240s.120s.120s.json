@@ -501,7 +501,7 @@
     },
     {
       "vehicleIndex": 5,
-      "vehicleLabel": "P0004 [start=2024-01-04T10:00:00Z end=2024-01-04T12:00:00Z]/0",
+      "vehicleLabel": "P0004 [time_windows=(start=2024-01-04T10:00:00Z end=2024-01-04T12:00:00Z)]/0",
       "vehicleStartTime": "2024-01-04T09:56:03Z",
       "vehicleEndTime": "2024-01-04T10:13:41Z",
       "visits": [
@@ -593,7 +593,7 @@
     },
     {
       "vehicleIndex": 6,
-      "vehicleLabel": "P0002 [start=2024-01-04T10:00:00Z end=2024-01-04T12:00:00Z]/0",
+      "vehicleLabel": "P0002 [time_windows=(start=2024-01-04T10:00:00Z end=2024-01-04T12:00:00Z)]/0",
       "vehicleStartTime": "2024-01-04T09:54:42Z",
       "vehicleEndTime": "2024-01-04T10:15:09Z",
       "visits": [
@@ -1007,7 +1007,7 @@
     },
     {
       "vehicleIndex": 10,
-      "vehicleLabel": "P0006 [start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z]/1",
+      "vehicleLabel": "P0006 [time_windows=(start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z)]/1",
       "vehicleStartTime": "2024-01-04T15:54:33Z",
       "vehicleEndTime": "2024-01-04T16:23:37Z",
       "visits": [
@@ -1137,7 +1137,7 @@
       "routeTotalCost": 10249.493333333334
     },
     {
-      "vehicleLabel": "P0001 [start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z]/0",
+      "vehicleLabel": "P0001 [time_windows=(start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z)]/0",
       "vehicleStartTime": "2024-01-04T15:53:39Z",
       "vehicleEndTime": "2024-01-04T16:12:32Z",
       "visits": [

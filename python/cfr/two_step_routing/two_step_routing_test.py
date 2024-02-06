@@ -1502,36 +1502,38 @@ class MakeLocalModelVehicleLabelTest(unittest.TestCase):
     self.assertEqual(
         two_step_routing._make_local_model_vehicle_label(
             two_step_routing._ParkingGroupKey(
-                "P123", "2023-08-11T00:00:00.000Z"
+                "P123", (("2023-08-11T00:00:00.000Z", None),)
             )
         ),
-        "P123 [start=2023-08-11T00:00:00.000Z]",
+        "P123 [time_windows=(start=2023-08-11T00:00:00.000Z)]",
     )
 
   def test_parking_tag_and_end_time(self):
     self.assertEqual(
         two_step_routing._make_local_model_vehicle_label(
             two_step_routing._ParkingGroupKey(
-                "P123", None, "2023-08-11T00:00:00.000Z"
+                "P123", ((None, "2023-08-11T00:00:00.000Z"),)
             )
         ),
-        "P123 [end=2023-08-11T00:00:00.000Z]",
+        "P123 [time_windows=(end=2023-08-11T00:00:00.000Z)]",
     )
 
   def test_parking_tag_and_start_and_end_time(self):
     self.assertEqual(
         two_step_routing._make_local_model_vehicle_label(
             two_step_routing._ParkingGroupKey(
-                "P123", "2023-08-11T00:00:00.000Z", "2023-08-11T08:00:00.000Z"
+                "P123",
+                (("2023-08-11T00:00:00.000Z", "2023-08-11T08:00:00.000Z"),),
             )
         ),
-        "P123 [start=2023-08-11T00:00:00.000Z end=2023-08-11T08:00:00.000Z]",
+        "P123 [time_windows=(start=2023-08-11T00:00:00.000Z"
+        " end=2023-08-11T08:00:00.000Z)]",
     )
 
   def test_parking_tag_and_allowed_vehicles(self):
     self.assertEqual(
         two_step_routing._make_local_model_vehicle_label(
-            two_step_routing._ParkingGroupKey("P123", None, None, (0, 1, 2))
+            two_step_routing._ParkingGroupKey("P123", (), (0, 1, 2))
         ),
         "P123 [vehicles=(0, 1, 2)]",
     )
@@ -1541,13 +1543,27 @@ class MakeLocalModelVehicleLabelTest(unittest.TestCase):
         two_step_routing._make_local_model_vehicle_label(
             two_step_routing._ParkingGroupKey(
                 "P123",
-                "2023-08-11T00:00:00.000Z",
-                "2023-08-11T08:00:00.000Z",
+                (("2023-08-11T00:00:00.000Z", "2023-08-11T08:00:00.000Z"),),
                 (0, 1, 2),
             )
         ),
-        "P123 [start=2023-08-11T00:00:00.000Z end=2023-08-11T08:00:00.000Z"
-        " vehicles=(0, 1, 2)]",
+        "P123 [time_windows=(start=2023-08-11T00:00:00.000Z"
+        " end=2023-08-11T08:00:00.000Z) vehicles=(0, 1, 2)]",
+    )
+
+  def test_parking_tag_multiple_time_windows(self):
+    self.assertEqual(
+        two_step_routing._make_local_model_vehicle_label(
+            two_step_routing._ParkingGroupKey(
+                "P123",
+                (
+                    (None, "2024-01-25T10:00:00.000Z"),
+                    ("2024-09-25T14:00:00Z", None),
+                ),
+            )
+        ),
+        "P123 [time_windows=(end=2024-01-25T10:00:00.000Z)"
+        "(start=2024-09-25T14:00:00Z)]",
     )
 
 
@@ -1619,6 +1635,20 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
       "label": "2023081000001",
       "allowedVehicleIndices": [0, 5, 2],
   }
+  _SHIPMENT_MULTIPLE_TIME_WINDOWS: cfr_json.Shipment = {
+      "deliveries": [
+          {
+              "timeWindows": [
+                  {"endTime": "2024-09-25T11:00:00Z"},
+                  {
+                      "startTime": "2024-09-25T18:00:00Z",
+                      "endTime": "2024-09-25T20:00:00Z",
+                  },
+              ]
+          },
+      ],
+      "label": "2023081000001",
+  }
 
   _PARKING_LOCATION = two_step_routing.ParkingLocation(
       coordinates={"latitude": 35.7668, "longitude": 139.7285}, tag="P1234"
@@ -1670,7 +1700,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
             self._SHIPMENT_TIME_WINDOW_START,
             self._PARKING_LOCATION,
         ),
-        two_step_routing._ParkingGroupKey("P1234", self._START_TIME, None),
+        two_step_routing._ParkingGroupKey("P1234", ((self._START_TIME, None),)),
     )
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
@@ -1678,7 +1708,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
             self._SHIPMENT_TIME_WINDOW_START,
             self._PARKING_LOCATION,
         ),
-        two_step_routing._ParkingGroupKey("P1234", None, None),
+        two_step_routing._ParkingGroupKey("P1234"),
     )
 
   def test_with_parking_and_time_window_end(self):
@@ -1688,7 +1718,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
             self._SHIPMENT_TIME_WINDOW_END,
             self._PARKING_LOCATION,
         ),
-        two_step_routing._ParkingGroupKey("P1234", None, self._END_TIME),
+        two_step_routing._ParkingGroupKey("P1234", ((None, self._END_TIME),)),
     )
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
@@ -1696,7 +1726,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
             self._SHIPMENT_TIME_WINDOW_END,
             self._PARKING_LOCATION,
         ),
-        two_step_routing._ParkingGroupKey("P1234", None, None),
+        two_step_routing._ParkingGroupKey("P1234"),
     )
 
   def test_with_parking_and_time_window_start_end(self):
@@ -1707,7 +1737,8 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
             self._PARKING_LOCATION,
         ),
         two_step_routing._ParkingGroupKey(
-            "P1234", self._START_TIME, self._END_TIME
+            "P1234",
+            ((self._START_TIME, self._END_TIME),),
         ),
     )
     self.assertEqual(
@@ -1716,7 +1747,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
             self._SHIPMENT_TIME_WINDOW_START_END,
             self._PARKING_LOCATION,
         ),
-        two_step_routing._ParkingGroupKey("P1234", None, None),
+        two_step_routing._ParkingGroupKey("P1234"),
     )
 
   def test_with_allowed_vehicles(self):
@@ -1728,8 +1759,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
         ),
         two_step_routing._ParkingGroupKey(
             "P1234",
-            None,
-            None,
+            (),
             (0, 2, 5),
         ),
     )
@@ -1741,9 +1771,24 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
         ),
         two_step_routing._ParkingGroupKey(
             "P1234",
-            None,
-            None,
+            (),
             (0, 2, 5),
+        ),
+    )
+
+  def test_with_multiple_time_windows(self):
+    self.assertEqual(
+        two_step_routing._parking_delivery_group_key(
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._SHIPMENT_MULTIPLE_TIME_WINDOWS,
+            self._PARKING_LOCATION,
+        ),
+        two_step_routing._ParkingGroupKey(
+            "P1234",
+            (
+                (None, "2024-09-25T11:00:00Z"),
+                ("2024-09-25T18:00:00Z", "2024-09-25T20:00:00Z"),
+            ),
         ),
     )
 

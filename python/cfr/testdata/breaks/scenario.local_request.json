@@ -423,7 +423,7 @@
     ],
     "vehicles": [
       {
-        "label": "P0001 [start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z]/0",
+        "label": "P0001 [time_windows=(start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z)]/0",
         "endWaypoint": {
           "location": {
             "latLng": {
@@ -454,7 +454,7 @@
         }
       },
       {
-        "label": "P0001 [start=2024-01-04T13:00:00Z end=2024-01-04T15:00:00Z]/0",
+        "label": "P0001 [time_windows=(start=2024-01-04T13:00:00Z end=2024-01-04T15:00:00Z)]/0",
         "endWaypoint": {
           "location": {
             "latLng": {
@@ -516,7 +516,7 @@
         }
       },
       {
-        "label": "P0002 [start=2024-01-04T10:00:00Z end=2024-01-04T12:00:00Z]/0",
+        "label": "P0002 [time_windows=(start=2024-01-04T10:00:00Z end=2024-01-04T12:00:00Z)]/0",
         "endWaypoint": {
           "location": {
             "latLng": {
@@ -640,7 +640,7 @@
         }
       },
       {
-        "label": "P0004 [start=2024-01-04T10:00:00Z end=2024-01-04T12:00:00Z]/0",
+        "label": "P0004 [time_windows=(start=2024-01-04T10:00:00Z end=2024-01-04T12:00:00Z)]/0",
         "endWaypoint": {
           "location": {
             "latLng": {
@@ -733,7 +733,7 @@
         }
       },
       {
-        "label": "P0006 [start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z]/0",
+        "label": "P0006 [time_windows=(start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z)]/0",
         "endWaypoint": {
           "location": {
             "latLng": {
@@ -764,7 +764,7 @@
         }
       },
       {
-        "label": "P0006 [start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z]/1",
+        "label": "P0006 [time_windows=(start=2024-01-04T16:00:00Z end=2024-01-04T18:00:00Z)]/1",
         "endWaypoint": {
           "location": {
             "latLng": {
@@ -795,7 +795,7 @@
         }
       },
       {
-        "label": "P0007 [start=2024-01-04T13:00:00Z end=2024-01-04T15:00:00Z]/0",
+        "label": "P0007 [time_windows=(start=2024-01-04T13:00:00Z end=2024-01-04T15:00:00Z)]/0",
         "endWaypoint": {
           "location": {
             "latLng": {

@@ -75,7 +75,7 @@
     },
     {
       "vehicleIndex": 1,
-      "vehicleLabel": "P001 [start=2023-08-11T12:00:00.000Z vehicles=(0,)]/0",
+      "vehicleLabel": "P001 [time_windows=(start=2023-08-11T12:00:00.000Z) vehicles=(0,)]/0",
       "vehicleStartTime": "2023-08-11T11:51:14Z",
       "vehicleEndTime": "2023-08-11T12:05:37Z",
       "visits": [
@@ -132,7 +132,7 @@
     },
     {
       "vehicleIndex": 2,
-      "vehicleLabel": "P001 [start=2023-08-11T14:00:00.000Z end=2023-08-11T16:00:00.000Z vehicles=(0,)]/0",
+      "vehicleLabel": "P001 [time_windows=(start=2023-08-11T14:00:00.000Z end=2023-08-11T16:00:00.000Z) vehicles=(0,)]/0",
       "vehicleStartTime": "2023-08-11T13:51:14Z",
       "vehicleEndTime": "2023-08-11T14:05:37Z",
       "visits": [

@@ -45,7 +45,7 @@ On a high level, the solver does the following:
 """
 
 import collections
-from collections.abc import Collection, Mapping, MutableMapping, Sequence, Set
+from collections.abc import Collection, Iterable, Mapping, MutableMapping, Sequence, Set
 import copy
 import dataclasses
 import enum
@@ -70,15 +70,14 @@ class _ParkingGroupKey:
   Attributes:
     parking_tag: The tag of the parking location from which the shipment is
       delivered.
-    start_time: The beginning of the delivery window of the shipment.
-    end_time: The end of the delivery window of the shipment.
+    time_windows: The list of delivery time windows for the shipment. Empty when
+      the shipment does not have a delivery time window.
     allowed_vehicle_indices: The list of vehicle indices that can deliver the
       shipment.
   """
 
   parking_tag: str | None = None
-  start_time: str | None = None
-  end_time: str | None = None
+  time_windows: tuple[tuple[str | None, str | None], ...] = ()
   allowed_vehicle_indices: tuple[int, ...] | None = None
 
 
@@ -2909,21 +2908,40 @@ def _get_parking_tag_from_local_route(route: cfr_json.ShipmentRoute) -> str:
   return parking_tag
 
 
+def _format_time_window(
+    time_window: tuple[str | None, str | None]
+) -> Iterable[str]:
+  """Formats a single time window in a parking group key."""
+  start, end = time_window
+  yield "("
+  if start is not None:
+    yield "start="
+    yield start
+  if start is not None and end is not None:
+    yield " "
+  if end is not None:
+    yield "end="
+    yield end
+  yield ")"
+
+
 def _make_local_model_vehicle_label(group_key: _ParkingGroupKey) -> str:
   """Creates a label for a vehicle in the local model."""
   parts = [group_key.parking_tag, " ["]
   num_initial_parts = len(parts)
 
-  def add_part_if_not_none(keyword: str, value: Any):
-    if value is not None:
-      if len(parts) > num_initial_parts:
-        parts.append(" ")
-      parts.append(keyword)
-      parts.append(str(value))
+  def add_part(keyword: str, value: Any):
+    if len(parts) > num_initial_parts:
+      parts.append(" ")
+    parts.append(keyword)
+    parts.append(str(value))
 
-  add_part_if_not_none("start=", group_key.start_time)
-  add_part_if_not_none("end=", group_key.end_time)
-  add_part_if_not_none("vehicles=", group_key.allowed_vehicle_indices)
+  if group_key.time_windows:
+    parts.append("time_windows=")
+    for time_window in group_key.time_windows:
+      parts.extend(_format_time_window(time_window))
+  if group_key.allowed_vehicle_indices is not None:
+    add_part("vehicles=", group_key.allowed_vehicle_indices)
   parts.append("]")
   return "".join(parts)
 
@@ -2940,20 +2958,19 @@ def _parking_delivery_group_key(
       options.local_model_grouping == LocalModelGrouping.PARKING_AND_TIME
   )
   parking_tag = parking.tag
-  start_time = None
-  end_time = None
   delivery = shipment["deliveries"][0]
-  # TODO(ondrasej): Allow using multiple time windows here.
-  time_window = next(iter(delivery.get("timeWindows", ())), None)
-  if group_by_time and time_window is not None:
-    start_time = time_window.get("startTime")
-    end_time = time_window.get("endTime")
+  time_windows = delivery.get("timeWindows", ())
+  key_time_windows = []
+  if group_by_time and time_windows:
+    for time_window in time_windows:
+      key_time_windows.append(
+          (time_window.get("startTime"), time_window.get("endTime"))
+      )
   allowed_vehicle_indices = shipment.get("allowedVehicleIndices")
   if allowed_vehicle_indices is not None:
     allowed_vehicle_indices = tuple(sorted(allowed_vehicle_indices))
   return _ParkingGroupKey(
       parking_tag=parking_tag,
-      start_time=start_time,
-      end_time=end_time,
+      time_windows=tuple(key_time_windows),
       allowed_vehicle_indices=allowed_vehicle_indices,
   )
