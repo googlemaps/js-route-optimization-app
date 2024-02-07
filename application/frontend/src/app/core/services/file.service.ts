@@ -78,10 +78,10 @@ export class FileService {
     const results = [];
     for (const filename of Object.keys(contents.files)) {
       try {
-        const rootFilename = filename.replace(/^.*[\\/]/, '');
-        if (contents.files[filename].dir) {
+        if (contents.files[filename].dir || filename.includes('__MACOSX/')) {
           continue;
         }
+        const rootFilename = filename.replace(/^.*[\\/]/, '');
         results.push(
           await zip
             .file(filename)
