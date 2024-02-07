@@ -62,16 +62,16 @@
             *ngIf="
               fileName.errors?.required && fileName.touched && fileName.dirty && !validatingUpload
             ">
-            File is required
+            File is required.
           </mat-error>
           <mat-error *ngIf="fileName.errors?.zipContents && (fileName.touched || fileName.dirty)">
-            Invalid zip contents
+            {{ getZipErrorMessage() }}
           </mat-error>
           <mat-error *ngIf="fileName.errors?.fileFormat && (fileName.touched || fileName.dirty)">
-            Invalid file format
+            The provided file cannot be loaded. Only valid .json and .zip files are supported.
           </mat-error>
           <mat-error *ngIf="fileName.errors?.requestFormat && (fileName.touched || fileName.dirty)">
-            The provided scenario is not valid
+            The provided scenario is not valid.
           </mat-error>
           <mat-hint>.json or .zip</mat-hint>
         </mat-form-field>

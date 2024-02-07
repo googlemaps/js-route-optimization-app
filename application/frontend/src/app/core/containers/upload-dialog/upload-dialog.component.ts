@@ -72,6 +72,9 @@ export class UploadDialogComponent {
   }
   private scenarioSolutionPair: ScenarioSolutionPair;
   zipContentsInvalid: boolean;
+  zipContentCountInvalid: boolean;
+  zipMissingScenario: boolean;
+  zipMissingSolution: boolean;
 
   resolvingPlaceIds = false;
   placeIdProgress = 0;
@@ -300,7 +303,12 @@ export class UploadDialogComponent {
   }
 
   loadZipContents(files: { content: JSON; filename: string }[]): ScenarioSolutionPair {
+    this.zipContentCountInvalid = false;
+    this.zipMissingScenario = false;
+    this.zipMissingSolution = false;
+
     if (files.length !== 2) {
+      this.zipContentCountInvalid = true;
       throw new Error('Incorrect number of files');
     }
 
@@ -316,14 +324,31 @@ export class UploadDialogComponent {
     });
 
     if (!scenario) {
+      this.zipMissingScenario = true;
       throw new Error('Missing scenario.json');
     }
 
     if (!solution) {
+      this.zipMissingSolution = true;
       throw new Error('Missing solution.json');
     }
 
     return { scenario, solution };
+  }
+
+  getZipErrorMessage(): string {
+    if (this.zipContentCountInvalid) {
+      return 'The zip contains an invalid number of .json files, or the .json files within are invalid.';
+    }
+    if (this.zipMissingScenario) {
+      return 'The provided zip is missing a valid scenario file.';
+    }
+
+    if (this.zipMissingSolution) {
+      return 'The provided zip is missing a valid solution file.';
+    }
+
+    return 'The provided zip contains invalid contents.';
   }
 
   /**
