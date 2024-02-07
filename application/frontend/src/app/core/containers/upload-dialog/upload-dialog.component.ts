@@ -315,10 +315,11 @@ export class UploadDialogComponent {
     let scenario;
     let solution;
     files.forEach((file) => {
-      if (file.filename === 'scenario.json') {
+      if (!scenario || !Object.keys(scenario).length) {
         scenario = this.validateScenario(file.content);
       }
-      if (file.filename === 'solution.json') {
+
+      if (!solution || !Object.keys(solution).length) {
         solution = this.validateSolution(file.content);
       }
     });
