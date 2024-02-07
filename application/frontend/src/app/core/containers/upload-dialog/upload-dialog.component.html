@@ -62,16 +62,16 @@
             *ngIf="
               fileName.errors?.required && fileName.touched && fileName.dirty && !validatingUpload
             ">
-            {{ (messages$ | async)?.formFileRequired || 'File is required' }}
+            File is required
           </mat-error>
           <mat-error *ngIf="fileName.errors?.zipContents && (fileName.touched || fileName.dirty)">
-            {{ 'Invalid zip contents' }}
+            Invalid zip contents
           </mat-error>
           <mat-error *ngIf="fileName.errors?.fileFormat && (fileName.touched || fileName.dirty)">
-            {{ (messages$ | async)?.formInvalidFileFormat || 'Invalid file format' }}
+            Invalid file format
           </mat-error>
           <mat-error *ngIf="fileName.errors?.requestFormat && (fileName.touched || fileName.dirty)">
-            {{ (messages$ | async)?.formInvalidRequestFormat || 'Invalid request format' }}
+            The provided scenario is not valid
           </mat-error>
           <mat-hint>.json or .zip</mat-hint>
         </mat-form-field>

@@ -22,10 +22,9 @@ import { Observable } from 'rxjs';
 import { merge } from 'lodash';
 
 import * as fromRoot from 'src/app/reducers';
-import { MessagesConfig, Scenario, ScenarioSolutionPair, Solution } from '../../models';
+import { Scenario, ScenarioSolutionPair, Solution } from '../../models';
 import { UploadType } from '../../models/upload';
 import { IWaypoint } from '../../models/dispatcher.model';
-import * as fromConfig from '../../selectors/config.selectors';
 import { DispatcherService, FileService, PlacesService, UploadService } from '../../services';
 import { toDispatcherLatLng } from 'src/app/util';
 import { ScenarioSolutionHelpDialogComponent } from 'src/app/core/containers/scenario-solution-help-dialog/scenario-solution-help-dialog.component';
@@ -81,8 +80,6 @@ export class UploadDialogComponent {
     return this.scenarioWaypointsWithPlaceIDs.length;
   }
 
-  readonly messages$: Observable<MessagesConfig>;
-
   constructor(
     private store: Store<fromRoot.State>,
     private dialogRef: MatDialogRef<UploadDialogComponent>,
@@ -96,7 +93,6 @@ export class UploadDialogComponent {
     this.form = fb.group({
       fileName: (this.fileName = fb.control('', [this.fileValidator.bind(this)])),
     });
-    this.messages$ = this.store.pipe(select(fromConfig.selectMessagesConfig));
   }
 
   openScenarioSolutionHelp(): void {
@@ -171,7 +167,7 @@ export class UploadDialogComponent {
       this.fileName.setValue(file.name);
       this.validatingUpload = false;
 
-      if (!this.scenarioHasPlaceIds) {
+      if (!this.scenarioHasPlaceIds && this.fileName.valid) {
         this.solve();
       }
 
@@ -201,7 +197,12 @@ export class UploadDialogComponent {
     this.validatingUpload = false;
     this.fileName.setValue(file.name);
 
-    if (!this.zipContentsInvalid && !this.fileInvalid && !this.scenarioHasPlaceIds) {
+    if (
+      !this.zipContentsInvalid &&
+      !this.fileInvalid &&
+      !this.scenarioHasPlaceIds &&
+      this.fileName.valid
+    ) {
       this.solve();
     }
   }
