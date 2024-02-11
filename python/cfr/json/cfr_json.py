@@ -1017,6 +1017,7 @@ def _recompute_one_transition_start_and_durations(
     transition: Transition,
     start_time: datetime.datetime,
     end_time: datetime.datetime,
+    allow_negative_wait_duration: bool,
 ) -> None:
   """Updates `startTime` and `totalDuration` of one transition.
 
@@ -1029,10 +1030,15 @@ def _recompute_one_transition_start_and_durations(
     transition: The transition to be updated.
     start_time: The requested start time of the transition.
     end_time: The requested end time of the transition.
+    allow_negative_wait_duration: Allow that the time slot betwen start_time and
+      end_time is smaller than the required minimal duration of the transition.
+      When this happens, the function adds a negative wait time so that the
+      total duration of the transition matches the time between the two visits.
 
   Raises:
     ValueError: When sum of the other durations of the transition is greater
-      than the duration between `start_time` and `end_time`.
+      than the duration between `start_time` and `end_time`, and
+      allow_negative_wait_duration is False.
   """
   non_wait_duration = (
       parse_duration_string(transition.get("travelDuration", "0s"))
@@ -1040,7 +1046,10 @@ def _recompute_one_transition_start_and_durations(
       + parse_duration_string(transition.get("breakDuration", "0s"))
   )
   required_total_duration = end_time - start_time
-  if non_wait_duration > required_total_duration:
+  if (
+      non_wait_duration > required_total_duration
+      and not allow_negative_wait_duration
+  ):
     raise ValueError(
         f"The minimal duration of the transition ({non_wait_duration}) is"
         f" greater than the available time slot ({required_total_duration})."
@@ -1052,7 +1061,9 @@ def _recompute_one_transition_start_and_durations(
 
 
 def recompute_transition_starts_and_durations(
-    model: ShipmentModel, route: ShipmentRoute
+    model: ShipmentModel,
+    route: ShipmentRoute,
+    allow_negative_wait_duration: bool,
 ) -> None:
   """Recomputes transition start times and wait durations based on visit times.
 
@@ -1064,6 +1075,17 @@ def recompute_transition_starts_and_durations(
     model: The model in which the transition times are recomputed.
     route: The route, for which the transition times are recomputed. Modified in
       place.
+    allow_negative_wait_duration: Allow that the time slot between two visits is
+      shorter than the minimal duration of a transition. The missing time is
+      "fixed" by using a negative wait time. This is the approach taken by the
+      CFR solver when there is a traffic infeasibility; setting this to true
+      allows the computation to proceed also on results computed with live
+      traffic that may have traffic infeasibilities.
+
+  Raises:
+    ValueError: When the time between two visits is shorter than then time
+      required by the transition between them, and allow_negative_wait_duration
+      is False.
   """
   visits = get_visits(route)
   if not visits:
@@ -1079,7 +1101,10 @@ def recompute_transition_starts_and_durations(
       current_visit_start_time = parse_time_string(visit["startTime"])
       transition_in = transitions[transition_index]
       _recompute_one_transition_start_and_durations(
-          transition_in, previous_visit_end_time, current_visit_start_time
+          transition_in,
+          previous_visit_end_time,
+          current_visit_start_time,
+          allow_negative_wait_duration,
       )
 
       visit_duration = get_visit_request_duration(
@@ -1092,6 +1117,7 @@ def recompute_transition_starts_and_durations(
         transitions[-1],
         previous_visit_end_time,
         parse_time_string(route["vehicleEndTime"]),
+        allow_negative_wait_duration,
     )
   except ValueError as err:
     raise ValueError(

@@ -48,6 +48,7 @@ import collections
 from collections.abc import Collection, Iterable, Mapping, MutableMapping, Sequence, Set
 import copy
 import dataclasses
+import datetime
 import enum
 import functools
 import math
@@ -1919,8 +1920,18 @@ class _RefinedRouteIntegration:
 
         # Fix transition start times, and pad the transitions with waitTime as
         # needed to make all the invariants work.
+        # We allow the computation to create negative wait time. This is
+        # sometimes needed to deal with effects of traffic infeasibility in the
+        # original plan.
+        # TODO(ondrasej): Investigate other ways of dealing with traffic
+        # infeasibility.
+        has_traffic_infeasibility = integrated_global_route.get(
+            "hasTrafficInfeasibilities", False
+        )
         cfr_json.recompute_transition_starts_and_durations(
-            self._integrated_global_model, integrated_global_route
+            self._integrated_global_model,
+            integrated_global_route,
+            allow_negative_wait_duration=has_traffic_infeasibility,
         )
         cfr_json.recompute_travel_steps_from_transitions(
             integrated_global_route
@@ -2706,14 +2717,28 @@ def _get_consecutive_parking_location_visits(
       continue
     assert visit_type == "p"
     transition_in = global_transitions[global_visit_index]
-    break_duration = transition_in.get("breakDuration", "0s")
+    separated_by_break = transition_in.get("breakDuration", "0s") != "0s"
+    separated_by_traffic_infeasibility = transition_in.get(
+        "waitDuration", "0s"
+    ).startswith("-")
     local_route = local_routes[index]
     parking_tag = _get_parking_tag_from_local_route(local_route)
-    if parking_tag != previous_parking_tag or break_duration != "0s":
+    if (
+        parking_tag != previous_parking_tag
+        or separated_by_break
+        or separated_by_traffic_infeasibility
+    ):
       # The sequence ends when the vehicle moves to another parking location or
-      # when there is a break scheduled between the two visits. As of 2023-11-06
-      # we do not support breaks in local routes, and so we need to keep the
-      # part before the break and the part after the break separate.
+      # when there is either:
+      # - a break scheduled between the two visits. As of 2023-11-06 we do not
+      #   support breaks in local routes, and so we need to keep the part before
+      #   the break and the part after the break separate.
+      # - negative wait time between the two visits. This may happen when live
+      #   traffic is used, as a consequence of a traffic infeasiblity. With the
+      #   negative wait time, the amount of time available between the start of
+      #   the first visit and the end time of the last visit is smaller than the
+      #   actual amount of time needed, which would make the initial solution of
+      #   the refinement model infeasible.
       add_sequence_if_needed(global_visit_index)
       previous_parking_tag = parking_tag
       sequence_start = global_visit_index

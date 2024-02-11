@@ -1894,7 +1894,9 @@ class RecomputeTransitionStartsAndDurations(unittest.TestCase):
 
       if transitions:
         self.assertNotEqual(route, expected_route)
-      cfr_json.recompute_transition_starts_and_durations(model, route)
+      cfr_json.recompute_transition_starts_and_durations(
+          model, route, allow_negative_wait_duration=False
+      )
       self.assertEqual(route, expected_route)
 
   def test_moderate_local(self):
@@ -1929,7 +1931,58 @@ class RecomputeTransitionStartsAndDurations(unittest.TestCase):
         ],
     }
     with self.assertRaisesRegex(ValueError, "minimal duration"):
-      cfr_json.recompute_transition_starts_and_durations(model, route)
+      cfr_json.recompute_transition_starts_and_durations(
+          model, route, allow_negative_wait_duration=False
+      )
+
+  def test_insufficient_time_allow_negative_duration(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [{"deliveries": [{"duration": "120s"}]}],
+    }
+    route: cfr_json.ShipmentRoute = {
+        "vehicleIndex": 0,
+        "vehicleStartTime": "2024-01-15T10:00:00Z",
+        "vehicleEndTime": "2024-01-15T11:00:00z",
+        "visits": [{
+            "shipmentIndex": 0,
+            "visitRequestIndex": 0,
+            "isPickup": False,
+            "startTime": "2024-01-15T10:10:00Z",
+        }],
+        "transitions": [
+            {},
+            {"breakDuration": "1800s", "travelDuration": "1200s"},
+        ],
+    }
+    expected_route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {
+                "startTime": "2024-01-15T10:00:00Z",
+                "totalDuration": "600s",
+                "waitDuration": "600s",
+            },
+            {
+                "breakDuration": "1800s",
+                "startTime": "2024-01-15T10:12:00Z",
+                "totalDuration": "2880s",
+                "travelDuration": "1200s",
+                "waitDuration": "-120s",
+            },
+        ],
+        "vehicleEndTime": "2024-01-15T11:00:00z",
+        "vehicleIndex": 0,
+        "vehicleStartTime": "2024-01-15T10:00:00Z",
+        "visits": [{
+            "isPickup": False,
+            "shipmentIndex": 0,
+            "startTime": "2024-01-15T10:10:00Z",
+            "visitRequestIndex": 0,
+        }],
+    }
+    cfr_json.recompute_transition_starts_and_durations(
+        model, route, allow_negative_wait_duration=True
+    )
+    self.assertEqual(route, expected_route)
 
 
 class UpdateTimeStringTest(unittest.TestCase):
@@ -2004,6 +2057,11 @@ class MakeDurationStringTest(unittest.TestCase):
     self.assertEqual(
         cfr_json.as_duration_string(datetime.timedelta(milliseconds=500)),
         "0.5s",
+    )
+
+  def test_negative_time(self):
+    self.assertEqual(
+        cfr_json.as_duration_string(datetime.timedelta(seconds=-100)), "-100s"
     )
 
 

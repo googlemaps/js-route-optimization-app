@@ -483,11 +483,8 @@ def _run_two_step_planner() -> None:
         local_refinement_response,
         integration_mode=integration_mode,
     )
-    if not is_last_global_cfr_request or flags.end_with_local_refinement:
+    if not is_last_global_cfr_request:
       # Override the live traffic option for all but the last global request.
-      # TODO(ondrasej): Remove the override for the last global CFR request with
-      # local refinement once we support routes with live traffic in the
-      # refinement and integration process.
       integrated_global_request["considerRoadTraffic"] = False
 
     io_utils.write_json_to_file(
