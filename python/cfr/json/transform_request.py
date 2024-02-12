@@ -27,6 +27,7 @@ from .. import utils
 from . import cfr_json
 from . import io_utils
 from . import transforms
+from . import transforms_breaks
 
 
 class ItemsPerShipment(utils.EnumForArgparse):
@@ -97,6 +98,8 @@ class Flags:
 
   duplicate_vehicles_by_label: Sequence[str] | None
   remove_vehicles_by_label: Sequence[str] | None
+
+  transform_breaks: str | None
 
   @property
   def items_per_shipment_callback(self) -> Callable[[cfr_json.Shipment], int]:
@@ -210,6 +213,15 @@ class Flags:
             " same label, and it appears in this list, all of them are removed."
         ),
     )
+    parser.add_argument(
+        "--transform_breaks",
+        required=False,
+        help=(
+            "Rules for transforming breaks in the model. See the module"
+            " docstring of transform_breaks.py for more details on the"
+            " transformation language."
+        ),
+    )
 
     parsed_args = parser.parse_args(args)
     return cls(**vars(parsed_args))
@@ -304,6 +316,11 @@ def main(args: Sequence[str] | None = None) -> None:
     _remove_vehicles_by_label(model, removed_labels)
   if duplicated_labels := flags.duplicate_vehicles_by_label:
     _duplicate_vehicles_by_label(model, duplicated_labels)
+  if flags.transform_breaks is not None:
+    break_transform_rules = transforms_breaks.compile_rules(
+        flags.transform_breaks
+    )
+    transforms_breaks.transform_breaks(model, break_transform_rules)
 
   io_utils.write_json_to_file(flags.output_file, request)
 

@@ -433,6 +433,79 @@ class TransformRequestTest(unittest.TestCase):
           ("--remove_vehicles_by_label=V12345",),
       )
 
+  def test_transform_breaks(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "globalStartTime": "2024-02-12T09:00:00Z",
+            "globalEndTime": "2024-02-12T19:00:00Z",
+            "vehicles": [
+                {
+                    "label": "V001",
+                    "breakRule": {
+                        "breakRequests": [{
+                            "earliestStartTime": "2024-02-12T13:00:00Z",
+                            "latestStartTime": "2024-02-12T13:30:00Z",
+                            "minDuration": "3600s",
+                        }],
+                    },
+                },
+                {"label": "V002"},
+            ],
+        }
+    }
+    expected_output_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "globalStartTime": "2024-02-12T09:00:00Z",
+            "globalEndTime": "2024-02-12T19:00:00Z",
+            "vehicles": [
+                {
+                    "label": "V001",
+                    "breakRule": {
+                        "breakRequests": [
+                            {
+                                "earliestStartTime": "2024-02-12T12:30:00Z",
+                                "latestStartTime": "2024-02-12T13:30:00Z",
+                                "minDuration": "3600s",
+                            },
+                            {
+                                "earliestStartTime": "2024-02-12T16:00:00Z",
+                                "latestStartTime": "2024-02-12T17:00:00Z",
+                                "minDuration": "900s",
+                            },
+                        ],
+                    },
+                },
+                {
+                    "label": "V002",
+                    "breakRule": {
+                        "breakRequests": [{
+                            "earliestStartTime": "2024-02-12T16:00:00Z",
+                            "latestStartTime": "2024-02-12T17:00:00Z",
+                            "minDuration": "900s",
+                        }]
+                    },
+                },
+            ],
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request,
+            (
+                "--transform_breaks",
+                """
+                new
+                  earliestStartTime=16:00:00
+                  latestStartTime=17:00:00
+                  minDuration=900s;
+                @time=13:00:00
+                  earliestStartTime=12:30:00
+                """,
+            ),
+        ),
+        expected_output_request,
+    )
+
 
 if __name__ == "__main__":
   unittest.main()
