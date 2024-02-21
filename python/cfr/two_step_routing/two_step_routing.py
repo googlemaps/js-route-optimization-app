@@ -44,16 +44,16 @@ On a high level, the solver does the following:
    locations.
 """
 
+import argparse
 import collections
-from collections.abc import Collection, Iterable, Mapping, MutableMapping, Sequence, Set
+from collections.abc import Callable, Collection, Iterable, Mapping, MutableMapping, Sequence, Set
 import copy
 import dataclasses
-import datetime
 import enum
 import functools
 import math
 import re
-from typing import Any, TypeAlias, TypeVar, cast
+from typing import Any, Self, TypeAlias, TypeVar, cast
 
 from .. import utils
 from ..json import cfr_json
@@ -75,33 +75,100 @@ class _ParkingGroupKey:
       the shipment does not have a delivery time window.
     allowed_vehicle_indices: The list of vehicle indices that can deliver the
       shipment.
+    penalty_cost_group: The penalty cost/penalty cost group of the shipment.
+      Contains `None` when grouping by penalty cost is not used or the value
+      returned by `InitialLocalModelGrouping.get_penalty_cost_group` when it is
+      provided.
   """
 
   parking_tag: str | None = None
   time_windows: tuple[tuple[str | None, str | None], ...] = ()
   allowed_vehicle_indices: tuple[int, ...] | None = None
+  penalty_cost_group: str | None = None
 
 
-@enum.unique
-class LocalModelGrouping(utils.EnumForArgparse):
-  """Specifies how shipments are grouped in the local model.
+def _no_penalty_cost_grouping(shipment: cfr_json.Shipment) -> str | None:
+  """Implements "no grouping by penalty cost"."""
+  del shipment  # Unused.
+  return None
 
-  In the local model, the routes are computed for each group separately, i.e.
-  shipments that are in different groups according to the selected strategy can
-  never appear on the same route.
 
-  Values:
-    PARKING_AND_TIME: Shipments are grouped by the assigned parking location and
-      by their time windows. Only shipments delivered from the same parking
-      location in the same time window can be delivered together.
-    PARKING: Shipments are grouped by the assigned parking location. Shipments
-      that are delivered from the same parking location but with different time
-      windows can still be merged together, as long as the time windows overlap
-      or are not too far from each other.
+def _penalty_cost_per_item(shipment: cfr_json.Shipment) -> str | None:
+  """Groups shipments by their penalty cost per item in the shipment.
+
+  The number of items in a shipment is determined as the number of
+  comma-separated components in the label of the shipment. The group name is the
+  penalty cost per item in a string format, or None when the shipment is
+  mandatory.
+
+  Args:
+    shipment: The shipment for which the penalty cost per item is computed.
+
+  Returns:
+    None for mandatory shipments. Otherwise, returns a string that contains the
+    penaltyCost per item of the shipment in a string format.
+  """
+  penalty_cost = shipment.get("penaltyCost")
+  if penalty_cost is None:
+    return None
+  # TODO(ondrasej): Allow other ways to determine the number of items in the
+  # shipment.
+  num_items = shipment.get("label", "").count(",") + 1
+  return str(penalty_cost / num_items)
+
+
+@dataclasses.dataclass(frozen=True)
+class InitialLocalModelGrouping:
+  """Specifies how shipments are grouped in the initial local model.
+
+  Shipments are always grouped by parking location and allowed vehicle indices.
+  The fields of this class allow additional grouping.
+
+  Attributes:
+    time_windows: The shipments are grouped by their delivery time windows.
+    get_penalty_cost_group: A function that returns the transformed penalty cost
+      of the shipment used for the initial grouping of the shipments in the
+      local model.
   """
 
-  PARKING_AND_TIME = 0
-  PARKING = 1
+  time_windows: bool = False
+  get_penalty_cost_group: Callable[[cfr_json.Shipment], str | None] = (
+      _no_penalty_cost_grouping
+  )
+
+  @classmethod
+  def from_string(cls, options: str) -> Self:
+    """Creates the grouping specification from command-line flags.
+
+    Args:
+      options: The grouping options in a string format. Expects a
+        comma-separated list of option names.
+
+    Returns:
+      A new instance of this class.
+
+    Raises:
+      ArgumentTypeError: When parsing of the options fails.
+    """
+    time_windows = False
+    get_penalty_cost_group = _no_penalty_cost_grouping
+    for option in options.split(","):
+      match option:
+        case "":
+          break
+        case "time_windows":
+          time_windows = True
+        case "penalty_cost_per_item":
+          get_penalty_cost_group = _penalty_cost_per_item
+        case _:
+          raise argparse.ArgumentTypeError(
+              f"Unknown grouping option {option!r}, possible values are"
+              " 'time_windows' and 'penalty_cost_per_item'"
+          )
+    return cls(
+        time_windows=time_windows,
+        get_penalty_cost_group=get_penalty_cost_group,
+    )
 
 
 @enum.unique
@@ -321,6 +388,8 @@ class Options:
 
   Attributes:
     local_model_grouping: The grouping strategy used in the local model.
+    initial_local_model_grouping: The grouping strategy used in the initial
+      local model.
     local_model_vehicle_fixed_cost: The fixed cost of the vehicles in the local
       model. This should be a high number to make the solver use as few vehicles
       as possible.
@@ -340,7 +409,7 @@ class Options:
       CFR proto may fail.
   """
 
-  local_model_grouping: LocalModelGrouping = LocalModelGrouping.PARKING_AND_TIME
+  initial_local_model_grouping: InitialLocalModelGrouping
 
   # TODO(ondrasej): Do we actually need these? Perhaps they can be filled in on
   # the user side.
@@ -438,7 +507,7 @@ class Planner:
       shipment = self._shipments[shipment_index]
       parking = self._parking_locations[parking_tag]
       parking_group_key = _parking_delivery_group_key(
-          self._options, shipment, parking
+          self._options.initial_local_model_grouping, shipment, parking
       )
       parking_groups[parking_group_key].append(shipment_index)
     self._parking_groups: Mapping[_ParkingGroupKey, Sequence[int]] = (
@@ -2967,35 +3036,37 @@ def _make_local_model_vehicle_label(group_key: _ParkingGroupKey) -> str:
       parts.extend(_format_time_window(time_window))
   if group_key.allowed_vehicle_indices is not None:
     add_part("vehicles=", group_key.allowed_vehicle_indices)
+  if group_key.penalty_cost_group is not None:
+    add_part("penalty_cost=", group_key.penalty_cost_group)
   parts.append("]")
   return "".join(parts)
 
 
 def _parking_delivery_group_key(
-    options: Options,
+    grouping: InitialLocalModelGrouping,
     shipment: cfr_json.Shipment,
     parking: ParkingLocation | None,
 ) -> _ParkingGroupKey:
   """Creates a key that groups shipments with the same time window and parking."""
   if parking is None:
     return _ParkingGroupKey()
-  group_by_time = (
-      options.local_model_grouping == LocalModelGrouping.PARKING_AND_TIME
-  )
   parking_tag = parking.tag
-  delivery = shipment["deliveries"][0]
-  time_windows = delivery.get("timeWindows", ())
-  key_time_windows = []
-  if group_by_time and time_windows:
-    for time_window in time_windows:
-      key_time_windows.append(
-          (time_window.get("startTime"), time_window.get("endTime"))
-      )
+
   allowed_vehicle_indices = shipment.get("allowedVehicleIndices")
   if allowed_vehicle_indices is not None:
     allowed_vehicle_indices = tuple(sorted(allowed_vehicle_indices))
+
+  time_windows = ()
+  if grouping.time_windows:
+    delivery = shipment["deliveries"][0]
+    time_windows = tuple(
+        (time_window.get("startTime"), time_window.get("endTime"))
+        for time_window in delivery.get("timeWindows", ())
+    )
+
   return _ParkingGroupKey(
       parking_tag=parking_tag,
-      time_windows=tuple(key_time_windows),
+      time_windows=time_windows,
       allowed_vehicle_indices=allowed_vehicle_indices,
+      penalty_cost_group=grouping.get_penalty_cost_group(shipment),
   )

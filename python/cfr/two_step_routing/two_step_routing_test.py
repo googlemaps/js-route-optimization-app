@@ -185,12 +185,17 @@ class PlannerTest(unittest.TestCase):
   maxDiff = None
 
   _OPTIONS = two_step_routing.Options(
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
       local_model_vehicle_fixed_cost=10000,
       min_average_shipments_per_round=2,
   )
   _OPTIONS_GROUP_BY_PARKING = two_step_routing.Options(
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=False
+      ),
       local_model_vehicle_fixed_cost=0,
-      local_model_grouping=two_step_routing.LocalModelGrouping.PARKING,
   )
 
   _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
@@ -677,6 +682,9 @@ class PlannerTestWithPlaceId(unittest.TestCase):
   _OPTIONS = two_step_routing.Options(
       local_model_vehicle_fixed_cost=10000,
       min_average_shipments_per_round=1,
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
   )
 
   _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
@@ -749,6 +757,9 @@ class PlannerTestWithBreaks(unittest.TestCase):
   _OPTIONS = two_step_routing.Options(
       local_model_vehicle_fixed_cost=10000,
       min_average_shipments_per_round=1,
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
   )
 
   _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
@@ -1617,6 +1628,66 @@ class MakeLocalModelVehicleLabelTest(unittest.TestCase):
         "(start=2024-09-25T14:00:00Z)]",
     )
 
+  def test_parking_tag_time_windows_penalty_cost(self):
+    self.assertEqual(
+        two_step_routing._make_local_model_vehicle_label(
+            two_step_routing._ParkingGroupKey(
+                "P123",
+                (("2024-02-13T16:00:00Z", None),),
+                None,
+                "150",
+            )
+        ),
+        "P123 [time_windows=(start=2024-02-13T16:00:00Z) penalty_cost=150]",
+    )
+
+
+class InitialLocalModelGroupingTest(unittest.TestCase):
+  """Tests for InitialLocalModelGrouping."""
+
+  def test_from_string_no_options(self):
+    local_grouping = two_step_routing.InitialLocalModelGrouping.from_string("")
+    self.assertFalse(local_grouping.time_windows)
+    self.assertIs(
+        local_grouping.get_penalty_cost_group,
+        two_step_routing._no_penalty_cost_grouping,
+    )
+
+  def test_from_string_time_windows(self):
+    local_grouping = two_step_routing.InitialLocalModelGrouping.from_string(
+        "time_windows"
+    )
+    self.assertTrue(local_grouping.time_windows)
+    self.assertIs(
+        local_grouping.get_penalty_cost_group,
+        two_step_routing._no_penalty_cost_grouping,
+    )
+
+  def test_from_string_penalty_cost_per_item(self):
+    local_grouping = two_step_routing.InitialLocalModelGrouping.from_string(
+        "penalty_cost_per_item"
+    )
+    self.assertFalse(local_grouping.time_windows)
+    self.assertIs(
+        local_grouping.get_penalty_cost_group,
+        two_step_routing._penalty_cost_per_item,
+    )
+
+  def test_from_string_time_windows_penalty_cost_per_itme(self):
+    for test_input in (
+        "time_windows,penalty_cost_per_item",
+        "penalty_cost_per_item,time_windows",
+    ):
+      with self.subTest(test_input=test_input):
+        local_grouping = two_step_routing.InitialLocalModelGrouping.from_string(
+            test_input
+        )
+        self.assertTrue(local_grouping.time_windows)
+        self.assertIs(
+            local_grouping.get_penalty_cost_group,
+            two_step_routing._penalty_cost_per_item,
+        )
+
 
 class ParkingDeliveryGroupTest(unittest.TestCase):
   """Tests for _parking_delivery_group_key."""
@@ -1624,10 +1695,20 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
   maxDiff = None
 
   _OPTIONS_GROUP_BY_PARKING_AND_TIME = two_step_routing.Options(
-      local_model_grouping=two_step_routing.LocalModelGrouping.PARKING_AND_TIME
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
   )
   _OPTIONS_GROUP_BY_PARKING = two_step_routing.Options(
-      local_model_grouping=two_step_routing.LocalModelGrouping.PARKING
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=False
+      ),
+  )
+  _OPTIONS_GROUP_BY_PARKING_AND_TIME_AND_PENALTY = two_step_routing.Options(
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True,
+          get_penalty_cost_group=two_step_routing._penalty_cost_per_item,
+      )
   )
 
   _START_TIME = "2023-08-09T12:12:00.000Z"
@@ -1700,6 +1781,20 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
       ],
       "label": "2023081000001",
   }
+  _SHIPMENT_TIME_WINDOW_AND_PENALTY: cfr_json.Shipment = {
+      "deliveries": [
+          {
+              "timeWindows": [
+                  {
+                      "startTime": "2024-09-25T18:00:00Z",
+                      "endTime": "2024-09-25T20:00:00Z",
+                  },
+              ]
+          },
+      ],
+      "label": "2023081000001",
+      "penaltyCost": 12345,
+  }
 
   _PARKING_LOCATION = two_step_routing.ParkingLocation(
       coordinates={"latitude": 35.7668, "longitude": 139.7285}, tag="P1234"
@@ -1715,13 +1810,17 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
     ):
       self.assertEqual(
           two_step_routing._parking_delivery_group_key(
-              self._OPTIONS_GROUP_BY_PARKING_AND_TIME, shipment, None
+              self._OPTIONS_GROUP_BY_PARKING_AND_TIME.initial_local_model_grouping,
+              shipment,
+              None,
           ),
           two_step_routing._ParkingGroupKey(),
       )
       self.assertEqual(
           two_step_routing._parking_delivery_group_key(
-              self._OPTIONS_GROUP_BY_PARKING, shipment, None
+              self._OPTIONS_GROUP_BY_PARKING.initial_local_model_grouping,
+              shipment,
+              None,
           ),
           two_step_routing._ParkingGroupKey(),
       )
@@ -1729,7 +1828,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
   def test_with_parking_and_no_time_window(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME.initial_local_model_grouping,
             self._SHIPMENT_NO_TIME_WINDOW,
             self._PARKING_LOCATION,
         ),
@@ -1737,7 +1836,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
     )
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING,
+            self._OPTIONS_GROUP_BY_PARKING.initial_local_model_grouping,
             self._SHIPMENT_NO_TIME_WINDOW,
             self._PARKING_LOCATION,
         ),
@@ -1747,7 +1846,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
   def test_with_parking_and_time_window_start(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME.initial_local_model_grouping,
             self._SHIPMENT_TIME_WINDOW_START,
             self._PARKING_LOCATION,
         ),
@@ -1755,7 +1854,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
     )
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING,
+            self._OPTIONS_GROUP_BY_PARKING.initial_local_model_grouping,
             self._SHIPMENT_TIME_WINDOW_START,
             self._PARKING_LOCATION,
         ),
@@ -1765,7 +1864,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
   def test_with_parking_and_time_window_end(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME.initial_local_model_grouping,
             self._SHIPMENT_TIME_WINDOW_END,
             self._PARKING_LOCATION,
         ),
@@ -1773,7 +1872,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
     )
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING,
+            self._OPTIONS_GROUP_BY_PARKING.initial_local_model_grouping,
             self._SHIPMENT_TIME_WINDOW_END,
             self._PARKING_LOCATION,
         ),
@@ -1783,7 +1882,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
   def test_with_parking_and_time_window_start_end(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME.initial_local_model_grouping,
             self._SHIPMENT_TIME_WINDOW_START_END,
             self._PARKING_LOCATION,
         ),
@@ -1794,7 +1893,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
     )
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING,
+            self._OPTIONS_GROUP_BY_PARKING.initial_local_model_grouping,
             self._SHIPMENT_TIME_WINDOW_START_END,
             self._PARKING_LOCATION,
         ),
@@ -1804,7 +1903,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
   def test_with_allowed_vehicles(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME.initial_local_model_grouping,
             self._SHIPMENT_ALLOWED_VEHICLES,
             self._PARKING_LOCATION,
         ),
@@ -1816,7 +1915,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
     )
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING,
+            self._OPTIONS_GROUP_BY_PARKING.initial_local_model_grouping,
             self._SHIPMENT_ALLOWED_VEHICLES,
             self._PARKING_LOCATION,
         ),
@@ -1830,7 +1929,7 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
   def test_with_multiple_time_windows(self):
     self.assertEqual(
         two_step_routing._parking_delivery_group_key(
-            self._OPTIONS_GROUP_BY_PARKING_AND_TIME,
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME.initial_local_model_grouping,
             self._SHIPMENT_MULTIPLE_TIME_WINDOWS,
             self._PARKING_LOCATION,
         ),
@@ -1840,6 +1939,21 @@ class ParkingDeliveryGroupTest(unittest.TestCase):
                 (None, "2024-09-25T11:00:00Z"),
                 ("2024-09-25T18:00:00Z", "2024-09-25T20:00:00Z"),
             ),
+        ),
+    )
+
+  def test_with_time_window_and_penalty_cost(self):
+    self.assertEqual(
+        two_step_routing._parking_delivery_group_key(
+            self._OPTIONS_GROUP_BY_PARKING_AND_TIME_AND_PENALTY.initial_local_model_grouping,
+            self._SHIPMENT_TIME_WINDOW_AND_PENALTY,
+            self._PARKING_LOCATION,
+        ),
+        two_step_routing._ParkingGroupKey(
+            "P1234",
+            (("2024-09-25T18:00:00Z", "2024-09-25T20:00:00Z"),),
+            None,
+            "12345.0",
         ),
     )
 

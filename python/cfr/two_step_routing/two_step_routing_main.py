@@ -79,7 +79,7 @@ class Flags:
   reuse_existing: bool
   num_refinements: int
   end_with_local_refinement: bool
-  local_grouping: two_step_routing.LocalModelGrouping
+  local_grouping: two_step_routing.InitialLocalModelGrouping
   local_model_vehicle_fixed_cost: float | None
   travel_mode_in_merged_transitions: bool
   inject_start_times_to_refinement_first_solution: bool
@@ -116,15 +116,15 @@ def _parse_flags() -> Flags:
   parser.add_argument(
       "--token", required=True, help="The Google Cloud auth key."
   )
-  two_step_routing.LocalModelGrouping.add_as_argument(
-      parser,
+  parser.add_argument(
       "--local_grouping",
-      help="Controls the grouping mode in the local model.",
-      default=two_step_routing.LocalModelGrouping.PARKING_AND_TIME,
+      help="Controls the initial grouping of shipments in the local model.",
+      type=two_step_routing.InitialLocalModelGrouping.from_string,
+      default=two_step_routing.InitialLocalModelGrouping(time_windows=True),
   )
   parser.add_argument(
       "--local_model_vehicle_fixed_cost",
-      default=None,
+      default=0,
       type=float,
       help=(
           "The cost of a vehicle in the initial local model. When None, the"
@@ -340,26 +340,11 @@ def _run_two_step_planner() -> None:
   )
 
   logging.info("Creating local model")
-  match flags.local_grouping:
-    case two_step_routing.LocalModelGrouping.PARKING:
-      options = two_step_routing.Options(
-          local_model_grouping=two_step_routing.LocalModelGrouping.PARKING,
-          local_model_vehicle_fixed_cost=0,
-          travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
-      )
-    case two_step_routing.LocalModelGrouping.PARKING_AND_TIME:
-      options = two_step_routing.Options(
-          travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions
-      )
-    case _:
-      raise ValueError(
-          "Unexpected value of --local_grouping: {flags.local_grouping!r}"
-      )
-  if flags.local_model_vehicle_fixed_cost is not None:
-    options.local_model_vehicle_fixed_cost = (
-        flags.local_model_vehicle_fixed_cost
-    )
-
+  options = two_step_routing.Options(
+      initial_local_model_grouping=flags.local_grouping,
+      local_model_vehicle_fixed_cost=flags.local_model_vehicle_fixed_cost,
+      travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
+  )
   planner = two_step_routing.Planner(
       request_json, parking_locations, parking_for_shipment, options
   )
