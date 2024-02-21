@@ -102,7 +102,7 @@ def vehicle_end_location(vehicle: cfr_json.Vehicle) -> str:
   if end_location is not None:
     return lat_lng(end_location)
   if end_waypoint is not None:
-    return waypoint_latlng(end_waypoint)
+    return waypoint(end_waypoint)
   return ""
 
 
@@ -117,7 +117,7 @@ def vehicle_start_location(vehicle: cfr_json.Vehicle) -> str:
   if start_location is not None:
     return lat_lng(start_location)
   if start_waypoint is not None:
-    return waypoint_latlng(start_waypoint)
+    return waypoint(start_waypoint)
   return ""
 
 
@@ -148,7 +148,7 @@ def visit_request_location(visit_request: cfr_json.VisitRequest) -> str:
   if arrival_location is not None:
     parts.append(lat_lng(arrival_location))
   if arrival_waypoint is not None:
-    parts.append(waypoint_latlng(arrival_waypoint))
+    parts.append(waypoint(arrival_waypoint))
 
   departure_location = visit_request.get("departureLocation")
   departure_waypoint = visit_request.get("departureWaypoint")
@@ -159,18 +159,17 @@ def visit_request_location(visit_request: cfr_json.VisitRequest) -> str:
   if departure_location is not None:
     parts.append(lat_lng(departure_location))
   if departure_waypoint is not None:
-    parts.append(waypoint_latlng(departure_waypoint))
+    parts.append(waypoint(departure_waypoint))
 
   return " -> ".join(parts)
 
 
-def waypoint_latlng(wp: cfr_json.Waypoint) -> str:
+def waypoint(wp: cfr_json.Waypoint) -> str:
   """Returns the coordinates of a waypoint in a human-readable form."""
-  # TODO(ondrasej): Consider adding "sideOfRoad" and "placeId".
-  location = wp.get("location")
-  if location is None:
-    return ""
-  latlng = location.get("latLng")
-  if latlng is None:
-    return ""
-  return lat_lng(latlng)
+  # TODO(ondrasej): Consider adding "sideOfRoad" and "heading".
+  if (location := wp.get("location")) is not None:
+    if (latlng := location.get("latLng")) is not None:
+      return lat_lng(latlng)
+  elif (place_id := wp.get("placeId")) is not None:
+    return place_id
+  return ""

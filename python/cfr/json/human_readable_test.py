@@ -189,15 +189,11 @@ class VehicleEndLocationTest(unittest.TestCase):
 
   def test_waypoint(self):
     self.assertEqual(
-        human_readable.vehicle_end_location(
-            {
-                "endWaypoint": {
-                    "location": {
-                        "latLng": {"latitude": 1.23, "longitude": -4.56}
-                    }
-                }
+        human_readable.vehicle_end_location({
+            "endWaypoint": {
+                "location": {"latLng": {"latitude": 1.23, "longitude": -4.56}}
             }
-        ),
+        }),
         "1.23, -4.56",
     )
 
@@ -227,15 +223,11 @@ class VehicleStartLocationTest(unittest.TestCase):
 
   def test_waypoint(self):
     self.assertEqual(
-        human_readable.vehicle_start_location(
-            {
-                "startWaypoint": {
-                    "location": {
-                        "latLng": {"latitude": 1.23, "longitude": -4.56}
-                    }
-                }
+        human_readable.vehicle_start_location({
+            "startWaypoint": {
+                "location": {"latLng": {"latitude": 1.23, "longitude": -4.56}}
             }
-        ),
+        }),
         "1.23, -4.56",
     )
 
@@ -265,15 +257,11 @@ class VisitRequestLocationTest(unittest.TestCase):
 
   def test_arrival_waypoint(self):
     self.assertEqual(
-        human_readable.visit_request_location(
-            {
-                "arrivalWaypoint": {
-                    "location": {
-                        "latLng": {"latitude": 1.23, "longitude": -4.56}
-                    }
-                }
+        human_readable.visit_request_location({
+            "arrivalWaypoint": {
+                "location": {"latLng": {"latitude": 1.23, "longitude": -4.56}}
             }
-        ),
+        }),
         "1.23, -4.56",
     )
 
@@ -296,15 +284,11 @@ class VisitRequestLocationTest(unittest.TestCase):
 
   def test_departure_waypoint(self):
     self.assertEqual(
-        human_readable.visit_request_location(
-            {
-                "departureWaypoint": {
-                    "location": {
-                        "latLng": {"latitude": 1.23, "longitude": 4.56}
-                    }
-                }
+        human_readable.visit_request_location({
+            "departureWaypoint": {
+                "location": {"latLng": {"latitude": 1.23, "longitude": 4.56}}
             }
-        ),
+        }),
         "1.23, 4.56",
     )
 
@@ -343,6 +327,25 @@ class VisitRequestLocationTest(unittest.TestCase):
             human_readable.visit_request_location(visit_request),
             "0.12, 32.22 -> 0.89, 32.09",
         )
+
+
+class WaypointTest(unittest.TestCase):
+  """Tests for waypoint."""
+
+  maxDiff = None
+
+  def test_empty_waypoint(self):
+    self.assertEqual(human_readable.waypoint({}), "")
+
+  def test_waypoint_with_latlng(self):
+    waypoint: cfr_json.Waypoint = {
+        "location": {"latLng": {"latitude": 0.12, "longitude": 32.22}}
+    }
+    self.assertEqual(human_readable.waypoint(waypoint), "0.12, 32.22")
+
+  def test_waypoint_with_placeid(self):
+    waypoint: cfr_json.Waypoint = {"placeId": "helloworld"}
+    self.assertEqual(human_readable.waypoint(waypoint), "helloworld")
 
 
 if __name__ == "__main__":
