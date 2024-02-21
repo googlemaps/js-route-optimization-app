@@ -6,16 +6,17 @@
 """IO helper functions for JSON."""
 
 import json
+import sys
 from typing import Any
 
 
 def write_json_to_file(
     filename: str, value: Any, *, human_readable: bool = True
 ) -> None:
-  """Writes JSON data to a utf-8 text file.
+  """Writes JSON data to a utf-8 text file or stdout.
 
   Args:
-    filename: The name of the file to write to.
+    filename: The name of the file to write to. When empty, writes to stdout.
     value: The JSON data to write. This must be a data structure composed of
       dicts with string keys, lists, and scalar values supported in JSON.
     human_readable: When True, the output file will use a human-readable
@@ -27,17 +28,25 @@ def write_json_to_file(
   """
   indent = 2 if human_readable else None
   separators = None if human_readable else (",", ":")
-  with open(filename, "wt", encoding="utf-8") as f:
+
+  def write_json(file):
     json.dump(
-        value, f, ensure_ascii=False, indent=indent, separators=separators
+        value, file, ensure_ascii=False, indent=indent, separators=separators
     )
+
+  if filename:
+    with open(filename, "wt", encoding="utf-8") as f:
+      write_json(f)
+  else:
+    write_json(sys.stdout)
 
 
 def read_json_from_file(filename: str) -> Any:
-  """Reads JSON data from a file.
+  """Reads JSON data from a file or stdin.
 
   Args:
-    filename: The name of the file to read from.
+    filename: The name of the file to read from. When empty, reads from stdin
+      using the default system encoding.
 
   Returns:
     The JSON data in the native Python format.
@@ -46,5 +55,8 @@ def read_json_from_file(filename: str) -> Any:
     JSONDecodeError: When the input file is not a valid JSON file.
     OSError: When reading the input file fails.
   """
-  with open(filename, "rb") as f:
-    return json.load(f)
+  if filename:
+    with open(filename, "rb") as f:
+      return json.load(f)
+  else:
+    return json.load(sys.stdin)
