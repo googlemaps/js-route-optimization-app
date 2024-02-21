@@ -73,9 +73,21 @@ def _non_negative_float(value: str) -> float:
   value_as_float = float(value)
   if value_as_float < 0:
     raise argparse.ArgumentTypeError(
-        f"expected a non-negative value, got {value}"
+        f"expected a non-negative value, got {value!r}"
     )
   return value_as_float
+
+
+def _explicit_true_or_false(value: str) -> bool:
+  match value.casefold():
+    case "true":
+      return True
+    case "false":
+      return False
+    case _:
+      raise argparse.ArgumentTypeError(
+          "Expected 'true' or 'false', got {value!r}"
+      )
 
 
 @dataclasses.dataclass(slots=True)
@@ -100,6 +112,8 @@ class Flags:
   remove_vehicles_by_label: Sequence[str] | None
 
   transform_breaks: str | None
+
+  override_consider_road_traffic: bool | None
 
   @property
   def items_per_shipment_callback(self) -> Callable[[cfr_json.Shipment], int]:
@@ -222,6 +236,15 @@ class Flags:
             " transformation language."
         ),
     )
+    parser.add_argument(
+        "--override_consider_road_traffic",
+        help=(
+            "Specifies an override for the value of `considerRoadTraffic` in"
+            " the request. When unspecified, the original value is preserved."
+        ),
+        type=_explicit_true_or_false,
+        default=None,
+    )
 
     parsed_args = parser.parse_args(args)
     return cls(**vars(parsed_args))
@@ -296,6 +319,8 @@ def main(args: Sequence[str] | None = None) -> None:
 
   model = request["model"]
 
+  if flags.override_consider_road_traffic is not None:
+    request["considerRoadTraffic"] = flags.override_consider_road_traffic
   if flags.shipment_penalty_cost_per_item is not None:
     transforms.make_all_shipments_optional(
         model,

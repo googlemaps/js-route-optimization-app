@@ -506,6 +506,37 @@ class TransformRequestTest(unittest.TestCase):
         expected_output_request,
     )
 
+  def test_override_consider_road_traffic_true_from_false(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+        "considerRoadTraffic": False,
+    }
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+        "considerRoadTraffic": True,
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--override_consider_road_traffic=true",)
+        ),
+        expected_request,
+    )
+
+  def test_override_consider_road_traffic_false_from_none(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+    }
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+        "considerRoadTraffic": False,
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--override_consider_road_traffic=false",)
+        ),
+        expected_request,
+    )
+
 
 if __name__ == "__main__":
   unittest.main()
