@@ -385,7 +385,7 @@ class RemoveVehiclesFromInjectedFirstSolutionRoutesTest(unittest.TestCase):
     }
     expected_request = copy.deepcopy(request)
     transforms.remove_vehicles_from_injected_first_solution_routes(
-        request, {0: 0, 2: 1, 3: 2}
+        request, {0: 0, 2: 1, 3: 2}, {}
     )
     self.assertEqual(request, expected_request)
 
@@ -400,8 +400,16 @@ class RemoveVehiclesFromInjectedFirstSolutionRoutesTest(unittest.TestCase):
         },
         "injectedFirstSolutionRoutes": [
             {"vehicleLabel": "V001"},
-            {"vehicleIndex": 1, "vehicleLabel": "V004"},
-            {"vehicleIndex": 5, "vehicleLabel": "V007"},
+            {
+                "vehicleIndex": 1,
+                "vehicleLabel": "V004",
+                "visits": [{"shipmentIndex": 3, "visitRequestIndex": 0}],
+            },
+            {
+                "vehicleIndex": 5,
+                "vehicleLabel": "V007",
+                "visits": [{"visitRequestIndex": 0}],
+            },
         ],
     }
     expected_request: cfr_json.OptimizeToursRequest = {
@@ -413,12 +421,20 @@ class RemoveVehiclesFromInjectedFirstSolutionRoutesTest(unittest.TestCase):
             ]
         },
         "injectedFirstSolutionRoutes": [
-            {"vehicleIndex": 1, "vehicleLabel": "V004"},
-            {"vehicleIndex": 2, "vehicleLabel": "V007"},
+            {
+                "vehicleIndex": 1,
+                "vehicleLabel": "V004",
+                "visits": [{"shipmentIndex": 2, "visitRequestIndex": 0}],
+            },
+            {
+                "vehicleIndex": 2,
+                "vehicleLabel": "V007",
+                "visits": [{"shipmentIndex": 0, "visitRequestIndex": 0}],
+            },
         ],
     }
     transforms.remove_vehicles_from_injected_first_solution_routes(
-        request, {1: 1, 5: 2}
+        request, {1: 1, 5: 2}, {0: 0, 1: 1, 3: 2}
     )
     self.assertEqual(request, expected_request)
 

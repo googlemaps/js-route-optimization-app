@@ -6,7 +6,7 @@
 """A library of transformations to CFR JSON requests."""
 
 import collections
-from collections.abc import Callable, Collection, Iterable, Mapping
+from collections.abc import Callable, Collection, Iterable, Mapping, MutableMapping
 import copy
 import itertools
 import logging
@@ -142,7 +142,7 @@ def remove_vehicles(
     model: cfr_json.ShipmentModel,
     vehicle_indices: Collection[int],
     on_infeasible_shipment: OnInfeasibleShipment = OnInfeasibleShipment.FAIL,
-) -> Mapping[int, int]:
+) -> tuple[Mapping[int, int], Mapping[int, int]]:
   """Removes vehicles with the given indices from the model.
 
   Removes the vehicles from the list and updates vehicle indices in the other
@@ -225,6 +225,7 @@ def remove_vehicles(
           if vehicle_index not in removed_vehicle_indices
       ]
 
+  new_shipment_for_old_shipment: MutableMapping[int, int] = {}
   if removed_shipments:
     # Remove all trivially infeasible shipments from the model.
     new_shipments = []
@@ -237,15 +238,17 @@ def remove_vehicles(
             repr(label) if label is not None else "",
         )
       else:
+        new_shipment_for_old_shipment[shipment_index] = len(new_shipments)
         new_shipments.append(shipment)
     model["shipments"] = new_shipments
 
-  return new_vehicle_for_old_vehicle
+  return new_vehicle_for_old_vehicle, new_shipment_for_old_shipment
 
 
 def remove_vehicles_from_injected_first_solution_routes(
     request: cfr_json.OptimizeToursRequest,
     new_vehicle_for_old_vehicle: Mapping[int, int],
+    new_shipment_for_old_shipment: Mapping[int, int],
 ) -> None:
   """Removes given vehicles from the first solution hint in `request`."""
   injected_first_solution_routes = request.get("injectedFirstSolutionRoutes")
@@ -259,6 +262,13 @@ def remove_vehicles_from_injected_first_solution_routes(
     if new_vehicle_index is None:
       continue
     route["vehicleIndex"] = new_vehicle_index
+    if new_shipment_for_old_shipment:
+      for visit in cfr_json.get_visits(route):
+        old_shipment_index = visit.get("shipmentIndex", 0)
+        visit["shipmentIndex"] = new_shipment_for_old_shipment[
+            old_shipment_index
+        ]
+
     new_injected_first_solution_routes.append(route)
 
   if new_injected_first_solution_routes:
