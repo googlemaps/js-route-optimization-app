@@ -261,18 +261,19 @@ class Flags:
 
 
 def _remove_vehicles_by_label(
-    model: cfr_json.ShipmentModel,
+    request: cfr_json.OptimizeToursRequest,
     vehicle_labels: Iterable[str],
     on_infeasible_shipment: transforms.OnInfeasibleShipment,
 ) -> None:
-  """Removes all vehicles in the model whose label is in `vehicle_labels`.
+  """Removes all vehicles in the request whose label is in `vehicle_labels`.
 
   Args:
-    model: The model from which the vehicles are removed. Modified in place.
+    request: The request in which the vehicles are removed.
     vehicle_labels: The labels of vehicles to be removed from the model.
     on_infeasible_shipment: The behavior of the tool when a shipment becomes
       trivially infeasible after removing a vehicle.
   """
+  model = request["model"]
   indices_to_remove = set()
   labels_to_remove = set(vehicle_labels)
   removed_labels = set()
@@ -290,7 +291,12 @@ def _remove_vehicles_by_label(
         f" model: {', '.join(repr(label) for label in missing_labels)}"
     )
 
-  transforms.remove_vehicles(model, indices_to_remove, on_infeasible_shipment)
+  new_vehicle_for_old_vehicle = transforms.remove_vehicles(
+      request["model"], indices_to_remove, on_infeasible_shipment
+  )
+  transforms.remove_vehicles_from_injected_first_solution_routes(
+      request, new_vehicle_for_old_vehicle
+  )
 
 
 def _duplicate_vehicles_by_label(
@@ -353,7 +359,9 @@ def main(args: Sequence[str] | None = None) -> None:
     )
   if removed_labels := flags.remove_vehicles_by_label:
     _remove_vehicles_by_label(
-        model, removed_labels, flags.infeasible_shipment_after_removing_vehicle
+        request,
+        removed_labels,
+        flags.infeasible_shipment_after_removing_vehicle,
     )
   if duplicated_labels := flags.duplicate_vehicles_by_label:
     _duplicate_vehicles_by_label(model, duplicated_labels)

@@ -6,7 +6,7 @@
 """A library of transformations to CFR JSON requests."""
 
 import collections
-from collections.abc import Callable, Collection, Iterable
+from collections.abc import Callable, Collection, Iterable, Mapping
 import copy
 import itertools
 import logging
@@ -142,7 +142,7 @@ def remove_vehicles(
     model: cfr_json.ShipmentModel,
     vehicle_indices: Collection[int],
     on_infeasible_shipment: OnInfeasibleShipment = OnInfeasibleShipment.FAIL,
-) -> None:
+) -> Mapping[int, int]:
   """Removes vehicles with the given indices from the model.
 
   Removes the vehicles from the list and updates vehicle indices in the other
@@ -153,6 +153,10 @@ def remove_vehicles(
     vehicle_indices: The set of vehicle indices to remove.
     on_infeasible_shipment: The behavior of the function when it encounters an
       infeasible shipment.
+
+  Returns:
+    A mapping from vehicle indices before the removal to vehicle indices after
+    the removal. Removed vehicle indices are not present in this mapping.
   """
   old_vehicles = cfr_json.get_vehicles(model)
   num_old_vehicles = len(old_vehicles)
@@ -235,6 +239,32 @@ def remove_vehicles(
       else:
         new_shipments.append(shipment)
     model["shipments"] = new_shipments
+
+  return new_vehicle_for_old_vehicle
+
+
+def remove_vehicles_from_injected_first_solution_routes(
+    request: cfr_json.OptimizeToursRequest,
+    new_vehicle_for_old_vehicle: Mapping[int, int],
+) -> None:
+  """Removes given vehicles from the first solution hint in `request`."""
+  injected_first_solution_routes = request.get("injectedFirstSolutionRoutes")
+  if injected_first_solution_routes is None:
+    return
+
+  new_injected_first_solution_routes = []
+  for route in injected_first_solution_routes:
+    old_vehicle_index = route.get("vehicleIndex", 0)
+    new_vehicle_index = new_vehicle_for_old_vehicle.get(old_vehicle_index)
+    if new_vehicle_index is None:
+      continue
+    route["vehicleIndex"] = new_vehicle_index
+    new_injected_first_solution_routes.append(route)
+
+  if new_injected_first_solution_routes:
+    request["injectedFirstSolutionRoutes"] = new_injected_first_solution_routes
+  else:
+    request.pop("injectedFirstSolutionRoutes", None)
 
 
 def soften_shipment_allowed_vehicle_indices(

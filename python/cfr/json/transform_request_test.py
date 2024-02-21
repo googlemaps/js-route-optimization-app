@@ -413,6 +413,79 @@ class TransformRequestTest(unittest.TestCase):
         expected_output_request_v001_v002,
     )
 
+  def test_remove_vehicles_and_injected_first_solution_routes_by_label(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [0, 2]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [1],
+                },
+            ],
+            "vehicles": [
+                {"label": "V001", "costPerHour": 30},
+                {"label": "V002", "costPerHour": 60},
+                {"label": "V003", "costPerHour": 90},
+            ],
+        },
+        "injectedFirstSolutionRoutes": [
+            {"vehicleLabel": "V001", "visits": []},
+            {
+                "vehicleIndex": 1,
+                "vehicleLabel": "V002",
+                "visits": [{"shipmentIndex": 0, "visitRequestIndex": 0}],
+            },
+        ],
+    }
+    expected_output_request_v001: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [1]},
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [0],
+                },
+            ],
+            "vehicles": [
+                {"label": "V002", "costPerHour": 60},
+                {"label": "V003", "costPerHour": 90},
+            ],
+        },
+        "injectedFirstSolutionRoutes": [
+            {
+                "vehicleIndex": 0,
+                "vehicleLabel": "V002",
+                "visits": [{"shipmentIndex": 0, "visitRequestIndex": 0}],
+            },
+        ],
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--remove_vehicles_by_label=V001",)
+        ),
+        expected_output_request_v001,
+    )
+    expected_output_request_v001_v002: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "allowedVehicleIndices": [0]},
+                {"label": "S002"},
+            ],
+            "vehicles": [
+                {"label": "V003", "costPerHour": 90},
+            ],
+        }
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--remove_vehicles_by_label=V001,V002",)
+        ),
+        expected_output_request_v001_v002,
+    )
+
   def test_remove_vehicles_by_label__invalid_vehicle_label(self):
     request: cfr_json.OptimizeToursRequest = {
         "model": {

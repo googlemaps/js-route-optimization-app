@@ -368,6 +368,61 @@ class RemoveVehiclesTest(unittest.TestCase):
     )
 
 
+class RemoveVehiclesFromInjectedFirstSolutionRoutesTest(unittest.TestCase):
+  """Tests for remove_vehicles_from_injected_first_solution_routes."""
+
+  maxDiff = None
+
+  def test_no_injected_first_solution(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+            ]
+        }
+    }
+    expected_request = copy.deepcopy(request)
+    transforms.remove_vehicles_from_injected_first_solution_routes(
+        request, {0: 0, 2: 1, 3: 2}
+    )
+    self.assertEqual(request, expected_request)
+
+  def test_remove_some_vehicles(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+            ]
+        },
+        "injectedFirstSolutionRoutes": [
+            {"vehicleLabel": "V001"},
+            {"vehicleIndex": 1, "vehicleLabel": "V004"},
+            {"vehicleIndex": 5, "vehicleLabel": "V007"},
+        ],
+    }
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+            ]
+        },
+        "injectedFirstSolutionRoutes": [
+            {"vehicleIndex": 1, "vehicleLabel": "V004"},
+            {"vehicleIndex": 2, "vehicleLabel": "V007"},
+        ],
+    }
+    transforms.remove_vehicles_from_injected_first_solution_routes(
+        request, {1: 1, 5: 2}
+    )
+    self.assertEqual(request, expected_request)
+
+
 class SoftenShipmentAllowedVehicleIndicesTest(unittest.TestCase):
   """Tests for soften_shipment_allowed_vehicle_indices."""
 
