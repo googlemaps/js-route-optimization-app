@@ -110,6 +110,7 @@ class Flags:
 
   duplicate_vehicles_by_label: Sequence[str] | None
   remove_vehicles_by_label: Sequence[str] | None
+  infeasible_shipment_after_removing_vehicle: transforms.OnInfeasibleShipment
 
   transform_breaks: str | None
 
@@ -245,19 +246,32 @@ class Flags:
         type=_explicit_true_or_false,
         default=None,
     )
+    transforms.OnInfeasibleShipment.add_as_argument(
+        parser,
+        "--infeasible_shipment_after_removing_vehicle",
+        help=(
+            "Specifies how to deal with shipments that become trivially"
+            " infeasible after removing a vehicle."
+        ),
+        default=transforms.OnInfeasibleShipment.FAIL,
+    )
 
     parsed_args = parser.parse_args(args)
     return cls(**vars(parsed_args))
 
 
 def _remove_vehicles_by_label(
-    model: cfr_json.ShipmentModel, vehicle_labels: Iterable[str]
+    model: cfr_json.ShipmentModel,
+    vehicle_labels: Iterable[str],
+    on_infeasible_shipment: transforms.OnInfeasibleShipment,
 ) -> None:
   """Removes all vehicles in the model whose label is in `vehicle_labels`.
 
   Args:
     model: The model from which the vehicles are removed. Modified in place.
     vehicle_labels: The labels of vehicles to be removed from the model.
+    on_infeasible_shipment: The behavior of the tool when a shipment becomes
+      trivially infeasible after removing a vehicle.
   """
   indices_to_remove = set()
   labels_to_remove = set(vehicle_labels)
@@ -276,7 +290,7 @@ def _remove_vehicles_by_label(
         f" model: {', '.join(repr(label) for label in missing_labels)}"
     )
 
-  transforms.remove_vehicles(model, indices_to_remove)
+  transforms.remove_vehicles(model, indices_to_remove, on_infeasible_shipment)
 
 
 def _duplicate_vehicles_by_label(
@@ -338,7 +352,9 @@ def main(args: Sequence[str] | None = None) -> None:
         model, factor=flags.visit_duration_scaling_factor
     )
   if removed_labels := flags.remove_vehicles_by_label:
-    _remove_vehicles_by_label(model, removed_labels)
+    _remove_vehicles_by_label(
+        model, removed_labels, flags.infeasible_shipment_after_removing_vehicle
+    )
   if duplicated_labels := flags.duplicate_vehicles_by_label:
     _duplicate_vehicles_by_label(model, duplicated_labels)
   if flags.transform_breaks is not None:

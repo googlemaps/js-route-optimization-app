@@ -333,6 +333,40 @@ class RemoveVehiclesTest(unittest.TestCase):
     with self.assertRaisesRegex(ValueError, "becomes infeasible"):
       transforms.remove_vehicles(model, (1,))
 
+  def test_remove_infeasible_shipment(self):
+    model = copy.deepcopy(self._MODEL)
+    transforms.remove_vehicles(
+        model, (1,), transforms.OnInfeasibleShipment.REMOVE
+    )
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [0],
+                    "allowedVehicleIndices": [1],
+                },
+                {
+                    "label": "S003",
+                    "costsPerVehicle": [100, 300],
+                },
+            ],
+            "vehicles": [
+                {
+                    "label": "V001",
+                    "costPerKilometer": 5,
+                    "costPerHour": 180,
+                },
+                {
+                    "label": "V003",
+                    "costPerHour": 80,
+                },
+            ],
+        },
+    )
+
 
 class SoftenShipmentAllowedVehicleIndicesTest(unittest.TestCase):
   """Tests for soften_shipment_allowed_vehicle_indices."""

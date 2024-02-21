@@ -9,10 +9,12 @@ import collections
 from collections.abc import Callable, Collection, Iterable
 import copy
 import itertools
+import logging
 import math
 import re
 
 from . import cfr_json
+from .. import utils
 
 
 def make_all_shipments_optional(
@@ -121,8 +123,25 @@ def duplicate_vehicle(model: cfr_json.ShipmentModel, vehicle_index: int) -> int:
   return new_vehicle_index
 
 
+class OnInfeasibleShipment(utils.EnumForArgparse):
+  """Specifies the action taken when a shipment becommes infeasible.
+
+  This is used by `remove_vehicles` when the last vehicle that can serve a given
+  shipment is removed.
+
+  Values:
+    FAIL: The operation that made the shipment infeasible fails.
+    REMOVE: The infeasible shipment is removed from the request.
+  """
+
+  FAIL = 0
+  REMOVE = 1
+
+
 def remove_vehicles(
-    model: cfr_json.ShipmentModel, vehicle_indices: Collection[int]
+    model: cfr_json.ShipmentModel,
+    vehicle_indices: Collection[int],
+    on_infeasible_shipment: OnInfeasibleShipment = OnInfeasibleShipment.FAIL,
 ) -> None:
   """Removes vehicles with the given indices from the model.
 
@@ -132,12 +151,16 @@ def remove_vehicles(
   Args:
     model: The model to update.
     vehicle_indices: The set of vehicle indices to remove.
+    on_infeasible_shipment: The behavior of the function when it encounters an
+      infeasible shipment.
   """
   old_vehicles = cfr_json.get_vehicles(model)
   num_old_vehicles = len(old_vehicles)
   removed_vehicle_indices = frozenset(vehicle_indices)
   new_vehicle_for_old_vehicle = {}
   new_vehicles = []
+
+  removed_shipments = set()
 
   for old_vehicle_index, vehicle in enumerate(old_vehicles):
     if old_vehicle_index in removed_vehicle_indices:
@@ -147,7 +170,8 @@ def remove_vehicles(
     new_vehicles.append(vehicle)
   model["vehicles"] = new_vehicles
 
-  for shipment_index, shipment in enumerate(cfr_json.get_shipments(model)):
+  shipments = cfr_json.get_shipments(model)
+  for shipment_index, shipment in enumerate(shipments):
     allowed_vehicle_indices = shipment.get("allowedVehicleIndices")
     if allowed_vehicle_indices is not None:
       new_allowed_indices = [
@@ -156,8 +180,12 @@ def remove_vehicles(
           if vehicle_index not in removed_vehicle_indices
       ]
       if not new_allowed_indices:
-        # TODO(ondrasej): Perhaps also remove trivially infeasible shipments?
-        raise ValueError(f"Shipment {shipment_index} becomes infeasible")
+        match on_infeasible_shipment:
+          case OnInfeasibleShipment.FAIL:
+            raise ValueError(f"Shipment {shipment_index} becomes infeasible")
+          case OnInfeasibleShipment.REMOVE:
+            removed_shipments.add(shipment_index)
+            continue
       shipment["allowedVehicleIndices"] = new_allowed_indices
 
     costs_per_vehicle = shipment.get("costsPerVehicle")
@@ -192,6 +220,21 @@ def remove_vehicles(
           for vehicle_index, cost in enumerate(costs_per_vehicle)
           if vehicle_index not in removed_vehicle_indices
       ]
+
+  if removed_shipments:
+    # Remove all trivially infeasible shipments from the model.
+    new_shipments = []
+    for shipment_index, shipment in enumerate(shipments):
+      if shipment_index in removed_shipments:
+        label = shipment.get("label")
+        logging.warning(
+            "Removing trivially infeasible shipment #%d: %s",
+            shipment_index,
+            repr(label) if label is not None else "",
+        )
+      else:
+        new_shipments.append(shipment)
+    model["shipments"] = new_shipments
 
 
 def soften_shipment_allowed_vehicle_indices(
