@@ -60,6 +60,7 @@ export class AppComponent {
       'help',
       'help-filled',
       'input',
+      'json',
       'map',
       'maps',
       'more_vert',
