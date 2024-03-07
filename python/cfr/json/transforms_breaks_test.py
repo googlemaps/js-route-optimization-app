@@ -1,7 +1,9 @@
 """Tests for break rule transformations."""
 
+from collections.abc import Sequence
 import copy
 import datetime
+import re
 import unittest
 
 from . import cfr_json
@@ -115,6 +117,64 @@ class TransformBreaksTest(unittest.TestCase):
     }
     self.assertEqual(
         self.run_transform_breaks(model, "@time=14:00:00 depot"),
+        expected_model,
+    )
+
+  def test_break_at_location(self):
+    model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-02-09T08:00:00Z",
+        "globalEndTime": "2024-02-09T18:00:00Z",
+        "vehicles": [{
+            "startWaypoint": {"placeId": "foobar"},
+            "breakRule": {
+                "breakRequests": [
+                    {
+                        "earliestStartTime": "2024-02-09T11:30:00Z",
+                        "latestStartTime": "2024-02-09T12:30:00Z",
+                        "minDuration": "3600s",
+                    },
+                    {
+                        "earliestStartTime": "2024-02-09T14:00:00Z",
+                        "latestStartTime": "2024-02-09T16:00:00Z",
+                        "minDuration": "3600s",
+                    },
+                ]
+            },
+        }],
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-02-09T08:00:00Z",
+        "globalEndTime": "2024-02-09T18:00:00Z",
+        "vehicles": [{
+            "startWaypoint": {"placeId": "foobar"},
+            "breakRule": {
+                "breakRequests": [
+                    {
+                        "earliestStartTime": "2024-02-09T11:30:00Z",
+                        "latestStartTime": "2024-02-09T12:30:00Z",
+                        "minDuration": "3600s",
+                    },
+                ]
+            },
+        }],
+        "shipments": [{
+            "allowedVehicleIndices": [0],
+            "label": "break, vehicle_index=0",
+            "deliveries": [{
+                "arrivalWaypoint": {"placeId": "barbaz", "sideOfRoad": True},
+                "timeWindows": [{
+                    "startTime": "2024-02-09T14:00:00Z",
+                    "endTime": "2024-02-09T16:00:00Z",
+                }],
+                "duration": "3600s",
+            }],
+        }],
+    }
+    self.assertEqual(
+        self.run_transform_breaks(
+            model,
+            '@time=14:00:00 location={"placeId": "barbaz", "sideOfRoad": true}',
+        ),
         expected_model,
     )
 
@@ -453,6 +513,72 @@ class TransformBreaksTest(unittest.TestCase):
     )
 
 
+class TokenizeTest(unittest.TestCase):
+  maxDiff = None
+
+  def test_empty(self):
+    self.assertSequenceEqual(tuple(transforms_breaks._tokenize("")), (None,))
+
+  def test_single_name(self):
+    self.assertSequenceEqual(
+        tuple(transforms_breaks._tokenize("depot")),
+        (transforms_breaks._Component(name="depot"), None),
+    )
+
+  def test_tokenize_with_json_object(self):
+    components = tuple(transforms_breaks._tokenize('depot={"placeId": "foo"}'))
+    self.assertSequenceEqual(
+        components,
+        (
+            transforms_breaks._Component(
+                name="depot", operator="=", value={"placeId": "foo"}
+            ),
+            None,
+        ),
+    )
+
+  def test_tokenize_with_json_string(self):
+    components = tuple(
+        transforms_breaks._tokenize('@vehicleLabel="this vehicle"')
+    )
+    self.assertSequenceEqual(
+        components,
+        (
+            transforms_breaks._Component(
+                name="@vehicleLabel", operator="=", value="this vehicle"
+            ),
+            None,
+        ),
+    )
+
+  def test_multiple_rules(self):
+    components = tuple(transforms_breaks._tokenize("""
+            @time=12:00:00 minDuration=120s;
+            new earliestStartTime=10:00:00 latestEndTime=11:00:00 depot
+            """))
+    self.assertSequenceEqual(
+        components,
+        (
+            transforms_breaks._Component(
+                name="@time", operator="=", value="12:00:00"
+            ),
+            transforms_breaks._Component(
+                name="minDuration", operator="=", value="120s"
+            ),
+            None,
+            transforms_breaks._Component(name="new"),
+            transforms_breaks._Component(
+                name="earliestStartTime", operator="=", value="10:00:00"
+            ),
+            transforms_breaks._Component(
+                name="latestEndTime", operator="=", value="11:00:00"
+            ),
+            transforms_breaks._Component(name="depot"),
+            None,
+        ),
+    )
+
+
 class CompileRulesTest(unittest.TestCase):
   maxDiff = None
 
@@ -472,7 +598,9 @@ class CompileRulesTest(unittest.TestCase):
         "latestStartTime": "2024-02-09T13:00:00Z",
         "minDuration": "3600s",
     }
-    self.assertTrue(rules[0].applies_to(break_request))
+    self.assertTrue(
+        rules[0].applies_to(self.MODEL, self.VEHICLE, break_request)
+    )
     transformed_breaks = rules[0].apply_to(
         self.MODEL, self.VEHICLE, break_request
     )
@@ -501,8 +629,8 @@ class CompileRulesTest(unittest.TestCase):
         "latestStartTime": "2024-02-09T13:00:00Z",
         "minDuration": "3600s",
     }
-    self.assertTrue(rules[0].applies_to(noon_break))
-    self.assertFalse(rules[1].applies_to(noon_break))
+    self.assertTrue(rules[0].applies_to(self.MODEL, self.VEHICLE, noon_break))
+    self.assertFalse(rules[1].applies_to(self.MODEL, self.VEHICLE, noon_break))
     self.assertSequenceEqual(
         rules[0].apply_to(self.MODEL, self.VEHICLE, noon_break),
         (
@@ -519,8 +647,12 @@ class CompileRulesTest(unittest.TestCase):
         "latestStartTime": "2024-02-09T16:00:00Z",
         "minDuration": "150s",
     }
-    self.assertFalse(rules[0].applies_to(afternoon_break))
-    self.assertTrue(rules[1].applies_to(afternoon_break))
+    self.assertFalse(
+        rules[0].applies_to(self.MODEL, self.VEHICLE, afternoon_break)
+    )
+    self.assertTrue(
+        rules[1].applies_to(self.MODEL, self.VEHICLE, afternoon_break)
+    )
     self.assertSequenceEqual(
         rules[1].apply_to(self.MODEL, self.VEHICLE, afternoon_break),
         (
@@ -541,7 +673,9 @@ class CompileRulesTest(unittest.TestCase):
         "latestStartTime": "2024-02-09T13:00:00Z",
         "minDuration": "3600s",
     }
-    self.assertTrue(rules[0].applies_to(break_request))
+    self.assertTrue(
+        rules[0].applies_to(self.MODEL, self.VEHICLE, break_request)
+    )
     self.assertSequenceEqual(
         rules[0].apply_to(self.MODEL, self.VEHICLE, break_request),
         (
@@ -552,6 +686,47 @@ class CompileRulesTest(unittest.TestCase):
             },
         ),
     )
+
+  def test_select_by_vehicle_label_exact(self):
+    rules = transforms_breaks.compile_rules("@vehicleLabel=V001")
+    self.assertEqual(len(rules), 1)
+
+    break_request: cfr_json.BreakRequest = {}
+    matched_vehicle: cfr_json.Vehicle = {"label": "V001"}
+    unmatched_vehicle: cfr_json.Vehicle = {"label": "not matched"}
+    self.assertTrue(
+        rules[0].applies_to(self.MODEL, matched_vehicle, break_request)
+    )
+    self.assertFalse(
+        rules[0].applies_to(self.MODEL, unmatched_vehicle, break_request)
+    )
+
+  def test_select_by_vehicle_label_regex(self):
+    rules = transforms_breaks.compile_rules("@vehicleLabel~=V001|V002|C[0-9]+")
+    self.assertEqual(len(rules), 1)
+
+    break_request: cfr_json.BreakRequest = {}
+    matched_vehicles: Sequence[cfr_json.Vehicle] = (
+        {"label": "V001"},
+        {"label": "V002"},
+        {"label": "C1234567"},
+    )
+    unmatched_vehicles: Sequence[cfr_json.Vehicle] = (
+        {},
+        {"label": "not matched"},
+        {"label": "V003"},
+        {"label": "C"},
+    )
+    for matched_vehicle in matched_vehicles:
+      with self.subTest(matched_vehicle=matched_vehicle):
+        self.assertTrue(
+            rules[0].applies_to(self.MODEL, matched_vehicle, break_request)
+        )
+    for unmatched_vehicle in unmatched_vehicles:
+      with self.subTest(unmatched_vehicle=unmatched_vehicle):
+        self.assertFalse(
+            rules[0].applies_to(self.MODEL, unmatched_vehicle, break_request)
+        )
 
   def test_no_rules(self):
     rules = transforms_breaks.compile_rules("")
@@ -565,7 +740,9 @@ class CompileRulesTest(unittest.TestCase):
         "latestStartTime": "2024-02-09T13:00:00Z",
         "minDuration": "3600s",
     }
-    self.assertTrue(rules[0].applies_to(break_request))
+    self.assertTrue(
+        rules[0].applies_to(self.MODEL, self.VEHICLE, break_request)
+    )
     self.assertSequenceEqual(
         rules[0].apply_to(self.MODEL, self.VEHICLE, break_request),
         (
@@ -578,7 +755,9 @@ class CompileRulesTest(unittest.TestCase):
     )
 
   def test_does_not_parse(self):
-    with self.assertRaisesRegex(ValueError, "Could not parse component"):
+    with self.assertRaisesRegex(
+        ValueError, r"Can't parse component starting at .print\("
+    ):
       transforms_breaks.compile_rules("""print("hello world")""")
 
   def test_invalid_name(self):
@@ -651,15 +830,54 @@ class BreakStartTimeWindowContainsTimeTest(unittest.TestCase):
           expected_contains=expected_contains,
       ):
         time = transforms_breaks._parse_time(time_str)
+        model: cfr_json.ShipmentModel = {}
+        vehicle: cfr_json.Vehicle = {}
         break_request: cfr_json.BreakRequest = {
             "earliestStartTime": earliest_start,
             "latestStartTime": latest_start,
         }
         self.assertEqual(
             transforms_breaks._break_start_time_window_contains_time(
-                time, break_request
+                time, model, vehicle, break_request
             ),
             expected_contains,
+        )
+
+
+class VehicleLabelMatches(unittest.TestCase):
+  """tests for _vehicle_label_matches."""
+
+  def test_vehicle_label_matches(self):
+    test_cases = (
+        (None, "", True),
+        (None, "V001", False),
+        (None, re.compile(".*"), True),
+        (None, re.compile(""), True),
+        (None, re.compile(r"V\d\d\d"), False),
+        ("", "", True),
+        ("", "V001", False),
+        ("V001", "V001", True),
+        ("V001", re.compile(r"V\d\d\d"), True),
+        ("V001", re.compile(r"V.."), False),
+        ("V001", re.compile(r"V.."), False),
+        ("V001", re.compile("V001|V002|V003"), True),
+    )
+    for label, matcher, expected_match in test_cases:
+      with self.subTest(label=label, matcher=matcher):
+        model: cfr_json.ShipmentModel = {}
+        vehicle: cfr_json.Vehicle = {}
+        if label is not None:
+          vehicle["label"] = label
+        break_request: cfr_json.BreakRequest = {
+            "earliestStartTime": "2024-02-29T09:00:00Z",
+            "latestStartTime": "2024-02-29T19:00:00Z",
+            "minDuration": "1800s",
+        }
+        self.assertEqual(
+            transforms_breaks._vehicle_label_matches(
+                matcher, model, vehicle, break_request
+            ),
+            expected_match,
         )
 
 

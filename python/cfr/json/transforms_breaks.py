@@ -17,49 +17,62 @@ The grammar of the language:
   of a selector or an action, {op} is an operator (e.g. `=`), and {value} is an
   operand of the component. For some actions and selectors,the {op}{value} part
   is optional.
-- Selector names start with `@`.
+  - {name} is an identifier using alphanumeric characters, underscores, and '@'.
+  - {operator} can be '=', '~='.
+  - {value} can be either a string of non-whitespace characters, a double-quoted
+    string (with json-style escaping) or a JSON object. Each selector or action
+    may accept only some kinds of values.
+  - Selector names start with `@`.
 
 Examples:
-- "minDuration=7200s": sets the duration of all break requests to 7200s.
-- "@time=16:00:00 delete": deletes all breaks that can start at 16:00:00.
-- "new earliestStartTime=17:00:00 latestStartTime=18:00:00 minDuration=60s":
+- `minDuration=7200s`: sets the duration of all break requests to 7200s.
+- `@time=16:00:00 delete`: deletes all breaks that can start at 16:00:00.
+- `new earliestStartTime=17:00:00 latestStartTime=18:00:00 minDuration=60s`:
   adds a new break request that starts at 17:00, ends at 18:00, and has a
   minimal duration of 60s. The actual break request will use the dates from
   the global start/end time.
 
 Supported selectors:
-- "@time={time}": selects break rules that can start at the given _time_ (not
+- `@time={time}`: selects break rules that can start at the given _time_ (not
   datetime), i.e. {time} is a time that is between `earliestStartTime` and
   `latestStartTime` on any date. When there are less than 24 hours between the
   earliest and the latest start times, this works as expected; otherwise, it
   always selects.
+- `@vehicleLabel={label}`: selects break rules that belong to a vehicle with the
+  given label (exact match).
+- `@vehicleLabel~={regex}`: selects break rules that belong to a vehicle with a
+  label that matches {regex} (a Python regular expression).
 
 Supported actions:
-- "delete": deletes the break rule.
-- "new": Instead of editing the existing break rule, creates a new one and edits
+- `delete`: deletes the break rule.
+- `new`: Instead of editing the existing break rule, creates a new one and edits
   only that one. When a selector is used with new, the new break request is
   added only to vehicles that have a break request matching the selector.
-- "depot": Transforms the break into a virtual shipment that makes the vehicle
-  return to the depot for the break. The parameters of the shipment are set up
-  so that the start time window and the duration correspond to the break request
-  at the moment this action was executed. Once this action is used, no other
-  actions apply to the affected break rule.
-- "earliestStartTime={time}", "latestStartTime={time}": Changes the earliest or
+- `location={waypoint}`: Transforms the break into a virtual shipment that makes
+  the vehicle go to the given waypoint. The parameters of the shipment are set
+  up so that there is a single visit whose start time window and duration
+  correspond to the break request at the moment this action was executed. Once
+  this action is used, no other actions apply to the affected break rule.
+- `depot`: Transforms the break into a virtual shipment that makes the vehicle
+  return to the depot for the break. Equivalent to using `location={waypoint}`
+  with {waypoint} being the start waypoint of the vehicle.
+- `earliestStartTime={time}`, `latestStartTime={time}`: Changes the earliest or
   the latest start time of the break request. Similar to `@time`, the action
   takes only _time_ (not datetime) and infers the date from the existing value
   or from the global start/end date.
-- "minDuration={duration}": Changes the minimal duration of the break to
+- `minDuration={duration}`: Changes the minimal duration of the break to
   {minDuration}.
 
 The mini-language is intended to be used through the command-line flags of the
 request transformation script `transform_request.py`.
 """
 
-from collections.abc import Sequence
+from collections.abc import Callable, Iterable, Sequence
 import copy
 import dataclasses
 import datetime
 import functools
+import json
 import re
 from typing import Any, Protocol, cast
 
@@ -69,7 +82,12 @@ from . import cfr_json
 class BreakSelector(Protocol):
   """Function signature of a break selector."""
 
-  def __call__(self, break_request: cfr_json.BreakRequest) -> bool:
+  def __call__(
+      self,
+      model: cfr_json.ShipmentModel,
+      vehicle: cfr_json.Vehicle,
+      break_request: cfr_json.BreakRequest,
+  ) -> bool:
     ...
 
 
@@ -100,19 +118,27 @@ class BreakTransformRule:
       transformation.
     new_break_request: When True, this transformation creates a new break
       request rather than modify an existing one.
-    return_to_depot: When True, this transformation turns the break request into
-      a virtual shipment that has the same waypoint as the vehicle start, a time
-      window corresponding to (earliestStartTime, latestStartTime) of the break
-      request, and duration equal to the minDuration of the break. The break
-      request itself is removed.
+    break_at_waypoint: When not None, this transformation turns the break
+      request into a virtual shipment that has a time window corresponding to
+      (earliestStartTime, latestStartTime) of the break request, and duration
+      equal to the minDuration of the break. The location of the delivery is
+      determined by the value of `break_at_waypoint`: when it is the string
+      "depot", the break is at the start waypoint of the vehicle; otherwise, the
+      value must be a valid Waypoint JSON object, and it will be used as the
+      location of the break. The break request itself is removed.
   """
 
   selectors: Sequence[BreakSelector]
   actions: Sequence[BreakTransformAction]
   new_break_request: bool
-  return_to_depot: bool
+  break_at_waypoint: cfr_json.Waypoint | str | None
 
-  def applies_to(self, break_request: cfr_json.BreakRequest) -> bool:
+  def applies_to(
+      self,
+      model: cfr_json.ShipmentModel,
+      vehicle: cfr_json.Vehicle,
+      break_request: cfr_json.BreakRequest,
+  ) -> bool:
     """Checks that the break transform rule applies to the given break request.
 
     Returns True when either:
@@ -120,6 +146,8 @@ class BreakTransformRule:
     - self.selectors is empty, and this rule doesn't add a new break request.
 
     Args:
+      model: The model, in which the check is done.
+      vehicle: The vehicle, to which belongs the checked request.
       break_request: The break request to check.
 
     Returns:
@@ -128,7 +156,9 @@ class BreakTransformRule:
     """
     if not self.selectors:
       return not self.new_break_request
-    return all(selector(break_request) for selector in self.selectors)
+    return all(
+        selector(model, vehicle, break_request) for selector in self.selectors
+    )
 
   def apply_to(
       self,
@@ -158,13 +188,119 @@ class BreakTransformRule:
     return transformed_requests
 
 
-_COMPONENT = re.compile(
-    r"^(?P<name>@?[a-zA-Z0-9_]+)((?P<operator>=)(?P<value>.*))?$"
-)
+@dataclasses.dataclass(frozen=True)
+class _Component:
+  """A single component in the rules extracted by _tokenize.
+
+  Attributes:
+    name: The name of the component.
+    operator: The operator of the component; None, when only the name is used.
+    value: The value of the component; None, when only the name is used. This is
+      a JSON-like data structure (when the value starts with a left brace) or a
+      string (in other cases).
+  """
+
+  name: str
+  operator: str | None = None
+  value: Any | None = None
+
+  def __str__(self) -> str:
+    """Return a string that would parse as this component."""
+    if self.operator is None:
+      return self.name
+    return f"{self.name}{self.operator}{self.value!r}"
+
+
+def _is_name_char(char: str) -> bool:
+  return char.isalnum() or char in ("_", "@")
+
+
+def _is_operator_char(char: str) -> bool:
+  return char in ("=", "<", ">", "~")
+
+
+def _is_not_value_terminator(char: str) -> bool:
+  return not char.isspace() and char != ";"
+
+
+def _tokenize(rules: str) -> Iterable[_Component | None]:
+  """Tokenizes the rule string.
+
+  Args:
+    rules: The string that contains the rules to be tokenized.
+
+  Yields:
+    One value for each component found in the string; this value is either an
+    instance of `Component` for a component, or `None` when the string contains
+    a rule separator. Always yields None as the last token.
+
+  Raises:
+    ValueError: When `rules` doesn't have the expected format.
+  """
+  decoder = json.JSONDecoder()
+  pos = 0
+  size = len(rules)
+
+  def skip_whitespace() -> None:
+    nonlocal pos
+    while pos < size and rules[pos].isspace():
+      pos += 1
+
+  def read_while(condition: Callable[[str], bool]) -> str:
+    nonlocal pos
+    end_pos = pos
+    while end_pos < size and condition(rules[end_pos]):
+      end_pos += 1
+    output = rules[pos:end_pos]
+    pos = end_pos
+    return output
+
+  while pos < size:
+    skip_whitespace()
+    if pos == size:
+      break
+
+    if rules[pos] == ";":
+      pos += 1
+      yield None
+      continue
+
+    component_start_pos = pos
+    if not _is_name_char(rules[pos]):
+      raise ValueError("Can't parse component starting at {rules[pos:]}")
+
+    name = read_while(_is_name_char)
+    operator = None
+    value = None
+    if pos == size:
+      yield _Component(name=name)
+      break
+
+    if _is_operator_char(rules[pos]):
+      operator = read_while(_is_operator_char)
+      if pos < size and rules[pos] in ('"', "'", "{", "["):
+        # Drop everything we already parsed, because JSONDecoder must start at
+        # the beginning of the string.
+        rules = rules[pos:]
+        size = len(rules)
+        # Parse the JSON value, and update the position.
+        value, pos = decoder.raw_decode(rules)
+      elif pos < size:
+        value = read_while(_is_not_value_terminator)
+    elif not rules[pos].isspace() and rules[pos] != ";":
+      raise ValueError(
+          f"Can't parse component starting at {rules[component_start_pos:]!r}"
+      )
+    yield _Component(name=name, operator=operator, value=value)
+
+  yield None
 
 
 def _break_start_time_window_contains_time(
-    time: datetime.time, break_request: cfr_json.BreakRequest
+    time: datetime.time,
+    model: cfr_json.ShipmentModel,
+    vehicle: cfr_json.Vehicle,
+    break_request: cfr_json.BreakRequest,
 ) -> bool:
   """Selector that checks that `break_request` can start at a given time.
 
@@ -174,12 +310,15 @@ def _break_start_time_window_contains_time(
 
   Args:
     time: The given time to test.
+    model: The model in which the matching is done.
+    vehicle: The vehicle to which the break request belongs.
     break_request: The break request to test.
 
   Returns:
     True when `time` is between `earliestStartTime` and `latestStartTime` on any
     day. Otherwise, returns False.
   """
+  del model, vehicle  # Unused.
   earliest_start_time = cfr_json.get_break_earliest_start_time(break_request)
   latest_start_time = cfr_json.get_break_latest_start_time(break_request)
   if earliest_start_time > latest_start_time:
@@ -201,6 +340,33 @@ def _break_start_time_window_contains_time(
     )
   # Multi-day breaks cover any time.
   return True
+
+
+def _vehicle_label_matches(
+    label_matcher: str | re.Pattern[str],
+    model: cfr_json.ShipmentModel,
+    vehicle: cfr_json.Vehicle,
+    break_request: cfr_json.BreakRequest,
+) -> bool:
+  """Selector that checks the label of the vehicle.
+
+  Args:
+    label_matcher: A matcher for the label of the vehicle. When it is a `str`,
+      an exact match is required. When it is a compiled regular expression, it
+      is tested with `label_matcher.fullmatch(label)`.
+    model: The model in which the matching is done.
+    vehicle: The vehicle to which the break request belongs.
+    break_request: The break request to test.
+
+  Returns:
+    True when the label of the vehicle matches `label_matcher` as decribed
+    above; otherwise, returns False.
+  """
+  del model, break_request  # Unused.
+  vehicle_label = vehicle.get("label", "")
+  if isinstance(label_matcher, str):
+    return vehicle_label == label_matcher
+  return label_matcher.fullmatch(vehicle_label) is not None
 
 
 def _parse_time(time: str) -> datetime.time:
@@ -312,73 +478,103 @@ def compile_rules(rules: str) -> Sequence[BreakTransformRule]:
     A sequence of compiled break transformation rules.
   """
   compiled_rules = []
-  for rule in rules.split(";"):
-    selectors = []
-    actions = []
-    new_break_request = False
-    return_to_depot = False
-    for component in rule.split():
-      split = _COMPONENT.fullmatch(component)
-      if not split:
-        raise ValueError(f"Could not parse component: {component!r}")
-      name = split["name"]
-      operator = split["operator"]
-      value = split["value"]
-      match name:
-        case "@time":
-          if operator != "=":
-            raise ValueError(
-                f"Only '=' is allowed for @time, found {component!r}"
+
+  selectors: list[BreakSelector] = []
+  actions: list[BreakTransformAction] = []
+  new_break_request = False
+  break_at_waypoint = None
+
+  for component in _tokenize(rules):
+    if component is None:
+      if actions or selectors or break_at_waypoint or new_break_request:
+        compiled_rules.append(
+            BreakTransformRule(
+                selectors=selectors,
+                actions=actions,
+                new_break_request=new_break_request,
+                break_at_waypoint=break_at_waypoint,
             )
-          selectors.append(
-              functools.partial(
-                  _break_start_time_window_contains_time, _parse_time(value)
-              )
+        )
+        selectors = []
+        actions = []
+        new_break_request = False
+        break_at_waypoint = None
+      continue
+
+    match component.name:
+      case "@time":
+        if component.operator != "=":
+          raise ValueError(
+              f"Only '=' is allowed for @time, found {str(component)!r}"
           )
-        case "new":
-          new_break_request = True
-        case "delete":
-          actions.append(_delete_break_request)
-        case "depot":
-          return_to_depot = True
-        case "earliestStartTime" | "latestStartTime":
-          match operator:
-            case "=":
-              actions.append(
-                  functools.partial(
-                      _set_break_start_time_window_component_time,
-                      name,
-                      _parse_time(value),
-                  )
-              )
-            case _:
-              raise ValueError(
-                  f"Only '=' is allowed for `{name}`, found {component!r}"
-              )
-        case "minDuration":
-          match operator:
-            case "=":
-              actions.append(
-                  functools.partial(
-                      _set_break_min_duration,
-                      cfr_json.parse_duration_string(value),
-                  )
-              )
-            case _:
-              raise ValueError(
-                  f"Only '=' is allowed for `{name}`, found {component!r}"
-              )
-        case _:
-          raise ValueError(f"Unexpected name {name!r} in {component!r}")
-    if actions or selectors or return_to_depot or new_break_request:
-      compiled_rules.append(
-          BreakTransformRule(
-              selectors=selectors,
-              actions=actions,
-              new_break_request=new_break_request,
-              return_to_depot=return_to_depot,
+        selectors.append(
+            functools.partial(
+                _break_start_time_window_contains_time,
+                _parse_time(component.value),
+            )
+        )
+      case "@vehicleLabel":
+        match component.operator:
+          case "=":
+            selectors.append(
+                functools.partial(_vehicle_label_matches, component.value)
+            )
+          case "~=":
+            selectors.append(
+                functools.partial(
+                    _vehicle_label_matches, re.compile(component.value)
+                )
+            )
+          case _:
+            raise ValueError(
+                "Only '=' and '~=' are allowed for @vehicleLabel, found"
+                f" {str(component)!r}"
+            )
+      case "new":
+        new_break_request = True
+      case "delete":
+        actions.append(_delete_break_request)
+      case "depot":
+        break_at_waypoint = "depot"
+      case "location":
+        if component.operator != "=":
+          raise ValueError(
+              f"Only '=' is allowed for `location`, found {str(component)!r}"
           )
-      )
+        break_at_waypoint = component.value
+      case "earliestStartTime" | "latestStartTime":
+        match component.operator:
+          case "=":
+            actions.append(
+                functools.partial(
+                    _set_break_start_time_window_component_time,
+                    component.name,
+                    _parse_time(component.value),
+                )
+            )
+          case _:
+            raise ValueError(
+                f"Only '=' is allowed for `{component.name}`, found"
+                f" {str(component)!r}"
+            )
+      case "minDuration":
+        match component.operator:
+          case "=":
+            actions.append(
+                functools.partial(
+                    _set_break_min_duration,
+                    cfr_json.parse_duration_string(component.value),
+                )
+            )
+          case _:
+            raise ValueError(
+                f"Only '=' is allowed for `{component.name}`, found"
+                f" {str(component)!r}"
+            )
+      case _:
+        raise ValueError(
+            f"Unexpected name {component.name!r} in {str(component)!r}"
+        )
 
   return compiled_rules
 
@@ -395,13 +591,13 @@ def transform_breaks_for_vehicle(
   if (break_rule := vehicle.get("breakRule")) is not None:
     if (old_break_requests := break_rule.get("breakRequests")) is not None:
       break_requests = old_break_requests
-  returns_to_depot = []
+  breaks_at_waypoint = []
 
   for transform in compiled_rules:
     matched_anything = False
     new_requests: list[cfr_json.BreakRequest] = []
     for request in break_requests:
-      if not transform.applies_to(request):
+      if not transform.applies_to(model, vehicle, request):
         new_requests.append(request)
         continue
       matched_anything = True
@@ -423,8 +619,9 @@ def transform_breaks_for_vehicle(
         )
       else:
         rule_new_requests = transform.apply_to(model, vehicle, request)
-      if transform.return_to_depot:
-        returns_to_depot.extend(rule_new_requests)
+      if transform.break_at_waypoint:
+        for new_request in rule_new_requests:
+          breaks_at_waypoint.append((transform.break_at_waypoint, new_request))
       else:
         new_requests.extend(rule_new_requests)
 
@@ -448,8 +645,9 @@ def transform_breaks_for_vehicle(
               },
           )
       )
-      if transform.return_to_depot:
-        returns_to_depot.extend(rule_new_requests)
+      if transform.break_at_waypoint:
+        for new_request in rule_new_requests:
+          breaks_at_waypoint.append((transform.break_at_waypoint, new_request))
       else:
         new_requests.extend(rule_new_requests)
 
@@ -462,18 +660,26 @@ def transform_breaks_for_vehicle(
     vehicle.pop("breakRule", None)
 
   # Add any new virtual shipments to the model.
-  if returns_to_depot:
+  if breaks_at_waypoint:
     shipments = model.get("shipments")
     if shipments is None:
       shipments = []
       model["shipments"] = shipments
-    for break_request in returns_to_depot:
+    for src_waypoint, break_request in breaks_at_waypoint:
+      match src_waypoint:
+        case "depot":
+          # TODO(ondrasej): Also support `startLocation`.
+          waypoint = vehicle["startWaypoint"]
+        case value if isinstance(value, dict):
+          waypoint = cast(cfr_json.Waypoint, src_waypoint)
+        case _:
+          raise ValueError("Unexpected waypoint value {waypoint!r}")
       shipment_label = f"break, {vehicle_index=}"
       if vehicle_label := vehicle.get("label"):
         shipment_label += f", {vehicle_label=}"
       shipment: cfr_json.Shipment = {
           "deliveries": [{
-              "arrivalWaypoint": vehicle["startWaypoint"],
+              "arrivalWaypoint": waypoint,
               "duration": break_request["minDuration"],
               "timeWindows": [{
                   "startTime": break_request["earliestStartTime"],
