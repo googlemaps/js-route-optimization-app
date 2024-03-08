@@ -45,35 +45,17 @@ class PlannerError(Exception):
 class Flags:
   """Holds the values of command-line flags of this script.
 
-  Attributes:
-    request_file: The value of the --request flag.
-    parking_file: The value of the --parking flag.
-    google_cloud_project: The value of the --project flag.
-    google_cloud_token: The value of the --token flag.
-    reuse_existing: The value of the --reuse_existing flag. When a file with a
-      response exists, load it instead of resolving the request.
-    num_refinements: The value of the --use_refinements flag.
-    end_with_local_refinement: The value of the --end_with_local_refinement
-      flag.
-    local_grouping: The value of the --local_grouping flag or the default value.
-    local_model_vehicle_fixed_cost: The value of the
-      --local_model_vehicle_fixed_cost flag.
-    travel_mode_in_merged_transitions: The value of the
-      --travel_mode_in_merged_transitions flag.
-    inject_start_times_to_refinement_first_solution: The value of the
-      --inject_start_times_to_refinement_first_solution flag.
-    local_timeout: The value of the --local_timeout flag or the default value.
-    global_timeout: The value of the --global_timeout flag or the default value.
-    local_refinement_timeout: The value of the --local_refinement_timeout flag
-      or the default value.
-    global_refinement_timeout: The value of the --global_refinement_timeout flag
-      or the default value.
+  Each attribute corresponds to a command-line flag defined in _parse_flags()
+  with the same name. See the help strings of the command-line flags for more
+  information about its value.
   """
 
-  request_file: str
-  parking_file: str
-  google_cloud_project: str
-  google_cloud_token: str
+  request: str
+  parking: str
+  project: str
+  token: str
+  api_host: str | None
+  api_path: str | None
   reuse_existing: bool
   num_refinements: int
   end_with_local_refinement: bool
@@ -113,6 +95,24 @@ def _parse_flags() -> Flags:
   )
   parser.add_argument(
       "--token", required=True, help="The Google Cloud auth key."
+  )
+  parser.add_argument(
+      "--api_host",
+      default=None,
+      help=(
+          "The hostname used in the CFR HTTP API calls. When not specified, the"
+          " default host is used."
+      ),
+  )
+  parser.add_argument(
+      "--api_path",
+      default=None,
+      help=(
+          "The path to the optimizeTours method in the CFR HTTP API call. When"
+          " it contains '{project}' as a substring, it will be replaced with"
+          " the project ID when making the API call. When None, the default"
+          " path is used."
+      ),
   )
   parser.add_argument(
       "--local_grouping",
@@ -209,23 +209,7 @@ def _parse_flags() -> Flags:
   )
   flags = parser.parse_args()
 
-  return Flags(
-      request_file=flags.request,
-      parking_file=flags.parking,
-      google_cloud_project=flags.project,
-      google_cloud_token=flags.token,
-      local_timeout=flags.local_timeout,
-      local_grouping=flags.local_grouping,
-      local_model_vehicle_fixed_cost=flags.local_model_vehicle_fixed_cost,
-      travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
-      inject_start_times_to_refinement_first_solution=flags.inject_start_times_to_refinement_first_solution,
-      global_timeout=flags.global_timeout,
-      local_refinement_timeout=flags.local_refinement_timeout,
-      global_refinement_timeout=flags.global_refinement_timeout,
-      num_refinements=flags.num_refinements,
-      end_with_local_refinement=flags.end_with_local_refinement,
-      reuse_existing=flags.reuse_existing,
-  )
+  return Flags(**vars(flags))
 
 
 def _optimize_tours_and_write_response(
@@ -258,9 +242,11 @@ def _optimize_tours_and_write_response(
     return io_utils.read_json_from_file(output_filename)
   response = cfr_api.optimize_tours(
       request=request,
-      google_cloud_project=flags.google_cloud_project,
-      google_cloud_token=flags.google_cloud_token,
+      google_cloud_project=flags.project,
+      google_cloud_token=flags.token,
       timeout=timeout,
+      host=flags.api_host,
+      path=flags.api_path,
   )
   io_utils.write_json_to_file(
       output_filename,
@@ -273,14 +259,14 @@ def _run_two_step_planner() -> None:
   """Runs the two-step planner with parameters from command-line flags."""
   flags = _parse_flags()
 
-  logging.info("Parsing %s", flags.request_file)
+  logging.info("Parsing %s", flags.request)
   request_json: cfr_json.OptimizeToursRequest = io_utils.read_json_from_file(
-      flags.request_file
+      flags.request
   )
-  logging.info("Parsing %s", flags.parking_file)
-  parking_json = io_utils.read_json_from_file(flags.parking_file)
+  logging.info("Parsing %s", flags.parking)
+  parking_json = io_utils.read_json_from_file(flags.parking)
 
-  base_filename, _ = os.path.splitext(flags.request_file)
+  base_filename, _ = os.path.splitext(flags.request)
 
   logging.info("Extracting parking locations")
   parking_locations, parking_for_shipment = (

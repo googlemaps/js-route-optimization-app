@@ -21,6 +21,8 @@ def optimize_tours(
     google_cloud_project: str,
     google_cloud_token: str,
     timeout: cfr_json.DurationString,
+    host: str | None = None,
+    path: str | None = None,
 ) -> cfr_json.OptimizeToursResponse:
   """Solves request using the Google CFR API.
 
@@ -29,6 +31,12 @@ def optimize_tours(
     google_cloud_project: The name of the Google Cloud project used in the API.
     google_cloud_token: The Google Cloud access token used to invoke the API.
     timeout: The solve deadline for the request.
+    host: The host of the CFR API endpoint. When None, the default CFR endpoint
+      is used.
+    path: The path of the optimizeTours API method. When it contains "{project}"
+      as a substring, it will be replaced by the name of the project when making
+      the HTTP API call. When None, the default CFR API path for optimizeTours
+      is used.
 
   Returns:
     Upon success, returns the response from the server.
@@ -37,8 +45,11 @@ def optimize_tours(
     ApiCallError: When the CFR API invocation fails. The exception contains the
       status, explanation, and the body of the response.
   """
-  host = "cloudoptimization.googleapis.com"
-  path = f"/v1/projects/{google_cloud_project}:optimizeTours"
+  if host is None:
+    host = "cloudoptimization.googleapis.com"
+  if path is None:
+    path = "/v1/projects/{project}:optimizeTours"
+  path = path.format(project=google_cloud_project)
   timeout_seconds = cfr_json.parse_duration_string(timeout).total_seconds()
   headers = {
       "Content-Type": "application/json",
