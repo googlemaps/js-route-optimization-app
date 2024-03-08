@@ -5,15 +5,82 @@
 
 """Functions for invoking the CFR API."""
 
+import argparse
+from collections.abc import Sequence
+import dataclasses
 from http import client
 import json
 import socket
+from typing import Self
 
 from . import cfr_json
 
 
 class ApiCallError(Exception):
   """Exceptions raised when there is a problem with invoking the API."""
+
+
+@dataclasses.dataclass(frozen=True)
+class Flags:
+  """Holds values of command-line flags related to the CFR API.
+
+  This class can be extended with additional command-line flags. To do so,
+  create a data class derived from this class, and override the_add_arguments()
+  method to add the new arguments. The names of the arguments and the attributes
+  of the class must match.
+  """
+
+  project: str
+  token: str
+  api_host: str | None
+  api_path: str | None
+
+  @classmethod
+  def from_command_line(
+      cls, program_name: str, args: Sequence[str] | None = None
+  ) -> Self:
+    parser = argparse.ArgumentParser(program_name)
+    cls.add_arguments(parser)
+    parsed_flags = parser.parse_args(args)
+    return cls(**vars(parsed_flags))
+
+  @classmethod
+  def add_arguments(cls, parser: argparse.ArgumentParser) -> None:
+    """Adds command-line flag definitions to `parser`.
+
+    Child classes can override this method to append their own flag definitions.
+    Any overrides of this method must call super()._add_arguments() to add also
+    the argument definitions from the base classes.
+
+    Args:
+      parser: The argparse parser to which the flag definitions are added.
+    """
+    parser.add_argument(
+        "--project",
+        required=True,
+        help="The Google Cloud project ID used for the CFR API requests.",
+    )
+    parser.add_argument(
+        "--token", required=True, help="The Google Cloud auth key."
+    )
+    parser.add_argument(
+        "--api_host",
+        default=None,
+        help=(
+            "The hostname used in the CFR HTTP API calls. When not specified,"
+            " the default host is used."
+        ),
+    )
+    parser.add_argument(
+        "--api_path",
+        default=None,
+        help=(
+            "The path to the optimizeTours method in the CFR HTTP API call."
+            " When it contains '{project}' as a substring, it will be replaced"
+            " with the project ID when making the API call. When None, the"
+            " default path is used."
+        ),
+    )
 
 
 def optimize_tours(

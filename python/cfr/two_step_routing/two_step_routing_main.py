@@ -42,7 +42,7 @@ class PlannerError(Exception):
 
 
 @dataclasses.dataclass(frozen=True)
-class Flags:
+class Flags(cfr_api.Flags):
   """Holds the values of command-line flags of this script.
 
   Each attribute corresponds to a command-line flag defined in _parse_flags()
@@ -52,10 +52,6 @@ class Flags:
 
   request: str
   parking: str
-  project: str
-  token: str
-  api_host: str | None
-  api_path: str | None
   reuse_existing: bool
   num_refinements: int
   end_with_local_refinement: bool
@@ -68,148 +64,123 @@ class Flags:
   local_refinement_timeout: cfr_json.DurationString
   global_refinement_timeout: cfr_json.DurationString
 
-
-def _parse_flags() -> Flags:
-  """Parses the command-line flags from sys.argv."""
-  parser = argparse.ArgumentParser(prog="two_step_routing_main")
-  parser.add_argument(
-      "--request",
-      required=True,
-      help=(
-          "The name of the file that contains the input CFR request in the JSON"
-          " format."
-      ),
-  )
-  parser.add_argument(
-      "--parking",
-      required=True,
-      help=(
-          "The name of the file that contains the parking data in the JSON"
-          " format. "
-      ),
-  )
-  parser.add_argument(
-      "--project",
-      required=True,
-      help="The Google Cloud project ID used for the CFR API requests.",
-  )
-  parser.add_argument(
-      "--token", required=True, help="The Google Cloud auth key."
-  )
-  parser.add_argument(
-      "--api_host",
-      default=None,
-      help=(
-          "The hostname used in the CFR HTTP API calls. When not specified, the"
-          " default host is used."
-      ),
-  )
-  parser.add_argument(
-      "--api_path",
-      default=None,
-      help=(
-          "The path to the optimizeTours method in the CFR HTTP API call. When"
-          " it contains '{project}' as a substring, it will be replaced with"
-          " the project ID when making the API call. When None, the default"
-          " path is used."
-      ),
-  )
-  parser.add_argument(
-      "--local_grouping",
-      help="Controls the initial grouping of shipments in the local model.",
-      type=two_step_routing.InitialLocalModelGrouping.from_string,
-      default=two_step_routing.InitialLocalModelGrouping(time_windows=True),
-  )
-  parser.add_argument(
-      "--local_model_vehicle_fixed_cost",
-      default=0,
-      type=float,
-      help=(
-          "The cost of a vehicle in the initial local model. When None, the"
-          " default cost determined by the solver is used."
-      ),
-  )
-  parser.add_argument(
-      "--travel_mode_in_merged_transitions",
-      help="Add travel mode information to transitions in the merged solution.",
-      default=False,
-      action=argparse.BooleanOptionalAction,
-  )
-  parser.add_argument(
-      "--inject_start_times_to_refinement_first_solution",
-      help=(
-          "Use visit start times in the first solution injected to the request"
-          " in the global refinement request. This can make the solver more"
-          " efficient when loading the solution; however, it can also make the"
-          " refinement request infeasible when the travel times change, e.g."
-          " because of map data update between the original request and the"
-          " refinement."
-      ),
-      default=False,
-      action=argparse.BooleanOptionalAction,
-  )
-  parser.add_argument(
-      "--local_timeout",
-      help=(
-          "The timeout used for the local model. Uses the duration string"
-          " format."
-      ),
-      default="240s",
-  )
-  parser.add_argument(
-      "--global_timeout",
-      help="The timeout for the global model. Uses the duration string format.",
-      default="1800s",
-  )
-  parser.add_argument(
-      "--local_refinement_timeout",
-      help=(
-          "The timeout for the local refinement model. Uses the duration string"
-          " format."
-      ),
-      default="240s",
-  )
-  parser.add_argument(
-      "--global_refinement_timeout",
-      help=(
-          "The timeout for the global refinement model. Uses the duration"
-          " string format."
-      ),
-      default="240s",
-  )
-  parser.add_argument(
-      "--num_refinements",
-      help=(
-          "The number of refinement rounds applied to the solution. In each"
-          " refinement round, the solver first re-optimizes local routes when"
-          " there are two or more visits to the parking in a sequence, and then"
-          " updates the global solution to reflect and take advantage of the"
-          " potentially more optimized local routes. When 0, no refinement is"
-          " applied."
-      ),
-      default=0,
-      type=int,
-      action="store",
-  )
-  parser.add_argument(
-      "--end_with_local_refinement",
-      help=(
-          "End the refinement with a local refinement phase. The last global"
-          " refinement is obtained only by integrating the local refinement"
-          " response."
-      ),
-      default=False,
-      action=argparse.BooleanOptionalAction,
-  )
-  parser.add_argument(
-      "--reuse_existing",
-      help="Reuse existing solution files, if they exist.",
-      default=False,
-      action=argparse.BooleanOptionalAction,
-  )
-  flags = parser.parse_args()
-
-  return Flags(**vars(flags))
+  @classmethod
+  def add_arguments(cls, parser: argparse.ArgumentParser) -> None:
+    """See base class."""
+    super().add_arguments(parser)
+    parser.add_argument(
+        "--request",
+        required=True,
+        help=(
+            "The name of the file that contains the input CFR request in the"
+            " JSON format."
+        ),
+    )
+    parser.add_argument(
+        "--parking",
+        required=True,
+        help=(
+            "The name of the file that contains the parking data in the JSON"
+            " format. "
+        ),
+    )
+    parser.add_argument(
+        "--local_grouping",
+        help="Controls the initial grouping of shipments in the local model.",
+        type=two_step_routing.InitialLocalModelGrouping.from_string,
+        default=two_step_routing.InitialLocalModelGrouping(time_windows=True),
+    )
+    parser.add_argument(
+        "--local_model_vehicle_fixed_cost",
+        default=0,
+        type=float,
+        help=(
+            "The cost of a vehicle in the initial local model. When None, the"
+            " default cost determined by the solver is used."
+        ),
+    )
+    parser.add_argument(
+        "--travel_mode_in_merged_transitions",
+        help=(
+            "Add travel mode information to transitions in the merged solution."
+        ),
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
+    parser.add_argument(
+        "--inject_start_times_to_refinement_first_solution",
+        help=(
+            "Use visit start times in the first solution injected to the"
+            " request in the global refinement request. This can make the"
+            " solver more efficient when loading the solution; however, it can"
+            " also make the refinement request infeasible when the travel times"
+            " change, e.g. because of map data update between the original"
+            " request and the refinement."
+        ),
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
+    parser.add_argument(
+        "--local_timeout",
+        help=(
+            "The timeout used for the local model. Uses the duration string"
+            " format."
+        ),
+        default="240s",
+    )
+    parser.add_argument(
+        "--global_timeout",
+        help=(
+            "The timeout for the global model. Uses the duration string format."
+        ),
+        default="1800s",
+    )
+    parser.add_argument(
+        "--local_refinement_timeout",
+        help=(
+            "The timeout for the local refinement model. Uses the duration"
+            " string format."
+        ),
+        default="240s",
+    )
+    parser.add_argument(
+        "--global_refinement_timeout",
+        help=(
+            "The timeout for the global refinement model. Uses the duration"
+            " string format."
+        ),
+        default="240s",
+    )
+    parser.add_argument(
+        "--num_refinements",
+        help=(
+            "The number of refinement rounds applied to the solution. In each"
+            " refinement round, the solver first re-optimizes local routes when"
+            " there are two or more visits to the parking in a sequence, and"
+            " then updates the global solution to reflect and take advantage of"
+            " the potentially more optimized local routes. When 0, no"
+            " refinement is applied."
+        ),
+        default=0,
+        type=int,
+        action="store",
+    )
+    parser.add_argument(
+        "--end_with_local_refinement",
+        help=(
+            "End the refinement with a local refinement phase. The last global"
+            " refinement is obtained only by integrating the local refinement"
+            " response."
+        ),
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
+    parser.add_argument(
+        "--reuse_existing",
+        help="Reuse existing solution files, if they exist.",
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
 
 
 def _optimize_tours_and_write_response(
@@ -257,7 +228,7 @@ def _optimize_tours_and_write_response(
 
 def _run_two_step_planner() -> None:
   """Runs the two-step planner with parameters from command-line flags."""
-  flags = _parse_flags()
+  flags = Flags.from_command_line("two_step_routing_main")
 
   logging.info("Parsing %s", flags.request)
   request_json: cfr_json.OptimizeToursRequest = io_utils.read_json_from_file(
