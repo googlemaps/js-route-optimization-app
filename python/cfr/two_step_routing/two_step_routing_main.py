@@ -28,12 +28,10 @@ and have an access token for using the HTTP API:
 
 import argparse
 import dataclasses
-from http import client
-import json
 import logging
 import os
-import socket
 
+from ..json import cfr_api
 from ..json import cfr_json
 from ..json import io_utils
 from . import two_step_routing
@@ -230,61 +228,6 @@ def _parse_flags() -> Flags:
   )
 
 
-def _run_optimize_tours(
-    request: cfr_json.OptimizeToursRequest,
-    flags: Flags,
-    timeout: cfr_json.DurationString,
-) -> cfr_json.OptimizeToursResponse:
-  """Solves request using the Google CFR API.
-
-  Args:
-    request: The request to be solved.
-    flags: The command-line flags.
-    timeout: The solve deadline for the request.
-
-  Returns:
-    Upon success, returns the response from the server.
-
-  Raises:
-    PlannerError: When the CFR API invocation fails. The exception contains the
-      status, explanation, and the body of the response.
-  """
-  host = "cloudoptimization.googleapis.com"
-  path = f"/v1/projects/{flags.google_cloud_project}:optimizeTours"
-  timeout_seconds = cfr_json.parse_duration_string(timeout).total_seconds()
-  headers = {
-      "Content-Type": "application/json",
-      "Authorization": f"Bearer {flags.google_cloud_token}",
-      "x-goog-user-project": flags.google_cloud_project,
-      "X-Server-Timeout": str(timeout_seconds),
-  }
-  connection = client.HTTPSConnection(host)
-  connection.connect()
-  # Set up TCP keepalive pings for the connection to avoid losing it due to
-  # inactivity. This is important when using deadlines longer than a few
-  # minutes. The parameters used below were sufficient to successfully complete
-  # requests running up to one hour.
-  sock = connection.sock
-  sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-  sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
-  sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 60)
-  sock.setsockopt(
-      socket.IPPROTO_TCP, socket.TCP_KEEPCNT, max(int(timeout_seconds) // 30, 1)
-  )
-
-  # For longer running requests, it may be necessary to set an explicit deadline
-  # and set up keepalive pings so that the connection is not dropped before the
-  # server returns.
-  connection.request("POST", path, body=json.dumps(request), headers=headers)
-  response = connection.getresponse()
-  if response.status != 200:
-    body = response.read()
-    raise PlannerError(
-        f"Request failed: {response.status}  {response.reason}\n{body}"
-    )
-  return json.load(response)
-
-
 def _optimize_tours_and_write_response(
     request: cfr_json.OptimizeToursRequest,
     flags: Flags,
@@ -313,7 +256,12 @@ def _optimize_tours_and_write_response(
   """
   if flags.reuse_existing and os.path.isfile(output_filename):
     return io_utils.read_json_from_file(output_filename)
-  response = _run_optimize_tours(request, flags, timeout)
+  response = cfr_api.optimize_tours(
+      request=request,
+      google_cloud_project=flags.google_cloud_project,
+      google_cloud_token=flags.google_cloud_token,
+      timeout=timeout,
+  )
   io_utils.write_json_to_file(
       output_filename,
       response,
