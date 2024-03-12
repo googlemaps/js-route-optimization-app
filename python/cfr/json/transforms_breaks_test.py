@@ -512,6 +512,58 @@ class TransformBreaksTest(unittest.TestCase):
         expected_model,
     )
 
+  def test_overlapping_breaks(self):
+    model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-03-12T08:00:00Z",
+        "globalEndTime": "2024-03-12T21:00:00Z",
+        "vehicles": [{
+            "breakRule": {
+                "breakRequests": [{
+                    "earliestStartTime": "2024-03-12T18:00:00Z",
+                    "latestStartTime": "2024-03-12T19:52:30Z",
+                    "minDuration": "3600s",
+                }]
+            }
+        }],
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-03-12T08:00:00Z",
+        "globalEndTime": "2024-03-12T21:00:00Z",
+        "shipments": [{
+            "allowedVehicleIndices": [0],
+            "deliveries": [{
+                "arrivalWaypoint": {"placeId": "ThisIsAPlaceId"},
+                "timeWindows": [{
+                    "startTime": "2024-03-12T18:30:00Z",
+                    "endTime": "2024-03-12T18:30:00Z",
+                }],
+                "duration": "450s",
+            }],
+            "label": "break, vehicle_index=0",
+        }],
+        "vehicles": [{
+            "breakRule": {
+                "breakRequests": [{
+                    "earliestStartTime": "2024-03-12T18:00:00Z",
+                    "latestStartTime": "2024-03-12T19:52:30Z",
+                    "minDuration": "3600s",
+                }]
+            }
+        }],
+    }
+    self.assertEqual(
+        self.run_transform_breaks(
+            model,
+            """
+            new
+              earliestStartTime=18:30:00
+              latestStartTime=18:30:00
+              minDuration=450s
+              location={"placeId": "ThisIsAPlaceId"}""",
+        ),
+        expected_model,
+    )
+
 
 class TokenizeTest(unittest.TestCase):
   maxDiff = None
