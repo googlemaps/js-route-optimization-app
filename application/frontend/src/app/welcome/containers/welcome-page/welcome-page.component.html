@@ -1,57 +1,66 @@
 <app-logo></app-logo>
 <section id="page-title" class="page-content mb-0">
-  <img src="../../../../assets/images/cloud_fleet_routing_logo.svg" width="50px" />
-  <span class="mat-title ml-3">Cloud Fleet Routing API</span>
+  <span>What is Fleet Routing App?</span>
 </section>
 <section class="intro page-content">
   <p>
-    Cloud Fleet Routing solves your vehicle routing problems rapidly and at massive scale. It
-    supports capacities, costs, time windows, breaks, delays, traffic, heterogeneous fleets, and
-    different modalities (driving, bicycling, or walking). More information is available in the
-    <a (click)="onHelp()"> app help docs </a> or on our
-    <a href="https://cloud.google.com/optimization/docs">documentation site</a>.
+    Fleet Routing App is an open source web application intended to showcase the functionality of
+    GMP Route Optimization API (formerly Cloud Fleet Routing / CFR), and help developers better
+    evaluate and onboard to the product. It also serves as a sample UI implementation that
+    demonstrates how a dispatcher planning app integrates with the Route Optimization API.
   </p>
   <p>
-    For questions, reach out at
-    <a href="mailto:cloud-fleet-routing-support@google.com"
-      >cloud-fleet-routing-support@google.com</a
-    >. Try advanced features.
+    GMP Route Optimization API solves Vehicle Routing Problems (VRPs) for developers from across
+    different industries such as Logistics, On Demand Deliveries, Field Services and more.
   </p>
+  <p>
+    <a href="https://cloud.google.com/optimization/docs/introduction/get_started" target="_blank"
+      >Learn more</a
+    >
+  </p>
+</section>
+<section class="entry-points d-flex page-content">
+  <p class="mat-body-strong mb-0">Select one of the options below to start.</p>
+  <div class="d-flex main-entry-points">
+    <button
+      type="button"
+      mat-stroked-button
+      color="primary"
+      class="entry-point-button"
+      (click)="upload()">
+      <mat-icon svgIcon="input"></mat-icon>
+      <span class="ml-3">Load...</span>
+    </button>
+    <div class="col"></div>
+    <div class="col">
+      <button
+        type="button"
+        mat-stroked-button
+        color="primary"
+        class="entry-point-button"
+        (click)="newScenario()">
+        <mat-icon svgIcon="add"></mat-icon>
+        <span class="ml-2">Create new</span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="col cloud-invisible"
+    [ngClass]="{ 'cloud-visible': (hasStorageApi$ | async) && (allowUserStorage$ | async) }">
+    <a class="cloud-button" (click)="loadFromStorage()">
+      <mat-icon svgIcon="bookmark"></mat-icon>
+      Open from a Cloud Project
+    </a>
+  </div>
+</section>
+<section class="page-content">
+  <p class="mat-body-strong">More information</p>
+  <p>
+    <a (click)="onHelp()"> App help docs </a>
+  </p>
+  <p>For questions, reach out at gmpro-support@google.com.</p>
   <p>
     By using this demo app you agree to the terms and conditions of the following license:
     <a href="https://cloud.google.com/maps-platform/terms" target="_blank">Google Maps Platform</a>
   </p>
-</section>
-<section class="entry-points d-flex page-content">
-  <div class="d-flex">
-    <div class="col">
-      <button type="button" mat-flat-button color="primary" (click)="upload()">
-        Upload existing scenario or solution
-      </button>
-    </div>
-    <div class="col">
-      <button type="button" mat-stroked-button color="primary" (click)="newScenario()">
-        Build a new scenario
-      </button>
-    </div>
-  </div>
-  <div class="d-flex">
-    <div class="col">
-      <button type="button" mat-flat-button color="primary" (click)="loadFromCsv()">
-        Upload from CSV
-      </button>
-    </div>
-    <div
-      class="col cloud-invisible"
-      [ngClass]="{ 'cloud-visible': (hasStorageApi$ | async) && (allowUserStorage$ | async) }">
-      <button type="button" mat-flat-button color="primary" (click)="loadFromStorage()">
-        Open saved scenario or solution
-      </button>
-    </div>
-  </div>
-</section>
-<section>
-  <svg viewBox="0 0 811 471">
-    <image href="../../../../assets/images/welcome_image.svg" width="811" height="471"></image>
-  </svg>
 </section>

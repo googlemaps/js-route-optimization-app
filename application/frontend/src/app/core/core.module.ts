@@ -89,6 +89,7 @@ import { ConfirmBulkEditDialogComponent } from './components/confirm-bulk-edit-d
 import { VehicleOperatorsControlBarComponent } from './containers/vehicle-operators-control-bar/vehicle-operators-control-bar.component';
 import { BaseEditVehicleOperatorDialogComponent } from './components/base-edit-vehicle-operator-dialog/base-edit-vehicle-operator-dialog.component';
 import { PreSolveEditVehicleOperatorDialogComponent } from './containers/pre-solve-edit-vehicle-operator-dialog/pre-solve-edit-vehicle-operator-dialog.component';
+import { CsvHelpDialogComponent } from './containers/csv-help-dialog/csv-help-dialog.component';
 
 export const COMPONENTS = [
   BaseDocumentationDialogComponent,
@@ -180,6 +181,7 @@ export const CONTAINERS = [
     VehicleOperatorsControlBarComponent,
     PreSolveEditVehicleOperatorDialogComponent,
     BaseEditVehicleOperatorDialogComponent,
+    CsvHelpDialogComponent,
   ],
   exports: [COMPONENTS, CONTAINERS, CsvUploadDialogComponent],
 })

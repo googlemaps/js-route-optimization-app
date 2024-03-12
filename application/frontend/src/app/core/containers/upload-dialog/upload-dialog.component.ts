@@ -9,33 +9,55 @@
 
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import {
+  FormGroupDirective,
+  NgForm,
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
   ValidationErrors,
 } from '@angular/forms';
-import { MatDialogRef, MatDialogState } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MatDialogState } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { merge } from 'lodash';
 
 import * as fromRoot from 'src/app/reducers';
-import { MessagesConfig, Scenario, ScenarioSolutionPair, Solution } from '../../models';
+import { Scenario, ScenarioSolutionPair, Solution } from '../../models';
 import { UploadType } from '../../models/upload';
 import { IWaypoint } from '../../models/dispatcher.model';
-import * as fromConfig from '../../selectors/config.selectors';
 import { DispatcherService, FileService, PlacesService, UploadService } from '../../services';
 import { toDispatcherLatLng } from 'src/app/util';
+import { ScenarioSolutionHelpDialogComponent } from 'src/app/core/containers/scenario-solution-help-dialog/scenario-solution-help-dialog.component';
+import { UploadActions } from '../../actions';
+import { CsvHelpDialogComponent } from '../csv-help-dialog/csv-help-dialog.component';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+class FileUploadErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
+    const invalid =
+      ngForm?.errors?.required ||
+      ngForm.errors?.zipContents ||
+      ngForm.errors?.fileFormat ||
+      ngForm.errors?.requestFormat ||
+      control?.invalid;
+    const show = ngForm?.touched && ngForm?.dirty;
+    return !!(invalid && show);
+  }
+}
 
 @Component({
   selector: 'app-upload-dialog',
   templateUrl: './upload-dialog.component.html',
-  styleUrls: ['./upload-dialog.component.css'],
+  styleUrls: ['./upload-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class UploadDialogComponent {
   @ViewChild('fileInput', { static: true }) fileInput: ElementRef<HTMLInputElement>;
 
+  readonly fileUploadErrorStateMatcher = new FileUploadErrorStateMatcher();
   readonly form: UntypedFormGroup;
   readonly fileName: UntypedFormControl;
   fileInvalid: boolean;
@@ -50,6 +72,9 @@ export class UploadDialogComponent {
   }
   private scenarioSolutionPair: ScenarioSolutionPair;
   zipContentsInvalid: boolean;
+  zipContentCountInvalid: boolean;
+  zipMissingScenario: boolean;
+  zipMissingSolution: boolean;
 
   resolvingPlaceIds = false;
   placeIdProgress = 0;
@@ -58,11 +83,10 @@ export class UploadDialogComponent {
     return this.scenarioWaypointsWithPlaceIDs.length;
   }
 
-  readonly messages$: Observable<MessagesConfig>;
-
   constructor(
     private store: Store<fromRoot.State>,
     private dialogRef: MatDialogRef<UploadDialogComponent>,
+    private dialog: MatDialog,
     private dispatcherService: DispatcherService,
     private fileService: FileService,
     private placesService: PlacesService,
@@ -72,7 +96,23 @@ export class UploadDialogComponent {
     this.form = fb.group({
       fileName: (this.fileName = fb.control('', [this.fileValidator.bind(this)])),
     });
-    this.messages$ = this.store.pipe(select(fromConfig.selectMessagesConfig));
+  }
+
+  openScenarioSolutionHelp(): void {
+    this.dialog.open(ScenarioSolutionHelpDialogComponent, {
+      maxWidth: '600px',
+    });
+  }
+
+  openCsvHelp(): void {
+    this.dialog.open(CsvHelpDialogComponent, {
+      maxWidth: '600px',
+    });
+  }
+
+  loadFromCsv(): void {
+    this.dialogRef.close();
+    this.store.dispatch(UploadActions.openCsvDialog({ openUploadDialogOnClose: true }));
   }
 
   cancel(): void {
@@ -90,7 +130,6 @@ export class UploadDialogComponent {
     if (!this.fileInput) {
       return;
     }
-
     this.fileInput.nativeElement.click();
     this.fileName.markAsTouched();
   }
@@ -99,7 +138,12 @@ export class UploadDialogComponent {
     (e.target as HTMLInputElement).value = null;
   }
 
+  onCancelSelectFile(): void {
+    this.fileName.markAsDirty();
+  }
+
   async fileSelected(e: Event): Promise<void> {
+    this.fileName.markAsDirty();
     const target = e.target as HTMLInputElement;
     const file = target && target.files && target.files[0];
     if (!file) {
@@ -125,6 +169,11 @@ export class UploadDialogComponent {
       this.scenario = null;
       this.fileName.setValue(file.name);
       this.validatingUpload = false;
+
+      if (!this.scenarioHasPlaceIds && this.fileName.valid) {
+        this.solve();
+      }
+
       return;
     }
 
@@ -150,6 +199,15 @@ export class UploadDialogComponent {
     }
     this.validatingUpload = false;
     this.fileName.setValue(file.name);
+
+    if (
+      !this.zipContentsInvalid &&
+      !this.fileInvalid &&
+      !this.scenarioHasPlaceIds &&
+      this.fileName.valid
+    ) {
+      this.solve();
+    }
   }
 
   get scenarioHasPlaceIds(): boolean {
@@ -222,6 +280,10 @@ export class UploadDialogComponent {
       }
 
       this.resolvingPlaceIds = false;
+
+      if (!this.placeIdError) {
+        this.solve();
+      }
     }
   }
 
@@ -241,30 +303,53 @@ export class UploadDialogComponent {
   }
 
   loadZipContents(files: { content: JSON; filename: string }[]): ScenarioSolutionPair {
+    this.zipContentCountInvalid = false;
+    this.zipMissingScenario = false;
+    this.zipMissingSolution = false;
+
     if (files.length !== 2) {
+      this.zipContentCountInvalid = true;
       throw new Error('Incorrect number of files');
     }
 
     let scenario;
     let solution;
     files.forEach((file) => {
-      if (file.filename === 'scenario.json') {
+      if (!scenario || !Object.keys(scenario).length) {
         scenario = this.validateScenario(file.content);
       }
-      if (file.filename === 'solution.json') {
+
+      if (!solution || !Object.keys(solution).length) {
         solution = this.validateSolution(file.content);
       }
     });
 
     if (!scenario) {
+      this.zipMissingScenario = true;
       throw new Error('Missing scenario.json');
     }
 
     if (!solution) {
+      this.zipMissingSolution = true;
       throw new Error('Missing solution.json');
     }
 
     return { scenario, solution };
+  }
+
+  getZipErrorMessage(): string {
+    if (this.zipContentCountInvalid) {
+      return 'The zip contains an invalid number of .json files, or the .json files within are invalid.';
+    }
+    if (this.zipMissingScenario) {
+      return 'The provided zip is missing a valid scenario file.';
+    }
+
+    if (this.zipMissingSolution) {
+      return 'The provided zip is missing a valid solution file.';
+    }
+
+    return 'The provided zip contains invalid contents.';
   }
 
   /**

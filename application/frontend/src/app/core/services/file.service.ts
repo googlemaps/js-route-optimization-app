@@ -77,20 +77,20 @@ export class FileService {
 
     const results = [];
     for (const filename of Object.keys(contents.files)) {
-      const rootFilename = filename.replace(/^.*[\\/]/, '');
-      if (
-        contents.files[filename].dir ||
-        (rootFilename !== 'scenario.json' && rootFilename !== 'solution.json')
-      ) {
-        continue;
+      try {
+        if (contents.files[filename].dir || filename.includes('__MACOSX/')) {
+          continue;
+        }
+        const rootFilename = filename.replace(/^.*[\\/]/, '');
+        results.push(
+          await zip
+            .file(filename)
+            .async('text')
+            .then((content) => ({ filename: rootFilename, content: JSON.parse(content) }))
+        );
+      } catch (e) {
+        console.error(`Error opening JSON from zip: ${e}`);
       }
-
-      results.push(
-        await zip
-          .file(filename)
-          .async('text')
-          .then((content) => ({ filename: rootFilename, content: JSON.parse(content) }))
-      );
     }
     return results;
   }

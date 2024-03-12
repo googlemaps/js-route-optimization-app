@@ -27,6 +27,7 @@ import { Modal } from '../models';
 import { UploadType } from '../models/upload';
 import * as fromUI from '../selectors/ui.selectors';
 import { MessageService, NormalizationService } from '../services';
+import { forkJoin, of } from 'rxjs';
 
 @Injectable()
 export class UploadEffects {
@@ -46,8 +47,17 @@ export class UploadEffects {
           })
           .afterClosed()
       ),
-      mergeMap((dialogResult) => {
+      mergeMap((dialogResult) =>
+        forkJoin([
+          of(dialogResult),
+          this.store.pipe(select(fromUI.selectOpenUploadDialogOnClose), first()),
+        ])
+      ),
+      mergeMap(([dialogResult, openUploadDialog]) => {
         if (!dialogResult) {
+          if (openUploadDialog) {
+            return [UploadActions.openDialog()];
+          }
           return [];
         }
         const actions: Action[] = [UploadActions.closeCsvDialog()];
@@ -67,7 +77,7 @@ export class UploadEffects {
         this.dialog
           .open(UploadDialogComponent, {
             id: Modal.Upload,
-            maxWidth: '420px',
+            width: '700px',
           })
           .afterClosed()
       ),

@@ -86,7 +86,7 @@ describe('UploadEffects', () => {
         expect(matDialog.getDialogById).toHaveBeenCalledWith(Modal.Upload);
         expect(matDialog.open).toHaveBeenCalledWith(UploadDialogComponent, {
           id: Modal.Upload,
-          maxWidth: jasmine.any(String),
+          width: jasmine.any(String),
         });
       });
     });

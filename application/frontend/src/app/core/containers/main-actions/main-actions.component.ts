@@ -59,7 +59,7 @@ export class MainActionsComponent implements OnInit {
   }
 
   onCsvUpload(): void {
-    this.store.dispatch(UploadActions.openCsvDialog());
+    this.store.dispatch(UploadActions.openCsvDialog({}));
   }
 
   onCSVDownload(): void {
