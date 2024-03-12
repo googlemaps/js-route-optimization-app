@@ -292,7 +292,6 @@ class SkippedShipment(TypedDict, total=False):
   """Represents a skipped shipment in the JSON CFR result."""
 
   index: int
-  penaltyCost: float
   label: str
 
 
@@ -308,7 +307,7 @@ class OptimizeToursRequest(TypedDict, total=False):
   parent: str
   populatePolylines: bool
   populateTransitionPolylines: bool
-  searchMode: int
+  searchMode: int | str
   timeout: DurationString
 
 
@@ -652,6 +651,29 @@ def get_shipment_load_demand(shipment: Shipment, load_key: str) -> int:
   if unit_demands is None:
     return 0
   return int(unit_demands.get("amount", 0))
+
+
+def get_performed_shipments_from_routes(
+    routes: Sequence[ShipmentRoute],
+) -> Set[int]:
+  """Returns indices of shipments performed on `routes`."""
+  performed_shipments = set()
+  for route in routes:
+    performed_shipments.update(
+        visit.get("shipmentIndex", 0) for visit in get_visits(route)
+    )
+  return performed_shipments
+
+
+def get_skipped_shipments_from_routes(
+    model: ShipmentModel, routes: Sequence[ShipmentRoute]
+) -> Set[int]:
+  """Returns indices of shipments that are not performed in `routes`."""
+  shipments = get_shipments(model)
+  performed_shipments = get_performed_shipments_from_routes(routes)
+  skipped_shipment_indices = set(range(len(shipments)))
+  skipped_shipment_indices.difference_update(performed_shipments)
+  return skipped_shipment_indices
 
 
 def get_vehicle_earliest_start(

@@ -976,6 +976,61 @@ class GetShipmentLoadDemandTest(unittest.TestCase):
     self.assertEqual(cfr_json.get_shipment_load_demand(shipment, "wheat"), 0)
 
 
+class GetPerformedShipmentsFromRoutesTest(unittest.TestCase):
+  """Tests for get_performed_shipments_from_routes."""
+
+  def test_no_routes(self):
+    self.assertSetEqual(
+        cfr_json.get_performed_shipments_from_routes(()), frozenset()
+    )
+
+  def test_some_routes(self):
+    routes: Sequence[cfr_json.ShipmentRoute] = (
+        {"visits": [{"shipmentIndex": 0}, {"shipmentIndex": 3}]},
+        {},
+        {"visits": [{"shipmentIndex": 4}]},
+    )
+    expected_performed_shipments = frozenset((0, 3, 4))
+    self.assertSetEqual(
+        cfr_json.get_performed_shipments_from_routes(routes),
+        expected_performed_shipments,
+    )
+
+
+class GetSkippedShipmentsFromRoutesTest(unittest.TestCase):
+  """Tests for get_skipped_shipments_from_routes."""
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {"label": "S001"},
+          {"label": "S002"},
+          {"label": "S003"},
+          {"label": "S004"},
+          {"label": "S005"},
+          {"label": "S006"},
+      ],
+      "vehicles": [{"label": "V001"}, {"label": "V002"}, {"label": "V003"}],
+  }
+
+  def test_empty_routes(self):
+    routes: Sequence[cfr_json.ShipmentRoute] = ({}, {}, {})
+    self.assertSetEqual(
+        cfr_json.get_skipped_shipments_from_routes(self._MODEL, routes),
+        frozenset(range(6)),
+    )
+
+  def test_some_routes(self):
+    routes: Sequence[cfr_json.ShipmentRoute] = (
+        {"visits": [{"shipmentIndex": 0}]},
+        {},
+        {"visits": [{"shipmentIndex": 3}, {"shipmentIndex": 2}]},
+    )
+    self.assertSetEqual(
+        cfr_json.get_skipped_shipments_from_routes(self._MODEL, routes),
+        frozenset((1, 4, 5)),
+    )
+
+
 class GetVehicleEarliestStartTest(unittest.TestCase):
   """Tests for get_vehicle_earliest_start."""
 

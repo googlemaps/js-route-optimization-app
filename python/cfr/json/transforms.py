@@ -6,7 +6,7 @@
 """A library of transformations to CFR JSON requests."""
 
 import collections
-from collections.abc import Callable, Collection, Iterable, Mapping, MutableMapping
+from collections.abc import Callable, Collection, Iterable, Mapping, MutableMapping, Sequence, Set
 import copy
 import itertools
 import logging
@@ -42,6 +42,59 @@ def make_all_shipments_optional(
     if "penaltyCost" not in shipment:
       num_items = get_num_items(shipment)
       shipment["penaltyCost"] = num_items * cost
+
+
+def remove_shipments(
+    model: cfr_json.ShipmentModel, shipment_indices: Collection[int]
+) -> Mapping[int, int]:
+  """Removes the given shipments from the model.
+
+  Args:
+    model: The model from which the shipments are removed. The model is modified
+      in place.
+    shipment_indices: The indices of the removed shipment.
+
+  Returns:
+    A mapping from shipment indices before the removal to shipment indices after
+    the removal. Indices of removed shipments are not present in the mapping.
+  """
+  shipments = cfr_json.get_shipments(model)
+  new_shipments: list[cfr_json.Shipment] = []
+  new_shipment_for_old_shipment: dict[int, int] = {}
+
+  for shipment_index, shipment in enumerate(shipments):
+    if shipment_index in shipment_indices:
+      continue
+    new_shipment_index = len(new_shipments)
+    new_shipments.append(shipment)
+    new_shipment_for_old_shipment[shipment_index] = new_shipment_index
+  model["shipments"] = new_shipments
+
+  return new_shipment_for_old_shipment
+
+
+def update_shipment_indices_in_shipment_routes(
+    routes: Sequence[cfr_json.ShipmentRoute],
+    new_shipment_for_old_shipment: Mapping[int, int],
+) -> None:
+  """Removes shipments from visits in `routes`.
+
+  Args:
+    routes: The routes from which the shipments are removed. Modified in place.
+    new_shipment_for_old_shipment: A mapping from shipment indices before the
+      removal to shipment indices after the removal. Shipment indices that are
+      not present as keys in the mapping are considered to be removed.
+  """
+  for route in routes:
+    for visit in cfr_json.get_visits(route):
+      shipment_index = visit.get("shipmentIndex")
+      new_shipment_index = new_shipment_for_old_shipment.get(shipment_index)
+      if new_shipment_index is None:
+        raise ValueError(
+            f"Shipment index {shipment_index} is not present in"
+            " new_shipments_from_old_shipments."
+        )
+      visit["shipmentIndex"] = new_shipment_index
 
 
 def duplicate_vehicle(model: cfr_json.ShipmentModel, vehicle_index: int) -> int:
@@ -155,8 +208,12 @@ def remove_vehicles(
       infeasible shipment.
 
   Returns:
-    A mapping from vehicle indices before the removal to vehicle indices after
-    the removal. Removed vehicle indices are not present in this mapping.
+    A tuple `(vehicle_index_map, shipment_index_map)` where `vehicle_index_map`
+    is a mapping from vehicle indices before the removal to vehicle indices
+    after the removal, and `shipment_index_map` is a mapping from shipment
+    indices in the old model to shipment indices in the new model.
+
+    Removed vehicle indices are not present in this mapping.
   """
   old_vehicles = cfr_json.get_vehicles(model)
   num_old_vehicles = len(old_vehicles)
@@ -241,6 +298,9 @@ def remove_vehicles(
         new_shipment_for_old_shipment[shipment_index] = len(new_shipments)
         new_shipments.append(shipment)
     model["shipments"] = new_shipments
+  else:
+    for shipment_index in range(len(shipments)):
+      new_shipment_for_old_shipment[shipment_index] = shipment_index
 
   return new_vehicle_for_old_vehicle, new_shipment_for_old_shipment
 
