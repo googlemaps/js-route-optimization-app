@@ -34,3 +34,8 @@ export const selectStarted = createSelector(
 );
 
 export const selectMouseOverId = createSelector(selectUIState, fromUI.selectMouseOverId);
+
+export const selectOpenUploadDialogOnClose = createSelector(
+  selectUIState,
+  fromUI.selectOpenUploadDialogOnClose
+);

@@ -48,6 +48,7 @@ import {
 } from './core/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { initApp } from './app-initializer';
+import { ScenarioSolutionHelpDialogComponent } from './core/containers/scenario-solution-help-dialog/scenario-solution-help-dialog.component';
 
 @NgModule({
   imports: [
@@ -105,5 +106,6 @@ import { initApp } from './app-initializer';
     },
   ],
   bootstrap: [AppComponent],
+  declarations: [ScenarioSolutionHelpDialogComponent],
 })
 export class AppModule {}

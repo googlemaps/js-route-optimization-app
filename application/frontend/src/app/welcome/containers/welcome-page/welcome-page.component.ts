@@ -10,7 +10,7 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { DocumentationActions, StorageApiActions, UploadActions } from 'src/app/core/actions';
+import { DocumentationActions, StorageApiActions } from 'src/app/core/actions';
 import { selectHasStorageApiRoot } from 'src/app/core/selectors/config.selectors';
 import { State } from 'src/app/reducers';
 import { WelcomePageActions } from '../../actions';
@@ -19,7 +19,7 @@ import * as fromConfig from 'src/app/core/selectors/config.selectors';
 @Component({
   selector: 'app-welcome-page',
   templateUrl: './welcome-page.component.html',
-  styleUrls: ['./welcome-page.component.css'],
+  styleUrls: ['./welcome-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WelcomePageComponent implements OnInit {
@@ -45,10 +45,6 @@ export class WelcomePageComponent implements OnInit {
 
   loadFromStorage(): void {
     this.store.dispatch(StorageApiActions.openLoadDialog());
-  }
-
-  loadFromCsv(): void {
-    this.store.dispatch(UploadActions.openCsvDialog());
   }
 
   onHelp(): void {

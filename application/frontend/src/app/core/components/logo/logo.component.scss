@@ -1,6 +1,6 @@
 :host {
   display: flex;
-  margin: 1rem 0 0 0;
+  margin: 1rem;
 }
 
 .branding,
@@ -10,7 +10,7 @@
   align-items: center;
   position: relative;
   top: 2px;
-  margin: 4px 12px;
+  margin: 0;
   user-select: none;
   white-space: nowrap;
 }
@@ -19,19 +19,16 @@
   position: relative;
   top: -1.5px;
   color: #5f6368;
-  font-family: 'Product Sans', Arial, sans-serif;
-  font-size: 20px;
+  font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+  font-style: normal;
+  font-size: 22px;
   font-weight: 400;
-  line-height: 24px;
-  padding-left: 4px;
+  line-height: 28px;
   text-rendering: optimizeLegibility;
   text-align: left;
 }
 
-// a.branding:focus {
-//   text-decoration: none;
-// }
-
-// a.branding:focus .branding__name {
-//   text-decoration: underline;
-// }
+.branding__logo {
+  position: relative;
+  top: -4px;
+}
