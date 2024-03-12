@@ -1,0 +1,19 @@
+{
+  "routes": [
+    {
+      "vehicleIndex": 1,
+      "visits": [
+        {
+          "shipmentIndex": 0,
+          "isPickup": true
+        },
+        {
+          "shipmentIndex": 1
+        },
+        {
+          "shipmentIndex": 0
+        }
+      ]
+    }
+  ]
+}

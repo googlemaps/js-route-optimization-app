@@ -1,0 +1,89 @@
+{
+  "model": {
+      "globalStartTime": "2024-03-07T08:00:00Z",
+      "globalEndTime": "2024-03-07T20:00:00Z",
+      "shipments": [
+          {
+              "label": "S0001",
+              "pickups": [{
+                  "arrivalLocation": {
+                      "latitude": 48.883812,
+                      "longitude": 2.361237
+                  },
+                  "duration": "300s"
+              }],
+              "deliveries": [{
+                  "arrivalLocation": {
+                      "latitude": 48.879442,
+                      "longitude": 2.381168
+                  },
+                  "duration": "300s"
+              }]
+          },
+          {
+              "label": "S0002",
+              "deliveries": [{
+                  "arrivalLocation": {
+                      "latitude": 48.890648,
+                      "longitude": 2.351776
+                  },
+                  "duration": "300s"
+              }]
+          },
+          {
+              "label": "S0003",
+              "deliveries": [{
+                  "arrivalLocation": {
+                      "latitude": 48.871783,
+                      "longitude": 2.338115
+                  },
+                  "duration": "300s"
+              }],
+              "penaltyCost": 10000
+          },
+          {
+              "label": "S0004",
+              "deliveries": [{
+                  "arrivalLocation": {
+                      "latitude": 48.867654,
+                      "longitude": 2.312208
+                  },
+                  "duration": "300s"
+              }],
+              "penaltyCost": 10000
+          }
+      ],
+      "vehicles": [
+          {
+              "label": "V0001",
+              "costPerKilometer": 1.0,
+              "costPerHour": 60.0,
+              "startLocation": {
+                  "latitude": 48.879833,
+                  "longitude": 2.349798
+              },
+              "fixedCost": 1000.0
+          },
+          {
+              "label": "V0002",
+              "costPerKilometer": 1.0,
+              "costPerHour": 60.0,
+              "startLocation": {
+                  "latitude": 48.879833,
+                  "longitude": 2.349798
+              },
+              "fixedCost": 1000.0
+          },
+          {
+              "label": "V0003",
+              "costPerKilometer": 1.0,
+              "costPerHour": 60.0,
+              "startLocation": {
+                  "latitude": 48.879833,
+                  "longitude": 2.349798
+              },
+              "fixedCost": 1000.0
+          }
+      ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "model": {
+    "globalStartTime": "2024-03-07T08:00:00Z",
+    "globalEndTime": "2024-03-07T20:00:00Z",
+    "shipments": [
+      {
+        "label": "S0001",
+        "pickups": [
+          {
+            "arrivalLocation": {
+              "latitude": 48.883812,
+              "longitude": 2.361237
+            },
+            "duration": "300s"
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalLocation": {
+              "latitude": 48.879442,
+              "longitude": 2.381168
+            },
+            "duration": "300s"
+          }
+        ]
+      },
+      {
+        "label": "S0002",
+        "deliveries": [
+          {
+            "arrivalLocation": {
+              "latitude": 48.890648,
+              "longitude": 2.351776
+            },
+            "duration": "300s"
+          }
+        ]
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "V0001",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startLocation": {
+          "latitude": 48.879833,
+          "longitude": 2.349798
+        },
+        "fixedCost": 1000.0
+      },
+      {
+        "label": "V0002",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startLocation": {
+          "latitude": 48.879833,
+          "longitude": 2.349798
+        },
+        "fixedCost": 1000.0
+      },
+      {
+        "label": "V0003",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startLocation": {
+          "latitude": 48.879833,
+          "longitude": 2.349798
+        },
+        "fixedCost": 1000.0
+      }
+    ]
+  },
+  "searchMode": "RETURN_FAST",
+  "injectedSolutionConstraint": {
+    "routes": [
+      {
+        "vehicleIndex": 1,
+        "visits": [
+          {
+            "shipmentIndex": 0,
+            "isPickup": true
+          },
+          {
+            "shipmentIndex": 1
+          },
+          {
+            "shipmentIndex": 0
+          }
+        ]
+      }
+    ],
+    "constraintRelaxations": [
+      {
+        "relaxations": [
+          {
+            "level": "RELAX_VISIT_TIMES_AFTER_THRESHOLD"
+          }
+        ]
+      }
+    ]
+  }
+}
