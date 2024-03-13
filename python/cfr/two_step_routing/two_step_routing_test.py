@@ -813,6 +813,11 @@ class PlannerTestWithBreaks(unittest.TestCase):
           "breaks/scenario.refined_1.integrated_global_request.120s.240s.120s.120s.json"
       )
   )
+  _EXPECTED_INTEGRATED_GLOBAL_REQUEST_FULL_ROUTES: (
+      cfr_json.OptimizeToursRequest
+  ) = testdata.json(
+      "breaks/scenario.refined_1.integrated_global_request.120s.240s.120s.120s.full_routes.json"
+  )
   _EXPECTED_INTEGRATED_GLOBAL_RESPONSE: cfr_json.OptimizeToursResponse = (
       testdata.json(
           "breaks/scenario.refined_1.expected_integrated_global_response.120s.240s.120s.120s.json"
@@ -939,9 +944,10 @@ class PlannerTestWithBreaks(unittest.TestCase):
     self.assertEqual(
         integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
     )
-    # self.assertEqual(
-    #     integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
-    # )
+    self.assertEqual(
+        integrated_global_request,
+        self._EXPECTED_INTEGRATED_GLOBAL_REQUEST_FULL_ROUTES,
+    )
     self.assertEqual(
         integrated_global_response, self._EXPECTED_INTEGRATED_GLOBAL_RESPONSE
     )
