@@ -419,6 +419,7 @@ class Options:
 
   min_average_shipments_per_round: int = 1
 
+  use_deprecated_fields: bool = True
   travel_mode_in_merged_transitions: bool = False
 
 
@@ -1093,17 +1094,20 @@ class Planner:
     # add_merged_transition outside of the loop to avoid a lint warning (and to
     # avoid redefining the function for each iteration of the loop).
     merged_transitions = None
-    merged_travel_steps = None
+    merged_travel_steps: list[cfr_json.TravelStep] | None = None
+
+    use_deprecated_fields = self._options.use_deprecated_fields
 
     def add_merged_transition(
         transition: cfr_json.Transition,
-        travel_step: cfr_json.TravelStep,
+        travel_step: cfr_json.TravelStep | None,
         at_parking: ParkingLocation | None = None,
         vehicle: cfr_json.Vehicle | None = None,
     ):
       assert (at_parking is None) != (vehicle is None)
       assert merged_transitions is not None
-      assert merged_travel_steps is not None
+      assert use_deprecated_fields == (merged_travel_steps is not None)
+
       if self._options.travel_mode_in_merged_transitions:
         if at_parking is not None:
           transition["travelMode"] = at_parking.travel_mode
@@ -1116,7 +1120,8 @@ class Planner:
               "travelDurationMultiple", 1
           )
       merged_transitions.append(transition)
-      merged_travel_steps.append(travel_step)
+      if merged_travel_steps is not None:
+        merged_travel_steps.append(travel_step)
 
     for global_route_index, global_route in enumerate(global_routes):
       global_visits = cfr_json.get_visits(global_route)
@@ -1128,14 +1133,14 @@ class Planner:
         continue
 
       global_transitions = global_route["transitions"]
-      global_travel_steps = global_route["travelSteps"]
+      global_travel_steps = (
+          global_route["travelSteps"] if use_deprecated_fields else None
+      )
       merged_visits: list[cfr_json.Visit] = []
       merged_transitions: list[cfr_json.Transition] = []
-      merged_travel_steps: list[cfr_json.TravelStep] = []
       merged_route: cfr_json.ShipmentRoute = {
           "routeTotalCost": global_route["routeTotalCost"],
           "transitions": merged_transitions,
-          "travelSteps": merged_travel_steps,
           "vehicleEndTime": global_route["vehicleEndTime"],
           "vehicleIndex": global_route.get("vehicleIndex", 0),
           "vehicleLabel": global_route["vehicleLabel"],
@@ -1143,13 +1148,19 @@ class Planner:
           "visits": merged_visits,
           # TODO(ondrasej): metrics, detailed costs, ...
       }
+      if use_deprecated_fields:
+        merged_travel_steps = []
+        merged_route["travelSteps"] = merged_travel_steps
 
       # Copy breaks from the global route, if present.
       if (global_breaks := global_route.get("breaks")) is not None:
         merged_route["breaks"] = global_breaks
 
       # Copy vehicle detour from the global route, if present.
-      if (global_detour := global_route.get("vehicleDetour")) is not None:
+      if (
+          self._options.use_deprecated_fields
+          and (global_detour := global_route.get("vehicleDetour")) is not None
+      ):
         merged_route["vehicleDetour"] = global_detour
 
       merged_routes.append(merged_route)
@@ -1175,7 +1186,9 @@ class Planner:
         # always by vehicle.
         add_merged_transition(
             copy.deepcopy(global_transitions[global_visit_index]),
-            copy.deepcopy(global_travel_steps[global_visit_index]),
+            copy.deepcopy(global_travel_steps[global_visit_index])
+            if use_deprecated_fields
+            else None,
             vehicle=global_vehicle,
         )
         global_visit_label = global_visit["shipmentLabel"]
@@ -1221,16 +1234,20 @@ class Planner:
             # the timestamps as needed.
             local_visits = cfr_json.get_visits(local_route)
             local_transitions = local_route["transitions"]
-            local_travel_steps = local_route["travelSteps"]
+            local_travel_steps = (
+                local_route["travelSteps"] if use_deprecated_fields else None
+            )
             for local_visit_index, local_visit in enumerate(local_visits):
               local_transition_in = local_transitions[local_visit_index]
               merged_transition = copy.deepcopy(local_transition_in)
               merged_transition["startTime"] = cfr_json.update_time_string(
                   merged_transition["startTime"], local_to_global_delta
               )
-              merged_travel_step = copy.deepcopy(
-                  local_travel_steps[local_visit_index]
-              )
+              merged_travel_step = None
+              if use_deprecated_fields:
+                merged_travel_step = copy.deepcopy(
+                    local_travel_steps[local_visit_index]
+                )
               add_merged_transition(
                   merged_transition, merged_travel_step, at_parking=parking
               )
@@ -1262,7 +1279,9 @@ class Planner:
             transition_to_parking["startTime"] = cfr_json.update_time_string(
                 transition_to_parking["startTime"], local_to_global_delta
             )
-            travel_step_to_parking = copy.deepcopy(local_travel_steps[-1])
+            travel_step_to_parking = None
+            if use_deprecated_fields:
+              travel_step_to_parking = copy.deepcopy(local_travel_steps[-1])
             add_merged_transition(
                 transition_to_parking,
                 travel_step_to_parking,
@@ -1294,7 +1313,9 @@ class Planner:
       # Add the transition back to the depot.
       add_merged_transition(
           copy.deepcopy(global_transitions[-1]),
-          copy.deepcopy(global_travel_steps[-1]),
+          copy.deepcopy(global_travel_steps[-1])
+          if use_deprecated_fields
+          else None,
           vehicle=global_vehicle,
       )
       if populate_polylines:
@@ -2002,9 +2023,10 @@ class _RefinedRouteIntegration:
             integrated_global_route,
             allow_negative_wait_duration=has_traffic_infeasibility,
         )
-        cfr_json.recompute_travel_steps_from_transitions(
-            integrated_global_route
-        )
+        if self._options.use_deprecated_fields:
+          cfr_json.recompute_travel_steps_from_transitions(
+              integrated_global_route
+          )
         cfr_json.recompute_route_metrics(
             self._integrated_global_model,
             integrated_global_route,
@@ -2114,8 +2136,11 @@ class _RefinedRouteIntegration:
           # TODO(ondrasej): See if this list conversion is really needed.
           "visits": list(integrated_route_visits),
           "transitions": list(integrated_route_transitions),
-          "travelSteps": list(integrated_route_travel_steps),
       }
+      if self._options.use_deprecated_fields:
+        integrated_local_route["travelSteps"] = list(
+            integrated_route_travel_steps
+        )
       is_last_split = refined_split_index == num_refined_route_splits - 1
       remove_delay = None if is_last_split else parking.reload_duration
       cfr_json.update_route_start_end_time_from_transitions(
@@ -2823,7 +2848,7 @@ def _split_refined_local_route(
     tuple[
         Sequence[cfr_json.Visit],
         Sequence[cfr_json.Transition],
-        Sequence[cfr_json.TravelStep],
+        Sequence[cfr_json.TravelStep] | None,
     ]
 ]:
   """Extracts delivery rounds from a local refinement model route.
@@ -2842,9 +2867,11 @@ def _split_refined_local_route(
     of visits, transitions, and travel steps that belong to the segment. Only
     delivery visits are returned, and the first (resp. last) transition in each
     group is from (resp. to) the parking location.
+    Returns None when the input sequence doesn't have travel steps.
   """
   if route.get("breaks", ()):
     raise ValueError("Breaks in the local routes are not supported.")
+
   # NOTE(ondrasej): This code assumes that all shipments are delivery-only and
   # that all pickup visits are at the parking location address and they were
   # added by the local refinement model to make the driver return to the parking
@@ -2853,7 +2880,9 @@ def _split_refined_local_route(
 
   visits = iter(enumerate(cfr_json.get_visits(route)))
   transitions = route.get("transitions", ())
-  travel_steps = route.get("travelSteps", ())
+  travel_steps = route.get("travelSteps")
+  use_deprecated_fields = travel_steps is not None
+
   indexed_visit = next(visits, None)
   visit_index = None
   while True:
@@ -2870,7 +2899,7 @@ def _split_refined_local_route(
 
     split_visits = []
     split_transitions = []
-    split_travel_steps = []
+    split_travel_steps = [] if use_deprecated_fields else None
 
     # Extract visits and transitions from the current split.
     while indexed_visit is not None:
@@ -2881,7 +2910,8 @@ def _split_refined_local_route(
         break
       split_visits.append(visit)
       split_transitions.append(transitions[visit_index])
-      split_travel_steps.append(travel_steps[visit_index])
+      if use_deprecated_fields:
+        split_travel_steps.append(travel_steps[visit_index])
       indexed_visit = next(visits, None)
 
     # Add the transition back to the parking location. We can just add the next
@@ -2891,13 +2921,16 @@ def _split_refined_local_route(
     if indexed_visit is None:
       visit_index += 1
     split_transitions.append(transitions[visit_index])
-    split_travel_steps.append(travel_steps[visit_index])
+    if use_deprecated_fields:
+      split_travel_steps.append(travel_steps[visit_index])
 
     # If the algorithm is correct, there must be at least one split. Otherwise,
     # we'd exit the parent while loop right at the beginning.
     assert split_visits, "Unexpected empty visit list"
     assert split_transitions, "Unexpected empty transition list"
-    assert split_travel_steps, "Unexpected empty travel step list"
+    assert (
+        not use_deprecated_fields or split_travel_steps
+    ), "Unexpected empty travel step list"
 
     splits.append((split_visits, split_transitions, split_travel_steps))
 

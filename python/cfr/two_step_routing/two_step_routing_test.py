@@ -761,6 +761,14 @@ class PlannerTestWithBreaks(unittest.TestCase):
           time_windows=True
       ),
   )
+  _OPTIONS_NO_DEPRECATED_FIELDS = two_step_routing.Options(
+      local_model_vehicle_fixed_cost=10000,
+      min_average_shipments_per_round=1,
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
+      use_deprecated_fields=False,
+  )
 
   _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "breaks/scenario.json"
@@ -787,6 +795,11 @@ class PlannerTestWithBreaks(unittest.TestCase):
   )
   _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
       testdata.json("breaks/scenario.merged_response.120s.240s.json")
+  )
+  _EXPECTED_MERGED_RESPONSE_NO_DEPRECATED_FIELDS_JSON: (
+      cfr_json.OptimizeToursResponse
+  ) = testdata.json(
+      "breaks/scenario.merged_response.120s.240s.no_deprecated_fields.json"
   )
   _EXPECTED_LOCAL_REFINEMENT_REQUEST_JSON: cfr_json.OptimizeToursRequest = (
       testdata.json(
@@ -854,6 +867,22 @@ class PlannerTestWithBreaks(unittest.TestCase):
     )
     self.assertEqual(merged_request, self._EXPECTED_MERGED_REQUEST_JSON)
     self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
+
+  def test_merged_routes_no_deprecated_fields(self):
+    planner = two_step_routing.Planner(
+        options=self._OPTIONS_NO_DEPRECATED_FIELDS,
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+    )
+    merged_request, merged_response = planner.merge_local_and_global_result(
+        self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+    self.assertEqual(merged_request, self._EXPECTED_MERGED_REQUEST_JSON)
+    self.assertEqual(
+        merged_response,
+        self._EXPECTED_MERGED_RESPONSE_NO_DEPRECATED_FIELDS_JSON,
+    )
 
   def test_local_refinement_model(self):
     local_refinement_request = self._planner.make_local_refinement_request(

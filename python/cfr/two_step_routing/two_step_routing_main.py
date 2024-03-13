@@ -58,6 +58,7 @@ class Flags(cfr_api.Flags):
   local_grouping: two_step_routing.InitialLocalModelGrouping
   local_model_vehicle_fixed_cost: float | None
   travel_mode_in_merged_transitions: bool
+  no_deprecated_fields: bool
   inject_start_times_to_refinement_first_solution: bool
   local_timeout: cfr_json.DurationString
   global_timeout: cfr_json.DurationString
@@ -98,6 +99,15 @@ class Flags(cfr_api.Flags):
             "The cost of a vehicle in the initial local model. When None, the"
             " default cost determined by the solver is used."
         ),
+    )
+    parser.add_argument(
+        "--no_deprecated_fields",
+        help=(
+            "Do not use fields in CFR requests and responses that are marked as"
+            " deprecated. This concerns in particular `travelSteps`."
+        ),
+        default=False,
+        action=argparse.BooleanOptionalAction,
     )
     parser.add_argument(
         "--travel_mode_in_merged_transitions",
@@ -249,6 +259,7 @@ def _run_two_step_planner() -> None:
       initial_local_model_grouping=flags.local_grouping,
       local_model_vehicle_fixed_cost=flags.local_model_vehicle_fixed_cost,
       travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
+      use_deprecated_fields=not flags.no_deprecated_fields,
   )
   planner = two_step_routing.Planner(
       request_json, parking_locations, parking_for_shipment, options
