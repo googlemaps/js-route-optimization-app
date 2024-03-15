@@ -301,7 +301,7 @@
           }
         },
         "travelDurationMultiple": 1.1,
-        "routeModifiers": {"avoidIndoor": true},
+        "routeModifiers": { "avoidIndoor": true },
         "travelMode": 2
       },
       {
@@ -339,5 +339,6 @@
       }
     ]
   },
+  "parent": "my_awesome_project",
   "searchMode": 1
 }

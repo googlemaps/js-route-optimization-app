@@ -604,7 +604,6 @@ class Planner:
     request = {
         "label": self._request.get("label", "") + "/local",
         "model": local_model,
-        "parent": self._request.get("parent"),
     }
     self._add_options_from_original_request(request)
     return request
@@ -697,7 +696,6 @@ class Planner:
     request = {
         "label": self._request.get("label", "") + "/global",
         "model": global_model,
-        "parent": self._request.get("parent"),
     }
     self._add_options_from_original_request(request)
     if consider_road_traffic_override is not None:
@@ -1075,8 +1073,10 @@ class Planner:
     merged_request: cfr_json.OptimizeToursRequest = {
         "model": merged_model,
         "label": self._request.get("label", "") + "/merged",
-        "parent": self._request.get("parent"),
     }
+    if (parent := self._request.get("parent")) is not None:
+      merged_request["parent"] = parent
+
     merged_routes: list[cfr_json.ShipmentRoute] = []
     merged_result: cfr_json.OptimizeToursResponse = {
         "routes": merged_routes,
@@ -1398,6 +1398,10 @@ class Planner:
     )
     if populate_transition_polylines is not None:
       request["populateTransitionPolylines"] = populate_transition_polylines
+
+    # Copy additional metadata.
+    if (parent := self._request.get("parent")) is not None:
+      request["parent"] = parent
 
 
 def _make_local_model_vehicle(
