@@ -296,6 +296,125 @@ class TransformBreaksTest(unittest.TestCase):
         expected_model,
     )
 
+  def test_new_request_conditional_on_vehicle_hours(self):
+    model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-03-15T08:00:00Z",
+        "globalEndTime": "2024-03-15T21:00:00Z",
+        "vehicles": [
+            {
+                "label": "V001",
+                "endTimeWindows": [{"endTime": "2024-03-15T11:30:00Z"}],
+            },
+            {
+                "label": "V002",
+                "endTimeWindows": [{"endTime": "2024-03-15T18:00:00Z"}],
+            },
+        ],
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-03-15T08:00:00Z",
+        "globalEndTime": "2024-03-15T21:00:00Z",
+        "vehicles": [
+            {
+                "label": "V001",
+                "endTimeWindows": [{"endTime": "2024-03-15T11:30:00Z"}],
+                "breakRule": {
+                    "breakRequests": [{
+                        "earliestStartTime": "2024-03-15T08:00:00Z",
+                        "latestStartTime": "2024-03-15T08:30:00Z",
+                        "minDuration": "600s",
+                    }]
+                },
+            },
+            {
+                "label": "V002",
+                "endTimeWindows": [{"endTime": "2024-03-15T18:00:00Z"}],
+                "breakRule": {
+                    "breakRequests": [
+                        {
+                            "earliestStartTime": "2024-03-15T13:30:00Z",
+                            "latestStartTime": "2024-03-15T14:00:00Z",
+                            "minDuration": "300s",
+                        },
+                    ]
+                },
+            },
+        ],
+    }
+    self.assertEqual(
+        self.run_transform_breaks(
+            model,
+            """
+            @vehicleWorkTime=08:00:00
+            @vehicleLabel=V001
+            new
+              earliestStartTime=08:00:00
+              latestStartTime=08:30:00
+              minDuration=600s;
+            @vehicleWorkTime=14:00:00
+            new
+              earliestStartTime=13:30:00
+              latestStartTime=14:00:00
+              minDuration=300s;
+            """,
+        ),
+        expected_model,
+    )
+
+  def test_new_request_conditional_on_vehicle_label(self):
+    model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-03-15T08:00:00Z",
+        "globalEndTime": "2024-03-15T21:00:00Z",
+        "vehicles": [
+            {"label": "V001"},
+            {"label": "V002"},
+        ],
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-03-15T08:00:00Z",
+        "globalEndTime": "2024-03-15T21:00:00Z",
+        "vehicles": [
+            {
+                "label": "V001",
+                "breakRule": {
+                    "breakRequests": [{
+                        "earliestStartTime": "2024-03-15T08:00:00Z",
+                        "latestStartTime": "2024-03-15T08:30:00Z",
+                        "minDuration": "600s",
+                    }]
+                },
+            },
+            {
+                "label": "V002",
+                "breakRule": {
+                    "breakRequests": [
+                        {
+                            "earliestStartTime": "2024-03-15T13:30:00Z",
+                            "latestStartTime": "2024-03-15T14:00:00Z",
+                            "minDuration": "300s",
+                        },
+                    ]
+                },
+            },
+        ],
+    }
+    self.assertEqual(
+        self.run_transform_breaks(
+            model,
+            """
+            @vehicleLabel=V001 new
+              earliestStartTime=08:00:00
+              latestStartTime=08:30:00
+              minDuration=600s;
+            @vehicleLabel=V002 new
+              earliestStartTime=13:30:00
+              latestStartTime=14:00:00
+              minDuration=300s;
+            """,
+        ),
+        expected_model,
+    )
+
   def test_new_return_to_depot(self):
     model: cfr_json.ShipmentModel = {
         "globalStartTime": "2024-02-09T08:00:00Z",
@@ -743,21 +862,15 @@ class CompileRulesTest(unittest.TestCase):
     rules = transforms_breaks.compile_rules("@vehicleLabel=V001")
     self.assertEqual(len(rules), 1)
 
-    break_request: cfr_json.BreakRequest = {}
     matched_vehicle: cfr_json.Vehicle = {"label": "V001"}
     unmatched_vehicle: cfr_json.Vehicle = {"label": "not matched"}
-    self.assertTrue(
-        rules[0].applies_to(self.MODEL, matched_vehicle, break_request)
-    )
-    self.assertFalse(
-        rules[0].applies_to(self.MODEL, unmatched_vehicle, break_request)
-    )
+    self.assertTrue(rules[0].applies_to_context(self.MODEL, matched_vehicle))
+    self.assertFalse(rules[0].applies_to_context(self.MODEL, unmatched_vehicle))
 
   def test_select_by_vehicle_label_regex(self):
     rules = transforms_breaks.compile_rules("@vehicleLabel~=V001|V002|C[0-9]+")
     self.assertEqual(len(rules), 1)
 
-    break_request: cfr_json.BreakRequest = {}
     matched_vehicles: Sequence[cfr_json.Vehicle] = (
         {"label": "V001"},
         {"label": "V002"},
@@ -772,13 +885,152 @@ class CompileRulesTest(unittest.TestCase):
     for matched_vehicle in matched_vehicles:
       with self.subTest(matched_vehicle=matched_vehicle):
         self.assertTrue(
-            rules[0].applies_to(self.MODEL, matched_vehicle, break_request)
+            rules[0].applies_to_context(self.MODEL, matched_vehicle)
         )
     for unmatched_vehicle in unmatched_vehicles:
       with self.subTest(unmatched_vehicle=unmatched_vehicle):
         self.assertFalse(
-            rules[0].applies_to(self.MODEL, unmatched_vehicle, break_request)
+            rules[0].applies_to_context(self.MODEL, unmatched_vehicle)
         )
+
+  def test_select_by_vehicle_working_hours(self):
+    rules = transforms_breaks.compile_rules("@vehicleWorkTime=11:30:00")
+    model = {
+        "globalStartTime": "2024-03-15T09:00:00Z",
+        "globalEndTime": "2024-03-15T21:00:00Z",
+    }
+
+    matched_vehicles: Sequence[cfr_json.Vehicle] = (
+        {},
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T09:00:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-15T18:00:00Z"}],
+        },
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T11:30:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-15T18:00:00Z"}],
+        },
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T09:30:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-15T11:30:00Z"}],
+        },
+        {
+            "startTimeWindows": [
+                {
+                    "startTime": "2024-03-15T09:30:00Z",
+                    "startTime": "2024-03-15T09:30:00Z",
+                },
+                {
+                    "startTime": "2024-03-15T12:30:00Z",
+                    "startTime": "2024-03-15T12:30:00Z",
+                },
+            ],
+            "endTimeWindows": [{"endTime": "2024-03-15T11:30:00Z"}],
+        },
+    )
+    for matched_vehicle in matched_vehicles:
+      with self.subTest(matched_vehicle=matched_vehicle):
+        self.assertTrue(rules[0].applies_to_context(model, matched_vehicle))
+
+    unmatched_vehicles: Sequence[cfr_json.Vehicle] = (
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T12:00:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-15T18:00:00Z"}],
+        },
+        {"startTimeWindows": [{"startTime": "2024-03-15T12:00:00Z"}]},
+        {"endTimeWindows": [{"endTime": "2024-03-15T09:59:59Z"}]},
+    )
+    for unmatched_vehicle in unmatched_vehicles:
+      with self.subTest(unmatched_vehicle=unmatched_vehicle):
+        self.assertFalse(rules[0].applies_to_context(model, unmatched_vehicle))
+
+  def test_select_by_vehicle_working_hours_cross_midnight(self):
+    rules = transforms_breaks.compile_rules("@vehicleWorkTime=02:30:00")
+    model = {
+        "globalStartTime": "2024-03-15T16:00:00Z",
+        "globalEndTime": "2024-03-16T04:00:00Z",
+    }
+
+    matched_vehicles: Sequence[cfr_json.Vehicle] = (
+        {},
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T18:00:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-16T03:00:00Z"}],
+        },
+        {
+            "startTimeWindows": [{"startTime": "2024-03-16T02:30:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-16T03:00:00Z"}],
+        },
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T23:59:59Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-16T02:30:00Z"}],
+        },
+        {
+            "startTimeWindows": [
+                {
+                    "startTime": "2024-03-15T22:00:00Z",
+                    "startTime": "2024-03-15T22:30:00Z",
+                },
+                {
+                    "startTime": "2024-03-15T23:30:00Z",
+                    "startTime": "2024-03-15T23:59:59Z",
+                },
+            ],
+            "endTimeWindows": [{"endTime": "2024-03-16T02:30:00Z"}],
+        },
+    )
+    for matched_vehicle in matched_vehicles:
+      with self.subTest(matched_vehicle=matched_vehicle):
+        self.assertTrue(rules[0].applies_to_context(model, matched_vehicle))
+
+    unmatched_vehicles: Sequence[cfr_json.Vehicle] = (
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T18:00:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-15T22:00:00Z"}],
+        },
+        {"startTimeWindows": [{"startTime": "2024-03-16T03:00:00Z"}]},
+        {"endTimeWindows": [{"endTime": "2024-03-16T02:29:59Z"}]},
+    )
+    for unmatched_vehicle in unmatched_vehicles:
+      with self.subTest(unmatched_vehicle=unmatched_vehicle):
+        self.assertFalse(rules[0].applies_to_context(model, unmatched_vehicle))
+
+  def test_select_by_vehicle_working_hours_multiple_days(self):
+    rules = transforms_breaks.compile_rules("@vehicleWorkTime=02:30:00")
+    # The global duration of the model is over 48 hours.
+    model = {
+        "globalStartTime": "2024-03-15T16:00:00Z",
+        "globalEndTime": "2024-03-18T04:00:00Z",
+    }
+    matched_vehicles: Sequence[cfr_json.Vehicle] = (
+        {},
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T18:00:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-16T18:00:00Z"}],
+        },
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T18:30:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-17T03:00:00Z"}],
+        },
+        {
+            "startTimeWindows": [{"startTime": "2024-03-16T23:59:59Z"}],
+        },
+    )
+    for matched_vehicle in matched_vehicles:
+      with self.subTest(matched_vehicle=matched_vehicle):
+        self.assertTrue(rules[0].applies_to_context(model, matched_vehicle))
+
+    unmatched_vehicles: Sequence[cfr_json.Vehicle] = (
+        {
+            "startTimeWindows": [{"startTime": "2024-03-15T18:00:00Z"}],
+            "endTimeWindows": [{"endTime": "2024-03-15T22:00:00Z"}],
+        },
+        {"startTimeWindows": [{"startTime": "2024-03-18T03:00:00Z"}]},
+        {"endTimeWindows": [{"endTime": "2024-03-16T02:29:59Z"}]},
+    )
+    for unmatched_vehicle in unmatched_vehicles:
+      with self.subTest(unmatched_vehicle=unmatched_vehicle):
+        self.assertFalse(rules[0].applies_to_context(model, unmatched_vehicle))
 
   def test_no_rules(self):
     rules = transforms_breaks.compile_rules("")
@@ -920,15 +1172,8 @@ class VehicleLabelMatches(unittest.TestCase):
         vehicle: cfr_json.Vehicle = {}
         if label is not None:
           vehicle["label"] = label
-        break_request: cfr_json.BreakRequest = {
-            "earliestStartTime": "2024-02-29T09:00:00Z",
-            "latestStartTime": "2024-02-29T19:00:00Z",
-            "minDuration": "1800s",
-        }
         self.assertEqual(
-            transforms_breaks._vehicle_label_matches(
-                matcher, model, vehicle, break_request
-            ),
+            transforms_breaks._vehicle_label_matches(matcher, model, vehicle),
             expected_match,
         )
 

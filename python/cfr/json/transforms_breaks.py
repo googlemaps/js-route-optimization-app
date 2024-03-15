@@ -42,6 +42,8 @@ Supported selectors:
   given label (exact match).
 - `@vehicleLabel~={regex}`: selects break rules that belong to a vehicle with a
   label that matches {regex} (a Python regular expression).
+- `@vehicleWorkTime={time}`: selects break rules that belong to a vehicle that
+  can work at the given time.
 
 Supported actions:
 - `delete`: deletes the break rule.
@@ -73,10 +75,22 @@ import dataclasses
 import datetime
 import functools
 import json
+import logging
 import re
 from typing import Any, Protocol, cast
 
 from . import cfr_json
+
+
+class ContextSelector(Protocol):
+  """Function signature of a break context selector."""
+
+  def __call__(
+      self,
+      model: cfr_json.ShipmentModel,
+      vehicle: cfr_json.Vehicle,
+  ) -> bool:
+    ...
 
 
 class BreakSelector(Protocol):
@@ -113,7 +127,12 @@ class BreakTransformRule:
   Attributes:
     selectors: A collection of selector functions for break requests. A break
       request is selected for modification by this transformation when all the
-      selectors return True.
+      selectors and context_selectors return True.
+    context_selectors: A collection of selector functions for the "context" of
+      break requests. These are selectors that check only the model and the
+      vehicle but not the break request itself. A break request is selected for
+      modification by this transformation when all the selectors and
+      context_selectors return True.
     actions: The list of actions applied to the break request by this
       transformation.
     new_break_request: When True, this transformation creates a new break
@@ -129,6 +148,7 @@ class BreakTransformRule:
   """
 
   selectors: Sequence[BreakSelector]
+  context_selectors: Sequence[ContextSelector]
   actions: Sequence[BreakTransformAction]
   new_break_request: bool
   break_at_waypoint: cfr_json.Waypoint | str | None
@@ -159,6 +179,26 @@ class BreakTransformRule:
     return all(
         selector(model, vehicle, break_request) for selector in self.selectors
     )
+
+  def applies_to_context(
+      self,
+      model: cfr_json.ShipmentModel,
+      vehicle: cfr_json.Vehicle,
+  ) -> bool:
+    """Checks that the break transform rule applies to `model` and `vehicle`.
+
+    Args:
+      model: The model, in which the check is done.
+      vehicle: The vehicle, for which the check is done.
+
+    Returns:
+      True when either:
+      - self.context_selectors is empty.
+      - self.context_selectors is non-empty and all context selectors return
+        True.
+      False otherwise.
+    """
+    return all(selector(model, vehicle) for selector in self.context_selectors)
 
   def apply_to(
       self,
@@ -346,7 +386,6 @@ def _vehicle_label_matches(
     label_matcher: str | re.Pattern[str],
     model: cfr_json.ShipmentModel,
     vehicle: cfr_json.Vehicle,
-    break_request: cfr_json.BreakRequest,
 ) -> bool:
   """Selector that checks the label of the vehicle.
 
@@ -356,17 +395,54 @@ def _vehicle_label_matches(
       is tested with `label_matcher.fullmatch(label)`.
     model: The model in which the matching is done.
     vehicle: The vehicle to which the break request belongs.
-    break_request: The break request to test.
 
   Returns:
     True when the label of the vehicle matches `label_matcher` as decribed
     above; otherwise, returns False.
   """
-  del model, break_request  # Unused.
+  del model  # Unused.
   vehicle_label = vehicle.get("label", "")
   if isinstance(label_matcher, str):
     return vehicle_label == label_matcher
   return label_matcher.fullmatch(vehicle_label) is not None
+
+
+def _vehicle_working_hours_contain_time(
+    time: datetime.time,
+    model: cfr_json.ShipmentModel,
+    vehicle: cfr_json.Vehicle,
+) -> bool:
+  """Selector that checks that `vehicle` works at a given time.
+
+  This function works only on the time part of the time window, not the date.
+  Correctly handles vehicles whose working hours cross the day end boundary.
+
+  Args:
+    time: The given time to test.
+    model: The model in which the matching is done.
+    vehicle: The vehicle to which the break request belongs.
+
+  Returns:
+    True when `time` is between the earliest start time of the vehicle and the
+    latest end time of the vehicle on any day. Otherwise, returns False.
+  """
+  earliest_start_time = cfr_json.get_vehicle_earliest_start(model, vehicle)
+  latest_end_time = cfr_json.get_vehicle_latest_end(model, vehicle)
+  if earliest_start_time.date() == latest_end_time.date():
+    # When the earliest start time and the latest end time are on the same day,
+    # we just need to test the time.
+    res = earliest_start_time.time() <= time <= latest_end_time.time()
+  elif (
+      earliest_start_time + datetime.timedelta(days=1)
+  ).date() == latest_end_time.date():
+    # When the latest end time is on the next day from earliest_start_time, we
+    # need to be more careful about intervals.
+    res = time >= earliest_start_time.time() or time <= latest_end_time.time()
+  else:
+    res = True
+
+  # Vehicle that work over 24 hours can have a break at any given hour.
+  return res
 
 
 def _parse_time(time: str) -> datetime.time:
@@ -480,22 +556,31 @@ def compile_rules(rules: str) -> Sequence[BreakTransformRule]:
   compiled_rules = []
 
   selectors: list[BreakSelector] = []
+  context_selectors: list[BreakSelector] = []
   actions: list[BreakTransformAction] = []
   new_break_request = False
   break_at_waypoint = None
 
   for component in _tokenize(rules):
     if component is None:
-      if actions or selectors or break_at_waypoint or new_break_request:
+      if (
+          actions
+          or selectors
+          or context_selectors
+          or break_at_waypoint
+          or new_break_request
+      ):
         compiled_rules.append(
             BreakTransformRule(
                 selectors=selectors,
+                context_selectors=context_selectors,
                 actions=actions,
                 new_break_request=new_break_request,
                 break_at_waypoint=break_at_waypoint,
             )
         )
         selectors = []
+        context_selectors = []
         actions = []
         new_break_request = False
         break_at_waypoint = None
@@ -516,11 +601,11 @@ def compile_rules(rules: str) -> Sequence[BreakTransformRule]:
       case "@vehicleLabel":
         match component.operator:
           case "=":
-            selectors.append(
+            context_selectors.append(
                 functools.partial(_vehicle_label_matches, component.value)
             )
           case "~=":
-            selectors.append(
+            context_selectors.append(
                 functools.partial(
                     _vehicle_label_matches, re.compile(component.value)
                 )
@@ -530,6 +615,18 @@ def compile_rules(rules: str) -> Sequence[BreakTransformRule]:
                 "Only '=' and '~=' are allowed for @vehicleLabel, found"
                 f" {str(component)!r}"
             )
+      case "@vehicleWorkTime":
+        if component.operator != "=":
+          raise ValueError(
+              "Only '=' is allowed for @vehicleWorkTime, found"
+              f" {str(component)!r}"
+          )
+        context_selectors.append(
+            functools.partial(
+                _vehicle_working_hours_contain_time,
+                _parse_time(component.value),
+            )
+        )
       case "new":
         new_break_request = True
       case "delete":
@@ -593,10 +690,17 @@ def transform_breaks_for_vehicle(
       break_requests = old_break_requests
   breaks_at_waypoint = []
 
+  logging.debug("Processing vehicle_index=%d", vehicle_index)
   for transform in compiled_rules:
+    logging.debug("Applying transform %r", transform)
+    if not transform.applies_to_context(model, vehicle):
+      logging.debug("No context match")
+      continue
+
     matched_anything = False
     new_requests: list[cfr_json.BreakRequest] = []
     for request in break_requests:
+      logging.debug("Considering break request %r", request)
       if not transform.applies_to(model, vehicle, request):
         new_requests.append(request)
         continue
@@ -630,6 +734,7 @@ def transform_breaks_for_vehicle(
         and not transform.selectors
         and transform.new_break_request
     ):
+      logging.debug("Adding a new break request without an existing one")
       rule_new_requests = list(
           transform.apply_to(
               model,
