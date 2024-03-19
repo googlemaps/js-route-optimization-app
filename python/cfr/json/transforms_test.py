@@ -147,19 +147,23 @@ class TestUpdateShipmentIndicesInShipmentRoutes(unittest.TestCase):
       },
       {"visits": []},
       {"visits": [{"shipmentIndex": 4}, {"shipmentIndex": 3}]},
+      {"visits": [{}]},
   )
 
   def test_no_change(self):
     routes = copy.deepcopy(self._SHIPMENT_ROUTES)
+    expected_routes = copy.deepcopy(self._SHIPMENT_ROUTES)
+    # The code replaces an implicit shipmentIndex=0 with an explicit one.
+    expected_routes[3]["visits"][0]["shipmentIndex"] = 0
     transforms.update_shipment_indices_in_shipment_routes(
         routes, {i: i for i in range(5)}
     )
-    self.assertEqual(routes, self._SHIPMENT_ROUTES)
+    self.assertEqual(routes, expected_routes)
 
   def test_some_changes(self):
     routes = copy.deepcopy(self._SHIPMENT_ROUTES)
     transforms.update_shipment_indices_in_shipment_routes(
-        routes, {1: 0, 2: 1, 3: 2, 4: 3}
+        routes, {0: 7, 1: 0, 2: 1, 3: 2, 4: 3}
     )
     self.assertSequenceEqual(
         routes,
@@ -173,6 +177,7 @@ class TestUpdateShipmentIndicesInShipmentRoutes(unittest.TestCase):
             },
             {"visits": []},
             {"visits": [{"shipmentIndex": 3}, {"shipmentIndex": 2}]},
+            {"visits": [{"shipmentIndex": 7}]},
         ),
     )
 

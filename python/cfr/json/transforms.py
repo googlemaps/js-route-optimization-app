@@ -87,7 +87,7 @@ def update_shipment_indices_in_shipment_routes(
   """
   for route in routes:
     for visit in cfr_json.get_visits(route):
-      shipment_index = visit.get("shipmentIndex")
+      shipment_index = visit.get("shipmentIndex", 0)
       new_shipment_index = new_shipment_for_old_shipment.get(shipment_index)
       if new_shipment_index is None:
         raise ValueError(

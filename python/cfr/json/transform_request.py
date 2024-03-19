@@ -69,6 +69,21 @@ def _parse_comma_separated_list(value: str) -> Sequence[str]:
   return value.split(",")
 
 
+def _parse_comma_separated_index_list(value: str) -> Sequence[int]:
+  try:
+    indices = tuple(int(index) for index in value.split(",") if index.strip())
+    if any(index < 0 for index in indices):
+      # On error fall use the same error handling as when parsing the numbers
+      # fails.
+      raise ValueError()
+    return indices
+  except ValueError:
+    raise argparse.ArgumentTypeError(
+        "expected a list of non-negative integers separated by commas, got"
+        " {value!r}"
+    ) from None
+
+
 def _non_negative_float(value: str) -> float:
   value_as_float = float(value)
   if value_as_float < 0:
@@ -111,6 +126,7 @@ class Flags:
   duplicate_vehicles_by_label: Sequence[str] | None
   remove_vehicles_by_label: Sequence[str] | None
   reduce_to_vehicles_by_label: Sequence[str] | None
+  reduce_to_vehicles_by_index: Sequence[int] | None
   infeasible_shipment_after_removing_vehicle: transforms.OnInfeasibleShipment
 
   transform_breaks: str | None
@@ -230,6 +246,18 @@ class Flags:
         ),
     )
     parser.add_argument(
+        "--reduce_to_vehicles_by_index",
+        type=_parse_comma_separated_index_list,
+        help=(
+            "A comma separated list of vehicle indices. Removes all vehicles"
+            " whose indices do not appear in this list. Removes all shipments"
+            " that become trivially infeasible when the vehicles are removed."
+            " When both --reduce_to_vehicles_by_index and"
+            " --reduce_to_vehicles_by_label are used, vehicles specified by any"
+            " of the two are preserved in the request."
+        ),
+    )
+    parser.add_argument(
         "--reduce_to_vehicles_by_label",
         type=_parse_comma_separated_list,
         help=(
@@ -237,7 +265,10 @@ class Flags:
             " whose labels do not appear in this list. When multiple vehicles"
             " have the same label, and it appears in the list, all of them are"
             " preserved. Removes all shipments that become trivially infeasible"
-            " when the vehicles are removed."
+            " when the vehicles are removed. When both"
+            " --reduce_to_vehicles_by_index and --reduce_to_vehicles_by_label"
+            " are used, vehicles specified by any of the two are preserved in"
+            " the request."
         ),
     )
     parser.add_argument(
@@ -336,9 +367,10 @@ def _remove_vehicles_by_label(
   )
 
 
-def _reduce_to_vehicles_by_label(
+def _reduce_to_vehicles(
     request: cfr_json.OptimizeToursRequest,
-    vehicle_labels: Iterable[str],
+    vehicle_indices: Iterable[int] | None,
+    vehicle_labels: Iterable[str] | None,
 ) -> None:
   """Removes all vehicles in the request whose label is not in `vehicle_labels`.
 
@@ -347,21 +379,30 @@ def _reduce_to_vehicles_by_label(
 
   Args:
     request: The request in which the vehicles are removed.
+    vehicle_indices: The indices of vehicles to be kept in the model.
     vehicle_labels: The labels of vehicles to be kept in the model.
   """
   model = request["model"]
-  indices_to_keep, unseen_labels = _get_indices_of_vehicles_with_labels(
-      model, vehicle_labels
-  )
-
-  if unseen_labels:
-    raise ValueError(
-        "Vehicle labels from --reduce_to_vehicles_by_label do not appear in the"
-        f" model: {', '.join(repr(label) for label in sorted(unseen_labels))}"
-    )
   num_vehicles = len(cfr_json.get_vehicles(model))
   indices_to_remove = set(range(num_vehicles))
-  indices_to_remove.difference_update(indices_to_keep)
+
+  if vehicle_indices is not None:
+    indices_to_remove.difference_update(vehicle_indices)
+  if vehicle_labels is not None:
+    indices_to_keep, unseen_labels = _get_indices_of_vehicles_with_labels(
+        model, vehicle_labels
+    )
+
+    if unseen_labels:
+      raise ValueError(
+          "Vehicle labels from --reduce_to_vehicles_by_label do not appear in"
+          " the model:"
+          f" {', '.join(repr(label) for label in sorted(unseen_labels))}"
+      )
+
+    indices_to_remove.difference_update(indices_to_keep)
+
+  logging.info("Removing vehicle indices %r", indices_to_remove)
 
   new_vehicle_for_old_vehicle, new_shipment_for_old_shipment = (
       transforms.remove_vehicles(
@@ -437,8 +478,15 @@ def main(args: Sequence[str] | None = None) -> None:
         removed_labels,
         flags.infeasible_shipment_after_removing_vehicle,
     )
-  if preserved_labels := flags.reduce_to_vehicles_by_label:
-    _reduce_to_vehicles_by_label(request, preserved_labels)
+  preserved_vehicle_labels = flags.reduce_to_vehicles_by_label
+  preserved_vehicle_indices = flags.reduce_to_vehicles_by_index
+  if (
+      preserved_vehicle_labels is not None
+      or preserved_vehicle_indices is not None
+  ):
+    _reduce_to_vehicles(
+        request, preserved_vehicle_indices, preserved_vehicle_labels
+    )
   if duplicated_labels := flags.duplicate_vehicles_by_label:
     _duplicate_vehicles_by_label(model, duplicated_labels)
   if flags.transform_breaks is not None:
