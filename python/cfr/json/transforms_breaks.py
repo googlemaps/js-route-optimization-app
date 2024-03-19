@@ -55,6 +55,10 @@ Supported actions:
   up so that there is a single visit whose start time window and duration
   correspond to the break request at the moment this action was executed. Once
   this action is used, no other actions apply to the affected break rule.
+- `virtualShipmentLabel={label}`: When a virtual shipment is created for the
+  break, {label} is used as a base of the label of this virtual shipment. The
+  full label will include also the vehicle index and the vehicle label. When not
+  specified, the default is "break".
 - `depot`: Transforms the break into a virtual shipment that makes the vehicle
   return to the depot for the break. Equivalent to using `location={waypoint}`
   with {waypoint} being the start waypoint of the vehicle.
@@ -145,6 +149,8 @@ class BreakTransformRule:
       "depot", the break is at the start waypoint of the vehicle; otherwise, the
       value must be a valid Waypoint JSON object, and it will be used as the
       location of the break. The break request itself is removed.
+    virtual_shipment_label: WHen the break request is transformed into a virtual
+      shipment, this string is used as a base of the label of this shipment.
   """
 
   selectors: Sequence[BreakSelector]
@@ -152,6 +158,7 @@ class BreakTransformRule:
   actions: Sequence[BreakTransformAction]
   new_break_request: bool
   break_at_waypoint: cfr_json.Waypoint | str | None
+  virtual_shipment_label: str
 
   def applies_to(
       self,
@@ -560,6 +567,7 @@ def compile_rules(rules: str) -> Sequence[BreakTransformRule]:
   actions: list[BreakTransformAction] = []
   new_break_request = False
   break_at_waypoint = None
+  virtual_shipment_label = "break"
 
   for component in _tokenize(rules):
     if component is None:
@@ -577,6 +585,7 @@ def compile_rules(rules: str) -> Sequence[BreakTransformRule]:
                 actions=actions,
                 new_break_request=new_break_request,
                 break_at_waypoint=break_at_waypoint,
+                virtual_shipment_label=virtual_shipment_label,
             )
         )
         selectors = []
@@ -584,6 +593,7 @@ def compile_rules(rules: str) -> Sequence[BreakTransformRule]:
         actions = []
         new_break_request = False
         break_at_waypoint = None
+        virtual_shipment_label = "break"
       continue
 
     match component.name:
@@ -639,6 +649,13 @@ def compile_rules(rules: str) -> Sequence[BreakTransformRule]:
               f"Only '=' is allowed for `location`, found {str(component)!r}"
           )
         break_at_waypoint = component.value
+      case "virtualShipmentLabel":
+        if component.operator != "=":
+          raise ValueError(
+              "Only '=' is allowed for `virtualShipmentLabel`, found"
+              f" {str(component)!r}"
+          )
+        virtual_shipment_label = component.value
       case "earliestStartTime" | "latestStartTime":
         match component.operator:
           case "=":
@@ -688,7 +705,9 @@ def transform_breaks_for_vehicle(
   if (break_rule := vehicle.get("breakRule")) is not None:
     if (old_break_requests := break_rule.get("breakRequests")) is not None:
       break_requests = old_break_requests
-  breaks_at_waypoint = []
+  breaks_at_waypoint: list[
+      tuple[cfr_json.Waypoint, cfr_json.BreakRequest, str]
+  ] = []
 
   logging.debug("Processing vehicle_index=%d", vehicle_index)
   for transform in compiled_rules:
@@ -725,7 +744,11 @@ def transform_breaks_for_vehicle(
         rule_new_requests = transform.apply_to(model, vehicle, request)
       if transform.break_at_waypoint:
         for new_request in rule_new_requests:
-          breaks_at_waypoint.append((transform.break_at_waypoint, new_request))
+          breaks_at_waypoint.append((
+              transform.break_at_waypoint,
+              new_request,
+              transform.virtual_shipment_label,
+          ))
       else:
         new_requests.extend(rule_new_requests)
 
@@ -752,7 +775,11 @@ def transform_breaks_for_vehicle(
       )
       if transform.break_at_waypoint:
         for new_request in rule_new_requests:
-          breaks_at_waypoint.append((transform.break_at_waypoint, new_request))
+          breaks_at_waypoint.append((
+              transform.break_at_waypoint,
+              new_request,
+              transform.virtual_shipment_label,
+          ))
       else:
         new_requests.extend(rule_new_requests)
 
@@ -770,7 +797,7 @@ def transform_breaks_for_vehicle(
     if shipments is None:
       shipments = []
       model["shipments"] = shipments
-    for src_waypoint, break_request in breaks_at_waypoint:
+    for src_waypoint, break_request, shipment_label_base in breaks_at_waypoint:
       match src_waypoint:
         case "depot":
           # TODO(ondrasej): Also support `startLocation`.
@@ -779,7 +806,7 @@ def transform_breaks_for_vehicle(
           waypoint = cast(cfr_json.Waypoint, src_waypoint)
         case _:
           raise ValueError("Unexpected waypoint value {waypoint!r}")
-      shipment_label = f"break, {vehicle_index=}"
+      shipment_label = f"{shipment_label_base}, {vehicle_index=}"
       if vehicle_label := vehicle.get("label"):
         shipment_label += f", {vehicle_label=}"
       shipment: cfr_json.Shipment = {

@@ -159,7 +159,7 @@ class TransformBreaksTest(unittest.TestCase):
         }],
         "shipments": [{
             "allowedVehicleIndices": [0],
-            "label": "break, vehicle_index=0",
+            "label": "This is a break, vehicle_index=0",
             "deliveries": [{
                 "arrivalWaypoint": {"placeId": "barbaz", "sideOfRoad": True},
                 "timeWindows": [{
@@ -173,7 +173,11 @@ class TransformBreaksTest(unittest.TestCase):
     self.assertEqual(
         self.run_transform_breaks(
             model,
-            '@time=14:00:00 location={"placeId": "barbaz", "sideOfRoad": true}',
+            """
+            @time=14:00:00
+              location={"placeId": "barbaz", "sideOfRoad": true}
+              virtualShipmentLabel="This is a break"
+            """,
         ),
         expected_model,
     )
@@ -1031,6 +1035,12 @@ class CompileRulesTest(unittest.TestCase):
     for unmatched_vehicle in unmatched_vehicles:
       with self.subTest(unmatched_vehicle=unmatched_vehicle):
         self.assertFalse(rules[0].applies_to_context(model, unmatched_vehicle))
+
+  def test_invalid_virtual_shipment_label_operator(self):
+    with self.assertRaisesRegex(
+        ValueError, "Only '=' is allowed for `virtualShipmentLabel`"
+    ):
+      transforms_breaks.compile_rules("virtualShipmentLabel~=InvalidOperator")
 
   def test_no_rules(self):
     rules = transforms_breaks.compile_rules("")
