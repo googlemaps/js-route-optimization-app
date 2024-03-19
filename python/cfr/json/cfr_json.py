@@ -444,6 +444,26 @@ def get_shipments(model: ShipmentModel) -> Sequence[Shipment]:
   return model.get("shipments", ())
 
 
+def get_delivery_or_none(
+    shipment: Shipment, index: int = 0
+) -> VisitRequest | None:
+  """Returns the delivery visit request at the given index, or None."""
+  deliveries = shipment.get("deliveries", ())
+  if len(deliveries) <= index:
+    return None
+  return deliveries[index]
+
+
+def get_pickup_or_none(
+    shipment: Shipment, index: int = 0
+) -> VisitRequest | None:
+  """Returns the pickup visit request at the given index, or None."""
+  pickups = shipment.get("pickups", ())
+  if len(pickups) <= index:
+    return None
+  return pickups[index]
+
+
 def get_routes(response: OptimizeToursResponse) -> Sequence[ShipmentRoute]:
   """Returns the list of routes from a response or an empty sequence."""
   return response.get("routes", ())

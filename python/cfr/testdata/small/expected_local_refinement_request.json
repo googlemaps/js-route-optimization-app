@@ -44,7 +44,7 @@
               }
             },
             "duration": "60s",
-            "tags": ["P001 delivery"],
+            "tags": ["P001 visit"],
             "timeWindows": [
               {
                 "endTime": "2023-08-11T16:00:00.000Z",
@@ -64,7 +64,7 @@
                 }
               }
             },
-            "tags": ["P001", "P001 pickup"]
+            "tags": ["P001", "P001 unload"]
           }
         ]
       },
@@ -81,7 +81,7 @@
               }
             },
             "duration": "120s",
-            "tags": ["S001", "P001 delivery"]
+            "tags": ["S001", "P001 visit"]
           }
         ],
         "label": "0: S001",
@@ -95,7 +95,7 @@
                 }
               }
             },
-            "tags": ["P001", "P001 pickup"]
+            "tags": ["P001", "P001 unload"]
           }
         ]
       },
@@ -112,7 +112,7 @@
               }
             },
             "duration": "150s",
-            "tags": ["S002", "P001 delivery"]
+            "tags": ["S002", "P001 visit"]
           }
         ],
         "label": "1: S002",
@@ -126,7 +126,7 @@
                 }
               }
             },
-            "tags": ["P001", "P001 pickup"]
+            "tags": ["P001", "P001 unload"]
           }
         ]
       },
@@ -143,7 +143,7 @@
               }
             },
             "duration": "60s",
-            "tags": ["P001 delivery"],
+            "tags": ["P001 visit"],
             "timeWindows": [{ "startTime": "2023-08-11T12:00:00.000Z" }]
           }
         ],
@@ -158,7 +158,7 @@
                 }
               }
             },
-            "tags": ["P001", "P001 pickup"]
+            "tags": ["P001", "P001 unload"]
           }
         ]
       },
@@ -175,7 +175,7 @@
               }
             },
             "duration": "150s",
-            "tags": ["P002 delivery"]
+            "tags": ["P002 visit"]
           }
         ],
         "label": "7: S008",
@@ -189,7 +189,7 @@
                 }
               }
             },
-            "tags": ["P002", "P002 pickup"]
+            "tags": ["P002", "P002 unload"]
           }
         ]
       },
@@ -206,7 +206,7 @@
               }
             },
             "duration": "150s",
-            "tags": ["P002 delivery"]
+            "tags": ["P002 visit"]
           }
         ],
         "label": "5: S006",
@@ -224,7 +224,7 @@
                 }
               }
             },
-            "tags": ["P002", "P002 pickup"]
+            "tags": ["P002", "P002 unload"]
           }
         ]
       },
@@ -241,7 +241,7 @@
               }
             },
             "duration": "150s",
-            "tags": ["P002 delivery"]
+            "tags": ["P002 visit"]
           }
         ],
         "label": "4: S005",
@@ -255,7 +255,7 @@
                 }
               }
             },
-            "tags": ["P002", "P002 pickup"]
+            "tags": ["P002", "P002 unload"]
           }
         ]
       }
@@ -264,8 +264,13 @@
       { "cost": 1, "dstTag": "S002", "srcTag": "S001" },
       {
         "delay": "60s",
-        "dstTag": "P002 pickup",
-        "srcTag": "P002 delivery"
+        "dstTag": "P002 unload",
+        "srcTag": "P002 visit"
+      },
+      {
+        "delay": "60s",
+        "dstTag": "P002 unload",
+        "srcTag": "P002 load"
       }
     ],
     "vehicles": [

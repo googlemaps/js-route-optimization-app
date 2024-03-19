@@ -416,6 +416,90 @@ class GetShipmentsTest(unittest.TestCase):
     self.assertSequenceEqual(cfr_json.get_shipments(model), shipments)
 
 
+class GetDeliveryOrNoneTest(unittest.TestCase):
+  """Tests for get_delivery."""
+
+  def test_no_deliveries(self):
+    shipment: cfr_json.Shipment = {
+        "pickups": [
+            {"arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}}
+        ]
+    }
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 0))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 1))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 5))
+
+  def test_one_delivery(self):
+    delivery: cfr_json.VisitRequest = {
+        "arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}
+    }
+    shipment: cfr_json.Shipment = {"deliveries": [delivery]}
+    self.assertIs(cfr_json.get_delivery_or_none(shipment), delivery)
+    self.assertIs(cfr_json.get_delivery_or_none(shipment, 0), delivery)
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 1))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 5))
+
+  def test_more_deliveries(self):
+    deliveries: list[cfr_json.VisitRequest] = [
+        {"arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}},
+        {
+            "arrivalLocation": {
+                "latitude": 48.86593,
+                "longitude": 2.34886,
+            }
+        },
+    ]
+    shipment: cfr_json.Shipment = {"deliveries": deliveries}
+    self.assertIs(cfr_json.get_delivery_or_none(shipment), deliveries[0])
+    self.assertIs(cfr_json.get_delivery_or_none(shipment, 0), deliveries[0])
+    self.assertIs(cfr_json.get_delivery_or_none(shipment, 1), deliveries[1])
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 2))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 5))
+
+
+class GetPickupOrNoneTest(unittest.TestCase):
+  """Tests for get_pickup."""
+
+  def test_no_pickups(self):
+    shipment: cfr_json.Shipment = {
+        "deliveries": [
+            {"arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}}
+        ]
+    }
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 0))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 1))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 5))
+
+  def test_one_pickup(self):
+    pickup: cfr_json.VisitRequest = {
+        "arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}
+    }
+    shipment: cfr_json.Shipment = {"pickups": [pickup]}
+    self.assertIs(cfr_json.get_pickup_or_none(shipment), pickup)
+    self.assertIs(cfr_json.get_pickup_or_none(shipment, 0), pickup)
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 1))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 5))
+
+  def test_more_pickups(self):
+    pickups: list[cfr_json.VisitRequest] = [
+        {"arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}},
+        {
+            "arrivalLocation": {
+                "latitude": 48.86593,
+                "longitude": 2.34886,
+            }
+        },
+    ]
+    shipment: cfr_json.Shipment = {"pickups": pickups}
+    self.assertIs(cfr_json.get_pickup_or_none(shipment), pickups[0])
+    self.assertIs(cfr_json.get_pickup_or_none(shipment, 0), pickups[0])
+    self.assertIs(cfr_json.get_pickup_or_none(shipment, 1), pickups[1])
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 2))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 5))
+
+
 class GetRoutesTest(unittest.TestCase):
   """Tests for get_routes."""
 

@@ -15,7 +15,7 @@
                 }
               }
             },
-            "tags": ["P0007", "P0007 pickup"]
+            "tags": ["P0007", "P0007 unload"]
           }
         ],
         "deliveries": [
@@ -35,7 +35,7 @@
                 "endTime": "2024-01-04T15:00:00Z"
               }
             ],
-            "tags": ["P0007 delivery"]
+            "tags": ["P0007 visit"]
           }
         ],
         "allowedVehicleIndices": [0],
@@ -57,7 +57,7 @@
                 }
               }
             },
-            "tags": ["P0007", "P0007 pickup"]
+            "tags": ["P0007", "P0007 unload"]
           }
         ],
         "deliveries": [
@@ -71,7 +71,7 @@
               }
             },
             "duration": "150s",
-            "tags": ["P0007 delivery"]
+            "tags": ["P0007 visit"]
           }
         ],
         "allowedVehicleIndices": [0],
@@ -93,7 +93,7 @@
                 }
               }
             },
-            "tags": ["P0001", "P0001 pickup"]
+            "tags": ["P0001", "P0001 unload"]
           }
         ],
         "deliveries": [
@@ -113,7 +113,7 @@
                 "endTime": "2024-01-04T15:00:00Z"
               }
             ],
-            "tags": ["P0001 delivery"]
+            "tags": ["P0001 visit"]
           }
         ],
         "allowedVehicleIndices": [1],
@@ -135,7 +135,7 @@
                 }
               }
             },
-            "tags": ["P0001", "P0001 pickup"]
+            "tags": ["P0001", "P0001 unload"]
           }
         ],
         "deliveries": [
@@ -149,7 +149,7 @@
               }
             },
             "duration": "600s",
-            "tags": ["P0001 delivery"]
+            "tags": ["P0001 visit"]
           }
         ],
         "allowedVehicleIndices": [1],

@@ -286,6 +286,9 @@ class ParkingLocation:
   departure_duration: cfr_json.DurationString | None = None
   reload_duration: cfr_json.DurationString | None = None
 
+  unload_duration_per_item: cfr_json.DurationString | None = None
+  load_duration_per_item: cfr_json.DurationString | None = None
+
   arrival_cost: float = 0.0
   departure_cost: float = 0.0
   reload_cost: float = 0.0
@@ -797,10 +800,22 @@ class Planner:
     # transition attributes.
     visited_parking_tags = set()
 
+    def add_reload_transition_attribute(src_tag: str, dst_tag: str):
+      # TODO(ondrasej): There might also be tag-based delays coming from
+      # transition attributes in the original request. We need to find if any
+      # applies, and add them.
+      transition_attribute: cfr_json.TransitionAttributes = {
+          "srcTag": src_tag,
+          "dstTag": dst_tag,
+      }
+      if parking.reload_duration:
+        transition_attribute["delay"] = parking.reload_duration
+      if parking.reload_cost:
+        transition_attribute["cost"] = parking.reload_cost
+      refinement_transition_attributes.append(transition_attribute)
+
     for consecutive_visit_sequence in consecutive_visit_sequences:
       parking = self._parking_locations[consecutive_visit_sequence.parking_tag]
-
-      parking_waypoint = parking.waypoint_for_local_model
 
       refinement_vehicle_index = len(refinement_vehicles)
       refinement_vehicle_label = (
@@ -818,25 +833,20 @@ class Planner:
       # These pickup tags need to be different from any other tag used in the
       # model. Otherwise, other transition attributes or existing tags might
       # interfere with this modeling.
-      parking_pickup_tag = get_non_existent_tag(f"{parking.tag} pickup")
-      parking_delivery_tag = get_non_existent_tag(f"{parking.tag} delivery")
+      parking_load_tag = get_non_existent_tag(f"{parking.tag} load")
+      parking_unload_tag = get_non_existent_tag(f"{parking.tag} unload")
+      parking_visit_tag = get_non_existent_tag(f"{parking.tag} visit")
       if parking.tag not in visited_parking_tags and (
           parking.reload_duration or parking.reload_cost
       ):
-        # Each srcTag/dstTag can be used in the list of transition attributes
-        # only once.
-        # TODO(ondrasej): There might also be tag-based delays coming from
-        # transition attributes in the original request. We need to find if any
-        # applies, and add them.
-        transition_attribute: cfr_json.TransitionAttributes = {
-            "srcTag": parking_delivery_tag,
-            "dstTag": parking_pickup_tag,
-        }
-        if parking.reload_duration:
-          transition_attribute["delay"] = parking.reload_duration
-        if parking.reload_cost:
-          transition_attribute["cost"] = parking.reload_cost
-        refinement_transition_attributes.append(transition_attribute)
+        # Add transition attributes for a reload, if needed. The reload cost and
+        # delay apply either between the last visit and the first unloaded item
+        # in the next round, or between the last loaded item and the first
+        # unloaded items. By definition, only one of the situations can happen,
+        # and the delay and cost are applied only once, and only when there are
+        # multiple rounds.
+        add_reload_transition_attribute(parking_visit_tag, parking_unload_tag)
+        add_reload_transition_attribute(parking_load_tag, parking_unload_tag)
 
       visited_parking_tags.add(parking.tag)
 
@@ -890,28 +900,15 @@ class Planner:
               "isPickup": False,
           })
 
-          refinement_delivery = copy.deepcopy(
-              original_shipment["deliveries"][0]
+          refinement_shipment = _make_local_model_shipment(
+              shipment_index,
+              original_shipment,
+              parking,
+              [refinement_vehicle_index],
+              parking_load_tag=parking_load_tag,
+              parking_visit_tag=parking_visit_tag,
+              parking_unload_tag=parking_unload_tag,
           )
-          if "tags" in refinement_delivery:
-            refinement_delivery["tags"].append(parking_delivery_tag)
-          else:
-            refinement_delivery["tags"] = [parking_delivery_tag]
-          refinement_shipment: cfr_json.Shipment = {
-              "pickups": [
-                  {
-                      "arrivalWaypoint": parking_waypoint,
-                      "tags": [parking.tag, parking_pickup_tag],
-                  },
-              ],
-              "deliveries": [refinement_delivery],
-              "allowedVehicleIndices": [refinement_vehicle_index],
-              "label": f"{shipment_index}: {original_shipment.get('label')}",
-          }
-          # Preserve load demands.
-          load_demands = original_shipment.get("loadDemands")
-          if load_demands is not None:
-            refinement_shipment["loadDemands"] = load_demands
           refinement_shipments.append(refinement_shipment)
 
       # TODO(ondrasej): Also add skipped any shipments delivered from this
@@ -1402,6 +1399,102 @@ class Planner:
     # Copy additional metadata.
     if (parent := self._request.get("parent")) is not None:
       request["parent"] = parent
+
+
+def _make_local_model_shipment(
+    original_shipment_index: int,
+    original_shipment: cfr_json.Shipment,
+    parking: ParkingLocation,
+    parking_vehicle_indices: list[int],
+    parking_load_tag: str,
+    parking_visit_tag: str,
+    parking_unload_tag: str,
+) -> cfr_json.Shipment:
+  """Creates a shipment for a local pickup & delivery model.
+
+  Assumes that `original_shipment` is a shipment from the original model and
+  that it has either a single pickup or a single delivery at a customer address.
+  Creates a new shipment that has the same load requirement, the same pickup or
+  delivery, and a delivery or pickup to match it at the parking location.
+
+  Args:
+    original_shipment_index: The index of the shipment in the original model.
+    original_shipment: The shipment definition in the original model.
+    parking: The parking location from which the shipment is delivered or picked
+      up.
+    parking_vehicle_indices: The indices of the vehicles in the local model that
+      can perform this shipment.
+    parking_load_tag: The tag that is used for visits to the parking location
+      when a shipment that was picked up from a customer is delivered.
+    parking_visit_tag: The tag that is added to visits copied from the original
+      shipment.
+    parking_unload_tag: The tag that is added pickup visits at the parking
+      location when the original shipment is a delivery.
+
+  Returns:
+    A new pickup & delivery shipment that can be used in a pickup & delivery
+    local model.
+
+  Raises:
+    ValueError: When the inputs are invalid or when the original shipment does
+      not have the required information.
+  """
+  delivery = cfr_json.get_delivery_or_none(original_shipment)
+  pickup = cfr_json.get_pickup_or_none(original_shipment)
+  is_pickup = pickup is not None
+  if (delivery is None) == (pickup is None):
+    raise ValueError(
+        "A shipment must have either a just pickup or just a delivery."
+    )
+
+  # Create a visit request for the shipment address.
+  shipment_visit = pickup or delivery
+  assert shipment_visit is not None
+
+  local_shipment_visit: cfr_json.VisitRequest = {
+      "arrivalWaypoint": shipment_visit["arrivalWaypoint"],
+  }
+  if (duration := shipment_visit.get("duration")) is not None:
+    local_shipment_visit["duration"] = duration
+  if (tags := shipment_visit.get("tags")) is not None:
+    local_shipment_visit["tags"] = [*tags, parking_visit_tag]
+  else:
+    local_shipment_visit["tags"] = [parking_visit_tag]
+  if (time_windows := shipment_visit.get("timeWindows")) is not None:
+    local_shipment_visit["timeWindows"] = time_windows
+
+  # Create a visit request for the parking location.
+  parking_visit: cfr_json.VisitRequest = {
+      "arrivalWaypoint": parking.waypoint_for_local_model,
+      "tags": [
+          parking.tag,
+          parking_load_tag if is_pickup else parking_unload_tag,
+      ],
+  }
+  parking_visit_duration = (
+      parking.load_duration_per_item
+      if is_pickup
+      else parking.unload_duration_per_item
+  )
+  if parking_visit_duration is not None:
+    parking_visit["duration"] = parking_visit_duration
+
+  local_pickup = local_shipment_visit if is_pickup else parking_visit
+  local_delivery = parking_visit if is_pickup else local_shipment_visit
+
+  local_shipment: cfr_json.Shipment = {
+      "pickups": [local_pickup],
+      "deliveries": [local_delivery],
+      "label": (
+          f"{original_shipment_index}: {original_shipment.get('label', '')}"
+      ),
+      "allowedVehicleIndices": parking_vehicle_indices,
+  }
+  # Preserve load demands.
+  if (load_demands := original_shipment.get("loadDemands")) is not None:
+    local_shipment["loadDemands"] = load_demands
+
+  return local_shipment
 
 
 def _make_local_model_vehicle(
