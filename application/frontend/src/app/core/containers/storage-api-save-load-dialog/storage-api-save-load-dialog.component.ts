@@ -67,7 +67,7 @@ export class StorageApiSaveLoadDialogComponent implements OnInit {
     });
   }
 
-  loadSolution(content: { scenario: Scenario; solution: Solution; scenarioName: String }): void {
+  loadSolution(content: { scenario: Scenario; solution: Solution; scenarioName: string }): void {
     this.dialogRef.close({
       scenario: this.dispatcherService.objectToScenario(content.scenario),
       solution: this.dispatcherService.objectToSolution(content.solution, { json: true }),
