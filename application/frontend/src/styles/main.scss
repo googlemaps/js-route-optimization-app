@@ -887,7 +887,8 @@ app-bulk-edit-unset {
   font-weight: 500 !important;
 }
 
-.blue-svg-icon mat-icon svg path {
+.blue-svg-icon mat-icon svg path,
+.blue-svg-icon svg g path {
   fill: $blue;
 }
 
@@ -905,4 +906,8 @@ app-bulk-edit-unset {
     height: 20px !important;
     line-height: 20px !important;
   }
+}
+
+mat-form-field.scenario-input .mat-form-field-wrapper .mat-form-field-flex {
+  padding: 0;
 }
