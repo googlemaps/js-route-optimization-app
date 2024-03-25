@@ -60,14 +60,18 @@ export class StorageApiSaveLoadDialogComponent implements OnInit {
       });
   }
 
-  loadScenario(scenario: Scenario): void {
-    this.dialogRef.close({ scenario: this.dispatcherService.objectToScenario(scenario) });
+  loadScenario(content: { scenario: Scenario; scenarioName: string }): void {
+    this.dialogRef.close({
+      scenario: this.dispatcherService.objectToScenario(content.scenario),
+      scenarioName: content.scenarioName,
+    });
   }
 
-  loadSolution(content: { scenario: Scenario; solution: Solution }): void {
+  loadSolution(content: { scenario: Scenario; solution: Solution; scenarioName: String }): void {
     this.dialogRef.close({
       scenario: this.dispatcherService.objectToScenario(content.scenario),
       solution: this.dispatcherService.objectToSolution(content.solution, { json: true }),
+      scenarioName: content.scenarioName,
     });
   }
 }

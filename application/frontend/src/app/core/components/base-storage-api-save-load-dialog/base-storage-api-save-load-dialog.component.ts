@@ -45,10 +45,14 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
   @Input() saving = false;
   @Input() scenario: OptimizeToursRequest;
   @Input() solution: OptimizeToursResponse;
-  @Output() loadScenario = new EventEmitter<Scenario>();
+  @Output() loadScenario = new EventEmitter<{
+    scenario: Scenario;
+    scenarioName: string;
+  }>();
   @Output() loadSolution = new EventEmitter<{
     scenario: Scenario;
     solution: Solution;
+    scenarioName: string;
   }>();
 
   closed = new Subject<void>();
@@ -264,6 +268,7 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
     this.loadSolution.emit({
       scenario: result.scenario,
       solution: result.solution,
+      scenarioName: result.name.replace(/\.[^/.]+$/, ''),
     });
   }
 
@@ -272,7 +277,10 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
       this.validationError();
       return;
     }
-    this.loadScenario.emit(result.fileContent);
+    this.loadScenario.emit({
+      scenario: result.fileContent,
+      scenarioName: result.name.replace(/\.[^/.]+$/, ''),
+    });
   }
 
   confirmDelete(selection: SearchResult): void {

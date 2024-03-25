@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectScenarioName } from '../../selectors/dispatcher.selectors';
 import { saveScenarioName } from '../../actions/dispatcher.actions';
@@ -12,11 +12,12 @@ import { saveScenarioName } from '../../actions/dispatcher.actions';
 export class DatasetComponentComponent implements OnInit {
   scenarioName: string;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private detectRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.store.select(selectScenarioName).subscribe((value) => {
       this.scenarioName = value;
+      this.detectRef.markForCheck();
     });
   }
 
