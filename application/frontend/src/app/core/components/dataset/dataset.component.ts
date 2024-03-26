@@ -19,7 +19,8 @@ import { saveScenarioName } from '../../actions/dispatcher.actions';
 export class DatasetComponent implements AfterViewInit {
   @ViewChild('scenarioInput') scenarioInput: ElementRef;
   @ViewChild('resizeText') resizeText: ElementRef;
-  scenarioName: string;
+
+  scenarioName = '';
 
   constructor(private store: Store, private detectRef: ChangeDetectorRef) {}
 
@@ -32,7 +33,6 @@ export class DatasetComponent implements AfterViewInit {
   }
 
   updateInputSize(): void {
-    // this.scenarioInput.nativeElement.size = this.scenarioName.length || 1;
     this.resizeText.nativeElement.textContent = this.scenarioName;
   }
 
