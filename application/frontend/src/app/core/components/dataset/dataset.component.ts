@@ -9,7 +9,7 @@ import { saveScenarioName } from '../../actions/dispatcher.actions';
   styleUrls: ['./dataset.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DatasetComponentComponent implements OnInit {
+export class DatasetComponent implements OnInit {
   scenarioName: string;
 
   constructor(private store: Store, private detectRef: ChangeDetectorRef) {}

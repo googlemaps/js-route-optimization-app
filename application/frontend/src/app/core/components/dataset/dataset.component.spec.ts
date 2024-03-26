@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatasetComponentComponent } from './dataset.component';
+import { DatasetComponent } from './dataset.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { selectScenarioName } from '../../selectors/dispatcher.selectors';
 
-describe('DatasetComponentComponent', () => {
-  let component: DatasetComponentComponent;
-  let fixture: ComponentFixture<DatasetComponentComponent>;
+describe('DatasetComponent', () => {
+  let component: DatasetComponent;
+  let fixture: ComponentFixture<DatasetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DatasetComponentComponent],
+      declarations: [DatasetComponent],
       providers: [
         provideMockStore({
           selectors: [{ selector: selectScenarioName, value: '' }],
@@ -18,7 +18,7 @@ describe('DatasetComponentComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DatasetComponentComponent);
+    fixture = TestBed.createComponent(DatasetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
