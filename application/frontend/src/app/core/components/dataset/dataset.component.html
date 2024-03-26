@@ -1,11 +1,10 @@
 <div class="d-flex flex-row align-items-center ml-3">
-  <mat-icon class="blue-svg-icon pb-2" svgIcon="dataset"></mat-icon>
-  <mat-form-field class="ml-1 scenario-input" appearance="standard">
-    <input
-      matInput
-      placeholder="Scenario name"
-      (input)="onSave()"
-      [(ngModel)]="scenarioName"
-      #scenarioInput />
-  </mat-form-field>
+  <mat-icon class="blue-svg-icon mb-1" svgIcon="dataset"></mat-icon>
+  <input
+    matInput
+    class="mat-h3 m-0 ml-1 scenario-input"
+    placeholder="Scenario name"
+    (input)="onSave()"
+    [(ngModel)]="scenarioName"
+    #scenarioInput />
 </div>

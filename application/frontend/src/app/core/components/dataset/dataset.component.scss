@@ -1,3 +1,11 @@
 .scenario-input {
   width: 14rem;
+  border-width: 2px;
+  border-style: inset;
+  border-color: transparent;
+  border-radius: 4px;
+}
+
+.scenario-input:hover {
+  border-color: rgb(118, 118, 118);
 }
