@@ -1,8 +1,26 @@
 @import '../../../../styles/variables.scss';
 
-.scenario-input {
+.resizable-input-container {
+  display: inline-block;
+  position: relative;
   max-width: 50vw;
   min-width: 14em;
+  min-height: 3em;
+}
+
+.resize-text {
+  display: inline-block;
+  visibility: hidden;
+  white-space: pre;
+  padding: 0.25em 0.5em;
+}
+
+.scenario-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border-width: 2px;
   border-style: inset;
   border-color: transparent;
