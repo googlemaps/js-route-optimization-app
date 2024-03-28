@@ -17,6 +17,7 @@ import { DispatcherService } from '../../services';
 import { Page, Scenario, Solution } from '../../models';
 import { Observable } from 'rxjs';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
+import { selectScenarioName } from '../../selectors/dispatcher.selectors';
 
 @Component({
   selector: 'app-storage-api-save-load-dialog',
@@ -30,6 +31,7 @@ export class StorageApiSaveLoadDialogComponent implements OnInit {
   onSolutionPage$: Observable<boolean>;
   scenario: OptimizeToursRequest;
   solution: OptimizeToursResponse;
+  scenarioName: string;
 
   constructor(
     private dialogRef: MatDialogRef<StorageApiSaveLoadDialogComponent>,
@@ -58,6 +60,11 @@ export class StorageApiSaveLoadDialogComponent implements OnInit {
           this.solution = OptimizeToursResponse.fromObject(res.solution);
         }
       });
+
+    this.store
+      .select(selectScenarioName)
+      .pipe(take(1))
+      .subscribe((res) => (this.scenarioName = res));
   }
 
   loadScenario(content: { scenario: Scenario; scenarioName: string }): void {

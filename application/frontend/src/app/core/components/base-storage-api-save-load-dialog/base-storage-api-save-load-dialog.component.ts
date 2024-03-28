@@ -19,6 +19,7 @@ import {
   EventEmitter,
   OnChanges,
   OnDestroy,
+  SimpleChanges,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -45,6 +46,7 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
   @Input() saving = false;
   @Input() scenario: OptimizeToursRequest;
   @Input() solution: OptimizeToursResponse;
+  @Input() scenarioName: string;
   @Output() loadScenario = new EventEmitter<{
     scenario: Scenario;
     scenarioName: string;
@@ -88,10 +90,14 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
     this.search();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.onSolutionPage) {
       this.selectedTab = 1;
       this.changeTab(1);
+    }
+
+    if (changes.scenarioName) {
+      this.filename = this.scenarioName;
     }
   }
 
