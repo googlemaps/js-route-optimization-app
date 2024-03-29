@@ -38,6 +38,7 @@ export interface State {
   mouseOverId?: number;
   page: Page;
   splitSizes?: number[];
+  openUploadDialogOnClose?: boolean;
 }
 
 export const initialState: State = {
@@ -48,6 +49,7 @@ export const initialState: State = {
   mouseOverId: null,
   page: Page.Welcome,
   splitSizes: [50, 50],
+  openUploadDialogOnClose: false,
 };
 
 export const reducer = createReducer(
@@ -58,7 +60,11 @@ export const reducer = createReducer(
     mouseOverId: null,
   })),
   on(WelcomePageActions.initialize, () => ({ ...initialState })),
-  on(UploadActions.openCsvDialog, (state) => ({ ...state, modal: Modal.CsvUpload })),
+  on(UploadActions.openCsvDialog, (state, action) => ({
+    ...state,
+    modal: Modal.CsvUpload,
+    openUploadDialogOnClose: action.openUploadDialogOnClose,
+  })),
   on(DownloadActions.downloadPDF, (state) => ({ ...state, modal: Modal.DownloadPDF })),
   on(UploadActions.openDialog, WelcomePageActions.openUploadDialog, (state) => ({
     ...state,
@@ -128,3 +134,6 @@ export const selectHasMap = (state: State): boolean => state.hasMap;
 export const selectSplitSizes = (state: State): number[] => state.splitSizes;
 
 export const selectMouseOverId = (state: State): number => state.mouseOverId;
+
+export const selectOpenUploadDialogOnClose = (state: State): boolean =>
+  state.openUploadDialogOnClose;

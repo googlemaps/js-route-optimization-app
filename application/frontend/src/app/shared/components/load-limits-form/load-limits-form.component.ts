@@ -19,10 +19,10 @@ import {
 } from '@angular/core';
 import {
   ControlContainer,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -36,7 +36,7 @@ import { aLessThanB, nonNegativeIntegerValidator } from 'src/app/util';
 import { LoadLimitFormValue } from '../../models/load-limit';
 
 export class StartLoadErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl, form: FormGroupDirective | NgForm): boolean {
+  isErrorState(control: UntypedFormControl, form: FormGroupDirective | NgForm): boolean {
     const isSubmitted = form && form.submitted;
     return (
       form.errors?.startMinLessThanMax ||
@@ -46,7 +46,7 @@ export class StartLoadErrorStateMatcher implements ErrorStateMatcher {
 }
 
 export class EndLoadErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl, form: FormGroupDirective | NgForm): boolean {
+  isErrorState(control: UntypedFormControl, form: FormGroupDirective | NgForm): boolean {
     const isSubmitted = form && form.submitted;
     return (
       form.errors?.endMinLessThanMax ||
@@ -56,7 +56,7 @@ export class EndLoadErrorStateMatcher implements ErrorStateMatcher {
 }
 
 export class SoftMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl, form: FormGroupDirective | NgForm): boolean {
+  isErrorState(control: UntypedFormControl, form: FormGroupDirective | NgForm): boolean {
     const isSubmitted = form && form.submitted;
     return (
       form.errors?.softMaxLessThanMax ||
@@ -78,7 +78,7 @@ export class LoadLimitsFormComponent implements OnChanges, OnDestroy, OnInit {
   @Input() scenarioLoadLimits: Set<string>;
   @Input() scenarioLoadDemands: Set<string>;
 
-  control: FormArray;
+  control: UntypedFormArray;
   changeSub: Subscription;
 
   currentFilterIndex: number;
@@ -90,7 +90,7 @@ export class LoadLimitsFormComponent implements OnChanges, OnDestroy, OnInit {
   endLoadErrorStateMatcher = new EndLoadErrorStateMatcher();
   softMaxErrorStateMatcher = new SoftMaxErrorStateMatcher();
 
-  static createFormGroup(fb: FormBuilder): FormGroup {
+  static createFormGroup(fb: UntypedFormBuilder): UntypedFormGroup {
     return fb.group(
       {
         type: fb.control(null, [Validators.required]),
@@ -184,7 +184,7 @@ export class LoadLimitsFormComponent implements OnChanges, OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.control = this.controlContainer.control as FormArray;
+    this.control = this.controlContainer.control as UntypedFormArray;
     this.changeSub = this.control?.valueChanges.subscribe(() => {
       this.changeDetector.detectChanges();
     });

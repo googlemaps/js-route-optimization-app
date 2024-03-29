@@ -10,7 +10,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ControlContainer,
-  FormBuilder,
+  UntypedFormBuilder,
   FormGroupDirective,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -21,7 +21,7 @@ import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 import { TimeWindowComponent } from './time-window.component';
 
-const form = TimeWindowComponent.createFormGroup(new FormBuilder());
+const form = TimeWindowComponent.createFormGroup(new UntypedFormBuilder());
 const controlContainer = new FormGroupDirective([], []);
 controlContainer.form = form;
 
@@ -35,7 +35,7 @@ describe('TimeWindowComponent', () => {
       declarations: [TimeWindowComponent],
       providers: [
         { provide: ControlContainer, useValue: controlContainer },
-        { provide: FormBuilder },
+        { provide: UntypedFormBuilder },
       ],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })

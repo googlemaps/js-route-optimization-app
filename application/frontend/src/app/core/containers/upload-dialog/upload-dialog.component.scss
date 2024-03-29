@@ -1,0 +1,55 @@
+@import '../../../../styles/variables.scss';
+
+.file-input input[type='file'] {
+  opacity: 0;
+  height: 0;
+}
+
+.mat-dialog-content {
+  overflow-x: hidden;
+}
+
+.scenario-solution-help-icon {
+  display: inline-flex;
+
+  mat-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.upload-container {
+  border-radius: 0.625rem;
+  padding: 0.9375rem;
+  gap: 0.5rem;
+}
+
+.json-upload-container {
+  background: rgba(66, 133, 244, 0.05);
+}
+
+.csv-upload-container {
+  background: rgba(189, 189, 189, 0.15);
+}
+
+.json-description-container {
+  gap: 1rem;
+}
+
+.json-description {
+  flex-grow: 1;
+  width: 0;
+}
+
+.description-text {
+  color: $gray;
+}
+
+.white-button {
+  border: 1px solid #4285f480;
+  background: #fff;
+}
+
+.json-icon {
+  color: $blue;
+}

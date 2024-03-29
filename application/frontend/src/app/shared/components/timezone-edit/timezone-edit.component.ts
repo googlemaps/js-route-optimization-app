@@ -16,7 +16,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Timezone, utcTimezones } from '../../models';
@@ -36,7 +36,7 @@ export class TimezoneEditComponent implements OnChanges {
 
   selectedTimezone: Timezone;
   timezones: { timezone: Timezone; formattedLabel: string }[];
-  formControl = new FormControl();
+  formControl = new UntypedFormControl();
 
   constructor() {
     this.buildTimezoneLabels();

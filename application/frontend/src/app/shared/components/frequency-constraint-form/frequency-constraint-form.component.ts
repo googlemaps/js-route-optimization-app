@@ -19,10 +19,10 @@ import {
 import {
   AbstractControl,
   ControlContainer,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -33,7 +33,10 @@ import { Subscription } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class FrequencyConstraintErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors || control?.invalid;
     const show =
       ngForm &&
@@ -52,10 +55,10 @@ class FrequencyConstraintErrorStateMatcher implements ErrorStateMatcher {
 })
 export class FrequencyConstraintFormComponent implements OnInit, OnDestroy {
   @Output() remove = new EventEmitter<void>();
-  get form(): FormGroup {
+  get form(): UntypedFormGroup {
     return this._form;
   }
-  private _form: FormGroup;
+  private _form: UntypedFormGroup;
   changeSub: Subscription;
   get minBreakDuration(): AbstractControl {
     return this.form.get('minBreakDuration');
@@ -71,13 +74,13 @@ export class FrequencyConstraintFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this._form = this.controlContainer.control as FormGroup;
+    this._form = this.controlContainer.control as UntypedFormGroup;
     this.changeSub = this._form?.valueChanges.subscribe(() => {
       this.changeDetector.detectChanges();
     });
   }
 
-  static createFormGroup(fb: FormBuilder): FormGroup {
+  static createFormGroup(fb: UntypedFormBuilder): UntypedFormGroup {
     return fb.group({
       minBreakDuration: fb.group(
         {
@@ -132,13 +135,13 @@ export class FrequencyConstraintFormComponent implements OnInit, OnDestroy {
     };
   }
 
-  static readFormValues(formArray: FormArray): IFrequencyConstraint[] {
-    return formArray.controls.map((form: FormGroup) =>
+  static readFormValues(formArray: UntypedFormArray): IFrequencyConstraint[] {
+    return formArray.controls.map((form: UntypedFormGroup) =>
       FrequencyConstraintFormComponent.readFormValue(form)
     );
   }
 
-  static readFormValue(form: FormGroup): IFrequencyConstraint {
+  static readFormValue(form: UntypedFormGroup): IFrequencyConstraint {
     const minBreakDuration =
       form.get('minBreakDuration').value.min * 60 + form.get('minBreakDuration').value.sec;
     const maxInterBreakDuration =

@@ -12,8 +12,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FrequencyConstraintFormComponent } from './frequency-constraint-form.component';
 import {
   ControlContainer,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -25,9 +25,9 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const formDirective = new FormGroupDirective([], []);
-formDirective.form = new FormGroup({
-  minBreakDuration: new FormControl(''),
-  maxInterBreakDuration: new FormControl(''),
+formDirective.form = new UntypedFormGroup({
+  minBreakDuration: new UntypedFormControl(''),
+  maxInterBreakDuration: new UntypedFormControl(''),
 });
 
 @Component({
@@ -36,7 +36,7 @@ formDirective.form = new FormGroup({
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
-  @Input() parentFormGroup: FormGroup;
+  @Input() parentFormGroup: UntypedFormGroup;
   @Input() errorStateMatcher: ErrorStateMatcher;
   @Input() labelName: string;
   @Input() showUnset: boolean;

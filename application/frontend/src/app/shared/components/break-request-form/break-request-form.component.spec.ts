@@ -12,8 +12,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BreakRequestFormComponent } from './break-request-form.component';
 import {
   ControlContainer,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -23,11 +23,11 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const formDirective = new FormGroupDirective([], []);
-formDirective.form = new FormGroup({
-  earliestStartDate: new FormControl(new Date()),
-  earliestStartTime: new FormControl(''),
-  latestStartDate: new FormControl(new Date()),
-  latestStartTime: new FormControl(''),
+formDirective.form = new UntypedFormGroup({
+  earliestStartDate: new UntypedFormControl(new Date()),
+  earliestStartTime: new UntypedFormControl(''),
+  latestStartDate: new UntypedFormControl(new Date()),
+  latestStartTime: new UntypedFormControl(''),
 });
 
 @Component({
@@ -36,7 +36,7 @@ formDirective.form = new FormGroup({
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
-  @Input() parentFormGroup: FormGroup;
+  @Input() parentFormGroup: UntypedFormGroup;
   @Input() errorStateMatcher: ErrorStateMatcher;
   @Input() labelName: string;
   @Input() showUnset: boolean;

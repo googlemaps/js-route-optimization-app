@@ -1,0 +1,107 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: block;
+  text-align: justify;
+}
+
+.page-content {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section .mat-title {
+  display: inline-block;
+  margin: 0;
+}
+
+section {
+  margin-bottom: 28px;
+}
+
+section:last-child {
+  margin-bottom: 0;
+}
+
+.intro {
+  margin-top: 8px;
+}
+
+.intro p {
+  margin-bottom: 1.6rem;
+}
+
+.intro > :last-child {
+  margin-bottom: 0;
+}
+
+.guide {
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.info-panel {
+  margin: 12px;
+}
+
+.info-panel__content > * {
+  text-align: center;
+}
+
+.info-panel__content > :last-child {
+  margin-bottom: 0 !important;
+}
+
+.entry-points {
+  border-radius: 0.625rem;
+  background: rgba(66, 133, 244, 0.05);
+
+  display: flex;
+  padding: 0.9375rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5625rem;
+  align-self: stretch;
+}
+
+.cloud-invisible {
+  visibility: hidden;
+}
+
+.cloud-visible {
+  visibility: visible;
+}
+
+#page-title {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 160%;
+}
+
+.cloud-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    fill: $blue !important;
+  }
+}
+
+.main-entry-points {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  border-radius: var(--none, 0rem);
+}
+
+.entry-point-button {
+  border: 1px solid #4285f480;
+  background: #fff;
+}
+
+.inline-link-icon {
+  height: 1em;
+  width: unset;
+}

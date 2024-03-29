@@ -7,11 +7,14 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { createAction } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 
 export const openDialog = createAction('[Upload] Open Dialog');
 
 export const closeDialog = createAction('[Upload] Close Dialog');
 
-export const openCsvDialog = createAction('[Upload] Open CSV Dialog');
+export const openCsvDialog = createAction(
+  '[Upload] Open CSV Dialog',
+  props<{ openUploadDialogOnClose?: boolean }>()
+);
 export const closeCsvDialog = createAction('[Upload] Close CSV Dialog');

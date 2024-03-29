@@ -17,7 +17,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import {
   ActiveFilter,
   BooleanFilterOperation,
@@ -41,13 +41,13 @@ export class FilterBooleanFormComponent implements FilterForm, OnInit {
     return this.form.invalid;
   }
 
-  readonly form: FormGroup;
-  readonly operationCtrl: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly operationCtrl: UntypedFormControl;
   readonly operations = Object.entries(BooleanFilterOperation)
     .map(([_, value]) => value)
     .sort();
 
-  constructor(@Inject(LOCALE_ID) private locale: string, fb: FormBuilder) {
+  constructor(@Inject(LOCALE_ID) private locale: string, fb: UntypedFormBuilder) {
     this.form = fb.group({
       operation: (this.operationCtrl = fb.control(BooleanFilterOperation.True)),
     });

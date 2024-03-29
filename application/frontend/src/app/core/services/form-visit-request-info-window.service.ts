@@ -7,7 +7,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
+import { ApplicationRef, EnvironmentInjector, Injectable } from '@angular/core';
 import { BaseVisitRequestInfoWindowComponent } from '../components/base-visit-request-info-window/base-visit-request-info-window.component';
 import { Shipment, Vehicle, Visit, VisitRequest } from '../models';
 import { BaseInfoWindowService } from './base-info-window.service';
@@ -19,12 +19,11 @@ import { FormMapService } from './form-map.service';
 })
 export class FormVisitRequestInfoWindowService extends BaseInfoWindowService<BaseVisitRequestInfoWindowComponent> {
   constructor(
-    injector: Injector,
-    resolver: ComponentFactoryResolver,
+    injector: EnvironmentInjector,
     applicationRef: ApplicationRef,
     private formMapService: FormMapService
   ) {
-    super(injector, resolver, applicationRef);
+    super(injector, applicationRef);
   }
 
   open(

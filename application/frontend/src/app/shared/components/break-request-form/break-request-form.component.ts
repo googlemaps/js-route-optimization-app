@@ -20,10 +20,10 @@ import {
 import {
   AbstractControl,
   ControlContainer,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -44,7 +44,10 @@ import { IBreakRequest } from '../../../core/models';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class BreakRequestErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors || control?.invalid;
     const show = ngForm && (ngForm.submitted || showError(ngForm.form.get('minDuration')));
     return !!(invalid && show);
@@ -52,7 +55,10 @@ class BreakRequestErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class EarliestErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid = ngForm?.errors && ngForm.errors.earliestIncomplete;
     const invalid = control?.invalid || groupInvalid;
     const show =
@@ -65,7 +71,10 @@ class EarliestErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class LatestErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const groupInvalid =
       ngForm?.errors &&
       (ngForm.errors.latestStartDate ||
@@ -109,17 +118,17 @@ export class BreakRequestFormComponent implements OnInit, OnDestroy {
   readonly latestErrorStateMatcher = new LatestErrorStateMatcher();
 
   @Output() remove = new EventEmitter<void>();
-  get form(): FormGroup {
+  get form(): UntypedFormGroup {
     return this._form;
   }
-  private _form: FormGroup;
+  private _form: UntypedFormGroup;
   get minDuration(): AbstractControl {
     return this.form.get('minDuration');
   }
-  earliestStartDate: FormControl;
-  earliestStartTime: FormControl;
-  latestStartDate: FormControl;
-  latestStartTime: FormControl;
+  earliestStartDate: UntypedFormControl;
+  earliestStartTime: UntypedFormControl;
+  latestStartDate: UntypedFormControl;
+  latestStartTime: UntypedFormControl;
   showError = showError;
 
   constructor(
@@ -128,18 +137,18 @@ export class BreakRequestFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this._form = this.controlContainer.control as FormGroup;
-    this.earliestStartDate = this.form.get('earliestStartDate') as FormControl;
-    this.earliestStartTime = this.form.get('earliestStartTime') as FormControl;
-    this.latestStartDate = this.form.get('latestStartDate') as FormControl;
-    this.latestStartTime = this.form.get('latestStartTime') as FormControl;
+    this._form = this.controlContainer.control as UntypedFormGroup;
+    this.earliestStartDate = this.form.get('earliestStartDate') as UntypedFormControl;
+    this.earliestStartTime = this.form.get('earliestStartTime') as UntypedFormControl;
+    this.latestStartDate = this.form.get('latestStartDate') as UntypedFormControl;
+    this.latestStartTime = this.form.get('latestStartTime') as UntypedFormControl;
     this.changeSub = this._form?.valueChanges.subscribe(() => {
       this.changeDetector.detectChanges();
     });
     this.form.setValidators(this.breakRequestValidator.bind(this));
   }
 
-  static createFormGroup(fb: FormBuilder): FormGroup {
+  static createFormGroup(fb: UntypedFormBuilder): UntypedFormGroup {
     return fb.group({
       earliestStartDate: fb.control(null, [Validators.required]),
       earliestStartTime: fb.control(null, [timeStringValidator, Validators.required]),
@@ -196,13 +205,13 @@ export class BreakRequestFormComponent implements OnInit, OnDestroy {
     };
   }
 
-  static readFormValues(formArray: FormArray, timezoneOffset): IBreakRequest[] {
-    return formArray.controls.map((form: FormGroup) =>
+  static readFormValues(formArray: UntypedFormArray, timezoneOffset): IBreakRequest[] {
+    return formArray.controls.map((form: UntypedFormGroup) =>
       BreakRequestFormComponent.readFormValue(form, timezoneOffset)
     );
   }
 
-  static readFormValue(form: FormGroup, timezoneOffset: number): IBreakRequest {
+  static readFormValue(form: UntypedFormGroup, timezoneOffset: number): IBreakRequest {
     const earliestStartTime = localDateTimeToUtcSeconds(
       form.get('earliestStartDate').value,
       form.get('earliestStartTime').value,
@@ -225,7 +234,7 @@ export class BreakRequestFormComponent implements OnInit, OnDestroy {
     this.changeSub?.unsubscribe();
   }
 
-  private breakRequestValidator(control: FormGroup): { [error: string]: boolean } {
+  private breakRequestValidator(control: UntypedFormGroup): { [error: string]: boolean } {
     const errors: { [key: string]: boolean } = {};
     const earliestStartDate = control.get('earliestStartDate').value as Date;
     const latestStartDate = control.get('latestStartDate').value as Date;
