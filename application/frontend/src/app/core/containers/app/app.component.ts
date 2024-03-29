@@ -68,6 +68,7 @@ export class AppComponent {
       'more_vert',
       'navigate_before',
       'navigate_next',
+      'open_in_new',
       'pdf',
       'pickup',
       'satellite',
