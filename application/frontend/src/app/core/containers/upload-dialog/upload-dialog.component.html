@@ -50,9 +50,10 @@
         </div>
       </div>
       <div class="file-input">
-        <mat-form-field class="w-100 mb-3">
+        <mat-form-field class="w-100 mb-3" [hideRequiredMarker]="true">
           <input
             matInput
+            placeholder="Select file"
             [readonly]="true"
             [formControl]="fileName"
             (click)="selectFile()"
