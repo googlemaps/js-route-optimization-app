@@ -31,6 +31,7 @@ import {
   MapActions,
   PreSolveShipmentActions,
   PreSolveVehicleActions,
+  PreSolveVehicleOperatorActions,
   RoutesChartActions,
 } from '../../actions';
 import { SelectionMode } from '../../models';
@@ -183,10 +184,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.setMapTypeId(satellite ? 'satellite' : 'roadmap');
   }
 
-  onHideMap(): void {
-    this.store.dispatch(MapActions.hideMap());
-  }
-
   onZoomToHome(): void {
     this.mapService.zoomToHome();
   }
@@ -229,5 +226,23 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
     return drawingManager;
+  }
+
+  isPreSolve(): boolean {
+    return [Page.Shipments, Page.Vehicles, Page.VehicleOperators, Page.ScenarioPlanning].includes(
+      this.page
+    );
+  }
+
+  addShipment(): void {
+    this.store.dispatch(PreSolveShipmentActions.addShipment({}));
+  }
+
+  addVehicle(): void {
+    this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
+  }
+
+  addOperator(): void {
+    this.store.dispatch(PreSolveVehicleOperatorActions.addVehicleOperator({}));
   }
 }

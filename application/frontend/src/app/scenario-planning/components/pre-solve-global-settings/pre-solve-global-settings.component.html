@@ -6,7 +6,7 @@
         matInput
         type="text"
         (change)="onUpdateLabel($event.target.value)"
-        [value]="label$ | async"
+        [value]="globalSettings.label"
         placeholder="Enter label" />
     </mat-form-field>
   </div>
@@ -45,7 +45,7 @@
   <div class="settings-datetime settings-traffic item-sm pad-right">
     <div class="mat-body-strong">Traffic</div>
     <mat-checkbox
-      [checked]="traffic$ | async"
+      [checked]="globalSettings.traffic"
       color="primary"
       (change)="onUpdateTraffic($event.checked)">
       Consider Traffic

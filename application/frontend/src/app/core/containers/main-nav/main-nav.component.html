@@ -10,5 +10,9 @@
   (shipmentsClick)="onShipmentsClick()"
   (vehiclesClick)="onVehiclesClick()"
   [allowExperimentalFeatures]="allowExperimentalFeatures$ | async"
-  (solutionClick)="onSolutionClick()">
+  (solutionClick)="onSolutionClick()"
+  (addShipment)="addShipment()"
+  (addVehicle)="addVehicle()"
+  (addOperator)="addOperator()"
+  (scenarioClick)="onScenarioClick()">
 </app-base-main-nav>

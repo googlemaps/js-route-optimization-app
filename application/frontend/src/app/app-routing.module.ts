@@ -38,6 +38,11 @@ const routes: Routes = [
     loadChildren: () => import('./shipments/shipments.module').then((m) => m.ShipmentsModule),
   },
   {
+    path: 'scenarioPlanning',
+    loadChildren: () =>
+      import('./scenario-planning/scenario-planning.module').then((m) => m.ScenarioPlanningModule),
+  },
+  {
     path: 'routesChart',
     loadChildren: () =>
       import('./routes-chart/routes-chart.module').then((m) => m.RoutesChartModule),

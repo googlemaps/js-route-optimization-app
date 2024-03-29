@@ -45,6 +45,8 @@ class MockBaseMainNavComponent {
   @Output() shipmentsClick = new EventEmitter();
   @Output() solutionClick = new EventEmitter();
   @Output() vehiclesClick = new EventEmitter();
+  @Output() addShipment = new EventEmitter();
+  @Output() addVehicle = new EventEmitter();
 }
 
 describe('MainNavComponent', () => {

@@ -164,16 +164,6 @@
     <span>-</span>
   </ng-template>
 </app-table>
-<button
-  mat-fab
-  class="add-shipment"
-  type="button"
-  color=""
-  title="Add shipment"
-  (click)="add.emit()"
-  [disabled]="changeDisabled">
-  <mat-icon svgIcon="add_color"></mat-icon>
-</button>
 <mat-menu #hardTimeWindowsMenu="matMenu" class="time-windows-panel">
   <ng-template matMenuContent let-timeWindows="timeWindows">
     <ng-container *ngFor="let timeWindow of timeWindows.slice(1)">

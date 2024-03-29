@@ -18,12 +18,13 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import * as fromRoot from 'src/app/reducers';
 import { UIActions } from '../../actions';
 import { Page } from '../../models';
 import DispatcherApiSelectors from '../../selectors/dispatcher-api.selectors';
 import * as fromUI from '../../selectors/ui.selectors';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -64,6 +65,7 @@ export class AppComponent {
       'dataset',
       'delete',
       'depot_outline',
+      'dropdown',
       'dropoff',
       'edit',
       'help',
@@ -103,7 +105,14 @@ export class AppComponent {
       )
     );
     this.started$ = store.pipe(select(fromUI.selectStarted));
-    this.hasMap$ = store.pipe(select(fromUI.selectHasMap));
+    this.hasMap$ = combineLatest([
+      store.select(fromUI.selectHasMap),
+      store.select(fromUI.selectStarted),
+    ]).pipe(
+      map(([hasMap, hasStarted]) => {
+        return hasMap && hasStarted;
+      })
+    );
     this.loading$ = store.pipe(select(DispatcherApiSelectors.selectOptimizeToursLoading));
     this.splitSizes$ = store.pipe(select(fromUI.selectSplitSizes));
     this.page$ = store.pipe(select(fromUI.selectPage));

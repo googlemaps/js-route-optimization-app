@@ -46,7 +46,6 @@ export class BaseVehiclesTableComponent {
   @Input() relativeTo: Long;
   @Input() unitAbbreviations: { [unit: string]: string };
   @Input() changeDisabled = false;
-  @Output() add = new EventEmitter();
   @Output() selectAll = new EventEmitter<void>();
   @Output() deselectAll = new EventEmitter<void>();
   @Output() selectedChange = new EventEmitter<{ id: number; selected: boolean }>();

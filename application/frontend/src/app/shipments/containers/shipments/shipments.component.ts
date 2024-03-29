@@ -113,10 +113,6 @@ export class ShipmentsComponent {
     );
   }
 
-  onAdd(): void {
-    this.store.dispatch(PreSolveShipmentActions.addShipment({}));
-  }
-
   onEdit(shipmentId: number): void {
     this.store.dispatch(PreSolveShipmentActions.editShipment({ shipmentId }));
   }

@@ -1,10 +1,5 @@
-<div mat-dialog-title>
+<div class="settings-contents">
   <h3 class="d-inline mat-h3">Scenario Settings</h3>
-  <button mat-icon-button type="button" title="Close" (click)="onCancel()">
-    <mat-icon svgIcon="clear"></mat-icon>
-  </button>
-</div>
-<div mat-dialog-content>
   <mat-tab-group>
     <mat-tab label="Global">
       <app-pre-solve-global-settings> </app-pre-solve-global-settings>
@@ -14,18 +9,21 @@
     </mat-tab>
   </mat-tab-group>
 </div>
-<div mat-dialog-actions>
-  <a
-    class="secondary-link mr-4"
-    tabindex="0"
+<div class="save-controls mat-elevation-z8">
+  <button
+    type="button"
+    mat-stroked-button
+    color="primary"
+    class="light-stroked-button"
     (click)="onCancel()"
     (keydown.enter)="onCancel()"
     (keydown.space)="onCancel()"
-    >Cancel</a
-  >
+    [disabled]="saveDisabled">
+    Cancel
+  </button>
   <button
     type="button"
-    mat-raised-button
+    mat-flat-button
     color="primary"
     (click)="onSave()"
     (keydown.enter)="onSave()"

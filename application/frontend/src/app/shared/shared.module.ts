@@ -80,11 +80,13 @@ import { FrequencyConstraintFormComponent } from './components/frequency-constra
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BulkEditUnsetComponent } from './components/bulk-edit-unset/bulk-edit-unset.component';
+import { UndoRedoComponent } from './components/undo-redo/undo-redo.component';
 
 export const INTERNAL_COMPONENTS = [TimeLabelComponent];
 
 export const COMPONENTS = [
   BreakRequestFormComponent,
+  BulkEditUnsetComponent,
   ConfirmDialogComponent,
   CapacityQuantityComponent,
   ConfirmOverwriteDialogComponent,
@@ -115,6 +117,7 @@ export const COMPONENTS = [
   TimeWindowComponent,
   BulkEditUnsetComponent,
   TimezoneEditComponent,
+  UndoRedoComponent,
   VisitFormComponent,
   VisitRequestFormComponent,
 ];
@@ -147,7 +150,7 @@ export const PIPES = [
 ];
 
 @NgModule({
-  declarations: [COMPONENTS, DIRECTIVES, INTERNAL_COMPONENTS, PIPES, BulkEditUnsetComponent],
+  declarations: [COMPONENTS, DIRECTIVES, INTERNAL_COMPONENTS, PIPES],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule, MatTooltipModule],
   exports: [COMPONENTS, DIRECTIVES, PIPES],
 })

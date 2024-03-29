@@ -39,15 +39,4 @@ app-base-vehicles-table {
   }
 
   /** End workarounds */
-
-  .add-vehicle {
-    position: absolute;
-    right: 2rem;
-    bottom: 2rem;
-    z-index: 1;
-
-    &[disabled='true'] {
-      filter: grayscale(100%);
-    }
-  }
 }

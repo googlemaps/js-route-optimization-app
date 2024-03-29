@@ -2,8 +2,16 @@
 <button mat-button color="primary" (click)="bulkEdit.emit()" [disabled]="!showBulkEdit">
   Bulk edit
 </button>
-<button mat-button color="warn" (click)="bulkDelete.emit()" [disabled]="!showBulkDelete">
+<button
+  mat-button
+  color="warn"
+  (click)="bulkDelete.emit()"
+  class="ml-1"
+  [disabled]="!showBulkDelete">
   Bulk delete
+</button>
+<button mat-button (click)="openShipmentModelSettings.emit()">
+  <mat-icon svgIcon="settings" class="mr-2"></mat-icon>Shipment model settings
 </button>
 <app-filter-list
   class="grow"
@@ -11,6 +19,7 @@
   (editFilter)="editFilter.emit($event)"
   (removeFilter)="removeFilter.emit($event)">
 </app-filter-list>
+<app-undo-redo></app-undo-redo>
 <button
   class="display-columns-menu-trigger"
   mat-button

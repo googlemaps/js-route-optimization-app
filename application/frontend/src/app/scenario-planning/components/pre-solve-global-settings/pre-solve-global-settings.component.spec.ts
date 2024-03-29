@@ -23,8 +23,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { MaterialModule } from 'src/app/material';
 import { Timezone } from 'src/app/shared/models';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
-import { selectTimezone } from '../../selectors/config.selectors';
-import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
+import { selectTimezone } from '../../../core/selectors/config.selectors';
+import RequestSettingsSelectors from '../../../core/selectors/request-settings.selectors';
 import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import { PreSolveGlobalSettingsComponent } from './pre-solve-global-settings.component';
 

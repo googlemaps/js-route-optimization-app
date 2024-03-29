@@ -1,5 +1,10 @@
 <app-map-wrapper [options]="options$ | async" (mapInitialize)="onMapInitialize($event)">
 </app-map-wrapper>
+<app-map-add-buttons
+  *ngIf="isPreSolve()"
+  (addShipment)="addShipment()"
+  (addVehicle)="addVehicle()"
+  (addOperator)="addOperator()"></app-map-add-buttons>
 <app-map-type-button (typeChange)="onTypeChange($event)"> </app-map-type-button>
 <app-toggle-selection-filter-button
   *ngIf="mapSelectionToolsVisible$ | async"
@@ -10,5 +15,4 @@
   *ngIf="mapSelectionToolsVisible$ | async"
   (activeChange)="onToggleSelectMapItems($event)">
 </app-select-map-items-button>
-<app-hide-map-button (hideMap)="onHideMap()"></app-hide-map-button>
 <app-zoom-home-button (zoomToHome)="onZoomToHome()" [disabled]="!bounds"></app-zoom-home-button>

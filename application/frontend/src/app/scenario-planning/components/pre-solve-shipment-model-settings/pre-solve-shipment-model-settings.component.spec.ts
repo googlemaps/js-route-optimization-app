@@ -22,7 +22,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { MaterialModule } from 'src/app/material';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { PreSolveShipmentModelSettingsComponent } from './pre-solve-shipment-model-settings.component';
-import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
+import ShipmentModelSelectors from '../../../core/selectors/shipment-model.selectors';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
 
@@ -56,9 +56,6 @@ describe('PreSolveShipmentModelSettingsComponent', () => {
             { selector: ShipmentModelSelectors.selectGlobalEndTime, value: 0 },
             { selector: ShipmentModelSelectors.selectGlobalStartTime, value: 0 },
             { selector: ShipmentModelSelectors.selectMaxActiveVehicles, value: 0 },
-            { selector: ShipmentModelSelectors.selectPrecedenceRules, value: null },
-            { selector: ShipmentModelSelectors.selectShipmentTypeIncompatibilities, value: null },
-            { selector: ShipmentModelSelectors.selectShipmentTypeRequirements, value: null },
           ],
         }),
       ],

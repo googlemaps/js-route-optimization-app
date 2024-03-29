@@ -141,8 +141,4 @@ export class VehiclesComponent implements OnInit {
   onDelete(vehicle: Vehicle): void {
     this.store.dispatch(VehicleActions.confirmDeleteVehicle({ id: vehicle.id }));
   }
-
-  onAdd(): void {
-    this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
-  }
 }

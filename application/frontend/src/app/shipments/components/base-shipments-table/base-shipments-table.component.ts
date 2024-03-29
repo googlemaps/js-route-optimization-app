@@ -52,7 +52,6 @@ export class BaseShipmentsTableComponent {
   @Output() deselectAll = new EventEmitter<void>();
   @Output() selectedChange = new EventEmitter<{ id: number; selected: boolean }>();
   @Output() sortChange = new EventEmitter<{ active: string; direction: string }>();
-  @Output() add = new EventEmitter();
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<ShipmentItem>();
   @Output() mouseEnterVisitRequest = new EventEmitter<number>();

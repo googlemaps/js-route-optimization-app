@@ -6,8 +6,10 @@
   (removeFilter)="onRemoveFilter($event)"
   [displayColumns]="displayColumns$ | async"
   (displayColumnChange)="onDisplayColumnChange($event)"
+  [page]="page$ | async"
   (bulkEdit)="onBulkEdit()"
-  (bulkDelete)="onBulkDelete()">
+  (bulkDelete)="onBulkDelete()"
+  (openShipmentModelSettings)="onOpenShipmentModelSettings()">
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"

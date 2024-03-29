@@ -41,9 +41,13 @@ export class BaseMainNavComponent implements OnChanges {
   @Input() selectedVehicleCount: number;
   @Input() solving: boolean;
   @Input() page: Page;
+  @Output() scenarioClick = new EventEmitter();
   @Output() shipmentsClick = new EventEmitter();
   @Output() solutionClick = new EventEmitter();
   @Output() vehiclesClick = new EventEmitter();
+  @Output() addShipment = new EventEmitter();
+  @Output() addVehicle = new EventEmitter();
+  @Output() addOperator = new EventEmitter();
 
   label: string;
   pages = Page;

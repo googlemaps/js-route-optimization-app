@@ -15,21 +15,20 @@ limitations under the License.
 */
 
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { setTimezone } from '../../actions/config.actions';
-import { RequestSettingsActions, ShipmentModelActions } from '../../actions';
+import { setTimezone } from '../../../core/actions/config.actions';
+import { RequestSettingsActions, ShipmentModelActions } from '../../../core/actions';
 import { PreSolveGlobalSettingsComponent } from '../pre-solve-global-settings/pre-solve-global-settings.component';
 import { PreSolveShipmentModelSettingsComponent } from '../pre-solve-shipment-model-settings/pre-solve-shipment-model-settings.component';
 import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-pre-solve-settings-dialog',
-  templateUrl: './pre-solve-settings-dialog.component.html',
-  styleUrls: ['./pre-solve-settings-dialog.component.scss'],
+  selector: 'app-pre-solve-settings',
+  templateUrl: './pre-solve-settings.component.html',
+  styleUrls: ['./pre-solve-settings.component.scss'],
 })
-export class PreSolveSettingsDialogComponent implements AfterViewInit {
+export class PreSolveSettingsComponent implements AfterViewInit {
   @ViewChild(PreSolveGlobalSettingsComponent)
   private globalSettingsComponent: PreSolveGlobalSettingsComponent;
   @ViewChild(PreSolveShipmentModelSettingsComponent)
@@ -37,10 +36,7 @@ export class PreSolveSettingsDialogComponent implements AfterViewInit {
 
   saveDisabled = false;
 
-  constructor(
-    private dialogRef: MatDialogRef<PreSolveSettingsDialogComponent>,
-    private store: Store
-  ) {}
+  constructor(private store: Store) {}
 
   ngAfterViewInit(): void {
     combineLatest([
@@ -52,13 +48,16 @@ export class PreSolveSettingsDialogComponent implements AfterViewInit {
   }
 
   onCancel(): void {
-    this.dialogRef.close();
+    this.globalSettingsComponent.resetData();
+    this.shipmentSettingsComponent.resetData();
   }
 
   onSave(): void {
     // save global settings
-    if (this.globalSettingsComponent.newTimeZone) {
-      this.store.dispatch(setTimezone({ newTimezone: this.globalSettingsComponent.newTimeZone }));
+    if (this.globalSettingsComponent.currentTimezone) {
+      this.store.dispatch(
+        setTimezone({ newTimezone: this.globalSettingsComponent.currentTimezone })
+      );
     }
     this.store.dispatch(
       RequestSettingsActions.setRequestSettings(this.globalSettingsComponent.globalSettings)
@@ -74,6 +73,5 @@ export class PreSolveSettingsDialogComponent implements AfterViewInit {
         this.shipmentSettingsComponent.updatedShipmentModelSettings
       )
     );
-    this.dialogRef.close();
   }
 }

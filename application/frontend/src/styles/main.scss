@@ -755,10 +755,18 @@ mat-form-field {
 
 .gutter.gutter-horizontal {
   cursor: col-resize;
-  background-color: '#ffffff';
+  background-color: #ffffff;
   background-repeat: no-repeat;
   background-position: 50%;
   background-image: url('../assets/images/vertical-grips.png');
+}
+
+.gutter.gutter-vertical {
+  cursor: row-resize;
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-image: url('../assets/images/horizontal-grips.png');
 }
 
 app-base-routes-metadata-table,
@@ -898,4 +906,9 @@ app-bulk-edit-unset {
     height: 20px !important;
     line-height: 20px !important;
   }
+}
+
+.light-stroked-button {
+  border: 1px solid #4285f480 !important;
+  background: #fff !important;
 }

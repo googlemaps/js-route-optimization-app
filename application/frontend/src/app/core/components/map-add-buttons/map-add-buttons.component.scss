@@ -1,0 +1,21 @@
+@import '../../../../styles/variables';
+
+:host {
+  display: flex;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  gap: 1rem;
+  position: absolute;
+  top: 0;
+  left: 50px;
+  margin: 10px;
+}
+
+.add-button {
+  border-radius: 10rem;
+  padding: 4px 10px;
+  color: $blue;
+  line-height: unset;
+  border: solid 1px #e0e0e0;
+}

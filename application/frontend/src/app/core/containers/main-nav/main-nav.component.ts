@@ -27,6 +27,10 @@ import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
 import PreSolveVehicleSelectors from 'src/app/core/selectors/pre-solve-vehicle.selectors';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
+import {
+  PreSolveShipmentActions,
+  PreSolveVehicleActions,
+} from '../../actions';
 
 @Component({
   selector: 'app-main-nav',
@@ -68,6 +72,10 @@ export class MainNavComponent {
     );
   }
 
+  onScenarioClick(): void {
+    this.router.navigateByUrl('/scenarioPlanning', { skipLocationChange: true });
+  }
+
   onShipmentsClick(): void {
     this.router.navigateByUrl('/shipments', { skipLocationChange: true });
   }
@@ -79,4 +87,13 @@ export class MainNavComponent {
   onVehiclesClick(): void {
     this.router.navigateByUrl('/vehicles', { skipLocationChange: true });
   }
+
+  addShipment(): void {
+    this.store.dispatch(PreSolveShipmentActions.addShipment({}));
+  }
+
+  addVehicle(): void {
+    this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
+  }
+
 }

@@ -45,13 +45,18 @@ import {
   noUnspecifiedRelaxationLevelValidator,
   timeStringValidator,
 } from 'src/app/util/validators';
-import { IConstraintRelaxation, IDuration, ITimestamp, RelaxationLevel } from '../../models';
-import { selectTimezone } from '../../selectors/config.selectors';
-import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
+import {
+  IConstraintRelaxation,
+  IDuration,
+  ITimestamp,
+  RelaxationLevel,
+} from '../../../core/models';
+import { selectTimezone } from '../../../core/selectors/config.selectors';
+import RequestSettingsSelectors from '../../../core/selectors/request-settings.selectors';
 import * as fromSolution from 'src/app/core/selectors/solution.selectors';
-import { RequestSettings, TimeThreshold } from '../../models/request-settings';
-import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
-import { RequestSettingsActions } from '../../actions';
+import { RequestSettings, TimeThreshold } from '../../../core/models/request-settings';
+import ShipmentModelSelectors from '../../../core/selectors/shipment-model.selectors';
+import { RequestSettingsActions } from '../../../core/actions';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -85,8 +90,6 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
   relaxationLevelKeys = Object.keys(this.RelaxationLevelNames);
 
   hasSolution$: Observable<boolean>;
-  label$: Observable<string>;
-  traffic$: Observable<boolean>;
   injectedSolution: boolean;
 
   isInterpretInjectedSolutionsUsingLabels: boolean;
@@ -96,7 +99,6 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
 
   currentSearchMode: string;
   currentTimezone: Timezone;
-  newTimeZone?: Timezone;
   private globalStartDateValue: Date;
   private globalStartTimeValue: string;
   private globalStartSeconds: Long;
@@ -113,17 +115,27 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
     private changeDetectorRef: ChangeDetectorRef
   ) {
     this.initForm();
+    this.initData();
+  }
 
+  resetData(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.initData();
+  }
+
+  initData(): void {
     combineLatest([
-      store.pipe(select(selectTimezone)),
-      store.pipe(select(ShipmentModelSelectors.selectGlobalStartTime)),
-      store.pipe(select(ShipmentModelSelectors.selectGlobalEndTime)),
-      store.pipe(select(RequestSettingsSelectors.selectTimeout)),
-      store.pipe(select(RequestSettingsSelectors.selectGlobalConstraintRelaxations)),
-      store.pipe(select(RequestSettingsSelectors.selectInjectedSolution)),
-      store.pipe(select(RequestSettingsSelectors.selectInterpretInjectedSolutionsUsingLabels)),
-      store.pipe(select(RequestSettingsSelectors.selectPopulateTransitionPolylines)),
-      store.pipe(select(RequestSettingsSelectors.selectAllowLargeDeadlineDespiteInterruptionRisk)),
+      this.store.pipe(select(selectTimezone)),
+      this.store.pipe(select(ShipmentModelSelectors.selectGlobalStartTime)),
+      this.store.pipe(select(ShipmentModelSelectors.selectGlobalEndTime)),
+      this.store.pipe(select(RequestSettingsSelectors.selectTimeout)),
+      this.store.pipe(select(RequestSettingsSelectors.selectGlobalConstraintRelaxations)),
+      this.store.pipe(select(RequestSettingsSelectors.selectInjectedSolution)),
+      this.store.pipe(select(RequestSettingsSelectors.selectInterpretInjectedSolutionsUsingLabels)),
+      this.store.pipe(select(RequestSettingsSelectors.selectPopulateTransitionPolylines)),
+      this.store.pipe(
+        select(RequestSettingsSelectors.selectAllowLargeDeadlineDespiteInterruptionRisk)
+      ),
     ])
       .pipe(take(1))
       .subscribe(
@@ -167,26 +179,28 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
         }
       );
 
-    this.subscriptions.push(
-      this.store
-        .pipe(select(RequestSettingsSelectors.selectGlobalConstraintRelaxations))
-        .subscribe((relaxations) => {
-          this.updatedTimeThresholds = this.constraintRelaxationToTimeThresholds(
-            relaxations as IConstraintRelaxation
-          );
-          this.constraintRelaxations.reset(this.constraintRelaxationsToFormValues(relaxations));
-        })
-    );
+    this.store
+      .pipe(select(RequestSettingsSelectors.selectGlobalConstraintRelaxations), take(1))
+      .subscribe((relaxations) => {
+        this.updatedTimeThresholds = this.constraintRelaxationToTimeThresholds(
+          relaxations as IConstraintRelaxation
+        );
+        this.constraintRelaxations.reset(this.constraintRelaxationsToFormValues(relaxations));
+      });
 
-    store
-      .pipe(select(RequestSettingsSelectors.selectSearchMode))
-      .subscribe(
-        (currentSearchMode) => (this.currentSearchMode = (currentSearchMode || '').toString())
-      );
+    this.store
+      .pipe(select(RequestSettingsSelectors.selectSearchMode), take(1))
+      .subscribe((currentSearchMode) => {
+        this.currentSearchMode = (currentSearchMode || '').toString();
+      });
 
-    this.label$ = store.pipe(select(RequestSettingsSelectors.selectLabel));
-    this.traffic$ = store.pipe(select(RequestSettingsSelectors.selectTraffic));
-    this.hasSolution$ = this.store.pipe(select(fromSolution.selectHasSolution));
+    this.store
+      .pipe(select(RequestSettingsSelectors.selectLabel), take(1))
+      .subscribe((value) => (this.globalSettings.label = value));
+    this.store
+      .pipe(select(RequestSettingsSelectors.selectTraffic), take(1))
+      .subscribe((value) => (this.globalSettings.traffic = value));
+    this.hasSolution$ = this.store.pipe(select(fromSolution.selectHasSolution), take(1));
   }
 
   ngOnDestroy(): void {
@@ -278,7 +292,7 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
   }
 
   onUpdateTimezone(timezone: Timezone): void {
-    this.newTimeZone = timezone;
+    this.currentTimezone = timezone;
   }
 
   onUpdateLabel(label: string): void {
@@ -287,6 +301,7 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
 
   onUpdateSearchMode(selection: string): void {
     this.globalSettings.searchMode = parseInt(selection);
+    this.currentSearchMode = selection;
   }
 
   onUpdateTraffic(selection: boolean): void {

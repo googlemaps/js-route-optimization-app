@@ -1,10 +1,17 @@
 <div
   class="nav-container mat-body-strong"
   [ngClass]="{
-    'extended-border': page === pages.Shipments || page === pages.Vehicles
+    'extended-border':
+      page === pages.Shipments ||
+      page === pages.Vehicles ||
+      page == pages.ScenarioPlanning
   }">
   <div class="nav-item nav-scenario nav-page-button">
-    <button mat-flat-button (click)="shipmentsClick.emit()">
+    <button
+      mat-flat-button
+      class="nav-button"
+      (click)="scenarioClick.emit()"
+      [ngClass]="{ selected: page === pages.ScenarioPlanning }">
       <ng-container *ngTemplateOutlet="disabled ? bulletLarge : checkmarkLarge"></ng-container>
       <span class="nav-subtitle">Planning Scenario</span>
     </button>
@@ -13,6 +20,7 @@
     <button
       mat-flat-button
       (click)="shipmentsClick.emit()"
+      class="nav-button"
       [ngClass]="{ selected: page === pages.Shipments }">
       <ng-container *ngIf="!selectedShipmentCount; else checkmark">
         <svg height="24" width="24" class="nav-subitem-bullet">
@@ -32,14 +40,22 @@
             </g>
           </g>
         </svg>
-        Shipments{{ selectedShipmentCount ? ' (' + (selectedShipmentCount | number) + ')' : '' }}
+        Shipments
       </span>
+    </button>
+    <button
+      mat-mini-fab
+      aria-label="Add shipment"
+      class="main-nav-add-button blue-svg-icon"
+      (click)="addShipment.emit()">
+      <mat-icon svgIcon="add"></mat-icon>
     </button>
   </div>
   <div class="nav-item nav-subitem nav-page-button">
     <button
       mat-flat-button
       (click)="vehiclesClick.emit()"
+      class="nav-button"
       [ngClass]="{ selected: page === pages.Vehicles }">
       <ng-container *ngIf="!selectedVehicleCount; else checkmark">
         <svg height="24" width="24" class="nav-subitem-bullet">
@@ -56,11 +72,24 @@
               fill="rgba(0, 0, 0, 0.87)" />
           </g>
         </svg>
-        Vehicles{{ selectedVehicleCount ? ' (' + (selectedVehicleCount | number) + ')' : '' }}
+        Vehicles
       </span>
     </button>
+    <button
+      mat-mini-fab
+      aria-label="Add vehicle"
+      class="main-nav-add-button blue-svg-icon"
+      (click)="addVehicle.emit()">
+      <mat-icon svgIcon="add"></mat-icon>
+    </button>
   </div>
-  <div class="nav-item nav-subitem" *ngIf="page === pages.Shipments || page === pages.Vehicles">
+  <div
+    class="nav-item nav-subitem"
+    *ngIf="
+      page === pages.Shipments ||
+      page === pages.Vehicles ||
+      page === pages.ScenarioPlanning
+    ">
     <app-generate-button
       class="nav-generate"
       [disabled]="disabled"
@@ -73,6 +102,7 @@
     <button
       mat-flat-button
       (click)="hasSolution && solutionClick.emit()"
+      class="nav-button"
       [ngClass]="{ selected: page === pages.RoutesChart }">
       <ng-container
         *ngTemplateOutlet="
@@ -89,7 +119,13 @@
   <div class="border"></div>
 </div>
 <div class="nav-container mat-body-strong">
-  <ng-container *ngIf="hasSolutionWarning && page !== pages.Shipments && page !== pages.Vehicles">
+  <ng-container
+    *ngIf="
+      hasSolutionWarning &&
+      page !== pages.Shipments &&
+      page !== pages.Vehicles &&
+      page !== pages.ScenarioPlanning
+    ">
     <div class="nav-item nav-subitem">
       <app-post-solve-message class="nav-message"></app-post-solve-message>
     </div>
