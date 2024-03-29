@@ -11,10 +11,6 @@
   margin-right: auto;
 }
 
-svg {
-  max-height: 500px;
-}
-
 section .mat-title {
   display: inline-block;
   margin: 0;
@@ -103,4 +99,9 @@ section:last-child {
 .entry-point-button {
   border: 1px solid #4285f480;
   background: #fff;
+}
+
+.inline-link-icon {
+  height: 1em;
+  width: unset;
 }
