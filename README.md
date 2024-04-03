@@ -67,7 +67,7 @@ Refer to the following pricing guides for Cloud, Maps, and CFR for detailed cost
 > with just a few large scenarios.
 
 ## License
-Code is license under an MIT-style license,
+Code is licensed under an the Apache 2.0 license,
 see [LICENSE](LICENSE) for details.
 
 ## Terms of Use

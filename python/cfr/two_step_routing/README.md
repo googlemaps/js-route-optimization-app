@@ -29,5 +29,5 @@ python3 -m examples.two_step_routing.two_step_routing_main \
 
 ## License
 
-The example code is licensed under an MIT-style license, see
+The example code is licensed under the Apache 2.0 license, see
 [LICENSE](../../LICENSE) for details.
