@@ -2,7 +2,7 @@
   "name": "fleetrouting-app-frontend",
   "description": "Angular frontend for Fleet Routing App",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
     "demo": "npm install && ng serve -o",
