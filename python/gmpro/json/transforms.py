@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#    https://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,15 +15,13 @@
 """A library of transformations to CFR JSON requests."""
 
 import collections
-from collections.abc import Callable, Collection, Iterable, Mapping, MutableMapping, Sequence, Set
+from collections.abc import Callable, Collection, Iterable
 import copy
 import itertools
-import logging
 import math
 import re
 
 from . import cfr_json
-from .. import utils
 
 
 def make_all_shipments_optional(
@@ -51,59 +49,6 @@ def make_all_shipments_optional(
     if "penaltyCost" not in shipment:
       num_items = get_num_items(shipment)
       shipment["penaltyCost"] = num_items * cost
-
-
-def remove_shipments(
-    model: cfr_json.ShipmentModel, shipment_indices: Collection[int]
-) -> Mapping[int, int]:
-  """Removes the given shipments from the model.
-
-  Args:
-    model: The model from which the shipments are removed. The model is modified
-      in place.
-    shipment_indices: The indices of the removed shipment.
-
-  Returns:
-    A mapping from shipment indices before the removal to shipment indices after
-    the removal. Indices of removed shipments are not present in the mapping.
-  """
-  shipments = cfr_json.get_shipments(model)
-  new_shipments: list[cfr_json.Shipment] = []
-  new_shipment_for_old_shipment: dict[int, int] = {}
-
-  for shipment_index, shipment in enumerate(shipments):
-    if shipment_index in shipment_indices:
-      continue
-    new_shipment_index = len(new_shipments)
-    new_shipments.append(shipment)
-    new_shipment_for_old_shipment[shipment_index] = new_shipment_index
-  model["shipments"] = new_shipments
-
-  return new_shipment_for_old_shipment
-
-
-def update_shipment_indices_in_shipment_routes(
-    routes: Sequence[cfr_json.ShipmentRoute],
-    new_shipment_for_old_shipment: Mapping[int, int],
-) -> None:
-  """Removes shipments from visits in `routes`.
-
-  Args:
-    routes: The routes from which the shipments are removed. Modified in place.
-    new_shipment_for_old_shipment: A mapping from shipment indices before the
-      removal to shipment indices after the removal. Shipment indices that are
-      not present as keys in the mapping are considered to be removed.
-  """
-  for route in routes:
-    for visit in cfr_json.get_visits(route):
-      shipment_index = visit.get("shipmentIndex", 0)
-      new_shipment_index = new_shipment_for_old_shipment.get(shipment_index)
-      if new_shipment_index is None:
-        raise ValueError(
-            f"Shipment index {shipment_index} is not present in"
-            " new_shipments_from_old_shipments."
-        )
-      visit["shipmentIndex"] = new_shipment_index
 
 
 def duplicate_vehicle(model: cfr_json.ShipmentModel, vehicle_index: int) -> int:
@@ -185,26 +130,9 @@ def duplicate_vehicle(model: cfr_json.ShipmentModel, vehicle_index: int) -> int:
   return new_vehicle_index
 
 
-class OnInfeasibleShipment(utils.EnumForArgparse):
-  """Specifies the action taken when a shipment becommes infeasible.
-
-  This is used by `remove_vehicles` when the last vehicle that can serve a given
-  shipment is removed.
-
-  Values:
-    FAIL: The operation that made the shipment infeasible fails.
-    REMOVE: The infeasible shipment is removed from the request.
-  """
-
-  FAIL = 0
-  REMOVE = 1
-
-
 def remove_vehicles(
-    model: cfr_json.ShipmentModel,
-    vehicle_indices: Collection[int],
-    on_infeasible_shipment: OnInfeasibleShipment = OnInfeasibleShipment.FAIL,
-) -> tuple[Mapping[int, int], Mapping[int, int]]:
+    model: cfr_json.ShipmentModel, vehicle_indices: Collection[int]
+) -> None:
   """Removes vehicles with the given indices from the model.
 
   Removes the vehicles from the list and updates vehicle indices in the other
@@ -213,24 +141,12 @@ def remove_vehicles(
   Args:
     model: The model to update.
     vehicle_indices: The set of vehicle indices to remove.
-    on_infeasible_shipment: The behavior of the function when it encounters an
-      infeasible shipment.
-
-  Returns:
-    A tuple `(vehicle_index_map, shipment_index_map)` where `vehicle_index_map`
-    is a mapping from vehicle indices before the removal to vehicle indices
-    after the removal, and `shipment_index_map` is a mapping from shipment
-    indices in the old model to shipment indices in the new model.
-
-    Removed vehicle indices are not present in this mapping.
   """
   old_vehicles = cfr_json.get_vehicles(model)
   num_old_vehicles = len(old_vehicles)
   removed_vehicle_indices = frozenset(vehicle_indices)
   new_vehicle_for_old_vehicle = {}
   new_vehicles = []
-
-  removed_shipments = set()
 
   for old_vehicle_index, vehicle in enumerate(old_vehicles):
     if old_vehicle_index in removed_vehicle_indices:
@@ -240,8 +156,7 @@ def remove_vehicles(
     new_vehicles.append(vehicle)
   model["vehicles"] = new_vehicles
 
-  shipments = cfr_json.get_shipments(model)
-  for shipment_index, shipment in enumerate(shipments):
+  for shipment_index, shipment in enumerate(cfr_json.get_shipments(model)):
     allowed_vehicle_indices = shipment.get("allowedVehicleIndices")
     if allowed_vehicle_indices is not None:
       new_allowed_indices = [
@@ -250,12 +165,8 @@ def remove_vehicles(
           if vehicle_index not in removed_vehicle_indices
       ]
       if not new_allowed_indices:
-        match on_infeasible_shipment:
-          case OnInfeasibleShipment.FAIL:
-            raise ValueError(f"Shipment {shipment_index} becomes infeasible")
-          case OnInfeasibleShipment.REMOVE:
-            removed_shipments.add(shipment_index)
-            continue
+        # TODO(ondrasej): Perhaps also remove trivially infeasible shipments?
+        raise ValueError(f"Shipment {shipment_index} becomes infeasible")
       shipment["allowedVehicleIndices"] = new_allowed_indices
 
     costs_per_vehicle = shipment.get("costsPerVehicle")
@@ -290,60 +201,6 @@ def remove_vehicles(
           for vehicle_index, cost in enumerate(costs_per_vehicle)
           if vehicle_index not in removed_vehicle_indices
       ]
-
-  new_shipment_for_old_shipment: MutableMapping[int, int] = {}
-  if removed_shipments:
-    # Remove all trivially infeasible shipments from the model.
-    new_shipments = []
-    for shipment_index, shipment in enumerate(shipments):
-      if shipment_index in removed_shipments:
-        label = shipment.get("label")
-        logging.warning(
-            "Removing trivially infeasible shipment #%d: %s",
-            shipment_index,
-            repr(label) if label is not None else "",
-        )
-      else:
-        new_shipment_for_old_shipment[shipment_index] = len(new_shipments)
-        new_shipments.append(shipment)
-    model["shipments"] = new_shipments
-  else:
-    for shipment_index in range(len(shipments)):
-      new_shipment_for_old_shipment[shipment_index] = shipment_index
-
-  return new_vehicle_for_old_vehicle, new_shipment_for_old_shipment
-
-
-def remove_vehicles_from_injected_first_solution_routes(
-    request: cfr_json.OptimizeToursRequest,
-    new_vehicle_for_old_vehicle: Mapping[int, int],
-    new_shipment_for_old_shipment: Mapping[int, int],
-) -> None:
-  """Removes given vehicles from the first solution hint in `request`."""
-  injected_first_solution_routes = request.get("injectedFirstSolutionRoutes")
-  if injected_first_solution_routes is None:
-    return
-
-  new_injected_first_solution_routes = []
-  for route in injected_first_solution_routes:
-    old_vehicle_index = route.get("vehicleIndex", 0)
-    new_vehicle_index = new_vehicle_for_old_vehicle.get(old_vehicle_index)
-    if new_vehicle_index is None:
-      continue
-    route["vehicleIndex"] = new_vehicle_index
-    if new_shipment_for_old_shipment:
-      for visit in cfr_json.get_visits(route):
-        old_shipment_index = visit.get("shipmentIndex", 0)
-        visit["shipmentIndex"] = new_shipment_for_old_shipment[
-            old_shipment_index
-        ]
-
-    new_injected_first_solution_routes.append(route)
-
-  if new_injected_first_solution_routes:
-    request["injectedFirstSolutionRoutes"] = new_injected_first_solution_routes
-  else:
-    request.pop("injectedFirstSolutionRoutes", None)
 
 
 def soften_shipment_allowed_vehicle_indices(

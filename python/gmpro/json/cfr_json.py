@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#    https://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,6 @@ import collections
 from collections.abc import Collection, Iterable, Mapping, Sequence, Set
 import datetime
 import itertools
-import logging
 from typing import TypeAlias, TypedDict
 
 # A duration in a string format following the protocol buffers specification in
@@ -73,25 +72,10 @@ class Load(TypedDict):
   amount: Int64String
 
 
-class LoadCost(TypedDict, total=False):
-  """Represents the load costs in the JSON GMPRO request.
-
-  Note that load-based costs are supported only in GMPRO.
-  """
-
-  loadThreshold: Int64String
-  costPerUnitBelowThreshold: float
-  costPerUnitAboveThreshold: float
-
-
-class LoadLimit(TypedDict, total=False):
+class LoadLimit(TypedDict):
   """Represents the vehicle load limit in the JSON CFR request."""
 
   maxLoad: Int64String
-
-  # costPerKilometer and costPerTraveledHour are supported only by GMPRO.
-  costPerKilometer: LoadCost
-  costPerTraveledHour: LoadCost
 
 
 class Location(TypedDict, total=False):
@@ -310,13 +294,13 @@ class ShipmentRoute(TypedDict, total=False):
   routeTotalCost: float
 
   routePolyline: EncodedPolyline
-  hasTrafficInfeasibilities: bool
 
 
 class SkippedShipment(TypedDict, total=False):
   """Represents a skipped shipment in the JSON CFR result."""
 
   index: int
+  penaltyCost: float
   label: str
 
 
@@ -332,7 +316,7 @@ class OptimizeToursRequest(TypedDict, total=False):
   parent: str
   populatePolylines: bool
   populateTransitionPolylines: bool
-  searchMode: int | str
+  searchMode: int
   timeout: DurationString
 
 
@@ -351,7 +335,6 @@ class Metrics(TypedDict, total=False):
 class OptimizeToursResponse(TypedDict, total=False):
   """Represents the JSON CFR result."""
 
-  requestLabel: str
   routes: list[ShipmentRoute]
   skippedShipments: list[SkippedShipment]
   totalCost: float
@@ -430,11 +413,9 @@ def combined_allowed_vehicle_indices(
   """Returns the list of allowed vehicle indices that can serve all shipments."""
   allowed_vehicles = None
   for shipment in shipments:
-    logging.debug("shipment: %r", shipment)
     shipment_allowed_vehicles = shipment.get("allowedVehicleIndices")
     if shipment_allowed_vehicles is None:
       continue
-    logging.debug("allowed_vehicles = %r", allowed_vehicles)
     if allowed_vehicles is None:
       allowed_vehicles = set(shipment_allowed_vehicles)
     else:
@@ -447,46 +428,15 @@ def combined_allowed_vehicle_indices(
 
 
 def combined_load_demands(shipments: Collection[Shipment]) -> dict[str, Load]:
-  """Computes the combined load demands of all shipments in `shipments`.
-
-  Assumes that shipments are shipments that are picked up and delivered at the
-  same location (the same parking location), and computes load demands that are
-  sufficient both for the pickups and for the deliveries (assuming that pickups
-  happen before deliveries).
-
-  For each unit, computes the amount that is delivered and the amount that is
-  picked up, and takes the max of the two. The output load demands are the
-  smallest load demands that need to be reserved on the vehicle for the whole
-  route to guarantee that all shipments can be performed.
-
-  Args:
-    shipments: The list of shipments to be processed.
-
-  Returns:
-    The combined load demands as described above. Never contains negative
-    numbers.
-  """
-  delivery_demands = collections.defaultdict(int)
-  pickup_demands = collections.defaultdict(int)
+  """Computes the combined load demands of all shipments in `shipments`."""
+  demands = collections.defaultdict(int)
   for shipment in shipments:
     shipment_demands = shipment.get("loadDemands")
     if shipment_demands is None:
       continue
-
-    is_pickup = get_pickup_or_none(shipment) is not None
-    combined_demands = pickup_demands if is_pickup else delivery_demands
     for unit, amount in shipment_demands.items():
-      combined_demands[unit] += int(amount.get("amount", 0))
-
-  demands = {}
-  for unit in set(itertools.chain(delivery_demands, pickup_demands)):
-    demands[unit] = {
-        "amount": str(
-            max(delivery_demands.get(unit, 0), pickup_demands.get(unit, 0))
-        )
-    }
-
-  return demands
+      demands[unit] += int(amount.get("amount", 0))
+  return {unit: {"amount": str(amount)} for unit, amount in demands.items()}
 
 
 _DEFAULT_GLOBAL_START_TIME = datetime.datetime.fromtimestamp(
@@ -500,26 +450,6 @@ _DEFAULT_GLOBAL_END_TIME = datetime.datetime.fromtimestamp(
 def get_shipments(model: ShipmentModel) -> Sequence[Shipment]:
   """Returns the list of shipments of a model or an empty sequence."""
   return model.get("shipments", ())
-
-
-def get_delivery_or_none(
-    shipment: Shipment, index: int = 0
-) -> VisitRequest | None:
-  """Returns the delivery visit request at the given index, or None."""
-  deliveries = shipment.get("deliveries", ())
-  if len(deliveries) <= index:
-    return None
-  return deliveries[index]
-
-
-def get_pickup_or_none(
-    shipment: Shipment, index: int = 0
-) -> VisitRequest | None:
-  """Returns the pickup visit request at the given index, or None."""
-  pickups = shipment.get("pickups", ())
-  if len(pickups) <= index:
-    return None
-  return pickups[index]
 
 
 def get_routes(response: OptimizeToursResponse) -> Sequence[ShipmentRoute]:
@@ -729,29 +659,6 @@ def get_shipment_load_demand(shipment: Shipment, load_key: str) -> int:
   if unit_demands is None:
     return 0
   return int(unit_demands.get("amount", 0))
-
-
-def get_performed_shipments_from_routes(
-    routes: Sequence[ShipmentRoute],
-) -> Set[int]:
-  """Returns indices of shipments performed on `routes`."""
-  performed_shipments = set()
-  for route in routes:
-    performed_shipments.update(
-        visit.get("shipmentIndex", 0) for visit in get_visits(route)
-    )
-  return performed_shipments
-
-
-def get_skipped_shipments_from_routes(
-    model: ShipmentModel, routes: Sequence[ShipmentRoute]
-) -> Set[int]:
-  """Returns indices of shipments that are not performed in `routes`."""
-  shipments = get_shipments(model)
-  performed_shipments = get_performed_shipments_from_routes(routes)
-  skipped_shipment_indices = set(range(len(shipments)))
-  skipped_shipment_indices.difference_update(performed_shipments)
-  return skipped_shipment_indices
 
 
 def get_vehicle_earliest_start(
@@ -1078,7 +985,6 @@ def recompute_route_metrics(
     )
 
   if check_consistency:
-    assert len(visits) + 1 == len(get_transitions(route))
     if (
         route_total_duration
         != route_travel_duration
@@ -1118,7 +1024,6 @@ def _recompute_one_transition_start_and_durations(
     transition: Transition,
     start_time: datetime.datetime,
     end_time: datetime.datetime,
-    allow_negative_wait_duration: bool,
 ) -> None:
   """Updates `startTime` and `totalDuration` of one transition.
 
@@ -1131,40 +1036,30 @@ def _recompute_one_transition_start_and_durations(
     transition: The transition to be updated.
     start_time: The requested start time of the transition.
     end_time: The requested end time of the transition.
-    allow_negative_wait_duration: Allow that the time slot betwen start_time and
-      end_time is smaller than the required minimal duration of the transition.
-      When this happens, the function adds a negative wait time so that the
-      total duration of the transition matches the time between the two visits.
 
   Raises:
     ValueError: When sum of the other durations of the transition is greater
-      than the duration between `start_time` and `end_time`, and
-      allow_negative_wait_duration is False.
+      than the duration between `start_time` and `end_time`.
   """
   non_wait_duration = (
       parse_duration_string(transition.get("travelDuration", "0s"))
       + parse_duration_string(transition.get("delayDuration", "0s"))
       + parse_duration_string(transition.get("breakDuration", "0s"))
   )
-  required_total_duration = end_time - start_time
-  if (
-      non_wait_duration > required_total_duration
-      and not allow_negative_wait_duration
-  ):
+  total_duration = end_time - start_time
+  if non_wait_duration > total_duration:
     raise ValueError(
-        f"The minimal duration of the transition ({non_wait_duration}) is"
-        f" greater than the available time slot ({required_total_duration})."
+        "The minimal duration of the transition is greater than the available"
+        " time slot."
     )
-  wait_duration = required_total_duration - non_wait_duration
+  wait_duration = total_duration - non_wait_duration
   transition["startTime"] = as_time_string(start_time)
-  transition["totalDuration"] = as_duration_string(required_total_duration)
+  transition["totalDuration"] = as_duration_string(total_duration)
   transition["waitDuration"] = as_duration_string(wait_duration)
 
 
 def recompute_transition_starts_and_durations(
-    model: ShipmentModel,
-    route: ShipmentRoute,
-    allow_negative_wait_duration: bool,
+    model: ShipmentModel, route: ShipmentRoute
 ) -> None:
   """Recomputes transition start times and wait durations based on visit times.
 
@@ -1176,17 +1071,6 @@ def recompute_transition_starts_and_durations(
     model: The model in which the transition times are recomputed.
     route: The route, for which the transition times are recomputed. Modified in
       place.
-    allow_negative_wait_duration: Allow that the time slot between two visits is
-      shorter than the minimal duration of a transition. The missing time is
-      "fixed" by using a negative wait time. This is the approach taken by the
-      CFR solver when there is a traffic infeasibility; setting this to true
-      allows the computation to proceed also on results computed with live
-      traffic that may have traffic infeasibilities.
-
-  Raises:
-    ValueError: When the time between two visits is shorter than then time
-      required by the transition between them, and allow_negative_wait_duration
-      is False.
   """
   visits = get_visits(route)
   if not visits:
@@ -1196,56 +1080,21 @@ def recompute_transition_starts_and_durations(
   transitions = get_transitions(route)
 
   previous_visit_end_time = parse_time_string(route["vehicleStartTime"])
-  transition_index = None
-  try:
-    for transition_index, visit in enumerate(visits):
-      current_visit_start_time = parse_time_string(visit["startTime"])
-      transition_in = transitions[transition_index]
-      _recompute_one_transition_start_and_durations(
-          transition_in,
-          previous_visit_end_time,
-          current_visit_start_time,
-          allow_negative_wait_duration,
-      )
-
-      visit_duration = get_visit_request_duration(
-          get_visit_request(model, visit)
-      )
-      previous_visit_end_time = current_visit_start_time + visit_duration
-
-    transition_index = len(visits)
+  for visit_index, visit in enumerate(visits):
+    current_visit_start_time = parse_time_string(visit["startTime"])
+    transition_in = transitions[visit_index]
     _recompute_one_transition_start_and_durations(
-        transitions[-1],
-        previous_visit_end_time,
-        parse_time_string(route["vehicleEndTime"]),
-        allow_negative_wait_duration,
+        transition_in, previous_visit_end_time, current_visit_start_time
     )
-  except ValueError as err:
-    raise ValueError(
-        "Recomputing transition failed for transition_index ="
-        f" {transition_index}, vehicle_index = {route.get('vehicleIndex', 0)}:"
-        f" {err}"
-    ) from err
 
+    visit_duration = get_visit_request_duration(get_visit_request(model, visit))
+    previous_visit_end_time = current_visit_start_time + visit_duration
 
-def recompute_travel_steps_from_transitions(route: ShipmentRoute) -> None:
-  """Re-creates travel steps in `route` from its transitions."""
-  transitions = get_transitions(route)
-  if not transitions:
-    # Unused vehicle. Remove previous travelSteps if there were any.
-    route.pop("travelSteps", None)
-    return
-  travel_steps: list[TravelStep] = []
-  route["travelSteps"] = travel_steps
-
-  for transition in transitions:
-    travel_step = {
-        "duration": transition.get("travelDuration", "0s"),
-        "distanceMeters": transition.get("travelDistanceMeters", 0),
-    }
-    if (polyline := transition.get("routePolyline")) is not None:
-      travel_step["routePolyline"] = polyline
-    travel_steps.append(travel_step)
+  _recompute_one_transition_start_and_durations(
+      transitions[-1],
+      previous_visit_end_time,
+      parse_time_string(route["vehicleEndTime"]),
+  )
 
 
 def get_num_decreasing_visit_times(
