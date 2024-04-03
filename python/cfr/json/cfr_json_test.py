@@ -369,7 +369,7 @@ class CombinedLoadDemandsTest(unittest.TestCase):
   def test_no_shipments(self):
     self.assertEqual(cfr_json.combined_load_demands(()), {})
 
-  def test_some_shipments(self):
+  def test_some_deliveries(self):
     shipments = [
         cfr_json.make_shipment(
             "S001",
@@ -394,6 +394,64 @@ class CombinedLoadDemandsTest(unittest.TestCase):
         {
             "wheat": {"amount": "3"},
             "wood": {"amount": "6"},
+            "ore": {"amount": "2"},
+        },
+    )
+
+  def test_some_pickups(self):
+    shipments: Sequence[cfr_json.Shipment] = (
+        cfr_json.make_shipment(
+            "S001",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+            load_demands={"wheat": 3, "wood": 1},
+        ),
+        cfr_json.make_shipment(
+            "S002",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+            load_demands={"wood": 5, "ore": 2},
+        ),
+        cfr_json.make_shipment(
+            "S002",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+        ),
+    )
+    self.assertEqual(
+        cfr_json.combined_load_demands(shipments),
+        {
+            "wheat": {"amount": "3"},
+            "wood": {"amount": "6"},
+            "ore": {"amount": "2"},
+        },
+    )
+
+  def test_pickups_and_deliveries(self):
+    shipments: Sequence[cfr_json.Shipment] = (
+        cfr_json.make_shipment(
+            "S001",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+            load_demands={"wheat": 3, "wood": 1},
+        ),
+        cfr_json.make_shipment(
+            "S002",
+            delivery_latlng=(48.86471, 2.34901),
+            delivery_duration="120s",
+            load_demands={"wood": 5, "ore": 2},
+        ),
+        cfr_json.make_shipment(
+            "S002",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+        ),
+    )
+    self.assertEqual(
+        cfr_json.combined_load_demands(shipments),
+        {
+            "wheat": {"amount": "3"},
+            "wood": {"amount": "5"},
             "ore": {"amount": "2"},
         },
     )

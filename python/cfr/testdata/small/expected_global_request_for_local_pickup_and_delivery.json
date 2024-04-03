@@ -1,0 +1,268 @@
+{
+  "label": "my_little_model/global",
+  "model": {
+    "globalStartTime": "2023-08-11T00:00:00.000Z",
+    "globalEndTime": "2023-08-12T00:00:00.000Z",
+    "shipments": [
+      {
+        "label": "s:8 S009",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86597,
+                  "longitude": 2.3489
+                }
+              }
+            },
+            "duration": "150s"
+          }
+        ],
+        "allowedVehicleIndices": [0, 1]
+      },
+      {
+        "label": "p:0 S002,S001",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              },
+              "sideOfRoad": true
+            },
+            "duration": "575s",
+            "tags": ["P001"]
+          }
+        ],
+        "allowedVehicleIndices": [0],
+        "costsPerVehicle": [100, 200],
+        "costsPerVehicleIndices": [0, 1]
+      },
+      {
+        "label": "p:2 S003",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              },
+              "sideOfRoad": true
+            },
+            "duration": "391s",
+            "tags": ["P001"],
+            "timeWindows": [
+              {
+                "startTime": "2023-08-11T11:57:14Z"
+              }
+            ]
+          }
+        ],
+        "allowedVehicleIndices": [0]
+      },
+      {
+        "label": "p:3 S004",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              },
+              "sideOfRoad": true
+            },
+            "duration": "390s",
+            "tags": ["P001"],
+            "timeWindows": [
+              {
+                "startTime": "2023-08-11T13:57:15Z",
+                "endTime": "2023-08-11T15:57:15Z"
+              }
+            ]
+          }
+        ],
+        "allowedVehicleIndices": [0]
+      },
+      {
+        "label": "p:4 S005,S006",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              },
+              "sideOfRoad": true
+            },
+            "duration": "600s",
+            "tags": ["P002", "parking: P002"]
+          }
+        ],
+        "loadDemands": {
+          "ore": {
+            "amount": "2"
+          },
+          "wheat": {
+            "amount": "3"
+          }
+        },
+        "allowedVehicleIndices": [0, 1]
+      },
+      {
+        "label": "p:6 S007",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              },
+              "sideOfRoad": true
+            },
+            "duration": "449s",
+            "tags": ["P002", "parking: P002"]
+          }
+        ],
+        "loadDemands": {
+          "wood": {
+            "amount": "5"
+          },
+          "ore": {
+            "amount": "1"
+          }
+        },
+        "allowedVehicleIndices": [0]
+      },
+      {
+        "label": "p:7 S008",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86482,
+                  "longitude": 2.34932
+                }
+              },
+              "sideOfRoad": true
+            },
+            "duration": "449s",
+            "tags": ["P002", "parking: P002"]
+          }
+        ],
+        "allowedVehicleIndices": [1]
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "V001",
+        "travelMode": 1,
+        "travelDurationMultiple": 1,
+        "costPerHour": 60,
+        "costPerKilometer": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86321,
+              "longitude": 2.34767
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86321,
+              "longitude": 2.34767
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-08-11T08:00:00.000Z",
+            "endTime": "2023-08-11T08:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2023-08-11T16:00:00.000Z",
+            "endTime": "2023-08-11T21:00:00.000Z"
+          }
+        ]
+      },
+      {
+        "label": "V002",
+        "travelMode": 1,
+        "travelDurationMultiple": 1,
+        "costPerHour": 60,
+        "costPerKilometer": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86321,
+              "longitude": 2.34767
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.86321,
+              "longitude": 2.34767
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-08-11T08:00:00.000Z",
+            "endTime": "2023-08-11T08:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2023-08-11T20:00:00.000Z",
+            "endTime": "2023-08-11T21:00:00.000Z"
+          }
+        ]
+      }
+    ],
+    "transitionAttributes": [
+      {
+        "srcTag": "S001",
+        "dstTag": "S002",
+        "cost": 1
+      },
+      {
+        "delay": "180s",
+        "cost": 1000,
+        "excludedSrcTag": "parking: P002",
+        "dstTag": "parking: P002"
+      },
+      {
+        "delay": "180s",
+        "srcTag": "parking: P002",
+        "excludedDstTag": "parking: P002"
+      },
+      {
+        "delay": "60s",
+        "srcTag": "parking: P002",
+        "dstTag": "parking: P002"
+      }
+    ]
+  },
+  "searchMode": 1,
+  "allowLargeDeadlineDespiteInterruptionRisk": true,
+  "parent": "my_awesome_project",
+  "considerRoadTraffic": true
+}

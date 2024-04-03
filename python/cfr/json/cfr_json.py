@@ -9,6 +9,7 @@ import collections
 from collections.abc import Collection, Iterable, Mapping, Sequence, Set
 import datetime
 import itertools
+import logging
 from typing import TypeAlias, TypedDict
 
 # A duration in a string format following the protocol buffers specification in
@@ -405,9 +406,11 @@ def combined_allowed_vehicle_indices(
   """Returns the list of allowed vehicle indices that can serve all shipments."""
   allowed_vehicles = None
   for shipment in shipments:
+    logging.debug("shipment: %r", shipment)
     shipment_allowed_vehicles = shipment.get("allowedVehicleIndices")
     if shipment_allowed_vehicles is None:
       continue
+    logging.debug("allowed_vehicles = %r", allowed_vehicles)
     if allowed_vehicles is None:
       allowed_vehicles = set(shipment_allowed_vehicles)
     else:
@@ -420,15 +423,46 @@ def combined_allowed_vehicle_indices(
 
 
 def combined_load_demands(shipments: Collection[Shipment]) -> dict[str, Load]:
-  """Computes the combined load demands of all shipments in `shipments`."""
-  demands = collections.defaultdict(int)
+  """Computes the combined load demands of all shipments in `shipments`.
+
+  Assumes that shipments are shipments that are picked up and delivered at the
+  same location (the same parking location), and computes load demands that are
+  sufficient both for the pickups and for the deliveries (assuming that pickups
+  happen before deliveries).
+
+  For each unit, computes the amount that is delivered and the amount that is
+  picked up, and takes the max of the two. The output load demands are the
+  smallest load demands that need to be reserved on the vehicle for the whole
+  route to guarantee that all shipments can be performed.
+
+  Args:
+    shipments: The list of shipments to be processed.
+
+  Returns:
+    The combined load demands as described above. Never contains negative
+    numbers.
+  """
+  delivery_demands = collections.defaultdict(int)
+  pickup_demands = collections.defaultdict(int)
   for shipment in shipments:
     shipment_demands = shipment.get("loadDemands")
     if shipment_demands is None:
       continue
+
+    is_pickup = get_pickup_or_none(shipment) is not None
+    combined_demands = pickup_demands if is_pickup else delivery_demands
     for unit, amount in shipment_demands.items():
-      demands[unit] += int(amount.get("amount", 0))
-  return {unit: {"amount": str(amount)} for unit, amount in demands.items()}
+      combined_demands[unit] += int(amount.get("amount", 0))
+
+  demands = {}
+  for unit in set(itertools.chain(delivery_demands, pickup_demands)):
+    demands[unit] = {
+        "amount": str(
+            max(delivery_demands.get(unit, 0), pickup_demands.get(unit, 0))
+        )
+    }
+
+  return demands
 
 
 _DEFAULT_GLOBAL_START_TIME = datetime.datetime.fromtimestamp(
@@ -1020,6 +1054,7 @@ def recompute_route_metrics(
     )
 
   if check_consistency:
+    assert len(visits) + 1 == len(get_transitions(route))
     if (
         route_total_duration
         != route_travel_duration

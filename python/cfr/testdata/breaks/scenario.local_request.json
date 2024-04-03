@@ -5,6 +5,19 @@
     "globalStartTime": "2024-01-04T08:00:00Z",
     "shipments": [
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.876301660547924,
+                  "longitude": 2.349388130830844
+                }
+              }
+            },
+            "tags": ["P0001", "P0001 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -16,6 +29,7 @@
               }
             },
             "duration": "600s",
+            "tags": ["P0001 visit"],
             "timeWindows": [
               {
                 "startTime": "2024-01-04T16:00:00Z",
@@ -33,6 +47,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.876301660547924,
+                  "longitude": 2.349388130830844
+                }
+              }
+            },
+            "tags": ["P0001", "P0001 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -44,6 +71,7 @@
               }
             },
             "duration": "600s",
+            "tags": ["P0001 visit"],
             "timeWindows": [
               {
                 "startTime": "2024-01-04T13:00:00Z",
@@ -61,6 +89,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.876301660547924,
+                  "longitude": 2.349388130830844
+                }
+              }
+            },
+            "tags": ["P0001", "P0001 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -71,7 +112,8 @@
                 }
               }
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": ["P0001 visit"]
           }
         ],
         "label": "7: S0008",
@@ -83,6 +125,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878896743823766,
+                  "longitude": 2.345315644596649
+                }
+              }
+            },
+            "tags": ["P0002", "P0002 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -94,6 +149,7 @@
               }
             },
             "duration": "600s",
+            "tags": ["P0002 visit"],
             "timeWindows": [
               {
                 "startTime": "2024-01-04T10:00:00Z",
@@ -111,6 +167,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878896743823766,
+                  "longitude": 2.345315644596649
+                }
+              }
+            },
+            "tags": ["P0002", "P0002 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -121,7 +190,8 @@
                 }
               }
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": ["P0002 visit"]
           }
         ],
         "label": "9: S0010",
@@ -133,6 +203,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87358140362513,
+                  "longitude": 2.3575427961465145
+                }
+              }
+            },
+            "tags": ["P0003", "P0003 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -143,7 +226,8 @@
                 }
               }
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": ["P0003 visit"]
           }
         ],
         "label": "10: S0011",
@@ -155,6 +239,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86959247473453,
+                  "longitude": 2.3342220491432064
+                }
+              }
+            },
+            "tags": ["P0004", "P0004 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -165,7 +262,8 @@
                 }
               }
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": ["P0004 visit"]
           }
         ],
         "label": "11: S0012",
@@ -177,6 +275,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86959247473453,
+                  "longitude": 2.3342220491432064
+                }
+              }
+            },
+            "tags": ["P0004", "P0004 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -188,6 +299,7 @@
               }
             },
             "duration": "600s",
+            "tags": ["P0004 visit"],
             "timeWindows": [
               {
                 "startTime": "2024-01-04T10:00:00Z",
@@ -205,6 +317,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.879529214588096,
+                  "longitude": 2.3113355338108836
+                }
+              }
+            },
+            "tags": ["P0005", "P0005 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -215,7 +340,8 @@
                 }
               }
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": ["P0005 visit"]
           }
         ],
         "label": "13: S0014",
@@ -227,6 +353,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.879529214588096,
+                  "longitude": 2.3113355338108836
+                }
+              }
+            },
+            "tags": ["P0005", "P0005 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -237,7 +376,8 @@
                 }
               }
             },
-            "duration": "150s"
+            "duration": "150s",
+            "tags": ["P0005 visit"]
           }
         ],
         "label": "14: S0015",
@@ -249,6 +389,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888304267263145,
+                  "longitude": 2.3122590869294593
+                }
+              }
+            },
+            "tags": ["P0006", "P0006 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -260,6 +413,7 @@
               }
             },
             "duration": "600s",
+            "tags": ["P0006 visit"],
             "timeWindows": [
               {
                 "startTime": "2024-01-04T16:00:00Z",
@@ -277,6 +431,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.888304267263145,
+                  "longitude": 2.3122590869294593
+                }
+              }
+            },
+            "tags": ["P0006", "P0006 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -288,6 +455,7 @@
               }
             },
             "duration": "600s",
+            "tags": ["P0006 visit"],
             "timeWindows": [
               {
                 "startTime": "2024-01-04T16:00:00Z",
@@ -305,6 +473,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88961286137252,
+                  "longitude": 2.335890071102119
+                }
+              }
+            },
+            "tags": ["P0007", "P0007 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -316,6 +497,7 @@
               }
             },
             "duration": "600s",
+            "tags": ["P0007 visit"],
             "timeWindows": [
               {
                 "startTime": "2024-01-04T13:00:00Z",
@@ -333,6 +515,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88961286137252,
+                  "longitude": 2.335890071102119
+                }
+              }
+            },
+            "tags": ["P0007", "P0007 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -343,7 +538,8 @@
                 }
               }
             },
-            "duration": "150s"
+            "duration": "150s",
+            "tags": ["P0007 visit"]
           }
         ],
         "label": "18: S0019",
@@ -355,6 +551,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86942707364737,
+                  "longitude": 2.314022251318649
+                }
+              }
+            },
+            "tags": ["P0008", "P0008 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -365,7 +574,8 @@
                 }
               }
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": ["P0008 visit"]
           }
         ],
         "label": "19: S0020",
@@ -377,6 +587,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87951530450882,
+                  "longitude": 2.312743962924562
+                }
+              }
+            },
+            "tags": ["P0009", "P0009 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -387,7 +610,8 @@
                 }
               }
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": ["P0009 visit"]
           }
         ],
         "label": "20: S0021",
@@ -399,6 +623,19 @@
         }
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87834664125264,
+                  "longitude": 2.3087576249099384
+                }
+              }
+            },
+            "tags": ["P0010", "P0010 unload from vehicle"]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -409,7 +646,8 @@
                 }
               }
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": ["P0010 visit"]
           }
         ],
         "label": "21: S0022",
@@ -442,7 +680,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0001"],
@@ -473,7 +711,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0001"],
@@ -504,7 +742,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0001"],
@@ -535,7 +773,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0002"],
@@ -566,7 +804,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0002"],
@@ -597,7 +835,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0003"],
@@ -628,7 +866,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0004"],
@@ -659,7 +897,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0004"],
@@ -690,7 +928,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0005"],
@@ -721,7 +959,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0005"],
@@ -752,7 +990,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0006"],
@@ -783,7 +1021,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0006"],
@@ -814,7 +1052,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0007"],
@@ -845,7 +1083,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0007"],
@@ -876,7 +1114,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0008"],
@@ -907,7 +1145,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0009"],
@@ -938,7 +1176,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 1,
-        "fixedCost": 10000,
+        "fixedCost": 0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": ["P0010"],
@@ -948,6 +1186,188 @@
             "maxLoad": "5"
           }
         }
+      }
+    ],
+    "transitionAttributes": [
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0001 load to vehicle",
+        "dstTag": "P0001 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0001 visit",
+        "dstTag": "P0001 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0001 load to vehicle",
+        "dstTag": "P0001 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0002 load to vehicle",
+        "dstTag": "P0002 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0002 visit",
+        "dstTag": "P0002 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0002 load to vehicle",
+        "dstTag": "P0002 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0003 load to vehicle",
+        "dstTag": "P0003 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0003 visit",
+        "dstTag": "P0003 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0003 load to vehicle",
+        "dstTag": "P0003 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0004 load to vehicle",
+        "dstTag": "P0004 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0004 visit",
+        "dstTag": "P0004 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0004 load to vehicle",
+        "dstTag": "P0004 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0005 load to vehicle",
+        "dstTag": "P0005 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0005 visit",
+        "dstTag": "P0005 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0005 load to vehicle",
+        "dstTag": "P0005 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0006 load to vehicle",
+        "dstTag": "P0006 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0006 visit",
+        "dstTag": "P0006 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0006 load to vehicle",
+        "dstTag": "P0006 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0007 load to vehicle",
+        "dstTag": "P0007 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0007 visit",
+        "dstTag": "P0007 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0007 load to vehicle",
+        "dstTag": "P0007 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0008 load to vehicle",
+        "dstTag": "P0008 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0008 visit",
+        "dstTag": "P0008 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0008 load to vehicle",
+        "dstTag": "P0008 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0009 load to vehicle",
+        "dstTag": "P0009 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0009 visit",
+        "dstTag": "P0009 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0009 load to vehicle",
+        "dstTag": "P0009 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0010 load to vehicle",
+        "dstTag": "P0010 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0010 visit",
+        "dstTag": "P0010 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P0010 load to vehicle",
+        "dstTag": "P0010 visit"
       }
     ]
   },

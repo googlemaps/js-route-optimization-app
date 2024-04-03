@@ -139,14 +139,12 @@
                 }
               }
             },
-            "duration": "1133s",
-            "tags": [
-              "P0001"
-            ],
+            "duration": "1145s",
+            "tags": ["P0001"],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T15:53:39Z",
-                "endTime": "2024-01-04T17:53:39Z"
+                "startTime": "2024-01-04T15:53:26Z",
+                "endTime": "2024-01-04T17:53:26Z"
               }
             ]
           }
@@ -169,14 +167,12 @@
                 }
               }
             },
-            "duration": "1328s",
-            "tags": [
-              "P0001"
-            ],
+            "duration": "1339s",
+            "tags": ["P0001"],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T12:53:55Z",
-                "endTime": "2024-01-04T14:53:55Z"
+                "startTime": "2024-01-04T12:53:49Z",
+                "endTime": "2024-01-04T14:53:49Z"
               }
             ]
           }
@@ -199,10 +195,8 @@
                 }
               }
             },
-            "duration": "1028s",
-            "tags": [
-              "P0001"
-            ]
+            "duration": "994s",
+            "tags": ["P0001"]
           }
         ],
         "loadDemands": {
@@ -223,14 +217,12 @@
                 }
               }
             },
-            "duration": "1227s",
-            "tags": [
-              "P0002"
-            ],
+            "duration": "1218s",
+            "tags": ["P0002"],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T09:54:42Z",
-                "endTime": "2024-01-04T11:54:42Z"
+                "startTime": "2024-01-04T09:54:49Z",
+                "endTime": "2024-01-04T11:54:49Z"
               }
             ]
           }
@@ -253,10 +245,8 @@
                 }
               }
             },
-            "duration": "1177s",
-            "tags": [
-              "P0002"
-            ]
+            "duration": "1186s",
+            "tags": ["P0002"]
           }
         ],
         "loadDemands": {
@@ -277,10 +267,8 @@
                 }
               }
             },
-            "duration": "1384s",
-            "tags": [
-              "P0003"
-            ]
+            "duration": "1396s",
+            "tags": ["P0003"]
           }
         ],
         "loadDemands": {
@@ -301,10 +289,8 @@
                 }
               }
             },
-            "duration": "1302s",
-            "tags": [
-              "P0004"
-            ]
+            "duration": "1239s",
+            "tags": ["P0004"]
           }
         ],
         "loadDemands": {
@@ -325,14 +311,12 @@
                 }
               }
             },
-            "duration": "1058s",
-            "tags": [
-              "P0004"
-            ],
+            "duration": "883s",
+            "tags": ["P0004"],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T09:56:03Z",
-                "endTime": "2024-01-04T11:56:03Z"
+                "startTime": "2024-01-04T09:56:47Z",
+                "endTime": "2024-01-04T11:56:47Z"
               }
             ]
           }
@@ -344,7 +328,7 @@
         }
       },
       {
-        "label": "p:9 S0014,S0015",
+        "label": "p:8 S0014,S0015",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -355,10 +339,8 @@
                 }
               }
             },
-            "duration": "1569s",
-            "tags": [
-              "P0005"
-            ]
+            "duration": "1584s",
+            "tags": ["P0005"]
           }
         ],
         "loadDemands": {
@@ -368,7 +350,7 @@
         }
       },
       {
-        "label": "p:11 S0016,S0017",
+        "label": "p:10 S0016,S0017",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -379,14 +361,12 @@
                 }
               }
             },
-            "duration": "1744s",
-            "tags": [
-              "P0006"
-            ],
+            "duration": "1968s",
+            "tags": ["P0006"],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T15:54:33Z",
-                "endTime": "2024-01-04T17:42:12Z"
+                "startTime": "2024-01-04T15:50:50Z",
+                "endTime": "2024-01-04T17:38:29Z"
               }
             ]
           }
@@ -409,14 +389,12 @@
                 }
               }
             },
-            "duration": "1038s",
-            "tags": [
-              "P0007"
-            ],
+            "duration": "1048s",
+            "tags": ["P0007"],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T12:55:21Z",
-                "endTime": "2024-01-04T14:55:21Z"
+                "startTime": "2024-01-04T12:55:18Z",
+                "endTime": "2024-01-04T14:55:18Z"
               }
             ]
           }
@@ -439,10 +417,8 @@
                 }
               }
             },
-            "duration": "558s",
-            "tags": [
-              "P0007"
-            ]
+            "duration": "563s",
+            "tags": ["P0007"]
           }
         ],
         "loadDemands": {
@@ -463,10 +439,8 @@
                 }
               }
             },
-            "duration": "1262s",
-            "tags": [
-              "P0008"
-            ]
+            "duration": "872s",
+            "tags": ["P0008"]
           }
         ],
         "loadDemands": {
@@ -487,10 +461,8 @@
                 }
               }
             },
-            "duration": "1158s",
-            "tags": [
-              "P0009"
-            ]
+            "duration": "1205s",
+            "tags": ["P0009"]
           }
         ],
         "loadDemands": {
@@ -511,10 +483,8 @@
                 }
               }
             },
-            "duration": "1029s",
-            "tags": [
-              "P0010"
-            ]
+            "duration": "1038s",
+            "tags": ["P0010"]
           }
         ],
         "loadDemands": {

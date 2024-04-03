@@ -5,12 +5,26 @@
     "globalStartTime": "2023-12-18T09:00:00Z",
     "shipments": [
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "tags": [
+              "P001",
+              "P001 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJ442GNENu5kcRGYUrvgqHw88"
             },
-            "duration": "600s"
+            "duration": "600s",
+            "tags": [
+              "P001 visit"
+            ]
           }
         ],
         "label": "0: Basilique du Sacre-Coeur",
@@ -21,12 +35,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "tags": [
+              "P001",
+              "P001 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJWcXsQltu5kcRbqfaH0NhNxE"
             },
-            "duration": "1200s"
+            "duration": "1200s",
+            "tags": [
+              "P001 visit"
+            ]
           }
         ],
         "label": "1: Musee de Montmartre",
@@ -37,12 +65,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "tags": [
+              "P001",
+              "P001 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJ55llEENu5kcREU0LBvX0Jq4"
             },
-            "duration": "300s"
+            "duration": "300s",
+            "tags": [
+              "P001 visit"
+            ]
           }
         ],
         "label": "2: Carrousel de Saint-Pierre",
@@ -53,12 +95,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJt9sxMiRv5kcRaCD6SfTzDkY"
+            },
+            "tags": [
+              "P002",
+              "P002 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJQdQyeiZu5kcRUfQHfB-OCLA"
             },
-            "duration": "300s"
+            "duration": "300s",
+            "tags": [
+              "P002 visit"
+            ]
           }
         ],
         "label": "3: Pyramide de Louvre",
@@ -70,12 +126,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJt9sxMiRv5kcRaCD6SfTzDkY"
+            },
+            "tags": [
+              "P002",
+              "P002 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJ5bx0qiVu5kcRs_dMpI5ttiY"
             },
-            "duration": "300s"
+            "duration": "300s",
+            "tags": [
+              "P002 visit"
+            ]
           }
         ],
         "label": "4: Jardin du Palais Royal",
@@ -87,12 +157,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJt9sxMiRv5kcRaCD6SfTzDkY"
+            },
+            "tags": [
+              "P002",
+              "P002 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJo6qq6i5u5kcRCpYBp4rQP9w"
             },
-            "duration": "300s"
+            "duration": "300s",
+            "tags": [
+              "P002 visit"
+            ]
           }
         ],
         "label": "5: Musee de l'Orangerie",
@@ -104,12 +188,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJt9sxMiRv5kcRaCD6SfTzDkY"
+            },
+            "tags": [
+              "P002",
+              "P002 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJD3uTd9hx5kcR1IQvGfr8dbk"
             },
-            "duration": "300s"
+            "duration": "300s",
+            "tags": [
+              "P002 visit"
+            ]
           }
         ],
         "label": "6: Musee du Louvre",
@@ -121,12 +219,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJS4dXiddv5kcRyb3AwM1sFf0"
+            },
+            "tags": [
+              "P003",
+              "P003 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJUzCPuddv5kcRasGAnEUUWkU"
             },
-            "duration": "300s"
+            "duration": "300s",
+            "tags": [
+              "P003 visit"
+            ]
           }
         ],
         "label": "7: Hotel des Invalids",
@@ -137,12 +249,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJS4dXiddv5kcRyb3AwM1sFf0"
+            },
+            "tags": [
+              "P003",
+              "P003 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJG5Qwtitu5kcR2CNEsYy9cdA"
             },
-            "duration": "300s"
+            "duration": "300s",
+            "tags": [
+              "P003 visit"
+            ]
           }
         ],
         "label": "8: Musee d'Orsay",
@@ -153,12 +279,26 @@
         ]
       },
       {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJS4dXiddv5kcRyb3AwM1sFf0"
+            },
+            "tags": [
+              "P003",
+              "P003 unload from vehicle"
+            ]
+          }
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
               "placeId": "ChIJQ9vMHipw5kcRWHC2ESjYaGQ"
             },
-            "duration": "300s"
+            "duration": "300s",
+            "tags": [
+              "P003 visit"
+            ]
           }
         ],
         "label": "9: Musee Rodin",
@@ -180,7 +320,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -200,7 +340,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -220,7 +360,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -240,7 +380,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -260,7 +400,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -280,7 +420,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -300,7 +440,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -320,7 +460,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -340,7 +480,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -360,7 +500,7 @@
         },
         "travelDurationMultiple": 1.0,
         "travelMode": 2,
-        "fixedCost": 10000,
+        "fixedCost": 10000.0,
         "costPerHour": 300,
         "costPerKilometer": 60,
         "startTags": [
@@ -369,6 +509,62 @@
         "endTags": [
           "P003"
         ]
+      }
+    ],
+    "transitionAttributes": [
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P001 load to vehicle",
+        "dstTag": "P001 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P001 visit",
+        "dstTag": "P001 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P001 load to vehicle",
+        "dstTag": "P001 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P002 load to vehicle",
+        "dstTag": "P002 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P002 visit",
+        "dstTag": "P002 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P002 load to vehicle",
+        "dstTag": "P002 visit"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P003 load to vehicle",
+        "dstTag": "P003 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P003 visit",
+        "dstTag": "P003 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P003 load to vehicle",
+        "dstTag": "P003 visit"
       }
     ]
   },

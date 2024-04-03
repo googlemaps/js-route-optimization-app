@@ -2,11 +2,11 @@
   "allowLargeDeadlineDespiteInterruptionRisk": true,
   "label": "my_little_model/refined_local",
   "model": {
-    "globalEndTime": "2023-08-12T00:00:00.000Z",
-    "globalStartTime": "2023-08-11T00:00:00.000Z",
+    "globalEndTime": "2023-08-12T00:00:00Z",
+    "globalStartTime": "2023-08-11T00:00:00Z",
     "shipments": [
       {
-        "allowedVehicleIndices": [0],
+        "allowedVehicleIndices": [0, 1],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -15,13 +15,26 @@
               }
             },
             "duration": "120s",
-            "tags": ["S001"]
+            "tags": ["S001", "P001 visit"]
           }
         ],
-        "label": "0: S001"
+        "label": "0: S001",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+              }
+            },
+            "tags": [
+              "P001",
+              "P001 unload from vehicle"
+            ]
+          }
+        ]
       },
       {
-        "allowedVehicleIndices": [0],
+        "allowedVehicleIndices": [0, 1],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -30,13 +43,28 @@
               }
             },
             "duration": "150s",
-            "tags": ["S002"]
+            "tags": ["S002", "P001 visit"]
           }
         ],
-        "label": "1: S002"
+        "label": "1: S002",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+              }
+            },
+            "tags": [
+              "P001",
+              "P001 unload from vehicle"
+            ]
+          }
+        ]
       },
       {
-        "allowedVehicleIndices": [1],
+        "allowedVehicleIndices": [
+          2
+        ],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -45,13 +73,27 @@
               }
             },
             "duration": "60s",
+            "tags": ["P001 visit"],
             "timeWindows": [{ "startTime": "2023-08-11T12:00:00.000Z" }]
           }
         ],
-        "label": "2: S003"
+        "label": "2: S003",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+              }
+            },
+            "tags": [
+              "P001",
+              "P001 unload from vehicle"
+            ]
+          }
+        ]
       },
       {
-        "allowedVehicleIndices": [2],
+        "allowedVehicleIndices": [3],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -60,6 +102,7 @@
               }
             },
             "duration": "60s",
+            "tags": ["P001 visit"],
             "timeWindows": [
               {
                 "endTime": "2023-08-11T16:00:00.000Z",
@@ -68,10 +111,23 @@
             ]
           }
         ],
-        "label": "3: S004"
+        "label": "3: S004",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+              }
+            },
+            "tags": [
+              "P001",
+              "P001 unload from vehicle"
+            ]
+          }
+        ]
       },
       {
-        "allowedVehicleIndices": [3],
+        "allowedVehicleIndices": [4, 5],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -79,13 +135,24 @@
                 "latLng": { "latitude": 48.86596, "longitude": 2.34889 }
               }
             },
-            "duration": "150s"
+            "duration": "150s",
+            "tags": ["P002 visit"]
           }
         ],
-        "label": "4: S005"
+        "label": "4: S005",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+              }
+            },
+            "tags": ["P002", "P002 unload from vehicle"]
+          }
+        ]
       },
       {
-        "allowedVehicleIndices": [3],
+        "allowedVehicleIndices": [4, 5],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -93,14 +160,25 @@
                 "latLng": { "latitude": 48.86597, "longitude": 2.3489 }
               }
             },
-            "duration": "150s"
+            "duration": "150s",
+            "tags": ["P002 visit"]
           }
         ],
         "label": "5: S006",
-        "loadDemands": { "ore": { "amount": "2" }, "wheat": { "amount": "3" } }
+        "loadDemands": { "ore": { "amount": "2" }, "wheat": { "amount": "3" } },
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+              }
+            },
+            "tags": ["P002", "P002 unload from vehicle"]
+          }
+        ]
       },
       {
-        "allowedVehicleIndices": [4],
+        "allowedVehicleIndices": [6],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -108,14 +186,25 @@
                 "latLng": { "latitude": 48.86597, "longitude": 2.3489 }
               }
             },
-            "duration": "150s"
+            "duration": "150s",
+            "tags": ["P002 visit"]
           }
         ],
         "label": "6: S007",
-        "loadDemands": { "ore": { "amount": "1" }, "wood": { "amount": "5" } }
+        "loadDemands": { "ore": { "amount": "1" }, "wood": { "amount": "5" } },
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+              }
+            },
+            "tags": ["P002", "P002 unload from vehicle"]
+          }
+        ]
       },
       {
-        "allowedVehicleIndices": [5],
+        "allowedVehicleIndices": [7],
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -123,13 +212,54 @@
                 "latLng": { "latitude": 48.86597, "longitude": 2.3489 }
               }
             },
-            "duration": "150s"
+            "duration": "150s",
+            "tags": ["P002 visit"]
           }
         ],
-        "label": "7: S008"
+        "label": "7: S008",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": { "latitude": 48.86482, "longitude": 2.34932 }
+              }
+            },
+            "tags": ["P002", "P002 unload from vehicle"]
+          }
+        ]
       }
     ],
-    "transitionAttributes": [{ "cost": 1, "dstTag": "S002", "srcTag": "S001" }],
+    "transitionAttributes": [
+      {
+        "srcTag": "S001",
+        "dstTag": "S002",
+        "cost": 1
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P001 load to vehicle",
+        "dstTag": "P001 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P001 visit",
+        "dstTag": "P001 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P002 load to vehicle",
+        "dstTag": "P002 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P002 visit",
+        "dstTag": "P002 unload from vehicle"
+      }
+    ],
     "vehicles": [
       {
         "costPerHour": 300,

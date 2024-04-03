@@ -5,7 +5,52 @@
     "globalEndTime": "2024-01-04T19:00:00Z",
     "shipments": [
       {
-        "label": "p:0 S0021",
+        "label": "p:0 S0010",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878896743823766,
+                  "longitude": 2.345315644596649
+                }
+              }
+            },
+            "duration": "1186s",
+            "tags": [
+              "P0002"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "s:0 S0001",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.889648811882424,
+                  "longitude": 2.3537289923907476
+                }
+              }
+            },
+            "duration": "600s"
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:1 S0021",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -16,8 +61,10 @@
                 }
               }
             },
-            "duration": "1158s",
-            "tags": ["P0009"]
+            "duration": "1205s",
+            "tags": [
+              "P0009"
+            ]
           }
         ],
         "loadDemands": {
@@ -27,7 +74,7 @@
         }
       },
       {
-        "label": "p:1 S0014,S0015",
+        "label": "p:2 S0014,S0015",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -38,8 +85,10 @@
                 }
               }
             },
-            "duration": "1569s",
-            "tags": ["P0005"]
+            "duration": "1584s",
+            "tags": [
+              "P0005"
+            ]
           }
         ],
         "loadDemands": {
@@ -49,7 +98,7 @@
         }
       },
       {
-        "label": "p:2 S0022",
+        "label": "p:3 S0022",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -60,8 +109,10 @@
                 }
               }
             },
-            "duration": "1029s",
-            "tags": ["P0010"]
+            "duration": "1038s",
+            "tags": [
+              "P0010"
+            ]
           }
         ],
         "loadDemands": {
@@ -71,7 +122,7 @@
         }
       },
       {
-        "label": "p:3 S0020",
+        "label": "p:4 S0020",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -82,63 +133,45 @@
                 }
               }
             },
-            "duration": "1262s",
-            "tags": ["P0008"]
-          }
-        ],
-        "loadDemands": {
-          "shipment_count": {
-            "amount": "1"
-          }
-        }
-      },
-      {
-        "label": "p:4 S0012",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.86959247473453,
-                  "longitude": 2.3342220491432064
-                }
-              }
-            },
-            "duration": "1302s",
-            "tags": ["P0004"]
-          }
-        ],
-        "loadDemands": {
-          "shipment_count": {
-            "amount": "1"
-          }
-        }
-      },
-      {
-        "label": "p:5 S0013",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.86959247473453,
-                  "longitude": 2.3342220491432064
-                }
-              }
-            },
-            "duration": "1058s",
-            "tags": ["P0004"],
-            "timeWindows": [
-              {
-                "startTime": "2024-01-04T09:56:03Z",
-                "endTime": "2024-01-04T11:56:03Z"
-              }
+            "duration": "872s",
+            "tags": [
+              "P0008"
             ]
           }
         ],
         "loadDemands": {
           "shipment_count": {
             "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:5 S0012,S0013",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.86959247473453,
+                  "longitude": 2.3342220491432064
+                }
+              }
+            },
+            "duration": "1963s",
+            "tags": [
+              "P0004"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2024-01-04T09:38:47Z",
+                "endTime": "2024-01-04T11:38:47Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "2"
           }
         }
       },
@@ -154,12 +187,14 @@
                 }
               }
             },
-            "duration": "1227s",
-            "tags": ["P0002"],
+            "duration": "1218s",
+            "tags": [
+              "P0002"
+            ],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T09:54:42Z",
-                "endTime": "2024-01-04T11:54:42Z"
+                "startTime": "2024-01-04T09:54:49Z",
+                "endTime": "2024-01-04T11:54:49Z"
               }
             ]
           }
@@ -198,7 +233,7 @@
         }
       },
       {
-        "label": "p:7 S0018,S0019",
+        "label": "p:7 S0019",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -209,40 +244,63 @@
                 }
               }
             },
-            "duration": "1390s",
-            "tags": ["P0007"],
+            "duration": "563s",
+            "tags": [
+              "P0007"
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "p:8 S0018",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88961286137252,
+                  "longitude": 2.335890071102119
+                }
+              }
+            },
+            "duration": "1048s",
+            "tags": [
+              "P0007"
+            ],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T12:55:21Z",
-                "endTime": "2024-01-04T14:55:21Z"
+                "startTime": "2024-01-04T12:55:18Z",
+                "endTime": "2024-01-04T14:55:18Z"
               }
             ]
           }
         ],
         "loadDemands": {
           "shipment_count": {
-            "amount": "2"
+            "amount": "1"
           }
         }
       },
       {
-        "label": "s:2 S0003",
+        "label": "p:9 S0011",
         "deliveries": [
           {
             "arrivalWaypoint": {
               "location": {
                 "latLng": {
-                  "latitude": 48.874740131291816,
-                  "longitude": 2.3780651234921866
+                  "latitude": 48.87358140362513,
+                  "longitude": 2.3575427961465145
                 }
               }
             },
-            "duration": "150s",
-            "timeWindows": [
-              {
-                "startTime": "2024-01-04T13:00:00Z",
-                "endTime": "2024-01-04T15:00:00Z"
-              }
+            "duration": "1396s",
+            "tags": [
+              "P0003"
             ]
           }
         ],
@@ -280,19 +338,24 @@
         }
       },
       {
-        "label": "p:8 S0011",
+        "label": "s:2 S0003",
         "deliveries": [
           {
             "arrivalWaypoint": {
               "location": {
                 "latLng": {
-                  "latitude": 48.87358140362513,
-                  "longitude": 2.3575427961465145
+                  "latitude": 48.874740131291816,
+                  "longitude": 2.3780651234921866
                 }
               }
             },
-            "duration": "1384s",
-            "tags": ["P0003"]
+            "duration": "150s",
+            "timeWindows": [
+              {
+                "startTime": "2024-01-04T13:00:00Z",
+                "endTime": "2024-01-04T15:00:00Z"
+              }
+            ]
           }
         ],
         "loadDemands": {
@@ -302,7 +365,7 @@
         }
       },
       {
-        "label": "p:9 S0007,S0008",
+        "label": "p:10 S0007,S0008",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -313,12 +376,14 @@
                 }
               }
             },
-            "duration": "2055s",
-            "tags": ["P0001"],
+            "duration": "2028s",
+            "tags": [
+              "P0001"
+            ],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T12:53:55Z",
-                "endTime": "2024-01-04T14:53:55Z"
+                "startTime": "2024-01-04T12:53:49Z",
+                "endTime": "2024-01-04T14:53:49Z"
               }
             ]
           }
@@ -351,7 +416,7 @@
         }
       },
       {
-        "label": "p:10 S0016,S0017",
+        "label": "p:11 S0016,S0017",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -362,12 +427,14 @@
                 }
               }
             },
-            "duration": "1744s",
-            "tags": ["P0006"],
+            "duration": "1968s",
+            "tags": [
+              "P0006"
+            ],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T15:54:33Z",
-                "endTime": "2024-01-04T17:42:12Z"
+                "startTime": "2024-01-04T15:50:50Z",
+                "endTime": "2024-01-04T17:38:29Z"
               }
             ]
           }
@@ -379,7 +446,7 @@
         }
       },
       {
-        "label": "p:11 S0006",
+        "label": "p:12 S0006",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -390,57 +457,16 @@
                 }
               }
             },
-            "duration": "1133s",
-            "tags": ["P0001"],
+            "duration": "1145s",
+            "tags": [
+              "P0001"
+            ],
             "timeWindows": [
               {
-                "startTime": "2024-01-04T15:53:39Z",
-                "endTime": "2024-01-04T17:53:39Z"
+                "startTime": "2024-01-04T15:53:26Z",
+                "endTime": "2024-01-04T17:53:26Z"
               }
             ]
-          }
-        ],
-        "loadDemands": {
-          "shipment_count": {
-            "amount": "1"
-          }
-        }
-      },
-      {
-        "label": "p:12 S0010",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.878896743823766,
-                  "longitude": 2.345315644596649
-                }
-              }
-            },
-            "duration": "1177s",
-            "tags": ["P0002"]
-          }
-        ],
-        "loadDemands": {
-          "shipment_count": {
-            "amount": "1"
-          }
-        }
-      },
-      {
-        "label": "s:0 S0001",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.889648811882424,
-                  "longitude": 2.3537289923907476
-                }
-              }
-            },
-            "duration": "600s"
           }
         ],
         "loadDemands": {
@@ -563,159 +589,24 @@
     {
       "vehicleIndex": 0,
       "vehicleLabel": "V0001",
-      "vehicleStartTime": "2024-01-04T08:00:00Z",
-      "vehicleEndTime": "2024-01-04T17:40:09Z",
       "visits": [
         {
-          "detour": "0s",
-
           "shipmentIndex": 0,
-          "shipmentLabel": "p:0 S0021",
+          "shipmentLabel": "p:0 S0010",
           "isPickup": false,
-          "startTime": "2024-01-04T08:13:38Z"
+          "startTime": "2024-01-04T08:01:41Z",
+          "detour": "0s"
         },
         {
-          "detour": "1219s",
           "shipmentIndex": 1,
-          "shipmentLabel": "p:1 S0014,S0015",
-          "isPickup": false,
-          "startTime": "2024-01-04T08:34:51Z"
-        },
-        {
-          "detour": "2998s",
-          "shipmentIndex": 2,
-          "shipmentLabel": "p:2 S0022",
-          "isPickup": false,
-          "startTime": "2024-01-04T09:06:00Z"
-        },
-        {
-          "detour": "4430s",
-          "shipmentIndex": 3,
-          "shipmentLabel": "p:3 S0020",
-          "isPickup": false,
-          "startTime": "2024-01-04T09:30:53Z"
-        },
-        {
-          "detour": "6768s",
-          "shipmentIndex": 4,
-          "shipmentLabel": "p:4 S0012",
-          "isPickup": false,
-          "startTime": "2024-01-04T10:01:34Z"
-        },
-        {
-          "detour": "9870s",
-          "shipmentIndex": 5,
-          "shipmentLabel": "p:5 S0013",
-          "isPickup": false,
-          "startTime": "2024-01-04T10:53:16Z"
-        },
-        {
-          "detour": "12115s",
-          "shipmentIndex": 6,
-          "shipmentLabel": "p:6 S0009",
-          "isPickup": false,
-          "startTime": "2024-01-04T11:23:40Z"
-        },
-        {
-          "detour": "13418s",
-          "shipmentIndex": 7,
-          "shipmentLabel": "s:4 S0005",
-          "isPickup": false,
-          "startTime": "2024-01-04T11:58:15Z"
-        },
-        {
-          "detour": "18019s",
-          "shipmentIndex": 8,
-          "shipmentLabel": "p:7 S0018,S0019",
-          "isPickup": false,
-          "startTime": "2024-01-04T13:09:24Z"
-        },
-        {
-          "detour": "20421s",
-          "shipmentIndex": 9,
-          "shipmentLabel": "s:2 S0003",
-          "isPickup": false,
-          "startTime": "2024-01-04T13:54:05Z"
-        },
-        {
-          "detour": "21273s",
-          "shipmentIndex": 10,
-          "shipmentLabel": "s:3 S0004",
-          "isPickup": false,
-          "startTime": "2024-01-04T14:06:07Z"
-        },
-        {
-          "detour": "22619s",
-          "shipmentIndex": 11,
-          "shipmentLabel": "p:8 S0011",
-          "isPickup": false,
-          "startTime": "2024-01-04T14:23:31Z"
-        },
-        {
-          "detour": "24421s",
-          "shipmentIndex": 12,
-          "shipmentLabel": "p:9 S0007,S0008",
-          "isPickup": false,
-          "startTime": "2024-01-04T14:53:16Z"
-        },
-        {
-          "detour": "27388s",
-          "shipmentIndex": 13,
-          "shipmentLabel": "s:1 S0002",
-          "isPickup": false,
-          "startTime": "2024-01-04T15:49:31Z"
-        },
-        {
-          "detour": "27616s",
-          "shipmentIndex": 14,
-          "shipmentLabel": "p:10 S0016,S0017",
-          "isPickup": false,
-          "startTime": "2024-01-04T15:54:33Z"
-        },
-        {
-          "detour": "32945s",
-          "shipmentIndex": 15,
-          "shipmentLabel": "p:11 S0006",
-          "isPickup": false,
-          "startTime": "2024-01-04T17:15:20Z"
-        }
-      ],
-      "breaks": [
-        {
-          "startTime": "2024-01-04T10:23:16Z",
-          "duration": "1800s"
-        },
-        {
-          "startTime": "2024-01-04T12:00:45Z",
-          "duration": "3600s"
-        },
-        {
-          "startTime": "2024-01-04T16:23:37Z",
-          "duration": "1800s"
-        }
-      ]
-    },
-    {
-      "vehicleIndex": 1,
-      "vehicleLabel": "V0002",
-      "vehicleStartTime": "2024-01-04T08:00:00Z",
-      "vehicleEndTime": "2024-01-04T08:49:53Z",
-      "visits": [
-        {
-          "detour": "0s",
-          "shipmentIndex": 16,
-          "shipmentLabel": "p:12 S0010",
-          "isPickup": false,
-          "startTime": "2024-01-04T08:01:45Z"
-        },
-        {
-          "detour": "1346s",
-          "shipmentIndex": 17,
           "shipmentLabel": "s:0 S0001",
           "isPickup": false,
-          "startTime": "2024-01-04T08:29:43Z"
+          "startTime": "2024-01-04T08:29:52Z",
+          "detour": "1350s"
         }
       ],
+      "vehicleStartTime": "2024-01-04T08:00:00Z",
+      "vehicleEndTime": "2024-01-04T08:50:09Z",
       "breaks": [
         {
           "startTime": "2024-01-04T10:00:00Z",
@@ -727,6 +618,140 @@
         },
         {
           "startTime": "2024-01-04T16:00:00Z",
+          "duration": "1800s"
+        }
+      ]
+    },
+    {
+      "vehicleIndex": 1,
+      "vehicleLabel": "V0002",
+      "visits": [
+        {
+          "shipmentIndex": 2,
+          "shipmentLabel": "p:1 S0021",
+          "isPickup": false,
+          "startTime": "2024-01-04T08:15:13Z",
+          "detour": "0s"
+        },
+        {
+          "shipmentIndex": 3,
+          "shipmentLabel": "p:2 S0014,S0015",
+          "isPickup": false,
+          "startTime": "2024-01-04T08:36:47Z",
+          "detour": "1270s"
+        },
+        {
+          "shipmentIndex": 4,
+          "shipmentLabel": "p:3 S0022",
+          "isPickup": false,
+          "startTime": "2024-01-04T09:08:31Z",
+          "detour": "3087s"
+        },
+        {
+          "shipmentIndex": 5,
+          "shipmentLabel": "p:4 S0020",
+          "isPickup": false,
+          "startTime": "2024-01-04T09:32:58Z",
+          "detour": "4639s"
+        },
+        {
+          "shipmentIndex": 6,
+          "shipmentLabel": "p:5 S0012,S0013",
+          "isPickup": false,
+          "startTime": "2024-01-04T09:57:20Z",
+          "detour": "6472s"
+        },
+        {
+          "shipmentIndex": 7,
+          "shipmentLabel": "p:6 S0009",
+          "isPickup": false,
+          "startTime": "2024-01-04T11:12:37Z",
+          "detour": "11456s"
+        },
+        {
+          "shipmentIndex": 8,
+          "shipmentLabel": "s:4 S0005",
+          "isPickup": false,
+          "startTime": "2024-01-04T11:49:09Z",
+          "detour": "12742s"
+        },
+        {
+          "shipmentIndex": 9,
+          "shipmentLabel": "p:7 S0019",
+          "isPickup": false,
+          "startTime": "2024-01-04T12:00:14Z",
+          "detour": "13857s"
+        },
+        {
+          "shipmentIndex": 10,
+          "shipmentLabel": "p:8 S0018",
+          "isPickup": false,
+          "startTime": "2024-01-04T13:09:37Z",
+          "detour": "18020s"
+        },
+        {
+          "shipmentIndex": 11,
+          "shipmentLabel": "p:9 S0011",
+          "isPickup": false,
+          "startTime": "2024-01-04T13:41:11Z",
+          "detour": "20061s"
+        },
+        {
+          "shipmentIndex": 12,
+          "shipmentLabel": "s:3 S0004",
+          "isPickup": false,
+          "startTime": "2024-01-04T14:12:37Z",
+          "detour": "21513s"
+        },
+        {
+          "shipmentIndex": 13,
+          "shipmentLabel": "s:2 S0003",
+          "isPickup": false,
+          "startTime": "2024-01-04T14:31:23Z",
+          "detour": "22639s"
+        },
+        {
+          "shipmentIndex": 14,
+          "shipmentLabel": "p:10 S0007,S0008",
+          "isPickup": false,
+          "startTime": "2024-01-04T14:51:38Z",
+          "detour": "24314s"
+        },
+        {
+          "shipmentIndex": 15,
+          "shipmentLabel": "s:1 S0002",
+          "isPickup": false,
+          "startTime": "2024-01-04T15:47:21Z",
+          "detour": "27224s"
+        },
+        {
+          "shipmentIndex": 16,
+          "shipmentLabel": "p:11 S0016,S0017",
+          "isPickup": false,
+          "startTime": "2024-01-04T15:52:27Z",
+          "detour": "27449s"
+        },
+        {
+          "shipmentIndex": 17,
+          "shipmentLabel": "p:12 S0006",
+          "isPickup": false,
+          "startTime": "2024-01-04T17:23:31Z",
+          "detour": "33427s"
+        }
+      ],
+      "vehicleStartTime": "2024-01-04T08:00:00Z",
+      "vehicleEndTime": "2024-01-04T17:48:43Z",
+      "breaks": [
+        {
+          "startTime": "2024-01-04T10:32:42Z",
+          "duration": "1800s"
+        },
+        {
+          "startTime": "2024-01-04T12:09:37Z",
+          "duration": "3600s"
+        },
+        {
+          "startTime": "2024-01-04T16:25:15Z",
           "duration": "1800s"
         }
       ]

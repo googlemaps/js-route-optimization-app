@@ -25,7 +25,7 @@
         ]
       },
       {
-        "label": "p:0 S001,S002",
+        "label": "p:0 S002,S001",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -37,7 +37,7 @@
               },
               "sideOfRoad": true
             },
-            "duration": "1072s",
+            "duration": "575s",
             "tags": [
               "P001"
             ]
@@ -56,7 +56,7 @@
         ]
       },
       {
-        "label": "p:1 S003",
+        "label": "p:2 S003",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -68,13 +68,13 @@
               },
               "sideOfRoad": true
             },
-            "duration": "863s",
+            "duration": "391s",
             "tags": [
               "P001"
             ],
             "timeWindows": [
               {
-                "startTime": "2023-08-11T11:51:14Z"
+                "startTime": "2023-08-11T11:57:14Z"
               }
             ]
           }
@@ -84,7 +84,7 @@
         ]
       },
       {
-        "label": "p:2 S004",
+        "label": "p:3 S004",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -96,14 +96,14 @@
               },
               "sideOfRoad": true
             },
-            "duration": "863s",
+            "duration": "390s",
             "tags": [
               "P001"
             ],
             "timeWindows": [
               {
-                "startTime": "2023-08-11T13:51:14Z",
-                "endTime": "2023-08-11T15:51:14Z"
+                "startTime": "2023-08-11T13:57:15Z",
+                "endTime": "2023-08-11T15:57:15Z"
               }
             ]
           }
@@ -113,7 +113,7 @@
         ]
       },
       {
-        "label": "p:3 S006,S005",
+        "label": "p:4 S005,S006",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -146,7 +146,7 @@
         ]
       },
       {
-        "label": "p:4 S007",
+        "label": "p:6 S007",
         "deliveries": [
           {
             "arrivalWaypoint": {
@@ -178,7 +178,7 @@
         ]
       },
       {
-        "label": "p:5 S008",
+        "label": "p:7 S008",
         "deliveries": [
           {
             "arrivalWaypoint": {

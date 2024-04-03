@@ -57,7 +57,16 @@ class GroupGlobalVisits(unittest.TestCase):
         )
     )
     for group, expected_group in zip(groups, expected_groups, strict=True):
-      tag, num_rounds, shipments = group
+      (tag, num_rounds, shipments, arrival_visit_index,
+       departure_visit_index) = group
+
+      visits = cfr_json.get_visits(self._scenario.routes[0])
+      if tag is not None:
+        self.assertEqual(
+            visits[arrival_visit_index]["shipmentLabel"], f"{tag} arrival")
+        self.assertEqual(
+            visits[departure_visit_index]["shipmentLabel"], f"{tag} departure")
+
       expected_tag, expected_num_rounds, expected_num_shipments = expected_group
       with self.subTest(f"group {expected_group!r}"):
         self.assertEqual(tag, expected_tag)
@@ -92,7 +101,19 @@ class GroupGlobalVisits(unittest.TestCase):
         )
     )
     for group, expected_group in zip(groups, expected_groups, strict=True):
-      tag, num_rounds, shipments = group
+      tag, num_rounds, shipments, arrival_visit_index, departure_visit_index = (
+          group
+      )
+
+      visits = cfr_json.get_visits(self._scenario.routes[0])
+      if tag is not None:
+        self.assertEqual(
+            visits[arrival_visit_index]["shipmentLabel"], f"{tag} arrival"
+        )
+        self.assertEqual(
+            visits[departure_visit_index]["shipmentLabel"], f"{tag} departure"
+        )
+
       expected_tag, expected_num_rounds, expected_num_shipments = expected_group
       with self.subTest(f"group {expected_group!r}"):
         self.assertEqual(tag, expected_tag)

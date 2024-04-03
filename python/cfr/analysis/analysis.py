@@ -377,7 +377,13 @@ def group_global_visits(
     vehicle_index: int,
     split_by_breaks: bool = False,
 ) -> Iterable[
-    tuple[two_step_routing.ParkingTag, int, Sequence[cfr_json.Shipment]]
+    tuple[
+        two_step_routing.ParkingTag,
+        int,
+        Sequence[cfr_json.Shipment],
+        int,
+        int,
+    ]
 ]:
   """Iterates over groups of "global" visits and their shipments on a route.
 
@@ -398,8 +404,9 @@ def group_global_visits(
       three visits to the parking.
 
   Yields:
-    A sequence of triples `(parking_tag, num_rounds, shipments)` where each
-    triple represents one group of "global" visits.
+    A sequence of five tuple `(parking_tag, num_rounds, shipments,
+    arrival_visit_index, departure_visit_index)` where each five tuple
+    represents one group of "global" visits.
 
     When the global visit is a shipment that is delivered directly,
     `parking_tag` is `None`, `num_rounds` is 1, and `shipments` is a list that
@@ -410,6 +417,11 @@ def group_global_visits(
     of delivery rounds in the sequence (the number of visits in the global model
     used by the two_step_routing library), and `shipments` is the list of
     shipments delivered in all delivery rounds in the group.
+
+    `arrival_visit_index` and `departure_visit_index` are both the index of
+    the visit in the route.  `arrival_visit_index` is the index of the visit
+    to the "arrival to parking" virtual shipment, and `departure_visit_index`
+    is the index of the visit to the "departure from parking" virtual shipment.
   """
   parking_data = scenario.parking_location_data
   route = scenario.routes[vehicle_index]
@@ -425,10 +437,20 @@ def group_global_visits(
     parking_tag, arrival_visit_index, departure_visit_index = global_visits[
         global_visit_index
     ]
+
+    first_arrival_visit_index = arrival_visit_index
+    last_departure_visit_index = departure_visit_index
+
     if parking_tag is None:
       # Shipment delivered directly.
       shipment_index = visits[arrival_visit_index].get("shipmentIndex", 0)
-      yield (None, 1, (shipments[shipment_index],))
+      yield (
+          None,
+          1,
+          (shipments[shipment_index],),
+          first_arrival_visit_index,
+          last_departure_visit_index,
+      )
       global_visit_index += 1
       continue
 
@@ -459,12 +481,20 @@ def group_global_visits(
               departure_visit_index - 1,
           )
       )
+      last_departure_visit_index = departure_visit_index
+
       num_rounds += 1
       # After the last iteration of this loop, global_visit_index will be the
       # index of the last global visit in this (potential) ping-pong.
       global_visit_index += 1
 
-    yield (parking_tag, num_rounds, group_shipments)
+    yield (
+        parking_tag,
+        num_rounds,
+        group_shipments,
+        first_arrival_visit_index,
+        last_departure_visit_index
+    )
 
     global_visit_index += 1
 
@@ -507,7 +537,7 @@ def get_num_ping_pongs(
   """
   num_ping_pongs = 0
   bad_ping_pong_parking_tags = []
-  for parking_tag, num_rounds, group_shipments in group_global_visits(
+  for parking_tag, num_rounds, group_shipments, _, _ in group_global_visits(
       scenario, vehicle_index, split_by_breaks=split_by_breaks
   ):
     if num_rounds == 1:
@@ -672,7 +702,7 @@ def get_num_sandwiches(
   bad_sandwich_tags = []
   last_visit_to_parking = {}
 
-  for parking_tag, _, group_shipments in group_global_visits(
+  for parking_tag, _, group_shipments, _, _ in group_global_visits(
       scenario, vehicle_index
   ):
     last_visit_shipments = last_visit_to_parking.get(parking_tag)

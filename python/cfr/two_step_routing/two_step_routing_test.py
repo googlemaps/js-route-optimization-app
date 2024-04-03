@@ -3,9 +3,11 @@
 # Use of this source code is governed by an MIT-style license that can be found
 # in the LICENSE file or at https://opensource.org/licenses/MIT.
 
+from collections.abc import Sequence
 import copy
 import dataclasses
 import datetime
+import logging
 import unittest
 
 from ..testdata import testdata
@@ -179,78 +181,8 @@ class LoadParkingFromJsonTest(unittest.TestCase):
     self.assertDictEqual(parking_for_shipment, {6: "P002", 7: "P002"})
 
 
-class PlannerTest(unittest.TestCase):
-  """Tests for the Planner class."""
-
-  maxDiff = None
-
-  _OPTIONS = two_step_routing.Options(
-      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
-          time_windows=True
-      ),
-      local_model_vehicle_fixed_cost=10000,
-      min_average_shipments_per_round=2,
-  )
-  _OPTIONS_GROUP_BY_PARKING = two_step_routing.Options(
-      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
-          time_windows=False
-      ),
-      local_model_vehicle_fixed_cost=0,
-  )
-
-  _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
-      "small/request.json"
-  )
-  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
-      two_step_routing.load_parking_from_json(
-          testdata.json("small/parking.json")
-      )
-  )
-
-  # The expected local model request created by the two-step planner for the
-  # base request defined above.
-  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
-      "small/expected_local_request.json"
-  )
-
-  # An example response from the CFR solver for _EXPECTED_LOCAL_REQUEST_JSON.
-  # Fields that are not needed by the two-step solver were removed from the
-  # response to make it shorter.
-  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
-      "small/local_response.json"
-  )
-
-  _EXPECTED_LOCAL_REQUEST_GROUP_BY_PARKING_JSON: (
-      cfr_json.OptimizeToursRequest
-  ) = testdata.json("small/expected_local_request_group_by_parking.json")
-
-  # The expected global model request created by the two-step planner for the
-  # base request defined above, using _EXPECTED_LOCAL_REQUEST_JSON as the
-  # solution of the local model.
-  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
-      "small/expected_global_request.json"
-  )
-
-  # An example response from the CFR solver for _EXPECTED_GLOBAL_REQUEST_JSON.
-  # Fields that are not needed by the two-step solver were removed from the
-  # response to make it shorter.
-  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
-      "small/global_response.json"
-  )
-
-  # The expected merged model request created by the two-step planner for the
-  # base request defined above, using _EXPECTED_LOCAL_REQUEST and
-  # _EXPECTED_GLOBAL_REQUEST as the solutions of the local and global models.
-  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
-      "small/expected_merged_request.json"
-  )
-
-  # The expected merged model response creatd by the two-step planner for the
-  # base request defined above, using _EXPECTED_LOCAL_REQUEST and
-  # _EXPECTED_GLOBAL_REQUEST as the solutions of the local and global models.
-  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
-      testdata.json("small/expected_merged_response.json")
-  )
+class ValidateResponseMixin(unittest.TestCase):
+  """A mixin that provides a method for validating a CFR request + response."""
 
   def validate_response(
       self,
@@ -304,7 +236,6 @@ class PlannerTest(unittest.TestCase):
             else:
               delivered_shipments.add(shipment_index)
 
-            shipment = shipments[shipment_index]
             transition = transitions[visit_index]
             self.assertEqual(
                 current_time,
@@ -313,9 +244,8 @@ class PlannerTest(unittest.TestCase):
             transition_duration = cfr_json.parse_duration_string(
                 transition["totalDuration"]
             )
-            visit_duration = cfr_json.parse_duration_string(
-                shipment["deliveries"][0]["duration"]
-            )
+            visit_request = cfr_json.get_visit_request(request["model"], visit)
+            visit_duration = cfr_json.get_visit_request_duration(visit_request)
             total_duration += transition_duration
             current_time += transition_duration
             self.assertEqual(
@@ -350,6 +280,100 @@ class PlannerTest(unittest.TestCase):
         tuple(range(num_shipments)), picked_up_delivered_and_skipped_shipments
     )
 
+
+class PlannerTest(ValidateResponseMixin, unittest.TestCase):
+  """Tests for the Planner class."""
+
+  maxDiff = None
+
+  _OPTIONS = two_step_routing.Options(
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
+      local_model_vehicle_fixed_cost=10000,
+      min_average_shipments_per_round=2,
+  )
+  _OPTIONS_NO_FIXED_COST = two_step_routing.Options(
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
+      local_model_vehicle_fixed_cost=0,
+  )
+  _OPTIONS_GROUP_BY_PARKING = two_step_routing.Options(
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=False
+      ),
+      local_model_vehicle_fixed_cost=0,
+  )
+
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "small/request.json"
+  )
+  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
+      two_step_routing.load_parking_from_json(
+          testdata.json("small/parking.json")
+      )
+  )
+
+  # The expected local model request created by the two-step planner for the
+  # base request defined above.
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "small/expected_local_request.json"
+  )
+
+  _EXPECTED_LOCAL_PICKUP_AND_DELIVERY_REQUEST_JSON: (
+      cfr_json.OptimizeToursRequest
+  ) = testdata.json("small/expected_local_pickup_and_delivery_request.json")
+
+  # An example response from the CFR solver for _EXPECTED_LOCAL_REQUEST_JSON.
+  # Fields that are not needed by the two-step solver were removed from the
+  # response to make it shorter.
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
+      "small/local_response.json"
+  )
+
+  _LOCAL_PICKUP_AND_DELIVERY_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json("small/local_pickup_and_delivery_response.json")
+  )
+
+  _EXPECTED_LOCAL_REQUEST_GROUP_BY_PARKING_JSON: (
+      cfr_json.OptimizeToursRequest
+  ) = testdata.json("small/expected_local_request_group_by_parking.json")
+
+  # The expected global model request created by the two-step planner for the
+  # base request defined above, using _EXPECTED_LOCAL_REQUEST_JSON as the
+  # solution of the local model.
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "small/expected_global_request.json"
+  )
+
+  _EXPECTED_GLOBAL_REQUEST_FOR_LOCAL_PICKUP_AND_DELIVERY: (
+      cfr_json.OptimizeToursRequest
+  ) = testdata.json(
+      "small/expected_global_request_for_local_pickup_and_delivery.json"
+  )
+
+  # An example response from the CFR solver for _EXPECTED_GLOBAL_REQUEST_JSON.
+  # Fields that are not needed by the two-step solver were removed from the
+  # response to make it shorter.
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
+      "small/global_response.json"
+  )
+
+  # The expected merged model request created by the two-step planner for the
+  # base request defined above, using _EXPECTED_LOCAL_REQUEST and
+  # _EXPECTED_GLOBAL_REQUEST as the solutions of the local and global models.
+  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "small/expected_merged_request.json"
+  )
+
+  # The expected merged model response creatd by the two-step planner for the
+  # base request defined above, using _EXPECTED_LOCAL_REQUEST and
+  # _EXPECTED_GLOBAL_REQUEST as the solutions of the local and global models.
+  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json("small/expected_merged_response.json")
+  )
+
   def test_validate_request(self):
     self.assertIsNone(
         two_step_routing.validate_request(
@@ -360,6 +384,10 @@ class PlannerTest(unittest.TestCase):
   def test_local_request_and_response(self):
     self.validate_response(
         self._EXPECTED_LOCAL_REQUEST_JSON, self._LOCAL_RESPONSE_JSON
+    )
+    self.validate_response(
+        self._EXPECTED_LOCAL_PICKUP_AND_DELIVERY_REQUEST_JSON,
+        self._LOCAL_PICKUP_AND_DELIVERY_RESPONSE_JSON,
     )
 
   def test_global_request_and_response(self):
@@ -376,29 +404,17 @@ class PlannerTest(unittest.TestCase):
 class PlannerTestLocalModel(PlannerTest):
   """Tests for Planner.make_local_request()."""
 
-  def test_make_local_model_time_windows(self):
+  def test_make_local_pickup_and_delivery_model(self):
     planner = two_step_routing.Planner(
         request_json=self._REQUEST_JSON,
         parking_locations=self._PARKING_LOCATIONS,
         parking_for_shipment=self._PARKING_FOR_SHIPMENT,
-        options=self._OPTIONS,
+        options=self._OPTIONS_NO_FIXED_COST,
     )
     self.assertCountEqual(planner._direct_shipments, [8])
     self.assertEqual(
         planner.make_local_request(),
-        self._EXPECTED_LOCAL_REQUEST_JSON,
-    )
-
-  def test_make_local_model_group_by_parking(self):
-    planner = two_step_routing.Planner(
-        request_json=self._REQUEST_JSON,
-        parking_locations=self._PARKING_LOCATIONS,
-        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
-        options=self._OPTIONS_GROUP_BY_PARKING,
-    )
-    self.assertEqual(
-        planner.make_local_request(),
-        self._EXPECTED_LOCAL_REQUEST_GROUP_BY_PARKING_JSON,
+        self._EXPECTED_LOCAL_PICKUP_AND_DELIVERY_REQUEST_JSON,
     )
 
 
@@ -414,6 +430,21 @@ class PlannerTestGlobalModel(PlannerTest):
     )
     global_request = planner.make_global_request(self._LOCAL_RESPONSE_JSON)
     self.assertEqual(global_request, self._EXPECTED_GLOBAL_REQUEST_JSON)
+
+  def test_make_global_request_from_pickup_and_delivery_local_model(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS_NO_FIXED_COST,
+    )
+    global_request = planner.make_global_request(
+        self._LOCAL_PICKUP_AND_DELIVERY_RESPONSE_JSON
+    )
+    self.assertEqual(
+        global_request,
+        self._EXPECTED_GLOBAL_REQUEST_FOR_LOCAL_PICKUP_AND_DELIVERY,
+    )
 
   def test_make_global_request_with_traffic_override(self):
     planner = two_step_routing.Planner(
@@ -508,10 +539,11 @@ class PlannerTestRefinedLocalModel(PlannerTest):
         request_json=self._REQUEST_JSON,
         parking_locations=self._PARKING_LOCATIONS,
         parking_for_shipment=self._PARKING_FOR_SHIPMENT,
-        options=self._OPTIONS,
+        options=self._OPTIONS_NO_FIXED_COST,
     )
     local_refinement_request = planner.make_local_refinement_request(
-        self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+        self._LOCAL_PICKUP_AND_DELIVERY_RESPONSE_JSON,
+        self._GLOBAL_RESPONSE_JSON,
     )
     self.assertEqual(
         local_refinement_request, self._EXPECTED_LOCAL_REFINEMENT_REQUEST
@@ -526,7 +558,7 @@ class PlannerTestRefinedLocalModel(PlannerTest):
         request_json=self._REQUEST_JSON,
         parking_locations=parking_locations,
         parking_for_shipment=self._PARKING_FOR_SHIPMENT,
-        options=self._OPTIONS,
+        options=self._OPTIONS_NO_FIXED_COST,
     )
     local_refinement_request = planner.make_local_refinement_request(
         self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
@@ -676,7 +708,7 @@ class PlannerTestIntegratedModels(PlannerTest):
     )
 
 
-class PlannerTestWithPlaceId(unittest.TestCase):
+class PlannerTestWithPlaceId(ValidateResponseMixin, unittest.TestCase):
   maxDiff = None
 
   _OPTIONS = two_step_routing.Options(
@@ -695,7 +727,7 @@ class PlannerTestWithPlaceId(unittest.TestCase):
           testdata.json("place_id/parking.json")
       )
   )
-  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursResponse = testdata.json(
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "place_id/scenario.local_request.json"
   )
   _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
@@ -714,6 +746,21 @@ class PlannerTestWithPlaceId(unittest.TestCase):
       testdata.json("place_id/scenario.merged_response.60s.60s.json")
   )
 
+  def test_validate_local_files(self):
+    self.validate_response(
+        self._EXPECTED_LOCAL_REQUEST_JSON, self._LOCAL_RESPONSE_JSON
+    )
+
+  def test_validate_global_files(self):
+    self.validate_response(
+        self._EXPECTED_GLOBAL_REQUEST_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+
+  def test_validate_merged_files(self):
+    self.validate_response(
+        self._EXPECTED_MERGED_REQUEST_JSON, self._EXPECTED_MERGED_RESPONSE_JSON
+    )
+
   def test_local_model(self):
     planner = two_step_routing.Planner(
         options=self._OPTIONS,
@@ -722,7 +769,8 @@ class PlannerTestWithPlaceId(unittest.TestCase):
         parking_for_shipment=self._PARKING_FOR_SHIPMENT,
     )
     self.assertEqual(
-        planner.make_local_request(), self._EXPECTED_LOCAL_REQUEST_JSON
+        planner.make_local_request(),
+        self._EXPECTED_LOCAL_REQUEST_JSON,
     )
 
   def test_global_model(self):
@@ -751,18 +799,18 @@ class PlannerTestWithPlaceId(unittest.TestCase):
     self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
 
 
-class PlannerTestWithBreaks(unittest.TestCase):
+class PlannerWithBreaksTest(unittest.TestCase):
   maxDiff = None
 
   _OPTIONS = two_step_routing.Options(
-      local_model_vehicle_fixed_cost=10000,
+      local_model_vehicle_fixed_cost=0,
       min_average_shipments_per_round=1,
       initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
           time_windows=True
       ),
   )
   _OPTIONS_NO_DEPRECATED_FIELDS = two_step_routing.Options(
-      local_model_vehicle_fixed_cost=10000,
+      local_model_vehicle_fixed_cost=0,
       min_average_shipments_per_round=1,
       initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
           time_windows=True
@@ -848,7 +896,8 @@ class PlannerTestWithBreaks(unittest.TestCase):
 
   def test_local_model(self):
     self.assertEqual(
-        self._planner.make_local_request(), self._EXPECTED_LOCAL_REQUEST_JSON
+        self._planner.make_local_request(),
+        self._EXPECTED_LOCAL_REQUEST_JSON,
     )
 
   def test_global_model(self):
@@ -982,6 +1031,172 @@ class PlannerTestWithBreaks(unittest.TestCase):
     )
 
 
+class PlannerPickupAndDeliveryTest(ValidateResponseMixin, unittest.TestCase):
+  maxDiff = None
+
+  _OPTIONS = two_step_routing.Options(
+      local_model_vehicle_fixed_cost=0,
+      min_average_shipments_per_round=1,
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
+  )
+
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "pickup_and_delivery_small/scenario.json"
+  )
+  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
+      two_step_routing.load_parking_from_json(
+          testdata.json("pickup_and_delivery_small/parking.json")
+      )
+  )
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "pickup_and_delivery_small/scenario.local_request.json"
+  )
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
+      "pickup_and_delivery_small/scenario.local_response.10s.json"
+  )
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "pickup_and_delivery_small/scenario.global_request.10s.json"
+  )
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
+      "pickup_and_delivery_small/scenario.global_response.10s.10s.json"
+  )
+  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "pickup_and_delivery_small/scenario.merged_request.10s.10s.json"
+  )
+  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json(
+          "pickup_and_delivery_small/scenario.merged_response.10s.10s.json"
+      )
+  )
+  _EXPECTED_LOCAL_REFINEMENT_REQUEST_JSON: cfr_json.OptimizeToursRequest = (
+      testdata.json(
+          "pickup_and_delivery_small/scenario.refined_1.local_request.10s.10s.10s.10s.json"
+      )
+  )
+  _LOCAL_REFINEMENT_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json(
+          "pickup_and_delivery_small/scenario.refined_1.local_response.10s.10s.10s.10s.json"
+      )
+  )
+  _EXPECTED_INTEGRATED_LOCAL_REQUEST: cfr_json.OptimizeToursRequest = (
+      testdata.json(
+          "pickup_and_delivery_small/scenario.refined_1.integrated_local_request.10s.10s.10s.10s.json"
+      )
+  )
+  _EXPECTED_INTEGRATED_LOCAL_RESPONSE: cfr_json.OptimizeToursResponse = (
+      testdata.json(
+          "pickup_and_delivery_small/scenario.refined_1.integrated_local_response.10s.10s.10s.10s.json"
+      )
+  )
+  _EXPECTED_INTEGRATED_GLOBAL_REQUEST: cfr_json.OptimizeToursRequest = (
+      testdata.json(
+          "pickup_and_delivery_small/scenario.refined_1.integrated_global_request.10s.10s.10s.10s.json"
+      )
+  )
+  _EXPECTED_INTEGRATED_GLOBAL_REQUEST_FULL_ROUTES: (
+      cfr_json.OptimizeToursResponse
+  ) = testdata.json(
+      "pickup_and_delivery_small/scenario.refined_1.integrated_global_request.10s.10s.10s.10s.full_routes.json"
+  )
+  _EXPECTED_INTEGRATED_GLOBAL_RESPONSE_FULL_ROUTES: (
+      cfr_json.OptimizeToursResponse
+  ) = testdata.json(
+      "pickup_and_delivery_small/scenario.refined_1.integrated_global_response.10s.10s.10s.10s.full_routes.json"
+  )
+
+  def setUp(self):
+    super().setUp()
+    self._planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+
+  def test_local_request(self):
+    local_request = self._planner.make_local_request()
+    self.assertEqual(local_request, self._EXPECTED_LOCAL_REQUEST_JSON)
+
+  def test_global_request(self):
+    global_request = self._planner.make_global_request(
+        self._LOCAL_RESPONSE_JSON
+    )
+    self.assertEqual(global_request, self._EXPECTED_GLOBAL_REQUEST_JSON)
+
+  def test_merge_local_and_global_result(self):
+    merged_request, merged_response = (
+        self._planner.merge_local_and_global_result(
+            self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+        )
+    )
+    self.assertEqual(merged_request, self._EXPECTED_MERGED_REQUEST_JSON)
+    self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
+
+  def test_local_refinement_request(self):
+    local_refinement_request = self._planner.make_local_refinement_request(
+        self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+    self.assertEqual(
+        local_refinement_request, self._EXPECTED_LOCAL_REFINEMENT_REQUEST_JSON
+    )
+
+  def test_global_refinement_request(self):
+    (
+        integrated_local_request,
+        integrated_local_response,
+        integrated_global_request,
+        integrated_global_response,
+    ) = self._planner.integrate_local_refinement(
+        self._EXPECTED_LOCAL_REQUEST_JSON,
+        self._LOCAL_RESPONSE_JSON,
+        self._EXPECTED_GLOBAL_REQUEST_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+        self._LOCAL_REFINEMENT_RESPONSE_JSON,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_ONLY,
+    )
+    self.assertEqual(
+        integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
+    )
+    self.assertEqual(
+        integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
+    )
+    self.assertEqual(
+        integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    self.assertIsNone(integrated_global_response)
+
+  def test_global_refinement_request_full_routes(self):
+    (
+        integrated_local_request,
+        integrated_local_response,
+        integrated_global_request,
+        integrated_global_response,
+    ) = self._planner.integrate_local_refinement(
+        self._EXPECTED_LOCAL_REQUEST_JSON,
+        self._LOCAL_RESPONSE_JSON,
+        self._EXPECTED_GLOBAL_REQUEST_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+        self._LOCAL_REFINEMENT_RESPONSE_JSON,
+        integration_mode=two_step_routing.IntegrationMode.FULL_ROUTES,
+    )
+    self.assertEqual(
+        integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
+    )
+    self.assertEqual(
+        integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
+    )
+    self.assertEqual(
+        integrated_global_request,
+        self._EXPECTED_INTEGRATED_GLOBAL_REQUEST_FULL_ROUTES,
+    )
+    self.assertEqual(
+        integrated_global_response,
+        self._EXPECTED_INTEGRATED_GLOBAL_RESPONSE_FULL_ROUTES,
+    )
+
+
 class GetLocalModelRouteStartTimeWindowsTest(unittest.TestCase):
   """Tests for _get_local_model_route_start_time_windows."""
 
@@ -1035,6 +1250,15 @@ class GetLocalModelRouteStartTimeWindowsTest(unittest.TestCase):
               "deliveries": [{}],
               "label": "S006",
           },
+          {
+              "label": "S007",
+              "pickups": [{
+                  "timeWindows": [{
+                      "startTime": "2023-10-25T10:30:00Z",
+                      "endTime": "2023-10-25T12:00:00Z",
+                  }]
+              }],
+          },
       ],
   }
 
@@ -1065,7 +1289,7 @@ class GetLocalModelRouteStartTimeWindowsTest(unittest.TestCase):
           self._MODEL, local_route
       )
 
-  def test_with_some_shipments(self):
+  def test_with_some_delivery_shipments(self):
     local_route: cfr_json.ShipmentRoute = {
         "vehicleStartTime": "2023-10-25T11:00:00Z",
         "vehicleLabel": "P001 []",
@@ -1101,6 +1325,189 @@ class GetLocalModelRouteStartTimeWindowsTest(unittest.TestCase):
             "endTime": "2023-10-25T11:15:00Z",
         }],
     )
+
+  def test_pickup_and_delivery_local_model(self):
+    local_route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-25T11:00:00Z",
+        "vehicleLabel": "P001 []",
+        "visits": [
+            {
+                "startTime": "2023-10-25T11:00:00Z",
+                "isPickup": True,
+                "shipmentIndex": 3,
+                "shipmentLabel": "0: S001",
+            },
+            {
+                "startTime": "2023-10-25T11:00:00Z",
+                "isPickup": True,
+                "shipmentIndex": 1,
+                "shipmentLabel": "4: S005",
+            },
+            {
+                "startTime": "2023-10-25T11:00:00Z",
+                "isPickup": True,
+                "shipmentIndex": 2,
+                "shipmentLabel": "1: S002",
+            },
+            {
+                "startTime": "2023-10-25T11:00:00Z",
+                "isPickup": True,
+                "shipmentIndex": 0,
+                "shipmentLabel": "3: S004",
+            },
+            {
+                "startTime": "2023-10-25T11:10:00Z",
+                "shipmentIndex": 3,
+                "shipmentLabel": "0: S001",
+            },
+            {
+                "startTime": "2023-10-25T11:20:00Z",
+                "shipmentIndex": 1,
+                "shipmentLabel": "4: S005",
+            },
+            {
+                "startTime": "2023-10-25T11:45:00Z",
+                "shipmentIndex": 2,
+                "shipmentLabel": "1: S002",
+            },
+            {
+                "startTime": "2023-10-25T12:50:00Z",
+                "shipmentIndex": 0,
+                "shipmentLabel": "3: S004",
+            },
+        ],
+    }
+    self.assertSequenceEqual(
+        two_step_routing._get_local_model_route_start_time_windows(
+            self._MODEL, local_route
+        ),
+        [{
+            "startTime": "2023-10-25T10:10:00Z",
+            "endTime": "2023-10-25T11:15:00Z",
+        }],
+    )
+
+  def test_pickup_and_delivery_shipments(self):
+    local_route: cfr_json.ShipmentRoute = {
+        "vehicleStartTime": "2023-10-25T11:00:00Z",
+        "vehicleLabel": "P001 []",
+        "visits": [
+            {
+                "startTime": "2023-10-25T11:00:00Z",
+                "isPickup": True,
+                "shipmentIndex": 1,
+                "shipmentLabel": "4: S005",
+            },
+            {
+                "startTime": "2023-10-25T11:00:00Z",
+                "isPickup": True,
+                "shipmentIndex": 2,
+                "shipmentLabel": "1: S002",
+            },
+            {
+                "startTime": "2023-10-25T11:00:00Z",
+                "isPickup": True,
+                "shipmentIndex": 0,
+                "shipmentLabel": "3: S004",
+            },
+            {
+                "startTime": "2023-10-25T11:10:00Z",
+                "shipmentIndex": 5,
+                "shipmentLabel": "6: S007",
+                "isPickup": True,
+            },
+            {
+                "startTime": "2023-10-25T11:20:00Z",
+                "shipmentIndex": 1,
+                "shipmentLabel": "4: S005",
+            },
+            {
+                "startTime": "2023-10-25T11:45:00Z",
+                "shipmentIndex": 2,
+                "shipmentLabel": "1: S002",
+            },
+            {
+                "startTime": "2023-10-25T12:50:00Z",
+                "shipmentIndex": 0,
+                "shipmentLabel": "3: S004",
+            },
+            {
+                "startTime": "2023-10-25T13:02:00Z",
+                "shipmentIndex": 5,
+                "shipmentLabel": "6: S007",
+            },
+        ],
+    }
+    self.assertSequenceEqual(
+        two_step_routing._get_local_model_route_start_time_windows(
+            self._MODEL, local_route
+        ),
+        [{
+            "startTime": "2023-10-25T10:20:00Z",
+            "endTime": "2023-10-25T11:15:00Z",
+        }],
+    )
+
+
+class LocalRouteVisitIsToParking(unittest.TestCase):
+  """Tests for _local_route_visit_is_to_parking."""
+
+  maxDiff = None
+
+  _SHIPMENTS: Sequence[cfr_json.Shipment] = (
+      {
+          "deliveries": [{"arrivalWaypoint": {"placeId": "place1"}}],
+          "label": "S001",
+      },
+      {
+          "pickups": [{"arrivalWaypoint": {"placeId": "place2"}}],
+          "label": "S002",
+      },
+  )
+
+  def test_with_shipment(self):
+    test_cases: Sequence[tuple[cfr_json.Visit, int, bool]] = (
+        ({"isPickup": True}, 0, True),
+        ({}, 0, False),
+        ({"isPickup": False}, 0, False),
+        ({"isPickup": False}, 1, True),
+        ({}, 1, True),
+        ({"isPickup": True}, 1, False),
+    )
+    for visit, shipment_index, expected_is_to_parking in test_cases:
+      shipment = self._SHIPMENTS[shipment_index]
+      with self.subTest(
+          local_visit=visit,
+          shipment_index=shipment_index,
+          expected_is_to_parking=expected_is_to_parking,
+      ):
+        self.assertEqual(
+            two_step_routing._local_route_visit_is_to_parking(
+                visit, shipment=shipment
+            ),
+            expected_is_to_parking,
+        )
+
+  def test_with_shipments(self):
+    test_cases: Sequence[tuple[cfr_json.Visit, bool]] = (
+        ({"shipmentLabel": "0: S001", "isPickup": True}, True),
+        ({"shipmentLabel": "0: S001"}, False),
+        ({"shipmentLabel": "0: S001", "isPickup": False}, False),
+        ({"shipmentLabel": "1: S002", "isPickup": False}, True),
+        ({"shipmentLabel": "1: S002"}, True),
+        ({"shipmentLabel": "1: S002", "isPickup": True}, False),
+    )
+
+    for visit, expected_is_to_parking in test_cases:
+      with self.subTest(
+          local_visit=visit, expected_is_to_parking=expected_is_to_parking
+      ):
+        self.assertEqual(
+            two_step_routing._local_route_visit_is_to_parking(
+                visit, shipments=self._SHIPMENTS
+            ),
+            expected_is_to_parking,
+        )
 
 
 class GetConsecutiveParkingLocationVisits(unittest.TestCase):
@@ -1141,6 +1548,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P001 [vehicles=(0,)]/0",
                 "visits": [
+                    {"shipmentLabel": "3: S003", "isPickup": True},
+                    {"shipmentLabel": "5: S005", "isPickup": True},
                     {"shipmentLabel": "3: S003"},
                     {"shipmentLabel": "5: S005"},
                 ],
@@ -1148,6 +1557,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P001 [vehicles=(0,)]/1",
                 "visits": [
+                    {"shipmentLabel": "1: S001", "isPickup": True},
+                    {"shipmentLabel": "12: S012", "isPickup": True},
                     {"shipmentLabel": "1: S001"},
                     {"shipmentLabel": "12: S012"},
                 ],
@@ -1155,6 +1566,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/0",
                 "visits": [
+                    {"shipmentLabel": "2: S002", "isPickup": True},
+                    {"shipmentLabel": "8: S008", "isPickup": True},
                     {"shipmentLabel": "2: S002"},
                     {"shipmentLabel": "8: S008"},
                 ],
@@ -1184,6 +1597,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P001 [vehicles=(0,)]/0",
                 "visits": [
+                    {"shipmentLabel": "3: S003", "isPickup": True},
+                    {"shipmentLabel": "5: S005", "isPickup": True},
                     {"shipmentLabel": "3: S003"},
                     {"shipmentLabel": "5: S005"},
                 ],
@@ -1191,6 +1606,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P001 [vehicles=(0,)]/1",
                 "visits": [
+                    {"shipmentLabel": "1: S001", "isPickup": True},
+                    {"shipmentLabel": "12: S012", "isPickup": True},
                     {"shipmentLabel": "1: S001"},
                     {"shipmentLabel": "12: S012"},
                 ],
@@ -1198,6 +1615,9 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/0",
                 "visits": [
+                    {"shipmentLabel": "2: S002", "isPickup": True},
+                    {"shipmentLabel": "8: S008", "isPickup": True},
+                    {"shipmentLabel": "0: S000", "isPickup": True},
                     {"shipmentLabel": "2: S002"},
                     {"shipmentLabel": "8: S008"},
                     {"shipmentLabel": "0: S000"},
@@ -1206,6 +1626,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/1",
                 "visits": [
+                    {"shipmentLabel": "4: S004", "isPickup": True},
+                    {"shipmentLabel": "6: S006", "isPickup": True},
                     {"shipmentLabel": "4: S004"},
                     {"shipmentLabel": "6: S006"},
                 ],
@@ -1213,6 +1635,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/2",
                 "visits": [
+                    {"shipmentLabel": "9: S009", "isPickup": True},
+                    {"shipmentLabel": "10: S010", "isPickup": True},
                     {"shipmentLabel": "9: S009"},
                     {"shipmentLabel": "10: S010"},
                 ],
@@ -1243,7 +1667,52 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
                 first_global_visit_index=1,
                 num_global_visits=2,
                 local_route_indices=[0, 1],
-                shipment_indices=[[3, 5], [1, 12]],
+                visits=[
+                    [
+                        {
+                            "shipmentIndex": 3,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 5,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 3,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 5,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                    [
+                        {
+                            "shipmentIndex": 1,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 12,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 1,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 12,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                ],
             ),
             two_step_routing._ConsecutiveParkingLocationVisits(
                 parking_tag="P002",
@@ -1251,7 +1720,84 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
                 first_global_visit_index=4,
                 num_global_visits=3,
                 local_route_indices=[3, 2, 4],
-                shipment_indices=[[4, 6], [2, 8, 0], [9, 10]],
+                visits=[
+                    [
+                        {
+                            "shipmentIndex": 4,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 6,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 4,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 6,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                    [
+                        {
+                            "shipmentIndex": 2,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 8,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 0,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 2,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 8,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 0,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                    [
+                        {
+                            "shipmentIndex": 9,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 10,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 9,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 10,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                ],
             ),
         ),
     )
@@ -1262,6 +1808,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P001 [vehicles=(0,)]/0",
                 "visits": [
+                    {"shipmentLabel": "3: S003", "isPickup": True},
+                    {"shipmentLabel": "5: S005", "isPickup": True},
                     {"shipmentLabel": "3: S003"},
                     {"shipmentLabel": "5: S005"},
                 ],
@@ -1269,6 +1817,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P001 [vehicles=(0,)]/1",
                 "visits": [
+                    {"shipmentLabel": "1: S001", "isPickup": True},
+                    {"shipmentLabel": "12: S012", "isPickup": True},
                     {"shipmentLabel": "1: S001"},
                     {"shipmentLabel": "12: S012"},
                 ],
@@ -1276,6 +1826,9 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/0",
                 "visits": [
+                    {"shipmentLabel": "2: S002", "isPickup": True},
+                    {"shipmentLabel": "8: S008", "isPickup": True},
+                    {"shipmentLabel": "0: S000", "isPickup": True},
                     {"shipmentLabel": "2: S002"},
                     {"shipmentLabel": "8: S008"},
                     {"shipmentLabel": "0: S000"},
@@ -1284,6 +1837,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/1",
                 "visits": [
+                    {"shipmentLabel": "4: S004", "isPickup": True},
+                    {"shipmentLabel": "6: S006", "isPickup": True},
                     {"shipmentLabel": "4: S004"},
                     {"shipmentLabel": "6: S006"},
                 ],
@@ -1291,6 +1846,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/2",
                 "visits": [
+                    {"shipmentLabel": "9: S009", "isPickup": True},
+                    {"shipmentLabel": "10: S010", "isPickup": True},
                     {"shipmentLabel": "9: S009"},
                     {"shipmentLabel": "10: S010"},
                 ],
@@ -1325,7 +1882,52 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
                 first_global_visit_index=1,
                 num_global_visits=2,
                 local_route_indices=[0, 1],
-                shipment_indices=[[3, 5], [1, 12]],
+                visits=[
+                    [
+                        {
+                            "shipmentIndex": 3,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 5,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 3,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 5,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                    [
+                        {
+                            "shipmentIndex": 1,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 12,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 1,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 12,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                ],
             ),
             two_step_routing._ConsecutiveParkingLocationVisits(
                 parking_tag="P002",
@@ -1333,7 +1935,62 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
                 first_global_visit_index=4,
                 num_global_visits=2,
                 local_route_indices=[3, 2],
-                shipment_indices=[[4, 6], [2, 8, 0]],
+                visits=[
+                    [
+                        {
+                            "shipmentIndex": 4,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 6,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 4,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 6,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                    [
+                        {
+                            "shipmentIndex": 2,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 8,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 0,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 2,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 8,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 0,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                ],
             ),
         ),
     )
@@ -1344,6 +2001,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P001 [vehicles=(0,)]/0",
                 "visits": [
+                    {"shipmentLabel": "3: S003", "isPickup": True},
+                    {"shipmentLabel": "5: S005", "isPickup": True},
                     {"shipmentLabel": "3: S003"},
                     {"shipmentLabel": "5: S005"},
                 ],
@@ -1351,6 +2010,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P001 [vehicles=(0,)]/1",
                 "visits": [
+                    {"shipmentLabel": "1: S001", "isPickup": True},
+                    {"shipmentLabel": "12: S012", "isPickup": True},
                     {"shipmentLabel": "1: S001"},
                     {"shipmentLabel": "12: S012"},
                 ],
@@ -1358,6 +2019,9 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/0",
                 "visits": [
+                    {"shipmentLabel": "2: S002", "isPickup": True},
+                    {"shipmentLabel": "8: S008", "isPickup": True},
+                    {"shipmentLabel": "0: S000", "isPickup": True},
                     {"shipmentLabel": "2: S002"},
                     {"shipmentLabel": "8: S008"},
                     {"shipmentLabel": "0: S000"},
@@ -1366,6 +2030,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/1",
                 "visits": [
+                    {"shipmentLabel": "4: S004", "isPickup": True},
+                    {"shipmentLabel": "6: S006", "isPickup": True},
                     {"shipmentLabel": "4: S004"},
                     {"shipmentLabel": "6: S006"},
                 ],
@@ -1373,6 +2039,8 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
             {
                 "vehicleLabel": "P002 [vehicles=(0,)]/2",
                 "visits": [
+                    {"shipmentLabel": "9: S009", "isPickup": True},
+                    {"shipmentLabel": "10: S010", "isPickup": True},
                     {"shipmentLabel": "9: S009"},
                     {"shipmentLabel": "10: S010"},
                 ],
@@ -1400,7 +2068,52 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
                 first_global_visit_index=1,
                 num_global_visits=2,
                 local_route_indices=[0, 1],
-                shipment_indices=[[3, 5], [1, 12]],
+                visits=[
+                    [
+                        {
+                            "shipmentIndex": 3,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 5,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 3,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 5,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                    [
+                        {
+                            "shipmentIndex": 1,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 12,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 1,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 12,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                ],
             ),
             two_step_routing._ConsecutiveParkingLocationVisits(
                 parking_tag="P002",
@@ -1408,10 +2121,319 @@ class GetConsecutiveParkingLocationVisits(unittest.TestCase):
                 first_global_visit_index=3,
                 num_global_visits=2,
                 local_route_indices=[3, 2],
-                shipment_indices=[[4, 6], [2, 8, 0]],
+                visits=[
+                    [
+                        {
+                            "shipmentIndex": 4,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 6,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 4,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 6,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                    [
+                        {
+                            "shipmentIndex": 2,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 8,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 0,
+                            "visitRequestIndex": 0,
+                            "isPickup": True,
+                        },
+                        {
+                            "shipmentIndex": 2,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 8,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                        {
+                            "shipmentIndex": 0,
+                            "visitRequestIndex": 0,
+                            "isPickup": False,
+                        },
+                    ],
+                ],
             ),
         ),
     )
+
+
+class RemoveWaitTimeInLocalRouteUnloadTest(unittest.TestCase):
+  """Tests for _remove_wait_time_in_local_route_unload."""
+
+  maxDiff = None
+
+  _SHIPMENTS: Sequence[cfr_json.Shipment] = (
+      {
+          "label": "S001",
+          "deliveries": [{"arrivalWaypoint": {}}],
+      },
+      {
+          "label": "S002",
+          "deliveries": [{"arrivalWaypoint": {}}],
+      },
+      {
+          "label": "S003",
+          "pickups": [{"arrivalWaypoint": {}}],
+      },
+  )
+
+  def test_no_wait_time(self):
+    visits: Sequence[cfr_json.Visit] = (
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "shipmentLabel": "0: S001",
+            "isPickup": True,
+        },
+        {
+            "startTime": "2024-03-29T09:01:00Z",
+            "shipmentLabel": "0: S001",
+        },
+    )
+    transitions: Sequence[cfr_json.Transition] = (
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "travelDuration": "0s",
+            "totalDuration": "0s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "travelDuration": "60s",
+            "totalDuration": "60s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:03:00Z",
+            "travelDuration": "62s",
+            "totalDuration": "62s",
+            "waitDuration": "0s",
+        },
+    )
+    expected_visits = copy.deepcopy(visits)
+    expected_transitions = copy.deepcopy(transitions)
+    two_step_routing._remove_wait_time_in_local_route_unload(
+        visits, transitions, self._SHIPMENTS
+    )
+    self.assertEqual(visits, expected_visits)
+    self.assertEqual(transitions, expected_transitions)
+
+  def test_wait_time_between_customer_visits(self):
+    visits: Sequence[cfr_json.Visit] = (
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "shipmentLabel": "0: S001",
+            "isPickup": True,
+        },
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "shipmentLabel": "1: S002",
+            "isPickup": True,
+        },
+        {
+            "startTime": "2024-03-29T09:02:00Z",
+            "shipmentLabel": "2: S003",
+            "isPickup": True,
+        },
+        {
+            "startTime": "2024-03-29T09:05:00Z",
+            "shipmentLabel": "1: S002",
+        },
+        {
+            "startTime": "2024-03-29T09:09:00Z",
+            "shipmentLabel": "0: S001",
+        },
+        {
+            "startTime": "2024-03-29T09:11:00Z",
+            "shipmentLabel": "2: S003",
+        },
+    )
+    transitions: Sequence[cfr_json.Transition] = (
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "travelDuration": "0s",
+            "totalDuration": "0s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "travelDuration": "0s",
+            "totalDuration": "0s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "travelDuration": "120s",
+            "totalDuration": "120s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:03:00Z",
+            "travelDuration": "60s",
+            "totalDuration": "60s",
+            "waitDuration": "60s",
+        },
+        {
+            "startTime": "2024-03-29T09:07:00Z",
+            "travelDuration": "120s",
+            "totalDuration": "60s",
+            "waitDuration": "60s",
+        },
+        {
+            "startTime": "2024-03-29T09:10:00Z",
+            "travelDuration": "60s",
+            "totalDuration": "60s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:11:00Z",
+            "travelDuration": "0s",
+            "totalDuration": "0s",
+            "waitDuration": "0s",
+        },
+    )
+    expected_visits = copy.deepcopy(visits)
+    expected_transitions = copy.deepcopy(transitions)
+    two_step_routing._remove_wait_time_in_local_route_unload(
+        visits, transitions, self._SHIPMENTS
+    )
+    self.assertEqual(visits, expected_visits)
+    self.assertEqual(transitions, expected_transitions)
+
+  def test_wait_time_between_parking_visits(self):
+    visits: Sequence[cfr_json.Visit] = (
+        {
+            "startTime": "2024-03-29T09:01:00Z",
+            "shipmentLabel": "0: S001",
+            "isPickup": True,
+        },
+        {
+            "startTime": "2024-03-29T09:03:00Z",
+            "shipmentLabel": "1: S002",
+            "isPickup": True,
+        },
+        {
+            "startTime": "2024-03-29T09:06:00Z",
+            "shipmentLabel": "1: S002",
+        },
+        {
+            "startTime": "2024-03-29T09:13:00Z",
+            "shipmentLabel": "0: S001",
+        },
+    )
+    transitions: Sequence[cfr_json.Transition] = (
+        {
+            "startTime": "2024-03-29T09:00:00Z",
+            "travelDuration": "0s",
+            "totalDuration": "60s",
+            "waitDuration": "60s",
+        },
+        {
+            "startTime": "2024-03-29T09:01:00Z",
+            "travelDuration": "0s",
+            "totalDuration": "120s",
+            "waitDuration": "120s",
+        },
+        {
+            "startTime": "2024-03-29T09:03:00Z",
+            "travelDuration": "120s",
+            "totalDuration": "180s",
+            "waitDuration": "60s",
+        },
+        {
+            "startTime": "2024-03-29T09:08:00Z",
+            "travelDuration": "300s",
+            "totalDuration": "60s",
+            "waitDuration": "240s",
+        },
+        {
+            "startTime": "2024-03-29T09:15:00Z",
+            "travelDuration": "60s",
+            "totalDuration": "60s",
+            "waitDuration": "0s",
+        },
+    )
+    expected_visits: Sequence[cfr_json.Visit] = (
+        {
+            "startTime": "2024-03-29T09:04:00Z",
+            "shipmentLabel": "0: S001",
+            "isPickup": True,
+        },
+        {
+            "startTime": "2024-03-29T09:04:00Z",
+            "shipmentLabel": "1: S002",
+            "isPickup": True,
+        },
+        {
+            "startTime": "2024-03-29T09:06:00Z",
+            "shipmentLabel": "1: S002",
+        },
+        {
+            "startTime": "2024-03-29T09:13:00Z",
+            "shipmentLabel": "0: S001",
+        },
+    )
+    expected_transitions: Sequence[cfr_json.Transition] = (
+        {
+            "startTime": "2024-03-29T09:04:00Z",
+            "travelDuration": "0s",
+            "totalDuration": "0s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:04:00Z",
+            "travelDuration": "0s",
+            "totalDuration": "0s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:04:00Z",
+            "travelDuration": "120s",
+            "totalDuration": "120s",
+            "waitDuration": "0s",
+        },
+        {
+            "startTime": "2024-03-29T09:08:00Z",
+            "travelDuration": "300s",
+            "totalDuration": "60s",
+            "waitDuration": "240s",
+        },
+        {
+            "startTime": "2024-03-29T09:15:00Z",
+            "travelDuration": "60s",
+            "totalDuration": "60s",
+            "waitDuration": "0s",
+        },
+    )
+    two_step_routing._remove_wait_time_in_local_route_unload(
+        visits, transitions, self._SHIPMENTS
+    )
+    self.assertEqual(visits, expected_visits)
+    self.assertEqual(transitions, expected_transitions)
 
 
 class SplitRefinedLocalRouteTest(unittest.TestCase):
@@ -1432,14 +2454,14 @@ class SplitRefinedLocalRouteTest(unittest.TestCase):
 
   def test_single_round(self):
     visits: list[cfr_json.Visit] = [
-        {"shipmentIndex": 0, "isPickup": True},
-        {"shipmentIndex": 2, "isPickup": True},
-        {"shipmentIndex": 8, "isPickup": True},
-        {"shipmentIndex": 5, "isPickup": True},
-        {"shipmentIndex": 2, "isPickup": False},
-        {"shipmentIndex": 5, "isPickup": False},
-        {"shipmentIndex": 0, "isPickup": False},
-        {"shipmentIndex": 8, "isPickup": False},
+        {"shipmentIndex": 0, "shipmentLabel": "0: S000", "isPickup": True},
+        {"shipmentIndex": 2, "shipmentLabel": "2: S002", "isPickup": True},
+        {"shipmentIndex": 8, "shipmentLabel": "8: S008", "isPickup": True},
+        {"shipmentIndex": 5, "shipmentLabel": "5: S005", "isPickup": True},
+        {"shipmentIndex": 2, "shipmentLabel": "2: S002", "isPickup": False},
+        {"shipmentIndex": 5, "shipmentLabel": "5: S005", "isPickup": False},
+        {"shipmentIndex": 0, "shipmentLabel": "0: S000", "isPickup": False},
+        {"shipmentIndex": 8, "shipmentLabel": "8: S008", "isPickup": False},
     ]
     transitions = [
         {"totalDuration": "0s"},
@@ -1460,28 +2482,44 @@ class SplitRefinedLocalRouteTest(unittest.TestCase):
     }
     self.assertSequenceEqual(
         two_step_routing._split_refined_local_route(route),
-        ((visits[4:], transitions[4:], travel_steps[4:]),),
+        ((visits, transitions, travel_steps),),
     )
 
   def test_multiple_rounds(self):
     visits: list[cfr_json.Visit] = [
-        {"shipmentIndex": 0, "isPickup": True},
-        {"shipmentIndex": 2, "isPickup": False},
-        {"shipmentIndex": 2, "isPickup": True},
-        {"shipmentIndex": 8, "isPickup": True},
-        {"shipmentIndex": 5, "isPickup": False},
-        {"shipmentIndex": 0, "isPickup": False},
-        {"shipmentIndex": 5, "isPickup": True},
-        {"shipmentIndex": 8, "isPickup": False},
+        {"shipmentIndex": 0, "shipmentLabel": "0: S000", "isPickup": True},
+        {"shipmentIndex": 0, "shipmentLabel": "0: S000", "isPickup": False},
+        {"shipmentIndex": 1, "shipmentLabel": "barrier P123", "isPickup": True},
+        {
+            "shipmentIndex": 1,
+            "shipmentLabel": "barrier P123",
+            "isPickup": False,
+        },
+        {"shipmentIndex": 2, "shipmentLabel": "2: S002", "isPickup": True},
+        {"shipmentIndex": 8, "shipmentLabel": "8: S008", "isPickup": True},
+        {"shipmentIndex": 8, "shipmentLabel": "8: S008", "isPickup": False},
+        {"shipmentIndex": 2, "shipmentLabel": "2: S002", "isPickup": False},
+        {"shipmentIndex": 7, "shipmentLabel": "barrier P123", "isPickup": True},
+        {
+            "shipmentIndex": 7,
+            "shipmentLabel": "barrier P123",
+            "isPickup": False,
+        },
+        {"shipmentIndex": 5, "shipmentLabel": "5: S005", "isPickup": True},
+        {"shipmentIndex": 5, "shipmentLabel": "5: S005", "isPickup": False},
     ]
     transitions = [
         {"totalDuration": "0s"},
         {"totalDuration": "14s"},
         {"totalDuration": "16s"},
         {"totalDuration": "0s"},
+        {"totalDuration": "0s"},
+        {"totalDuration": "0s"},
         {"totalDuration": "32s"},
         {"totalDuration": "45s"},
         {"totalDuration": "27s"},
+        {"totalDuration": "0s"},
+        {"totalDuration": "0s"},
         {"totalDuration": "72s"},
         {"totalDuration": "18s"},
     ]
@@ -1491,13 +2529,14 @@ class SplitRefinedLocalRouteTest(unittest.TestCase):
         "transitions": transitions,
         "travelSteps": travel_steps,
     }
+    expected_splits = (
+        (visits[0:2], transitions[0:3], travel_steps[0:3]),
+        (visits[4:8], transitions[4:9], travel_steps[4:9]),
+        (visits[10:], transitions[10:], travel_steps[10:]),
+    )
     self.assertSequenceEqual(
         two_step_routing._split_refined_local_route(route),
-        (
-            (visits[1:2], transitions[1:3], travel_steps[1:3]),
-            (visits[4:6], transitions[4:7], travel_steps[4:7]),
-            (visits[7:], transitions[7:], travel_steps[7:]),
-        ),
+        expected_splits,
     )
 
 
@@ -2213,4 +3252,9 @@ class TestAssertGlobalModelRoutesHandleSameShipments(unittest.TestCase):
 
 
 if __name__ == "__main__":
+  logging.basicConfig(
+      format="%(asctime)s %(levelname)-8s %(filename)s:%(lineno)d %(message)s",
+      level=logging.INFO,
+      datefmt="%Y-%m-%d %H:%M:%S",
+  )
   unittest.main()

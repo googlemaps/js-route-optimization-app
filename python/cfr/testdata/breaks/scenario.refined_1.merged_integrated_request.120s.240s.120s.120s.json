@@ -526,6 +526,70 @@
         }
       },
       {
+        "label": "P0002 arrival",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878896743823766,
+                  "longitude": 2.345315644596649
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ]
+      },
+      {
+        "label": "P0002 departure",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.878896743823766,
+                  "longitude": 2.345315644596649
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ]
+      },
+      {
+        "label": "P0010 arrival",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87834664125264,
+                  "longitude": 2.3087576249099384
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ]
+      },
+      {
+        "label": "P0010 departure",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87834664125264,
+                  "longitude": 2.3087576249099384
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ]
+      },
+      {
         "label": "P0009 arrival",
         "deliveries": [
           {
@@ -582,38 +646,6 @@
                 "latLng": {
                   "latitude": 48.879529214588096,
                   "longitude": 2.3113355338108836
-                }
-              }
-            },
-            "duration": "0s"
-          }
-        ]
-      },
-      {
-        "label": "P0010 arrival",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.87834664125264,
-                  "longitude": 2.3087576249099384
-                }
-              }
-            },
-            "duration": "0s"
-          }
-        ]
-      },
-      {
-        "label": "P0010 departure",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.87834664125264,
-                  "longitude": 2.3087576249099384
                 }
               }
             },
@@ -686,38 +718,6 @@
         ]
       },
       {
-        "label": "P0004 arrival",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.86959247473453,
-                  "longitude": 2.3342220491432064
-                }
-              }
-            },
-            "duration": "0s"
-          }
-        ]
-      },
-      {
-        "label": "P0004 departure",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.86959247473453,
-                  "longitude": 2.3342220491432064
-                }
-              }
-            },
-            "duration": "0s"
-          }
-        ]
-      },
-      {
         "label": "P0002 arrival",
         "deliveries": [
           {
@@ -742,6 +742,38 @@
                 "latLng": {
                   "latitude": 48.878896743823766,
                   "longitude": 2.345315644596649
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ]
+      },
+      {
+        "label": "P0007 arrival",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88961286137252,
+                  "longitude": 2.335890071102119
+                }
+              }
+            },
+            "duration": "0s"
+          }
+        ]
+      },
+      {
+        "label": "P0007 departure",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88961286137252,
+                  "longitude": 2.335890071102119
                 }
               }
             },
@@ -902,38 +934,6 @@
                 "latLng": {
                   "latitude": 48.876301660547924,
                   "longitude": 2.349388130830844
-                }
-              }
-            },
-            "duration": "0s"
-          }
-        ]
-      },
-      {
-        "label": "P0002 arrival",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.878896743823766,
-                  "longitude": 2.345315644596649
-                }
-              }
-            },
-            "duration": "0s"
-          }
-        ]
-      },
-      {
-        "label": "P0002 departure",
-        "deliveries": [
-          {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.878896743823766,
-                  "longitude": 2.345315644596649
                 }
               }
             },
