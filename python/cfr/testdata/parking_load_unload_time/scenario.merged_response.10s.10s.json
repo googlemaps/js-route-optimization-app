@@ -1,0 +1,396 @@
+{
+  "routes": [
+    {
+      "routeTotalCost": 3196.0063333333333,
+      "transitions": [
+        {
+          "travelDuration": "756s",
+          "travelDistanceMeters": 2687,
+          "delayDuration": "120s",
+          "waitDuration": "2551s",
+          "totalDuration": "3427s",
+          "startTime": "2024-03-30T08:00:00Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "3"
+            }
+          }
+        },
+        {
+          "travelDuration": "153s",
+          "travelDistanceMeters": 440,
+          "waitDuration": "0s",
+          "totalDuration": "153s",
+          "startTime": "2024-03-30T08:57:27Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "403s",
+          "travelDistanceMeters": 1201,
+          "waitDuration": "0s",
+          "totalDuration": "403s",
+          "startTime": "2024-03-30T09:05:00Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "2"
+            }
+          }
+        },
+        {
+          "travelDuration": "258s",
+          "travelDistanceMeters": 766,
+          "waitDuration": "0s",
+          "totalDuration": "258s",
+          "startTime": "2024-03-30T09:16:43Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "0s",
+          "delayDuration": "60s",
+          "waitDuration": "0s",
+          "totalDuration": "60s",
+          "startTime": "2024-03-30T09:23:01Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "2"
+            }
+          }
+        },
+        {
+          "travelDuration": "164s",
+          "travelDistanceMeters": 531,
+          "waitDuration": "0s",
+          "totalDuration": "164s",
+          "startTime": "2024-03-30T09:24:01Z",
+          "vehicleLoads": {
+            "shipment_count": {}
+          }
+        },
+        {
+          "travelDuration": "226s",
+          "travelDistanceMeters": 679,
+          "waitDuration": "0s",
+          "totalDuration": "226s",
+          "startTime": "2024-03-30T09:31:45Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "548s",
+          "travelDistanceMeters": 1858,
+          "delayDuration": "30s",
+          "waitDuration": "0s",
+          "totalDuration": "578s",
+          "startTime": "2024-03-30T09:37:31Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "744s",
+          "travelDistanceMeters": 2445,
+          "delayDuration": "120s",
+          "waitDuration": "0s",
+          "totalDuration": "864s",
+          "startTime": "2024-03-30T09:52:09Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "2"
+            }
+          }
+        },
+        {
+          "travelDuration": "200s",
+          "travelDistanceMeters": 575,
+          "waitDuration": "0s",
+          "totalDuration": "200s",
+          "startTime": "2024-03-30T10:07:33Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "209s",
+          "travelDistanceMeters": 654,
+          "waitDuration": "0s",
+          "totalDuration": "209s",
+          "startTime": "2024-03-30T10:15:53Z",
+          "vehicleLoads": {
+            "shipment_count": {}
+          }
+        },
+        {
+          "travelDuration": "0s",
+          "delayDuration": "60s",
+          "waitDuration": "0s",
+          "totalDuration": "60s",
+          "startTime": "2024-03-30T10:19:22Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "265s",
+          "travelDistanceMeters": 768,
+          "waitDuration": "0s",
+          "totalDuration": "265s",
+          "startTime": "2024-03-30T10:21:22Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "731s",
+          "travelDistanceMeters": 2922,
+          "waitDuration": "0s",
+          "totalDuration": "731s",
+          "startTime": "2024-03-30T10:30:47Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "2"
+            }
+          }
+        },
+        {
+          "travelDuration": "519s",
+          "travelDistanceMeters": 2036,
+          "waitDuration": "0s",
+          "totalDuration": "519s",
+          "startTime": "2024-03-30T10:47:58Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "580s",
+          "travelDistanceMeters": 1733,
+          "delayDuration": "30s",
+          "waitDuration": "0s",
+          "totalDuration": "610s",
+          "startTime": "2024-03-30T10:57:07Z",
+          "vehicleLoads": {
+            "shipment_count": {}
+          }
+        }
+      ],
+      "vehicleEndTime": "2024-03-30T11:07:17Z",
+      "vehicleIndex": 0,
+      "vehicleLabel": "V0001",
+      "vehicleStartTime": "2024-03-30T08:00:00Z",
+      "visits": [
+        {
+          "shipmentIndex": 7,
+          "shipmentLabel": "P0002 arrival",
+          "startTime": "2024-03-30T08:57:07Z",
+          "detour": "2551s"
+        },
+        {
+          "shipmentIndex": 6,
+          "startTime": "2024-03-30T09:00:00Z",
+          "detour": "2571s",
+          "shipmentLabel": "S0007",
+          "isPickup": true
+        },
+        {
+          "shipmentIndex": 4,
+          "startTime": "2024-03-30T09:11:43Z",
+          "detour": "3169s",
+          "shipmentLabel": "S0005"
+        },
+        {
+          "shipmentIndex": 8,
+          "shipmentLabel": "P0002 departure",
+          "startTime": "2024-03-30T09:21:01Z",
+          "detour": "1554s"
+        },
+        {
+          "shipmentIndex": 9,
+          "shipmentLabel": "P0002 arrival",
+          "startTime": "2024-03-30T09:24:01Z",
+          "detour": "4165s"
+        },
+        {
+          "shipmentIndex": 5,
+          "startTime": "2024-03-30T09:26:45Z",
+          "detour": "4165s",
+          "shipmentLabel": "S0006",
+          "isPickup": true
+        },
+        {
+          "shipmentIndex": 10,
+          "shipmentLabel": "P0002 departure",
+          "startTime": "2024-03-30T09:35:31Z",
+          "detour": "810s"
+        },
+        {
+          "isPickup": true,
+          "startTime": "2024-03-30T09:47:09Z",
+          "demands": [
+            {
+              "type": "shipment_count",
+              "value": "1"
+            }
+          ],
+          "detour": "6205s",
+          "shipmentLabel": "S0001",
+          "arrivalLoads": [
+            {
+              "type": "shipment_count",
+              "value": "1"
+            }
+          ],
+          "delayBeforeStart": {
+            "startTime": "2024-03-30T09:46:39Z",
+            "duration": "30s"
+          },
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          },
+          "shipmentIndex": 0
+        },
+        {
+          "shipmentIndex": 11,
+          "shipmentLabel": "P0001 arrival",
+          "startTime": "2024-03-30T10:06:33Z",
+          "detour": "7082s"
+        },
+        {
+          "shipmentIndex": 3,
+          "startTime": "2024-03-30T10:10:53Z",
+          "detour": "7082s",
+          "shipmentLabel": "S0004"
+        },
+        {
+          "shipmentIndex": 12,
+          "shipmentLabel": "P0001 departure",
+          "startTime": "2024-03-30T10:19:22Z",
+          "detour": "769s"
+        },
+        {
+          "shipmentIndex": 13,
+          "shipmentLabel": "P0001 arrival",
+          "startTime": "2024-03-30T10:20:22Z",
+          "detour": "7911s"
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2024-03-30T10:25:47Z",
+          "detour": "7971s",
+          "shipmentLabel": "S0002",
+          "isPickup": true
+        },
+        {
+          "shipmentIndex": 2,
+          "startTime": "2024-03-30T10:42:58Z",
+          "detour": "8783s",
+          "shipmentLabel": "S0003"
+        },
+        {
+          "shipmentIndex": 14,
+          "shipmentLabel": "P0001 departure",
+          "startTime": "2024-03-30T10:56:37Z",
+          "detour": "2205s"
+        }
+      ],
+      "travelSteps": [
+        {
+          "duration": "748s",
+          "distanceMeters": 2686
+        },
+        {
+          "duration": "154s",
+          "distanceMeters": 441
+        },
+        {
+          "duration": "398s",
+          "distanceMeters": 1201
+        },
+        {
+          "duration": "256s",
+          "distanceMeters": 766
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "duration": "165s",
+          "distanceMeters": 531
+        },
+        {
+          "duration": "225s",
+          "distanceMeters": 680
+        },
+        {
+          "duration": "547s",
+          "distanceMeters": 1858
+        },
+        {
+          "duration": "773s",
+          "distanceMeters": 2444
+        },
+        {
+          "duration": "199s",
+          "distanceMeters": 576
+        },
+        {
+          "duration": "241s",
+          "distanceMeters": 652
+        },
+        {
+          "duration": "0s"
+        },
+        {
+          "duration": "260s",
+          "distanceMeters": 769
+        },
+        {
+          "duration": "727s",
+          "distanceMeters": 2925
+        },
+        {
+          "duration": "549s",
+          "distanceMeters": 2034
+        },
+        {
+          "duration": "578s",
+          "distanceMeters": 1732
+        }
+      ],
+      "vehicleDetour": "11237s",
+      "metrics": {
+        "performedShipmentCount": 15,
+        "performedMandatoryShipmentCount": 9,
+        "travelDuration": "5756s",
+        "travelDistanceMeters": 19295,
+        "waitDuration": "2551s",
+        "delayDuration": "420s",
+        "breakDuration": "0s",
+        "visitDuration": "2510s",
+        "totalDuration": "11237s"
+      }
+    }
+  ]
+}

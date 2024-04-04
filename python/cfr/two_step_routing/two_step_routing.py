@@ -832,6 +832,9 @@ class Planner:
             local_start_time = cfr_json.parse_time_string(
                 local_route["vehicleStartTime"]
             )
+            local_end_time = cfr_json.parse_time_string(
+                local_route["vehicleEndTime"]
+            )
             local_to_global_delta = global_start_time - local_start_time
             merged_visits.append({
                 "shipmentIndex": arrival_shipment_index,
@@ -851,6 +854,8 @@ class Planner:
                 local_route["travelSteps"] if use_deprecated_fields else None
             )
             previous_visit_was_to_parking = True
+            unload_duration = datetime.timedelta()
+            load_duration = datetime.timedelta()
             for local_visit_index, local_visit in enumerate(local_visits):
               shipment_index = _get_shipment_index_from_local_route_visit(
                   local_visit
@@ -860,6 +865,32 @@ class Planner:
                   local_visit, shipment=shipment
               )
 
+              local_transition_in = local_transitions[local_visit_index]
+
+              if (
+                  previous_visit_was_to_parking
+                  and not current_visit_is_to_parking
+              ):
+                # The current visit is the first visit on the local route that
+                # is not at the parking location. We can compute the unload
+                # duration as the duration between the start of the transition
+                # to this visit and the start of the local route.
+                unload_duration = (
+                    cfr_json.parse_time_string(local_transition_in["startTime"])
+                    - local_start_time
+                )
+              if (
+                  not previous_visit_was_to_parking
+                  and current_visit_is_to_parking
+              ):
+                # The current visit is the first visit back at the parking
+                # location. We can compute the load duration as the duration
+                # between the start of the local visit and the end of the local
+                # route.
+                load_duration = local_end_time - cfr_json.parse_time_string(
+                    local_visit["startTime"]
+                )
+
               if (
                   not previous_visit_was_to_parking
                   or not current_visit_is_to_parking
@@ -868,7 +899,6 @@ class Planner:
                 # the visits to customer locations. We need to preserve
                 # transitions between these visits, but also between parking and
                 # the first/last visit to the customer location.
-                local_transition_in = local_transitions[local_visit_index]
                 merged_transition = copy.deepcopy(local_transition_in)
                 merged_transition["startTime"] = cfr_json.update_time_string(
                     merged_transition["startTime"], local_to_global_delta
@@ -937,6 +967,14 @@ class Planner:
             departure_shipment_index, departure_shipment = (
                 add_parking_location_shipment(parking, arrival=False)
             )
+
+            arrival_shipment["deliveries"][0]["duration"] = (
+                cfr_json.as_duration_string(unload_duration)
+            )
+            departure_shipment["deliveries"][0]["duration"] = (
+                cfr_json.as_duration_string(load_duration)
+            )
+
             local_route_duration = cfr_json.parse_duration_string(
                 local_route["metrics"]["totalDuration"]
             )
@@ -944,7 +982,8 @@ class Planner:
                 "shipmentIndex": departure_shipment_index,
                 "shipmentLabel": departure_shipment["label"],
                 "startTime": cfr_json.update_time_string(
-                    local_route["vehicleEndTime"], local_to_global_delta
+                    local_route["vehicleEndTime"],
+                    local_to_global_delta - load_duration,
                 ),
                 # NOTE(ondrasej): The detour of the parking departure visit is
                 # the time spent in the parking (the delta between the arrival
@@ -1074,7 +1113,7 @@ def _make_local_model_barrier_shipment(
   """Creates a barrier shipment for the local refinement model.
 
   The barrier shipment consumes the whole capacity of the vehicle used from the
-  bus stop, forcing it to make any pending deliveries before passing through the
+  parking, forcing it to make any pending deliveries before passing through the
   barrier. It should be used with transition attributes that turn the barrier
   into a separator between two visit rounds (without a return to the vehicle).
 
