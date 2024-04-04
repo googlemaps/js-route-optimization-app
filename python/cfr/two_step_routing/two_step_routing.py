@@ -44,421 +44,31 @@ On a high level, the solver does the following:
    locations.
 """
 
-import argparse
 import collections
-from collections.abc import Callable, Collection, Iterable, Mapping, MutableMapping, Sequence, Set
+from collections.abc import Collection, Iterable, Mapping, MutableMapping, Sequence, Set
 import copy
 import dataclasses
 import datetime
-import enum
-import functools
 import logging
 import re
-from typing import Any, Self, TypeAlias, TypeVar
+from typing import Any, TypeAlias, TypeVar
 
+from . import _parking
+from . import _shared
 from ..json import cfr_json
 
-
-@dataclasses.dataclass(frozen=True)
-class _ParkingGroupKey:
-  """A key used to group shipments into parking groups.
-
-  A parking group is a group of shipments that are delivered from the same
-  parking location and that are planned as a group by the global model. The goal
-  of this class is that shipments with the same key can be grouped in the local
-  and global models.
-
-  Attributes:
-    parking_tag: The tag of the parking location from which the shipment is
-      delivered.
-    time_windows: The list of delivery time windows for the shipment. Empty when
-      the shipment does not have a delivery time window.
-    allowed_vehicle_indices: The list of vehicle indices that can deliver the
-      shipment.
-    penalty_cost_group: The penalty cost/penalty cost group of the shipment.
-      Contains `None` when grouping by penalty cost is not used or the value
-      returned by `InitialLocalModelGrouping.get_penalty_cost_group` when it is
-      provided.
-  """
-
-  parking_tag: str | None = None
-  time_windows: tuple[tuple[str | None, str | None], ...] = ()
-  allowed_vehicle_indices: tuple[int, ...] | None = None
-  penalty_cost_group: str | None = None
-
-
-def _no_penalty_cost_grouping(shipment: cfr_json.Shipment) -> str | None:
-  """Implements "no grouping by penalty cost"."""
-  del shipment  # Unused.
-  return None
-
-
-def _penalty_cost_per_item(shipment: cfr_json.Shipment) -> str | None:
-  """Groups shipments by their penalty cost per item in the shipment.
-
-  The number of items in a shipment is determined as the number of
-  comma-separated components in the label of the shipment. The group name is the
-  penalty cost per item in a string format, or None when the shipment is
-  mandatory.
-
-  Args:
-    shipment: The shipment for which the penalty cost per item is computed.
-
-  Returns:
-    None for mandatory shipments. Otherwise, returns a string that contains the
-    penaltyCost per item of the shipment in a string format.
-  """
-  penalty_cost = shipment.get("penaltyCost")
-  if penalty_cost is None:
-    return None
-  # TODO(ondrasej): Allow other ways to determine the number of items in the
-  # shipment.
-  num_items = shipment.get("label", "").count(",") + 1
-  return str(penalty_cost / num_items)
-
-
-@dataclasses.dataclass(frozen=True)
-class InitialLocalModelGrouping:
-  """Specifies how shipments are grouped in the initial local model.
-
-  Shipments are always grouped by parking location and allowed vehicle indices.
-  The fields of this class allow additional grouping.
-
-  Attributes:
-    time_windows: The shipments are grouped by their delivery time windows.
-    get_penalty_cost_group: A function that returns the transformed penalty cost
-      of the shipment used for the initial grouping of the shipments in the
-      local model.
-  """
-
-  time_windows: bool = False
-  get_penalty_cost_group: Callable[[cfr_json.Shipment], str | None] = (
-      _no_penalty_cost_grouping
-  )
-
-  @classmethod
-  def from_string(cls, options: str) -> Self:
-    """Creates the grouping specification from command-line flags.
-
-    Args:
-      options: The grouping options in a string format. Expects a
-        comma-separated list of option names.
-
-    Returns:
-      A new instance of this class.
-
-    Raises:
-      ArgumentTypeError: When parsing of the options fails.
-    """
-    time_windows = False
-    get_penalty_cost_group = _no_penalty_cost_grouping
-    for option in options.split(","):
-      match option:
-        case "":
-          break
-        case "time_windows":
-          time_windows = True
-        case "penalty_cost_per_item":
-          get_penalty_cost_group = _penalty_cost_per_item
-        case _:
-          raise argparse.ArgumentTypeError(
-              f"Unknown grouping option {option!r}, possible values are"
-              " 'time_windows' and 'penalty_cost_per_item'"
-          )
-    return cls(
-        time_windows=time_windows,
-        get_penalty_cost_group=get_penalty_cost_group,
-    )
-
-
-@enum.unique
-class IntegrationMode(enum.Enum):
-  """Specifies how integration of the local refinement response is done.
-
-  Values:
-    VISITS_ONLY: The injected first solution routes contain only shipment and
-      visit request indices and break start times.
-    VISITS_AND_START_TIMES: The injected first solution routes contain shipment
-      and visit request indices as well as visit start times from the initial
-      solution.
-    FULL_ROUTES: The injected first solution routes are fully integrated,
-      including transitions and aggregated metrics. The routes can be used in a
-      call to `Planner.merge_local_and_global_result()`.
-  """
-
-  VISITS_ONLY = 0
-  VISITS_AND_START_TIMES = 1
-  FULL_ROUTES = 2
-
-
-# The type of parking location tags. Technically, this is a string, but we use
-# an alias with a different name to make this apparent from type annotations
-# alone.
-ParkingTag: TypeAlias = str
-
-
-# A dummy waypoint used when no other waypoint is provided during the
-# construction of a ParkingLocation. We can't use None for the initialization,
-# because that would require adding `| None` to the type annotation, and then
-# checking for None everywhere even though we always have a valid waypoint.
-_PARKING_WAYPOINT_SENTINEL: cfr_json.Waypoint = {
-    "location": {"latLng": {"latitude": 0, "longitude": 0}}
-}
-
-
-@dataclasses.dataclass(frozen=True)
-class ParkingLocation:
-  """Defines one parking location for the planner.
-
-  Attributes:
-    coordinates: Only for initialization & deprecated. The coordinates of the
-      parking location. Converted to `waypoint` during the construction of the
-      object. Exactly one of `coordinates` and `waypoint` must be provided.
-    waypoint: The waypoint for the parking location. When delivering a shipment
-      using the two-step delivery, the driver first parks at this waypoint, and
-      then uses a different mode of transport to the final delivery locations.
-      Exactly one of `coordinates` and `waypoint` must be provided.
-    tag: A unique name used for the parking location. Used to match parking
-      locations in `ShipmentParkingMap`, and it is also used in the labels of
-      the virtual shipments generated for parking locations by the planner.
-    travel_mode: The travel mode used in the CFR requests when computing
-      optimized routes from the parking lot to the final delivery locations.
-      Overrides `Vehicle.travel_mode` for vehicles used in the local route
-      optimization plan.
-    travel_duration_multiple: The travel duration multiple used when computing
-      optimized routes from the parking lot to the final delivery locations.
-      Overrides `Vehicle.travel_duration_multiple` for vehicles used in the
-      local route optimization plan.
-    avoid_indoor: The value of the `routeModifiers.avoidIndoor` option used in
-      local delivery routes from this parking location. When `None`, the option
-      will not be set. This option can be set to True only for when walking
-      directions are used, i.e. when `travel_mode` == 2.
-    delivery_load_limits: The load limits applied when delivering shipments from
-      the parking location. This is equivalent to Vehicle.loadLimits, and it
-      restricts the number of shipments that can be delivered without returning
-      to the parking location. When the number of shipments delivered from the
-      parking location exceeds this limit, the model will create multiple routes
-      starting and ending at the parking location that will appear as multiple
-      visits to the parking location in the global model. Since the local model
-      allows only very limited cost tuning, we accept only one value per unit,
-      and this value is used as the hard limit.
-    max_round_duration: The maximal duration of one delivery round from the
-      parking location. When None, there is no limit on the maximal duration of
-      one round.
-    arrival_duration: The time that is spent when a vehicle arrives to the
-      parking location. This time is added to the total duration of the route
-      whenever the vehicle arrives to the parking location from a different
-      location. Can be used to model the time required to enter a parking lot,
-      park the vehicle, and pick up the shipments for the first delivery round.
-    departure_duration: The time that is spent when a vehicle leaves the parking
-      location. This time is added to the total duration of the route whenever
-      the vehicle leaves the parking location for a different location. Can be
-      used to model the time needed to leave a parking lot.
-    reload_duration: The time that is spent at the parking location between two
-      consecutive delivery rounds from the parking location. Can be used to
-      model the time required to pick up packages from the vehicle before
-      another round of pickups.
-    arrival_cost: The cost of entering the parking location. The cost is applied
-      when a vehicle enters the parking location from another location.
-    departure_cost: The cost of leaving the parking location. The cost is
-      applied when a vehicle leaves the parking location for another location.
-    reload_cost: The cost of visiting the parking location between two
-      consecutive delivery rounds from the parking location.
-  """
-
-  tag: str
-
-  waypoint: cfr_json.Waypoint = dataclasses.field(
-      default_factory=lambda: _PARKING_WAYPOINT_SENTINEL
-  )
-  coordinates: dataclasses.InitVar[cfr_json.LatLng | None] = None
-
-  travel_mode: int = 1
-  travel_duration_multiple: float = 1.0
-
-  avoid_indoor: bool | None = None
-
-  delivery_load_limits: Mapping[str, int] | None = None
-
-  max_round_duration: cfr_json.DurationString | None = None
-
-  arrival_duration: cfr_json.DurationString | None = None
-  departure_duration: cfr_json.DurationString | None = None
-  reload_duration: cfr_json.DurationString | None = None
-
-  unload_duration_per_item: cfr_json.DurationString | None = None
-  load_duration_per_item: cfr_json.DurationString | None = None
-
-  arrival_cost: float = 0.0
-  departure_cost: float = 0.0
-  reload_cost: float = 0.0
-
-  def __post_init__(self, coordinates: cfr_json.LatLng | None):
-    has_waypoint = self.waypoint is not _PARKING_WAYPOINT_SENTINEL
-    has_coordinates = coordinates is not None
-    if has_waypoint == has_coordinates:
-      raise ValueError(
-          "Exactly one of `waypoint` and `coordinates` must be provided."
-      )
-
-    if has_coordinates:
-      object.__setattr__(
-          self, "waypoint", {"location": {"latLng": coordinates}}
-      )
-
-    if self.avoid_indoor and self.travel_mode != 2:
-      raise ValueError("`avoid_indoor` can be True only when travel_mode == 2.")
-
-  @functools.cached_property
-  def waypoint_for_local_model(self) -> cfr_json.Waypoint:
-    """Returns a waypoint for the parking to be used in local models.
-
-    Local models typically use with travel modes other than DRIVE, which is not
-    compatible with sideOfRoad. To allow using `sideOfRoad` in parking location
-    waypoints (so that it is used in the global model), we need to remove it
-    from the waypoint when it is used in a local model.
-
-    Returns:
-      The waypoint of the parking location. When the travel mode of the parking
-      location is not DRIVE, `sideOfRoad` is removed from the waypoint. The
-      returned object is cached and must not be mutated.
-    """
-    if self.travel_mode == 1:
-      return self.waypoint
-    waypoint = copy.deepcopy(self.waypoint)
-    waypoint.pop("sideOfRoad", None)
-    return waypoint
-
-
-def load_parking_from_json(
-    parking_json: Any,
-) -> tuple[Sequence[ParkingLocation], Mapping[int, ParkingTag]]:
-  """Loads parking location data from a JSON data structure.
-
-  Expects that `parking_json` is a JSON-like data structure that contains the
-  definitions of the parking locations and the mapping from shipments to parking
-  locations.
-
-  `parking_json` must be a dict that contains the following two keys:
-  - "parking_locations":
-      Contains the list of parking location definitions. Each element of the
-      list is a dict that will be passed as keyword args to the constructor of
-      `ParkingLocation`.
-  - "parking_for_shipment":
-      Contains the mapping from shipment indices to parking location tags for
-      shipments that are delivered through a parking location.
-
-  Args:
-    parking_json: The JSON data structure that contains the parking data.
-
-  Returns:
-    A tuple (parking_locations, parking_for_shipment) where parking_locations
-    is the list of parking location definitions, and parking_for_shipment is a
-    mapping from shipment indices to parking tags.
-
-  Raises:
-    ValueError: When the format of the input file is invalid.
-  """
-  try:
-    parking_for_shipment: Mapping[int, str] = {
-        int(shipment): parking
-        for shipment, parking in parking_json["parking_for_shipment"].items()
-    }
-  except KeyError:
-    raise ValueError(
-        "parking_json doesn't have the key 'parking_for_shipment'"
-    ) from None
-
-  parking_location_json = None
-  try:
-    parking_locations: list[ParkingLocation] = []
-    for parking_location_json in parking_json["parking_locations"]:
-      parking_locations.append(ParkingLocation(**parking_location_json))
-  except (TypeError, ValueError):
-    raise ValueError(
-        f"Invalid parking location specification: {parking_location_json!r}"
-    ) from None
-  except KeyError:
-    raise ValueError(
-        "parking_json doesn't have the key 'parking_locations'"
-    ) from None
-  return parking_locations, parking_for_shipment
-
-
-@dataclasses.dataclass(frozen=True)
-class _ParkingLocationTags:
-  """Holds tags used by the library for a parking location.
-
-  The tags are created by _ParkingTransitionAttributeManager in such a way that
-  they do not collide with any other tags in the original request.
-
-  Attributes:
-    global_tag: The tag used for the parking location in the global model.
-    local_unload_from_vehicle_tag: The tag used for the visits in the local
-      model where items that are delivered to customers from the parking are
-      picked up from the vehicle.
-    local_load_to_vehicle_tag: The tag used for the visits in the local model
-      where items that are picked up from customers delivered to the vehicle at
-      the parking.
-    local_visit_tag: The tag used for the visits to customer addresses from the
-      parking location.
-    local_barrier_pickup_tag: The tag used for the pickup part of barrier
-      shipments in the parking.
-    local_barrier_delivery_tag: The tag used for the delivery part of barrier
-      shipments in the parking.
-    has_global_transition_attributes: True when the parking location requires
-      parking-specific transition attributes at the global level.
-  """
-
-  global_tag: str
-  local_unload_from_vehicle_tag: str
-  local_load_to_vehicle_tag: str
-  local_visit_tag: str
-  local_barrier_pickup_tag: str
-  local_barrier_delivery_tag: str
-
-  has_global_transition_attributes: bool
-
-
-@dataclasses.dataclass
-class Options:
-  """Options for the two-step planner.
-
-  Attributes:
-    local_model_grouping: The grouping strategy used in the local model.
-    initial_local_model_grouping: The grouping strategy used in the initial
-      local model.
-    local_model_vehicle_fixed_cost: The fixed cost of the vehicles in the local
-      model. This should be a high number to make the solver use as few vehicles
-      as possible.
-    local_model_vehicle_per_hour_cost: The per-hour cost of the vehicles in the
-      local model. This should be a small positive number so that the solver
-      prefers faster routes.
-    local_model_vehicle_per_km_cost: The per-kilometer cost of the vehicles in
-      the local model. This should be a small positive number so that the solver
-      prefers shorter routes.
-    min_average_shipments_per_round: The minimal (average) number of shipments
-      that is delivered from a parking location without returning to the parking
-      location. This is used to estimate the number of vehicles in the plan.
-    travel_mode_in_merged_transitions: When True, transition objects in the
-      merged response contain also the travel mode and travel duration multiple
-      used while computing route for the transition. These fields are extensions
-      to the CFR API, and converting a JSON response with these fields to the
-      CFR proto may fail.
-  """
-
-  initial_local_model_grouping: InitialLocalModelGrouping
-
-  # TODO(ondrasej): Do we actually need these? Perhaps they can be filled in on
-  # the user side.
-  local_model_vehicle_fixed_cost: float = 10_000
-  local_model_vehicle_per_hour_cost: float = 300
-  local_model_vehicle_per_km_cost: float = 60
-
-  min_average_shipments_per_round: int = 1
-
-  use_deprecated_fields: bool = True
-  travel_mode_in_merged_transitions: bool = False
+# Re-export types that are parts of the public API but that are implemented in
+# _shared.py.
+IntegrationMode = _shared.IntegrationMode
+Options = _shared.Options
+
+
+# Re-export functions and types that are part of the public API but that are
+# implemented in _parking.py.
+InitialLocalModelGrouping: TypeAlias = _parking.InitialLocalModelGrouping
+ParkingTag: TypeAlias = _parking.ParkingTag
+ParkingLocation: TypeAlias = _parking.ParkingLocation
+load_parking_from_json = _parking.load_parking_from_json
 
 
 # Defines a mapping from shipments to the parking locations from which they are
@@ -478,7 +88,7 @@ class Planner:
 
   _parking_locations: Mapping[str, ParkingLocation]
   _parking_for_shipment: ShipmentParkingMap
-  _parking_groups: Mapping[_ParkingGroupKey, Sequence[int]]
+  _parking_groups: Mapping[_parking.GroupKey, Sequence[int]]
   _direct_shipments: Set[int]
 
   def __init__(
@@ -545,11 +155,11 @@ class Planner:
         )
       shipment = self._shipments[shipment_index]
       parking = self._parking_locations[parking_tag]
-      parking_group_key = _parking_delivery_group_key(
+      parking_group_key = _parking.shipment_group_key(
           self._options.initial_local_model_grouping, shipment, parking
       )
       parking_groups[parking_group_key].append(shipment_index)
-    self._parking_groups: Mapping[_ParkingGroupKey, Sequence[int]] = (
+    self._parking_groups: Mapping[_parking.GroupKey, Sequence[int]] = (
         parking_groups
     )
 
@@ -588,7 +198,7 @@ class Planner:
         "vehicles": local_vehicles,
     }
 
-    transition_attribute_manager = _ParkingTransitionAttributeManager(
+    transition_attribute_manager = _parking.TransitionAttributeManager(
         self._model
     )
 
@@ -672,7 +282,7 @@ class Planner:
         "vehicles": self._model["vehicles"],
     }
 
-    transition_attributes = _ParkingTransitionAttributeManager(self._model)
+    transition_attributes = _parking.TransitionAttributeManager(self._model)
 
     # Take all shipments that are delivered directly, and copy them to the
     # global request. the only change we make is that we add the original
@@ -782,7 +392,7 @@ class Planner:
       solution of the global model.
     """
     global_routes = cfr_json.get_routes(global_response)
-    transition_attribute_manager = _ParkingTransitionAttributeManager(
+    transition_attribute_manager = _parking.TransitionAttributeManager(
         self._model
     )
 
@@ -1459,12 +1069,12 @@ class Planner:
 def _make_local_model_barrier_shipment(
     parking: ParkingLocation,
     parking_vehicle_indices: list[int],
-    parking_tags: _ParkingLocationTags,
+    parking_tags: _parking.ParkingLocationTags,
 ) -> cfr_json.Shipment:
   """Creates a barrier shipment for the local refinement model.
 
   The barrier shipment consumes the whole capacity of the vehicle used from the
-  parking, forcing it to make any pending deliveries before passing through the
+  bus stop, forcing it to make any pending deliveries before passing through the
   barrier. It should be used with transition attributes that turn the barrier
   into a separator between two visit rounds (without a return to the vehicle).
 
@@ -1504,7 +1114,7 @@ def _make_local_model_shipment(
     original_shipment: cfr_json.Shipment,
     parking: ParkingLocation,
     parking_vehicle_indices: list[int],
-    parking_tags: _ParkingLocationTags,
+    parking_tags: _parking.ParkingLocationTags,
 ) -> cfr_json.Shipment:
   """Creates a shipment for a local pickup & delivery model.
 
@@ -1569,7 +1179,7 @@ def _make_local_model_shipment(
       if is_pickup
       else parking.unload_duration_per_item
   )
-  if parking_visit_duration is not None:
+  if parking_visit_duration is not None and parking_visit_duration != "0s":
     parking_visit["duration"] = parking_visit_duration
 
   local_pickup = local_shipment_visit if is_pickup else parking_visit
@@ -1865,7 +1475,7 @@ class _RefinedRouteIntegration:
         None
     )
 
-    self._transition_attributes = _ParkingTransitionAttributeManager(
+    self._transition_attributes = _parking.TransitionAttributeManager(
         self._model
     )
 
@@ -2480,7 +2090,7 @@ class _RefinedRouteIntegration:
     """
     # NOTE(ondrasej): This method works only for shipments with a single
     # delivery option and no pickups.
-    _, is_pickup = _get_visit_request(shipment)
+    _, is_pickup = _parking.get_visit_request(shipment)
     # Visit start time must be provided when creating a visit for the integrated
     # global shipment, even if it is not included in the initial solution.
     assert (
@@ -2504,259 +2114,12 @@ class _RefinedRouteIntegration:
     return shipment_index
 
 
-class _ParkingTransitionAttributeManager:
-  """Manages transition attributes for parking locations in the global model."""
-
-  def __init__(self, model: cfr_json.ShipmentModel):
-    """Initializes the transition attribute manager."""
-    self._existing_tags = cfr_json.get_all_visit_tags(model)
-    self._cached_parking_transition_tags: dict[
-        ParkingTag, _ParkingLocationTags
-    ] = {}
-    # TODO(ondrasej): Restrict the preserved transition attributes only to tags
-    # that are actually used in the model, to make the model smaller.
-    self._global_transition_attributes: list[cfr_json.TransitionAttributes] = (
-        list(model.get("transitionAttributes", ()))
-    )
-    self._local_transition_attributes: list[cfr_json.TransitionAttributes] = (
-        list(model.get("transitionAttributes", ()))
-    )
-    self._local_refinement_transition_attributes: list[
-        cfr_json.TransitionAttributes
-    ] = list(model.get("transitionAttributes", ()))
-
-  @property
-  def global_transition_attributes(self) -> list[cfr_json.TransitionAttributes]:
-    """Returns transition attributes for the global model."""
-    return self._global_transition_attributes
-
-  @property
-  def local_transition_attributes(self) -> list[cfr_json.TransitionAttributes]:
-    """Returns transition attributes for the local model."""
-    return self._local_transition_attributes
-
-  @property
-  def local_refinement_transition_attributes(
-      self,
-  ) -> list[cfr_json.TransitionAttributes]:
-    """Returns the transition attributes for the local refinement model."""
-    return self._local_refinement_transition_attributes
-
-  def get_or_create(self, parking: ParkingLocation) -> _ParkingLocationTags:
-    """Creates parking transition attribute for a parking location if needed.
-
-    When the parking location uses arrival/departure/reload costs or delays,
-    creates transition attributes for the parking location that implement them.
-    Does nothing when the parking location doesn't use any of these features.
-
-    Can be safely called multiple times for the same parking location.
-
-    Args:
-      parking: The parking location for which the transition attributes are
-        created.
-
-    Returns:
-      When the parking location has features that require transition attributes,
-      returns a unique tag for visits to the parking location. Otherwise,
-      returns None.
-    """
-    cached_tags = self._cached_parking_transition_tags.get(parking.tag)
-    if cached_tags is not None:
-      return cached_tags
-
-    global_tag = self._get_non_existent_tag(f"parking: {parking.tag}")
-    local_load_to_vehicle_tag = self._get_non_existent_tag(
-        f"{parking.tag} load to vehicle"
-    )
-    local_unload_from_vehicle_tag = self._get_non_existent_tag(
-        f"{parking.tag} unload from vehicle"
-    )
-    local_visit_tag = self._get_non_existent_tag(f"{parking.tag} visit")
-    local_barrier_pickup_tag = self._get_non_existent_tag(
-        f"{parking.tag} barrier pickup"
-    )
-    local_barrier_delivery_tag = self._get_non_existent_tag(
-        f"{parking.tag} barrier delivery"
-    )
-
-    has_global_transition_attributes = self._add_transition_attribute_if_needed(
-        self._global_transition_attributes,
-        delay=parking.arrival_duration,
-        cost=parking.arrival_cost,
-        excluded_src_tag=global_tag,
-        dst_tag=global_tag,
-    )
-    has_global_transition_attributes |= (
-        self._add_transition_attribute_if_needed(
-            self._global_transition_attributes,
-            delay=parking.departure_duration,
-            cost=parking.departure_cost,
-            src_tag=global_tag,
-            excluded_dst_tag=global_tag,
-        )
-    )
-    has_global_transition_attributes |= (
-        self._add_transition_attribute_if_needed(
-            self._global_transition_attributes,
-            delay=parking.reload_duration,
-            cost=parking.reload_cost,
-            src_tag=global_tag,
-            dst_tag=global_tag,
-        )
-    )
-
-    # Add transition attributes that make multi-round local routes more
-    # expensive than splitting them into two routes. This way, we can depend on
-    # the solver to split them instead of having to implement the route
-    # splitting logic when working with the local model.
-    # The two transition attributes below cover the two cases that can
-    # happen when returning to the parking location after a visit round, and
-    # before the start of another visit round.
-    # TODO(ondrasej): Parameterize the cost and delay.
-
-    # 1. Avoid picking up more items from the vehicle after storing items picked
-    # up from customers.
-    self._add_transition_attribute_if_needed(
-        self._local_transition_attributes,
-        delay="7200s",
-        cost=1000000,
-        src_tag=local_load_to_vehicle_tag,
-        dst_tag=local_unload_from_vehicle_tag,
-    )
-    # 2. Avoid picking up more items from the vehicle after delivering items to
-    # the customers.
-    self._add_transition_attribute_if_needed(
-        self._local_transition_attributes,
-        delay="7200s",
-        cost=1000000,
-        src_tag=local_visit_tag,
-        dst_tag=local_unload_from_vehicle_tag,
-    )
-    # 3. Avoid visiting customer locations after loading items collected from
-    # customers to the truck.
-    self._add_transition_attribute_if_needed(
-        self._local_transition_attributes,
-        delay="7200s",
-        cost=1000000,
-        src_tag=local_load_to_vehicle_tag,
-        dst_tag=local_visit_tag,
-    )
-
-    # Add transition attributes for local refinement models:
-    #
-    # Add transition attributes for a reload, if needed. The reload cost and
-    # delay apply either between the last visit and the first unloaded item in
-    # the next round, or between the last loaded item and the first unloaded
-    # items. By definition, only one of the situations can happen, and the delay
-    # and cost are applied only once, and only when there are multiple rounds.
-    self._add_transition_attribute_if_needed(
-        self._local_refinement_transition_attributes,
-        delay=parking.reload_duration,
-        cost=parking.reload_cost,
-        src_tag=local_visit_tag,
-        dst_tag=local_barrier_pickup_tag,
-    )
-    self._add_transition_attribute_if_needed(
-        self._local_refinement_transition_attributes,
-        delay=parking.reload_duration,
-        cost=parking.reload_cost,
-        src_tag=local_load_to_vehicle_tag,
-        dst_tag=local_barrier_pickup_tag,
-    )
-    # Make the barrier the only viable way from a customer location visit or
-    # loading items to the vehicle to unloading items from the vehicle.
-    self._add_transition_attribute_if_needed(
-        self._local_refinement_transition_attributes,
-        delay="7200s",
-        cost=1000000,
-        src_tag=local_visit_tag,
-        dst_tag=local_unload_from_vehicle_tag,
-    )
-    self._add_transition_attribute_if_needed(
-        self._local_refinement_transition_attributes,
-        delay="7200s",
-        cost=1000000,
-        src_tag=local_load_to_vehicle_tag,
-        dst_tag=local_unload_from_vehicle_tag,
-    )
-    self._add_transition_attribute_if_needed(
-        self._local_refinement_transition_attributes,
-        delay="7200s",
-        cost=1000000,
-        src_tag=local_load_to_vehicle_tag,
-        dst_tag=local_visit_tag,
-    )
-
-    cached_tags = _ParkingLocationTags(
-        global_tag=global_tag,
-        local_load_to_vehicle_tag=local_load_to_vehicle_tag,
-        local_unload_from_vehicle_tag=local_unload_from_vehicle_tag,
-        local_visit_tag=local_visit_tag,
-        local_barrier_pickup_tag=local_barrier_pickup_tag,
-        local_barrier_delivery_tag=local_barrier_delivery_tag,
-        has_global_transition_attributes=has_global_transition_attributes,
-    )
-
-    self._cached_parking_transition_tags[parking.tag] = cached_tags
-    return cached_tags
-
-  def _add_transition_attribute_if_needed(
-      self,
-      transition_attribute_list: list[cfr_json.TransitionAttributes],
-      *,
-      delay: cfr_json.DurationString | None,
-      cost: float,
-      src_tag: str | None = None,
-      excluded_src_tag: str | None = None,
-      dst_tag: str | None = None,
-      excluded_dst_tag: str | None = None,
-  ) -> bool:
-    """Adds a new transition attributes objects when delay or cost are used."""
-    if delay is None and cost == 0:
-      return False
-    if cost < 0:
-      raise ValueError("Cost must be non-negative.")
-    if (src_tag is None) == (excluded_src_tag is None):
-      raise ValueError(
-          "Exactly one of `src_tag` and `excluded_src_tag` must be provided."
-      )
-    if (dst_tag is None) == (excluded_dst_tag is None):
-      raise ValueError(
-          "Exactly one of `dst_tag` and `excluded_dst_tag` must be provided."
-      )
-    transition_attributes: cfr_json.TransitionAttributes = {}
-    if delay is not None:
-      transition_attributes["delay"] = delay
-    if cost > 0:
-      transition_attributes["cost"] = cost
-    if src_tag is not None:
-      transition_attributes["srcTag"] = src_tag
-    if excluded_src_tag is not None:
-      transition_attributes["excludedSrcTag"] = excluded_src_tag
-    if dst_tag is not None:
-      transition_attributes["dstTag"] = dst_tag
-    if excluded_dst_tag is not None:
-      transition_attributes["excludedDstTag"] = excluded_dst_tag
-    transition_attribute_list.append(transition_attributes)
-    return True
-
-  def _get_non_existent_tag(self, base: str) -> str:
-    if base not in self._existing_tags:
-      return base
-    index = 1
-    while True:
-      tag = f"{base}#{index}"
-      if tag not in self._existing_tags:
-        return tag
-      index += 1
-
-
 def _make_global_model_shipment_for_local_route(
     model: cfr_json.ShipmentModel,
     local_route_index: int,
     local_route: cfr_json.ShipmentRoute,
     parking: ParkingLocation,
-    transition_attributes: _ParkingTransitionAttributeManager,
+    transition_attributes: _parking.TransitionAttributeManager,
 ) -> cfr_json.Shipment:
   """Creates a virtual shipment in the global model for a local delivery route.
 
@@ -3488,33 +2851,6 @@ def _get_parking_tag_from_local_route(route: cfr_json.ShipmentRoute) -> str:
   return parking_tag
 
 
-def _get_visit_request(
-    shipment: cfr_json.Shipment,
-) -> tuple[cfr_json.VisitRequest, bool]:
-  """Returns the pickup or delivery request of shipment.
-
-  Args:
-    shipment: The shipment to return the visit request from.
-
-  Returns:
-    A tuple (visit_request, is_pickup) where `visit_request` is the visit
-    request from the shipment, and `is_pickup` is True when the shipment is a
-    pickup shipment.
-
-  Raises:
-    ValueError: When the shipment has no visit requests or when it has multiple
-      visit requests.
-  """
-  pickups = shipment.get("pickups", ())
-  deliveries = shipment.get("deliveries", ())
-  if len(pickups) + len(deliveries) != 1:
-    raise ValueError(
-        "Expected the shipment to have either a single pickup request or a"
-        f" single delivery request. Got:\n{shipment}"
-    )
-  return (pickups[0], True) if pickups else (deliveries[0], False)
-
-
 def _format_time_window(
     time_window: tuple[str | None, str | None],
 ) -> Iterable[str]:
@@ -3532,7 +2868,7 @@ def _format_time_window(
   yield ")"
 
 
-def _make_local_model_vehicle_label(group_key: _ParkingGroupKey) -> str:
+def _make_local_model_vehicle_label(group_key: _parking.GroupKey) -> str:
   """Creates a label for a vehicle in the local model."""
   parts = [group_key.parking_tag, " ["]
   num_initial_parts = len(parts)
@@ -3553,33 +2889,3 @@ def _make_local_model_vehicle_label(group_key: _ParkingGroupKey) -> str:
     add_part("penalty_cost=", group_key.penalty_cost_group)
   parts.append("]")
   return "".join(parts)
-
-
-def _parking_delivery_group_key(
-    grouping: InitialLocalModelGrouping,
-    shipment: cfr_json.Shipment,
-    parking: ParkingLocation | None,
-) -> _ParkingGroupKey:
-  """Creates a key that groups shipments with the same time window and parking."""
-  if parking is None:
-    return _ParkingGroupKey()
-  parking_tag = parking.tag
-
-  allowed_vehicle_indices = shipment.get("allowedVehicleIndices")
-  if allowed_vehicle_indices is not None:
-    allowed_vehicle_indices = tuple(sorted(allowed_vehicle_indices))
-
-  time_windows = ()
-  if grouping.time_windows:
-    delivery, _ = _get_visit_request(shipment)
-    time_windows = tuple(
-        (time_window.get("startTime"), time_window.get("endTime"))
-        for time_window in delivery.get("timeWindows", ())
-    )
-
-  return _ParkingGroupKey(
-      parking_tag=parking_tag,
-      time_windows=time_windows,
-      allowed_vehicle_indices=allowed_vehicle_indices,
-      penalty_cost_group=grouping.get_penalty_cost_group(shipment),
-  )
