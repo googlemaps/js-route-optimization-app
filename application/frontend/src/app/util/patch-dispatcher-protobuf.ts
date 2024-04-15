@@ -275,22 +275,6 @@ export function patchShipmentRouteTransition(): void {
   };
 }
 
-export function patchShipmentRouteTravelStep(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentRoute.TravelStep.fromObject;
-  google.cloud.optimization.v1.ShipmentRoute.TravelStep.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentRoute.ITravelStep
-  ) => {
-    if (object == null) {
-      return fromObject(object);
-    }
-    object = { ...object };
-    if (isCanonicalDuration(object.duration)) {
-      object.duration = google.protobuf.Duration.fromObject(object.duration);
-    }
-    return fromObject(object);
-  };
-}
-
 export function patchShipmentRouteVisit(): void {
   const fromObject = google.cloud.optimization.v1.ShipmentRoute.Visit.fromObject;
   google.cloud.optimization.v1.ShipmentRoute.Visit.fromObject = (

@@ -39,13 +39,15 @@ export const selectRoutes = createSelector(
 
 export const selectUsedRoutesCount = createSelector(
   selectRoutes,
-  (routes) => routes.filter((route) => route.travelSteps?.length).length
+  (routes) => routes.filter((route) => route.transitions?.length).length
 );
 
 export const selectTotalRoutesDistanceMeters = createSelector(selectRoutes, (routes) => {
   let totalDistanceMeters = 0;
   routes.forEach((route) =>
-    route.travelSteps?.forEach((step) => (totalDistanceMeters += step.distanceMeters || 0))
+    route.transitions?.forEach(
+      (transition) => (totalDistanceMeters += transition.travelDistanceMeters || 0)
+    )
   );
   return totalDistanceMeters;
 });

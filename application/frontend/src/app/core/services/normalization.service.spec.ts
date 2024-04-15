@@ -2820,18 +2820,6 @@ describe('normalization Service', () => {
             { type: 'volume_liters', value: '20' },
             { type: 'weight_kilograms', value: '100' },
           ],
-          travelSteps: [
-            {
-              duration: { seconds: '933', nanos: 0 },
-              distanceMeters: 3426,
-              trafficInfoUnavailable: false,
-            },
-            {
-              duration: { seconds: '967', nanos: 0 },
-              distanceMeters: 3840,
-              trafficInfoUnavailable: false,
-            },
-          ],
           vehicleDetour: { seconds: '15780', nanos: 0 },
           routeCosts: {
             'model.vehicles.cost_per_hour': 131.5,
@@ -2954,18 +2942,6 @@ describe('normalization Service', () => {
         endLoads: [
           { type: 'volume_liters', value: '20' },
           { type: 'weight_kilograms', value: '100' },
-        ],
-        travelSteps: [
-          {
-            duration: { seconds: '933', nanos: 0 },
-            distanceMeters: 3426,
-            trafficInfoUnavailable: false,
-          },
-          {
-            duration: { seconds: '967', nanos: 0 },
-            distanceMeters: 3840,
-            trafficInfoUnavailable: false,
-          },
         ],
         vehicleDetour: { seconds: '15780', nanos: 0 },
         routeCosts: {
@@ -3157,33 +3133,6 @@ describe('normalization Service', () => {
           endLoads: [
             { type: 'volume_liters', value: '35' },
             { type: 'weight_kilograms', value: '300' },
-          ],
-          travelSteps: [
-            {
-              duration: { seconds: '933', nanos: 0 },
-              distanceMeters: 3426,
-              trafficInfoUnavailable: false,
-            },
-            {
-              duration: { seconds: '898', nanos: 0 },
-              distanceMeters: 4329,
-              trafficInfoUnavailable: false,
-            },
-            {
-              duration: { seconds: '793', nanos: 0 },
-              distanceMeters: 4806,
-              trafficInfoUnavailable: false,
-            },
-            {
-              duration: { seconds: '430', nanos: 0 },
-              distanceMeters: 1348,
-              trafficInfoUnavailable: false,
-            },
-            {
-              duration: { seconds: '1081', nanos: 0 },
-              distanceMeters: 4261,
-              trafficInfoUnavailable: false,
-            },
           ],
           vehicleDetour: { seconds: '23935', nanos: 0 },
           routeCosts: {
@@ -3439,33 +3388,6 @@ describe('normalization Service', () => {
         endLoads: [
           { type: 'volume_liters', value: '35' },
           { type: 'weight_kilograms', value: '300' },
-        ],
-        travelSteps: [
-          {
-            duration: { seconds: '933', nanos: 0 },
-            distanceMeters: 3426,
-            trafficInfoUnavailable: false,
-          },
-          {
-            duration: { seconds: '898', nanos: 0 },
-            distanceMeters: 4329,
-            trafficInfoUnavailable: false,
-          },
-          {
-            duration: { seconds: '793', nanos: 0 },
-            distanceMeters: 4806,
-            trafficInfoUnavailable: false,
-          },
-          {
-            duration: { seconds: '430', nanos: 0 },
-            distanceMeters: 1348,
-            trafficInfoUnavailable: false,
-          },
-          {
-            duration: { seconds: '1081', nanos: 0 },
-            distanceMeters: 4261,
-            trafficInfoUnavailable: false,
-          },
         ],
         vehicleDetour: { seconds: '23935', nanos: 0 },
         routeCosts: {

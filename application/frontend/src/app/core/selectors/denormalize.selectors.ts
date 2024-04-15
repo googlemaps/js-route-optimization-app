@@ -283,13 +283,13 @@ const selectInjectedRoutes = createSelector(
       if (incompatibleVehicleIds.has(shipmentRoute.id)) {
         return;
       }
-      // If a shipment is incompatible, remove its visits and all travel steps from the route
+      // If a shipment is incompatible, remove its visits and all transitions from the route
       const incompatibleVisitIds = incompatibleVisitIdsByShipmentRouteId.get(shipmentRoute.id);
       if (incompatibleVisitIds) {
         injectedRoutes.push({
           ...shipmentRoute,
           visits: shipmentRoute.visits.filter((id) => !incompatibleVisitIds.has(id)),
-          travelSteps: null,
+          transitions: null,
         });
         return;
       }
@@ -599,7 +599,7 @@ const selectRequestRecalculatePolylines = (
               arrivalLoads: null,
             })),
             endLoads: null,
-            travelSteps: null,
+            transitions: null,
             routePolyline: null,
             vehicleStartTime: globalStartTime,
             vehicleEndTime: globalEndTime,
