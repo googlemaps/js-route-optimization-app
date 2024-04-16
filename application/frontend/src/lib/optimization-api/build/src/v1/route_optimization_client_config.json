@@ -1,6 +1,6 @@
 {
     "interfaces": {
-        "google.cloud.optimization.v1.FleetRouting": {
+        "google.maps.routeoptimization.v1.RouteOptimization": {
             "retry_codes": {
                 "non_idempotent": [],
                 "idempotent": [
@@ -34,11 +34,6 @@
             "methods": {
                 "OptimizeTours": {
                     "timeout_millis": 3600000,
-                    "retry_codes_name": "unavailable",
-                    "retry_params_name": "ce5b960a6ed052e690863808e4f0deff3dc7d49f"
-                },
-                "BatchOptimizeTours": {
-                    "timeout_millis": 60000,
                     "retry_codes_name": "unavailable",
                     "retry_params_name": "ce5b960a6ed052e690863808e4f0deff3dc7d49f"
                 }
