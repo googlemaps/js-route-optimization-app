@@ -3,6 +3,7 @@ services:
     build: .
     env_file: .env
     volumes:
-      - "./key.json:/usr/src/app/key.json"
+      - "./google_service_account_key.json:/usr/src/app/google_service_account_key.json"
     ports:
       - 8080:8080
+      - 443:443
