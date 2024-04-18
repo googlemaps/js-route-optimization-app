@@ -63,23 +63,6 @@ export const routesFilterOptions: RouteFilterOption[] = [
     predicate: ({ route }, params) => applyStringFilter(route.vehicleLabel, params),
   } as RouteFilterOption<StringFilterParams>,
   {
-    id: 'operatorIDs',
-    label: 'Vehicle Operator IDs',
-    form: () => FilterStringFormComponent,
-    predicate: ({ route }, params) =>
-      applyStringFilter(
-        route.vehicleOperatorIndices.map((element) => element + 1).toString(),
-        params
-      ),
-  } as RouteFilterOption<StringFilterParams>,
-  {
-    id: 'operatorLabels',
-    label: 'Vehicle Operator Labels',
-    form: () => FilterStringFormComponent,
-    predicate: ({ route }, params) =>
-      applyStringFilter(route.vehicleOperatorLabels?.toString(), params),
-  } as RouteFilterOption<StringFilterParams>,
-  {
     id: 'utilized',
     label: 'Utilized',
     form: () => FilterBooleanFormComponent,

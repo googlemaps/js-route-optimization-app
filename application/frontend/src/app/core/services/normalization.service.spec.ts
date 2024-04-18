@@ -23,7 +23,7 @@ import {
 } from '../models';
 import { NormalizationService } from './normalization.service';
 import { google } from '@google-cloud/optimization/build/protos/protos';
-import Level = google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level;
+import Level = google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level;
 
 describe('normalization Service', () => {
   let _normalizationService: NormalizationService;
@@ -66,7 +66,6 @@ describe('normalization Service', () => {
       traffic: false,
       visitRequests: [],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -168,7 +167,6 @@ describe('normalization Service', () => {
         },
       ],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -294,7 +292,6 @@ describe('normalization Service', () => {
         },
       ],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -420,7 +417,6 @@ describe('normalization Service', () => {
         },
       ],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -539,7 +535,6 @@ describe('normalization Service', () => {
         },
       ],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -654,7 +649,6 @@ describe('normalization Service', () => {
         },
       ],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -768,7 +762,6 @@ describe('normalization Service', () => {
         },
       ],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -882,7 +875,6 @@ describe('normalization Service', () => {
         },
       ],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -1000,7 +992,6 @@ describe('normalization Service', () => {
         },
       ],
       vehicles: [],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -1109,7 +1100,6 @@ describe('normalization Service', () => {
             },
           ],
         },
-        requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
         loadLimits: {
           weight_kilograms: {
             maxLoad: '400',
@@ -1204,7 +1194,6 @@ describe('normalization Service', () => {
               },
             ],
           },
-          requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -1220,7 +1209,6 @@ describe('normalization Service', () => {
           changeTime: 0,
         },
       ],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -1285,7 +1273,6 @@ describe('normalization Service', () => {
                   },
                 ],
               },
-              requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -1359,7 +1346,6 @@ describe('normalization Service', () => {
             },
           ],
         },
-        requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
         loadLimits: {
           weight_kilograms: {
             maxLoad: '400',
@@ -1454,7 +1440,6 @@ describe('normalization Service', () => {
               },
             ],
           },
-          requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -1470,7 +1455,6 @@ describe('normalization Service', () => {
           changeTime: 0,
         },
       ],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -1531,7 +1515,7 @@ describe('normalization Service', () => {
                   },
                 ],
               },
-              requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+              
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -1605,7 +1589,7 @@ describe('normalization Service', () => {
             },
           ],
         },
-        requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+        
         loadLimits: {
           weight_kilograms: {
             maxLoad: '400',
@@ -1700,7 +1684,7 @@ describe('normalization Service', () => {
               },
             ],
           },
-          requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+          
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -1716,7 +1700,6 @@ describe('normalization Service', () => {
           changeTime: 0,
         },
       ],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -1777,7 +1760,7 @@ describe('normalization Service', () => {
                   },
                 ],
               },
-              requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+              
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -1855,7 +1838,7 @@ describe('normalization Service', () => {
             },
           ],
         },
-        requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+        
         capacities: [
           { type: 'weight_kilograms', value: '400' },
           { type: 'volume_liters', value: '50' },
@@ -1942,7 +1925,7 @@ describe('normalization Service', () => {
               },
             ],
           },
-          requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+          
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -1954,7 +1937,6 @@ describe('normalization Service', () => {
           changeTime: 0,
         },
       ],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -2019,7 +2001,7 @@ describe('normalization Service', () => {
                   },
                 ],
               },
-              requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+              
               capacities: [
                 { type: 'weight_kilograms', value: '400' },
                 { type: 'volume_liters', value: '50' },
@@ -2074,7 +2056,7 @@ describe('normalization Service', () => {
         costPerKilometer: 0.2,
         usedIfRouteIsEmpty: true,
         travelDurationLimit: {},
-        requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+        
         loadLimits: {
           weight_kilograms: {
             maxLoad: '400',
@@ -2207,7 +2189,7 @@ describe('normalization Service', () => {
               },
             ],
           },
-          requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+          
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -2223,7 +2205,6 @@ describe('normalization Service', () => {
           changeTime: 0,
         },
       ],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -2273,7 +2254,7 @@ describe('normalization Service', () => {
               costPerKilometer: 0.2,
               usedIfRouteIsEmpty: true,
               travelDurationLimit: {},
-              requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+              
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -2337,7 +2318,7 @@ describe('normalization Service', () => {
         costPerKilometer: 0.2,
         usedIfRouteIsEmpty: true,
         travelDurationLimit: {},
-        requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+        
         breakRule: {
           breakRequests: [
             {
@@ -2514,7 +2495,7 @@ describe('normalization Service', () => {
               },
             ],
           },
-          requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+          
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -2530,7 +2511,6 @@ describe('normalization Service', () => {
           changeTime: 0,
         },
       ],
-      vehicleOperators: [],
       allowLargeDeadlineDespiteInterruptionRisk: undefined,
       interpretInjectedSolutionsUsingLabels: undefined,
       populateTransitionPolylines: undefined,
@@ -2580,7 +2560,7 @@ describe('normalization Service', () => {
               costPerKilometer: 0.2,
               usedIfRouteIsEmpty: true,
               travelDurationLimit: {},
-              requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+              
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -2626,127 +2606,12 @@ describe('normalization Service', () => {
     });
   });
 
-  it('normalizes scenario with Vehicle Operator ', () => {
-    model.vehicleOperators = [
-      {
-        startTimeWindows: [
-          {
-            startTime: {
-              seconds: '1563097800',
-            },
-            endTime: {
-              seconds: '1563102000',
-            },
-          },
-        ],
-        endTimeWindows: [
-          {
-            startTime: {
-              seconds: '1563117780',
-            },
-            endTime: {
-              seconds: '1563121980',
-            },
-          },
-        ],
-        type: 'Vehicle Operator Type',
-      },
-    ];
-    scenario.model = model;
-    expect(_normalizationService.normalizeScenario(scenario, 0)).toEqual({
-      firstSolutionRoutes: undefined,
-      injectedModelConstraint: undefined,
-      injectedSolution: false,
-      label: '',
-      searchMode: SearchMode.RETURN_FAST,
-      shipments: [],
-      shipmentModel: {
-        globalDurationCostPerHour: undefined,
-        maxActiveVehicles: undefined,
-        precedenceRules: undefined,
-        shipmentTypeRequirements: undefined,
-        shipmentTypeIncompatibilities: undefined,
-        transitionAttributes: undefined,
-        globalStartTime: nowSeconds,
-        globalEndTime: tomorrowSeconds,
-      },
-      solvingMode: undefined,
-      timeout: undefined,
-      traffic: false,
-      visitRequests: [],
-      vehicles: [],
-      vehicleOperators: [
-        {
-          id: 1,
-          startTimeWindows: [
-            {
-              startTime: {
-                seconds: '1563097800',
-              },
-              endTime: {
-                seconds: '1563102000',
-              },
-            },
-          ],
-          endTimeWindows: [
-            {
-              startTime: {
-                seconds: '1563117780',
-              },
-              endTime: {
-                seconds: '1563121980',
-              },
-            },
-          ],
-          type: 'Vehicle Operator Type',
-          changeTime: 0,
-        },
-      ],
-      allowLargeDeadlineDespiteInterruptionRisk: undefined,
-      interpretInjectedSolutionsUsingLabels: undefined,
-      populateTransitionPolylines: undefined,
-      useGeodesicDistances: undefined,
-      geodesicMetersPerSecond: undefined,
-      normalizedScenario: {
-        model: {
-          vehicleOperators: [
-            {
-              startTimeWindows: [
-                {
-                  startTime: {
-                    seconds: '1563097800',
-                  },
-                  endTime: {
-                    seconds: '1563102000',
-                  },
-                },
-              ],
-              endTimeWindows: [
-                {
-                  startTime: {
-                    seconds: '1563117780',
-                  },
-                  endTime: {
-                    seconds: '1563121980',
-                  },
-                },
-              ],
-              type: 'Vehicle Operator Type',
-            },
-          ],
-        },
-      },
-    });
-  });
-
   it('normalizes solution ', () => {
     const solutionTest = {
       routes: [
         {
           vehicleIndex: 0,
           vehicleLabel: '',
-          vehicleOperatorIndices: [0],
-          vehicleOperatorLabels: ['Vehicle Operator 1'],
           vehicleStartTime: { seconds: '1563102000', nanos: 0 },
           vehicleEndTime: { seconds: '1563117780', nanos: 0 },
           visits: [
@@ -2890,8 +2755,6 @@ describe('normalization Service', () => {
       {
         vehicleIndex: 0,
         vehicleLabel: '',
-        vehicleOperatorIndices: [0],
-        vehicleOperatorLabels: ['Vehicle Operator 1'],
         vehicleStartTime: { seconds: '1563102000', nanos: 0 },
         vehicleEndTime: { seconds: '1563117780', nanos: 0 },
         visits: [1],
@@ -3488,7 +3351,7 @@ describe('normalization Service', () => {
             },
           ],
         },
-        requiredOperatorTypes: ['Vehicle Operator Type1', 'Vehicle Operator Type2'],
+        
         loadLimits: {
           weight_kilograms: {
             maxLoad: '400',

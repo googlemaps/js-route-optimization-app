@@ -56,7 +56,6 @@ import { Page } from 'src/app/core/models';
 import { durationSeconds, getEntityName } from 'src/app/util';
 import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 import { combineLatest } from 'rxjs';
-import * as fromVehicleOperator from 'src/app/core/selectors/vehicle-operator.selectors';
 
 @Component({
   selector: 'app-routes-row',
@@ -72,7 +71,6 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
   currentOverlapId$: Observable<number>;
   selected$: Observable<boolean>;
   vehicle$: Observable<Vehicle>;
-  vehicleOperator$: Observable<string>;
   shipmentCount$: Observable<number>;
   timeline$: Observable<Timeline>;
   duration$: Observable<[Long, Long]>;
@@ -136,25 +134,6 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
           map((vehicleByIdFn) => vehicleByIdFn(route?.id))
         )
       )
-    );
-
-    this.vehicleOperator$ = combineLatest([
-      this.route$,
-      this.store.pipe(select(fromVehicleOperator.selectAll)),
-      this.store.pipe(select(fromVehicleOperator.selectRequestedIds)),
-    ]).pipe(
-      take(1),
-      map(([route, selectAll, requestedIds]: any) => {
-        let vehicleOperatorLabels = '';
-        route.vehicleOperatorIndices?.forEach((anIndex) => {
-          const vehicleOperatorObj = selectAll.find((obj) => obj.id === requestedIds[anIndex]);
-          vehicleOperatorLabels =
-            vehicleOperatorLabels +
-            (vehicleOperatorLabels ? ',' : '') +
-            getEntityName(vehicleOperatorObj);
-        });
-        return vehicleOperatorLabels;
-      })
     );
 
     this.shipmentCount$ = this.route$.pipe(

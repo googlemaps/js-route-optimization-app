@@ -23,7 +23,6 @@ export enum Modal {
   EditShipment = 'editShipment',
   DeleteShipment = 'deleteShipment',
   EditVehicle = 'editVehicle',
-  EditVehicleOperator = 'editVehicleOperator',
   EditVisit = 'editVisit',
   EditSettings = 'editSettings',
   ValidationResult = 'validationResult',

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { Shipment, Vehicle, VehicleOperator, VisitRequest } from '../core/models';
+import { Shipment, Vehicle, VisitRequest } from '../core/models';
 
 export function joinLabel(value: string[]): string {
   return value?.join(',') || null;
@@ -30,7 +30,7 @@ export function splitLabel(value: string): string[] {
 }
 
 export function getEntityName(
-  entity: Shipment | Vehicle | VisitRequest | VehicleOperator,
+  entity: Shipment | Vehicle | VisitRequest,
   defaultNamePrefix = ''
 ): string {
   return entity && (entity.label || defaultNamePrefix + ' #' + entity.id);

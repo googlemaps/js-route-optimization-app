@@ -60,23 +60,6 @@ export const routeMetadataFilterOptions: RouteMetadataFilterOption[] = [
     predicate: ({ route }, params) => applyStringFilter(route.vehicleLabel, params),
   } as RouteMetadataFilterOption<StringFilterParams>,
   {
-    id: 'vehicleOperator.Ids',
-    label: 'Vehicle Operator IDs',
-    form: () => FilterStringFormComponent,
-    predicate: ({ route }, params) =>
-      applyStringFilter(
-        route.vehicleOperatorIndices.map((element) => element + 1).toString(),
-        params
-      ),
-  } as RouteMetadataFilterOption<StringFilterParams>,
-  {
-    id: 'vehicleOperator.label',
-    label: 'Vehicle Operator Labels',
-    form: () => FilterStringFormComponent,
-    predicate: ({ route }, params) =>
-      applyStringFilter(route.vehicleOperatorLabels?.toString(), params),
-  } as RouteMetadataFilterOption<StringFilterParams>,
-  {
     id: 'traveledTime',
     label: 'Traveled time (min)',
     form: () => FilterNumberFormComponent,

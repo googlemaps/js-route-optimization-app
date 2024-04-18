@@ -54,7 +54,6 @@ class MockBaseRoutesRowComponent {
   @Input() isDragging: boolean;
   @Input() route: ShipmentRoute;
   @Input() vehicle: Vehicle;
-  @Input() vehicleOperator: string;
   @Input() shipmentCount: number;
   @Input() selected = false;
   @Input() timeline: Timeline;

@@ -27,7 +27,6 @@ import {
   PostSolveControlBarActions,
   PreSolveShipmentActions,
   PreSolveVehicleActions,
-  PreSolveVehicleOperatorActions,
   RequestSettingsActions,
   RoutesChartActions,
   RoutesMetadataActions,
@@ -37,14 +36,13 @@ import {
   UIActions,
   UndoRedoActions,
   VehicleActions,
-  VehicleOperatorActions,
 } from '../core/actions';
 import { Page } from '../core/models';
 import { Frame, State as UndoRedoState } from '../core/reducers/undo-redo.reducer';
 
 const maxUndos = 100;
 
-const preSolvePages = new Set([Page.Welcome, Page.Vehicles, Page.Shipments, Page.VehicleOperators]);
+const preSolvePages = new Set([Page.Welcome, Page.Vehicles, Page.Shipments]);
 
 const ignoreActions = new Set<string>([
   UndoRedoActions.changePage.type,
@@ -91,17 +89,6 @@ const ignoreActions = new Set<string>([
   PreSolveVehicleActions.changeDisplayColumns.type,
   PreSolveVehicleActions.changePage.type,
   PreSolveVehicleActions.changeSort.type,
-  PreSolveVehicleOperatorActions.selectVehicleOperator.type,
-  PreSolveVehicleOperatorActions.selectVehicleOperators.type,
-  PreSolveVehicleOperatorActions.deselectVehicleOperator.type,
-  PreSolveVehicleOperatorActions.deselectVehicleOperators.type,
-  PreSolveVehicleOperatorActions.updateVehicleOperatorsSelection.type,
-  PreSolveVehicleOperatorActions.addFilter.type,
-  PreSolveVehicleOperatorActions.editFilter.type,
-  PreSolveVehicleOperatorActions.removeFilter.type,
-  PreSolveVehicleOperatorActions.changeDisplayColumns.type,
-  PreSolveVehicleOperatorActions.changePage.type,
-  PreSolveVehicleOperatorActions.changeSort.type,
   ShipmentModelActions.setGlobalEndTime.type,
   ShipmentModelActions.setGlobalStartTime.type,
   RequestSettingsActions.setLabel.type,
@@ -195,10 +182,6 @@ const config: Config = {
   [VehicleActions.upsertVehicles.type]: {},
   [VehicleActions.deleteVehicle.type]: {},
   [VehicleActions.deleteVehicles.type]: {},
-  [VehicleOperatorActions.upsertVehicleOperator.type]: {},
-  [VehicleOperatorActions.upsertVehicleOperators.type]: {},
-  [VehicleOperatorActions.deleteVehicleOperator.type]: {},
-  [VehicleOperatorActions.deleteVehicleOperators.type]: {},
 };
 
 export function undoRedo(reducer: ActionReducer<State>): ActionReducer<State> {

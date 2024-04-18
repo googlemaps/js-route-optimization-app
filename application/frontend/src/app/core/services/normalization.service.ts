@@ -39,7 +39,6 @@ import {
   Visit,
   IBreakRule,
   IShipmentModel,
-  VehicleOperator,
 } from 'src/app/core/models';
 import { durationSeconds } from 'src/app/util';
 
@@ -66,7 +65,6 @@ export class NormalizationService {
     traffic: boolean;
     visitRequests: VisitRequest[];
     vehicles: Vehicle[];
-    vehicleOperators: VehicleOperator[];
     allowLargeDeadlineDespiteInterruptionRisk: boolean;
     interpretInjectedSolutionsUsingLabels: boolean;
     populateTransitionPolylines: boolean;
@@ -81,7 +79,6 @@ export class NormalizationService {
 
     const { breakRules, ...scenarioModel } = { breakRules: [], ...scenario.model };
     const { vehicles } = this.normalizeVehicles(scenarioModel, breakRules, changeTime);
-    const { vehicleOperators } = this.normalizeVehicleOperators(scenarioModel, changeTime);
     const normalizedScenario = { ...scenario, model: scenarioModel };
     const firstSolutionRoutes = normalizedScenario?.injectedFirstSolutionRoutes;
 
@@ -129,7 +126,6 @@ export class NormalizationService {
       traffic,
       visitRequests,
       vehicles,
-      vehicleOperators,
       allowLargeDeadlineDespiteInterruptionRisk,
       interpretInjectedSolutionsUsingLabels,
       populateTransitionPolylines,
@@ -445,26 +441,5 @@ export class NormalizationService {
       return vehicleEntity;
     });
     return { vehicles: normalizedVehicleArray };
-  }
-
-  private normalizeVehicleOperators(
-    scenarioModel: IShipmentModel,
-    changeTime: number
-  ): { vehicleOperators: VehicleOperator[] } {
-    if (!scenarioModel?.vehicleOperators?.length) {
-      return { vehicleOperators: [] };
-    }
-
-    const normalizedVehicleOperatorsArray = scenarioModel.vehicleOperators.map(
-      (vehicleOperator, index) => {
-        const vehicleOperatorEntity: VehicleOperator = {
-          id: index + 1,
-          ...vehicleOperator,
-          changeTime,
-        };
-        return vehicleOperatorEntity;
-      }
-    );
-    return { vehicleOperators: normalizedVehicleOperatorsArray };
   }
 }

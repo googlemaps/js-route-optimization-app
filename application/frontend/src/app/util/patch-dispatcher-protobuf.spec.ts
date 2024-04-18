@@ -27,16 +27,16 @@ describe('util', () => {
   });
 
   it('should convert canonical master JSON', async () => {
-    const expected = google.cloud.optimization.v1.OptimizeToursRequest.fromObject(masterNonCanon);
-    const result = google.cloud.optimization.v1.OptimizeToursRequest.fromObject(masterCanon);
+    const expected = google.maps.routeoptimization.v1.OptimizeToursRequest.fromObject(masterNonCanon);
+    const result = google.maps.routeoptimization.v1.OptimizeToursRequest.fromObject(masterCanon);
 
     expect(result).toEqual(expected);
   });
 
   it('should convert canonical master JSON solution', async () => {
     const expected =
-      google.cloud.optimization.v1.OptimizeToursResponse.fromObject(masterSolutionNonCanon);
-    const result = google.cloud.optimization.v1.OptimizeToursResponse.fromObject(masterSolution);
+      google.maps.routeoptimization.v1.OptimizeToursResponse.fromObject(masterSolutionNonCanon);
+    const result = google.maps.routeoptimization.v1.OptimizeToursResponse.fromObject(masterSolution);
 
     expect(result).toEqual(expected);
   });
@@ -47,11 +47,11 @@ describe('util', () => {
     };
 
     const result =
-      google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.fromObject(
+      google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.fromObject(
         relaxation
       );
     const expected =
-      google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.fromObject({
+      google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.fromObject({
         relaxations: [
           {
             thresholdTime: { seconds: (Date.parse('2019-10-02T22:39:00.000Z') / 1000).toString() },
@@ -64,12 +64,12 @@ describe('util', () => {
 
   it('should convert canonical distance matrix row', () => {
     const expected =
-      google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject({
+      google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject({
         meters: [1000, 2000],
         durations: [{ seconds: 100 }, { seconds: 200 }],
       });
 
-    const result = google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject(
+    const result = google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject(
       {
         meters: [1000, 2000],
         durations: ['100s', '200s'],
@@ -80,12 +80,12 @@ describe('util', () => {
   });
 
   it('should convert canonical break request', () => {
-    const expected = google.cloud.optimization.v1.BreakRule.BreakRequest.fromObject({
+    const expected = google.maps.routeoptimization.v1.BreakRule.BreakRequest.fromObject({
       earliestStartTime: { seconds: (Date.parse('2022-06-02T11:00:00.000Z') / 1000).toString() },
       latestStartTime: { seconds: (Date.parse('2022-06-02T11:45:00.000Z') / 1000).toString() },
       minDuration: { seconds: 2700 },
     });
-    const result = google.cloud.optimization.v1.BreakRule.BreakRequest.fromObject({
+    const result = google.maps.routeoptimization.v1.BreakRule.BreakRequest.fromObject({
       earliestStartTime: '2022-06-02T11:00:00.000Z',
       latestStartTime: '2022-06-02T11:45:00.000Z',
       minDuration: '2700s',
@@ -95,12 +95,12 @@ describe('util', () => {
   });
 
   it('should convert canonical frequency constraint', () => {
-    const result = google.cloud.optimization.v1.BreakRule.FrequencyConstraint.fromObject({
+    const result = google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject({
       minBreakDuration: '1800s',
       maxInterBreakDuration: '5400s',
     });
 
-    const expected = google.cloud.optimization.v1.BreakRule.FrequencyConstraint.fromObject({
+    const expected = google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject({
       minBreakDuration: { seconds: 1800 },
       maxInterBreakDuration: { seconds: 5400 },
     });

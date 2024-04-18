@@ -190,11 +190,9 @@ describe('PreSolveVehicle Reducer', () => {
       const action = DispatcherActions.loadScenario({
         shipments: [],
         vehicles: [],
-        vehicleOperators: [],
         visitRequests: [],
         selectedShipments: [],
         selectedVehicles: [1, 7],
-        selectedVehicleOperators: [],
         changeTime: 1,
       });
       const state = reducer(prevState, action);

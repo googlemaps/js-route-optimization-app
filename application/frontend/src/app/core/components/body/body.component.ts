@@ -108,9 +108,6 @@ export class BodyComponent implements OnChanges {
   get isVehiclesPage(): boolean {
     return this.page === Page.Vehicles;
   }
-  get isVehicleOperatorsPage(): boolean {
-    return this.page === Page.VehicleOperators;
-  }
   get isRoutesChartPage(): boolean {
     return this.page === Page.RoutesChart;
   }
@@ -118,7 +115,7 @@ export class BodyComponent implements OnChanges {
     return this.page === Page.RoutesMetadata || this.page === Page.ShipmentsMetadata;
   }
   get isPreSolve(): boolean {
-    return this.isShipmentsPage || this.isVehiclesPage || this.isVehicleOperatorsPage;
+    return this.isShipmentsPage || this.isVehiclesPage;
   }
   get isPostSolve(): boolean {
     return this.isRoutesChartPage || this.isMetadata;

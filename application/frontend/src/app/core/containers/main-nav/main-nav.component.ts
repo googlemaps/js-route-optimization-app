@@ -26,7 +26,6 @@ import PreSolveShipmentSelectors from 'src/app/core/selectors/pre-solve-shipment
 import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
 import PreSolveVehicleSelectors from 'src/app/core/selectors/pre-solve-vehicle.selectors';
-import PreSolveVehicleOperatorSelectors from '../../selectors/pre-solve-vehicle-operator.selectors';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 
 @Component({
@@ -44,7 +43,6 @@ export class MainNavComponent {
   readonly selectedShipmentCount$: Observable<number>;
   readonly selectedVehicleCount$: Observable<number>;
   readonly allowExperimentalFeatures$: Observable<boolean>;
-  readonly selectedVehicleOperatorCount$: Observable<number>;
 
   readonly solving$: Observable<boolean>;
 
@@ -63,9 +61,6 @@ export class MainNavComponent {
     this.selectedVehicleCount$ = this.store.pipe(
       select(PreSolveVehicleSelectors.selectTotalSelected)
     );
-    this.selectedVehicleOperatorCount$ = this.store.pipe(
-      select(PreSolveVehicleOperatorSelectors.selectTotalSelected)
-    );
     this.solving$ = store.pipe(select(DispatcherApiSelectors.selectOptimizeToursLoading));
     this.page$ = this.store.pipe(select(fromUI.selectPage));
     this.allowExperimentalFeatures$ = this.store.pipe(
@@ -83,9 +78,5 @@ export class MainNavComponent {
 
   onVehiclesClick(): void {
     this.router.navigateByUrl('/vehicles', { skipLocationChange: true });
-  }
-
-  onVehicleOperatorsClick(): void {
-    this.router.navigateByUrl('/vehicleOperators', { skipLocationChange: true });
   }
 }

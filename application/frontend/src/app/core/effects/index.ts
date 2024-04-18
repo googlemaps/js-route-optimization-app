@@ -36,5 +36,3 @@ export * from './routes-chart.effects';
 export * from './undo-redo.effects';
 export * from './upload.effects';
 export * from './vehicle.effects';
-export * from './pre-solve-vehicle-operator.effects';
-export * from './vehicle-operator.effects';

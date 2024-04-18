@@ -49,28 +49,6 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
     valueComparer: (a: string, b: string): number => a.localeCompare(b),
   },
   {
-    id: 'vehicleOperator.ids',
-    label: 'Vehicle Operator IDs',
-    active: true,
-    toggleable: true,
-    selector: ({ route }) => {
-      return route.vehicleOperatorIndices?.length > 0 ? route.vehicleOperatorIndices.join(',') : '';
-    },
-    valueComparer: (a: string, b: string): number => a.localeCompare(b),
-  },
-  {
-    id: 'vehicleOperator.label',
-    label: 'Vehicle Operator Label',
-    active: true,
-    toggleable: true,
-    selector: ({ route }) => {
-      return route.vehicleOperatorLabels?.length > 0
-        ? '-' + route.vehicleOperatorLabels.join(',')
-        : '';
-    },
-    valueComparer: (a: string, b: string): number => a.localeCompare(b),
-  },
-  {
     id: 'capacityUtilization',
     label: 'Used / Unused Capacity',
     active: true,

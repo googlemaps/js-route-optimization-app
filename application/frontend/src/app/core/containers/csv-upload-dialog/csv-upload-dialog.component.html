@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Upload shipments, vehicles and vehicle operators from CSV</h1>
+<h1 mat-dialog-title>Upload shipments and vehicles from CSV</h1>
 <div mat-dialog-content>
   <mat-horizontal-stepper
     (selectionChange)="onStepperSelectionChange($event)"
@@ -9,8 +9,7 @@
       <form [formGroup]="uploadForm">
         <ng-template matStepLabel>Upload File</ng-template>
         <p>
-          This dialog will guide you through the process of uploading a set of shipments, vehicles,
-          and/or vehicle operators from CSV files. This method only supports a subset of the fields
+          This dialog will guide you through the process of uploading a set of shipments and/or vehicles from CSV files. This method only supports a subset of the fields
           that the Cloud Fleet Routing API supports. Please use the JSON uploader for full API
           support.
         </p>
@@ -21,11 +20,6 @@
           <ul>
             <li><a href="javascript:void(0)" (click)="downloadShipmentsSample()">Shipments</a></li>
             <li><a href="javascript:void(0)" (click)="downloadVehiclesSample()">Vehicles</a></li>
-            <li *ngIf="allowExperimentalFeatures">
-              <a href="javascript:void(0)" (click)="downloadVehicleOperatorsSample()"
-                >Vehicle Operators</a
-              >
-            </li>
           </ul>
         </div>
         <h4 class="margin-bottom-0">Select your timezone</h4>
@@ -76,45 +70,20 @@
             (change)="fileSelected($event, false, true)"
             (change)="uploadFilesChanged()" />
         </div>
-        <div class="file-input">
-          <div class="file-input__form-field" *ngIf="allowExperimentalFeatures">
-            <mat-form-field>
-              <mat-label>Vehicle Operators file</mat-label>
-              <input
-                matInput
-                [readonly]="true"
-                [formControl]="vehicleOperatorFilename"
-                (click)="selectVehicleOperatorFile()" />
-            </mat-form-field>
-            <button type="button" mat-raised-button (click)="selectVehicleOperatorFile()">
-              Choose a File
-            </button>
-          </div>
-          <input
-            #vehicleOperatorFileInput
-            type="file"
-            accept=".csv"
-            (change)="fileSelected($event, false, false)"
-            (change)="uploadFilesChanged()" />
-        </div>
       </form>
     </mat-step>
 
     <!-- step 2 - preview -->
     <mat-step>
       <ng-template matStepLabel>{{
-        (shipmentFileInput && vehicleFileInput) ||
-        (vehicleFileInput && vehicleOperatorFileInput) ||
-        (shipmentFileInput && vehicleOperatorFileInput)
+        (shipmentFileInput && vehicleFileInput)
           ? 'Preview CSVs'
           : 'Preview CSV'
       }}</ng-template>
       <div *ngIf="!isLoadingCsv; else loading">
         <p>
           {{
-            (shipmentFile && vehicleFile) ||
-            (vehicleFile && vehicleOperatorFile) ||
-            (shipmentFile && vehicleOperatorFile)
+            (shipmentFile && vehicleFile)
               ? 'If the tables below do not look as expected, try using the template files from the previous page.'
               : 'If the table below does not look as expected, try using a template file from the previous page.'
           }}
@@ -174,38 +143,6 @@
               </div>
             </div>
           </mat-tab>
-          <mat-tab
-            label="Vehicle Operators"
-            [disabled]="!vehicleOperatorFile"
-            *ngIf="allowExperimentalFeatures">
-            <div *ngIf="vehicleOperatorFile">
-              <p *ngIf="vehicleOperatorPreviewData.length" class="mt-3">
-                {{
-                  vehicleOperatorPreviewData.length < previewRows
-                    ? 'Previewing all rows.'
-                    : 'Previewing the first ' + previewRows + ' rows.'
-                }}
-              </p>
-              <div class="preview-table">
-                <div *ngIf="!errorLoadingVehicleOperatorCsv; else errorLoading">
-                  <div *ngIf="vehicleOperatorPreviewData.length; else noData">
-                    <table mat-table [dataSource]="vehicleOperatorPreviewData">
-                      <ng-container
-                        *ngFor="let column of vehicleOperatorPreviewCsvColumns"
-                        [matColumnDef]="column">
-                        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-                        <td mat-cell *matCellDef="let row">{{ row[column] }}</td>
-                      </ng-container>
-                      <tr mat-header-row *matHeaderRowDef="vehicleOperatorPreviewCsvColumns"></tr>
-                      <tr
-                        mat-row
-                        *matRowDef="let row; columns: vehicleOperatorPreviewCsvColumns"></tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </mat-tab>
         </mat-tab-group>
       </div>
     </mat-step>
@@ -249,7 +186,7 @@
                       <mat-option
                         *ngFor="let header of shipmentPreviewCsvColumns"
                         [value]="header"
-                        [disabled]="isColumnMapped(header, true, false)">
+                        [disabled]="isColumnMapped(header, true)">
                         {{ header }}
                       </mat-option>
                     </mat-select>
@@ -290,51 +227,7 @@
                       <mat-option
                         *ngFor="let header of vehiclePreviewCsvColumns"
                         [value]="header"
-                        [disabled]="isColumnMapped(header, false, true)">
-                        {{ header }}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="hasError(field)">
-                      {{ getErrorMessage(field) }}
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-            </form>
-          </div>
-        </mat-tab>
-        <mat-tab
-          label="Vehicle Operators"
-          [disabled]="!vehicleOperatorFile"
-          *ngIf="allowExperimentalFeatures">
-          <div *ngIf="vehicleOperatorFile" class="mt-3">
-            <form [formGroup]="mappingFormVehicleOperators">
-              <div>
-                <div class="margin-bottom-1rem">
-                  <mat-chip-list aria-label="Column mappings">
-                    <mat-chip
-                      *ngFor="let mapping of vehicleOperatorChipList"
-                      (removed)="removeChip(mapping, false, false)">
-                      {{ mapping.apiField }} = {{ mapping.column }}
-                      <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-                  </mat-chip-list>
-                </div>
-                <div class="field-match-group">
-                  <mat-form-field
-                    *ngFor="let field of vehicleOperatorFieldKeys"
-                    appearance="fill"
-                    class="item-lg field-match-select">
-                    <mat-label>{{ formatFieldName(field) }}</mat-label>
-                    <mat-select
-                      [formControlName]="field"
-                      (selectionChange)="setMapping(field, $event.value, false, false)"
-                      [errorStateMatcher]="getErrorStateMatcher(field)">
-                      <mat-option>- Unused -</mat-option>
-                      <mat-option
-                        *ngFor="let header of vehicleOperatorPreviewCsvColumns"
-                        [value]="header"
-                        [disabled]="isColumnMapped(header, false, false)">
+                        [disabled]="isColumnMapped(header, false)">
                         {{ header }}
                       </mat-option>
                     </mat-select>
