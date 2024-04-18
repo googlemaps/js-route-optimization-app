@@ -51,7 +51,6 @@ export {
 export type IBreak = dispatcher.ShipmentRoute.IBreak;
 export type IBreakRule = google.maps.routeoptimization.v1.IBreakRule;
 export type IBreakRequest = google.maps.routeoptimization.v1.BreakRule.IBreakRequest;
-export type ICapacityQuantity = dispatcher.ICapacityQuantity;
 export type IConstraintRelaxation = dispatcher.InjectedSolutionConstraint.IConstraintRelaxation;
 export type IDistanceLimit = dispatcher.IDistanceLimit;
 export type IDuration = google.protobuf.IDuration;

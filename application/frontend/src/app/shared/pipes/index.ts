@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export * from './capacity-quantities-has-value.pipe';
+export * from './load-demands-has-value.pipe';
 export * from './capacity-quantity-label.pipe';
 export * from './capacity-quantity-unit.pipe';
 export * from './distance-limit.pipe';

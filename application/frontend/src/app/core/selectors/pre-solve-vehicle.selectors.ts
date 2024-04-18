@@ -135,8 +135,8 @@ const selectVehicleFilterOptions = createSelector(
         label: 'Demand (' + label + (unit ? ', ' + unit : '') + ')',
         form: () => FilterNumberFormComponent,
         predicate: ({ vehicle }, params) => {
-          const capacity = vehicle.capacities?.find((c) => c.type === capacityType);
-          return applyLongValueFilter(capacity.value, params);
+          const capacity = vehicle.loadLimits[capacityType];
+          return applyLongValueFilter(capacity.maxLoad, params);
         },
       } as VehicleFilterOption<NumberFilterParams>);
     }
@@ -328,17 +328,15 @@ const selectVehiclesKpis = createSelector(
     };
 
     vehicles.forEach((vehicle) => {
-      if (!vehicle.capacities) {
+      if (!vehicle.loadLimits) {
         return;
       }
 
-      vehicle.capacities.forEach((capacity) => {
-        if (!capacity) {
-          return;
-        }
-        const capacityValue = capacity.value ? Long.fromValue(capacity.value).toNumber() : 0;
+      Object.keys(vehicle.loadLimits).forEach((loadLimitKey) => {
+        const loadLimit = vehicle.loadLimits[loadLimitKey];
+        const capacityValue = loadLimit.maxLoad ? Long.fromValue(loadLimit.maxLoad).toNumber() : 0;
         const filteredCapacities = kpis.capacities.filter(
-          (kpiCapacity) => kpiCapacity.type === capacity.type
+          (kpiCapacity) => kpiCapacity.type === loadLimitKey
         );
         if (filteredCapacities.length) {
           const matchingCapacity = filteredCapacities[0];
@@ -350,7 +348,7 @@ const selectVehiclesKpis = createSelector(
           kpis.capacities.push({
             selected: capacityValue,
             total: capacityValue,
-            type: capacity.type,
+            type: loadLimitKey,
           });
         }
       });

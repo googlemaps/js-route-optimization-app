@@ -15,11 +15,11 @@ limitations under the License.
 */
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { ICapacityQuantity } from 'src/app/core/models';
+import { ILoad } from 'src/app/core/models';
 
-@Pipe({ name: 'capacityQuantitiesHasValue' })
-export class CapacityQuantitiesHasValuePipe implements PipeTransform {
-  transform(capacityQuantities: ICapacityQuantity[]): boolean {
-    return Array.isArray(capacityQuantities) && capacityQuantities.some((c) => c.value != null);
+@Pipe({ name: 'loadDemandsHasValue' })
+export class LoadDemandsHasValuePipe implements PipeTransform {
+  transform(loadDemands: ILoad[]): boolean {
+    return Array.isArray(loadDemands) && loadDemands.some((c) => c.amount != null);
   }
 }

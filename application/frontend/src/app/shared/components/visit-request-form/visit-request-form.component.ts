@@ -304,13 +304,6 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
           value: this.visitRequest.loadDemands[key],
         });
       });
-    } else if (this.visitRequest.demands) {
-      this.visitRequest.demands.forEach((aDemand) => {
-        loadDemands.push({
-          type: getCapacityQuantityRoot(aDemand.type),
-          value: { amount: aDemand.value },
-        });
-      });
     }
 
     this.resetDemands(loadDemands);

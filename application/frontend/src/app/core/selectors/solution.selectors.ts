@@ -29,7 +29,7 @@ export const selectSkippedShipments = createSelector(
 
 export const selectTotalCost = createSelector(
   fromDispatcher.selectSolution,
-  (solution) => solution?.totalCost || 0
+  (solution) => solution?.metrics?.totalCost || 0
 );
 
 export const selectRoutes = createSelector(

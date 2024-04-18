@@ -223,21 +223,6 @@ export class NormalizationService {
         changeTime,
       };
 
-      // remap demands to loadDemands
-      if (shipmentEntity.demands?.length > 0) {
-        const newLoadDemands = shipmentEntity.demands.reduce(
-          (prev, cur) => ({ ...prev, [cur.type]: { amount: cur.value } as ILoad }),
-          {}
-        ) as { [k: string]: ILoad };
-
-        shipmentEntity.loadDemands = {
-          ...newLoadDemands,
-          ...shipmentEntity.loadDemands,
-        };
-
-        delete shipmentEntity.demands;
-      }
-
       // pickups
       for (let i = 0, l = shipment.pickups?.length; i < l; i++) {
         const visitRequestEntity = {
@@ -260,24 +245,6 @@ export class NormalizationService {
             location: { latLng: visitRequestEntity.departureLocation },
           };
           delete visitRequestEntity.departureLocation;
-        }
-
-        // remap demands to loadDemands
-        if (visitRequestEntity.demands?.length > 0) {
-          const demandsAsLoadDemands = visitRequestEntity.demands.reduce(
-            (loadDemands, demand) => ({
-              ...loadDemands,
-              [demand.type]: { amount: demand.value } as ILoad,
-            }),
-            {}
-          ) as { [k: string]: ILoad };
-
-          visitRequestEntity.loadDemands = {
-            ...demandsAsLoadDemands,
-            ...visitRequestEntity.loadDemands,
-          };
-
-          delete visitRequestEntity.demands;
         }
 
         visitRequestEntities.push(visitRequestEntity);
@@ -306,24 +273,6 @@ export class NormalizationService {
             location: { latLng: visitRequestEntity.departureLocation },
           });
           delete visitRequestEntity.departureLocation;
-        }
-
-        // remap demands to loadDemands
-        if (visitRequestEntity.demands?.length > 0) {
-          const demandsAsLoadDemands = visitRequestEntity.demands.reduce(
-            (loadDemands, demand) => ({
-              ...loadDemands,
-              [demand.type]: { amount: demand.value } as ILoad,
-            }),
-            {}
-          ) as { [k: string]: ILoad };
-
-          visitRequestEntity.loadDemands = {
-            ...demandsAsLoadDemands,
-            ...visitRequestEntity.loadDemands,
-          };
-
-          delete visitRequestEntity.demands;
         }
 
         visitRequestEntities.push(visitRequestEntity);
@@ -399,24 +348,6 @@ export class NormalizationService {
         delete vehicleEntity.endLocation;
       }
 
-      // remap capacities to loadLimits
-      if (vehicleEntity.capacities?.length > 0) {
-        const capacitiesAsLimits = vehicleEntity.capacities.reduce(
-          (limits, capacity) => ({
-            ...limits,
-            [capacity.type]: <ILoadLimit>{ maxLoad: capacity.value },
-          }),
-          {}
-        ) as { [k: string]: ILoadLimit };
-
-        vehicleEntity.loadLimits = {
-          ...capacitiesAsLimits,
-          ...vehicleEntity.loadLimits,
-        };
-
-        delete vehicleEntity.capacities;
-      }
-
       //normalize Break Rules
       if (breakRules?.length > 0) {
         const newBreakRule = breakRules?.find(
@@ -435,9 +366,6 @@ export class NormalizationService {
         }
       }
 
-      if (vehicleEntity.breakRuleIndices) {
-        delete vehicleEntity.breakRuleIndices;
-      }
       return vehicleEntity;
     });
     return { vehicles: normalizedVehicleArray };
