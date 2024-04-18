@@ -47,7 +47,7 @@ export const selectNumberOfRoutes = createSelector(
 
 export const selectTotalCost = createSelector(
   selectSolution,
-  (solution) => solution?.totalCost || 0
+  (solution) => solution?.metrics.totalCost || 0
 );
 
 export const selectRoutes = createSelector(selectSolution, (solution) => solution?.routes || []);
