@@ -482,7 +482,7 @@ describe('normalization Service', () => {
         allowedVehicleIndices: [],
         shipmentType: 'Shipment Type1',
         label: 'Shipment Label 1',
-        demands: [{ type: 'weight', value: '200' }],
+        loadDemands: { weight: { amount: '200' } },
       },
     ];
     scenario.model = model;
@@ -562,7 +562,7 @@ describe('normalization Service', () => {
               allowedVehicleIndices: [],
               shipmentType: 'Shipment Type1',
               label: 'Shipment Label 1',
-              demands: [{ type: 'weight', value: '200' }],
+              loadDemands: { weight: { amount: '200' } },
             },
           ],
         },
@@ -596,7 +596,7 @@ describe('normalization Service', () => {
         allowedVehicleIndices: [],
         shipmentType: 'Shipment Type1',
         label: 'Shipment Label 1',
-        demands: [{ type: 'weight', value: '200' }],
+        loadDemands: { weight: { amount: '200' } },
       },
     ];
     scenario.model = model;
@@ -675,7 +675,7 @@ describe('normalization Service', () => {
               allowedVehicleIndices: [],
               shipmentType: 'Shipment Type1',
               label: 'Shipment Label 1',
-              demands: [{ type: 'weight', value: '200' }],
+              loadDemands: { weight: { amount: '200' } },
             },
           ],
         },
@@ -709,7 +709,7 @@ describe('normalization Service', () => {
         allowedVehicleIndices: [],
         shipmentType: 'Shipment Type1',
         label: 'Shipment Label 1',
-        demands: [{ type: 'weight', value: '200' }],
+        loadDemands: { weight: { amount: '200' } },
       },
     ];
     scenario.model = model;
@@ -788,7 +788,7 @@ describe('normalization Service', () => {
               allowedVehicleIndices: [],
               shipmentType: 'Shipment Type1',
               label: 'Shipment Label 1',
-              demands: [{ type: 'weight', value: '200' }],
+              loadDemands: { weight: { amount: '200' } },
             },
           ],
         },
@@ -822,7 +822,7 @@ describe('normalization Service', () => {
         allowedVehicleIndices: [],
         shipmentType: 'Shipment Type1',
         label: 'Shipment Label 1',
-        demands: [{ type: 'weight', value: '200' }],
+        loadDemands: { weight: { amount: '200' } },
       },
     ];
     scenario.model = model;
@@ -901,7 +901,7 @@ describe('normalization Service', () => {
               allowedVehicleIndices: [],
               shipmentType: 'Shipment Type1',
               label: 'Shipment Label 1',
-              demands: [{ type: 'weight', value: '200' }],
+              loadDemands: { weight: { amount: '200' } },
             },
           ],
         },
@@ -934,7 +934,7 @@ describe('normalization Service', () => {
             cost: 0.25,
             visitTypes: ['Visit Type1'],
             label: 'Pickup Request 1',
-            demands: [{ type: 'weight', value: '200' }],
+            loadDemands: { weight: { amount: '200' } },
           },
         ],
         allowedVehicleIndices: [],
@@ -1014,7 +1014,7 @@ describe('normalization Service', () => {
                   cost: 0.25,
                   visitTypes: ['Visit Type1'],
                   label: 'Pickup Request 1',
-                  demands: [{ type: 'weight', value: '200' }],
+                  loadDemands: { weight: { amount: '200' } },
                 },
               ],
               allowedVehicleIndices: [],
@@ -1838,11 +1838,14 @@ describe('normalization Service', () => {
             },
           ],
         },
-
-        capacities: [
-          { type: 'weight_kilograms', value: '400' },
-          { type: 'volume_liters', value: '50' },
-        ],
+        loadLimits: {
+          weight_kilograms: {
+            maxLoad: '400',
+          },
+          volume_liters: {
+            maxLoad: '50',
+          },
+        },
       },
     ];
     scenario.model = model;
@@ -2002,603 +2005,14 @@ describe('normalization Service', () => {
                 ],
               },
 
-              capacities: [
-                { type: 'weight_kilograms', value: '400' },
-                { type: 'volume_liters', value: '50' },
-              ],
-            },
-          ],
-        },
-      },
-    });
-  });
-
-  it('normalizes scenario with Vehicle - Break Rules ', () => {
-    model.vehicles = [
-      {
-        startWaypoint: {
-          location: {
-            latLng: {
-              latitude: 48.883332,
-              longitude: 2.369089,
-            },
-          },
-        },
-        endWaypoint: {
-          location: {
-            latLng: {
-              latitude: 48.883332,
-              longitude: 2.369089,
-            },
-          },
-        },
-        startTimeWindows: [
-          {
-            startTime: {
-              seconds: '1563097800',
-            },
-            endTime: {
-              seconds: '1563102000',
-            },
-          },
-        ],
-        endTimeWindows: [
-          {
-            startTime: {
-              seconds: '1563117780',
-            },
-            endTime: {
-              seconds: '1563121980',
-            },
-          },
-        ],
-        costPerHour: 30,
-        costPerKilometer: 0.2,
-        usedIfRouteIsEmpty: true,
-        travelDurationLimit: {},
-
-        loadLimits: {
-          weight_kilograms: {
-            maxLoad: '400',
-            startLoadInterval: {},
-            endLoadInterval: {},
-          },
-          volume_liters: {
-            maxLoad: '50',
-            startLoadInterval: {},
-            endLoadInterval: {},
-          },
-        },
-        breakRuleIndices: [0],
-      },
-    ];
-    model.breakRules = [
-      {
-        breakRequests: [
-          {
-            earliestStartTime: {
-              seconds: '1563188400',
-            },
-            latestStartTime: {
-              seconds: '1563195600',
-            },
-            minDuration: {
-              seconds: '3000',
-            },
-          },
-        ],
-        frequencyConstraints: [
-          {
-            minBreakDuration: {
-              seconds: '5400',
-            },
-            maxInterBreakDuration: {
-              seconds: '7200',
-            },
-          },
-        ],
-      },
-    ];
-    scenario.model = model;
-    expect(_normalizationService.normalizeScenario(scenario, 0)).toEqual({
-      firstSolutionRoutes: undefined,
-      injectedModelConstraint: undefined,
-      injectedSolution: false,
-      label: '',
-      searchMode: SearchMode.RETURN_FAST,
-      shipments: [],
-      shipmentModel: {
-        globalDurationCostPerHour: undefined,
-        maxActiveVehicles: undefined,
-        precedenceRules: undefined,
-        shipmentTypeRequirements: undefined,
-        shipmentTypeIncompatibilities: undefined,
-        transitionAttributes: undefined,
-        globalStartTime: nowSeconds,
-        globalEndTime: tomorrowSeconds,
-      },
-      solvingMode: undefined,
-      timeout: undefined,
-      traffic: false,
-      visitRequests: [],
-      vehicles: [
-        {
-          id: 1,
-          startWaypoint: {
-            location: {
-              latLng: {
-                latitude: 48.883332,
-                longitude: 2.369089,
-              },
-            },
-          },
-          endWaypoint: {
-            location: {
-              latLng: {
-                latitude: 48.883332,
-                longitude: 2.369089,
-              },
-            },
-          },
-          startTimeWindows: [
-            {
-              startTime: {
-                seconds: '1563097800',
-              },
-              endTime: {
-                seconds: '1563102000',
-              },
-            },
-          ],
-          endTimeWindows: [
-            {
-              startTime: {
-                seconds: '1563117780',
-              },
-              endTime: {
-                seconds: '1563121980',
-              },
-            },
-          ],
-          costPerHour: 30,
-          costPerKilometer: 0.2,
-          usedIfRouteIsEmpty: true,
-          travelDurationLimit: {},
-          breakRule: {
-            breakRequests: [
-              {
-                earliestStartTime: {
-                  seconds: '1563188400',
-                },
-                latestStartTime: {
-                  seconds: '1563195600',
-                },
-                minDuration: {
-                  seconds: '3000',
-                },
-              },
-            ],
-            frequencyConstraints: [
-              {
-                minBreakDuration: {
-                  seconds: '5400',
-                },
-                maxInterBreakDuration: {
-                  seconds: '7200',
-                },
-              },
-            ],
-          },
-
-          loadLimits: {
-            weight_kilograms: {
-              maxLoad: '400',
-              startLoadInterval: {},
-              endLoadInterval: {},
-            },
-            volume_liters: {
-              maxLoad: '50',
-              startLoadInterval: {},
-              endLoadInterval: {},
-            },
-          },
-          changeTime: 0,
-        },
-      ],
-      allowLargeDeadlineDespiteInterruptionRisk: undefined,
-      interpretInjectedSolutionsUsingLabels: undefined,
-      populateTransitionPolylines: undefined,
-      useGeodesicDistances: undefined,
-      geodesicMetersPerSecond: undefined,
-      normalizedScenario: {
-        model: {
-          vehicles: [
-            {
-              startWaypoint: {
-                location: {
-                  latLng: {
-                    latitude: 48.883332,
-                    longitude: 2.369089,
-                  },
-                },
-              },
-              endWaypoint: {
-                location: {
-                  latLng: {
-                    latitude: 48.883332,
-                    longitude: 2.369089,
-                  },
-                },
-              },
-              startTimeWindows: [
-                {
-                  startTime: {
-                    seconds: '1563097800',
-                  },
-                  endTime: {
-                    seconds: '1563102000',
-                  },
-                },
-              ],
-              endTimeWindows: [
-                {
-                  startTime: {
-                    seconds: '1563117780',
-                  },
-                  endTime: {
-                    seconds: '1563121980',
-                  },
-                },
-              ],
-              costPerHour: 30,
-              costPerKilometer: 0.2,
-              usedIfRouteIsEmpty: true,
-              travelDurationLimit: {},
-
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
-                  startLoadInterval: {},
-                  endLoadInterval: {},
                 },
                 volume_liters: {
                   maxLoad: '50',
-                  startLoadInterval: {},
-                  endLoadInterval: {},
                 },
               },
-              breakRuleIndices: [0],
-            },
-          ],
-        },
-      },
-    });
-  });
-
-  it('normalizes scenario with Vehicle Break Rules concat Break Requests and Frequency Constraints', () => {
-    model.vehicles = [
-      {
-        startWaypoint: {
-          location: {
-            latLng: {
-              latitude: 48.883332,
-              longitude: 2.369089,
-            },
-          },
-        },
-        endWaypoint: {
-          location: {
-            latLng: {
-              latitude: 48.883332,
-              longitude: 2.369089,
-            },
-          },
-        },
-        startTimeWindows: [
-          {
-            startTime: {
-              seconds: '1563097800',
-            },
-            endTime: {
-              seconds: '1563102000',
-            },
-          },
-        ],
-        endTimeWindows: [
-          {
-            startTime: {
-              seconds: '1563117780',
-            },
-            endTime: {
-              seconds: '1563121980',
-            },
-          },
-        ],
-        costPerHour: 30,
-        costPerKilometer: 0.2,
-        usedIfRouteIsEmpty: true,
-        travelDurationLimit: {},
-
-        breakRule: {
-          breakRequests: [
-            {
-              earliestStartTime: {
-                seconds: '1563274800',
-              },
-              latestStartTime: {
-                seconds: '1563282000',
-              },
-              minDuration: {
-                seconds: '2700',
-              },
-            },
-          ],
-          frequencyConstraints: [
-            {
-              minBreakDuration: {
-                seconds: '2750',
-              },
-              maxInterBreakDuration: {
-                seconds: '3600',
-              },
-            },
-          ],
-        },
-        loadLimits: {
-          weight_kilograms: {
-            maxLoad: '400',
-            startLoadInterval: {},
-            endLoadInterval: {},
-          },
-          volume_liters: {
-            maxLoad: '50',
-            startLoadInterval: {},
-            endLoadInterval: {},
-          },
-        },
-        breakRuleIndices: [0],
-      },
-    ];
-    model.breakRules = [
-      {
-        breakRequests: [
-          {
-            earliestStartTime: {
-              seconds: '1563188400',
-            },
-            latestStartTime: {
-              seconds: '1563195600',
-            },
-            minDuration: {
-              seconds: '3000',
-            },
-          },
-        ],
-        frequencyConstraints: [
-          {
-            minBreakDuration: {
-              seconds: '5400',
-            },
-            maxInterBreakDuration: {
-              seconds: '7200',
-            },
-          },
-        ],
-      },
-    ];
-    scenario.model = model;
-    expect(_normalizationService.normalizeScenario(scenario, 0)).toEqual({
-      firstSolutionRoutes: undefined,
-      injectedModelConstraint: undefined,
-      injectedSolution: false,
-      label: '',
-      searchMode: SearchMode.RETURN_FAST,
-      shipments: [],
-      shipmentModel: {
-        globalDurationCostPerHour: undefined,
-        maxActiveVehicles: undefined,
-        precedenceRules: undefined,
-        shipmentTypeRequirements: undefined,
-        shipmentTypeIncompatibilities: undefined,
-        transitionAttributes: undefined,
-        globalStartTime: nowSeconds,
-        globalEndTime: tomorrowSeconds,
-      },
-      solvingMode: undefined,
-      timeout: undefined,
-      traffic: false,
-      visitRequests: [],
-      vehicles: [
-        {
-          id: 1,
-          startWaypoint: {
-            location: {
-              latLng: {
-                latitude: 48.883332,
-                longitude: 2.369089,
-              },
-            },
-          },
-          endWaypoint: {
-            location: {
-              latLng: {
-                latitude: 48.883332,
-                longitude: 2.369089,
-              },
-            },
-          },
-          startTimeWindows: [
-            {
-              startTime: {
-                seconds: '1563097800',
-              },
-              endTime: {
-                seconds: '1563102000',
-              },
-            },
-          ],
-          endTimeWindows: [
-            {
-              startTime: {
-                seconds: '1563117780',
-              },
-              endTime: {
-                seconds: '1563121980',
-              },
-            },
-          ],
-          costPerHour: 30,
-          costPerKilometer: 0.2,
-          usedIfRouteIsEmpty: true,
-          travelDurationLimit: {},
-          breakRule: {
-            breakRequests: [
-              {
-                earliestStartTime: {
-                  seconds: '1563274800',
-                },
-                latestStartTime: {
-                  seconds: '1563282000',
-                },
-                minDuration: {
-                  seconds: '2700',
-                },
-              },
-              {
-                earliestStartTime: {
-                  seconds: '1563188400',
-                },
-                latestStartTime: {
-                  seconds: '1563195600',
-                },
-                minDuration: {
-                  seconds: '3000',
-                },
-              },
-            ],
-            frequencyConstraints: [
-              {
-                minBreakDuration: {
-                  seconds: '2750',
-                },
-                maxInterBreakDuration: {
-                  seconds: '3600',
-                },
-              },
-              {
-                minBreakDuration: {
-                  seconds: '5400',
-                },
-                maxInterBreakDuration: {
-                  seconds: '7200',
-                },
-              },
-            ],
-          },
-
-          loadLimits: {
-            weight_kilograms: {
-              maxLoad: '400',
-              startLoadInterval: {},
-              endLoadInterval: {},
-            },
-            volume_liters: {
-              maxLoad: '50',
-              startLoadInterval: {},
-              endLoadInterval: {},
-            },
-          },
-          changeTime: 0,
-        },
-      ],
-      allowLargeDeadlineDespiteInterruptionRisk: undefined,
-      interpretInjectedSolutionsUsingLabels: undefined,
-      populateTransitionPolylines: undefined,
-      useGeodesicDistances: undefined,
-      geodesicMetersPerSecond: undefined,
-      normalizedScenario: {
-        model: {
-          vehicles: [
-            {
-              startWaypoint: {
-                location: {
-                  latLng: {
-                    latitude: 48.883332,
-                    longitude: 2.369089,
-                  },
-                },
-              },
-              endWaypoint: {
-                location: {
-                  latLng: {
-                    latitude: 48.883332,
-                    longitude: 2.369089,
-                  },
-                },
-              },
-              startTimeWindows: [
-                {
-                  startTime: {
-                    seconds: '1563097800',
-                  },
-                  endTime: {
-                    seconds: '1563102000',
-                  },
-                },
-              ],
-              endTimeWindows: [
-                {
-                  startTime: {
-                    seconds: '1563117780',
-                  },
-                  endTime: {
-                    seconds: '1563121980',
-                  },
-                },
-              ],
-              costPerHour: 30,
-              costPerKilometer: 0.2,
-              usedIfRouteIsEmpty: true,
-              travelDurationLimit: {},
-
-              loadLimits: {
-                weight_kilograms: {
-                  maxLoad: '400',
-                  startLoadInterval: {},
-                  endLoadInterval: {},
-                },
-                volume_liters: {
-                  maxLoad: '50',
-                  startLoadInterval: {},
-                  endLoadInterval: {},
-                },
-              },
-              breakRule: {
-                breakRequests: [
-                  {
-                    earliestStartTime: {
-                      seconds: '1563274800',
-                    },
-                    latestStartTime: {
-                      seconds: '1563282000',
-                    },
-                    minDuration: {
-                      seconds: '2700',
-                    },
-                  },
-                ],
-                frequencyConstraints: [
-                  {
-                    minBreakDuration: {
-                      seconds: '2750',
-                    },
-                    maxInterBreakDuration: {
-                      seconds: '3600',
-                    },
-                  },
-                ],
-              },
-              breakRuleIndices: [0],
             },
           ],
         },
@@ -3415,7 +2829,7 @@ describe('normalization Service', () => {
         allowedVehicleIndices: [],
         shipmentType: 'Shipment Type1',
         label: 'Shipment Label 1',
-        demands: [{ type: 'weight', value: '200' }],
+        loadDemands: { weight: { amount: '200' } },
       },
     ];
     scenario.model = model;

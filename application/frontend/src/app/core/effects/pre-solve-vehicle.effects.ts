@@ -17,20 +17,12 @@ limitations under the License.
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { exhaustMap, map, mergeMap, take } from 'rxjs/operators';
-import {
-  MapActions,
-  PreSolveVehicleActions,
-  ValidationResultActions,
-  VehicleActions,
-} from '../actions';
+import { exhaustMap } from 'rxjs/operators';
+import { MapActions, PreSolveVehicleActions, ValidationResultActions } from '../actions';
 import { PreSolveEditVehicleDialogComponent } from '../containers';
-import { Modal, Vehicle } from '../models';
+import { Modal } from '../models';
 import { Store } from '@ngrx/store';
 import { State } from '../../reducers';
-import { combineLatest } from 'rxjs';
-import * as fromVehicle from 'src/app/core/selectors/vehicle.selectors';
-import { Update } from '@ngrx/entity';
 
 @Injectable()
 export class PreSolveVehicleEffects {

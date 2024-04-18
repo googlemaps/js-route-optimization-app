@@ -21,8 +21,6 @@ import { merge } from 'lodash';
 import {
   IDuration,
   IInjectedSolution,
-  ILoad,
-  ILoadLimit,
   IShipment,
   IShipmentRoute,
   ISkippedShipmentReason,
@@ -37,7 +35,6 @@ import {
   Vehicle,
   VisitRequest,
   Visit,
-  IBreakRule,
   IShipmentModel,
 } from 'src/app/core/models';
 import { durationSeconds } from 'src/app/util';
@@ -77,8 +74,8 @@ export class NormalizationService {
       changeTime
     );
 
-    const { breakRules, ...scenarioModel } = { breakRules: [], ...scenario.model };
-    const { vehicles } = this.normalizeVehicles(scenarioModel, breakRules, changeTime);
+    const { ...scenarioModel } = { ...scenario.model };
+    const { vehicles } = this.normalizeVehicles(scenarioModel, changeTime);
     const normalizedScenario = { ...scenario, model: scenarioModel };
     const firstSolutionRoutes = normalizedScenario?.injectedFirstSolutionRoutes;
 
@@ -320,7 +317,6 @@ export class NormalizationService {
 
   private normalizeVehicles(
     scenarioModel: IShipmentModel,
-    breakRules: IBreakRule[],
     changeTime: number
   ): { vehicles: Vehicle[] } {
     if (!scenarioModel?.vehicles?.length) {
@@ -346,24 +342,6 @@ export class NormalizationService {
           location: { latLng: vehicleEntity.endLocation },
         });
         delete vehicleEntity.endLocation;
-      }
-
-      //normalize Break Rules
-      if (breakRules?.length > 0) {
-        const newBreakRule = breakRules?.find(
-          (breakRule: IBreakRule, index: number) => vehicleEntity.id === index + 1
-        );
-        if (vehicleEntity.breakRule) {
-          const breakRequests = vehicleEntity.breakRule.breakRequests?.concat(
-            newBreakRule.breakRequests
-          );
-          const frequencyConstraints = vehicleEntity.breakRule.frequencyConstraints?.concat(
-            newBreakRule.frequencyConstraints
-          );
-          vehicleEntity.breakRule = { breakRequests, frequencyConstraints };
-        } else {
-          vehicleEntity.breakRule = newBreakRule;
-        }
       }
 
       return vehicleEntity;

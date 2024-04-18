@@ -48,7 +48,6 @@ import { ILatLng, VisitCategory, VisitRequest } from 'src/app/core/models';
 import { FormVisitRequestLayer } from 'src/app/core/services';
 import {
   durationMinutesSeconds,
-  getCapacityQuantityRoot,
   joinLabel,
   localDateTimeToUtcSeconds,
   noDuplicateCapacitiesValidator,

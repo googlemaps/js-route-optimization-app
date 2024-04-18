@@ -25,7 +25,7 @@ import {
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 import * as RoutesChartActions from 'src/app/core/actions/routes-chart.actions';
 import { PreSolveVehicleActions } from 'src/app/core/actions';
 import {
@@ -53,9 +53,8 @@ import { ValidationService } from 'src/app/core/services';
 import { PostSolveMetricsActions } from 'src/app/core/actions';
 import { Router } from '@angular/router';
 import { Page } from 'src/app/core/models';
-import { durationSeconds, getEntityName } from 'src/app/util';
+import { durationSeconds } from 'src/app/util';
 import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
-import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-routes-row',
