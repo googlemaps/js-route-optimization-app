@@ -1515,7 +1515,7 @@ describe('normalization Service', () => {
                   },
                 ],
               },
-              
+
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -1589,7 +1589,7 @@ describe('normalization Service', () => {
             },
           ],
         },
-        
+
         loadLimits: {
           weight_kilograms: {
             maxLoad: '400',
@@ -1684,7 +1684,7 @@ describe('normalization Service', () => {
               },
             ],
           },
-          
+
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -1760,7 +1760,7 @@ describe('normalization Service', () => {
                   },
                 ],
               },
-              
+
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -1838,7 +1838,7 @@ describe('normalization Service', () => {
             },
           ],
         },
-        
+
         capacities: [
           { type: 'weight_kilograms', value: '400' },
           { type: 'volume_liters', value: '50' },
@@ -1925,7 +1925,7 @@ describe('normalization Service', () => {
               },
             ],
           },
-          
+
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -2001,7 +2001,7 @@ describe('normalization Service', () => {
                   },
                 ],
               },
-              
+
               capacities: [
                 { type: 'weight_kilograms', value: '400' },
                 { type: 'volume_liters', value: '50' },
@@ -2056,7 +2056,7 @@ describe('normalization Service', () => {
         costPerKilometer: 0.2,
         usedIfRouteIsEmpty: true,
         travelDurationLimit: {},
-        
+
         loadLimits: {
           weight_kilograms: {
             maxLoad: '400',
@@ -2189,7 +2189,7 @@ describe('normalization Service', () => {
               },
             ],
           },
-          
+
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -2254,7 +2254,7 @@ describe('normalization Service', () => {
               costPerKilometer: 0.2,
               usedIfRouteIsEmpty: true,
               travelDurationLimit: {},
-              
+
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -2318,7 +2318,7 @@ describe('normalization Service', () => {
         costPerKilometer: 0.2,
         usedIfRouteIsEmpty: true,
         travelDurationLimit: {},
-        
+
         breakRule: {
           breakRequests: [
             {
@@ -2495,7 +2495,7 @@ describe('normalization Service', () => {
               },
             ],
           },
-          
+
           loadLimits: {
             weight_kilograms: {
               maxLoad: '400',
@@ -2560,7 +2560,7 @@ describe('normalization Service', () => {
               costPerKilometer: 0.2,
               usedIfRouteIsEmpty: true,
               travelDurationLimit: {},
-              
+
               loadLimits: {
                 weight_kilograms: {
                   maxLoad: '400',
@@ -3351,7 +3351,7 @@ describe('normalization Service', () => {
             },
           ],
         },
-        
+
         loadLimits: {
           weight_kilograms: {
             maxLoad: '400',

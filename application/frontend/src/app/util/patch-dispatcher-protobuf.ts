@@ -147,8 +147,7 @@ export function patchShipmentModelBreakRuleBreakRequest(): void {
 }
 
 export function patchShipmentModelBreakRuleFrequencyConstraint(): void {
-  const fromObject =
-    google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject;
+  const fromObject = google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject;
   google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject = (
     object: google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint
   ) => {

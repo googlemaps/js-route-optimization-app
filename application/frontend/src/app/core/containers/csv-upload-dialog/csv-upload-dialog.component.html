@@ -9,9 +9,9 @@
       <form [formGroup]="uploadForm">
         <ng-template matStepLabel>Upload File</ng-template>
         <p>
-          This dialog will guide you through the process of uploading a set of shipments and/or vehicles from CSV files. This method only supports a subset of the fields
-          that the Cloud Fleet Routing API supports. Please use the JSON uploader for full API
-          support.
+          This dialog will guide you through the process of uploading a set of shipments and/or
+          vehicles from CSV files. This method only supports a subset of the fields that the Cloud
+          Fleet Routing API supports. Please use the JSON uploader for full API support.
         </p>
         <div>
           You may download sample CSVs below. If you use the template CSVs, or upload your own files
@@ -76,14 +76,12 @@
     <!-- step 2 - preview -->
     <mat-step>
       <ng-template matStepLabel>{{
-        (shipmentFileInput && vehicleFileInput)
-          ? 'Preview CSVs'
-          : 'Preview CSV'
+        shipmentFileInput && vehicleFileInput ? 'Preview CSVs' : 'Preview CSV'
       }}</ng-template>
       <div *ngIf="!isLoadingCsv; else loading">
         <p>
           {{
-            (shipmentFile && vehicleFile)
+            shipmentFile && vehicleFile
               ? 'If the tables below do not look as expected, try using the template files from the previous page.'
               : 'If the table below does not look as expected, try using a template file from the previous page.'
           }}

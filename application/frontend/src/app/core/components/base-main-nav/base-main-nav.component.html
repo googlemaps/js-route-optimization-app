@@ -1,8 +1,7 @@
 <div
   class="nav-container mat-body-strong"
   [ngClass]="{
-    'extended-border':
-      page === pages.Shipments || page === pages.Vehicles
+    'extended-border': page === pages.Shipments || page === pages.Vehicles
   }">
   <div class="nav-item nav-scenario nav-page-button">
     <button mat-flat-button (click)="shipmentsClick.emit()">
@@ -61,9 +60,7 @@
       </span>
     </button>
   </div>
-  <div
-    class="nav-item nav-subitem"
-    *ngIf="page === pages.Shipments || page === pages.Vehicles">
+  <div class="nav-item nav-subitem" *ngIf="page === pages.Shipments || page === pages.Vehicles">
     <app-generate-button
       class="nav-generate"
       [disabled]="disabled"
@@ -92,12 +89,7 @@
   <div class="border"></div>
 </div>
 <div class="nav-container mat-body-strong">
-  <ng-container
-    *ngIf="
-      hasSolutionWarning &&
-      page !== pages.Shipments &&
-      page !== pages.Vehicles
-    ">
+  <ng-container *ngIf="hasSolutionWarning && page !== pages.Shipments && page !== pages.Vehicles">
     <div class="nav-item nav-subitem">
       <app-post-solve-message class="nav-message"></app-post-solve-message>
     </div>

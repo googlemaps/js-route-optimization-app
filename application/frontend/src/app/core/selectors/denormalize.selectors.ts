@@ -481,13 +481,7 @@ const selectRequestScenario = createSelector(
   fromRequestSettings.selectRequestSettingsState,
   fromShipmentModel.selectShipmentModelState,
   (scenario, shipments, vehicles, requestSettings, shipmentModel) =>
-    getRequestScenario(
-      scenario,
-      shipments,
-      vehicles,
-      requestSettings,
-      shipmentModel
-    )
+    getRequestScenario(scenario, shipments, vehicles, requestSettings, shipmentModel)
 );
 
 const selectRequestIncrementalScenario = (
@@ -529,13 +523,7 @@ const selectRequestedScenario = createSelector(
   fromRequestSettings.selectRequestSettingsState,
   fromShipmentModel.selectShipmentModelState,
   (scenario, shipments, vehicles, requestSettings, shipmentModel) =>
-    getRequestScenario(
-      scenario,
-      shipments,
-      vehicles,
-      requestSettings,
-      shipmentModel
-    )
+    getRequestScenario(scenario, shipments, vehicles, requestSettings, shipmentModel)
 );
 
 const selectShipmentRouteChangeIndices = (shipmentRouteChanges?: ShipmentRoute[]) =>

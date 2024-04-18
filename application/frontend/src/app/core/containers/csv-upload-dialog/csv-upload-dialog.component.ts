@@ -485,9 +485,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         vehicleFilename: fb.control(''),
       },
       {
-        validators: [
-          requireAny(['shipmentFilename', 'vehicleFilename']),
-        ],
+        validators: [requireAny(['shipmentFilename', 'vehicleFilename'])],
       }
     );
     this.initMappingForms();
@@ -1275,8 +1273,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         })
       )
       .subscribe(
-        (geocodingResults) =>
-          this.createScenario(shipments, vehicles, geocodingResults),
+        (geocodingResults) => this.createScenario(shipments, vehicles, geocodingResults),
         (err) => {
           this.isValidatingWithApi = false;
           this.errorValidating = true;
@@ -1291,11 +1288,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
       );
   }
 
-  createScenario(
-    shipments: any[],
-    vehicles: any[],
-    geocodingResults: any[]
-  ): void {
+  createScenario(shipments: any[], vehicles: any[], geocodingResults: any[]): void {
     this.isValidatingWithApi = false;
     this.scenario = {
       model: {
@@ -1338,12 +1331,10 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
   isColumnMapped(key: string, forShipments: boolean): boolean {
     return forShipments
       ? !!Object.values(this.shipmentColumnMappings).includes(key)
-      : !!Object.values(this.vehicleColumnMappings).includes(key)
+      : !!Object.values(this.vehicleColumnMappings).includes(key);
   }
 
-  getMappedFields(
-    forShipments: boolean,
-  ): { apiField: string; column: string }[] {
+  getMappedFields(forShipments: boolean): { apiField: string; column: string }[] {
     return forShipments
       ? Object.keys(this.shipmentColumnMappings)
           .filter((key) => this.shipmentColumnMappings[key] != null)

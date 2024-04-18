@@ -138,4 +138,4 @@ export interface GeocodeErrorResponse extends ValidationErrorResponse {
   location: string;
 }
 
-export const  EXPERIMENTAL_API_FIELDS_VEHICLES = [];
+export const EXPERIMENTAL_API_FIELDS_VEHICLES = [];

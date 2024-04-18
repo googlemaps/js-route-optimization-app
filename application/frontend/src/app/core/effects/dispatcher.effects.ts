@@ -113,7 +113,7 @@ export class DispatcherEffects {
         VehicleActions.deleteVehicle,
         VehicleActions.deleteVehicles,
         ShipmentActions.deleteShipment,
-        ShipmentActions.deleteShipments,
+        ShipmentActions.deleteShipments
       ),
       mergeMap((_) => this.store.pipe(select(selectHasSolution), take(1))),
       filter((hasSolution) => hasSolution),

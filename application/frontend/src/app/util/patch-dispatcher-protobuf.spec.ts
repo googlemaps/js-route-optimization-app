@@ -27,7 +27,8 @@ describe('util', () => {
   });
 
   it('should convert canonical master JSON', async () => {
-    const expected = google.maps.routeoptimization.v1.OptimizeToursRequest.fromObject(masterNonCanon);
+    const expected =
+      google.maps.routeoptimization.v1.OptimizeToursRequest.fromObject(masterNonCanon);
     const result = google.maps.routeoptimization.v1.OptimizeToursRequest.fromObject(masterCanon);
 
     expect(result).toEqual(expected);
@@ -36,7 +37,8 @@ describe('util', () => {
   it('should convert canonical master JSON solution', async () => {
     const expected =
       google.maps.routeoptimization.v1.OptimizeToursResponse.fromObject(masterSolutionNonCanon);
-    const result = google.maps.routeoptimization.v1.OptimizeToursResponse.fromObject(masterSolution);
+    const result =
+      google.maps.routeoptimization.v1.OptimizeToursResponse.fromObject(masterSolution);
 
     expect(result).toEqual(expected);
   });
@@ -69,12 +71,11 @@ describe('util', () => {
         durations: [{ seconds: 100 }, { seconds: 200 }],
       });
 
-    const result = google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject(
-      {
+    const result =
+      google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject({
         meters: [1000, 2000],
         durations: ['100s', '200s'],
-      }
-    );
+      });
 
     expect(result).toEqual(expected);
   });
