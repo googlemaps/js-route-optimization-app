@@ -14,14 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { v1 } from "@google-cloud/optimization";
 import { google } from "@google-cloud/optimization/build/protos/protos";
 import { CallOptions } from "google-gax";
 
 import { log } from "../logging";
+import { RouteOptimizationClient } from "@google-cloud/optimization/build/src/v1";
 
 class FleetRoutingService {
-  private readonly _client: v1.FleetRoutingClient;
+  private readonly _client: RouteOptimizationClient;
   private readonly _parent: string;
 
   constructor() {
@@ -30,7 +30,7 @@ class FleetRoutingService {
     }
     this._parent = `projects/${process.env.PROJECT_ID}`;
 
-    this._client = new v1.FleetRoutingClient({
+    this._client = new RouteOptimizationClient({
       "grpc.keepalive_time_ms": 120000, // 2m
       "grpc.keepalive_timeout_ms": 10000, // 10s
       "grpc.http2.max_pings_without_data": 0,
@@ -38,8 +38,8 @@ class FleetRoutingService {
   }
 
   public async optimizeTours(
-    request: google.cloud.optimization.v1.IOptimizeToursRequest
-  ): Promise<google.cloud.optimization.v1.IOptimizeToursResponse> {
+    request: google.maps.routeoptimization.v1.IOptimizeToursRequest
+  ): Promise<google.maps.routeoptimization.v1.IOptimizeToursResponse> {
     request.parent = this._parent;
 
     // `IOptimizeToursRequest` defines timeout as an `IDuraion` object

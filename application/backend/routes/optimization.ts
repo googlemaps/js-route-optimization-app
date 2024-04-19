@@ -31,7 +31,7 @@ router.get("/healthz", async (req: Request, res: Response) => {
 router.post(
   "/fleet-routing/optimize-tours",
   async (req: Request, res: Response) => {
-    const body = req.body as google.cloud.optimization.v1.IOptimizeToursRequest;
+    const body = req.body as google.maps.routeoptimization.v1.IOptimizeToursRequest;
 
     if (!body?.model) {
       return res

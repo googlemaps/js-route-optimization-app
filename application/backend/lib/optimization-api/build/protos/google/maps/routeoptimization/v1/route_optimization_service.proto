@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2023 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,22 +14,22 @@
 
 syntax = "proto3";
 
-package google.cloud.optimization.v1;
+package google.maps.routeoptimization.v1;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
-import "google/api/resource.proto";
-import "google/cloud/optimization/v1/async_model.proto";
-import "google/longrunning/operations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/type/latlng.proto";
 
-option go_package = "google.golang.org/genproto/googleapis/cloud/optimization/v1;optimization";
+option csharp_namespace = "Google.Maps.RouteOptimization.V1";
+option go_package = "cloud.google.com/go/maps/routeoptimization/apiv1/routeoptimizationpb;routeoptimizationpb";
 option java_multiple_files = true;
-option java_outer_classname = "FleetRoutingProto";
-option java_package = "com.google.cloud.optimization.v1";
+option java_outer_classname = "RouteOptimizationServiceProto";
+option java_package = "com.google.maps.routeoptimization.v1";
+option php_namespace = "Google\\Maps\\RouteOptimization\\V1";
+option ruby_package = "Google::Maps::RouteOptimization::V1";
 
 // A service for optimizing vehicle tours.
 //
@@ -48,9 +48,11 @@ option java_package = "com.google.cloud.optimization.v1";
 //     * latitude must be in [-90.0, 90.0].
 //     * longitude must be in [-180.0, 180.0].
 //     * at least one of latitude and longitude must be non-zero.
-service FleetRouting {
-  option (google.api.default_host) = "cloudoptimization.googleapis.com";
-  option (google.api.oauth_scopes) = "https://www.googleapis.com/auth/cloud-platform";
+//
+service RouteOptimization {
+  option (google.api.default_host) = "routeoptimization.googleapis.com";
+  option (google.api.oauth_scopes) =
+      "https://www.googleapis.com/auth/cloud-platform";
 
   // Sends an `OptimizeToursRequest` containing a `ShipmentModel` and returns an
   // `OptimizeToursResponse` containing `ShipmentRoute`s, which are a set of
@@ -76,31 +78,6 @@ service FleetRouting {
       }
     };
   }
-
-  // Optimizes vehicle tours for one or more `OptimizeToursRequest`
-  // messages as a batch.
-  //
-  // This method is a Long Running Operation (LRO). The inputs for optimization
-  // (`OptimizeToursRequest` messages) and outputs (`OptimizeToursResponse`
-  // messages) are read/written from/to Cloud Storage in user-specified
-  // format. Like the `OptimizeTours` method, each `OptimizeToursRequest`
-  // contains a `ShipmentModel` and returns an `OptimizeToursResponse`
-  // containing `ShipmentRoute`s, which are a set of routes to be performed by
-  // vehicles minimizing the overall cost.
-  rpc BatchOptimizeTours(BatchOptimizeToursRequest) returns (google.longrunning.Operation) {
-    option (google.api.http) = {
-      post: "/v1/{parent=projects/*/locations/*}:batchOptimizeTours"
-      body: "*"
-      additional_bindings {
-        post: "/v1/{parent=projects/*}:batchOptimizeTours"
-        body: "*"
-      }
-    };
-    option (google.longrunning.operation_info) = {
-      response_type: "BatchOptimizeToursResponse"
-      metadata_type: "AsyncModelMetadata"
-    };
-  }
 }
 
 // Request to be given to a tour optimization solver which defines the
@@ -108,24 +85,33 @@ service FleetRouting {
 message OptimizeToursRequest {
   // Defines how the solver should handle the request. In all modes but
   // `VALIDATE_ONLY`, if the request is invalid, you will receive an
-  // `INVALID_REQUEST` error. See [max_validation_errors][google.cloud.optimization.v1.OptimizeToursRequest.max_validation_errors] to cap the number of
-  // errors returned.
+  // `INVALID_REQUEST` error. See
+  // [max_validation_errors][google.maps.routeoptimization.v1.OptimizeToursRequest.max_validation_errors]
+  // to cap the number of errors returned.
   enum SolvingMode {
     // Solve the model.
     DEFAULT_SOLVE = 0;
 
     // Only validates the model without solving it: populates as many
-    // [OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors]
+    // [OptimizeToursResponse.validation_errors][google.maps.routeoptimization.v1.OptimizeToursResponse.validation_errors]
     // as possible.
     VALIDATE_ONLY = 1;
 
     // Only populates
-    // [OptimizeToursResponse.skipped_shipments][google.cloud.optimization.v1.OptimizeToursResponse.skipped_shipments],
+    // [OptimizeToursResponse.validation_errors][google.maps.routeoptimization.v1.OptimizeToursResponse.validation_errors]
+    // or
+    // [OptimizeToursResponse.skipped_shipments][google.maps.routeoptimization.v1.OptimizeToursResponse.skipped_shipments],
     // and doesn't actually solve the rest of the request (`status` and `routes`
     // are unset in the response).
+    // If infeasibilities in `injected_solution_constraint` routes are detected
+    // they are populated in the
+    // [OptimizeToursResponse.validation_errors][google.maps.routeoptimization.v1.OptimizeToursResponse.validation_errors]
+    // field and
+    // [OptimizeToursResponse.skipped_shipments][google.maps.routeoptimization.v1.OptimizeToursResponse.skipped_shipments]
+    // is left empty.
     //
     // *IMPORTANT*: not all infeasible shipments are returned here, but only the
-    // ones that are detected as infeasible as a preprocessing.
+    // ones that are detected as infeasible during preprocessing.
     DETECT_SOME_INFEASIBLE_SHIPMENTS = 2;
   }
 
@@ -142,9 +128,11 @@ message OptimizeToursRequest {
     CONSUME_ALL_AVAILABLE_TIME = 2;
   }
 
-  // Required. Target project and location to make a call.
+  // Required. Target project or location to make a call.
   //
-  // Format: `projects/{project-id}/locations/{location-id}`.
+  // Format:
+  // * `projects/{project-id}`
+  // * `projects/{project-id}/locations/{location-id}`
   //
   // If no location is specified, a region will be chosen automatically.
   string parent = 1 [(google.api.field_behavior) = REQUIRED];
@@ -162,15 +150,6 @@ message OptimizeToursRequest {
 
   // By default, the solving mode is `DEFAULT_SOLVE` (0).
   SolvingMode solving_mode = 4;
-
-  // Truncates the number of validation errors returned. These errors are
-  // typically attached to an INVALID_ARGUMENT error payload as a BadRequest
-  // error detail (https://cloud.google.com/apis/design/errors#error_details),
-  // unless solving_mode=VALIDATE_ONLY: see the
-  // [OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors]
-  // field.
-  // This defaults to 100 and is capped at 10,000.
-  optional int32 max_validation_errors = 5;
 
   // Search mode used to solve the request.
   SearchMode search_mode = 6;
@@ -196,9 +175,10 @@ message OptimizeToursRequest {
   //     <= visits[0].start_time <= visits[1].start_time ...
   //     <= vehicle_end_time`).
   //   * a shipment may only be performed on a vehicle that is allowed. A
-  //     vehicle is allowed if [Shipment.allowed_vehicle_indices][google.cloud.optimization.v1.Shipment.allowed_vehicle_indices] is empty or
-  //     its `vehicle_index` is included in
-  //     [Shipment.allowed_vehicle_indices][google.cloud.optimization.v1.Shipment.allowed_vehicle_indices].
+  //     vehicle is allowed if
+  //     [Shipment.allowed_vehicle_indices][google.maps.routeoptimization.v1.Shipment.allowed_vehicle_indices]
+  //     is empty or its `vehicle_index` is included in
+  //     [Shipment.allowed_vehicle_indices][google.maps.routeoptimization.v1.Shipment.allowed_vehicle_indices].
   //
   // If the injected solution is not feasible, a validation error is not
   // necessarily returned and an error indicating infeasibility may be returned
@@ -235,16 +215,27 @@ message OptimizeToursRequest {
 
   // If true:
   //
-  //   * uses [ShipmentRoute.vehicle_label][google.cloud.optimization.v1.ShipmentRoute.vehicle_label] instead of `vehicle_index` to
+  //   * uses
+  //   [ShipmentRoute.vehicle_label][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_label]
+  //   instead of `vehicle_index` to
   //     match routes in an injected solution with vehicles in the request;
-  //     reuses the mapping of original [ShipmentRoute.vehicle_index][google.cloud.optimization.v1.ShipmentRoute.vehicle_index] to new
-  //     [ShipmentRoute.vehicle_index][google.cloud.optimization.v1.ShipmentRoute.vehicle_index] to update
-  //     [ConstraintRelaxation.vehicle_indices][google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.vehicle_indices]
+  //     reuses the mapping of original
+  //     [ShipmentRoute.vehicle_index][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_index]
+  //     to new
+  //     [ShipmentRoute.vehicle_index][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_index]
+  //     to update
+  //     [ConstraintRelaxation.vehicle_indices][google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.vehicle_indices]
   //     if non-empty, but the mapping must be unambiguous (i.e., multiple
   //     `ShipmentRoute`s must not share the same original `vehicle_index`).
-  //   * uses [ShipmentRoute.Visit.shipment_label][google.cloud.optimization.v1.ShipmentRoute.Visit.shipment_label] instead of `shipment_index`
+  //   * uses
+  //   [ShipmentRoute.Visit.shipment_label][google.maps.routeoptimization.v1.ShipmentRoute.Visit.shipment_label]
+  //   instead of `shipment_index`
   //     to match visits in an injected solution with shipments in the request;
-  //   * uses [SkippedShipment.label][google.cloud.optimization.v1.SkippedShipment.label] instead of [SkippedShipment.index][google.cloud.optimization.v1.SkippedShipment.index] to
+  //   * uses
+  //   [SkippedShipment.label][google.maps.routeoptimization.v1.SkippedShipment.label]
+  //   instead of
+  //   [SkippedShipment.index][google.maps.routeoptimization.v1.SkippedShipment.index]
+  //   to
   //     match skipped shipments in the injected solution with request
   //     shipments.
   //
@@ -257,10 +248,12 @@ message OptimizeToursRequest {
   // If true, labels in the following categories must appear at most once in
   // their category:
   //
-  //   * [Vehicle.label][google.cloud.optimization.v1.Vehicle.label] in the request;
-  //   * [Shipment.label][google.cloud.optimization.v1.Shipment.label] in the request;
-  //   * [ShipmentRoute.vehicle_label][google.cloud.optimization.v1.ShipmentRoute.vehicle_label] in the injected solution;
-  //   * [SkippedShipment.label][google.cloud.optimization.v1.SkippedShipment.label] and [ShipmentRoute.Visit.shipment_label][google.cloud.optimization.v1.ShipmentRoute.Visit.shipment_label] in
+  //   * [Vehicle.label][google.maps.routeoptimization.v1.Vehicle.label] in the
+  //   request;
+  //   * [Shipment.label][google.maps.routeoptimization.v1.Shipment.label] in
+  //   the request;
+  //   * [ShipmentRoute.vehicle_label][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_label] in the injected solution;
+  //   * [SkippedShipment.label][google.maps.routeoptimization.v1.SkippedShipment.label] and [ShipmentRoute.Visit.shipment_label][google.maps.routeoptimization.v1.ShipmentRoute.Visit.shipment_label] in
   //     the injected solution (except pickup/delivery visit pairs, whose
   //     `shipment_label` must appear twice).
   //
@@ -268,37 +261,40 @@ message OptimizeToursRequest {
   // request vehicle, the corresponding route is removed from the solution
   // along with its visits. If a `shipment_label` in the injected solution does
   // not correspond to a request shipment, the corresponding visit is removed
-  // from the solution. If a [SkippedShipment.label][google.cloud.optimization.v1.SkippedShipment.label] in the injected solution
-  // does not correspond to a request shipment, the `SkippedShipment` is removed
-  // from the solution.
+  // from the solution. If a
+  // [SkippedShipment.label][google.maps.routeoptimization.v1.SkippedShipment.label]
+  // in the injected solution does not correspond to a request shipment, the
+  // `SkippedShipment` is removed from the solution.
   //
   // Removing route visits or entire routes from an injected solution may
   // have an effect on the implied constraints, which may lead to change in
   // solution, validation errors, or infeasibility.
   //
-  // NOTE: The caller must ensure that each [Vehicle.label][google.cloud.optimization.v1.Vehicle.label]
-  // (resp. [Shipment.label][google.cloud.optimization.v1.Shipment.label]) uniquely identifies a vehicle (resp. shipment)
-  // entity used across the two relevant requests: the past request that
-  // produced the `OptimizeToursResponse` used in the injected solution and the
-  // current request that includes the injected solution. The uniqueness checks
-  // described above are not enough to guarantee this requirement.
+  // NOTE: The caller must ensure that each
+  // [Vehicle.label][google.maps.routeoptimization.v1.Vehicle.label] (resp.
+  // [Shipment.label][google.maps.routeoptimization.v1.Shipment.label]) uniquely
+  // identifies a vehicle (resp. shipment) entity used across the two relevant
+  // requests: the past request that produced the `OptimizeToursResponse` used
+  // in the injected solution and the current request that includes the injected
+  // solution. The uniqueness checks described above are not enough to guarantee
+  // this requirement.
   bool interpret_injected_solutions_using_labels = 10;
 
   // Consider traffic estimation in calculating `ShipmentRoute` fields
-  // [Transition.travel_duration][google.cloud.optimization.v1.ShipmentRoute.Transition.travel_duration],
-  // [Visit.start_time][google.cloud.optimization.v1.ShipmentRoute.Visit.start_time],
+  // [Transition.travel_duration][google.maps.routeoptimization.v1.ShipmentRoute.Transition.travel_duration],
+  // [Visit.start_time][google.maps.routeoptimization.v1.ShipmentRoute.Visit.start_time],
   // and `vehicle_end_time`; in setting the
-  // [ShipmentRoute.has_traffic_infeasibilities][google.cloud.optimization.v1.ShipmentRoute.has_traffic_infeasibilities] field, and in calculating the
-  // [OptimizeToursResponse.total_cost][google.cloud.optimization.v1.OptimizeToursResponse.total_cost] field.
+  // [ShipmentRoute.has_traffic_infeasibilities][google.maps.routeoptimization.v1.ShipmentRoute.has_traffic_infeasibilities]
+  // field, and in calculating the
+  // [OptimizeToursResponse.total_cost][google.maps.routeoptimization.v1.OptimizeToursResponse.total_cost]
+  // field.
   bool consider_road_traffic = 11;
 
   // If true, polylines will be populated in response `ShipmentRoute`s.
   bool populate_polylines = 12;
 
   // If true, polylines will be populated in response
-  // [ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions].
-  // Note that in this case, the polylines will also be populated in the
-  // deprecated `travel_steps`.
+  // [ShipmentRoute.transitions][google.maps.routeoptimization.v1.ShipmentRoute.transitions].
   bool populate_transition_polylines = 13;
 
   // If this is set, then the request can have a deadline
@@ -318,19 +314,18 @@ message OptimizeToursRequest {
   // meters/seconds.
   optional double geodesic_meters_per_second = 16;
 
+  // Truncates the number of validation errors returned. These errors are
+  // typically attached to an INVALID_ARGUMENT error payload as a BadRequest
+  // error detail (https://cloud.google.com/apis/design/errors#error_details),
+  // unless solving_mode=VALIDATE_ONLY: see the
+  // [OptimizeToursResponse.validation_errors][google.maps.routeoptimization.v1.OptimizeToursResponse.validation_errors]
+  // field.
+  // This defaults to 100 and is capped at 10,000.
+  optional int32 max_validation_errors = 5;
+
   // Label that may be used to identify this request, reported back in the
-  // [OptimizeToursResponse.request_label][google.cloud.optimization.v1.OptimizeToursResponse.request_label].
+  // [OptimizeToursResponse.request_label][google.maps.routeoptimization.v1.OptimizeToursResponse.request_label].
   string label = 17;
-
-  // Advanced internal parameters used to configure the behavior of the service.
-  // Please contact your Google representative for its usage.
-  string internal_parameters = 18;
-
-  // Deprecated: Use [OptimizeToursRequest.populate_transition_polylines][google.cloud.optimization.v1.OptimizeToursRequest.populate_transition_polylines]
-  // instead. If true, polylines will be populated in response
-  // [ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions]. Note that in this case, the polylines will
-  // also be populated in the deprecated `travel_steps`.
-  bool populate_travel_step_polylines = 20 [deprecated = true];
 }
 
 // Response after solving a tour optimization problem containing the routes
@@ -340,23 +335,27 @@ message OptimizeToursResponse {
   // Overall metrics, aggregated over all routes.
   message Metrics {
     // Aggregated over the routes. Each metric is the sum (or max, for loads)
-    // over all [ShipmentRoute.metrics][google.cloud.optimization.v1.ShipmentRoute.metrics] fields of the same name.
+    // over all
+    // [ShipmentRoute.metrics][google.maps.routeoptimization.v1.ShipmentRoute.metrics]
+    // fields of the same name.
     AggregatedMetrics aggregated_route_metrics = 1;
 
     // Number of mandatory shipments skipped.
     int32 skipped_mandatory_shipment_count = 2;
 
     // Number of vehicles used. Note: if a vehicle route is empty and
-    // [Vehicle.used_if_route_is_empty][google.cloud.optimization.v1.Vehicle.used_if_route_is_empty] is true, the vehicle is considered
-    // used.
+    // [Vehicle.used_if_route_is_empty][google.maps.routeoptimization.v1.Vehicle.used_if_route_is_empty]
+    // is true, the vehicle is considered used.
     int32 used_vehicle_count = 3;
 
     // The earliest start time for a used vehicle, computed as the minimum over
-    // all used vehicles of [ShipmentRoute.vehicle_start_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_start_time].
+    // all used vehicles of
+    // [ShipmentRoute.vehicle_start_time][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_start_time].
     google.protobuf.Timestamp earliest_vehicle_start_time = 4;
 
     // The latest end time for a used vehicle, computed as the maximum over all
-    // used vehicles of [ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time].
+    // used vehicles of
+    // [ShipmentRoute.vehicle_end_time][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_end_time].
     google.protobuf.Timestamp latest_vehicle_end_time = 5;
 
     // Cost of the solution, broken down by cost-related request fields.
@@ -372,38 +371,15 @@ message OptimizeToursResponse {
 
     // Total cost of the solution. The sum of all values in the costs map.
     double total_cost = 6;
-
-    // [VehicleFullness][google.cloud.optimization.v1.VehicleFullness], aggregated over all used vehicles. Each of the 3
-    // fields below uses a different aggregation metric.
-    // The aggregation applies to each field independently, and unset fields are
-    // taken into account. However, if a given field is always unset, it will be
-    // unset for the aggregated VehicleFullness as well.
-    // For instance,
-    // vehicle_fullness { max_fullness: 0.3 distance: 0.3 }
-    // vehicle_fullness { max_fullness: 0.1 max_load: 0.2 }
-    // will result in
-    // min_vehicle_fullness { max_fullness: 0.1 distance: 0 max_load: 0 }
-    // avg_vehicle_fullness { max_fullness: 0.2 distance: 0.15 max_load: 0.1 }
-    // max_vehicle_fullness { max_fullness: 0.3 distance: 0.3 max_load: 0.2 }
-    //
-    // The minimum of each [VehicleFullness][google.cloud.optimization.v1.VehicleFullness] field across the vehicles.
-    VehicleFullness min_vehicle_fullness = 7;
-
-    // The average of each [VehicleFullness][google.cloud.optimization.v1.VehicleFullness] field across the vehicles.
-    // Note: like for the min (see documentation above), in general,
-    // avg_vehicle_fullness.max_fullness != max(avg_vehicle_fullness.*).
-    VehicleFullness avg_vehicle_fullness = 8;
-
-    // The maximum of each [VehicleFullness][google.cloud.optimization.v1.VehicleFullness] field across the vehicles.
-    VehicleFullness max_vehicle_fullness = 9;
   }
 
   // Routes computed for each vehicle; the i-th route corresponds to the i-th
   // vehicle in the model.
   repeated ShipmentRoute routes = 1;
 
-  // Copy of the [OptimizeToursRequest.label][google.cloud.optimization.v1.OptimizeToursRequest.label], if a label was specified in the
-  // request.
+  // Copy of the
+  // [OptimizeToursRequest.label][google.maps.routeoptimization.v1.OptimizeToursRequest.label],
+  // if a label was specified in the request.
   string request_label = 3;
 
   // The list of all shipments skipped.
@@ -411,64 +387,12 @@ message OptimizeToursResponse {
 
   // List of all the validation errors that we were able to detect
   // independently. See the "MULTIPLE ERRORS" explanation for the
-  // [OptimizeToursValidationError][google.cloud.optimization.v1.OptimizeToursValidationError] message.
+  // [OptimizeToursValidationError][google.maps.routeoptimization.v1.OptimizeToursValidationError]
+  // message.
   repeated OptimizeToursValidationError validation_errors = 5;
 
   // Duration, distance and usage metrics for this solution.
   Metrics metrics = 6;
-
-  // Deprecated: Use [Metrics.total_cost][google.cloud.optimization.v1.OptimizeToursResponse.Metrics.total_cost] instead.
-  // Total cost of the solution. This takes into account all costs: costs per
-  // per hour and travel hour, fixed vehicle costs, unperformed shipment penalty
-  // costs, global duration cost, etc.
-  double total_cost = 2 [deprecated = true];
-}
-
-// Request to batch optimize tours as an asynchronous operation.
-// Each input file should contain one `OptimizeToursRequest`, and each output
-// file will contain one `OptimizeToursResponse`. The request contains
-// information to read/write and parse the files. All the input and output files
-// should be under the same project.
-message BatchOptimizeToursRequest {
-  // Information for solving one optimization model asynchronously.
-  message AsyncModelConfig {
-    // User defined model name, can be used as alias by users to keep track of
-    // models.
-    string display_name = 1;
-
-    // Required. Information about the input model.
-    InputConfig input_config = 2 [(google.api.field_behavior) = REQUIRED];
-
-    // Required. The desired output location information.
-    OutputConfig output_config = 3 [(google.api.field_behavior) = REQUIRED];
-
-    // If this is set, the model will be solved in the checkpoint mode. In this
-    // mode, the input model can have a deadline longer than 30 mins without the
-    // risk of interruption. The model will be solved in multiple short-running
-    // stages. Each stage generates an intermediate checkpoint
-    // and stores it in the user's Cloud Storage buckets. The checkpoint
-    // mode should be preferred over
-    // allow_large_deadline_despite_interruption_risk since it prevents the risk
-    // of interruption.
-    bool enable_checkpoints = 4;
-  }
-
-  // Required. Target project and location to make a call.
-  //
-  // Format: `projects/{project-id}/locations/{location-id}`.
-  //
-  // If no location is specified, a region will be chosen automatically.
-  string parent = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // Required. Input/Output information each purchase model, such as file paths and data
-  // formats.
-  repeated AsyncModelConfig model_configs = 2 [(google.api.field_behavior) = REQUIRED];
-}
-
-// Response to a `BatchOptimizeToursRequest`. This is returned in
-// the LRO Operation after the operation is complete.
-message BatchOptimizeToursResponse {
-
 }
 
 // A shipment model contains a set of shipments which must be performed by a
@@ -485,7 +409,7 @@ message ShipmentModel {
     // Specifies a row of the duration and distance matrix.
     message Row {
       // Duration values for a given row. It must have as many elements as
-      // [ShipmentModel.duration_distance_matrix_dst_tags][google.cloud.optimization.v1.ShipmentModel.duration_distance_matrix_dst_tags].
+      // [ShipmentModel.duration_distance_matrix_dst_tags][google.maps.routeoptimization.v1.ShipmentModel.duration_distance_matrix_dst_tags].
       repeated google.protobuf.Duration durations = 1;
 
       // Distance values for a given row. If no costs or constraints refer to
@@ -495,7 +419,8 @@ message ShipmentModel {
     }
 
     // Specifies the rows of the duration and distance matrix. It must have as
-    // many elements as [ShipmentModel.duration_distance_matrix_src_tags][google.cloud.optimization.v1.ShipmentModel.duration_distance_matrix_src_tags].
+    // many elements as
+    // [ShipmentModel.duration_distance_matrix_src_tags][google.maps.routeoptimization.v1.ShipmentModel.duration_distance_matrix_src_tags].
     repeated Row rows = 1;
 
     // Tag defining to which vehicles this duration and distance matrix applies.
@@ -537,97 +462,11 @@ message ShipmentModel {
     google.protobuf.Duration offset_duration = 5;
   }
 
-  // Deprecated: Use top level [BreakRule][google.cloud.optimization.v1.ShipmentModel.BreakRule] instead.
-  // Rules to generate time breaks for a vehicle (e.g. lunch
-  // breaks). A break is a contiguous period of time during which the vehicle
-  // remains idle at its current position and cannot perform any visit. A break
-  // may occur:
-  //
-  // * during the travel between two visits (which includes the time right
-  //   before or right after a visit, but not in the middle of a visit), in
-  //   which case it extends the corresponding transit time between the visits
-  // * before the vehicle start (the vehicle may not start in the middle of
-  //   a break), in which case it does not affect the vehicle start time.
-  // * after the vehicle end (ditto, with the vehicle end time).
-  message BreakRule {
-    option deprecated = true;
-
-    // The sequence of breaks (i.e. their number and order) that apply to each
-    // vehicle must be known beforehand. The repeated `BreakRequest`s define
-    // that sequence, in the order in which they must occur. Their time windows
-    // (`earliest_start_time` / `latest_start_time`) may overlap, but they must
-    // be compatible with the order (this is checked).
-    message BreakRequest {
-      // Required. Lower bound (inclusive) on the start of the break.
-      google.protobuf.Timestamp earliest_start_time = 1 [(google.api.field_behavior) = REQUIRED];
-
-      // Required. Upper bound (inclusive) on the start of the break.
-      google.protobuf.Timestamp latest_start_time = 2 [(google.api.field_behavior) = REQUIRED];
-
-      // Required. Minimum duration of the break. Must be positive.
-      google.protobuf.Duration min_duration = 3 [(google.api.field_behavior) = REQUIRED];
-    }
-
-    // One may further constrain the frequency and duration of the breaks
-    // specified above, by enforcing a minimum break frequency, such as
-    // "There must be a break of at least 1 hour every 12 hours". Assuming that
-    // this can be interpreted as "Within any sliding time window of 12h, there
-    // must be at least one break of at least one hour", that example would
-    // translate to the following `FrequencyConstraint`:
-    // ```
-    // {
-    //    min_break_duration { seconds: 3600 }         # 1 hour.
-    //    max_inter_break_duration { seconds: 39600 }  # 11 hours (12 - 1 = 11).
-    // }
-    // ```
-    //
-    // The timing and duration of the breaks in the solution will respect all
-    // such constraints, in addition to the time windows and minimum durations
-    // already specified in the `BreakRequest`.
-    //
-    // A `FrequencyConstraint` may in practice apply to non-consecutive breaks.
-    // For example, the following schedule honors the "1h every 12h" example:
-    // ```
-    //   04:00 vehicle start
-    //    .. performing travel and visits ..
-    //   09:00 1 hour break
-    //   10:00 end of the break
-    //    .. performing travel and visits ..
-    //   12:00 20-min lunch break
-    //   12:20 end of the break
-    //    .. performing travel and visits ..
-    //   21:00 1 hour break
-    //   22:00 end of the break
-    //    .. performing travel and visits ..
-    //   23:59 vehicle end
-    // ```
-    message FrequencyConstraint {
-      // Required. Minimum break duration for this constraint. Nonnegative.
-      // See description of `FrequencyConstraint`.
-      google.protobuf.Duration min_break_duration = 1 [(google.api.field_behavior) = REQUIRED];
-
-      // Required. Maximum allowed span of any interval of time in the route that does not
-      // include at least partially a break of `duration >=
-      // min_break_duration`. Must be positive.
-      google.protobuf.Duration max_inter_break_duration = 2 [(google.api.field_behavior) = REQUIRED];
-    }
-
-    // Sequence of breaks. See the `BreakRequest` message.
-    repeated BreakRequest break_requests = 1;
-
-    // Several `FrequencyConstraint` may apply. They must all be satisfied by
-    // the `BreakRequest`s of this `BreakRule`. See `FrequencyConstraint`.
-    repeated FrequencyConstraint frequency_constraints = 2;
-  }
-
   // Set of shipments which must be performed in the model.
   repeated Shipment shipments = 1;
 
   // Set of vehicles which can be used to perform visits.
   repeated Vehicle vehicles = 2;
-
-  // Set of available vehicle operators.
-  repeated VehicleOperator vehicle_operators = 3;
 
   // Constrains the maximum number of active vehicles. A vehicle is active if
   // its route performs at least one shipment. This can be used to limit the
@@ -658,7 +497,8 @@ message ShipmentModel {
   // earliest effective start time and the latest effective end time of
   // all vehicles. Users can assign a cost per hour to that quantity to try
   // and optimize for earliest job completion, for example. This cost must be in
-  // the same unit as [Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost].
+  // the same unit as
+  // [Shipment.penalty_cost][google.maps.routeoptimization.v1.Shipment.penalty_cost].
   double global_duration_cost_per_hour = 7;
 
   // Specifies duration and distance matrices used in the model. If this field
@@ -756,8 +596,9 @@ message ShipmentModel {
   // in matrix i.
   //
   // Tags correspond to
-  // [VisitRequest.tags][google.cloud.optimization.v1.Shipment.VisitRequest.tags]
-  // or [Vehicle.start_tags][google.cloud.optimization.v1.Vehicle.start_tags].
+  // [VisitRequest.tags][google.maps.routeoptimization.v1.Shipment.VisitRequest.tags]
+  // or
+  // [Vehicle.start_tags][google.maps.routeoptimization.v1.Vehicle.start_tags].
   // A given `VisitRequest` or `Vehicle` must match exactly one tag in this
   // field. Note that a `Vehicle`'s source, destination and matrix tags may be
   // the same; similarly a `VisitRequest`'s source and destination tags may be
@@ -773,8 +614,9 @@ message ShipmentModel {
   // `duration_distance_matrix_dst_tags(k)` in matrix i.
   //
   // Tags correspond to
-  // [VisitRequest.tags][google.cloud.optimization.v1.Shipment.VisitRequest.tags]
-  // or [Vehicle.start_tags][google.cloud.optimization.v1.Vehicle.start_tags].
+  // [VisitRequest.tags][google.maps.routeoptimization.v1.Shipment.VisitRequest.tags]
+  // or
+  // [Vehicle.start_tags][google.maps.routeoptimization.v1.Vehicle.start_tags].
   // A given `VisitRequest` or `Vehicle` must match exactly one tag in this
   // field. Note that a `Vehicle`'s source, destination and matrix tags may be
   // the same; similarly a `VisitRequest`'s source and destination tags may be
@@ -793,12 +635,6 @@ message ShipmentModel {
 
   // Set of precedence rules which must be enforced in the model.
   repeated PrecedenceRule precedence_rules = 14;
-
-  // Deprecated: No longer used.
-  // Set of break rules used in the model.
-  // Each vehicle specifies the `BreakRule` that applies to it via the
-  // [Vehicle.break_rule_indices][google.cloud.optimization.v1.Vehicle.break_rule_indices] field (which must be a singleton).
-  repeated BreakRule break_rules = 15 [deprecated = true];
 }
 
 // The shipment of a single item, from one of its pickups to one of its
@@ -807,11 +643,6 @@ message ShipmentModel {
 // accordingly), then visit one of its delivery locations later on (and
 // therefore re-increase its spare capacities accordingly).
 message Shipment {
-  option (google.api.resource) = {
-    type: "cloudoptimization.googleapis.com/Shipment"
-    pattern: "projects/{project}/locations/{location}/workspaces/{workspace}/shipments/{shipment}"
-  };
-
   // Request for a visit which can be done by a vehicle: it has a geo-location
   // (or two, see below), opening and closing times represented by time windows,
   // and a service duration time (time spent by the vehicle once it has arrived
@@ -847,7 +678,7 @@ message Shipment {
     // Note that a vehicle may depart outside of the arrival time window, i.e.
     // arrival time + duration do not need to be inside a time window. This can
     // result in waiting time if the vehicle arrives before
-    // [TimeWindow.start_time][google.cloud.optimization.v1.TimeWindow.start_time].
+    // [TimeWindow.start_time][google.maps.routeoptimization.v1.TimeWindow.start_time].
     //
     // The absence of `TimeWindow` means that the vehicle can perform this visit
     // at any time.
@@ -871,42 +702,38 @@ message Shipment {
     double cost = 8;
 
     // Load demands of this visit request. This is just like
-    // [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands] field, except that it only applies to this
-    // [VisitRequest][google.cloud.optimization.v1.Shipment.VisitRequest] instead of the whole [Shipment][google.cloud.optimization.v1.Shipment].
-    // The demands listed here are added to the demands listed in
-    // [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands].
+    // [Shipment.load_demands][google.maps.routeoptimization.v1.Shipment.load_demands]
+    // field, except that it only applies to this
+    // [VisitRequest][google.maps.routeoptimization.v1.Shipment.VisitRequest]
+    // instead of the whole
+    // [Shipment][google.maps.routeoptimization.v1.Shipment]. The demands listed
+    // here are added to the demands listed in
+    // [Shipment.load_demands][google.maps.routeoptimization.v1.Shipment.load_demands].
     map<string, Load> load_demands = 12;
 
     // Specifies the types of the visit. This may be used to allocate additional
     // time required for a vehicle to complete this visit (see
-    // [Vehicle.extra_visit_duration_for_visit_type][google.cloud.optimization.v1.Vehicle.extra_visit_duration_for_visit_type]).
+    // [Vehicle.extra_visit_duration_for_visit_type][google.maps.routeoptimization.v1.Vehicle.extra_visit_duration_for_visit_type]).
     //
     // A type can only appear once.
     repeated string visit_types = 10;
 
     // Specifies a label for this `VisitRequest`. This label is reported in the
-    // response as `visit_label` in the corresponding [ShipmentRoute.Visit][google.cloud.optimization.v1.ShipmentRoute.Visit].
+    // response as `visit_label` in the corresponding
+    // [ShipmentRoute.Visit][google.maps.routeoptimization.v1.ShipmentRoute.Visit].
     string label = 11;
-
-    // Deprecated: Use [VisitRequest.load_demands][google.cloud.optimization.v1.Shipment.VisitRequest.load_demands] instead.
-    repeated CapacityQuantity demands = 9 [deprecated = true];
   }
 
   // When performing a visit, a predefined amount may be added to the vehicle
   // load if it's a pickup, or subtracted if it's a delivery. This message
-  // defines such amount. See [load_demands][google.cloud.optimization.v1.Shipment.load_demands].
+  // defines such amount. See
+  // [load_demands][google.maps.routeoptimization.v1.Shipment.load_demands].
   message Load {
     // The amount by which the load of the vehicle performing the corresponding
     // visit will vary. Since it is an integer, users are advised to choose an
     // appropriate unit to avoid loss of precision. Must be ≥ 0.
     int64 amount = 2;
   }
-
-  // The resource name of the shipment. This is a unique identifier. Format:
-  // `projects/{project}/locations/{location}/workspaces/{workspace}/shipments/{shipment}`
-  // This field would be ignored while calling `OptimizeTours` and
-  // `BatchOptimizeTours` methods.
-  string name = 15;
 
   // The user-defined display name of the shipment.
   // It can be up to 63 characters long and may use UTF-8 characters.
@@ -1019,7 +846,8 @@ message Shipment {
   string shipment_type = 11;
 
   // Specifies a label for this shipment. This label is reported in the response
-  // in the `shipment_label` of the corresponding [ShipmentRoute.Visit][google.cloud.optimization.v1.ShipmentRoute.Visit].
+  // in the `shipment_label` of the corresponding
+  // [ShipmentRoute.Visit][google.maps.routeoptimization.v1.ShipmentRoute.Visit].
   string label = 12;
 
   // If true, skip this shipment, but don't apply a `penalty_cost`.
@@ -1032,9 +860,6 @@ message Shipment {
   // related pickup/delivery visits from the performing route.
   // `precedence_rules` that reference ignored shipments will also be ignored.
   bool ignore = 13;
-
-  // Deprecated: Use [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands] instead.
-  repeated CapacityQuantity demands = 3 [deprecated = true];
 }
 
 // Specifies incompatibilties between shipments depending on their
@@ -1115,75 +940,10 @@ message ShipmentTypeRequirement {
   RequirementMode requirement_mode = 3;
 }
 
-// Encapsulates a set of optional conditions to satisfy when calculating
-// vehicle routes. This is similar to `RouteModifiers` in the Google Maps
-// Platform Routes Preferred API; see:
-// https://developers.google.com/maps/documentation/routes_preferred/reference/rest/Shared.Types/RouteModifiers.
-message RouteModifiers {
-  // Specifies whether to avoid toll roads where reasonable. Preference will be
-  // given to routes not containing toll roads. Applies only to motorized travel
-  // modes.
-  bool avoid_tolls = 2;
-
-  // Specifies whether to avoid highways where reasonable. Preference will be
-  // given to routes not containing highways. Applies only to motorized travel
-  // modes.
-  bool avoid_highways = 3;
-
-  // Specifies whether to avoid ferries where reasonable. Preference will be
-  // given to routes not containing travel by ferries. Applies only to motorized
-  // travel modes.
-  bool avoid_ferries = 4;
-}
-
-// Information about the vehicle's execution of a route to be used in
-// constraining the solution `ShipmentRoute` obtained from a re-optimization.
-// In particular, specifies route start time (i.e., actual, not planned),
-// actual past visit start times, and committed sequence of future visits.
-message RouteCommitments {
-  // Specifies a pickup or delivery visit of a particular `Shipment` and,
-  // optionally, its `start_time`, which should only be set if the visit
-  // has actually happened.
-  message Visit {
-    // The resource name of the shipment.
-    string shipment_name = 1;
-
-    // If true, the visit corresponds to a pickup of a `Shipment`. Otherwise,
-    // it corresponds to a delivery.
-    bool is_pickup = 2;
-
-    // Index of `VisitRequest` in either the pickup or delivery field of the
-    // `Shipment`.
-    int32 visit_request_index = 3;
-
-    // Leave unset for next_visits.
-    optional google.protobuf.Timestamp start_time = 4;
-  }
-
-  // The actual time when the vehicle started executing its route. This must
-  // only be specified if the vehicle has started its route.
-  optional google.protobuf.Timestamp route_start_time = 1;
-
-  // Visits that the vehicle has actually started (not necessarily completed)
-  // in the past, including their `start_time`s. These visits must have
-  // `start_time` >= `route_start_time` and be in order of `start_time`.
-  repeated Visit past_visits = 2;
-
-  // Visits that the vehicle is committed to doing next. These visits must
-  // not have `start_time` specified, but must be listed in the sequence
-  // that they are to be performed.
-  repeated Visit next_visits = 3;
-}
-
 // Models a vehicle in a shipment problem. Solving a shipment problem will
 // build a route starting from `start_location` and ending at `end_location`
 // for this vehicle. A route is a sequence of visits (see `ShipmentRoute`).
 message Vehicle {
-  option (google.api.resource) = {
-    type: "cloudoptimization.googleapis.com/Vehicle"
-    pattern: "projects/{project}/locations/{location}/workspaces/{workspace}/vehicles/{vehicle}"
-  };
-
   // Travel modes which can be used by vehicles.
   //
   // These should be a subset of the Google Maps Platform Routes Preferred API
@@ -1196,9 +956,8 @@ message Vehicle {
     // Travel mode corresponding to driving directions (car, ...).
     DRIVING = 1;
 
-    // Two-wheeled, motorized vehicle. For example, motorcycle. Note that this
-    // differs from the BICYCLING travel mode which covers human-powered mode.
-    TWO_WHEELER = 5;
+    // Travel mode corresponding to walking directions.
+    WALKING = 2;
   }
 
   // Policy on how a vehicle can be unloaded. Applies only to shipments having
@@ -1219,30 +978,42 @@ message Vehicle {
   }
 
   // Defines a load limit applying to a vehicle, e.g. "this truck may only
-  // carry up to 3500 kg". See [load_limits][google.cloud.optimization.v1.Vehicle.load_limits].
+  // carry up to 3500 kg". See
+  // [load_limits][google.maps.routeoptimization.v1.Vehicle.load_limits].
   message LoadLimit {
     // Interval of acceptable load amounts.
     message Interval {
       // A minimum acceptable load. Must be ≥ 0.
-      // If they're both specified, [min][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.min] must be ≤ [max][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.max].
+      // If they're both specified,
+      // [min][google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval.min]
+      // must be ≤
+      // [max][google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval.max].
       int64 min = 1;
 
       // A maximum acceptable load. Must be ≥ 0. If unspecified, the maximum
       // load is unrestricted by this message.
-      // If they're both specified, [min][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.min] must be ≤ [max][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.max].
+      // If they're both specified,
+      // [min][google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval.min]
+      // must be ≤
+      // [max][google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval.max].
       optional int64 max = 2;
     }
 
     // The maximum acceptable amount of load.
     optional int64 max_load = 1;
 
-    // A soft limit of the load. See [cost_per_unit_above_soft_max][google.cloud.optimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max].
+    // A soft limit of the load. See
+    // [cost_per_unit_above_soft_max][google.maps.routeoptimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max].
     int64 soft_max_load = 2;
 
-    // If the load ever exceeds [soft_max_load][google.cloud.optimization.v1.Vehicle.LoadLimit.soft_max_load] along this vehicle's route,
-    // the following cost penalty applies (only once per vehicle):
-    // (load - [soft_max_load][google.cloud.optimization.v1.Vehicle.LoadLimit.soft_max_load]) * [cost_per_unit_above_soft_max][google.cloud.optimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max]. All costs
-    // add up and must be in the same unit as [Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost].
+    // If the load ever exceeds
+    // [soft_max_load][google.maps.routeoptimization.v1.Vehicle.LoadLimit.soft_max_load]
+    // along this vehicle's route, the following cost penalty applies (only once
+    // per vehicle): (load -
+    // [soft_max_load][google.maps.routeoptimization.v1.Vehicle.LoadLimit.soft_max_load])
+    // * [cost_per_unit_above_soft_max][google.maps.routeoptimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max]. All costs
+    // add up and must be in the same unit as
+    // [Shipment.penalty_cost][google.maps.routeoptimization.v1.Shipment.penalty_cost].
     double cost_per_unit_above_soft_max = 3;
 
     // The acceptable load interval of the vehicle at the start of the route.
@@ -1305,12 +1076,6 @@ message Vehicle {
     optional double cost_per_square_hour_after_quadratic_soft_max = 5;
   }
 
-  // The resource name of the vehicle. This is a unique identifier. Format:
-  // `projects/{project}/locations/{location}/workspaces/{workspace}/vehicles/{vehicle}`
-  // This field would be ignored while calling `OptimizeTours` and
-  // `BatchOptimizeTours` methods.
-  string name = 31;
-
   // The user-defined display name of the vehicle.
   // It can be up to 63 characters long and may use UTF-8 characters.
   string display_name = 32;
@@ -1318,10 +1083,6 @@ message Vehicle {
   // The travel mode which affects the roads usable by the vehicle and its
   // speed. See also `travel_duration_multiple`.
   TravelMode travel_mode = 1;
-
-  // A set of conditions to satisfy that affect the way routes are calculated
-  // for the given vehicle.
-  RouteModifiers route_modifiers = 2;
 
   // Geographic location where the vehicle starts before picking up any
   // shipments. If not specified, the vehicle starts at its first pickup.
@@ -1363,7 +1124,7 @@ message Vehicle {
 
   // Time windows during which the vehicle may depart its start location.
   // They must be within the global time limits (see
-  // [ShipmentModel.global_*][google.cloud.optimization.v1.ShipmentModel.global_start_time]
+  // [ShipmentModel.global_*][google.maps.routeoptimization.v1.ShipmentModel.global_start_time]
   // fields). If unspecified, there is no limitation besides those global time
   // limits.
   //
@@ -1377,7 +1138,7 @@ message Vehicle {
 
   // Time windows during which the vehicle may arrive at its end location.
   // They must be within the global time limits (see
-  // [ShipmentModel.global_*][google.cloud.optimization.v1.ShipmentModel.global_start_time]
+  // [ShipmentModel.global_*][google.maps.routeoptimization.v1.ShipmentModel.global_start_time]
   // fields). If unspecified, there is no limitation besides those global time
   // limits.
   //
@@ -1410,13 +1171,13 @@ message Vehicle {
   // Capacities of the vehicle (weight, volume, # of pallets for example).
   // The keys in the map are the identifiers of the type of load, consistent
   // with the keys of the
-  // [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands]
+  // [Shipment.load_demands][google.maps.routeoptimization.v1.Shipment.load_demands]
   // field. If a given key is absent from this map, the corresponding capacity
   // is considered to be limitless.
   map<string, LoadLimit> load_limits = 30;
 
   // Vehicle costs: all costs add up and must be in the same unit as
-  // [Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost].
+  // [Shipment.penalty_cost][google.maps.routeoptimization.v1.Shipment.penalty_cost].
   //
   // Cost per hour of the vehicle route. This cost is applied to the total time
   // taken by the route, and includes travel time, waiting time, and visit time.
@@ -1426,13 +1187,15 @@ message Vehicle {
 
   // Cost per traveled hour of the vehicle route. This cost is applied only to
   // travel time taken by the route (i.e., that reported in
-  // [ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions]), and excludes waiting time and visit time.
+  // [ShipmentRoute.transitions][google.maps.routeoptimization.v1.ShipmentRoute.transitions]),
+  // and excludes waiting time and visit time.
   double cost_per_traveled_hour = 17;
 
   // Cost per kilometer of the vehicle route. This cost is applied to the
-  // distance reported in the [ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions] and does not apply
-  // to any distance implicitly traveled from the `arrival_location` to the
-  // `departure_location` of a single `VisitRequest`.
+  // distance reported in the
+  // [ShipmentRoute.transitions][google.maps.routeoptimization.v1.ShipmentRoute.transitions]
+  // and does not apply to any distance implicitly traveled from the
+  // `arrival_location` to the `departure_location` of a single `VisitRequest`.
   double cost_per_kilometer = 18;
 
   // Fixed cost applied if this vehicle is used to handle a shipment.
@@ -1459,39 +1222,33 @@ message Vehicle {
 
   // Limit applied to the travel duration of the vehicle's route. In a given
   // `OptimizeToursResponse`, the route travel duration is the sum of all its
-  // [transitions.travel_duration][google.cloud.optimization.v1.ShipmentRoute.Transition.travel_duration].
+  // [transitions.travel_duration][google.maps.routeoptimization.v1.ShipmentRoute.Transition.travel_duration].
   DurationLimit travel_duration_limit = 22;
 
   // Limit applied to the total distance of the vehicle's route. In a given
   // `OptimizeToursResponse`, the route distance is the sum of all its
-  // [transitions.travel_distance_meters][google.cloud.optimization.v1.ShipmentRoute.Transition.travel_distance_meters].
+  // [transitions.travel_distance_meters][google.maps.routeoptimization.v1.ShipmentRoute.Transition.travel_distance_meters].
   DistanceLimit route_distance_limit = 23;
 
   // Specifies a map from visit_types strings to durations. The duration is time
   // in addition to
-  // [VisitRequest.duration][google.cloud.optimization.v1.Shipment.VisitRequest.duration]
+  // [VisitRequest.duration][google.maps.routeoptimization.v1.Shipment.VisitRequest.duration]
   // to be taken at visits with the specified `visit_types`. This extra visit
   // duration adds cost if `cost_per_hour` is specified. Keys (i.e.
   // `visit_types`) cannot be empty strings.
   //
   // If a visit request has multiple types, a duration will be added for each
   // type in the map.
-  map<string, google.protobuf.Duration> extra_visit_duration_for_visit_type = 24;
+  map<string, google.protobuf.Duration> extra_visit_duration_for_visit_type =
+      24;
 
   // Describes the break schedule to be enforced on this vehicle.
   // If empty, no breaks will be scheduled for this vehicle.
   BreakRule break_rule = 25;
 
-  // Set of vehicle operator types required by this vehicle.
-  // For every type listed here, exactly one vehicle operator of this
-  // [VehicleOperator.type][google.cloud.optimization.v1.VehicleOperator.type] must be assigned to the vehicle if (and only if)
-  // the vehicle is used (i.e. the vehicle's route is non-empty or
-  // [Vehicle.used_if_route_is_empty][google.cloud.optimization.v1.Vehicle.used_if_route_is_empty] is true).
-  // A given operator `type` must appear at most once in this list.
-  repeated string required_operator_types = 26;
-
   // Specifies a label for this vehicle. This label is reported in the response
-  // as the `vehicle_label` of the corresponding [ShipmentRoute][google.cloud.optimization.v1.ShipmentRoute].
+  // as the `vehicle_label` of the corresponding
+  // [ShipmentRoute][google.maps.routeoptimization.v1.ShipmentRoute].
   string label = 27;
 
   // If true, `used_if_route_is_empty` must be false, and this vehicle will
@@ -1508,26 +1265,6 @@ message Vehicle {
   // If a shipment has a non-empty `allowed_vehicle_indices` field and all of
   // the allowed vehicles are ignored, it is skipped in the response.
   bool ignore = 28;
-
-  // The route execution state of the vehicle. This field is used in the
-  // stateful service only.
-  RouteCommitments route_commitments = 33;
-
-  // Deprecated: No longer used.
-  // Indices in the `break_rule` field in the source
-  // [ShipmentModel][google.cloud.optimization.v1.ShipmentModel]. They correspond to break rules enforced on the vehicle.
-  //
-  // As of 2018/03, at most one rule index per vehicle can be specified.
-  repeated int32 break_rule_indices = 29 [deprecated = true];
-
-  // Deprecated: Use [Vehicle.load_limits][google.cloud.optimization.v1.Vehicle.load_limits] instead.
-  repeated CapacityQuantity capacities = 13 [deprecated = true];
-
-  // Deprecated: Use [Vehicle.LoadLimit.start_load_interval][google.cloud.optimization.v1.Vehicle.LoadLimit.start_load_interval] instead.
-  repeated CapacityQuantityInterval start_load_intervals = 14 [deprecated = true];
-
-  // Deprecated: Use [Vehicle.LoadLimit.end_load_interval][google.cloud.optimization.v1.Vehicle.LoadLimit.end_load_interval] instead.
-  repeated CapacityQuantityInterval end_load_intervals = 15 [deprecated = true];
 }
 
 // Time windows constrain the time of an event, such as the arrival time at a
@@ -1542,8 +1279,11 @@ message Vehicle {
 // event to happen at or before `soft_end_time` by incurring a cost proportional
 // to how long after `soft_end_time` the event occurs. `start_time`, `end_time`,
 // `soft_start_time` and `soft_end_time` should be within the global time limits
-// (see [ShipmentModel.global_start_time][google.cloud.optimization.v1.ShipmentModel.global_start_time] and
-// [ShipmentModel.global_end_time][google.cloud.optimization.v1.ShipmentModel.global_end_time]) and should respect:
+// (see
+// [ShipmentModel.global_start_time][google.maps.routeoptimization.v1.ShipmentModel.global_start_time]
+// and
+// [ShipmentModel.global_end_time][google.maps.routeoptimization.v1.ShipmentModel.global_end_time])
+// and should respect:
 // ```
 //   0 <= `start_time` <= `soft_start_time` <= `end_time` and
 //   0 <= `start_time` <= `soft_end_time` <= `end_time`.
@@ -1590,26 +1330,6 @@ message TimeWindow {
   optional double cost_per_hour_after_soft_end_time = 6;
 }
 
-// Deprecated: Use [Vehicle.LoadLimit.Interval][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval] instead.
-message CapacityQuantity {
-  option deprecated = true;
-
-  string type = 1;
-
-  int64 value = 2;
-}
-
-// Deprecated: Use [Vehicle.LoadLimit.Interval][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval] instead.
-message CapacityQuantityInterval {
-  option deprecated = true;
-
-  string type = 1;
-
-  optional int64 min_value = 2;
-
-  optional int64 max_value = 3;
-}
-
 // A limit defining a maximum distance which can be traveled. It can be either
 // hard or soft.
 //
@@ -1628,8 +1348,8 @@ message DistanceLimit {
   // nonnegative.
   optional int64 soft_max_meters = 2;
 
-  // Cost per kilometer incurred if `soft_max_meters` limit is violated. The
-  // additional cost is 0 if the distance is under the limit, otherwise the
+  // Cost per kilometer incurred if distance is above `soft_max_meters` limit.
+  // The additional cost is 0 if the distance is under the limit, otherwise the
   // formula used to compute the cost is the following:
   // ```
   //   (distance_meters - soft_max_meters) / 1000.0 *
@@ -1647,8 +1367,9 @@ message TransitionAttributes {
   // Tags defining the set of (src->dst) transitions these attributes apply to.
   //
   // A source visit or vehicle start matches iff its
-  // [VisitRequest.tags][google.cloud.optimization.v1.Shipment.VisitRequest.tags]
-  // or [Vehicle.start_tags][google.cloud.optimization.v1.Vehicle.start_tags]
+  // [VisitRequest.tags][google.maps.routeoptimization.v1.Shipment.VisitRequest.tags]
+  // or
+  // [Vehicle.start_tags][google.maps.routeoptimization.v1.Vehicle.start_tags]
   // either contains `src_tag` or does not contain `excluded_src_tag` (depending
   // on which of these two fields is non-empty).
   string src_tag = 1;
@@ -1658,9 +1379,10 @@ message TransitionAttributes {
   string excluded_src_tag = 2;
 
   // A destination visit or vehicle end matches iff its
-  // [VisitRequest.tags][google.cloud.optimization.v1.Shipment.VisitRequest.tags]
-  // or [Vehicle.end_tags][google.cloud.optimization.v1.Vehicle.end_tags] either contains `dst_tag` or does not contain
-  // `excluded_dst_tag` (depending on which of these two fields is non-empty).
+  // [VisitRequest.tags][google.maps.routeoptimization.v1.Shipment.VisitRequest.tags]
+  // or [Vehicle.end_tags][google.maps.routeoptimization.v1.Vehicle.end_tags]
+  // either contains `dst_tag` or does not contain `excluded_dst_tag` (depending
+  // on which of these two fields is non-empty).
   string dst_tag = 3;
 
   // See `dst_tag`. Exactly one of `dst_tag` and `excluded_dst_tag` must be
@@ -1674,7 +1396,8 @@ message TransitionAttributes {
 
   // Specifies a cost per kilometer applied to the distance traveled while
   // performing this transition. It adds up to any
-  // [Vehicle.cost_per_kilometer][google.cloud.optimization.v1.Vehicle.cost_per_kilometer] specified on vehicles.
+  // [Vehicle.cost_per_kilometer][google.maps.routeoptimization.v1.Vehicle.cost_per_kilometer]
+  // specified on vehicles.
   double cost_per_kilometer = 6;
 
   // Specifies a limit on the distance traveled while performing this
@@ -1703,13 +1426,13 @@ message Waypoint {
     string place_id = 2;
   }
 
-  // Indicates that the location of this waypoint is meant to have a preference
-  // for the vehicle to stop at a particular side of road. When you set this
-  // value, the route will pass through the location so that the vehicle can
-  // stop at the side of road that the location is biased towards from the
-  // center of the road. This option works only for the 'DRIVING' travel mode,
-  // and when the 'location_type' is set to 'location'.
-  bool side_of_road = 3;
+  // Optional. Indicates that the location of this waypoint is meant to have a
+  // preference for the vehicle to stop at a particular side of road. When you
+  // set this value, the route will pass through the location so that the
+  // vehicle can stop at the side of road that the location is biased towards
+  // from the center of the road. This option doesn't work for the 'WALKING'
+  // travel mode.
+  bool side_of_road = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Encapsulates a location (a geographic point, and an optional heading).
@@ -1742,13 +1465,16 @@ message BreakRule {
   // be compatible with the order (this is checked).
   message BreakRequest {
     // Required. Lower bound (inclusive) on the start of the break.
-    google.protobuf.Timestamp earliest_start_time = 1 [(google.api.field_behavior) = REQUIRED];
+    google.protobuf.Timestamp earliest_start_time = 1
+        [(google.api.field_behavior) = REQUIRED];
 
     // Required. Upper bound (inclusive) on the start of the break.
-    google.protobuf.Timestamp latest_start_time = 2 [(google.api.field_behavior) = REQUIRED];
+    google.protobuf.Timestamp latest_start_time = 2
+        [(google.api.field_behavior) = REQUIRED];
 
     // Required. Minimum duration of the break. Must be positive.
-    google.protobuf.Duration min_duration = 3 [(google.api.field_behavior) = REQUIRED];
+    google.protobuf.Duration min_duration = 3
+        [(google.api.field_behavior) = REQUIRED];
   }
 
   // One may further constrain the frequency and duration of the breaks
@@ -1787,12 +1513,14 @@ message BreakRule {
   message FrequencyConstraint {
     // Required. Minimum break duration for this constraint. Nonnegative.
     // See description of `FrequencyConstraint`.
-    google.protobuf.Duration min_break_duration = 1 [(google.api.field_behavior) = REQUIRED];
+    google.protobuf.Duration min_break_duration = 1
+        [(google.api.field_behavior) = REQUIRED];
 
-    // Required. Maximum allowed span of any interval of time in the route that does not
-    // include at least partially a break of `duration >=
+    // Required. Maximum allowed span of any interval of time in the route that
+    // does not include at least partially a break of `duration >=
     // min_break_duration`. Must be positive.
-    google.protobuf.Duration max_inter_break_duration = 2 [(google.api.field_behavior) = REQUIRED];
+    google.protobuf.Duration max_inter_break_duration = 2
+        [(google.api.field_behavior) = REQUIRED];
   }
 
   // Sequence of breaks. See the `BreakRequest` message.
@@ -1801,38 +1529,6 @@ message BreakRule {
   // Several `FrequencyConstraint` may apply. They must all be satisfied by
   // the `BreakRequest`s of this `BreakRule`. See `FrequencyConstraint`.
   repeated FrequencyConstraint frequency_constraints = 2;
-}
-
-// A vehicle operator sets extra constraints on the route of the vehicle it gets
-// assigned to.
-// Every used vehicle requiring a certain `type` of vehicle operator (see
-// [Vehicle.required_operator_types][google.cloud.optimization.v1.Vehicle.required_operator_types])
-// must be assigned to exactly one operator of that `type`, and every vehicle
-// operator can in turn be assigned to at most one vehicle requiring its `type`.
-message VehicleOperator {
-  // TimeWindows during which the vehicle assigned to this operator can
-  // start its route. These apply on top of the vehicle's own possible start
-  // time windows.
-  // NOTE: As of 09/2021, only a single time window is allowed, with no soft
-  // bounds and costs.
-  repeated TimeWindow start_time_windows = 1;
-
-  // TimeWindows during which the vehicle assigned to this operator can
-  // end its route. These apply on top of the vehicle's own possible end time
-  // windows.
-  // NOTE: As of 09/2021, only a single time window is allowed, with no soft
-  // bounds and costs.
-  repeated TimeWindow end_time_windows = 2;
-
-  // Required. Type of the vehicle operator. This must be referenced by the
-  // [Vehicle.required_operator_types][google.cloud.optimization.v1.Vehicle.required_operator_types] field of vehicles requiring this
-  // operator.
-  string type = 3 [(google.api.field_behavior) = REQUIRED];
-
-  // Specifies a label for this vehicle operator. This label is reported in the
-  // response in the `vehicle_operator_labels` of the [ShipmentRoute][google.cloud.optimization.v1.ShipmentRoute] it gets
-  // assigned to.
-  string label = 4;
 }
 
 // A vehicle's route can be decomposed, along the time axis, like this (we
@@ -1920,27 +1616,12 @@ message VehicleOperator {
 // --++-----------------------------------------------------------------++-->
 // ```
 message ShipmentRoute {
-  // Deprecated: Use [ShipmentRoute.Transition.delay_duration][google.cloud.optimization.v1.ShipmentRoute.Transition.delay_duration] instead.
-  // Time interval spent on the route resulting from a
-  // [TransitionAttributes.delay][google.cloud.optimization.v1.TransitionAttributes.delay].
-  message Delay {
-    option deprecated = true;
-
-    // Start of the delay.
-    google.protobuf.Timestamp start_time = 1;
-
-    // Duration of the delay.
-    google.protobuf.Duration duration = 2;
-  }
-
   // A visit performed during a route. This visit corresponds to a pickup or a
   // delivery of a `Shipment`.
   message Visit {
-    // Index of the `shipments` field in the source [ShipmentModel][google.cloud.optimization.v1.ShipmentModel].
+    // Index of the `shipments` field in the source
+    // [ShipmentModel][google.maps.routeoptimization.v1.ShipmentModel].
     int32 shipment_index = 1;
-
-    // Name of the `shipment`. It is used in the stateful service only.
-    string shipment_name = 12;
 
     // If true the visit corresponds to a pickup of a `Shipment`. Otherwise, it
     // corresponds to a delivery.
@@ -1958,7 +1639,7 @@ message ShipmentRoute {
     // Total visit load demand as the sum of the shipment and the visit request
     // `load_demands`. The values are negative if the visit is a delivery.
     // Demands are reported for the same types as the
-    // [Transition.loads][google.cloud.optimization.v1.ShipmentRoute.Transition]
+    // [Transition.loads][google.maps.routeoptimization.v1.ShipmentRoute.Transition]
     // (see this field).
     map<string, Shipment.Load> load_demands = 11;
 
@@ -1984,29 +1665,13 @@ message ShipmentRoute {
     string shipment_label = 7;
 
     // Copy of the corresponding
-    // [VisitRequest.label][google.cloud.optimization.v1.Shipment.VisitRequest.label],
+    // [VisitRequest.label][google.maps.routeoptimization.v1.Shipment.VisitRequest.label],
     // if specified in the `VisitRequest`.
     string visit_label = 8;
-
-    // Deprecated: Use [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads] instead.
-    // Vehicle loads upon arrival at the visit location, for each
-    // type specified in [Vehicle.capacities][google.cloud.optimization.v1.Vehicle.capacities], `start_load_intervals`,
-    // `end_load_intervals` or `demands`.
-    //
-    // Exception: we omit loads for quantity types unconstrained by intervals
-    // and that don't have any non-zero demand on the route.
-    repeated CapacityQuantity arrival_loads = 9 [deprecated = true];
-
-    // Deprecated: Use [ShipmentRoute.Transition.delay_duration][google.cloud.optimization.v1.ShipmentRoute.Transition.delay_duration] instead.
-    // Delay occurring before the visit starts.
-    Delay delay_before_start = 10 [deprecated = true];
-
-    // Deprecated: Use [Visit.load_demands][google.cloud.optimization.v1.ShipmentRoute.Visit.load_demands] instead.
-    repeated CapacityQuantity demands = 5 [deprecated = true];
   }
 
   // Transition between two events on the route. See the description of
-  // [ShipmentRoute][google.cloud.optimization.v1.ShipmentRoute].
+  // [ShipmentRoute][google.maps.routeoptimization.v1.ShipmentRoute].
   //
   // If the vehicle does not have a `start_location` and/or `end_location`, the
   // corresponding travel metrics are 0.
@@ -2019,7 +1684,7 @@ message ShipmentRoute {
 
     // When traffic is requested via
     // [OptimizeToursRequest.consider_road_traffic]
-    // [google.cloud.optimization.v1.OptimizeToursRequest.consider_road_traffic],
+    // [google.maps.routeoptimization.v1.OptimizeToursRequest.consider_road_traffic],
     // and the traffic info couldn't be retrieved for a `Transition`, this
     // boolean is set to true. This may be temporary (rare hiccup in the
     // realtime traffic servers) or permanent (no data for this location).
@@ -2028,12 +1693,12 @@ message ShipmentRoute {
     // Sum of the delay durations applied to this transition. If any, the delay
     // starts exactly `delay_duration` seconds before the next event (visit or
     // vehicle end). See
-    // [TransitionAttributes.delay][google.cloud.optimization.v1.TransitionAttributes.delay].
+    // [TransitionAttributes.delay][google.maps.routeoptimization.v1.TransitionAttributes.delay].
     google.protobuf.Duration delay_duration = 4;
 
     // Sum of the duration of the breaks occurring during this transition, if
     // any. Details about each break's start time and duration are stored in
-    // [ShipmentRoute.breaks][google.cloud.optimization.v1.ShipmentRoute.breaks].
+    // [ShipmentRoute.breaks][google.maps.routeoptimization.v1.ShipmentRoute.breaks].
     google.protobuf.Duration break_duration = 5;
 
     // Time spent waiting during this transition. Wait duration corresponds to
@@ -2057,29 +1722,31 @@ message ShipmentRoute {
     // The encoded polyline representation of the route followed during the
     // transition.
     // This field is only populated if [populate_transition_polylines]
-    // [google.cloud.optimization.v1.OptimizeToursRequest.populate_transition_polylines]
+    // [google.maps.routeoptimization.v1.OptimizeToursRequest.populate_transition_polylines]
     // is set to true.
     EncodedPolyline route_polyline = 9;
 
     // Vehicle loads during this transition, for each type that either appears
-    // in this vehicle's [Vehicle.load_limits][google.cloud.optimization.v1.Vehicle.load_limits], or that have non-zero
-    // [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands] on some shipment performed on this route.
+    // in this vehicle's
+    // [Vehicle.load_limits][google.maps.routeoptimization.v1.Vehicle.load_limits],
+    // or that have non-zero
+    // [Shipment.load_demands][google.maps.routeoptimization.v1.Shipment.load_demands]
+    // on some shipment performed on this route.
     //
     // The loads during the first transition are the starting loads of the
     // vehicle route. Then, after each visit, the visit's `load_demands` are
     // either added or subtracted to get the next transition's loads, depending
     // on whether the visit was a pickup or a delivery.
     map<string, VehicleLoad> vehicle_loads = 11;
-
-    // Deprecated: Use [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads] instead.
-    repeated CapacityQuantity loads = 10 [deprecated = true];
   }
 
   // Reports the actual load of the vehicle at some point along the route,
-  // for a given type (see [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads]).
+  // for a given type (see
+  // [Transition.vehicle_loads][google.maps.routeoptimization.v1.ShipmentRoute.Transition.vehicle_loads]).
   message VehicleLoad {
     // The amount of load on the vehicle, for the given type. The unit of load
-    // is usually indicated by the type. See [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads].
+    // is usually indicated by the type. See
+    // [Transition.vehicle_loads][google.maps.routeoptimization.v1.ShipmentRoute.Transition.vehicle_loads].
     int64 amount = 1;
   }
 
@@ -2101,44 +1768,6 @@ message ShipmentRoute {
     google.protobuf.Duration duration = 2;
   }
 
-  // Deprecated: Use [ShipmentRoute.Transition][google.cloud.optimization.v1.ShipmentRoute.Transition] instead.
-  // Travel between each visit along the route: from the
-  // vehicle's `start_location` to the first visit's `arrival_location`, then
-  // from the first visit's `departure_location` to the second visit's
-  // `arrival_location`, and so on until the vehicle's `end_location`. This
-  // accounts only for the actual travel between visits, not counting the
-  // waiting time, the time spent performing a visit, nor the distance covered
-  // during a visit.
-  //
-  // Invariant: `travel_steps_size() == visits_size() + 1`.
-  //
-  // If the vehicle does not have a start_ and/or end_location, the
-  // corresponding travel metrics are 0 and/or empty.
-  message TravelStep {
-    option deprecated = true;
-
-    // Duration of the travel step.
-    google.protobuf.Duration duration = 1;
-
-    // Distance traveled during the step.
-    double distance_meters = 2;
-
-    // When traffic is requested via
-    // [OptimizeToursRequest.consider_road_traffic][google.cloud.optimization.v1.OptimizeToursRequest.consider_road_traffic],
-    // and the traffic info couldn't be retrieved for a TravelStep, this boolean
-    // is set to true. This may be temporary (rare hiccup in the realtime
-    // traffic servers) or permanent (no data for this location).
-    bool traffic_info_unavailable = 3;
-
-    // The encoded polyline representation of the route followed during the
-    // step.
-    //
-    // This field is only populated if
-    // [OptimizeToursRequest.populate_travel_step_polylines][google.cloud.optimization.v1.OptimizeToursRequest.populate_travel_step_polylines]
-    // is set to true.
-    EncodedPolyline route_polyline = 4;
-  }
-
   // Vehicle performing the route, identified by its index in the source
   // `ShipmentModel`.
   int32 vehicle_index = 1;
@@ -2146,19 +1775,6 @@ message ShipmentRoute {
   // Label of the vehicle performing this route, equal to
   // `ShipmentModel.vehicles(vehicle_index).label`, if specified.
   string vehicle_label = 2;
-
-  // Name of the vehicle performing this route. It is used in the stateful
-  // service only.
-  string vehicle_name = 19;
-
-  // Vehicle operators assigned to this route, identified by their index in the
-  // source `ShipmentModel`, if the vehicle is used.
-  repeated int32 vehicle_operator_indices = 3;
-
-  // Labels of the vehicle operators assigned to this route. For every vehicle
-  // operator #op in `vehicle_operator_indices`,
-  // `vehicle_operator_labels(op)` = `ShipmentModel.vehicle_operators(op).label`
-  repeated string vehicle_operator_labels = 4;
 
   // Time at which the vehicle starts its route.
   google.protobuf.Timestamp vehicle_start_time = 5;
@@ -2175,7 +1791,7 @@ message ShipmentRoute {
   repeated Transition transitions = 8;
 
   // When
-  // [OptimizeToursRequest.consider_road_traffic][google.cloud.optimization.v1.OptimizeToursRequest.consider_road_traffic],
+  // [OptimizeToursRequest.consider_road_traffic][google.maps.routeoptimization.v1.OptimizeToursRequest.consider_road_traffic],
   // is set to true, this field indicates that inconsistencies in route timings
   // are predicted using traffic-based travel duration estimates. There may be
   // insufficient time to complete traffic-adjusted travel, delays, and breaks
@@ -2196,7 +1812,7 @@ message ShipmentRoute {
 
   // The encoded polyline representation of the route.
   // This field is only populated if
-  // [OptimizeToursRequest.populate_polylines][google.cloud.optimization.v1.OptimizeToursRequest.populate_polylines]
+  // [OptimizeToursRequest.populate_polylines][google.maps.routeoptimization.v1.OptimizeToursRequest.populate_polylines]
   // is set to true.
   EncodedPolyline route_polyline = 10;
 
@@ -2206,15 +1822,13 @@ message ShipmentRoute {
   repeated Break breaks = 11;
 
   // Duration, distance and load metrics for this route. The fields of
-  // [AggregatedMetrics][google.cloud.optimization.v1.AggregatedMetrics] are summed over all [ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions] or
-  // [ShipmentRoute.visits][google.cloud.optimization.v1.ShipmentRoute.visits], depending on the context.
+  // [AggregatedMetrics][google.maps.routeoptimization.v1.AggregatedMetrics] are
+  // summed over all
+  // [ShipmentRoute.transitions][google.maps.routeoptimization.v1.ShipmentRoute.transitions]
+  // or
+  // [ShipmentRoute.visits][google.maps.routeoptimization.v1.ShipmentRoute.visits],
+  // depending on the context.
   AggregatedMetrics metrics = 12;
-
-  // [VehicleFullness][google.cloud.optimization.v1.VehicleFullness] field for computing how close the capped metrics are to
-  // their respective vehicle limits. Its fields are ratios between a capped
-  // metric field (e.g. [AggregatedMetrics.travel_distance_meters][google.cloud.optimization.v1.AggregatedMetrics.travel_distance_meters]) and the
-  // related vehicle limit (e.g. [Vehicle.route_distance_limit][google.cloud.optimization.v1.Vehicle.route_distance_limit]).
-  VehicleFullness vehicle_fullness = 20;
 
   // Cost of the route, broken down by cost-related request fields.
   // The keys are proto paths, relative to the input OptimizeToursRequest, e.g.
@@ -2228,33 +1842,6 @@ message ShipmentRoute {
 
   // Total cost of the route. The sum of all costs in the cost map.
   double route_total_cost = 18;
-
-  // Deprecated: Use [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads] instead.
-  // Vehicle loads upon arrival at its end location, for each
-  // type specified in [Vehicle.capacities][google.cloud.optimization.v1.Vehicle.capacities],
-  // `start_load_intervals`, `end_load_intervals` or demands. Exception: we omit
-  // loads for quantity types unconstrained by intervals and that don't have any
-  // non-zero demand on the route.
-  repeated CapacityQuantity end_loads = 13 [deprecated = true];
-
-  // Deprecated: Use [ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions] instead.
-  // Ordered list of travel steps for the route.
-  repeated TravelStep travel_steps = 14 [deprecated = true];
-
-  // Deprecated: No longer used.
-  // This field will only be populated at the
-  // [ShipmentRoute.Visit][google.cloud.optimization.v1.ShipmentRoute.Visit] level.
-  //
-  // This field is the extra detour time due to the shipments visited on the
-  // route.
-  //
-  // It is equal to `vehicle_end_time` - `vehicle_start_time` - travel duration
-  // from the vehicle's start_location to its `end_location`.
-  google.protobuf.Duration vehicle_detour = 15 [deprecated = true];
-
-  // Deprecated: Delay occurring before the vehicle end. See
-  // [TransitionAttributes.delay][google.cloud.optimization.v1.TransitionAttributes.delay].
-  Delay delay_before_vehicle_end = 16 [deprecated = true];
 }
 
 // Specifies details of unperformed shipments in a solution. For trivial cases
@@ -2332,23 +1919,6 @@ message SkippedShipment {
       // The `allowed_vehicle_indices` field of the shipment is not empty and
       // this vehicle does not belong to it.
       VEHICLE_NOT_ALLOWED = 7;
-
-      // The vehicle's `ignore` field is true.
-      VEHICLE_IGNORED = 8;
-
-      // The shipment's `ignore` field is true.
-      SHIPMENT_IGNORED = 9;
-
-      // The shipment is skipped in the `injected_solution_constraint`.
-      SKIPPED_IN_INJECTED_SOLUTION_CONSTRAINT = 10;
-
-      // The vehicle route relaxation specified in the
-      // `injected_solution_constraint` doesn't permit any visit to be inserted.
-      VEHICLE_ROUTE_IS_FULLY_SEQUENCE_CONSTRAINED = 11;
-
-      // The vehicle requires an operator type which doesn't appear in
-      // `vehicle_operators`.
-      VEHICLE_REQUIRED_OPERATOR_TYPE_NOT_FOUND = 12;
     }
 
     // Refer to the comments of Code.
@@ -2367,32 +1937,28 @@ message SkippedShipment {
   // `ShipmentModel`.
   int32 index = 1;
 
-  // Copy of the corresponding [Shipment.label][google.cloud.optimization.v1.Shipment.label], if specified in the
-  // `Shipment`.
+  // Copy of the corresponding
+  // [Shipment.label][google.maps.routeoptimization.v1.Shipment.label], if
+  // specified in the `Shipment`.
   string label = 2;
-
-  // Name of the `shipment`. It is used in the stateful service only.
-  string shipment_name = 4;
 
   // A list of reasons that explain why the shipment was skipped. See comment
   // above `Reason`.
   repeated Reason reasons = 3;
 }
 
-// Aggregated metrics for [ShipmentRoute][google.cloud.optimization.v1.ShipmentRoute] (resp. for [OptimizeToursResponse][google.cloud.optimization.v1.OptimizeToursResponse]
-// over all [Transition][google.cloud.optimization.v1.ShipmentRoute.Transition]
-// and/or [Visit][google.cloud.optimization.v1.ShipmentRoute.Visit] (resp. over
-// all [ShipmentRoute][google.cloud.optimization.v1.ShipmentRoute]) elements.
+// Aggregated metrics for
+// [ShipmentRoute][google.maps.routeoptimization.v1.ShipmentRoute] (resp. for
+// [OptimizeToursResponse][google.maps.routeoptimization.v1.OptimizeToursResponse]
+// over all
+// [Transition][google.maps.routeoptimization.v1.ShipmentRoute.Transition]
+// and/or [Visit][google.maps.routeoptimization.v1.ShipmentRoute.Visit] (resp.
+// over all [ShipmentRoute][google.maps.routeoptimization.v1.ShipmentRoute])
+// elements.
 message AggregatedMetrics {
   // Number of shipments performed. Note that a pickup and delivery pair only
   // counts once.
   int32 performed_shipment_count = 1;
-
-  // Number of mandatory shipments performed.
-  optional int32 performed_mandatory_shipment_count = 12;
-
-  // The sum of the [Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost] of the performed shipments.
-  optional double penalty_cost_avoided = 13;
 
   // Total travel duration for a route or a solution.
   google.protobuf.Duration travel_duration = 2;
@@ -2410,8 +1976,12 @@ message AggregatedMetrics {
   google.protobuf.Duration visit_duration = 6;
 
   // The total duration should be equal to the sum of all durations above.
-  // For routes, it also corresponds to [ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time] -
-  // [ShipmentRoute.vehicle_start_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_start_time].
+  // For routes, it also corresponds to:
+  // ```
+  // [ShipmentRoute.vehicle_end_time][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_end_time]
+  // -
+  // [ShipmentRoute.vehicle_start_time][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_start_time]
+  // ```
   google.protobuf.Duration total_duration = 7;
 
   // Total travel distance for a route or a solution.
@@ -2420,59 +1990,10 @@ message AggregatedMetrics {
   // Maximum load achieved over the entire route (resp. solution), for each of
   // the quantities on this route (resp. solution), computed as the maximum over
   // all
-  // [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads]
+  // [Transition.vehicle_loads][google.maps.routeoptimization.v1.ShipmentRoute.Transition.vehicle_loads]
   // (resp.
-  // [ShipmentRoute.metrics.max_loads][google.cloud.optimization.v1.AggregatedMetrics.max_loads].
+  // [ShipmentRoute.metrics.max_loads][google.maps.routeoptimization.v1.AggregatedMetrics.max_loads].
   map<string, ShipmentRoute.VehicleLoad> max_loads = 9;
-
-  // Deprecated: Use [ShipmentRoute.route_costs][google.cloud.optimization.v1.ShipmentRoute.route_costs] and
-  // [OptimizeToursResponse.Metrics.costs][google.cloud.optimization.v1.OptimizeToursResponse.Metrics.costs] instead.
-  map<string, double> costs = 10 [deprecated = true];
-
-  // Deprecated: Use [ShipmentRoute.route_total_cost][google.cloud.optimization.v1.ShipmentRoute.route_total_cost] and
-  // [OptimizeToursResponse.Metrics.total_cost][google.cloud.optimization.v1.OptimizeToursResponse.Metrics.total_cost] instead.
-  double total_cost = 11 [deprecated = true];
-}
-
-// [VehicleFullness][google.cloud.optimization.v1.VehicleFullness] is a metric which computes how full a vehicle is.
-// Each [VehicleFullness][google.cloud.optimization.v1.VehicleFullness] field is between 0 and 1, computed as the ratio
-// between a capped metric field (e.g.
-// [AggregatedMetrics.travel_distance_meters][google.cloud.optimization.v1.AggregatedMetrics.travel_distance_meters]) and its related vehicle limit
-// (e.g. [Vehicle.route_distance_limit][google.cloud.optimization.v1.Vehicle.route_distance_limit]), if it exists. Otherwise the fullness
-// ratio stays unset. If the limit is 0, the field is set to 1.
-// Note: when a route is subject to traffic infeasibilities, some raw fullness
-// ratios might exceed 1.0, e.g. the vehicle might exceed its distance limit. In
-// these cases, we cap the fullness values at 1.0.
-message VehicleFullness {
-  // Maximum of all other fields in this message.
-  optional double max_fullness = 1;
-
-  // The ratio between [AggregatedMetrics.travel_distance_meters][google.cloud.optimization.v1.AggregatedMetrics.travel_distance_meters] and
-  // [Vehicle.route_distance_limit][google.cloud.optimization.v1.Vehicle.route_distance_limit]. If [Vehicle.route_distance_limit][google.cloud.optimization.v1.Vehicle.route_distance_limit] is
-  // unset, this field will be unset.
-  optional double distance = 2;
-
-  // The ratio between [AggregatedMetrics.travel_duration_seconds][] and
-  // [Vehicle.travel_duration_limit][google.cloud.optimization.v1.Vehicle.travel_duration_limit]. If [Vehicle.travel_duration_limit][google.cloud.optimization.v1.Vehicle.travel_duration_limit] is
-  // unset, this field will be unset.
-  optional double travel_duration = 3;
-
-  // The ratio between [AggregatedMetrics.total_duration_seconds][] and
-  // [Vehicle.route_duration_limit][google.cloud.optimization.v1.Vehicle.route_duration_limit]. If [Vehicle.route_duration_limit][google.cloud.optimization.v1.Vehicle.route_duration_limit] is
-  // unset, this field will be unset.
-  optional double active_duration = 4;
-
-  // The maximum ratio among all types of [AggregatedMetrics.max_load][] and
-  // their respective [Vehicle.load_limits][google.cloud.optimization.v1.Vehicle.load_limits]. If all [Vehicle.load_limits][google.cloud.optimization.v1.Vehicle.load_limits]
-  // fields are unset, this field will be unset.
-  optional double max_load = 5;
-
-  // The ratio (vehicle_end_time - vehicle_start_time) /
-  // (latest_vehicle_end_time - earliest_vehicle_start_time) for a given
-  // vehicle. If the denominator is not present, it uses
-  // ([ShipmentModel.global_end_time][google.cloud.optimization.v1.ShipmentModel.global_end_time] - [ShipmentModel.global_start_time][google.cloud.optimization.v1.ShipmentModel.global_start_time])
-  // instead.
-  optional double active_span = 6;
 }
 
 // Solution injected in the request including information about which visits
@@ -2577,8 +2098,9 @@ message InjectedSolutionConstraint {
     // `vehicle_indices`. A vehicle index can only be listed once, even within
     // several `constraint_relaxations`.
     //
-    // A vehicle index is mapped the same as [ShipmentRoute.vehicle_index][google.cloud.optimization.v1.ShipmentRoute.vehicle_index], if
-    // `interpret_injected_solutions_using_labels` is true (see `fields`
+    // A vehicle index is mapped the same as
+    // [ShipmentRoute.vehicle_index][google.maps.routeoptimization.v1.ShipmentRoute.vehicle_index],
+    // if `interpret_injected_solutions_using_labels` is true (see `fields`
     // comment).
     repeated int32 vehicle_indices = 2;
   }
@@ -2675,6 +2197,7 @@ message OptimizeToursValidationError {
   //     * INJECTED_SOLUTION_CONCURRENT_SOLUTION_TYPES = 2005;
   //     * INJECTED_SOLUTION_MORE_THAN_ONE_PER_TYPE = 2006;
   //     * INJECTED_SOLUTION_REFRESH_WITHOUT_POPULATE = 2008;
+  //     * INJECTED_SOLUTION_CONSTRAINED_ROUTE_PORTION_INFEASIBLE = 2010;
   // * SHIPMENT_MODEL_ERROR = 22;
   //     * SHIPMENT_MODEL_TOO_LARGE = 2200;
   //     * SHIPMENT_MODEL_TOO_MANY_CAPACITY_TYPES = 2201;
@@ -2809,8 +2332,6 @@ message OptimizeToursValidationError {
   //     * VEHICLE_TRAVEL_DURATION_MULTIPLE_WITH_SHIPMENT_PD_DETOUR_LIMITS
   //       = 4223;
   //     * VEHICLE_MATRIX_INDEX_WITH_SHIPMENT_PD_DETOUR_LIMITS = 4224;
-  //     * VEHICLE_DISTINCT_COST_MODEL_OPTIONS_WITH_SHIPMENT_PD_DETOUR_LIMITS
-  //       = 4225;
   //     * VEHICLE_MINIMUM_DURATION_LONGER_THAN_DURATION_LIMIT = 4222;
   // * VISIT_REQUEST_ERROR = 44;
   //     * VISIT_REQUEST_EMPTY_TAG = 4400;

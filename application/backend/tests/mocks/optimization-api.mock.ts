@@ -23,8 +23,8 @@ import { google } from "@google-cloud/optimization/build/protos/protos";
 
 export const SCENARIOS_AND_SOLUTIONS: {
   [label: string]: {
-    scenario: google.cloud.optimization.v1.IOptimizeToursRequest;
-    solution?: google.cloud.optimization.v1.IOptimizeToursResponse;
+    scenario: google.maps.routeoptimization.v1.IOptimizeToursRequest;
+    solution?: google.maps.routeoptimization.v1.IOptimizeToursResponse;
   };
 } = {};
 
@@ -32,7 +32,7 @@ export const SCENARIOS_AND_SOLUTIONS: {
 ["./models/fleet-routing/basic-scenario.json"].forEach((scenarioFile) => {
   const scenario = JSON.parse(
     fs.readFileSync(path.join(__dirname, scenarioFile)).toString()
-  ) as google.cloud.optimization.v1.IOptimizeToursRequest;
+  ) as google.maps.routeoptimization.v1.IOptimizeToursRequest;
 
   if (!scenario.label) {
     console.error(`Missing label in mock scenario file:  ${scenarioFile}`);
@@ -49,7 +49,7 @@ export const SCENARIOS_AND_SOLUTIONS: {
 ["./models/fleet-routing/basic-solution.json"].forEach((solutionFile) => {
   const solution = JSON.parse(
     fs.readFileSync(path.join(__dirname, solutionFile)).toString()
-  ) as google.cloud.optimization.v1.IOptimizeToursResponse;
+  ) as google.maps.routeoptimization.v1.IOptimizeToursResponse;
 
   if (!solution.requestLabel) {
     console.error(`Missing requestLabel in mock solution file:  ${solutionFile}`);
@@ -70,7 +70,7 @@ export function mockGoogleCloudOptimization() {
   const mockImp = jest.fn().mockImplementation(() => {
     return {
       optimizeTours: async (
-        req: google.cloud.optimization.v1.IOptimizeToursRequest
+        req: google.maps.routeoptimization.v1.IOptimizeToursRequest
       ) => {
         if(!req.label || !SCENARIOS_AND_SOLUTIONS[req.label]?.solution) {
           throw new Error(`Request label does not match any solutions:  ${req.label}`)
