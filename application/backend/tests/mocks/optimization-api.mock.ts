@@ -81,7 +81,7 @@ export function mockGoogleCloudOptimization() {
     };
   });
 
-  return jest.mock("@google-cloud/routeoptimization", () => {
+  return jest.mock("@google-cloud/routeoptimization/build/src/v1", () => {
     return {
       RouteOptimizationClient: mockImp, // alias for v1.RouteOptimizationClient
       v1: {
