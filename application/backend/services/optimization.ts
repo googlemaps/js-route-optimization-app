@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { google } from "@google-cloud/optimization/build/protos/protos";
+import { google } from "@google-cloud/routeoptimization/build/protos/protos";
 import { CallOptions } from "google-gax";
 
 import { log } from "../logging";
-import { RouteOptimizationClient } from "@google-cloud/optimization/build/src/v1";
+import { RouteOptimizationClient } from "@google-cloud/routeoptimization/build/src/v1";
 
 class FleetRoutingService {
   private readonly _client: RouteOptimizationClient;

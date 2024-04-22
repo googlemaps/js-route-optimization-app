@@ -17,7 +17,7 @@ limitations under the License.
 import express, { Response, Request } from "express";
 export const router = express.Router();
 
-import { google } from "@google-cloud/optimization/build/protos/protos";
+import { google } from "@google-cloud/routeoptimization/build/protos/protos";
 
 import { log } from "../logging";
 import { fleetRouting } from "../services/optimization";
