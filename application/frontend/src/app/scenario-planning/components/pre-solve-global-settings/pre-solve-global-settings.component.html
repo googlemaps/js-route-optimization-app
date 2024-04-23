@@ -1,7 +1,7 @@
 <form [formGroup]="form" autocomplete="off" class="edit-menu-content">
   <div class="settings-item pad-right item-md">
-    <div class="mat-body-strong">Label</div>
     <mat-form-field appearance="outline">
+      <mat-label>Label</mat-label>
       <input
         matInput
         type="text"
@@ -11,8 +11,8 @@
     </mat-form-field>
   </div>
   <div class="settings-item pad-right item-lg">
-    <div class="mat-body-strong">Solve Strategy</div>
     <mat-form-field appearance="outline">
+      <mat-label>Solve Strategy</mat-label>
       <mat-select (selectionChange)="onUpdateSearchMode($event.value)" [value]="currentSearchMode">
         <mat-option *ngFor="let key of searchModeKeys" [value]="key">
           {{ searchModeLabels[key] }}
@@ -21,8 +21,8 @@
     </mat-form-field>
   </div>
   <div class="settings-item item-sm pad-right">
-    <div class="mat-body-strong">Time Limit</div>
     <mat-form-field appearance="outline">
+      <mat-label>Time Limit</mat-label>
       <input
         matInput
         type="number"
@@ -35,7 +35,6 @@
     </mat-form-field>
   </div>
   <div class="settings-datetime pad-right timezone-settings item-lg">
-    <div class="mat-body-strong">Timezone</div>
     <app-timezone-edit
       appearance="outline"
       [currentTimezone]="currentTimezone"
