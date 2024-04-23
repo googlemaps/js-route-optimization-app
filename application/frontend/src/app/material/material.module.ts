@@ -48,7 +48,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
-import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   imports: [
@@ -65,7 +64,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatDividerModule,
     MatFormFieldModule,
     MatExpansionModule,
-    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -101,7 +99,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
-    MatGridListModule,
     MatListModule,
     MatIconModule,
     MatInputModule,
