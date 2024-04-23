@@ -80,6 +80,9 @@ export class BodyComponent implements OnChanges {
       gutterStyle: () => {
         return {
           height: '15px',
+          borderWidth: '1px 0px',
+          borderColor: '#b4b4b4',
+          borderStyle: 'solid',
         };
       },
       onDragEnd: (sizes) => {
