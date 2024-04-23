@@ -165,14 +165,8 @@ export class DownloadPdfDialogComponent implements OnInit, OnDestroy {
 
     const route = this.routes.find((r) => r.id === routeId);
     const vehicleIndex = route.vehicleIndex || 0;
-    const vehicleOperatorIndices =
-      route.vehicleOperatorIndices?.length > 0 ? route.vehicleOperatorIndices.join(',') : '';
-    const vehicleOperatorLabels =
-      route.vehicleOperatorLabels?.length > 0 ? route.vehicleOperatorLabels.join(',') : '';
     this.addTitle(doc, vehicleIndex, this.vehicles[vehicleIndex].label);
-    if (vehicleOperatorIndices || vehicleOperatorLabels) {
-      this.addVehicleOperatorDetails(doc, vehicleOperatorIndices, vehicleOperatorLabels);
-    }
+
     doc.addImage(
       mapData,
       'PNG',
@@ -190,12 +184,6 @@ export class DownloadPdfDialogComponent implements OnInit, OnDestroy {
     const title = `Route for Vehicle #${vehicleIndex}` + (label ? ` - ${label}` : '');
     const splitTitle = doc.setFont(undefined, 'bold').splitTextToSize(title, 7.5);
     doc.text(splitTitle, 8.5 / 2, 0.5, { align: 'center' });
-  }
-
-  addVehicleOperatorDetails(doc: jsPDF, vehicleOperatorIndices: string, label: string): void {
-    const title = `Vehicle Operator # ${vehicleOperatorIndices}` + (label ? ` - ${label}` : '');
-    const splitTitle = doc.setFont(undefined, 'bold').splitTextToSize(title, 7.5);
-    doc.text(splitTitle, 8.5 / 2, 1.0, { align: 'center' });
   }
 
   addTable(doc, vehicleIndex: number): void {

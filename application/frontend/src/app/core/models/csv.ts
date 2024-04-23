@@ -77,25 +77,11 @@ export enum VehicleFields {
   LoadLimit3Value,
   LoadLimit4Type,
   LoadLimit4Value,
-  RequiredOperatorType1,
-  RequiredOperatorType2,
-  RequiredOperatorType3,
-}
-
-export enum VehicleOperatorFields {
-  Label,
-  Type,
-  StartTimeWindowStartTime,
-  StartTimeWindowEndTime,
-  EndTimeWindowStartTime,
-  EndTimeWindowEndTime,
 }
 
 export interface CsvData {
   vehicleIndex: number;
   vehicleLabel: string;
-  vehicleOperatorIndices: string;
-  vehicleOperatorLabels: string;
   visitType: string;
   visitLabel: string;
   visitStart: string;
@@ -109,8 +95,6 @@ export interface CsvData {
 export const CSV_COLUMN_ORDER = [
   'vehicleIndex',
   'vehicleLabel',
-  'vehicleOperatorIndices',
-  'vehicleOperatorLabels',
   'visitType',
   'visitLabel',
   'visitStart',
@@ -124,8 +108,6 @@ export const CSV_COLUMN_ORDER = [
 export const CSV_DATA_LABELS = {
   vehicleIndex: 'Vehicle index',
   vehicleLabel: 'Vehicle label',
-  vehicleOperatorIndices: 'Vehicle operator indices',
-  vehicleOperatorLabels: 'Vehicle Operator Labels',
   visitType: 'Visit type',
   visitLabel: 'Visit label',
   visitStart: 'Visit start',
@@ -156,8 +138,4 @@ export interface GeocodeErrorResponse extends ValidationErrorResponse {
   location: string;
 }
 
-export const EXPERIMENTAL_API_FIELDS_VEHICLES = [
-  'requiredOperatorType1',
-  'requiredOperatorType2',
-  'requiredOperatorType3',
-];
+export const EXPERIMENTAL_API_FIELDS_VEHICLES = [];

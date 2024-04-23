@@ -50,7 +50,6 @@ export class BaseRoutesRowComponent implements OnInit {
   @Input() isDragging: boolean;
   @Input() route: ShipmentRoute;
   @Input() vehicle: Vehicle;
-  @Input() vehicleOperator: string;
   @Input() shipmentCount: number;
   @HostBinding('class.selected') @Input() selected = false;
   @Input() timeline: Timeline;

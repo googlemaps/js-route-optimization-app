@@ -1,5 +1,5 @@
 "use strict";
-// Copyright 2022 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,14 +17,12 @@
 // ** https://github.com/googleapis/gapic-generator-typescript **
 // ** All changes to this file may be overwritten. **
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.protos = exports.StatefulFleetRoutingClient = exports.FleetRoutingClient = exports.v1 = void 0;
+exports.protos = exports.RouteOptimizationClient = exports.v1 = void 0;
 const v1 = require("./v1");
 exports.v1 = v1;
-const FleetRoutingClient = v1.FleetRoutingClient;
-exports.FleetRoutingClient = FleetRoutingClient;
-const StatefulFleetRoutingClient = v1.StatefulFleetRoutingClient;
-exports.StatefulFleetRoutingClient = StatefulFleetRoutingClient;
-exports.default = { v1, FleetRoutingClient, StatefulFleetRoutingClient };
+const RouteOptimizationClient = v1.RouteOptimizationClient;
+exports.RouteOptimizationClient = RouteOptimizationClient;
+exports.default = { v1, RouteOptimizationClient };
 const protos = require("../protos/protos");
 exports.protos = protos;
 //# sourceMappingURL=index.js.map

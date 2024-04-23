@@ -108,11 +108,3 @@ export const selectVisitTypes = createSelector(selectAll, (vehicles) => {
   });
   return visitTypes;
 });
-
-export const selectOperatorTypes = createSelector(selectAll, (vehicles) => {
-  const operatorTypes = new Set<string>();
-  vehicles.forEach((vehicle) => {
-    vehicle.requiredOperatorTypes?.forEach((type) => operatorTypes.add(type));
-  });
-  return operatorTypes;
-});

@@ -48,4 +48,3 @@ export * from './vehicle-info-window/vehicle-info-window.component';
 export * from './vehicles-control-bar/vehicles-control-bar.component';
 export * from './vehicles-kpis/vehicles-kpis.component';
 export * from './visit-request-info-window/visit-request-info-window.component';
-export * from './vehicle-operators-kpis/vehicle-operators-kpis.component';

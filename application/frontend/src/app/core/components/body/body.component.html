@@ -14,11 +14,6 @@
   <app-vehicles-control-bar></app-vehicles-control-bar>
 </ng-container>
 
-<ng-container *ngIf="isVehicleOperatorsPage">
-  <app-vehicle-operators-kpis></app-vehicle-operators-kpis>
-  <app-vehicle-operators-control-bar></app-vehicle-operators-control-bar>
-</ng-container>
-
 <app-post-solve-metrics *ngIf="isPostSolve"></app-post-solve-metrics>
 <app-routes-chart-control-bar *ngIf="isRoutesChartPage"></app-routes-chart-control-bar>
 <app-metadata-control-bar *ngIf="isMetadata"></app-metadata-control-bar>

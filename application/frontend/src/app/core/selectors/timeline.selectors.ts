@@ -21,7 +21,6 @@ import * as fromRoot from 'src/app/reducers';
 import { durationSeconds, maxLong, minLong } from 'src/app/util';
 import {
   IBreak,
-  ITravelStep,
   ShipmentRoute,
   Timeline,
   TimelineCategory,
@@ -31,6 +30,7 @@ import {
   Visit,
   VisitRequest,
   VisitVisitRequest,
+  ITransition,
 } from '../models';
 import ShipmentRouteSelectors, * as fromShipmentRoute from './shipment-route.selectors';
 
@@ -97,7 +97,7 @@ const identifyTravelTimeSegment = (
 
 /**
  * @remarks
- * Assumes a route's travel steps, visits, and breaks are in time ascending order.
+ * Assumes a route's transitions, visits, and breaks are in time ascending order.
  */
 const getTimeline = (
   route: ShipmentRoute,
@@ -112,11 +112,11 @@ const getTimeline = (
     createVisitSegment(visit, visitRequest)
   );
 
-  // Visits must be traveled to and from, so travel steps should be +1 in length
+  // Visits must be traveled to and from, so transitions should be +1 in length
   // eslint-disable-next-line no-console
   console.assert(
-    visits.length === route.travelSteps.length - 1,
-    'Visits and travel steps not aligned.'
+    visits.length === route.transitions.length - 1,
+    'Visits and transitions not aligned.'
   );
 
   const routeStartTime = route.vehicleStartTime ? durationSeconds(route.vehicleStartTime) : null;
@@ -147,10 +147,10 @@ const getTimeline = (
 
   // Add travel + visits and interspersed breaks to the timeline
   let lastTravelSegment: TimelineCatagorySegment;
-  route.travelSteps.forEach((travelStep: ITravelStep, index: number) => {
+  route.transitions.forEach((transition: ITransition, index: number) => {
     const nextVisit = visits[index];
     try {
-      const travelDuration = durationSeconds(travelStep.duration);
+      const travelDuration = durationSeconds(transition.travelDuration);
       if (travelDuration.isZero()) {
         return;
       }
@@ -226,7 +226,7 @@ const getTimeline = (
         );
       }
     } finally {
-      // Place the next visit that follows the travel step
+      // Place the next visit that follows the transition
       if (nextVisit) {
         timeline.push({
           category: TimelineCategory.Service,

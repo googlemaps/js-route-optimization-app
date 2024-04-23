@@ -159,9 +159,9 @@ const getTraveledDistanceMeters = (visitId: number, shipmentRoute: ShipmentRoute
   if (shipmentRoute) {
     traveledDistanceMeters = 0;
     const visits = shipmentRoute.visits || [];
-    const travelSteps = shipmentRoute.travelSteps || [];
-    for (let i = 0, l = travelSteps.length; i < l; i++) {
-      traveledDistanceMeters += travelSteps[i]?.distanceMeters || 0;
+    const transitions = shipmentRoute.transitions || [];
+    for (let i = 0, l = transitions.length; i < l; i++) {
+      traveledDistanceMeters += transitions[i]?.travelDistanceMeters || 0;
       if (visits[i] === visitId) {
         break;
       }

@@ -21,8 +21,9 @@ import { take } from 'rxjs/operators';
 import * as fromRoot from 'src/app/reducers';
 import { durationSeconds, getAvailableTimeRange, ValidationTimeWindow } from '../../util';
 import {
-  ICapacityQuantity,
   IDuration,
+  ILoad,
+  ILoadLimit,
   IShipmentTypeIncompatibility,
   IShipmentTypeRequirement,
   ITimeWindow,
@@ -220,7 +221,7 @@ export class ValidationService {
     }
 
     // Do shipment demands exceed the vehicle's capacity?
-    const pickupDemands = this.getCapacityQuantities(visitRequest.demands);
+    const pickupDemands = this.getLoadDemands(visitRequest.loadDemands);
     const excessDemand = this.validateShipmentDemands(
       shipment,
       pickupTime,
@@ -353,12 +354,20 @@ export class ValidationService {
     }
   }
 
-  private getCapacityQuantities(capacityQuantities: ICapacityQuantity[]): {
-    [type: string]: number;
-  } {
+  private getLoadDemands(loadDemands: { [k: string]: ILoad }): { [k: string]: number } {
     const lookup: { [type: string]: number } = {};
-    capacityQuantities?.forEach((cq) => {
-      lookup[cq.type] = cq.value ? Long.fromValue(cq.value).toNumber() : 0;
+    Object.keys(loadDemands || {}).forEach((demand) => {
+      const entry = loadDemands[demand];
+      lookup[demand] = entry.amount ? Long.fromValue(entry.amount).toNumber() : 0;
+    });
+    return lookup;
+  }
+
+  private getLoadLimits(loadLimits: { [k: string]: ILoadLimit }): { [k: string]: number } {
+    const lookup: { [type: string]: number } = {};
+    Object.keys(loadLimits || {}).forEach((limit) => {
+      const entry = loadLimits[limit];
+      lookup[limit] = entry.maxLoad ? Long.fromValue(entry.maxLoad).toNumber() : 0;
     });
     return lookup;
   }
@@ -399,7 +408,7 @@ export class ValidationService {
         routeShipment = {
           shipmentId: shipment.id,
           shipmentType: shipment.shipmentType,
-          shipmentDemands: this.getCapacityQuantities(shipment.demands),
+          shipmentDemands: this.getLoadDemands(shipment.loadDemands),
         };
         routeShipments.set(shipment.id, routeShipment);
       }
@@ -408,11 +417,11 @@ export class ValidationService {
         routeShipment.pickupTime = visit.startTime
           ? durationSeconds(visit.startTime).toNumber()
           : null;
-        routeShipment.pickupDemands = this.getCapacityQuantities(visitRequest.demands);
+        routeShipment.pickupDemands = this.getLoadDemands(visitRequest.loadDemands);
       } else {
         // Shipment considered delivered at end of delivery visit
         routeShipment.deliveryTime = this.getVisitTimeWindow(visit, visitRequest.duration).endTime;
-        routeShipment.deliveryDemands = this.getCapacityQuantities(visitRequest.demands);
+        routeShipment.deliveryDemands = this.getLoadDemands(visitRequest.loadDemands);
       }
     });
     return Array.from(routeShipments.values());
@@ -463,8 +472,8 @@ export class ValidationService {
     vehicle: Vehicle,
     otherRouteShipments: RouteShipment[]
   ): { [type: string]: number } {
-    const capacities = this.getCapacityQuantities(vehicle.capacities);
-    const shipmentDemands = this.getCapacityQuantities(shipment.demands);
+    const capacities = this.getLoadLimits(vehicle.loadLimits);
+    const shipmentDemands = this.getLoadDemands(shipment.loadDemands);
     // Does this shipment + pickup have demands aligned to this vehicle?
     if (
       !Object.keys(shipmentDemands).some((type) => type in capacities) &&

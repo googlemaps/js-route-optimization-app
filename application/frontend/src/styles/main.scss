@@ -632,13 +632,6 @@ mat-button-toggle-group.main-toggle-group {
   color: $darker !important;
 }
 
-.vehicle-operator-chip,
-.vehicle-operator-chips > span,
-.vehicle-operator-chip > mat-icon {
-  background-color: $vehicle-operator-label !important;
-  color: $darker !important;
-}
-
 .visit-request-chip,
 .visit-request-chips > span {
   background-color: $visit-request-label !important;
@@ -647,7 +640,6 @@ mat-button-toggle-group.main-toggle-group {
 
 .shipment-chips,
 .vehicle-chips,
-.vehicle-operator-chips,
 .visit-request-chips {
   > span {
     display: inline-block;

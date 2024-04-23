@@ -160,7 +160,6 @@ export class UploadEffects {
           timeout,
           traffic,
           vehicles,
-          vehicleOperators,
           visitRequests,
           allowLargeDeadlineDespiteInterruptionRisk,
           interpretInjectedSolutionsUsingLabels,
@@ -183,11 +182,6 @@ export class UploadEffects {
           }
         });
 
-        const selectedVehicleOperators: number[] = [];
-        vehicleOperators.forEach((vehicleOperator) =>
-          selectedVehicleOperators.push(vehicleOperator.id)
-        );
-
         if (injectedModelConstraint?.routes) {
           this.messageService.warning(
             'The uploaded scenario contains injected routes, which will be ignored by the application.',
@@ -199,11 +193,9 @@ export class UploadEffects {
           DispatcherActions.loadScenario({
             shipments,
             vehicles,
-            vehicleOperators,
             visitRequests,
             selectedShipments,
             selectedVehicles,
-            selectedVehicleOperators,
             changeTime,
           }),
           RequestSettingsActions.setRequestSettings({

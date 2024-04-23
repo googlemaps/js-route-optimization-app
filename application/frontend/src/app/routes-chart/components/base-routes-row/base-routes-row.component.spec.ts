@@ -42,7 +42,6 @@ describe('BaseRoutesRowComponent', () => {
     fixture = TestBed.createComponent(BaseRoutesRowComponent);
     component = fixture.componentInstance;
     component.vehicle = { id: 1 };
-    component.vehicleOperator = '';
     fixture.detectChanges();
   });
 

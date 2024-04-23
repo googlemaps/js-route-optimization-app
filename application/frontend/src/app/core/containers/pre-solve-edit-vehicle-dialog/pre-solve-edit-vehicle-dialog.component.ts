@@ -27,7 +27,6 @@ import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import * as fromMap from '../../selectors/map.selectors';
 import * as fromScenario from '../../selectors/scenario.selectors';
 import * as fromVehicles from '../../selectors/vehicle.selectors';
-import * as fromVehicleOperators from '../../selectors/pre-solve-vehicle-operator.selectors';
 import { MapService, MessageService, VehicleLayer } from '../../services';
 import * as fromCapacityQuantity from '../../selectors/capacity-quantity.selectors';
 import { TimeThreshold } from '../../models/request-settings';
@@ -58,8 +57,6 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
   scenarioCapacities$: Observable<Set<string>>;
   scenarioDemands$: Observable<Set<string>>;
   visitTags$: Observable<string[]>;
-  operatorTypes$: Observable<Set<string>>;
-  existingOperatorTypes$: Observable<Set<string>>;
   visitTypes$: Observable<string[]>;
   timezoneOffset$: Observable<number>;
   timeThresholds$: Observable<IConstraintRelaxation>;
@@ -104,11 +101,6 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
     }
     // Form map bounds will remember the initial bounds
     this.scenarioBounds$ = this.store.pipe(select(fromMap.selectFormScenarioBounds), take(1));
-    this.operatorTypes$ = this.store.pipe(select(fromScenario.selectVehicleOperatorTypes), take(1));
-    this.existingOperatorTypes$ = this.store.pipe(
-      select(fromVehicleOperators.selectVehicleOperatorTypes),
-      take(1)
-    );
   }
 
   onCancel(): void {
@@ -197,9 +189,6 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
     if (unsetFields.includes(VehicleFormFields.EndVisitTags)) {
       vehicle.endTags = [];
     }
-    if (unsetFields.includes(VehicleFormFields.OperatorTypes)) {
-      vehicle.requiredOperatorTypes = [];
-    }
     if (unsetFields.includes(VehicleFormFields.StartTimeWindows)) {
       vehicle.startTimeWindows = [];
     }
@@ -278,12 +267,6 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
     }
     if (vehicle.endTags || unsetFields.includes(VehicleFormFields.EndVisitTags)) {
       fields.push('End Tags');
-    }
-    if (
-      vehicle.requiredOperatorTypes.length > 0 ||
-      unsetFields.includes(VehicleFormFields.OperatorTypes)
-    ) {
-      fields.push('Vehicle Operator Types');
     }
     if (
       vehicle.startTimeWindows.length > 0 ||

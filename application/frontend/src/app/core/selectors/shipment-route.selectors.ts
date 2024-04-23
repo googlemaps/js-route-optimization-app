@@ -139,16 +139,16 @@ const getTravelStats = (route: ShipmentRoute) => {
     sum: Long.ZERO,
     distanceMeters: 0,
   };
-  for (const travelStep of route.travelSteps || []) {
-    stats.distanceMeters += travelStep.distanceMeters || 0;
-    stats.sum = stats.sum.add(durationSeconds(travelStep.duration));
+  for (const transition of route.transitions || []) {
+    stats.distanceMeters += transition.travelDistanceMeters || 0;
+    stats.sum = stats.sum.add(durationSeconds(transition.travelDuration));
   }
   return stats;
 };
 
 /**
  * @remarks
- * Where traffic infeasibilities are present, clamp travel step duration as it contributes to the
+ * Where traffic infeasibilities are present, clamp transition duration as it contributes to the
  * sum to the available duration.  This is to preserve representation of idle time consistent with
  * timelines.
  */
@@ -157,14 +157,14 @@ const getInfeasibleTravelStats = (
   visitVisitRequests: VisitVisitRequest[]
 ) => {
   // With each visit's associated visit request derive visit end time; this is used to determine
-  // the travel start time after the first travel step (the first's is the vehicle start time).
+  // the travel start time after the first transition (the first's is the vehicle start time).
   const stats: { min?: Long; max?: Long; sum: Long; distanceMeters: number } = {
     min: route.vehicleStartTime ? durationSeconds(route.vehicleStartTime) : null,
     max: route.vehicleEndTime ? durationSeconds(route.vehicleEndTime) : null,
     sum: Long.ZERO,
     distanceMeters: 0,
   };
-  (route.travelSteps || []).forEach((travelStep, index) => {
+  (route.transitions || []).forEach((transition, index) => {
     const { visit: prevVisit, visitRequest: prevVisitRequest } =
       visitVisitRequests[index - 1] || {};
     const { visit: nextVisit } = visitVisitRequests[index] || {};
@@ -174,9 +174,9 @@ const getInfeasibleTravelStats = (
     const endTime = durationSeconds(nextVisit ? nextVisit.startTime : route.vehicleEndTime);
 
     const availableTravelDuration = endTime.subtract(startTime);
-    const likelyTravelDuration = durationSeconds(travelStep.duration);
+    const likelyTravelDuration = durationSeconds(transition.travelDuration);
     const travelDuration = minLong(likelyTravelDuration, availableTravelDuration);
-    stats.distanceMeters += travelStep.distanceMeters || 0;
+    stats.distanceMeters += transition.travelDistanceMeters || 0;
     stats.sum = stats.sum.add(travelDuration);
   });
   return stats;

@@ -24,8 +24,7 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { MatDialog, MatDialogRef, MatDialogState } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { merge } from 'lodash';
 
 import * as fromRoot from 'src/app/reducers';

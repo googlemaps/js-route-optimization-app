@@ -185,7 +185,7 @@ const calculateCapacityUtilizations = (vehicle: Vehicle, shipments: Shipment[]):
 
 const calculateRouteKm = (route: ShipmentRoute): number => {
   let distance = 0;
-  route.travelSteps?.forEach((step) => (distance += step.distanceMeters));
+  route.transitions?.forEach((transition) => (distance += transition.travelDistanceMeters));
   return distance / 1000;
 };
 

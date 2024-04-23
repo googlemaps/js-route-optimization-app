@@ -17,7 +17,7 @@ limitations under the License.
 import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { durationSeconds, pick } from 'src/app/util';
-import { ITravelStep, ShipmentRoute, Visit } from '../models';
+import { ITransition, ShipmentRoute, Visit } from '../models';
 import * as fromEditVisit from '../reducers/edit-visit.reducer';
 import * as fromShipmentRoute from './shipment-route.selectors';
 import * as fromShipment from './shipment.selectors';
@@ -81,37 +81,37 @@ export const selectVisitDeliveryRequest = createSelector(
 function removeVisitFromRoute(
   originalRoute: ShipmentRoute,
   visitId: number
-): { route: ShipmentRoute; travelStep: ITravelStep } {
+): { route: ShipmentRoute; transition: ITransition } {
   const route = {
     ...originalRoute,
     visits: originalRoute.visits.slice(),
-    travelSteps: originalRoute.travelSteps.slice(),
+    transitions: originalRoute.transitions.slice(),
   };
 
   const visitIndex = route.visits.indexOf(visitId);
   route.visits.splice(visitIndex, 1);
-  const travelStep = route.travelSteps.splice(visitIndex, 1)[0];
-  return { route, travelStep };
+  const transition = route.transitions.splice(visitIndex, 1)[0];
+  return { route, transition };
 }
 
 function getSortedShipmentRoute(shipmentRoute: ShipmentRoute, visits: Dictionary<Visit>) {
-  // Keep track of the original visit to travel step association
-  const travelStepByVisitId = new Map(
-    shipmentRoute.visits.map((id, index) => [id, shipmentRoute.travelSteps[index]])
+  // Keep track of the original visit to transition association
+  const transitionByVisitId = new Map(
+    shipmentRoute.visits.map((id, index) => [id, shipmentRoute.transitions[index]])
   );
   // Sort the visits
   const sortedRouteVisits = shipmentRoute.visits.sort((a, b) => {
     return durationSeconds(visits[a].startTime).compare(durationSeconds(visits[b].startTime));
   });
-  // Map the sorted visits to their travel steps to get the sorted travel steps, and append the
-  // last travel step which wasn't mapped to a visit (travel steps length is visits length + 1)
-  const sortedTravelSteps = sortedRouteVisits
-    .map((id) => travelStepByVisitId.get(id))
-    .concat(shipmentRoute.travelSteps[shipmentRoute.travelSteps.length - 1]);
+  // Map the sorted visits to their transitions to get the sorted transitions, and append the
+  // last transition which wasn't mapped to a visit (transitions length is visits length + 1)
+  const sortedTransitions = sortedRouteVisits
+    .map((id) => transitionByVisitId.get(id))
+    .concat(shipmentRoute.transitions[shipmentRoute.transitions.length - 1]);
   return {
     ...shipmentRoute,
     visits: sortedRouteVisits,
-    travelSteps: sortedTravelSteps,
+    transitions: sortedTransitions,
   };
 }
 
@@ -137,7 +137,7 @@ export const selectVisitShipmentRouteChanges = (visitChanges: Visit[]) =>
           changedShipmentRoutesLookup[originalVisit.shipmentRouteId] ||
           shipmentRoutes[originalVisit.shipmentRouteId];
 
-        const { route, travelStep } = removeVisitFromRoute(originalRoute, validVisit.id);
+        const { route, transition } = removeVisitFromRoute(originalRoute, validVisit.id);
 
         // Important to use the original route just pruned if the visit will remain on its original route
         const newRoute =
@@ -146,19 +146,19 @@ export const selectVisitShipmentRouteChanges = (visitChanges: Visit[]) =>
             : changedShipmentRoutesLookup[validVisit.shipmentRouteId] ||
               shipmentRoutes[validVisit.shipmentRouteId];
 
-        // Update the new route.  This is partial since the visits and travel steps need to be sorted, which
+        // Update the new route.  This is partial since the visits and transitions need to be sorted, which
         // is being deferred until all the visit changes have been applied
         const newVisits = newRoute.visits.concat(validVisit.id);
 
-        // Always one more travel step than visit; not associating the last travel step with any visit, thus
-        // the splice to keep the last travel step in place
-        const newTravelSteps = newRoute.travelSteps.slice();
-        newTravelSteps.splice(newRoute.visits.length, 0, travelStep);
+        // Always one more transition than visit; not associating the last transition with any visit, thus
+        // the splice to keep the last transition in place
+        const newTransitions = newRoute.transitions.slice();
+        newTransitions.splice(newRoute.visits.length, 0, transition);
 
         changedShipmentRoutesLookup[newRoute.id] = {
           id: newRoute.id,
           visits: newVisits,
-          travelSteps: newTravelSteps,
+          transitions: newTransitions,
         };
         // Only shipment routes with moved/added visits need sorted
         sortShipmentRouteIds.add(newRoute.id);
@@ -167,13 +167,13 @@ export const selectVisitShipmentRouteChanges = (visitChanges: Visit[]) =>
         if (validVisit.shipmentRouteId !== route.id) {
           changedShipmentRoutesLookup[route.id] = {
             id: route.id,
-            travelSteps: route.travelSteps,
+            transitions: route.transitions,
             visits: route.visits,
           };
         }
       }
 
-      // Sort the visit/travel steps of the changed shipment routes
+      // Sort the visit/transitions of the changed shipment routes
       const changedVisitsLookup: Dictionary<Visit> = Object.assign(
         {},
         ...changedVisits.map((v) => ({ [v.id]: v }))
