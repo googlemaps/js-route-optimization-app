@@ -228,9 +228,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   isPreSolve(): boolean {
-    return [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(
-      this.page
-    );
+    return [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(this.page);
   }
 
   addShipment(): void {

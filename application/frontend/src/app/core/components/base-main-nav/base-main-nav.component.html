@@ -2,9 +2,7 @@
   class="nav-container mat-body-strong"
   [ngClass]="{
     'extended-border':
-      page === pages.Shipments ||
-      page === pages.Vehicles ||
-      page == pages.ScenarioPlanning
+      page === pages.Shipments || page === pages.Vehicles || page == pages.ScenarioPlanning
   }">
   <div class="nav-item nav-scenario nav-page-button">
     <button
@@ -85,11 +83,7 @@
   </div>
   <div
     class="nav-item nav-subitem"
-    *ngIf="
-      page === pages.Shipments ||
-      page === pages.Vehicles ||
-      page === pages.ScenarioPlanning
-    ">
+    *ngIf="page === pages.Shipments || page === pages.Vehicles || page === pages.ScenarioPlanning">
     <app-generate-button
       class="nav-generate"
       [disabled]="disabled"

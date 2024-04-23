@@ -118,11 +118,7 @@ export class BodyComponent implements OnChanges {
     return this.page === Page.RoutesMetadata || this.page === Page.ShipmentsMetadata;
   }
   get isPreSolve(): boolean {
-    return (
-      this.isShipmentsPage ||
-      this.isVehiclesPage ||
-      this.isScenarioPlanningPage
-    );
+    return this.isShipmentsPage || this.isVehiclesPage || this.isScenarioPlanningPage;
   }
   get isPostSolve(): boolean {
     return this.isRoutesChartPage || this.isMetadata;
