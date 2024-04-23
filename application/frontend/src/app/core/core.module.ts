@@ -37,7 +37,6 @@ import {
   BaseVehicleInfoWindowComponent,
   BodyComponent,
   BaseVehiclesKpisComponent,
-  BaseVehicleOperatorsKpisComponent,
   BaseVisitRequestInfoWindowComponent,
   HideMapButtonComponent,
   LogoComponent,
@@ -87,15 +86,11 @@ import {
   VehicleInfoWindowComponent,
   VehiclesControlBarComponent,
   VehiclesKpisComponent,
-  VehicleOperatorsKpisComponent,
   VisitRequestInfoWindowComponent,
 } from './containers';
 import { DownloadPdfDialogComponent } from './containers/download-pdf-dialog/download-pdf-dialog.component';
 import { PdfMapComponent } from './containers/pdf-map/pdf-map.component';
 import { ConfirmBulkEditDialogComponent } from './components/confirm-bulk-edit-dialog/confirm-bulk-edit-dialog.component';
-import { VehicleOperatorsControlBarComponent } from './containers/vehicle-operators-control-bar/vehicle-operators-control-bar.component';
-import { BaseEditVehicleOperatorDialogComponent } from './components/base-edit-vehicle-operator-dialog/base-edit-vehicle-operator-dialog.component';
-import { PreSolveEditVehicleOperatorDialogComponent } from './containers/pre-solve-edit-vehicle-operator-dialog/pre-solve-edit-vehicle-operator-dialog.component';
 import { CsvHelpDialogComponent } from './containers/csv-help-dialog/csv-help-dialog.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { DatasetComponent } from './components/dataset/dataset.component';
@@ -116,7 +111,6 @@ export const COMPONENTS = [
   BaseValidationResultDialogComponent,
   BaseVehicleInfoWindowComponent,
   BaseVehiclesKpisComponent,
-  BaseVehicleOperatorsKpisComponent,
   BaseVisitRequestInfoWindowComponent,
   BodyComponent,
   HideMapButtonComponent,
@@ -166,7 +160,6 @@ export const CONTAINERS = [
   VehicleInfoWindowComponent,
   VehiclesControlBarComponent,
   VehiclesKpisComponent,
-  VehicleOperatorsKpisComponent,
   VisitRequestInfoWindowComponent,
 ];
 
@@ -187,9 +180,6 @@ export const CONTAINERS = [
     DownloadPdfDialogComponent,
     PdfMapComponent,
     ConfirmBulkEditDialogComponent,
-    VehicleOperatorsControlBarComponent,
-    PreSolveEditVehicleOperatorDialogComponent,
-    BaseEditVehicleOperatorDialogComponent,
     CsvHelpDialogComponent,
     TopBarComponent,
     DatasetComponent,

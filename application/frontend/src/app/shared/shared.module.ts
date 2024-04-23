@@ -55,7 +55,7 @@ import {
   GanttRowDirective,
 } from './directives';
 import {
-  CapacityQuantitiesHasValuePipe,
+  LoadDemandsHasValuePipe,
   CapacityQuantityLabelPipe,
   CapacityQuantityUnitPipe,
   DistanceLimitPipe,
@@ -127,7 +127,7 @@ export const DIRECTIVES = [
 ];
 
 export const PIPES = [
-  CapacityQuantitiesHasValuePipe,
+  LoadDemandsHasValuePipe,
   CapacityQuantityLabelPipe,
   CapacityQuantityUnitPipe,
   DistanceLimitPipe,

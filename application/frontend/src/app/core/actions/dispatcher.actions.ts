@@ -22,7 +22,6 @@ import {
   Shipment,
   ShipmentRoute,
   Vehicle,
-  VehicleOperator,
   Visit,
   VisitRequest,
 } from '../models';
@@ -37,11 +36,9 @@ export const loadScenario = createAction(
   props<{
     shipments: Shipment[];
     vehicles: Vehicle[];
-    vehicleOperators: VehicleOperator[];
     visitRequests: VisitRequest[];
     selectedShipments: number[];
     selectedVehicles: number[];
-    selectedVehicleOperators: number[];
     changeTime: number;
   }>()
 );

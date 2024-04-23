@@ -17,7 +17,6 @@ limitations under the License.
 import { createReducer, on } from '@ngrx/store';
 import { ShipmentsActions } from 'src/app/shipments/actions';
 import { VehiclesActions } from 'src/app/vehicles/actions';
-import { VehicleOperatorsActions } from 'src/app/vehicle-operators/actions';
 import { WelcomePageActions } from 'src/app/welcome/actions';
 import {
   DispatcherActions,
@@ -85,7 +84,6 @@ export const reducer = createReducer(
   })),
   on(ShipmentsActions.initialize, (state) => ({ ...state, page: Page.Shipments })),
   on(VehiclesActions.initialize, (state) => ({ ...state, page: Page.Vehicles })),
-  on(VehicleOperatorsActions.initialize, (state) => ({ ...state, page: Page.VehicleOperators })),
   on(RoutesChartActions.initialize, (state) => ({
     ...state,
     page: Page.RoutesChart,

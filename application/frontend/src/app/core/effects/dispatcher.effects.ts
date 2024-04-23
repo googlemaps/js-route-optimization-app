@@ -29,7 +29,6 @@ import {
   ShipmentActions,
   ValidationResultActions,
   VehicleActions,
-  VehicleOperatorActions,
 } from '../actions';
 import { optimizeTours } from '../actions/dispatcher-api.actions';
 import {
@@ -114,9 +113,7 @@ export class DispatcherEffects {
         VehicleActions.deleteVehicle,
         VehicleActions.deleteVehicles,
         ShipmentActions.deleteShipment,
-        ShipmentActions.deleteShipments,
-        VehicleOperatorActions.deleteVehicleOperator,
-        VehicleOperatorActions.deleteVehicleOperators
+        ShipmentActions.deleteShipments
       ),
       mergeMap((_) => this.store.pipe(select(selectHasSolution), take(1))),
       filter((hasSolution) => hasSolution),

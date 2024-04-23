@@ -48,7 +48,6 @@ import { ILatLng, VisitCategory, VisitRequest } from 'src/app/core/models';
 import { FormVisitRequestLayer } from 'src/app/core/services';
 import {
   durationMinutesSeconds,
-  getCapacityQuantityRoot,
   joinLabel,
   localDateTimeToUtcSeconds,
   noDuplicateCapacitiesValidator,
@@ -302,13 +301,6 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
         return loadDemands.push({
           type: key,
           value: this.visitRequest.loadDemands[key],
-        });
-      });
-    } else if (this.visitRequest.demands) {
-      this.visitRequest.demands.forEach((aDemand) => {
-        loadDemands.push({
-          type: getCapacityQuantityRoot(aDemand.type),
-          value: { amount: aDemand.value },
         });
       });
     }

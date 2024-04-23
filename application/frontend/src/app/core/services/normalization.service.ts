@@ -21,8 +21,6 @@ import { merge } from 'lodash';
 import {
   IDuration,
   IInjectedSolution,
-  ILoad,
-  ILoadLimit,
   IShipment,
   IShipmentRoute,
   ISkippedShipmentReason,
@@ -37,9 +35,7 @@ import {
   Vehicle,
   VisitRequest,
   Visit,
-  IBreakRule,
   IShipmentModel,
-  VehicleOperator,
 } from 'src/app/core/models';
 import { durationSeconds } from 'src/app/util';
 
@@ -66,7 +62,6 @@ export class NormalizationService {
     traffic: boolean;
     visitRequests: VisitRequest[];
     vehicles: Vehicle[];
-    vehicleOperators: VehicleOperator[];
     allowLargeDeadlineDespiteInterruptionRisk: boolean;
     interpretInjectedSolutionsUsingLabels: boolean;
     populateTransitionPolylines: boolean;
@@ -79,9 +74,8 @@ export class NormalizationService {
       changeTime
     );
 
-    const { breakRules, ...scenarioModel } = { breakRules: [], ...scenario.model };
-    const { vehicles } = this.normalizeVehicles(scenarioModel, breakRules, changeTime);
-    const { vehicleOperators } = this.normalizeVehicleOperators(scenarioModel, changeTime);
+    const { ...scenarioModel } = { ...scenario.model };
+    const { vehicles } = this.normalizeVehicles(scenarioModel, changeTime);
     const normalizedScenario = { ...scenario, model: scenarioModel };
     const firstSolutionRoutes = normalizedScenario?.injectedFirstSolutionRoutes;
 
@@ -129,7 +123,6 @@ export class NormalizationService {
       traffic,
       visitRequests,
       vehicles,
-      vehicleOperators,
       allowLargeDeadlineDespiteInterruptionRisk,
       interpretInjectedSolutionsUsingLabels,
       populateTransitionPolylines,
@@ -227,21 +220,6 @@ export class NormalizationService {
         changeTime,
       };
 
-      // remap demands to loadDemands
-      if (shipmentEntity.demands?.length > 0) {
-        const newLoadDemands = shipmentEntity.demands.reduce(
-          (prev, cur) => ({ ...prev, [cur.type]: { amount: cur.value } as ILoad }),
-          {}
-        ) as { [k: string]: ILoad };
-
-        shipmentEntity.loadDemands = {
-          ...newLoadDemands,
-          ...shipmentEntity.loadDemands,
-        };
-
-        delete shipmentEntity.demands;
-      }
-
       // pickups
       for (let i = 0, l = shipment.pickups?.length; i < l; i++) {
         const visitRequestEntity = {
@@ -264,24 +242,6 @@ export class NormalizationService {
             location: { latLng: visitRequestEntity.departureLocation },
           };
           delete visitRequestEntity.departureLocation;
-        }
-
-        // remap demands to loadDemands
-        if (visitRequestEntity.demands?.length > 0) {
-          const demandsAsLoadDemands = visitRequestEntity.demands.reduce(
-            (loadDemands, demand) => ({
-              ...loadDemands,
-              [demand.type]: { amount: demand.value } as ILoad,
-            }),
-            {}
-          ) as { [k: string]: ILoad };
-
-          visitRequestEntity.loadDemands = {
-            ...demandsAsLoadDemands,
-            ...visitRequestEntity.loadDemands,
-          };
-
-          delete visitRequestEntity.demands;
         }
 
         visitRequestEntities.push(visitRequestEntity);
@@ -310,24 +270,6 @@ export class NormalizationService {
             location: { latLng: visitRequestEntity.departureLocation },
           });
           delete visitRequestEntity.departureLocation;
-        }
-
-        // remap demands to loadDemands
-        if (visitRequestEntity.demands?.length > 0) {
-          const demandsAsLoadDemands = visitRequestEntity.demands.reduce(
-            (loadDemands, demand) => ({
-              ...loadDemands,
-              [demand.type]: { amount: demand.value } as ILoad,
-            }),
-            {}
-          ) as { [k: string]: ILoad };
-
-          visitRequestEntity.loadDemands = {
-            ...demandsAsLoadDemands,
-            ...visitRequestEntity.loadDemands,
-          };
-
-          delete visitRequestEntity.demands;
         }
 
         visitRequestEntities.push(visitRequestEntity);
@@ -375,7 +317,6 @@ export class NormalizationService {
 
   private normalizeVehicles(
     scenarioModel: IShipmentModel,
-    breakRules: IBreakRule[],
     changeTime: number
   ): { vehicles: Vehicle[] } {
     if (!scenarioModel?.vehicles?.length) {
@@ -403,68 +344,8 @@ export class NormalizationService {
         delete vehicleEntity.endLocation;
       }
 
-      // remap capacities to loadLimits
-      if (vehicleEntity.capacities?.length > 0) {
-        const capacitiesAsLimits = vehicleEntity.capacities.reduce(
-          (limits, capacity) => ({
-            ...limits,
-            [capacity.type]: <ILoadLimit>{ maxLoad: capacity.value },
-          }),
-          {}
-        ) as { [k: string]: ILoadLimit };
-
-        vehicleEntity.loadLimits = {
-          ...capacitiesAsLimits,
-          ...vehicleEntity.loadLimits,
-        };
-
-        delete vehicleEntity.capacities;
-      }
-
-      //normalize Break Rules
-      if (breakRules?.length > 0) {
-        const newBreakRule = breakRules?.find(
-          (breakRule: IBreakRule, index: number) => vehicleEntity.id === index + 1
-        );
-        if (vehicleEntity.breakRule) {
-          const breakRequests = vehicleEntity.breakRule.breakRequests?.concat(
-            newBreakRule.breakRequests
-          );
-          const frequencyConstraints = vehicleEntity.breakRule.frequencyConstraints?.concat(
-            newBreakRule.frequencyConstraints
-          );
-          vehicleEntity.breakRule = { breakRequests, frequencyConstraints };
-        } else {
-          vehicleEntity.breakRule = newBreakRule;
-        }
-      }
-
-      if (vehicleEntity.breakRuleIndices) {
-        delete vehicleEntity.breakRuleIndices;
-      }
       return vehicleEntity;
     });
     return { vehicles: normalizedVehicleArray };
-  }
-
-  private normalizeVehicleOperators(
-    scenarioModel: IShipmentModel,
-    changeTime: number
-  ): { vehicleOperators: VehicleOperator[] } {
-    if (!scenarioModel?.vehicleOperators?.length) {
-      return { vehicleOperators: [] };
-    }
-
-    const normalizedVehicleOperatorsArray = scenarioModel.vehicleOperators.map(
-      (vehicleOperator, index) => {
-        const vehicleOperatorEntity: VehicleOperator = {
-          id: index + 1,
-          ...vehicleOperator,
-          changeTime,
-        };
-        return vehicleOperatorEntity;
-      }
-    );
-    return { vehicleOperators: normalizedVehicleOperatorsArray };
   }
 }

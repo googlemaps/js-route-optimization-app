@@ -55,8 +55,6 @@ class MockBaseEditVehicleDialogComponent {
   @Input() scenarioBounds?: google.maps.LatLngBounds;
   @Input() visitTags?: string[];
   @Input() visitTypes?: string[];
-  @Input() operatorTypes?: Set<string>;
-  @Input() existingOperatorTypes?: Set<string>;
   @Input() timezoneOffset?: number;
   @Input() vehicle: Vehicle;
   @Output() cancel = new EventEmitter<void>();

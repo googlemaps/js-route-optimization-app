@@ -17,7 +17,7 @@ limitations under the License.
 import express, { Response, Request } from "express";
 export const router = express.Router();
 
-import { google } from "@google-cloud/optimization/build/protos/protos";
+import { google } from "@google-cloud/routeoptimization/build/protos/protos";
 
 import { log } from "../logging";
 import { fleetRouting } from "../services/optimization";
@@ -31,7 +31,7 @@ router.get("/healthz", async (req: Request, res: Response) => {
 router.post(
   "/fleet-routing/optimize-tours",
   async (req: Request, res: Response) => {
-    const body = req.body as google.cloud.optimization.v1.IOptimizeToursRequest;
+    const body = req.body as google.maps.routeoptimization.v1.IOptimizeToursRequest;
 
     if (!body?.model) {
       return res

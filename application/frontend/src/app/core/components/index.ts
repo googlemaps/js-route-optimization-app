@@ -44,4 +44,3 @@ export * from './side-bar/side-bar.component';
 export * from './time-navigation/time-navigation.component';
 export * from './toggle-selection-filter-button/toggle-selection-filter-button.component';
 export * from './zoom-home-button/zoom-home-button.component';
-export * from './base-vehicle-operators-kpis/base-vehicle-operators-kpis.component';

@@ -21,7 +21,6 @@ export enum VehicleFormFields {
   EndLocation = 'end-location',
   StartVisitTags = 'StartVisitTags',
   EndVisitTags = 'EndVisitTags',
-  OperatorTypes = 'OperatorTypes',
   StartTimeWindows = 'StartTimeWindows',
   EndTimeWindows = 'EndTimeWindows',
   LoadLimits = 'LoadLimits',

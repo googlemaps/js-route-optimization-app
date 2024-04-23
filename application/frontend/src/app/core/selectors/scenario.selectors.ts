@@ -25,7 +25,6 @@ import ShipmentSelectors from './shipment.selectors';
 import ShipmentModelSelectors from './shipment-model.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import VisitRequestSelectors from 'src/app/core/selectors/visit-request.selectors';
-import PreSolveVehicleOperatorSelectors from './pre-solve-vehicle-operator.selectors';
 
 export const selectModel = createSelector(
   fromDispatcher.selectScenario,
@@ -120,13 +119,5 @@ export const selectShipmentTypes = createSelector(
     });
 
     return Array.from(types).sort();
-  }
-);
-
-export const selectVehicleOperatorTypes = createSelector(
-  fromVehicle.selectOperatorTypes,
-  PreSolveVehicleOperatorSelectors.selectVehicleOperatorTypes,
-  (vehicleOperatorTypes, shipmentModelVehicleOperatorTypes) => {
-    return new Set([...vehicleOperatorTypes, ...shipmentModelVehicleOperatorTypes]);
   }
 );

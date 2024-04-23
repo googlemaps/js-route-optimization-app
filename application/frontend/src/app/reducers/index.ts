@@ -34,7 +34,6 @@ import * as fromMapApi from '../core/reducers/map-api.reducer';
 import * as fromPointsOfInterest from '../core/reducers/points-of-interest.reducer';
 import * as fromPreSolveShipment from '../core/reducers/pre-solve-shipment.reducer';
 import * as fromPreSolveVehicle from '../core/reducers/pre-solve-vehicle.reducer';
-import * as fromPreSolveVehicleOperator from '../core/reducers/pre-solve-vehicle-operator.reducer';
 import * as fromRequestSettings from '../core/reducers/request-settings.reducer';
 import * as fromRoutesChart from '../core/reducers/routes-chart.reducer';
 import * as fromRoutesMetadata from '../core/reducers/routes-metadata.reducer';
@@ -45,7 +44,6 @@ import * as fromShipmentsMetadata from '../core/reducers/shipments-metadata.redu
 import * as fromUI from '../core/reducers/ui.reducer';
 import * as fromUndoRedo from '../core/reducers/undo-redo.reducer';
 import * as fromVehicle from '../core/reducers/vehicle.reducer';
-import * as fromVehicleOperator from '../core/reducers/vehicle-operator.reducer';
 import * as fromVisitRequest from '../core/reducers/visit-request.reducer';
 import * as fromVisit from '../core/reducers/visit.reducer';
 import * as fromUiSelectors from '../core/selectors/ui.selectors';
@@ -61,13 +59,11 @@ export interface State {
   [fromShipmentRoute.shipmentRoutesFeatureKey]: fromShipmentRoute.State;
   [fromShipmentsMetadata.shipmentsMetadataFeatureKey]: fromShipmentsMetadata.State;
   [fromVehicle.vehiclesFeatureKey]: fromVehicle.State;
-  [fromVehicleOperator.vehicleOperatorsFeatureKey]: fromVehicleOperator.State;
   [fromVisit.visitsFeatureKey]: fromVisit.State;
   [fromVisitRequest.visitRequestsFeatureKey]: fromVisitRequest.State;
   [fromPointsOfInterest.poiFeatureKey]: fromPointsOfInterest.State;
   [fromPreSolveShipment.preSolveShipmentFeatureKey]: fromPreSolveShipment.State;
   [fromPreSolveVehicle.preSolveVehicleFeatureKey]: fromPreSolveVehicle.State;
-  [fromPreSolveVehicleOperator.preSolveVehicleOperatorFeatureKey]: fromPreSolveVehicleOperator.State;
   [fromRoutesChart.routesChartFeatureKey]: fromRoutesChart.State;
   [fromRoutesMetadata.routesMetadataFeatureKey]: fromRoutesMetadata.State;
   [fromRequestSettings.requestSettingsFeatureKey]: fromRequestSettings.State;
@@ -87,8 +83,6 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
       [fromMapApi.mapApiFeatureKey]: fromMapApi.reducer,
       [fromPreSolveShipment.preSolveShipmentFeatureKey]: fromPreSolveShipment.reducer,
       [fromPreSolveVehicle.preSolveVehicleFeatureKey]: fromPreSolveVehicle.reducer,
-      [fromPreSolveVehicleOperator.preSolveVehicleOperatorFeatureKey]:
-        fromPreSolveVehicleOperator.reducer,
       [fromPointsOfInterest.poiFeatureKey]: fromPointsOfInterest.reducer,
       [fromRequestSettings.requestSettingsFeatureKey]: fromRequestSettings.reducer,
       [fromRoutesChart.routesChartFeatureKey]: fromRoutesChart.reducer,
@@ -100,7 +94,6 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
       [fromUI.uiFeatureKey]: fromUI.reducer,
       [fromUndoRedo.undoRedoFeatureKey]: fromUndoRedo.reducer,
       [fromVehicle.vehiclesFeatureKey]: fromVehicle.reducer,
-      [fromVehicleOperator.vehicleOperatorsFeatureKey]: fromVehicleOperator.reducer,
       [fromVisit.visitsFeatureKey]: fromVisit.reducer,
       [fromVisitRequest.visitRequestsFeatureKey]: fromVisitRequest.reducer,
       router: fromRouter.routerReducer,
@@ -130,9 +123,5 @@ export const selectRouter = createFeatureSelector<fromRouter.RouterReducerState<
 
 export const selectMapSelectionToolsVisible = createSelector(
   fromUiSelectors.selectPage,
-  (page) =>
-    page === Page.Shipments ||
-    page === Page.Vehicles ||
-    page === Page.VehicleOperators ||
-    page === Page.RoutesChart
+  (page) => page === Page.Shipments || page === Page.Vehicles || page === Page.RoutesChart
 );

@@ -30,7 +30,7 @@ export const selectGenerateDisabled = createSelector(
 
 export const selectActive = createSelector(
   fromUI.selectPage,
-  (page) => page === Page.Shipments || page === Page.Vehicles || page === Page.VehicleOperators
+  (page) => page === Page.Shipments || page === Page.Vehicles
 );
 
 export const selectInactive = createSelector(selectActive, (active) => !active);

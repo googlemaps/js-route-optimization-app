@@ -244,8 +244,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   @Input() scenarioBounds?: google.maps.LatLngBounds;
   @Input() visitTags?: string[];
   @Input() visitTypes?: string[];
-  @Input() operatorTypes?: Set<string>;
-  @Input() existingOperatorTypes?: Set<string>;
   @Input() timezoneOffset?: number;
   @Input() vehicle: Vehicle;
   @Output() cancel = new EventEmitter<void>();
@@ -400,7 +398,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   unloadingPolicyKeys = Object.keys(this.UnloadingPolicy);
   labelSeparatorKeysCodes: number[] = [ENTER, COMMA];
   visitTagsSeparatorKeysCodes: number[] = [ENTER, COMMA];
-  operatorTypeKeysCodes: number[] = [ENTER, COMMA];
 
   private availableStartVisitTags: string[] = [];
   startVisitTagsCtrl = new UntypedFormControl();
@@ -413,12 +410,7 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   durationSeconds = durationSeconds;
   replaceAll = replaceAll;
   labels: string[] = [];
-  requiredOperatorTypes: string[] = [];
-  private availableOperatorTypes: string[] = [];
-  requiredOperatorTypesCtrl = new UntypedFormControl();
-  filteredAvailableOperatorTypes: Observable<string[]>;
 
-  isOperatorTypeError: boolean;
   updatedVehicle: Vehicle;
 
   editState: EditState = EditState.Off;
@@ -450,7 +442,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       endLocationHeading: [null],
       endLocationSideOfRoad: [null],
       relaxationSettings: fb.array([]),
-      requiredOperatorTypes: [null],
       startTimeWindows: fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
       endTimeWindows: fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
       routeDistanceLimit: fb.group(
@@ -588,14 +579,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
         );
       })
     );
-    this.filteredAvailableOperatorTypes = this.requiredOperatorTypesCtrl.valueChanges.pipe(
-      startWith(null as string),
-      map((value: string) => {
-        return [...this.availableOperatorTypes].filter(
-          this.getOperatorTypesPredicateFn(this.updatedVehicle?.requiredOperatorTypes, value)
-        );
-      })
-    );
   }
 
   ngOnDestroy(): void {
@@ -635,13 +618,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       this.startVisitTagsCtrl.setValue(null);
       this.endVisitTagsCtrl.setValue(null);
     }
-
-    if (changes.operatorTypes) {
-      const operatorTypes = (changes.operatorTypes.currentValue as string[]) || [];
-      this.availableOperatorTypes = operatorTypes;
-      this.requiredOperatorTypesCtrl.setValue(null);
-      this.checkOperatorTypeError();
-    }
   }
 
   ngAfterViewInit(): void {
@@ -658,7 +634,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       };
     }
     this.parseLabels();
-    this.setRequiredOperatorTypes();
     this.vehicleLayer.load(this.updatedVehicle);
   }
 
@@ -707,7 +682,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       endLocationHeading: this.updatedVehicle.endWaypoint?.location?.heading,
       endLocationSideOfRoad: this.updatedVehicle.endWaypoint?.sideOfRoad,
       relaxationSettings: this.loadRelaxationSettings(),
-      requiredOperatorTypes: this.updatedVehicle.requiredOperatorTypes,
       startTimeWindows: TimeWindowComponent.createFormValues(startTimeWindows, this.timezoneOffset),
       endTimeWindows: TimeWindowComponent.createFormValues(endTimeWindows, this.timezoneOffset),
       travelDurationMultiple: this.updatedVehicle.travelDurationMultiple,
@@ -1040,10 +1014,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     this.labels = splitLabel(this.updatedVehicle.label) || [];
   }
 
-  setRequiredOperatorTypes(): void {
-    this.requiredOperatorTypes = this.updatedVehicle.requiredOperatorTypes || [];
-  }
-
   addLabel(rawValue: any, input: HTMLInputElement): void {
     const value = (rawValue || '').trim();
     if (value) {
@@ -1060,55 +1030,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     }
   }
 
-  addOperatorTypeInputToken(rawValue: any, input?: HTMLInputElement): void {
-    const value = (rawValue || '').trim();
-    if (value) {
-      const operatorType = [...this.availableOperatorTypes].find(
-        this.getOperatorTypesPredicateFn(this.updatedVehicle.requiredOperatorTypes, value)
-      );
-      if (operatorType) {
-        this.addOperatorType(operatorType);
-      } else if (!(this.updatedVehicle.requiredOperatorTypes || []).includes(value)) {
-        this.addOperatorType(value);
-      }
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  private addOperatorType(value: string): void {
-    this.updatedVehicle.requiredOperatorTypes = (
-      this.updatedVehicle.requiredOperatorTypes || []
-    ).concat(value);
-    this.setRequiredOperatorTypes();
-    this.requiredOperatorTypesCtrl.setValue(null);
-    this.checkOperatorTypeError();
-  }
-
-  removeOperatorType(index: number): void {
-    if (index >= 0) {
-      const types = this.requiredOperatorTypes.slice();
-      types.splice(index, 1);
-      this.updatedVehicle.requiredOperatorTypes = types;
-      this.setRequiredOperatorTypes();
-      this.requiredOperatorTypesCtrl.setValue(null);
-      this.checkOperatorTypeError();
-    }
-  }
-
-  checkOperatorTypeError(): void {
-    this.isOperatorTypeError = false;
-    this.updatedVehicle.requiredOperatorTypes?.forEach((type) => {
-      if (![...this.existingOperatorTypes].includes(type)) {
-        this.isOperatorTypeError = true;
-        return;
-      }
-    });
-  }
-
   onLabelKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Tab') {
       const input = event.target as HTMLInputElement;
@@ -1120,13 +1041,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     if (event.key === 'Tab') {
       const input = event.target as HTMLInputElement;
       this.addStartVisitTagsInputToken(input.value, input);
-    }
-  }
-
-  onOperatorTypeKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Tab') {
-      const input = event.target as HTMLInputElement;
-      this.addOperatorTypeInputToken(input.value, input);
     }
   }
 
@@ -1274,7 +1188,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
 
   formToUpdatedVehicle(): void {
     this.updatedVehicle.label = joinLabel(this.labels);
-    this.updatedVehicle.requiredOperatorTypes = this.requiredOperatorTypes;
     this.updatedVehicle.loadLimits = LoadLimitsFormComponent.readFormValues(this.loadLimits.value);
     this.updatedVehicle.extraVisitDurationForVisitType =
       ExtraVisitDurationFormComponent.readFormValues(this.extraVisitDurationForVisitType.value);
@@ -1472,32 +1385,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       vehicle: this.updatedVehicle,
       unsetFields: this.unsetFields,
     });
-  }
-
-  onOperatorTypesSelected(event: MatAutocompleteSelectedEvent): void {
-    this.addOperatorType(event.option.value);
-  }
-
-  /** Gets a operator Types predicate function for find/filter */
-  private getOperatorTypesPredicateFn(
-    currentValues: string[],
-    value: string
-  ): (operatorType: string) => boolean {
-    // Exclude options already part of the operator Types (control value)
-    const isAvailable = ((operatorType: string) =>
-      !(currentValues || []).includes(operatorType)).bind(this);
-    if (value == null) {
-      return isAvailable;
-    }
-
-    // If a filter value is provided, compose the isAvailable filter with a value filter
-    const lowerValue = value.toLowerCase();
-    return ((operatorType: string) =>
-      isAvailable(operatorType) && operatorType.toLowerCase().includes(lowerValue)).bind(this);
-  }
-
-  onOperatorsTypeSelected(event: MatAutocompleteSelectedEvent): void {
-    this.addOperatorType(event.option.value);
   }
 
   isUnset(field: string): boolean {

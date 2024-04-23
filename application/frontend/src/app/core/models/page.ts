@@ -23,7 +23,6 @@ export enum Page {
   Welcome = 'welcome',
   Shipments = 'shipments',
   Vehicles = 'vehicles',
-  VehicleOperators = 'vehicleOperators',
   RoutesChart = 'routesChart',
   RoutesMetadata = 'routesMetadata',
   ShipmentsMetadata = 'shipmentsMetadata',

@@ -30,7 +30,6 @@ import * as PostSolveControlBarActions from './post-solve-control-bar.actions';
 import * as PostSolveMetricsActions from './post-solve-metrics.actions';
 import * as PreSolveShipmentActions from './pre-solve-shipment.actions';
 import * as PreSolveVehicleActions from './pre-solve-vehicle.actions';
-import * as PreSolveVehicleOperatorActions from './pre-solve-vehicle-operator.actions';
 import * as RequestSettingsActions from './request-settings.actions';
 import * as RoutesChartActions from './routes-chart.actions';
 import * as RoutesMetadataActions from './routes-metadata.actions';
@@ -46,7 +45,6 @@ import * as ValidationResultActions from './validation-result.actions';
 import * as VehicleActions from './vehicle.actions';
 import * as VisitRequestActions from './visit-request.actions';
 import * as VisitActions from './visit.actions';
-import * as VehicleOperatorActions from './vehicle-operator.actions';
 
 export {
   ConfigActions,
@@ -65,7 +63,6 @@ export {
   PostSolveMetricsActions,
   PreSolveShipmentActions,
   PreSolveVehicleActions,
-  PreSolveVehicleOperatorActions,
   RequestSettingsActions,
   RoutesChartActions,
   RoutesMetadataActions,
@@ -81,5 +78,4 @@ export {
   VehicleActions,
   VisitActions,
   VisitRequestActions,
-  VehicleOperatorActions,
 };

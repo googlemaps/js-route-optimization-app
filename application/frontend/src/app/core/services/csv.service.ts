@@ -27,7 +27,6 @@ import {
   ILatLng,
   IShipment,
   IVehicle,
-  IVehicleOperator,
   ValidationErrorResponse,
 } from '../models';
 import { FileService } from './file.service';
@@ -180,14 +179,6 @@ export class CsvService {
     return unparse(data.map((row) => omit(row, filterFields)));
   }
 
-  downloadVehicleOperatorsSample(): void {
-    this.http
-      .get('./assets/vehicleOperatorsSample.csv', { responseType: 'text' })
-      .subscribe((content) =>
-        this.fileService.download('vehicleOperatorsSample.csv', [content], 'text/csv')
-      );
-  }
-
   getCsvPreview(file: File, n: number): Observable<any> {
     return new Observable((observer) => {
       parse(file, {
@@ -304,26 +295,10 @@ export class CsvService {
           mapping,
           parseFloat
         ),
-        ...this.mapToVehicleOperatorTypes(vehicle, mapping),
         ...this.mapToLoadLimits(vehicle, mapping),
         ...this.mapToVehicleTimeWindows(vehicle, mapping),
       };
       return parsedVehicle;
-    });
-  }
-
-  csvToVehicleOperators(
-    csvVehicleOperators: any[],
-    mapping: { [key: string]: string }
-  ): IVehicleOperator[] {
-    return csvVehicleOperators.map((vehicleOperator) => {
-      // Conditionally add each field to the vehicle object, converting from csv strings as needed
-      const parsedVehicleOperator = {
-        ...this.mapKeyToModelValue('label', 'Label', vehicleOperator, mapping),
-        ...this.mapKeyToModelValue('type', 'Type', vehicleOperator, mapping),
-        ...this.mapToVehicleOperatorTimeWindows(vehicleOperator, mapping),
-      };
-      return parsedVehicleOperator;
     });
   }
 
@@ -552,56 +527,6 @@ export class CsvService {
     return timeWindows;
   }
 
-  private mapToVehicleOperatorTimeWindows(
-    vehicleOperator: any,
-    mapping: { [key: string]: string }
-  ): any {
-    const startTimeWindows = [
-      {
-        ...this.mapKeyToModelValue(
-          'startTime',
-          'StartTimeWindowStartTime',
-          vehicleOperator,
-          mapping,
-          this.timeStringToSeconds
-        ),
-        ...this.mapKeyToModelValue(
-          'endTime',
-          'StartTimeWindowEndTime',
-          vehicleOperator,
-          mapping,
-          this.timeStringToSeconds
-        ),
-      },
-    ];
-    const endTimeWindows = [
-      {
-        ...this.mapKeyToModelValue(
-          'startTime',
-          'EndTimeWindowStartTime',
-          vehicleOperator,
-          mapping,
-          this.timeStringToSeconds
-        ),
-        ...this.mapKeyToModelValue(
-          'endTime',
-          'EndTimeWindowEndTime',
-          vehicleOperator,
-          mapping,
-          this.timeStringToSeconds
-        ),
-      },
-    ];
-    const timeWindows: any = {};
-    if (Object.keys(startTimeWindows).length > 0) {
-      timeWindows.startTimeWindows = startTimeWindows;
-    }
-    if (Object.keys(endTimeWindows).length > 0) {
-      timeWindows.endTimeWindows = endTimeWindows;
-    }
-    return timeWindows;
-  }
-
   private timeStringToSeconds(timestring: string): { seconds: string } {
     try {
       const date = new Date(timestring);
@@ -643,20 +568,6 @@ export class CsvService {
       loadLimit[vehicle[mapping.LoadLimit4Type]] = { maxLoad: vehicle[mapping.LoadLimit4Value] };
     }
     return { loadLimits: { ...loadLimit } };
-  }
-
-  private mapToVehicleOperatorTypes(vehicle: any, mapping: { [key: string]: string }): any {
-    const vehicleOperatorType = [];
-    if (mapping.RequiredOperatorType1 && vehicle[mapping.RequiredOperatorType1]) {
-      vehicleOperatorType.push(vehicle[mapping.RequiredOperatorType1]);
-    }
-    if (mapping.RequiredOperatorType2 && vehicle[mapping.RequiredOperatorType2]) {
-      vehicleOperatorType.push(vehicle[mapping.RequiredOperatorType2]);
-    }
-    if (mapping.RequiredOperatorType3 && vehicle[mapping.RequiredOperatorType3]) {
-      vehicleOperatorType.push(vehicle[mapping.RequiredOperatorType3]);
-    }
-    return { requiredOperatorTypes: vehicleOperatorType };
   }
 
   private mapToLoadDemands(shipment: any, mapping: { [key: string]: string }): any {

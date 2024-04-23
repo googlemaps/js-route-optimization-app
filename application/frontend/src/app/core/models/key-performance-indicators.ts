@@ -33,8 +33,3 @@ export interface VehiclesKpis {
     total: number;
   }[];
 }
-
-export interface VehicleOperatorsKpis {
-  total: number;
-  selected: number;
-}

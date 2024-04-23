@@ -218,17 +218,11 @@ export class DownloadEffects {
 
     data.solution.routes.forEach((route) => {
       const vehicle = data.scenario.model.vehicles[route.vehicleIndex || 0];
-      const vehicleOperatorIndices =
-        route.vehicleOperatorIndices?.length > 0 ? route.vehicleOperatorIndices.join(',') : '';
-      const vehicleOperatorLabels =
-        route.vehicleOperatorLabels?.length > 0 ? route.vehicleOperatorLabels.join(',') : '';
 
       if (vehicle.startWaypoint) {
         csvData.push({
           vehicleIndex: route.vehicleIndex || 0,
           vehicleLabel: vehicle.label,
-          vehicleOperatorIndices: vehicleOperatorIndices,
-          vehicleOperatorLabels: vehicleOperatorLabels,
           visitType: 'Start of day',
           visitEnd: new Date(
             durationSeconds(route.vehicleStartTime).toNumber() * 1000

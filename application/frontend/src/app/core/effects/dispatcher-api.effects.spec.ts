@@ -120,7 +120,7 @@ describe('DispatcherApiEffects', () => {
     it('should dispatch optimize tours success', () => {
       const elapsedSolution: ElapsedSolution = {
         scenario: {},
-        solution: { totalCost: 42 },
+        solution: { metrics: { totalCost: 42 } },
         elapsedTime: Date.now(),
         requestTime: Date.now(),
         batchTime: Date.now(),
@@ -162,7 +162,7 @@ describe('DispatcherApiEffects', () => {
       const error = { message: 'foo', code: StatusCode.UNAVAILABLE, requestTime: Date.now() };
       const elapsedSolution: ElapsedSolution = {
         scenario: {},
-        solution: { totalCost: 42 },
+        solution: { metrics: { totalCost: 42 } },
         elapsedTime: Date.now(),
         requestTime: Date.now(),
         batchTime: Date.now(),
@@ -188,7 +188,7 @@ describe('DispatcherApiEffects', () => {
   describe('generateMessagesForSolution$', () => {
     it('should check solution for messages', () => {
       const scenario: Scenario = {};
-      const solution: Solution = { totalCost: 0 };
+      const solution: Solution = { metrics: { totalCost: 0 } };
       const elapsedSolution = {
         scenario,
         solution,
