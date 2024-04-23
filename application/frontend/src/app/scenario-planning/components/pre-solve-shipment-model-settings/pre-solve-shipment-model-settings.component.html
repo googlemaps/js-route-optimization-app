@@ -1,30 +1,50 @@
 <form [formGroup]="form" autocomplete="off" class="d-flex flex-column p-3">
-  <div class="d-flex flex-row model-items">
+  <div class="d-flex flex-row model-items align-items-end">
     <div>
-      <!-- global duration cost per hour -->
-      <div class="settings-item">
-        <mat-form-field appearance="outline">
-          <mat-label>Global Duration Cost Per Hour</mat-label>
-          <input
-            matInput
-            type="number"
-            min="0"
-            pattern="\d*(\.\d+)?"
-            step=".1"
-            (ngModelChange)="onUpdateGlobalDurationCostPerHour()"
-            [formControl]="globalDurationCostPerHourControl"
-            placeholder="Enter number" />
-        </mat-form-field>
-        <mat-error
-          class="mb-4"
-          *ngIf="
-            globalDurationCostPerHourControl.errors?.pattern &&
-            (globalDurationCostPerHourControl.touched || globalDurationCostPerHourControl.dirty)
-          "
-          [attr.title]="patternMessage.innerText">
-          <span #patternMessage>Non-negative number required</span>
-        </mat-error>
+      <div class="d-flex flex-row model-items">
+        <!-- global duration cost per hour -->
+        <div class="settings-item col">
+          <mat-form-field appearance="outline">
+            <mat-label>Global Duration Cost Per Hour</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              pattern="\d*(\.\d+)?"
+              step=".1"
+              (ngModelChange)="onUpdateGlobalDurationCostPerHour()"
+              [formControl]="globalDurationCostPerHourControl"
+              placeholder="Enter number" />
+          </mat-form-field>
+          <mat-error
+            class="mb-4"
+            *ngIf="
+              globalDurationCostPerHourControl.errors?.pattern &&
+              (globalDurationCostPerHourControl.touched || globalDurationCostPerHourControl.dirty)
+            "
+            [attr.title]="patternMessage.innerText">
+            <span #patternMessage>Non-negative number required</span>
+          </mat-error>
+        </div>
+        <!-- max active vehicles -->
+        <div class="settings-item col">
+          <mat-form-field appearance="outline">
+            <mat-label>Max Active Vehicles </mat-label>
+            <input
+              matInput
+              type="number"
+              (change)="onUpdateMaxActiveVehicles()"
+              [formControl]="maxActiveVehicles"
+              min="1"
+              max="{{ maxInt32 }}"
+              placeholder="Enter number" />
+            <mat-error class="mb-4" *ngIf="maxActiveVehicles.errors">
+              Must be in range 1-{{ maxInt32 | number }}.
+            </mat-error>
+          </mat-form-field>
+        </div>
       </div>
+      <div class="d-flex flex-row"></div>
       <!-- global start date -->
       <div class="d-flex align-items-center flex-row">
         <div class="mat-body-strong mr-3 mb-3">Routes begin at</div>
@@ -54,53 +74,34 @@
         </mat-form-field>
       </div>
     </div>
-    <div>
-      <!-- max active vehicles -->
-      <div class="settings-item">
-        <mat-form-field appearance="outline">
-          <mat-label>Max Active Vehicles </mat-label>
-          <input
-            matInput
-            type="number"
-            (change)="onUpdateMaxActiveVehicles()"
-            [formControl]="maxActiveVehicles"
-            min="1"
-            max="{{ maxInt32 }}"
-            placeholder="Enter number" />
-          <mat-error class="mb-4" *ngIf="maxActiveVehicles.errors">
-            Must be in range 1-{{ maxInt32 | number }}.
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <!-- global end date -->
-      <div class="d-flex align-items-center flex-row">
-        <div class="mat-body-strong mr-3 mb-3">Routes end at</div>
-        <mat-form-field appearance="outline" class="pad-right">
-          <mat-label>End Date</mat-label>
-          <input
-            matInput
-            [matDatepicker]="endDatePicker"
-            [formControl]="globalEndDate"
-            (dateChange)="onUpdateEndDatetime()" />
-          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #endDatePicker></mat-datepicker>
-          <mat-error *ngIf="globalEndDate.errors"> End date is required. </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>End Time</mat-label>
-          <input
-            matInput
-            type="time"
-            [formControl]="globalEndTime"
-            class="time-input"
-            (change)="onUpdateEndDatetime()"
-            #endTimePicker />
-          <mat-error *ngIf="globalEndTime.errors?.timeString"> Invalid format </mat-error>
-          <mat-error *ngIf="!globalEndTime.errors?.timeString && globalEndTime.errors">
-            End time is required.
-          </mat-error>
-        </mat-form-field>
-      </div>
+    <!-- global end date -->
+    <div class="d-flex align-items-center flex-row">
+      <div class="mat-body-strong mr-3 mb-3">Routes end at</div>
+      <mat-form-field appearance="outline" class="pad-right">
+        <mat-label>End Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="endDatePicker"
+          [formControl]="globalEndDate"
+          (dateChange)="onUpdateEndDatetime()" />
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+        <mat-error *ngIf="globalEndDate.errors"> End date is required. </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>End Time</mat-label>
+        <input
+          matInput
+          type="time"
+          [formControl]="globalEndTime"
+          class="time-input"
+          (change)="onUpdateEndDatetime()"
+          #endTimePicker />
+        <mat-error *ngIf="globalEndTime.errors?.timeString"> Invalid format </mat-error>
+        <mat-error *ngIf="!globalEndTime.errors?.timeString && globalEndTime.errors">
+          End time is required.
+        </mat-error>
+      </mat-form-field>
     </div>
   </div>
 </form>
