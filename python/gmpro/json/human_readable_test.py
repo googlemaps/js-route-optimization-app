@@ -17,6 +17,7 @@ import unittest
 from . import cfr_json
 from . import human_readable
 
+
 class LatLngTest(unittest.TestCase):
   """Tests for lat_lng."""
 

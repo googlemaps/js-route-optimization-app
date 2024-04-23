@@ -13,9 +13,6 @@
 # limitations under the License.
 
 import datetime
-from importlib import resources
-import json
-import logging
 import unittest
 
 from . import analysis

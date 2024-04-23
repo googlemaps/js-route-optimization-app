@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""End-to-end example of running the two-step delivery planner.
+r"""End-to-end example of running the two-step delivery planner.
 
 Reads a CFR request and parking location data from JSON file and runs the
 two-step delivery planner on by making requests to the CFR service. The CFR

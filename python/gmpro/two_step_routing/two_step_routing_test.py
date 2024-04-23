@@ -24,6 +24,7 @@ from ..json import cfr_json
 from . import _parking
 from . import two_step_routing
 
+
 class ValidateResponseMixin(unittest.TestCase):
   """A mixin that provides a method for validating a CFR request + response."""
 

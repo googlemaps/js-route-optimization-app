@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""A command-line utility that transforms CFR request JSON files.
+r"""A command-line utility that transforms CFR request JSON files.
 
 Reads a CFR request file in the JSON format, transforms it according to the
 parameters provided via command-line flags and writes the modified file to
