@@ -10,6 +10,7 @@
   [disabled]="!showBulkDelete">
   Bulk delete
 </button>
+<app-undo-redo></app-undo-redo>
 <button mat-button (click)="openShipmentModelSettings.emit()">
   <mat-icon svgIcon="settings" class="mr-2"></mat-icon>Shipment model settings
 </button>
@@ -19,7 +20,6 @@
   (editFilter)="editFilter.emit($event)"
   (removeFilter)="removeFilter.emit($event)">
 </app-filter-list>
-<app-undo-redo></app-undo-redo>
 <button
   class="display-columns-menu-trigger"
   mat-button
