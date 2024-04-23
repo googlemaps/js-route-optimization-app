@@ -5,23 +5,16 @@
   flex-direction: column;
 }
 
-.global-duration-cost {
-  padding: 1rem 1rem 0 0;
+.model-items {
+  gap: 2rem;
+}
+
+.time-input {
+  margin-bottom: -1em;
 }
 
 .shipment-type {
   width: 100%;
-}
-
-.shipment-type > header {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.unused-shipment-type-warning {
-  font-size: 0.8em;
-  color: $orange;
 }
 
 mat-error {
