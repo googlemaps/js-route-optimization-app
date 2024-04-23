@@ -239,7 +239,4 @@ export class MapComponent implements OnInit, OnDestroy {
     this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
   }
 
-  addOperator(): void {
-    this.store.dispatch(PreSolveVehicleOperatorActions.addVehicleOperator({}));
-  }
 }
