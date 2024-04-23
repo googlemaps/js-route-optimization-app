@@ -33,5 +33,4 @@ export class MapAddButtonsComponent {
 
   @Output() addShipment = new EventEmitter();
   @Output() addVehicle = new EventEmitter();
-  @Output() addOperator = new EventEmitter();
 }

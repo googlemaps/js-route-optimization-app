@@ -45,10 +45,6 @@ describe('ScenarioKpisComponent', () => {
                   selected: 0,
                   capacities: [],
                 },
-                vehicleOperatorKpis: {
-                  total: 0,
-                  selected: 0,
-                },
               },
             },
           ],

@@ -31,7 +31,6 @@ import {
   MapActions,
   PreSolveShipmentActions,
   PreSolveVehicleActions,
-  PreSolveVehicleOperatorActions,
   RoutesChartActions,
 } from '../../actions';
 import { SelectionMode } from '../../models';
@@ -229,7 +228,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   isPreSolve(): boolean {
-    return [Page.Shipments, Page.Vehicles, Page.VehicleOperators, Page.ScenarioPlanning].includes(
+    return [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(
       this.page
     );
   }

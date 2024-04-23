@@ -19,7 +19,6 @@ import { Page } from '../models';
 import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
 import * as fromUI from './ui.selectors';
-import PreSolveVehicleOperatorSelectors from './pre-solve-vehicle-operator.selectors';
 
 export const selectGenerateDisabled = createSelector(
   PreSolveShipmentSelectors.selectTotalSelected,
@@ -39,12 +38,10 @@ export const selectInactive = createSelector(selectActive, (active) => !active);
 export const selectScenarioKpis = createSelector(
   PreSolveShipmentSelectors.selectShipmentsKpis,
   PreSolveVehicleSelectors.selectVehiclesKpis,
-  PreSolveVehicleOperatorSelectors.selectVehicleOperatorsKpis,
-  (shipmentKpis, vehicleKpis, vehicleOperatorKpis) => {
+  (shipmentKpis, vehicleKpis) => {
     return {
       shipmentKpis,
       vehicleKpis,
-      vehicleOperatorKpis,
     };
   }
 );

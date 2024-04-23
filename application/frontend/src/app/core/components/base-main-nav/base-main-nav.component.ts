@@ -47,7 +47,6 @@ export class BaseMainNavComponent implements OnChanges {
   @Output() vehiclesClick = new EventEmitter();
   @Output() addShipment = new EventEmitter();
   @Output() addVehicle = new EventEmitter();
-  @Output() addOperator = new EventEmitter();
 
   label: string;
   pages = Page;
