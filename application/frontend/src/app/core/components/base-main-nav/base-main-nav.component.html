@@ -11,7 +11,7 @@
       (click)="scenarioClick.emit()"
       [ngClass]="{ selected: page === pages.ScenarioPlanning }">
       <ng-container *ngTemplateOutlet="disabled ? bulletLarge : checkmarkLarge"></ng-container>
-      <span class="nav-subtitle">Planning Scenario</span>
+      <span class="nav-subtitle">Request Planning</span>
     </button>
   </div>
   <div class="nav-item nav-subitem nav-page-button">
@@ -103,7 +103,7 @@
           hasSolution ? (hasSolutionWarning ? cautionLarge : checkmarkLarge) : bulletLarge
         ">
       </ng-container>
-      <span class="nav-subtitle"> Solution </span>
+      <span class="nav-subtitle"> Response </span>
       <span class="warning-label" [ngSwitch]="isSolutionIllegal" *ngIf="hasSolutionWarning">
         <ng-container *ngSwitchCase="true">Illegal</ng-container>
         <ng-container *ngSwitchDefault>Stale</ng-container>

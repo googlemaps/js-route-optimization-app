@@ -249,7 +249,7 @@
           <div *ngIf="!geocodingErrorsShipments?.length && !geocodingErrorsVehicles?.length">
             CSV successfully loaded and geocoded. If you would like to make changes, you may:
             <ul>
-              <li>Continue to the scenario planner to edit the data</li>
+              <li>Continue to the request planner to edit the data</li>
               <li>
                 Fix the address{{ shipmentFile && vehicleFile ? 'es' : '' }} in the uploaded CSV{{
                   shipmentFile && vehicleFile ? 's' : ''
@@ -257,13 +257,13 @@
                 and try uploading again
               </li>
             </ul>
-            <p>Click Finish to go to the scenario planner.</p>
+            <p>Click Finish to go to the request planner.</p>
           </div>
           <div *ngIf="geocodingErrorsShipments?.length || geocodingErrorsVehicles?.length">
             <mat-error>CSV loaded, but some entries could not be geocoded. You may:</mat-error>
             <ul>
               <li>Manually correct the entries below</li>
-              <li>Remove the entries from the scenario below</li>
+              <li>Remove the entries from the request below</li>
               <li>
                 Fix the address{{ shipmentFile && vehicleFile ? 'es' : '' }} in the uploaded CSV{{
                   shipmentFile && vehicleFile ? 's' : ''
