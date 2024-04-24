@@ -22,6 +22,7 @@ import { PreSolveGlobalSettingsComponent } from '../pre-solve-global-settings/pr
 import { PreSolveShipmentModelSettingsComponent } from '../pre-solve-shipment-model-settings/pre-solve-shipment-model-settings.component';
 import { combineLatest } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+import { MessageService } from 'src/app/core/services';
 
 @Component({
   selector: 'app-pre-solve-settings',
@@ -36,7 +37,7 @@ export class PreSolveSettingsComponent implements AfterViewInit {
 
   saveDisabled = false;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private messageService: MessageService) {}
 
   ngAfterViewInit(): void {
     combineLatest([
@@ -50,6 +51,7 @@ export class PreSolveSettingsComponent implements AfterViewInit {
   onCancel(): void {
     this.globalSettingsComponent.resetData();
     this.shipmentSettingsComponent.resetData();
+    this.messageService.info('Changes cleared', { duration: 2000 });
   }
 
   onSave(): void {
@@ -73,5 +75,6 @@ export class PreSolveSettingsComponent implements AfterViewInit {
         this.shipmentSettingsComponent.updatedShipmentModelSettings
       )
     );
+    this.messageService.info('Changes saved', { duration: 2000 });
   }
 }
