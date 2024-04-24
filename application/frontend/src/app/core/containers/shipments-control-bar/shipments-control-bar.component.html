@@ -1,14 +1,10 @@
 <app-table-control-bar
-  [showBulkEdit]="showBulkEdit$ | async"
-  [showBulkDelete]="showBulkDelete$ | async"
   [filters]="filters$ | async"
   (editFilter)="onEditFilter($event)"
   (removeFilter)="onRemoveFilter($event)"
   [displayColumns]="displayColumns$ | async"
   (displayColumnChange)="onDisplayColumnChange($event)"
   [page]="page$ | async"
-  (bulkEdit)="onBulkEdit()"
-  (bulkDelete)="onBulkDelete()"
   (openShipmentModelSettings)="onOpenShipmentModelSettings()">
   <app-filter-menu
     [filters]="filters$ | async"

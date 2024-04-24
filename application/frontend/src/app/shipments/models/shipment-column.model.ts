@@ -39,6 +39,12 @@ export const shipmentColumns: ShipmentColumn[] = [
     selector: (shipment) => shipment.id,
   },
   {
+    id: 'menu',
+    label: 'Menu',
+    active: true,
+    toggleableHidden: true,
+  },
+  {
     id: 'label',
     label: 'Label',
     active: true,

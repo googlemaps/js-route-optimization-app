@@ -49,8 +49,6 @@ export class ShipmentsControlBarComponent implements OnDestroy {
   readonly filterOptions$: Observable<ShipmentFilterOption[]>;
   readonly filters$: Observable<ActiveFilter[]>;
   readonly displayColumns$: Observable<Column[]>;
-  readonly showBulkEdit$: Observable<boolean>;
-  readonly showBulkDelete$: Observable<boolean>;
   readonly page$: Observable<Page>;
 
   private addSubscription: Subscription;
@@ -68,8 +66,6 @@ export class ShipmentsControlBarComponent implements OnDestroy {
     this.displayColumns$ = store.pipe(
       select(PreSolveShipmentSelectors.selectAvailableDisplayColumnsOptions)
     );
-    this.showBulkEdit$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkEdit));
-    this.showBulkDelete$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkDelete));
     this.page$ = store.pipe(select(selectPage));
   }
 
@@ -124,22 +120,6 @@ export class ShipmentsControlBarComponent implements OnDestroy {
             displayColumns: { ...displayColumns, [columnId]: active },
           })
         );
-      });
-  }
-
-  onBulkEdit(): void {
-    this.store
-      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
-      .subscribe((shipmentIds) => {
-        this.store.dispatch(PreSolveShipmentActions.editShipments({ shipmentIds }));
-      });
-  }
-
-  onBulkDelete(): void {
-    this.store
-      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
-      .subscribe((ids) => {
-        this.store.dispatch(ShipmentActions.confirmDeleteShipments({ ids }));
       });
   }
 

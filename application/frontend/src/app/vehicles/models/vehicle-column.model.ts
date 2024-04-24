@@ -38,6 +38,12 @@ export const vehicleColumns: VehicleColumn[] = [
     selector: (vehicle) => vehicle.id,
   },
   {
+    id: 'menu',
+    label: 'Menu',
+    active: true,
+    toggleableHidden: true,
+  },
+  {
     id: 'label',
     label: 'Label',
     active: true,

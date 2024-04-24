@@ -296,8 +296,12 @@ const selectAvailableDisplayColumnsOptions = createSelector(
 
 const selectColumnsToDisplay = createSelector(
   selectAllDisplayColumnsOptions,
-  (displayColumnOptions) =>
-    displayColumnOptions.filter((column) => column.active).map((column) => column.id)
+  (displayColumnOptions) => {
+    const displayColumns = displayColumnOptions
+      .filter((column) => column.active)
+      .map((column) => column.id);
+    return displayColumns.slice(0, 3).concat('_filler').concat(displayColumns.slice(3));
+  }
 );
 
 const selectDisplayColumns = createSelector(

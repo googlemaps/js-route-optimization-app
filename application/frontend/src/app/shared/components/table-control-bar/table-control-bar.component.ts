@@ -34,10 +34,6 @@ import { ActiveFilter } from '../../models';
 })
 export class TableControlBarComponent {
   @Input() filters: ActiveFilter[];
-  @Input() showBulkEdit: boolean;
-  @Input() showBulkDelete: boolean;
-  @Output() bulkEdit = new EventEmitter();
-  @Output() bulkDelete = new EventEmitter();
   @Output() editFilter = new EventEmitter<{ filter: ActiveFilter; element: HTMLElement }>();
   @Output() removeFilter = new EventEmitter<ActiveFilter>();
   @Output() openShipmentModelSettings = new EventEmitter();

@@ -11,12 +11,16 @@
     [unitAbbreviations]="unitAbbreviations$ | async"
     [totalItems]="totalItems$ | async"
     [changeDisabled]="changeDisabled$ | async"
+    [showBulkEdit]="showBulkEdit$ | async"
+    [showBulkDelete]="showBulkDelete$ | async"
     (selectAll)="onSelectAll()"
     (deselectAll)="onDeselectAll()"
     (selectedChange)="onSelectedChange($event)"
     (sortChange)="onSortChange($event)"
     (editVehicle)="onEdit($event)"
     (deleteVehicle)="onDelete($event)"
+    (bulkEdit)="onBulkEdit()"
+    (bulkDelete)="onBulkDelete()"
     [shipmentCount]="shipmentCount$ | async">
   </app-base-vehicles-table>
 </div>

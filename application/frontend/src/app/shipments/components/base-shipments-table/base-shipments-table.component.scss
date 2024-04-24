@@ -1,12 +1,5 @@
 @import '../../../../styles/variables.scss';
 
-.shipment-meta-col {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-}
-
 app-base-shipments-table {
   position: relative;
 
