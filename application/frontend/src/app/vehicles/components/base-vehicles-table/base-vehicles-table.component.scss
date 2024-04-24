@@ -1,3 +1,10 @@
+.vehicle-meta-col {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
 app-base-vehicles-table {
   app-table {
     overflow: auto;
@@ -32,6 +39,10 @@ app-base-vehicles-table {
   .menu-button {
     width: 35px !important;
     height: 35px !important;
+
+    .mat-button-wrapper mat-icon {
+      margin-bottom: 6px;
+    }
   }
 
   .menu-vehicles {

@@ -404,15 +404,8 @@ const selectAvailableDisplayColumnsOptions = createSelector(
 
 const selectColumnsToDisplay = createSelector(
   selectAllDisplayColumnsOptions,
-  (displayColumnOptions) => {
-    const displayColumns = displayColumnOptions
-      .filter((column) => column.active)
-      .map((column) => column.id);
-    return displayColumns
-      .slice(0, displayColumns.length - 1)
-      .concat('_filler')
-      .concat(displayColumns[displayColumns.length - 1]);
-  }
+  (displayColumnOptions) =>
+    displayColumnOptions.filter((column) => column.active).map((column) => column.id)
 );
 
 const selectDisplayColumns = createSelector(

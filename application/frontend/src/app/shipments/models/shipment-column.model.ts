@@ -107,10 +107,4 @@ export const shipmentColumns: ShipmentColumn[] = [
     toggleable: true,
     selector: (shipment, visitRequest) => visitRequest.cost || 0,
   },
-  {
-    id: 'menu',
-    label: 'Menu',
-    active: true,
-    toggleableHidden: true,
-  },
 ];

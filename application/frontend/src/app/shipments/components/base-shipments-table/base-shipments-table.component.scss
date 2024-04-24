@@ -1,5 +1,12 @@
 @import '../../../../styles/variables.scss';
 
+.shipment-meta-col {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
 app-base-shipments-table {
   position: relative;
 
@@ -33,6 +40,10 @@ app-base-shipments-table {
   .menu-button {
     width: 35px !important;
     height: 35px !important;
+
+    .mat-button-wrapper mat-icon {
+      margin-bottom: 6px;
+    }
   }
   /** End workarounds */
 

@@ -86,10 +86,4 @@ export const vehicleColumns: VehicleColumn[] = [
     toggleable: true,
     selector: (vehicle) => durationSeconds(vehicle.travelDurationLimit?.maxDuration).toNumber(),
   },
-  {
-    id: 'menu',
-    label: 'Menu',
-    active: true,
-    toggleableHidden: true,
-  },
 ];
