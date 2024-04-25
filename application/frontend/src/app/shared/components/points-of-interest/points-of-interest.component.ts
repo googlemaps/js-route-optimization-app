@@ -85,9 +85,7 @@ export class PointsOfInterestComponent implements OnChanges {
     return Math.max(0, ...Object.values(lookup).map((value) => value.width / 2));
   }
 
-  constructor(
-    @Inject(LOCALE_ID) private locale: string,
-  ) {}
+  constructor(@Inject(LOCALE_ID) private locale: string) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const timeChange = (changes.duration || changes.timezoneOffset) != null;
