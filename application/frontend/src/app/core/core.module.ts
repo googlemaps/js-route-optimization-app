@@ -71,10 +71,7 @@ import {
   PreSolveControlBarComponent,
   PreSolveEditShipmentDialogComponent,
   PreSolveEditVehicleDialogComponent,
-  PreSolveSettingsDialogComponent,
-  PreSolveGlobalSettingsComponent,
   PreSolveMessageComponent,
-  PreSolveShipmentModelSettingsComponent,
   RegenerateConfirmationDialogComponent,
   RoutesChartControlBarComponent,
   ShipmentsControlBarComponent,
@@ -94,6 +91,13 @@ import { ConfirmBulkEditDialogComponent } from './components/confirm-bulk-edit-d
 import { CsvHelpDialogComponent } from './containers/csv-help-dialog/csv-help-dialog.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { DatasetComponent } from './components/dataset/dataset.component';
+import { ScenarioKpisComponent } from './containers/scenario-kpis/scenario-kpis.component';
+import { MapAddButtonsComponent } from './components/map-add-buttons/map-add-buttons.component';
+import { ShipmentTypeIncompatibilityDialogComponent } from './components/shipment-type-incompatibility-dialog/shipment-type-incompatibility-dialog.component';
+import { ShipmentTypeRequirementDialogComponent } from './components/shipment-type-requirement-dialog/shipment-type-requirement-dialog.component';
+import { TransitionAttributesDialogComponent } from './components/transition-attributes-dialog/transition-attributes-dialog.component';
+import { PrecedenceRulesDialogComponent } from './components/precedence-rules-dialog/precedence-rules-dialog.component';
+import { ShipmentModelSettingsComponent } from './containers/shipment-model-settings/shipment-model-settings.component';
 
 export const COMPONENTS = [
   BaseDocumentationDialogComponent,
@@ -146,10 +150,7 @@ export const CONTAINERS = [
   PreSolveControlBarComponent,
   PreSolveEditShipmentDialogComponent,
   PreSolveEditVehicleDialogComponent,
-  PreSolveGlobalSettingsComponent,
   PreSolveMessageComponent,
-  PreSolveSettingsDialogComponent,
-  PreSolveShipmentModelSettingsComponent,
   RegenerateConfirmationDialogComponent,
   RoutesChartControlBarComponent,
   ShipmentsControlBarComponent,
@@ -183,6 +184,13 @@ export const CONTAINERS = [
     CsvHelpDialogComponent,
     TopBarComponent,
     DatasetComponent,
+    ScenarioKpisComponent,
+    MapAddButtonsComponent,
+    ShipmentTypeIncompatibilityDialogComponent,
+    ShipmentTypeRequirementDialogComponent,
+    TransitionAttributesDialogComponent,
+    PrecedenceRulesDialogComponent,
+    ShipmentModelSettingsComponent,
   ],
   exports: [COMPONENTS, CONTAINERS, CsvUploadDialogComponent],
 })

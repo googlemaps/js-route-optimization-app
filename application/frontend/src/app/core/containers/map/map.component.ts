@@ -183,10 +183,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.setMapTypeId(satellite ? 'satellite' : 'roadmap');
   }
 
-  onHideMap(): void {
-    this.store.dispatch(MapActions.hideMap());
-  }
-
   onZoomToHome(): void {
     this.mapService.zoomToHome();
   }
@@ -229,5 +225,17 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
     return drawingManager;
+  }
+
+  isPreSolve(): boolean {
+    return [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(this.page);
+  }
+
+  addShipment(): void {
+    this.store.dispatch(PreSolveShipmentActions.addShipment({}));
+  }
+
+  addVehicle(): void {
+    this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
   }
 }

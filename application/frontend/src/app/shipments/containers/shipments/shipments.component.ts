@@ -51,6 +51,8 @@ export class ShipmentsComponent {
   readonly pageSize$: Observable<number>;
   readonly changeDisabled$: Observable<boolean>;
   readonly mapOpen$: Observable<boolean>;
+  readonly showBulkEdit$: Observable<boolean>;
+  readonly showBulkDelete$: Observable<boolean>;
 
   constructor(private store: Store<fromRoot.State>) {
     store.dispatch(ShipmentsActions.initialize());
@@ -72,6 +74,8 @@ export class ShipmentsComponent {
     this.pageSize$ = store.pipe(select(PreSolveShipmentSelectors.selectPageSize));
     this.changeDisabled$ = store.pipe(select(fromScenario.selectChangeDisabled));
     this.mapOpen$ = store.pipe(select(selectHasMap));
+    this.showBulkEdit$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkEdit));
+    this.showBulkDelete$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkDelete));
   }
 
   onPage(event: PageEvent): void {
@@ -113,10 +117,6 @@ export class ShipmentsComponent {
     );
   }
 
-  onAdd(): void {
-    this.store.dispatch(PreSolveShipmentActions.addShipment({}));
-  }
-
   onEdit(shipmentId: number): void {
     this.store.dispatch(PreSolveShipmentActions.editShipment({ shipmentId }));
   }
@@ -131,5 +131,21 @@ export class ShipmentsComponent {
 
   onMouseExitVisitRequest(): void {
     this.store.dispatch(PreSolveShipmentActions.mouseExitVisitRequest());
+  }
+
+  onBulkEdit(): void {
+    this.store
+      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
+      .subscribe((shipmentIds) => {
+        this.store.dispatch(PreSolveShipmentActions.editShipments({ shipmentIds }));
+      });
+  }
+
+  onBulkDelete(): void {
+    this.store
+      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
+      .subscribe((ids) => {
+        this.store.dispatch(ShipmentActions.confirmDeleteShipments({ ids }));
+      });
   }
 }

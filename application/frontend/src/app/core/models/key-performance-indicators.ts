@@ -22,6 +22,9 @@ export interface ShipmentsKpis {
     selected: number;
     total: number;
   }[];
+  pickups: number;
+  deliveries: number;
+  dwellTime: number;
 }
 
 export interface VehiclesKpis {

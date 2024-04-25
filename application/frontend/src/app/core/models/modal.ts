@@ -28,4 +28,5 @@ export enum Modal {
   ValidationResult = 'validationResult',
   StorageLoad = 'storageLoad',
   StorageSave = 'storageSave',
+  EditShipmentModelSettings = 'editShipmentModelSettings',
 }

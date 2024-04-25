@@ -43,14 +43,14 @@ export class BodyComponent implements OnChanges {
   private split: Split.Instance;
   private splitPanels = [
     {
-      id: 'main-page',
-      index: 0,
-      collapsed: false,
-    },
-    {
       id: 'main-map',
       index: 1,
       collapsed: true,
+    },
+    {
+      id: 'main-page',
+      index: 0,
+      collapsed: false,
     },
   ];
 
@@ -74,12 +74,15 @@ export class BodyComponent implements OnChanges {
 
   private createSplit(): void {
     this.split = Split([`#${this.splitPanels[0].id}`, `#${this.splitPanels[1].id}`], {
-      direction: 'horizontal',
+      direction: 'vertical',
       sizes: [50, 50],
       minSize: 0,
       gutterStyle: () => {
         return {
-          width: '15px',
+          height: '15px',
+          borderWidth: '1px 0px',
+          borderColor: '#b4b4b4',
+          borderStyle: 'solid',
         };
       },
       onDragEnd: (sizes) => {
@@ -87,7 +90,7 @@ export class BodyComponent implements OnChanges {
       },
     });
 
-    const gutter = document.querySelector('.gutter.gutter-horizontal');
+    const gutter = document.querySelector('.gutter.gutter-vertical');
     gutter.addEventListener('dblclick', () => {
       this.splitPanels.forEach((p) => {
         p.collapsed = !p.collapsed;
@@ -108,6 +111,9 @@ export class BodyComponent implements OnChanges {
   get isVehiclesPage(): boolean {
     return this.page === Page.Vehicles;
   }
+  get isScenarioPlanningPage(): boolean {
+    return this.page === Page.ScenarioPlanning;
+  }
   get isRoutesChartPage(): boolean {
     return this.page === Page.RoutesChart;
   }
@@ -115,7 +121,7 @@ export class BodyComponent implements OnChanges {
     return this.page === Page.RoutesMetadata || this.page === Page.ShipmentsMetadata;
   }
   get isPreSolve(): boolean {
-    return this.isShipmentsPage || this.isVehiclesPage;
+    return this.isShipmentsPage || this.isVehiclesPage || this.isScenarioPlanningPage;
   }
   get isPostSolve(): boolean {
     return this.isRoutesChartPage || this.isMetadata;

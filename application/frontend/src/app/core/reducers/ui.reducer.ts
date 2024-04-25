@@ -33,6 +33,7 @@ import {
   UploadActions,
 } from '../actions';
 import { Modal, Page } from '../models';
+import { ScenarioPlanningActions } from 'src/app/scenario-planning/actions';
 
 export const uiFeatureKey = 'ui';
 
@@ -50,7 +51,7 @@ export interface State {
 export const initialState: State = {
   clickedMapVehicleId: null,
   clickedMapVisitRequestId: null,
-  hasMap: false,
+  hasMap: true,
   modal: null,
   mouseOverId: null,
   page: Page.Welcome,
@@ -82,6 +83,7 @@ export const reducer = createReducer(
     ...state,
     modal: null,
   })),
+  on(ScenarioPlanningActions.initialize, (state) => ({ ...state, page: Page.ScenarioPlanning })),
   on(ShipmentsActions.initialize, (state) => ({ ...state, page: Page.Shipments })),
   on(VehiclesActions.initialize, (state) => ({ ...state, page: Page.Vehicles })),
   on(RoutesChartActions.initialize, (state) => ({

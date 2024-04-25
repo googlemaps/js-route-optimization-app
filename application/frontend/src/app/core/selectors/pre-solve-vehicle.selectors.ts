@@ -300,10 +300,7 @@ const selectColumnsToDisplay = createSelector(
     const displayColumns = displayColumnOptions
       .filter((column) => column.active)
       .map((column) => column.id);
-    return displayColumns
-      .slice(0, displayColumns.length - 1)
-      .concat('_filler')
-      .concat(displayColumns[displayColumns.length - 1]);
+    return displayColumns.slice(0, 3).concat('_filler').concat(displayColumns.slice(3));
   }
 );
 

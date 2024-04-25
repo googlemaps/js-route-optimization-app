@@ -27,7 +27,6 @@ export * from './point-of-interest.effects';
 export * from './map.effects';
 export * from './pre-solve-shipment.effects';
 export * from './pre-solve-vehicle.effects';
-export * from './pre-solve-settings.effects';
 export * from './shipment.effects';
 export * from './shipment-model.effects';
 export * from './storage-api.effects';

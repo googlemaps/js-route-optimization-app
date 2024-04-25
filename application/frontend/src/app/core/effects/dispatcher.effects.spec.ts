@@ -72,10 +72,10 @@ describe('DispatcherEffects', () => {
   });
 
   describe('navigateToShipments$', () => {
-    it('upload scenario success should navigate to shipments', () => {
+    it('upload scenario success should navigate to scenario planning', () => {
       actions$ = cold('-a-----', { a: DispatcherActions.uploadScenarioSuccess(null) });
       effects.navigateToShipments$.subscribe(() => {
-        expect(router.navigateByUrl).toHaveBeenCalledWith('shipments', {
+        expect(router.navigateByUrl).toHaveBeenCalledWith('scenarioPlanning', {
           skipLocationChange: true,
         });
       });

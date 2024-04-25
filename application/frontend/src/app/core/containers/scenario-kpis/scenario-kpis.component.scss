@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}
+
+.metrics {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
+
+.metric-box {
+  background-color: #eaa23514;
+  border-radius: 5px;
+  padding: 5px 20px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.metric-box-title {
+  color: #5f6368;
+  font-weight: 300;
+}
+
+.metric-box-value {
+  color: #000000;
+  font-weight: 500;
+}

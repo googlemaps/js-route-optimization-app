@@ -34,3 +34,14 @@ export const selectActive = createSelector(
 );
 
 export const selectInactive = createSelector(selectActive, (active) => !active);
+
+export const selectScenarioKpis = createSelector(
+  PreSolveShipmentSelectors.selectShipmentsKpis,
+  PreSolveVehicleSelectors.selectVehiclesKpis,
+  (shipmentKpis, vehicleKpis) => {
+    return {
+      shipmentKpis,
+      vehicleKpis,
+    };
+  }
+);

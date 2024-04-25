@@ -50,6 +50,12 @@ class MockShipmentsControlBarComponent {}
 class MockShipmentsKpisComponent {}
 
 @Component({
+  selector: 'app-scenario-kpis',
+  template: '',
+})
+class MockScenarioKpiComponent {}
+
+@Component({
   selector: 'app-vehicles-control-bar',
   template: '',
 })
@@ -114,6 +120,7 @@ describe('BodyComponent', () => {
         MockFormMapComponent,
         MockPdfMapComponent,
         BodyComponent,
+        MockScenarioKpiComponent,
       ],
     }).compileComponents();
 
