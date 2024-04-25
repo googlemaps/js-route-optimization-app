@@ -115,4 +115,8 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
   onUpdateTimezone(selectedTimezone: Timezone): void {
     this.store.dispatch(ConfigActions.setTimezone({ newTimezone: selectedTimezone }));
   }
+
+  trackRangeBy(index: number): number {
+    return index;
+  }
 }

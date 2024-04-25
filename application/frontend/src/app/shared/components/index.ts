@@ -25,7 +25,6 @@ export * from './filter-number-form/filter-number-form.component';
 export * from './filter-select-form/filter-select-form.component';
 export * from './filter-string-form/filter-string-form.component';
 export * from './filter/filter.component';
-export * from './gantt-chart-control-bar/gantt-chart-control-bar.component';
 export * from './gantt-chart/gantt-chart.component';
 export * from './gantt-settings-dialog/gantt-settings-dialog.component';
 export * from './injected-relaxation-constraints-form/injected-relaxation-constraints-form.component';

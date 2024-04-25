@@ -1,4 +1,5 @@
 <app-table-control-bar
+  [showModelSettings]="false"
   [filters]="filters$ | async"
   (editFilter)="onEditFilter($event)"
   (removeFilter)="onRemoveFilter($event)"

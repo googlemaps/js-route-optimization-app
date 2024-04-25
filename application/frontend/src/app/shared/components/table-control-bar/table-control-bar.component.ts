@@ -33,6 +33,7 @@ import { ActiveFilter } from '../../models';
   encapsulation: ViewEncapsulation.None,
 })
 export class TableControlBarComponent {
+  @Input() showModelSettings = true;
   @Input() filters: ActiveFilter[];
   @Output() editFilter = new EventEmitter<{ filter: ActiveFilter; element: HTMLElement }>();
   @Output() removeFilter = new EventEmitter<ActiveFilter>();

@@ -1,6 +1,6 @@
 <ng-content></ng-content>
 <app-undo-redo></app-undo-redo>
-<button mat-button (click)="openShipmentModelSettings.emit()">
+<button *ngIf="showModelSettings" mat-button (click)="openShipmentModelSettings.emit()">
   <mat-icon svgIcon="settings" class="mr-2"></mat-icon>Shipment model settings
 </button>
 <app-filter-list
@@ -9,10 +9,11 @@
   (editFilter)="editFilter.emit($event)"
   (removeFilter)="removeFilter.emit($event)">
 </app-filter-list>
+<ng-content select="[endContent]"></ng-content>
 <button
   class="display-columns-menu-trigger"
   mat-button
-  [disabled]="!(displayColumns?.length > 0)"
+  *ngIf="displayColumns?.length > 0"
   [matMenuTriggerFor]="menu"
   aria-label="Display columns menu"
   @.disabled>
