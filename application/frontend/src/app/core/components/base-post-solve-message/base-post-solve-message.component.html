@@ -1,9 +1,9 @@
 <ng-container *ngIf="isSolutionIllegal; then illegal; else stale"> </ng-container>
 
-<ng-template #illegal> Changes deviate from the generated solution. </ng-template>
+<ng-template #illegal> Changes deviate from the generated response. </ng-template>
 
 <ng-template #stale>
   <ng-container *ngIf="isSolutionStale">
-    Solution has become stale due to the changes made.
+    Response has become stale due to the changes made.
   </ng-container>
 </ng-template>

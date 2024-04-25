@@ -8,13 +8,13 @@
       (click)="cancel()">
       <mat-icon svgIcon="clear"></mat-icon>
     </button>
-    <span> Upload a scenario or solution </span>
+    <span> Upload a request or response </span>
   </h1>
   <div mat-dialog-content>
     <mat-divider class="mb-4"></mat-divider>
     <h3 class="strong">What file types can I use?</h3>
     <h4 class="strong d-flex mb-2">
-      Load scenario and solution files
+      Load request and response files
       <a
         (click)="openScenarioSolutionHelp()"
         class="ml-1 scenario-solution-help-icon blue-svg-icon">
@@ -31,7 +31,7 @@
             <span class="ml-1 mat-body-strong">.json file</span>
           </div>
           <p class="description-text">
-            Use this option when you have a .json file that contains a VRP scenario you want to
+            Use this option when you have a .json file that contains a VRP request you want to
             solve.
           </p>
         </div>
@@ -43,9 +43,9 @@
             <span class="ml-1 mat-body-strong">.zip file</span>
           </div>
           <p class="description-text">
-            Use this option when you have a .zip file that contains both the .json and VRP scenario
-            files. The .zip file must contain two .json files, one for the scenario and one for the
-            solution.
+            Use this option when you have a .zip file that contains both the request and response
+            files. The .zip file must contain two .json files, one for the request and one for the
+            response.
           </p>
         </div>
       </div>
@@ -72,7 +72,7 @@
             The provided file cannot be loaded. Only valid .json and .zip files are supported.
           </mat-error>
           <mat-error *ngIf="fileName.errors?.requestFormat && (fileName.touched || fileName.dirty)">
-            The provided scenario is not valid.
+            The provided request is not valid.
           </mat-error>
           <mat-hint>.json or .zip</mat-hint>
         </mat-form-field>
@@ -90,9 +90,9 @@
           class="d-flex flex-column mat-small mt-3">
           <div *ngIf="!resolvingPlaceIds" class="d-flex flex-column align-items-center">
             <p>
-              ⚠️ This scenario contains Place ID waypoints. Some features of the application require
+              ⚠️ This request contains Place ID waypoints. Some features of the application require
               lat/lng locations. Click the button below to request the lat/lng location of all Place
-              IDs in the scenario (it will take a few minutes). You may continue with just the Place
+              IDs in the request (it will take a few minutes). You may continue with just the Place
               IDs, but some parts of the application may not work properly.
             </p>
             <button

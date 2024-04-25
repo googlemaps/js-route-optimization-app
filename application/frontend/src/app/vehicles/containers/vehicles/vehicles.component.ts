@@ -50,6 +50,8 @@ export class VehiclesComponent implements OnInit {
   readonly pageIndex$: Observable<number>;
   readonly pageSize$: Observable<number>;
   readonly changeDisabled$: Observable<boolean>;
+  readonly showBulkEdit$: Observable<boolean>;
+  readonly showBulkDelete$: Observable<boolean>;
   shipmentCount$: Observable<number>;
 
   constructor(private store: Store<fromRoot.State>) {
@@ -73,6 +75,8 @@ export class VehiclesComponent implements OnInit {
     this.pageIndex$ = store.pipe(select(PreSolveVehicleSelectors.selectPageIndex));
     this.pageSize$ = store.pipe(select(PreSolveVehicleSelectors.selectPageSize));
     this.changeDisabled$ = store.pipe(select(fromScenario.selectChangeDisabled));
+    this.showBulkEdit$ = store.pipe(select(PreSolveVehicleSelectors.selectShowBulkEdit));
+    this.showBulkDelete$ = store.pipe(select(PreSolveVehicleSelectors.selectShowBulkDelete));
   }
 
   ngOnInit(): void {
@@ -142,7 +146,19 @@ export class VehiclesComponent implements OnInit {
     this.store.dispatch(VehicleActions.confirmDeleteVehicle({ id: vehicle.id }));
   }
 
-  onAdd(): void {
-    this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
+  onBulkEdit(): void {
+    this.store
+      .pipe(select(PreSolveVehicleSelectors.selectFilteredVehiclesSelectedIds), take(1))
+      .subscribe((vehicleIds) => {
+        this.store.dispatch(PreSolveVehicleActions.editVehicles({ vehicleIds }));
+      });
+  }
+
+  onBulkDelete(): void {
+    this.store
+      .pipe(select(PreSolveVehicleSelectors.selectFilteredVehiclesSelectedIds), take(1))
+      .subscribe((ids) => {
+        this.store.dispatch(VehicleActions.confirmDeleteVehicles({ ids }));
+      });
   }
 }

@@ -26,4 +26,5 @@ export enum Page {
   RoutesChart = 'routesChart',
   RoutesMetadata = 'routesMetadata',
   ShipmentsMetadata = 'shipmentsMetadata',
+  ScenarioPlanning = 'scenarioPlanning',
 }

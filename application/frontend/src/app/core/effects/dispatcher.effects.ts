@@ -54,7 +54,7 @@ export class DispatcherEffects {
     () =>
       this.actions$.pipe(
         ofType(DispatcherActions.uploadScenarioSuccess, WelcomePageActions.newScenario),
-        tap(() => this.router.navigateByUrl('shipments', { skipLocationChange: true }))
+        tap(() => this.router.navigateByUrl('scenarioPlanning', { skipLocationChange: true }))
       ),
     { dispatch: false }
   );

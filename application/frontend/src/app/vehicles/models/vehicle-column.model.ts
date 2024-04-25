@@ -38,6 +38,12 @@ export const vehicleColumns: VehicleColumn[] = [
     selector: (vehicle) => vehicle.id,
   },
   {
+    id: 'menu',
+    label: 'Menu',
+    active: true,
+    toggleableHidden: true,
+  },
+  {
     id: 'label',
     label: 'Label',
     active: true,
@@ -85,11 +91,5 @@ export const vehicleColumns: VehicleColumn[] = [
     active: true,
     toggleable: true,
     selector: (vehicle) => durationSeconds(vehicle.travelDurationLimit?.maxDuration).toNumber(),
-  },
-  {
-    id: 'menu',
-    label: 'Menu',
-    active: true,
-    toggleableHidden: true,
   },
 ];

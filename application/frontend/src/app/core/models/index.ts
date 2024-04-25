@@ -34,6 +34,7 @@ export * from './shipment.model';
 export * from './shipment-filter';
 export * from './shipment-metadata-filter';
 export * from './normalized-shipment-model';
+export * from './scenario-kpis';
 export * from './shipment-route.model';
 export * from './solution';
 export * from './storage-api';

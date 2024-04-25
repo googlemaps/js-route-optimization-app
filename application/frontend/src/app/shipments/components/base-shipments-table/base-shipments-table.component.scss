@@ -33,19 +33,12 @@ app-base-shipments-table {
   .menu-button {
     width: 35px !important;
     height: 35px !important;
-  }
-  /** End workarounds */
 
-  .add-shipment {
-    position: absolute;
-    right: 2rem;
-    bottom: 2rem;
-    z-index: 1;
-
-    &[disabled='true'] {
-      filter: grayscale(100%);
+    .mat-button-wrapper mat-icon {
+      margin-bottom: 6px;
     }
   }
+  /** End workarounds */
 
   .menu-shipment {
     display: flex;

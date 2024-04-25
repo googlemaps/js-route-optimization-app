@@ -8,10 +8,10 @@
 
 <ng-template #partialSelection>
   <ng-container *ngIf="numberOfShipments; else onlyVehicles">
-    Select vehicles to generate the solution.
+    Select vehicles to generate the response.
   </ng-container>
 
-  <ng-template #onlyVehicles> Select shipments to generate the solution. </ng-template>
+  <ng-template #onlyVehicles> Select shipments to generate the response. </ng-template>
 </ng-template>
 
-<ng-template #noSelection> Select shipments and vehicles to generate the solution. </ng-template>
+<ng-template #noSelection> Select shipments and vehicles to generate the response. </ng-template>

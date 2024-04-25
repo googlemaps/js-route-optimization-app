@@ -33,6 +33,12 @@ class MockFilterListComponent {
   @Output() removeFilter = new EventEmitter<ActiveFilter>();
 }
 
+@Component({
+  selector: 'app-undo-redo',
+  template: '',
+})
+class MockUndoRedoComponent {}
+
 describe('TableControlBarComponent', () => {
   let component: TableControlBarComponent;
   let fixture: ComponentFixture<TableControlBarComponent>;
@@ -40,7 +46,7 @@ describe('TableControlBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MaterialModule, NoopAnimationsModule],
-      declarations: [MockFilterListComponent, TableControlBarComponent],
+      declarations: [MockFilterListComponent, TableControlBarComponent, MockUndoRedoComponent],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
       .compileComponents();

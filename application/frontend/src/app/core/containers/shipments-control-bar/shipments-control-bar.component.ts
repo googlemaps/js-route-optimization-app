@@ -30,8 +30,11 @@ import { ActiveFilter } from 'src/app/shared/models';
 import { FilterService } from 'src/app/shared/services';
 import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
 import { PreSolveShipmentActions, ShipmentActions } from '../../actions';
-import { Column, ShipmentFilterOption } from '../../models';
+import { Column, Modal, Page, ShipmentFilterOption } from '../../models';
 import PreSolveShipmentSelectors from '../../selectors/pre-solve-shipment.selectors';
+import { selectPage } from '../../selectors/ui.selectors';
+import { MatDialog } from '@angular/material/dialog';
+import { ShipmentModelSettingsComponent } from '../shipment-model-settings/shipment-model-settings.component';
 
 @Component({
   selector: 'app-shipments-control-bar',
@@ -46,13 +49,16 @@ export class ShipmentsControlBarComponent implements OnDestroy {
   readonly filterOptions$: Observable<ShipmentFilterOption[]>;
   readonly filters$: Observable<ActiveFilter[]>;
   readonly displayColumns$: Observable<Column[]>;
-  readonly showBulkEdit$: Observable<boolean>;
-  readonly showBulkDelete$: Observable<boolean>;
+  readonly page$: Observable<Page>;
 
   private addSubscription: Subscription;
   private editSubscription: Subscription;
 
-  constructor(private filterService: FilterService, private store: Store<fromRoot.State>) {
+  constructor(
+    private filterService: FilterService,
+    private store: Store<fromRoot.State>,
+    private dialog: MatDialog
+  ) {
     this.filterOptions$ = store.pipe(
       select(PreSolveShipmentSelectors.selectAvailableFiltersOptions)
     );
@@ -60,8 +66,7 @@ export class ShipmentsControlBarComponent implements OnDestroy {
     this.displayColumns$ = store.pipe(
       select(PreSolveShipmentSelectors.selectAvailableDisplayColumnsOptions)
     );
-    this.showBulkEdit$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkEdit));
-    this.showBulkDelete$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkDelete));
+    this.page$ = store.pipe(select(selectPage));
   }
 
   ngOnDestroy(): void {
@@ -118,19 +123,13 @@ export class ShipmentsControlBarComponent implements OnDestroy {
       });
   }
 
-  onBulkEdit(): void {
-    this.store
-      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
-      .subscribe((shipmentIds) => {
-        this.store.dispatch(PreSolveShipmentActions.editShipments({ shipmentIds }));
-      });
-  }
-
-  onBulkDelete(): void {
-    this.store
-      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
-      .subscribe((ids) => {
-        this.store.dispatch(ShipmentActions.confirmDeleteShipments({ ids }));
-      });
+  onOpenShipmentModelSettings(): void {
+    this.dialog.open(ShipmentModelSettingsComponent, {
+      id: Modal.EditShipmentModelSettings,
+      maxHeight: '100%',
+      maxWidth: '100%',
+      position: { right: '0' },
+      panelClass: 'fly-out-dialog',
+    });
   }
 }

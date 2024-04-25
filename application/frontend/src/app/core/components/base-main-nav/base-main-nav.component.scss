@@ -5,6 +5,7 @@
   margin-left: 1.5rem;
   display: flex;
   flex-direction: column;
+  min-width: 200px;
   color: rgba(0, 0, 0, 0.87);
   .border {
     position: absolute;
@@ -60,7 +61,7 @@
 }
 
 .nav-page-button {
-  button {
+  .nav-button {
     padding: 0.5rem 0;
     width: 100%;
     text-align: left;
@@ -91,4 +92,16 @@
   line-height: 1;
   background-color: #feefe3 !important;
   color: $darker !important;
+}
+
+.main-nav-add-button {
+  position: absolute;
+  right: 0.5rem;
+  background-color: white;
+
+  mat-icon {
+    margin-bottom: 0.25rem;
+  }
+
+  z-index: 1;
 }

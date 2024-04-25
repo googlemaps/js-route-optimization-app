@@ -1,0 +1,40 @@
+<div class="mat-h3 mb-0">Request Metrics</div>
+<div class="metrics">
+  <div class="metric-box">
+    <div class="mat-h3 mb-1 metric-box-title">Shipments in total</div>
+    <div class="mat-h3 mb-0 metric-box-value">
+      {{ (kpis$ | async).shipmentKpis.selected }} / {{ (kpis$ | async).shipmentKpis.total }}
+    </div>
+  </div>
+  <div class="metric-box">
+    <div class="mat-h3 mb-1 metric-box-title">Total load demands</div>
+    <div class="mat-h3 mb-0 metric-box-value" *ngIf="!(kpis$ | async).shipmentKpis.demands?.length">
+      -
+    </div>
+    <div
+      class="mat-h3 mb-0 metric-box-value"
+      *ngFor="let demand of (kpis$ | async).shipmentKpis.demands">
+      {{ demand.selected | number }} {{ demand.type }}
+    </div>
+  </div>
+  <div class="metric-box">
+    <div class="mat-h3 mb-1 metric-box-title">Number of vehicles</div>
+    <div class="mat-h3 mb-0 metric-box-value">
+      {{ (kpis$ | async).vehicleKpis.selected }} / {{ (kpis$ | async).vehicleKpis.total }}
+    </div>
+  </div>
+  <div class="metric-box">
+    <div class="mat-h3 mb-1 metric-box-title">Dwell time</div>
+    <div class="mat-h3 mb-0 metric-box-value">
+      {{ formattedDurationSeconds((kpis$ | async).shipmentKpis.dwellTime) }}
+    </div>
+  </div>
+  <div class="metric-box">
+    <div class="mat-h3 mb-1 metric-box-title">Number of pickups</div>
+    <div class="mat-h3 mb-0 metric-box-value">{{ (kpis$ | async).shipmentKpis.pickups }}</div>
+  </div>
+  <div class="metric-box">
+    <div class="mat-h3 mb-1 metric-box-title">Number of dropoffs</div>
+    <div class="mat-h3 mb-0 metric-box-value">{{ (kpis$ | async).shipmentKpis.deliveries }}</div>
+  </div>
+</div>

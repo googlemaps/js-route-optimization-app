@@ -45,8 +45,6 @@ export class VehiclesControlBarComponent implements OnDestroy {
   readonly filterOptions$: Observable<VehicleFilterOption[]>;
   readonly filters$: Observable<ActiveFilter[]>;
   readonly displayColumns$: Observable<Column[]>;
-  readonly showBulkEdit$: Observable<boolean>;
-  readonly showBulkDelete$: Observable<boolean>;
 
   private addSubscription: Subscription;
   private editSubscription: Subscription;
@@ -59,8 +57,6 @@ export class VehiclesControlBarComponent implements OnDestroy {
     this.displayColumns$ = store.pipe(
       select(PreSolveVehicleSelectors.selectAvailableDisplayColumnsOptions)
     );
-    this.showBulkEdit$ = store.pipe(select(PreSolveVehicleSelectors.selectShowBulkEdit));
-    this.showBulkDelete$ = store.pipe(select(PreSolveVehicleSelectors.selectShowBulkDelete));
   }
 
   ngOnDestroy(): void {
@@ -114,22 +110,6 @@ export class VehiclesControlBarComponent implements OnDestroy {
             displayColumns: { ...displayColumns, [columnId]: active },
           })
         );
-      });
-  }
-
-  onBulkEdit(): void {
-    this.store
-      .pipe(select(PreSolveVehicleSelectors.selectFilteredVehiclesSelectedIds), take(1))
-      .subscribe((vehicleIds) => {
-        this.store.dispatch(PreSolveVehicleActions.editVehicles({ vehicleIds }));
-      });
-  }
-
-  onBulkDelete(): void {
-    this.store
-      .pipe(select(PreSolveVehicleSelectors.selectFilteredVehiclesSelectedIds), take(1))
-      .subscribe((ids) => {
-        this.store.dispatch(VehicleActions.confirmDeleteVehicles({ ids }));
       });
   }
 }

@@ -1,0 +1,212 @@
+<form [formGroup]="form" autocomplete="off">
+  <section class="shipment-type">
+    <div formArrayName="transitionAttributes" class="w-100">
+      <div
+        *ngFor="let transitionAttributes of transitionAttributesControl.controls; let i = index"
+        [formGroupName]="i"
+        class="d-flex flex-row w-100 mb-2">
+        <div class="d-flex flex-row flex-wrap">
+          <!-- Source tag -->
+          <div class="mr-4">
+            <div class="d-flex flex-row">
+              <div class="settings-item pad-right">
+                <mat-form-field appearance="outline" class="unpadded-form-field">
+                  <mat-label>Source tag</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="srcTag"
+                    [matAutocomplete]="srcTagAuto"
+                    (input)="filterTransitionAttributeTags($event.target.value)"
+                    (focus)="filterTransitionAttributeTags('')" />
+                  <mat-autocomplete autoActiveFirstOption #srcTagAuto="matAutocomplete">
+                    <mat-option
+                      *ngFor="let option of filteredTransitionTags$ | async"
+                      [value]="option">
+                      {{ option }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div class="settings-item">
+                <mat-form-field appearance="outline" class="unpadded-form-field">
+                  <mat-label>Excluded source tag</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="excludedSrcTag"
+                    [matAutocomplete]="excludedSrcTagAuto"
+                    (input)="filterTransitionAttributeTags($event.target.value)"
+                    (focus)="filterTransitionAttributeTags('')" />
+                  <mat-autocomplete autoActiveFirstOption #excludedSrcTagAuto="matAutocomplete">
+                    <mat-option
+                      *ngFor="let option of filteredTransitionTags$ | async"
+                      [value]="option">
+                      {{ option }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </div>
+            <mat-error
+              *ngIf="
+                transitionAttributes.errors?.srcTagOrExcludeSrcTag &&
+                (transitionAttributes.touched || transitionAttributes.dirty)
+              ">
+              <span
+                *ngIf="
+                  transitionAttributes.get('srcTag').value &&
+                    transitionAttributes.get('excludedSrcTag').value;
+                  else sourceRequired
+                ">
+                Cannot define both a source tag and excluded source tag
+              </span>
+              <ng-template #sourceRequired>
+                Source tag or excluded source tag is required
+              </ng-template>
+            </mat-error>
+          </div>
+          <!-- Destination tag -->
+          <div class="mr-4">
+            <div class="d-flex flex-row">
+              <div class="settings-item pad-right">
+                <mat-form-field appearance="outline" class="unpadded-form-field">
+                  <mat-label>Destination tag</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="dstTag"
+                    [matAutocomplete]="dstTagAuto"
+                    (input)="filterTransitionAttributeTags($event.target.value)"
+                    (focus)="filterTransitionAttributeTags('')" />
+                  <mat-autocomplete autoActiveFirstOption #dstTagAuto="matAutocomplete">
+                    <mat-option
+                      *ngFor="let option of filteredTransitionTags$ | async"
+                      [value]="option">
+                      {{ option }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div class="settings-item">
+                <mat-form-field appearance="outline" class="unpadded-form-field">
+                  <mat-label>Excluded destination tag</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="excludedDstTag"
+                    [matAutocomplete]="excludedDstTagAuto"
+                    (input)="filterTransitionAttributeTags($event.target.value)"
+                    (focus)="filterTransitionAttributeTags('')" />
+                  <mat-autocomplete autoActiveFirstOption #excludedDstTagAuto="matAutocomplete">
+                    <mat-option
+                      *ngFor="let option of filteredTransitionTags$ | async"
+                      [value]="option">
+                      {{ option }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </div>
+            <mat-error
+              *ngIf="
+                transitionAttributes.errors?.dstTagOrExcludeDstTag &&
+                (transitionAttributes.touched || transitionAttributes.dirty)
+              ">
+              <span
+                *ngIf="
+                  transitionAttributes.get('dstTag').value &&
+                    transitionAttributes.get('excludedDstTag').value;
+                  else destinationRequired
+                ">
+                Cannot define both a destination tag and excluded destination tag
+              </span>
+              <ng-template #destinationRequired>
+                Destination tag or excluded destination tag is required
+              </ng-template>
+            </mat-error>
+          </div>
+          <!-- Costs -->
+          <div class="d-flex flex-row">
+            <div class="settings-item pad-right">
+              <mat-form-field appearance="outline" class="unpadded-form-field">
+                <mat-label>Cost</mat-label>
+                <input matInput type="number" formControlName="cost" />
+              </mat-form-field>
+              <mat-error *ngIf="transitionAttributes.get('cost').errors?.min">
+                Must be greater than zero
+              </mat-error>
+            </div>
+            <div class="settings-item pad-right">
+              <mat-form-field appearance="outline" class="unpadded-form-field">
+                <mat-label>Cost per kilometer</mat-label>
+                <input matInput type="number" formControlName="costPerKilometer" />
+              </mat-form-field>
+              <mat-error *ngIf="transitionAttributes.get('costPerKilometer').errors?.min">
+                Must be greater than zero
+              </mat-error>
+            </div>
+          </div>
+          <!-- Distance limit -->
+          <div class="mr-4">
+            <div class="d-flex flex-row">
+              <div class="settings-item pad-right">
+                <mat-form-field appearance="outline" class="unpadded-form-field">
+                  <mat-label>Distance limit soft max</mat-label>
+                  <input matInput type="number" formControlName="distanceLimitSoftMax" />
+                </mat-form-field>
+                <mat-error *ngIf="transitionAttributes.get('distanceLimitSoftMax').errors?.min">
+                  Must be greater than zero
+                </mat-error>
+              </div>
+              <div class="settings-item pad-right">
+                <mat-form-field appearance="outline" class="unpadded-form-field">
+                  <mat-label>Distance limit cost above soft max</mat-label>
+                  <input matInput type="number" formControlName="distanceLimitCostAboveSoftMax" />
+                </mat-form-field>
+                <mat-error
+                  *ngIf="transitionAttributes.get('distanceLimitCostAboveSoftMax').errors?.min">
+                  Must be greater than zero
+                </mat-error>
+              </div>
+            </div>
+            <mat-error
+              *ngIf="
+                transitionAttributes.errors?.distanceLimitSoftCostRequired ||
+                transitionAttributes.errors?.distanceLimitSoftMaxRequired
+              ">
+              <span> Soft max and cost must both be defined </span>
+            </mat-error>
+          </div>
+          <!-- Delay -->
+          <div class="d-flex flex-row">
+            <app-duration-min-sec-form
+              [appearance]="'outline'"
+              [parentFormGroup]="transitionAttributes.controls.delay"
+              [labelName]="'Delay'"></app-duration-min-sec-form>
+          </div>
+        </div>
+
+        <!-- remove -->
+        <div class="d-flex align-items-center">
+          <button
+            type="button"
+            class="clear-place"
+            (click)="removeTransitionAttributes(i)"
+            mat-icon-button
+            title="Remove transition attributes">
+            <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <button
+    type="button"
+    mat-stroked-button
+    class="light-stroked-button"
+    color="primary"
+    (click)="addTransitionAttributes()">
+    Add Transition Attribute
+  </button>
+</form>

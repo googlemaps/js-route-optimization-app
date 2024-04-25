@@ -12,15 +12,18 @@
     [totalShipments]="totalShipments$ | async"
     [changeDisabled]="changeDisabled$ | async"
     [hasMap]="mapOpen$ | async"
+    [showBulkEdit]="showBulkEdit$ | async"
+    [showBulkDelete]="showBulkDelete$ | async"
     (selectAll)="onSelectAll()"
     (deselectAll)="onDeselectAll()"
     (selectedChange)="onSelectedChange($event)"
     (sortChange)="onSortChange($event)"
-    (add)="onAdd()"
     (edit)="onEdit($event)"
     (delete)="onDelete($event)"
     (mouseEnterVisitRequest)="onMouseEnterVisitRequest($event)"
-    (mouseExitVisitRequest)="onMouseExitVisitRequest()">
+    (mouseExitVisitRequest)="onMouseExitVisitRequest()"
+    (bulkEdit)="onBulkEdit()"
+    (bulkDelete)="onBulkDelete()">
   </app-base-shipments-table>
 </div>
 <div class="footer-container">

@@ -1,0 +1,66 @@
+<h3 mat-dialog-title>Shipment Model Settings</h3>
+<mat-dialog-content>
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          [ngClass]="
+            this.shipmentTypeIncompatibilities?.form.valid
+              ? 'panel-title-valid'
+              : 'panel-title-invalid'
+          ">
+          Shipment Type Incompatibilities ({{
+            shipmentTypeIncompatibilities?.shipmentTypeIncompatsControl.value?.length || 0
+          }})
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-shipment-type-incompatibility-dialog
+        #shipmentTypeIncompatibilities></app-shipment-type-incompatibility-dialog>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          [ngClass]="
+            this.shipmentTypeRequirements?.form.valid ? 'panel-title-valid' : 'panel-title-invalid'
+          ">
+          Shipment Type Requirements ({{
+            shipmentTypeRequirements.shipmentTypeReqsControl.value?.length || 0
+          }})
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-shipment-type-requirement-dialog
+        #shipmentTypeRequirements></app-shipment-type-requirement-dialog>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          [ngClass]="
+            this.precedenceRules?.form.valid ? 'panel-title-valid' : 'panel-title-invalid'
+          ">
+          Precedence Rules ({{ precedenceRules.precedenceRulesControl.controls.length || 0 }})
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-precedence-rules-dialog #precedenceRules></app-precedence-rules-dialog>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          [ngClass]="
+            this.transitionAttributes?.form.valid ? 'panel-title-valid' : 'panel-title-invalid'
+          ">
+          Transition Attributes ({{
+            transitionAttributes.transitionAttributesControl.controls.length || 0
+          }})
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-transition-attributes-dialog #transitionAttributes></app-transition-attributes-dialog>
+    </mat-expansion-panel>
+  </mat-accordion>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button mat-stroked-button class="light-stroked-button" color="primary" mat-dialog-close>
+    Cancel
+  </button>
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!canSave()">Save</button>
+</mat-dialog-actions>

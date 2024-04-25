@@ -1,9 +1,7 @@
 <ng-content></ng-content>
-<button mat-button color="primary" (click)="bulkEdit.emit()" [disabled]="!showBulkEdit">
-  Bulk edit
-</button>
-<button mat-button color="warn" (click)="bulkDelete.emit()" [disabled]="!showBulkDelete">
-  Bulk delete
+<app-undo-redo></app-undo-redo>
+<button mat-button (click)="openShipmentModelSettings.emit()">
+  <mat-icon svgIcon="settings" class="mr-2"></mat-icon>Shipment model settings
 </button>
 <app-filter-list
   class="grow"

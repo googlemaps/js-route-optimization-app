@@ -22,7 +22,7 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { Column } from 'src/app/core/models';
+import { Column, Page } from 'src/app/core/models';
 import { ActiveFilter } from '../../models';
 
 @Component({
@@ -34,15 +34,16 @@ import { ActiveFilter } from '../../models';
 })
 export class TableControlBarComponent {
   @Input() filters: ActiveFilter[];
-  @Input() showBulkEdit: boolean;
-  @Input() showBulkDelete: boolean;
-  @Output() bulkEdit = new EventEmitter();
-  @Output() bulkDelete = new EventEmitter();
   @Output() editFilter = new EventEmitter<{ filter: ActiveFilter; element: HTMLElement }>();
   @Output() removeFilter = new EventEmitter<ActiveFilter>();
+  @Output() openShipmentModelSettings = new EventEmitter();
 
   @Input() displayColumns: Column[];
   @Output() displayColumnChange = new EventEmitter<{ columnId: string; active: boolean }>();
+
+  @Input() page: Page;
+
+  Page = Page;
 
   onDisplayColumnChange(column: Column, active: boolean): void {
     this.displayColumnChange.emit({ columnId: column.id, active });
