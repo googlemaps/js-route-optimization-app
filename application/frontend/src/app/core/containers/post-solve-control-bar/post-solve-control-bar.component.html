@@ -5,10 +5,10 @@
   (change)="onToggleChange($event.value)"
   [value]="page$ | async">
   <mat-button-toggle class="main-toggle" [value]="Page.RoutesChart" [disableRipple]="true"
-    >Gantt
+    >Timeline
   </mat-button-toggle>
   <mat-button-toggle class="main-toggle" [value]="Page.RoutesMetadata" [disableRipple]="true"
-    >Metadata
+    >Table
   </mat-button-toggle>
 </mat-button-toggle-group>
 <app-time-navigation
