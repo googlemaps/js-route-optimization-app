@@ -29,7 +29,7 @@ import { FilterMenuComponent } from 'src/app/shared/components';
 import { ActiveFilter } from 'src/app/shared/models';
 import { FilterService } from 'src/app/shared/services';
 import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
-import { PreSolveVehicleActions, VehicleActions } from '../../actions';
+import { PreSolveVehicleActions } from '../../actions';
 import { Column, VehicleFilterOption } from '../../models';
 import PreSolveVehicleSelectors from '../../selectors/pre-solve-vehicle.selectors';
 

@@ -41,27 +41,7 @@
     <div *ngIf="buildFormattedDeparture() as formattedDeparture">
       Departure: {{ formattedDeparture }}
     </div>
-    <div class="item-sm pad-right">
-      <mat-form-field>
-        <mat-select
-          (selectionChange)="changeVehicleSelection($event.value)"
-          [value]="vehicle"
-          #vehicleSelection>
-          <cdk-virtual-scroll-viewport
-            style="height: 200px"
-            [itemSize]="optionItemSize"
-            minBufferPx="200"
-            maxBufferPx="400">
-            <mat-option
-              [style.height.px]="optionItemSize"
-              *cdkVirtualFor="let vehicle of getVehicleDropdownOptions()"
-              [value]="vehicle">
-              {{ getVehicleName(vehicle) }}
-            </mat-option>
-          </cdk-virtual-scroll-viewport>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <div>Vehicle: {{ getVehicleName(vehicle) }}</div>
   </div>
   <mat-divider class="mt-1 mb-1"></mat-divider>
   <div>Optional? {{ shipment?.penaltyCost ? 'Yes' : 'No' }}</div>

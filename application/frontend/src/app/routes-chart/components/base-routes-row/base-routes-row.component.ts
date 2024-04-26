@@ -45,9 +45,6 @@ import { Store } from '@ngrx/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseRoutesRowComponent implements OnInit {
-  @Input() currentDragVisitIds: number[];
-  @Input() currentOverlapId: number;
-  @Input() isDragging: boolean;
   @Input() route: ShipmentRoute;
   @Input() vehicle: Vehicle;
   @Input() shipmentCount: number;
@@ -63,14 +60,9 @@ export class BaseRoutesRowComponent implements OnInit {
   @Input() timezoneOffset: number;
   @Input() changedVisits: ChangedVisits;
   @Output() selectedChange = new EventEmitter<boolean>();
-  @Output() dragStart = new EventEmitter<PointOfInterestStartDrag>();
-  @Output() timelineEnter = new EventEmitter<PointOfInterestTimelineOverlapBegin>();
-  @Output() timelineLeave = new EventEmitter<number>();
   @Output() pointOfInterestClick = new EventEmitter<PointOfInterestClick>();
   @Output() editVehicle = new EventEmitter<number>();
   @Output() viewMetadata = new EventEmitter<number>();
-  @Output() mouseEnterVisit = new EventEmitter<number>();
-  @Output() mouseExitVisit = new EventEmitter();
   @HostBinding('class') className = 'item item-container';
   allowExperimentalFeatures: boolean;
 

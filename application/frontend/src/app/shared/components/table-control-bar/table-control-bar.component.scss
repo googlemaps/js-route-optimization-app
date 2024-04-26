@@ -4,7 +4,7 @@ app-table-control-bar {
   display: flex;
   align-items: center;
   border-bottom: 1px solid $blue-lighter;
-  padding: 0.25rem 0;
+  padding: 0.25rem;
 
   app-filter-list {
     margin-right: 16px;

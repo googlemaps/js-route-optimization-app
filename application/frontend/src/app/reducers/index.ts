@@ -123,5 +123,9 @@ export const selectRouter = createFeatureSelector<fromRouter.RouterReducerState<
 
 export const selectMapSelectionToolsVisible = createSelector(
   fromUiSelectors.selectPage,
-  (page) => page === Page.Shipments || page === Page.Vehicles || page === Page.RoutesChart || page === Page.ScenarioPlanning
+  (page) =>
+    page === Page.Shipments ||
+    page === Page.Vehicles ||
+    page === Page.RoutesChart ||
+    page === Page.ScenarioPlanning
 );

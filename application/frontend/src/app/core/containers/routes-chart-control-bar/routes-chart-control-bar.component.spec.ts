@@ -26,6 +26,10 @@ import { FilterService } from 'src/app/shared/services';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import { RoutesChartControlBarComponent } from './routes-chart-control-bar.component';
+import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
+import Long from 'long';
+import { Page } from '../../models';
+import * as fromUI from 'src/app/core/selectors/ui.selectors';
 
 describe('RoutesChartControlBarComponent', () => {
   let component: RoutesChartControlBarComponent;
@@ -53,6 +57,14 @@ describe('RoutesChartControlBarComponent', () => {
               },
             },
             { selector: fromConfig.selectTimezoneOffset, value: 0 },
+            {
+              selector: ShipmentModelSelectors.selectGlobalDuration,
+              value: [Long.ZERO, Long.ZERO],
+            },
+            { selector: RoutesChartSelectors.selectNowRangeOffset, value: 0 },
+            { selector: RoutesChartSelectors.selectRangeOffset, value: 0 },
+            { selector: RoutesChartSelectors.selectSelectedRange, value: null },
+            { selector: fromUI.selectPage, value: Page.RoutesChart },
           ],
         }),
       ],

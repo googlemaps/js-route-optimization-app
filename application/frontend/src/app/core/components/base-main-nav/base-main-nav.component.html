@@ -97,7 +97,7 @@
       mat-flat-button
       (click)="hasSolution && solutionClick.emit()"
       class="nav-button"
-      [ngClass]="{ selected: page === pages.RoutesChart }">
+      [ngClass]="{ selected: page === pages.RoutesChart || page === pages.RoutesMetadata }">
       <ng-container
         *ngTemplateOutlet="
           hasSolution ? (hasSolutionWarning ? cautionLarge : checkmarkLarge) : bulletLarge

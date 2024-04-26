@@ -1,14 +1,10 @@
 <app-progress-bar *ngIf="!isWelcomePage" [loading]="loading"></app-progress-bar>
 
-<app-post-solve-control-bar *ngIf="isPostSolve"></app-post-solve-control-bar>
-
 <ng-container *ngIf="isPreSolve">
   <app-scenario-kpis></app-scenario-kpis>
 </ng-container>
 
 <app-post-solve-metrics *ngIf="isPostSolve"></app-post-solve-metrics>
-<app-routes-chart-control-bar *ngIf="isRoutesChartPage"></app-routes-chart-control-bar>
-<app-metadata-control-bar *ngIf="isMetadata"></app-metadata-control-bar>
 
 <main>
   <app-map id="main-map" [ngClass]="{ 'map-hidden': !hasMap }"></app-map>
@@ -20,6 +16,8 @@
       <ng-container *ngIf="isVehiclesPage">
         <app-vehicles-control-bar></app-vehicles-control-bar>
       </ng-container>
+      <app-routes-chart-control-bar *ngIf="isRoutesChartPage"></app-routes-chart-control-bar>
+      <app-metadata-control-bar *ngIf="isMetadata"></app-metadata-control-bar>
       <router-outlet></router-outlet>
     </div>
   </div>
