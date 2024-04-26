@@ -26,12 +26,6 @@ import { BodyComponent } from './body.component';
 class MockMetadataControlBarComponent {}
 
 @Component({
-  selector: 'app-post-solve-control-bar',
-  template: '',
-})
-class MockPostSolveControlBarComponent {}
-
-@Component({
   selector: 'app-pre-solve-control-bar',
   template: '',
 })
@@ -108,7 +102,6 @@ describe('BodyComponent', () => {
       imports: [RouterTestingModule],
       declarations: [
         MockMetadataControlBarComponent,
-        MockPostSolveControlBarComponent,
         MockPreSolveControlBarComponent,
         MockShipmentsControlBarComponent,
         MockShipmentsKpisComponent,
