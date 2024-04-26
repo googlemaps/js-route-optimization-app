@@ -5,19 +5,6 @@
   (removeFilter)="onRemoveFilter($event)"
   [displayColumns]="displayColumns$ | async"
   (displayColumnChange)="onDisplayColumnChange($event)">
-  <mat-select (selectionChange)="onSelectionChange($event.value)" [value]="page$ | async">
-    <mat-select-trigger>
-      <mat-icon svgIcon="vehicles_nav" *ngIf="(page$ | async) === Page.RoutesMetadata"></mat-icon>
-      <mat-icon svgIcon="shipments_nav" *ngIf="(page$ | async) !== Page.RoutesMetadata"></mat-icon>
-      {{ (page$ | async) === Page.RoutesMetadata ? 'Metrics per route' : 'Metrics per shipment' }}
-    </mat-select-trigger>
-    <mat-option [value]="Page.RoutesMetadata">
-      <mat-icon svgIcon="vehicles_nav"></mat-icon> Metrics per route
-    </mat-option>
-    <mat-option [value]="Page.ShipmentsMetadata">
-      <mat-icon svgIcon="shipments_nav"></mat-icon> Metrics per shipment
-    </mat-option>
-  </mat-select>
   <mat-divider preUndoRedo vertical></mat-divider>
   <mat-button-toggle-group
     preUndoRedo
@@ -39,4 +26,20 @@
     [filterOptions]="filterOptions$ | async"
     (addFilter)="onAddFilter($event)">
   </app-filter-menu>
+  <mat-select
+    (selectionChange)="onSelectionChange($event.value)"
+    [value]="page$ | async"
+    endContent>
+    <mat-select-trigger>
+      <mat-icon svgIcon="vehicles_nav" *ngIf="(page$ | async) === Page.RoutesMetadata"></mat-icon>
+      <mat-icon svgIcon="shipments_nav" *ngIf="(page$ | async) !== Page.RoutesMetadata"></mat-icon>
+      {{ (page$ | async) === Page.RoutesMetadata ? 'Metrics per route' : 'Metrics per shipment' }}
+    </mat-select-trigger>
+    <mat-option [value]="Page.RoutesMetadata">
+      <mat-icon svgIcon="vehicles_nav"></mat-icon> Metrics per route
+    </mat-option>
+    <mat-option [value]="Page.ShipmentsMetadata">
+      <mat-icon svgIcon="shipments_nav"></mat-icon> Metrics per shipment
+    </mat-option>
+  </mat-select>
 </app-table-control-bar>
