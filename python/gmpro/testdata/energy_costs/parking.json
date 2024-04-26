@@ -1,0 +1,72 @@
+{
+  "parking_locations": [
+    {
+      "tag": "P0001",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.890654930276966,
+            "longitude": 2.3302311065233527
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "avoid_indoor": null,
+      "delivery_load_limits": {
+        "shipment_count": 20
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "unload_duration_per_item": null,
+      "load_duration_per_item": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0,
+      "cost_per_load_unit_per_traveled_hour": {
+        "shipment_count": {
+          "costPerUnitAboveThreshold": 30
+        }
+      }
+    },
+    {
+      "tag": "P0002",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.87077943569341,
+            "longitude": 2.3379046824227077
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "avoid_indoor": null,
+      "delivery_load_limits": {
+        "shipment_count": 20
+      },
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "unload_duration_per_item": null,
+      "load_duration_per_item": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0,
+      "cost_per_load_unit_per_kilometer": {
+        "shipment_count": {
+          "costPerUnitAboveThreshold": 10
+        }
+      }
+    }
+  ],
+  "parking_for_shipment": {
+    "0": "P0001",
+    "1": "P0001",
+    "2": "P0002",
+    "3": "P0002"
+  }
+}

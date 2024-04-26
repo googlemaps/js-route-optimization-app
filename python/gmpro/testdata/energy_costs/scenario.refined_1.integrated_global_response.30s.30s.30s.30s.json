@@ -1,0 +1,138 @@
+{
+  "routes": [
+    {
+      "vehicleLabel": "V0001",
+      "vehicleStartTime": "2024-04-25T08:00:00Z",
+      "vehicleEndTime": "2024-04-25T13:18:20Z",
+      "visits": [
+        {
+          "startTime": "2024-04-25T11:11:58Z",
+          "detour": "10844s",
+          "shipmentLabel": "p:0 S0002,S0001",
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-2"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2024-04-25T11:54:31Z",
+          "detour": "13639s",
+          "shipmentLabel": "p:1 S0003",
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        },
+        {
+          "shipmentIndex": 2,
+          "startTime": "2024-04-25T12:56:36Z",
+          "detour": "17364s",
+          "shipmentLabel": "p:2 S0004",
+          "loadDemands": {
+            "shipment_count": {
+              "amount": "-1"
+            }
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": "674s",
+          "travelDistanceMeters": 2584,
+          "waitDuration": "10844s",
+          "totalDuration": "11518s",
+          "startTime": "2024-04-25T08:00:00Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "4"
+            }
+          }
+        },
+        {
+          "travelDuration": "1002s",
+          "travelDistanceMeters": 3549,
+          "waitDuration": "0s",
+          "totalDuration": "1002s",
+          "startTime": "2024-04-25T11:37:49Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "2"
+            }
+          }
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "2922s",
+          "totalDuration": "2922s",
+          "startTime": "2024-04-25T12:07:54Z",
+          "vehicleLoads": {
+            "shipment_count": {
+              "amount": "1"
+            }
+          }
+        },
+        {
+          "travelDuration": "653s",
+          "travelDistanceMeters": 2027,
+          "waitDuration": "0s",
+          "totalDuration": "653s",
+          "startTime": "2024-04-25T13:07:27Z",
+          "vehicleLoads": {
+            "shipment_count": {}
+          }
+        }
+      ],
+      "metrics": {
+        "performedShipmentCount": 3,
+        "travelDuration": "2329s",
+        "waitDuration": "13766s",
+        "delayDuration": "0s",
+        "breakDuration": "0s",
+        "visitDuration": "3005s",
+        "totalDuration": "19100s",
+        "travelDistanceMeters": 8160,
+        "maxLoads": {
+          "shipment_count": {
+            "amount": "4"
+          }
+        }
+      },
+      "routeCosts": {
+        "model.vehicles.cost_per_kilometer": 8.16,
+        "model.vehicles.cost_per_hour": 318.3333333333333,
+        "model.vehicles.fixed_cost": 1000
+      },
+      "routeTotalCost": 1326.4933333333333
+    }
+  ],
+  "requestLabel": "/refined_global",
+  "metrics": {
+    "aggregatedRouteMetrics": {
+      "performedShipmentCount": 3,
+      "travelDuration": "2329s",
+      "waitDuration": "13766s",
+      "delayDuration": "0s",
+      "breakDuration": "0s",
+      "visitDuration": "3005s",
+      "totalDuration": "19100s",
+      "travelDistanceMeters": 8160,
+      "maxLoads": {
+        "shipment_count": {
+          "amount": "4"
+        }
+      }
+    },
+    "usedVehicleCount": 1,
+    "earliestVehicleStartTime": "2024-04-25T08:00:00Z",
+    "latestVehicleEndTime": "2024-04-25T13:18:20Z",
+    "totalCost": 1326.4933333333333,
+    "costs": {
+      "model.vehicles.fixed_cost": 1000,
+      "model.vehicles.cost_per_hour": 318.3333333333333,
+      "model.vehicles.cost_per_kilometer": 8.16
+    }
+  }
+}

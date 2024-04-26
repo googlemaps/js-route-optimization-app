@@ -191,6 +191,12 @@ class ParkingLocation:
       visits to the parking location in the global model. Since the local model
       allows only very limited cost tuning, we accept only one value per unit,
       and this value is used as the hard limit.
+    cost_per_load_unit_per_kilometer: The distance-based energy cost. This is
+      the cost per unit of load per traveled kilometer with the load. The key in
+      the dict is the name of the unit, same as in `delivery_load_limits`.
+    cost_per_load_unit_per_traveled_hour: The time-based energy cost. This is
+      the cost per unit of load per traveled hour with the load. The key in the
+      dict is the name of the unit, same as in `delivery_load_limits`.
     max_round_duration: The maximal duration of one delivery round from the
       parking location. When None, there is no limit on the maximal duration of
       one round.
@@ -207,6 +213,13 @@ class ParkingLocation:
       consecutive delivery rounds from the parking location. Can be used to
       model the time required to pick up packages from the vehicle before
       another round of pickups.
+    unload_duration_per_item: The amount of time needed to pick up one item from
+      the truck before delivering it to a client from the parking location. This
+      duration takes place right after the arrival to the parking.
+    load_duration_per_item: The amount of time needed to store one item to the
+      truck after picking it up from a client from the parking location. This
+      duration takes place just after the return to the parking from the local
+      route.
     arrival_cost: The cost of entering the parking location. The cost is applied
       when a vehicle enters the parking location from another location.
     departure_cost: The cost of leaving the parking location. The cost is
@@ -228,6 +241,12 @@ class ParkingLocation:
   avoid_indoor: bool | None = None
 
   delivery_load_limits: Mapping[str, int] | None = None
+  cost_per_load_unit_per_kilometer: Mapping[str, cfr_json.LoadCost] | None = (
+      None
+  )
+  cost_per_load_unit_per_traveled_hour: (
+      Mapping[str, cfr_json.LoadCost] | None
+  ) = None
 
   max_round_duration: cfr_json.DurationString | None = None
 

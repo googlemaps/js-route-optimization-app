@@ -73,10 +73,25 @@ class Load(TypedDict):
   amount: Int64String
 
 
-class LoadLimit(TypedDict):
+class LoadCost(TypedDict, total=False):
+  """Represents the load costs in the JSON GMPRO request.
+
+  Note that load-based costs are supported only in GMPRO.
+  """
+
+  loadThreshold: Int64String
+  costPerUnitBelowThreshold: float
+  costPerUnitAboveThreshold: float
+
+
+class LoadLimit(TypedDict, total=False):
   """Represents the vehicle load limit in the JSON CFR request."""
 
   maxLoad: Int64String
+
+  # costPerKilometer and costPerTraveledHour are supported only by GMPRO.
+  costPerKilometer: LoadCost
+  costPerTraveledHour: LoadCost
 
 
 class Location(TypedDict, total=False):

@@ -149,11 +149,34 @@ def make_vehicle(
     vehicle["routeDurationLimit"] = {
         "maxDuration": parking.max_round_duration,
     }
+  load_limits: dict[str, cfr_json.LoadLimit] = {}
+
+  def get_or_create_load_limit(unit: str) -> cfr_json.LoadLimit:
+    load_limit = load_limits.get(unit)
+    if load_limit is None:
+      load_limit: cfr_json.LoadLimit = {}
+      load_limits[unit] = load_limit
+    assert load_limit is not None
+    return load_limit
+
   if parking.delivery_load_limits is not None:
-    vehicle["loadLimits"] = {
-        unit: {"maxLoad": str(max_load)}
-        for unit, max_load in parking.delivery_load_limits.items()
-    }
+    for unit, max_load in parking.delivery_load_limits.items():
+      load_limit = get_or_create_load_limit(unit)
+      load_limit["maxLoad"] = str(max_load)
+
+  if parking.cost_per_load_unit_per_kilometer is not None:
+    for unit, load_cost in parking.cost_per_load_unit_per_kilometer.items():
+      load_limit = get_or_create_load_limit(unit)
+      load_limit["costPerKilometer"] = load_cost
+
+  if parking.cost_per_load_unit_per_traveled_hour is not None:
+    for unit, load_cost in parking.cost_per_load_unit_per_traveled_hour.items():
+      load_limit = get_or_create_load_limit(unit)
+      load_limit["costPerTraveledHour"] = load_cost
+
+  if load_limits:
+    vehicle["loadLimits"] = load_limits
+
   return vehicle
 
 
