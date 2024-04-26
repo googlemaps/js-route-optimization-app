@@ -1,7 +1,4 @@
 <app-table-control-bar
-  [filters]="filters$ | async"
-  (editFilter)="onEditFilter($event)"
-  (removeFilter)="onRemoveFilter($event)"
   [displayColumns]="displayColumns$ | async"
   (displayColumnChange)="onDisplayColumnChange($event)"
   [page]="page$ | async"
@@ -9,6 +6,8 @@
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"
-    (addFilter)="onAddFilter($event)">
+    (addFilter)="onAddFilter($event)"
+    (editFilter)="onEditFilter($event)"
+    (removeFilter)="onRemoveFilter($event)">
   </app-filter-menu>
 </app-table-control-bar>

@@ -1,8 +1,5 @@
 <app-table-control-bar
   [showModelSettings]="false"
-  [filters]="filters$ | async"
-  (editFilter)="onEditFilter($event)"
-  (removeFilter)="onRemoveFilter($event)"
   [displayColumns]="displayColumns$ | async"
   (displayColumnChange)="onDisplayColumnChange($event)">
   <mat-divider preUndoRedo vertical></mat-divider>
@@ -24,7 +21,9 @@
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"
-    (addFilter)="onAddFilter($event)">
+    (addFilter)="onAddFilter($event)"
+    (editFilter)="onEditFilter($event)"
+    (removeFilter)="onRemoveFilter($event)">
   </app-filter-menu>
   <mat-select
     (selectionChange)="onSelectionChange($event.value)"

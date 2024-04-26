@@ -5,12 +5,6 @@
   <mat-icon svgIcon="settings" class="mr-2"></mat-icon>Shipment model settings
 </button>
 <ng-content select="[postUndoRedo]"></ng-content>
-<app-filter-list
-  class="grow"
-  [filters]="filters"
-  (editFilter)="editFilter.emit($event)"
-  (removeFilter)="removeFilter.emit($event)">
-</app-filter-list>
 <ng-content select="[endContent]"></ng-content>
 <button
   class="display-columns-menu-trigger"
