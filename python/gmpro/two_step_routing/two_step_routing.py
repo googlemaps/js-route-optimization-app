@@ -62,6 +62,7 @@ import logging
 import re
 from typing import TypeAlias, TypeVar
 
+from . import _global_model
 from . import _local_model
 from . import _parking
 from . import _shared
@@ -320,7 +321,7 @@ class Planner:
 
       parking_tag = _local_model.get_parking_tag_from_route(route)
       global_shipments.append(
-          _make_global_model_shipment_for_local_route(
+          _global_model.make_shipment_for_local_route(
               model=self._model,
               local_route_index=route_index,
               local_route=route,
@@ -816,7 +817,9 @@ class Planner:
         )
         global_visit_label = global_visit["shipmentLabel"]
         global_visit_detour = cfr_json.get_visit_detour(global_visit)
-        visit_type, index = _parse_global_shipment_label(global_visit_label)
+        visit_type, index = _global_model.parse_shipment_label(
+            global_visit_label
+        )
         match visit_type:
           case "s":
             # This is direct delivery of one of the shipments in the original
@@ -1045,7 +1048,7 @@ class Planner:
           "label": label,
       })
     for global_skipped_shipment in global_response.get("skippedShipments", ()):
-      shipment_type, index = _parse_global_shipment_label(
+      shipment_type, index = _global_model.parse_shipment_label(
           global_skipped_shipment["label"]
       )
       match shipment_type:
@@ -1202,99 +1205,6 @@ def validate_request(
   if errors:
     return errors
   return None
-
-
-def _shipment_label_counts_in_global_route(
-    route: cfr_json.ShipmentRoute,
-) -> Mapping[str, int]:
-  r"""Counts base shipment labels in the visits on a global model route.
-
-  Assumes that the labels of the shipments on the route follow the format of
-  shipment labels in the global model "[ds]:\d+ (?<labels>.*)" where the
-  group <labels> contains a comma-separated list of shipment labels from the
-  base model.
-
-  Note that when shipment labels in the base model contain commas, the counts
-  might not match but the results will be comparable in terms of the comparisons
-  done in `_assert_global_model_routes_handle_same_shipments()`.
-
-  Args:
-    route: A route from the global model.
-
-  Returns:
-    A mapping from shipment labels in the base model to the count of their
-    appearances on the route.
-  """
-  label_count = collections.defaultdict(int)
-  for visit in cfr_json.get_visits(route):
-    global_shipment_label = visit["shipmentLabel"]
-    _, base_shipment_labels = global_shipment_label.split(" ", maxsplit=1)
-    for label in base_shipment_labels.split(","):
-      label_count[label] += 1
-  return label_count
-
-
-def _routes_by_unique_vehicle_indices(
-    response: cfr_json.OptimizeToursResponse,
-) -> Mapping[int, cfr_json.ShipmentRoute]:
-  routes = {}
-  for route in cfr_json.get_routes(response):
-    vehicle = route.get("vehicleIndex", 0)
-    assert vehicle not in routes, f"Duplicate vehicle index {vehicle}"
-    routes[vehicle] = route
-  return routes
-
-
-def _assert_global_model_routes_handle_same_shipments(
-    response_a: cfr_json.OptimizeToursResponse,
-    response_b: cfr_json.OptimizeToursResponse,
-) -> None:
-  """Checks that routes in `response_a` and `response_b` serve same shipments.
-
-  Assumes that `response_a` and `response_b` are two different solutions of
-  equivalent global models in a two-step routing model. They may be either two
-  different solutions of the same global model, or the solution of a base global
-  model and an integrated global model.
-
-  Checks that the routes in `response_a` and `response_b` are similar in the
-  sense that:
-  - both responses have the same number of routes,
-  - the shipment labels on the routes are the same. This is done by extracting
-    the "original shipment labels" part of the the shipment labels on both
-    routes and checking that their numbers are the same.
-
-  Args:
-    response_a: The first response to compare.
-    response_b: The second response to compare.
-
-  Raises:
-    AssertionError: When the routes are not equivalent.
-  """
-  routes_a = _routes_by_unique_vehicle_indices(response_a)
-  routes_b = _routes_by_unique_vehicle_indices(response_b)
-
-  assert len(routes_a) == len(routes_b), (
-      f"The number of routes is different. Found {len(routes_a)} routes in"
-      f" response_a, {len(routes_b)} in response_b."
-  )
-  vehicle_indices_a = set(routes_a)
-  vehicle_indices_b = set(routes_b)
-  assert vehicle_indices_a == vehicle_indices_b, (
-      "The vehicle indices of the routes are different. Found"
-      f" {vehicle_indices_a} in response_a and {vehicle_indices_b} in"
-      " response_b."
-  )
-
-  for vehicle_index in vehicle_indices_a:
-    route_a = routes_a[vehicle_index]
-    route_b = routes_b[vehicle_index]
-    label_count_a = _shipment_label_counts_in_global_route(route_a)
-    label_count_b = _shipment_label_counts_in_global_route(route_b)
-    assert label_count_a == label_count_b, (
-        f"Shipment label counts for vehicle {vehicle_index} are different:\n"
-        f"response_a: {label_count_a},\n"
-        f"response_b: {label_count_b}"
-    )
 
 
 class _RefinedRouteIntegration:
@@ -1482,7 +1392,7 @@ class _RefinedRouteIntegration:
             consider_road_traffic
         )
 
-      _assert_global_model_routes_handle_same_shipments(
+      _global_model.assert_routes_handle_same_shipments(
           self._global_response, {"routes": self._integrated_global_routes}
       )
 
@@ -1522,7 +1432,7 @@ class _RefinedRouteIntegration:
     for global_skipped_shipment in global_skipped_shipments:
       global_shipment_index = global_skipped_shipment.get("index", 0)
       global_shipment = self._global_shipments[global_shipment_index]
-      visit_type, index = _parse_global_shipment_label(
+      visit_type, index = _global_model.parse_shipment_label(
           global_skipped_shipment["label"]
       )
       match visit_type:
@@ -1657,7 +1567,9 @@ class _RefinedRouteIntegration:
         global_shipment_label = global_visit.get("shipmentLabel", "")
         global_shipment_index = global_visit.get("shipmentIndex", 0)
         global_shipment = self._global_shipments[global_shipment_index]
-        visit_type, index = _parse_global_shipment_label(global_shipment_label)
+        visit_type, index = _global_model.parse_shipment_label(
+            global_shipment_label
+        )
         visit_refinement = refinements.get(global_visit_index)
         if visit_refinement is not None:
           if visit_type != "p":
@@ -1884,7 +1796,7 @@ class _RefinedRouteIntegration:
       self._integrated_local_routes.append(integrated_local_route)
 
       # Add a global shipment for the local delivery round.
-      integrated_global_shipment = _make_global_model_shipment_for_local_route(
+      integrated_global_shipment = _global_model.make_shipment_for_local_route(
           self._model,
           integrated_local_route_index,
           integrated_local_route,
@@ -2029,97 +1941,9 @@ class _RefinedRouteIntegration:
     return shipment_index
 
 
-def _make_global_model_shipment_for_local_route(
-    model: cfr_json.ShipmentModel,
-    local_route_index: int,
-    local_route: cfr_json.ShipmentRoute,
-    parking: ParkingLocation,
-    transition_attributes: _parking.TransitionAttributeManager,
-) -> cfr_json.Shipment:
-  """Creates a virtual shipment in the global model for a local delivery route.
-
-  Args:
-    model: The original model.
-    local_route_index: The index of the local delivery route in the local
-      response.
-    local_route: The local delivery route.
-    parking: The parking location for the local delivery route.
-    transition_attributes: The parking transition attribute manager used for the
-      construction of the global model.
-
-  Returns:
-    The newly created global shipment.
-  """
-  visits = cfr_json.get_visits(local_route)
-
-  # Get all shipments from the original model that are delivered in this
-  # parking location route.
-  shipment_indices = _local_model.get_shipment_indices_from_visits(
-      cfr_json.get_shipments(model), visits
-  )
-  shipments = tuple(
-      model["shipments"][shipment_index] for shipment_index in shipment_indices
-  )
-  assert shipments
-
-  global_delivery_tags: list[str] = [parking.tag]
-  global_delivery: cfr_json.VisitRequest = {
-      # We use the waypoint of the parking location for the waypoint.
-      "arrivalWaypoint": parking.waypoint,
-      # The duration of the delivery at the parking location is the total
-      # duration of the local route for this round.
-      "duration": local_route["metrics"]["totalDuration"],
-      "tags": global_delivery_tags,
-  }
-  global_time_windows = _local_model.get_route_start_time_windows(
-      model, local_route
-  )
-  if global_time_windows is not None:
-    global_delivery["timeWindows"] = global_time_windows
-
-  # Add arrival/departure/reload costs and delays if needed.
-  parking_tags = transition_attributes.get_or_create(parking)
-  if parking_tags.has_global_transition_attributes:
-    global_delivery_tags.append(parking_tags.global_tag)
-
-  shipment_labels = ",".join(shipment["label"] for shipment in shipments)
-  global_shipment: cfr_json.Shipment = {
-      "label": f"p:{local_route_index} {shipment_labels}",
-      # We use the total duration of the parking location route as the
-      # duration of this virtual shipment.
-      "deliveries": [global_delivery],
-  }
-  # The load demands of the virtual shipment is the sum of the demands of
-  # all individual shipments delivered on the local route.
-  load_demands = cfr_json.combined_load_demands(shipments)
-  if load_demands:
-    global_shipment["loadDemands"] = load_demands
-
-  # Add the penalty cost of the virtual shipment if needed.
-  penalty_cost = cfr_json.combined_penalty_cost(shipments)
-  if penalty_cost is not None:
-    global_shipment["penaltyCost"] = penalty_cost
-
-  allowed_vehicle_indices = cfr_json.combined_allowed_vehicle_indices(shipments)
-  if allowed_vehicle_indices:
-    global_shipment["allowedVehicleIndices"] = allowed_vehicle_indices
-
-  costs_per_vehicle_and_indices = cfr_json.combined_costs_per_vehicle(shipments)
-  if costs_per_vehicle_and_indices is not None:
-    vehicle_indices, costs = costs_per_vehicle_and_indices
-    global_shipment["costsPerVehicle"] = costs
-    global_shipment["costsPerVehicleIndices"] = vehicle_indices
-
-  return global_shipment
-
-
-_GLOBAL_SHIPEMNT_LABEL = re.compile(r"^([ps]):(\d+) .*")
 _REFINEMENT_VEHICLE_LABEL = re.compile(
     r"^global_route:(\d+) start:(\d+) size:(\d+) parking:(.*)$"
 )
-
-
-T = TypeVar("T")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -2238,7 +2062,7 @@ def _get_consecutive_parking_location_visits(
 
   for global_visit_index, global_visit in enumerate(global_visits):
     global_visit_label = global_visit["shipmentLabel"]
-    visit_type, index = _parse_global_shipment_label(global_visit_label)
+    visit_type, index = _global_model.parse_shipment_label(global_visit_label)
     if visit_type == "s":
       add_sequence_if_needed(global_visit_index)
       previous_parking_tag = None
@@ -2377,10 +2201,3 @@ def _parse_refinement_vehicle_label(label: str) -> tuple[int, int, int, str]:
   if not match:
     raise ValueError("Invalid vehicle label in refinement model: {label!r}")
   return int(match[1]), int(match[2]), int(match[3]), match[4]
-
-
-def _parse_global_shipment_label(label: str) -> tuple[str, int]:
-  match = _GLOBAL_SHIPEMNT_LABEL.match(label)
-  if not match:
-    raise ValueError(f"Invalid shipment label: {label!r}")
-  return match[1], int(match[2])
