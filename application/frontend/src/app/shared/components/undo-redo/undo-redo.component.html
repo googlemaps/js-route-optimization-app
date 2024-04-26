@@ -3,18 +3,20 @@
   class="mat-elevation-z0"
   color=""
   aria-label="Undo"
+  title="Undo"
   (click)="onUndo()"
   [disabled]="(disabled$ | async) || (canUndo$ | async) !== true">
   <mat-icon>undo</mat-icon>
-  Undo
+  <span class="undo-redo-text">Undo</span>
 </button>
 <button
   mat-button
   class="mat-elevation-z0"
   color=""
   aria-label="Redo"
+  title="Redo"
   (click)="onRedo()"
   [disabled]="(disabled$ | async) || (canRedo$ | async) !== true">
   <mat-icon>redo</mat-icon>
-  Redo
+  <span class="undo-redo-text">Redo</span>
 </button>
