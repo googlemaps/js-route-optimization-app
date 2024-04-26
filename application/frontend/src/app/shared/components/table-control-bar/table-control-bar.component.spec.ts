@@ -14,24 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
-import { ActiveFilter } from '../../models';
 import { TableControlBarComponent } from './table-control-bar.component';
-
-@Component({
-  selector: 'app-filter-list',
-  template: '',
-})
-class MockFilterListComponent {
-  @Input() filters: ActiveFilter[];
-  @Output() editFilter = new EventEmitter<{ filter: ActiveFilter; element: HTMLElement }>();
-  @Output() removeFilter = new EventEmitter<ActiveFilter>();
-}
 
 @Component({
   selector: 'app-undo-redo',
@@ -46,7 +35,7 @@ describe('TableControlBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MaterialModule, NoopAnimationsModule],
-      declarations: [MockFilterListComponent, TableControlBarComponent, MockUndoRedoComponent],
+      declarations: [TableControlBarComponent, MockUndoRedoComponent],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
       .compileComponents();

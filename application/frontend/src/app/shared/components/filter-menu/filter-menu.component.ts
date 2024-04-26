@@ -27,6 +27,14 @@ export class FilterMenuComponent {
   @Input() filters: ActiveFilter[];
   @Input() filterOptions: FilterOption[];
   @Output() addFilter = new EventEmitter<FilterOption>();
+  @Output() editFilter = new EventEmitter<{ filter: ActiveFilter; element: HTMLElement }>();
+  @Output() removeFilter = new EventEmitter<ActiveFilter>();
+
+  onEditFilter(filter: ActiveFilter, event: MouseEvent): void {
+    if (filter.params != null) {
+      this.editFilter.emit({ filter, element: event.target as HTMLElement });
+    }
+  }
 
   trackFilterOptionBy(_index: number, filterOption: FilterOption): string {
     return filterOption.id;

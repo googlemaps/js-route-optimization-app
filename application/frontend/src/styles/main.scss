@@ -912,3 +912,9 @@ app-bulk-edit-unset {
   border: 1px solid #4285f480 !important;
   background: #fff !important;
 }
+
+.filters.mat-menu-panel {
+  min-height: fit-content;
+  padding: 0 0.5rem;
+  max-width: 50vw;
+}

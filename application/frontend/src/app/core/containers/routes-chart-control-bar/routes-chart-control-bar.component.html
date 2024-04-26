@@ -1,12 +1,10 @@
-<app-table-control-bar
-  [showModelSettings]="false"
-  [filters]="filters$ | async"
-  (editFilter)="onEditFilter($event)"
-  (removeFilter)="onRemoveFilter($event)">
+<app-table-control-bar [showModelSettings]="false">
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"
-    (addFilter)="onAddFilter($event)">
+    (addFilter)="onAddFilter($event)"
+    (editFilter)="onEditFilter($event)"
+    (removeFilter)="onRemoveFilter($event)">
   </app-filter-menu>
   <mat-divider preUndoRedo vertical></mat-divider>
   <mat-button-toggle-group
