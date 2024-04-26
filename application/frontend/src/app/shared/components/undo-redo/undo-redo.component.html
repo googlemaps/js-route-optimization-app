@@ -3,7 +3,7 @@
   class="mat-elevation-z0"
   color=""
   aria-label="Undo"
-  title="Undo"
+  title="Undo the last change"
   (click)="onUndo()"
   [disabled]="(disabled$ | async) || (canUndo$ | async) !== true">
   <mat-icon>undo</mat-icon>
@@ -14,7 +14,7 @@
   class="mat-elevation-z0"
   color=""
   aria-label="Redo"
-  title="Redo"
+  title="Redo the last change"
   (click)="onRedo()"
   [disabled]="(disabled$ | async) || (canRedo$ | async) !== true">
   <mat-icon>redo</mat-icon>
