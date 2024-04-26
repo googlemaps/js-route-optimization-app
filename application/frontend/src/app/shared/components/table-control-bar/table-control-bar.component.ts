@@ -34,9 +34,6 @@ import { ActiveFilter } from '../../models';
 })
 export class TableControlBarComponent {
   @Input() showModelSettings = true;
-  @Input() filters: ActiveFilter[];
-  @Output() editFilter = new EventEmitter<{ filter: ActiveFilter; element: HTMLElement }>();
-  @Output() removeFilter = new EventEmitter<ActiveFilter>();
   @Output() openShipmentModelSettings = new EventEmitter();
 
   @Input() displayColumns: Column[];
@@ -48,12 +45,6 @@ export class TableControlBarComponent {
 
   onDisplayColumnChange(column: Column, active: boolean): void {
     this.displayColumnChange.emit({ columnId: column.id, active });
-  }
-
-  onEditFilter(filter: ActiveFilter, event: MouseEvent): void {
-    if (filter.params != null) {
-      this.editFilter.emit({ filter, element: event.target as HTMLElement });
-    }
   }
 
   trackDisplayColumnBy(index: number, displayColumn: Column): string {
