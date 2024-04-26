@@ -171,4 +171,8 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
   onSelectionChange(selection: Page): void {
     this.router.navigateByUrl('/' + selection, { skipLocationChange: true });
   }
+
+  onToggleChange(selection: Page): void {
+    this.router.navigateByUrl('/' + selection, { skipLocationChange: true });
+  }
 }

@@ -8,6 +8,20 @@
     [filterOptions]="filterOptions$ | async"
     (addFilter)="onAddFilter($event)">
   </app-filter-menu>
+  <mat-button-toggle-group
+    postUndoRedo
+    class="main-toggle-group"
+    name="responseViews"
+    aria-label="Response Views"
+    (change)="onToggleChange($event.value)"
+    [value]="page$ | async">
+    <mat-button-toggle class="main-toggle" [value]="Page.RoutesChart" [disableRipple]="true"
+      >Timeline
+    </mat-button-toggle>
+    <mat-button-toggle class="main-toggle" [value]="Page.RoutesMetadata" [disableRipple]="true"
+      >Table
+    </mat-button-toggle>
+  </mat-button-toggle-group>
   <app-timezone-edit
     endContent
     appearance="outline"
@@ -18,7 +32,7 @@
     endContent
     class="range"
     *ngIf="(ranges$ | async)?.length"
-    [attr.title]="(range$ | async)?.label"
+    [attr.title]="(dayRange$ | async)?.label"
     [ngModel]="rangeIndex$ | async"
     (ngModelChange)="onRangeIndexSelect($event)"
     [ngModelOptions]="{ standalone: true }">
@@ -26,4 +40,14 @@
       {{ r.label }}
     </mat-option>
   </mat-select>
+  <app-time-navigation
+    endContent
+    *ngIf="(page$ | async) === Page.RoutesChart"
+    [range]="range$ | async"
+    [rangeOffset]="rangeOffset$ | async"
+    [nowRangeOffset]="nowRangeOffset$ | async"
+    [timezoneOffset]="timezoneOffset$ | async"
+    [globalDuration]="globalDuration$ | async"
+    (rangeOffsetChange)="onRangeOffsetChange($event)">
+  </app-time-navigation>
 </app-table-control-bar>

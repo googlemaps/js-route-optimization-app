@@ -18,6 +18,20 @@
       <mat-icon svgIcon="shipments_nav"></mat-icon> Metrics per shipment
     </mat-option>
   </mat-select>
+  <mat-button-toggle-group
+    postUndoRedo
+    class="main-toggle-group"
+    name="responseViews"
+    aria-label="Response Views"
+    (change)="onToggleChange($event.value)"
+    [value]="page$ | async">
+    <mat-button-toggle class="main-toggle" [value]="Page.RoutesChart" [disableRipple]="true"
+      >Timeline
+    </mat-button-toggle>
+    <mat-button-toggle class="main-toggle" [value]="Page.RoutesMetadata" [disableRipple]="true"
+      >Table
+    </mat-button-toggle>
+  </mat-button-toggle-group>
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"

@@ -24,15 +24,19 @@ import {
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { exhaustMap, take } from 'rxjs/operators';
+import { exhaustMap, map, take } from 'rxjs/operators';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import RoutesChartSelectors from 'src/app/core/selectors/routes-chart.selectors';
 import { FilterMenuComponent } from 'src/app/shared/components';
 import { ActiveFilter, Timezone, UnitStep } from 'src/app/shared/models';
 import { FilterService } from 'src/app/shared/services';
 import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
-import { ConfigActions, RoutesChartActions } from '../../actions';
-import { RouteFilterOption } from '../../models';
+import { ConfigActions, PostSolveControlBarActions, RoutesChartActions } from '../../actions';
+import { Page, RouteFilterOption } from '../../models';
+import { Router } from '@angular/router';
+import { Range } from 'src/app/shared/models';
+import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
+import * as fromUI from 'src/app/core/selectors/ui.selectors';
 
 @Component({
   selector: 'app-routes-chart-control-bar',
@@ -47,13 +51,22 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
   rangeIndex$: Observable<number>;
   filterOptions$: Observable<RouteFilterOption[]>;
   filters$: Observable<ActiveFilter[]>;
-  range$: Observable<number>;
+  dayRange$: Observable<number>;
+  page$: Observable<Page>;
+  range$: Observable<Range>;
+  rangeOffset$: Observable<number>;
+  nowRangeOffset$: Observable<number>;
   currentTimezone$: Observable<Timezone>;
   timezoneOffset$: Observable<number>;
+  globalDuration$: Observable<[Long, Long]>;
   private addSubscription: Subscription;
   private editSubscription: Subscription;
 
-  constructor(private filterService: FilterService, private store: Store) {}
+  get Page(): typeof Page {
+    return Page;
+  }
+
+  constructor(private filterService: FilterService, private store: Store, private router: Router) {}
 
   ngOnInit(): void {
     this.ranges$ = this.store.pipe(select(RoutesChartSelectors.selectRanges));
@@ -64,6 +77,14 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
     this.filters$ = this.store.pipe(select(RoutesChartSelectors.selectFilters));
     this.currentTimezone$ = this.store.pipe(select(fromConfig.selectTimezone));
     this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
+    this.range$ = this.store.pipe(select(RoutesChartSelectors.selectSelectedRange));
+    this.rangeOffset$ = this.store.pipe(select(RoutesChartSelectors.selectRangeOffset));
+    this.nowRangeOffset$ = this.store.pipe(select(RoutesChartSelectors.selectNowRangeOffset));
+    this.globalDuration$ = this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration));
+    this.page$ = this.store.pipe(
+      select(fromUI.selectPage),
+      map((page) => (page === Page.ShipmentsMetadata ? Page.RoutesMetadata : page))
+    );
   }
 
   ngOnDestroy(): void {
@@ -118,5 +139,13 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
 
   trackRangeBy(index: number): number {
     return index;
+  }
+
+  onToggleChange(selection: Page): void {
+    this.router.navigateByUrl('/' + selection, { skipLocationChange: true });
+  }
+
+  onRangeOffsetChange(rangeOffset: number): void {
+    this.store.dispatch(PostSolveControlBarActions.changeRangeOffset({ rangeOffset }));
   }
 }

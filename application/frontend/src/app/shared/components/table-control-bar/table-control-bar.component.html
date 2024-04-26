@@ -3,6 +3,7 @@
 <button *ngIf="showModelSettings" mat-button (click)="openShipmentModelSettings.emit()">
   <mat-icon svgIcon="settings" class="mr-2"></mat-icon>Shipment model settings
 </button>
+<ng-content select="[postUndoRedo]"></ng-content>
 <app-filter-list
   class="grow"
   [filters]="filters"
