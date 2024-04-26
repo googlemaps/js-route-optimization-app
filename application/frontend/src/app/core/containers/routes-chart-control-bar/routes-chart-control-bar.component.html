@@ -8,8 +8,9 @@
     [filterOptions]="filterOptions$ | async"
     (addFilter)="onAddFilter($event)">
   </app-filter-menu>
+  <mat-divider preUndoRedo vertical></mat-divider>
   <mat-button-toggle-group
-    postUndoRedo
+    preUndoRedo
     class="main-toggle-group"
     name="responseViews"
     aria-label="Response Views"
@@ -22,6 +23,7 @@
       >Table
     </mat-button-toggle>
   </mat-button-toggle-group>
+  <mat-divider preUndoRedo vertical></mat-divider>
   <app-timezone-edit
     endContent
     appearance="outline"
