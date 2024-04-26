@@ -1,5 +1,9 @@
 @import '../../../../styles/variables.scss';
 
+.display-columns-menu-trigger {
+  margin-left: auto;
+}
+
 app-table-control-bar {
   display: flex;
   align-items: center;

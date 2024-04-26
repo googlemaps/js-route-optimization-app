@@ -23,7 +23,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Column, Page } from 'src/app/core/models';
-import { ActiveFilter } from '../../models';
 
 @Component({
   selector: 'app-table-control-bar',
