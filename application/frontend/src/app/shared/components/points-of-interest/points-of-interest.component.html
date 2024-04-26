@@ -7,15 +7,6 @@
     {{ c.count }}
   </div>
 </div>
-<svg width="100%" height="13" #poiSvg>
-  <rect
-    x="0"
-    y="0"
-    width="100%"
-    height="100%"
-    fill="rgba(66, 133, 244, 0.25)"
-    *ngIf="isDragging && currentOverlapId === routeId" />
-</svg>
 <ng-container *ngFor="let p of points">
   <ng-container [ngSwitch]="p[1]" *ngIf="imageAttributeLookup[p[1]] as attr">
     <svg
@@ -30,12 +21,9 @@
       [attr.height]="attr.height"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
-        'pending-poi-old': isPendingOldPoi(p),
-        'dragging-poi': isDraggingPoint(p)
+        'pending-poi-old': isPendingOldPoi(p)
       }"
-      (mousedown)="onMouseDown($event, p)"
-      (mouseenter)="onMouseEnter(p)"
-      (mouseleave)="onMouseLeave()">
+      (mousedown)="onMouseDown($event, p)">
       <title>{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}</title>
       <path
         d="m 5.3143151,1.4380714 c 0.393,-0.61699998 1.2939998,-0.61699998 1.6869998,0 l 4.1740001,6.5509999 c 0.424,0.665 -0.054,1.537 -0.843,1.537 H 1.9833151 c -0.789,0 -1.26699998,-0.872 -0.843,-1.537 z"
@@ -55,12 +43,9 @@
       [attr.height]="attr.height"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
-        'pending-poi-old': isPendingOldPoi(p),
-        'dragging-poi': isDraggingPoint(p)
+        'pending-poi-old': isPendingOldPoi(p)
       }"
-      (mousedown)="onMouseDown($event, p)"
-      (mouseenter)="onMouseEnter(p)"
-      (mouseleave)="onMouseLeave()">
+      (mousedown)="onMouseDown($event, p)">
       <title>{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}</title>
       <path
         d="m 7.0012052,9.0889997 c -0.393,0.6159995 -1.294,0.6159995 -1.687,0 l -4.174,-6.551 C 0.71620522,1.872 1.1942052,1 1.9832052,1 h 8.3490008 c 0.789,0 1.267,0.872 0.843,1.5379997 z"

@@ -31,11 +31,9 @@ import { PreSolveVehicleActions } from 'src/app/core/actions';
 import {
   PointOfInterest,
   ShipmentRoute,
-  PointOfInterestStartDrag,
   Timeline,
   Vehicle,
   PointOfInterestClick,
-  PointOfInterestTimelineOverlapBegin,
   IConstraintRelaxation,
   ChangedVisits,
 } from 'src/app/core/models';
@@ -46,7 +44,6 @@ import * as fromTimeline from 'src/app/core/selectors/timeline.selectors';
 import ShipmentRouteSelectors from 'src/app/core/selectors/shipment-route.selectors';
 import * as fromVehicle from 'src/app/core/selectors/vehicle.selectors';
 import * as fromRoot from 'src/app/reducers';
-import * as PoiActions from 'src/app/core/actions/points-of-interest.actions';
 import RequestSettingsSelectors from 'src/app/core/selectors/request-settings.selectors';
 import VisitSelectors from 'src/app/core/selectors/visit.selectors';
 import { ValidationService } from 'src/app/core/services';
@@ -65,9 +62,6 @@ import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
   @Input() route: ShipmentRoute;
 
-  isDragging$: Observable<boolean>;
-  dragVisitIds$: Observable<number[]>;
-  currentOverlapId$: Observable<number>;
   selected$: Observable<boolean>;
   vehicle$: Observable<Vehicle>;
   shipmentCount$: Observable<number>;
@@ -180,12 +174,6 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
     );
 
     this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
-    this.isDragging$ = this.store.pipe(select(fromPointsOfInterest.selectIsDragging));
-    this.currentOverlapId$ = this.store.pipe(select(fromPointsOfInterest.selectOverlapTimelineId));
-    this.dragVisitIds$ = this.store.pipe(
-      select(fromPointsOfInterest.selectDragVisitsToEdit),
-      map((visits) => visits.map((visit) => visit.id))
-    );
     this.relaxationTimes$ = this.store.pipe(
       select(
         RequestSettingsSelectors.selectGlobalAndVehicleConstraintRelaxationsForVehicle(
@@ -212,19 +200,8 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
     this.store.dispatch(action({ routeId: this.route.id }));
   }
 
-  onDragStart(dragStart: PointOfInterestStartDrag): void {
-    this.store.dispatch(PoiActions.startDrag({ dragStart }));
-  }
-
-  onTimelineEnter(overlap: PointOfInterestTimelineOverlapBegin): void {
-    this.store.dispatch(PoiActions.beginTimelineOverlap({ overlap }));
-  }
-
-  onTimelineLeave(): void {
-    this.store.dispatch(PoiActions.endTimelineOverlap());
-  }
-
   onPointOfInterestClick(pointOfInterestClick: PointOfInterestClick): void {
+    console.log(pointOfInterestClick);
     if (pointOfInterestClick.visitId < 1) {
       return;
     }
@@ -238,13 +215,5 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
   onViewMetadata(id: number): void {
     this.store.dispatch(PostSolveMetricsActions.showMetadataForRoute({ id }));
     this.router.navigateByUrl('/' + Page.RoutesMetadata, { skipLocationChange: true });
-  }
-
-  onMouseEnterVisit(id: number): void {
-    this.store.dispatch(RoutesChartActions.mouseEnterVisitRequest({ id }));
-  }
-
-  onMouseExitVisit(): void {
-    this.store.dispatch(RoutesChartActions.mouseExitVisitRequest());
   }
 }

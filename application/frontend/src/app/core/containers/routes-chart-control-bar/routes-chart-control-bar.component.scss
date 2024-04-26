@@ -1,0 +1,26 @@
+app-table-control-bar {
+  height: 4rem;
+}
+
+app-timezone-edit {
+  margin-left: auto;
+  margin-right: 16px;
+  margin-top: 4px;
+  margin-bottom: -18px;
+  width: 20rem;
+}
+
+.filters {
+  flex-grow: 1;
+  margin-right: 16px;
+}
+
+.range {
+  margin-right: 16px;
+  max-width: 120px;
+}
+
+mat-divider {
+  height: 4em;
+  margin: 0 0.5em;
+}

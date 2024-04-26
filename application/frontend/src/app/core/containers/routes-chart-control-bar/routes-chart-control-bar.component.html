@@ -1,15 +1,55 @@
-<app-gantt-chart-control-bar
+<app-table-control-bar
+  [showModelSettings]="false"
   [filters]="filters$ | async"
   (editFilter)="onEditFilter($event)"
-  (removeFilter)="onRemoveFilter($event)"
-  [ranges]="ranges$ | async"
-  [rangeIndex]="rangeIndex$ | async"
-  (rangeIndexSelect)="onRangeIndexSelect($event)"
-  (updateTimezone)="onUpdateTimezone($event)"
-  [currentTimezone]="currentTimezone$ | async">
+  (removeFilter)="onRemoveFilter($event)">
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"
     (addFilter)="onAddFilter($event)">
   </app-filter-menu>
-</app-gantt-chart-control-bar>
+  <mat-divider preUndoRedo vertical></mat-divider>
+  <mat-button-toggle-group
+    preUndoRedo
+    class="main-toggle-group"
+    name="responseViews"
+    aria-label="Response Views"
+    (change)="onToggleChange($event.value)"
+    [value]="page$ | async">
+    <mat-button-toggle class="main-toggle" [value]="Page.RoutesChart" [disableRipple]="true"
+      >Timeline
+    </mat-button-toggle>
+    <mat-button-toggle class="main-toggle" [value]="Page.RoutesMetadata" [disableRipple]="true"
+      >Table
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-divider preUndoRedo vertical></mat-divider>
+  <app-timezone-edit
+    endContent
+    appearance="outline"
+    [currentTimezone]="currentTimezone$ | async"
+    (timezoneSelected)="onUpdateTimezone($event)">
+  </app-timezone-edit>
+  <mat-select
+    endContent
+    class="range"
+    *ngIf="(ranges$ | async)?.length"
+    [attr.title]="(dayRange$ | async)?.label"
+    [ngModel]="rangeIndex$ | async"
+    (ngModelChange)="onRangeIndexSelect($event)"
+    [ngModelOptions]="{ standalone: true }">
+    <mat-option *ngFor="let r of ranges$ | async; trackBy: trackRangeBy; let i = index" [value]="i">
+      {{ r.label }}
+    </mat-option>
+  </mat-select>
+  <app-time-navigation
+    endContent
+    *ngIf="(page$ | async) === Page.RoutesChart"
+    [range]="range$ | async"
+    [rangeOffset]="rangeOffset$ | async"
+    [nowRangeOffset]="nowRangeOffset$ | async"
+    [timezoneOffset]="timezoneOffset$ | async"
+    [globalDuration]="globalDuration$ | async"
+    (rangeOffsetChange)="onRangeOffsetChange($event)">
+  </app-time-navigation>
+</app-table-control-bar>

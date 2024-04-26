@@ -1,3 +1,7 @@
+app-table-control-bar {
+  height: 4rem;
+}
+
 mat-select.mat-select {
   min-width: 0;
   width: 190px;
@@ -20,4 +24,9 @@ mat-select mat-select-trigger {
 mat-option mat-icon {
   position: relative;
   top: -2px;
+}
+
+mat-divider {
+  height: 4em;
+  margin: 0 0.5em;
 }
