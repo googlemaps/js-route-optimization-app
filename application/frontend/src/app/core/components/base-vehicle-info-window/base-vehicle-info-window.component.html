@@ -12,7 +12,7 @@
 <div *ngIf="shipmentCount != null" class="text__caption">
   Shipments: <span class="strong">{{ shipmentCount }}</span>
 </div>
-<div *ngIf="route" class="d-flex text__caption">
+<div *ngIf="route?.metrics?.maxLoads" class="d-flex text__caption">
   <div class="mr-1">Max load:</div>
   <div ngClass="d-flex flex-column">
     <div *ngFor="let load of ObjectKeys(route.metrics?.maxLoads); let first = first">
