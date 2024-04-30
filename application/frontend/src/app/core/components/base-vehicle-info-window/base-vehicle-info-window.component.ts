@@ -14,8 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Vehicle } from '../../models';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  LOCALE_ID,
+  Output,
+} from '@angular/core';
+import { ITimestamp, ShipmentRoute, Vehicle } from '../../models';
+import { formatDate } from '@angular/common';
+import { durationSeconds } from 'src/app/util';
 
 @Component({
   selector: 'app-base-vehicle-info-window',
@@ -27,11 +37,22 @@ export class BaseVehicleInfoWindowComponent {
   @Input() vehicle: Vehicle;
   @Input() shipmentCount?: number;
   @Input() navigation = false;
+  @Input() route: ShipmentRoute;
+  @Input() timezoneOffset = 0;
   @Output() vehicleClick = new EventEmitter<Vehicle>();
+
+  ObjectKeys = Object.keys;
+
+  constructor(@Inject(LOCALE_ID) private locale: string) {}
 
   onVehicleClick(): void {
     if (this.navigation) {
       this.vehicleClick.emit(this.vehicle);
     }
+  }
+
+  formatDate(timestamp: ITimestamp): string {
+    const time = (durationSeconds(timestamp).toNumber() + this.timezoneOffset) * 1000;
+    return formatDate(time, 'yyyy/MM/dd h:mmaa', this.locale, 'UTC').toLocaleLowerCase(this.locale);
   }
 }

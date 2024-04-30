@@ -35,14 +35,22 @@
       <span class="strong">{{ shipment | entityName }}</span>
     </span>
   </div>
-  <div *ngIf="visit">Visit Type: <span class="strong">{{ visit.isPickup ? 'Pickup' : 'Delivery' }}</span></div>
-  <div *ngIf="shipment?.shipmentType">Shipment Type: <span class="strong">{{ shipment.shipmentType }}</span></div>
   <div *ngIf="visit">
-    <div>Arrival: <span class="strong">{{ buildFormattedArrival() }}</span></div>
+    Visit Type: <span class="strong">{{ visit.isPickup ? 'Pickup' : 'Delivery' }}</span>
+  </div>
+  <div *ngIf="shipment?.shipmentType">
+    Shipment Type: <span class="strong">{{ shipment.shipmentType }}</span>
+  </div>
+  <div *ngIf="visit">
+    <div>
+      Arrival: <span class="strong">{{ buildFormattedArrival() }}</span>
+    </div>
     <div *ngIf="buildFormattedDeparture() as formattedDeparture">
       Departure: <span class="strong">{{ formattedDeparture }}</span>
     </div>
-    <div>Vehicle: <span class="strong">{{ getVehicleName(vehicle) }}</span></div>
+    <div>
+      Vehicle: <span class="strong">{{ getVehicleName(vehicle) }}</span>
+    </div>
   </div>
 </div>
 <div *ngIf="savePending" class="updating-overlay">
