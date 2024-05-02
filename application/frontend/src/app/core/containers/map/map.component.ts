@@ -106,6 +106,15 @@ export class MapComponent implements OnInit, OnDestroy {
         )
         .subscribe((bounds) => {
           if (bounds) {
+            // If initial load, wait for the map to settle before trying to set the bounds
+            if (this.mapService.hasEmptyBounds) {
+              const listener = this.map.addListener('idle', () => {
+                this.mapService.setBounds(bounds);
+                this.changeDetector.markForCheck();
+                listener.remove();
+              });
+              return;
+            }
             this.mapService.setBounds(bounds);
             this.changeDetector.markForCheck();
           }
