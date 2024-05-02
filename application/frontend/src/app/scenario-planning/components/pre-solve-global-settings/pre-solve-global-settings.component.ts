@@ -57,7 +57,6 @@ import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import { RequestSettings, TimeThreshold } from '../../../core/models/request-settings';
 import ShipmentModelSelectors from '../../../core/selectors/shipment-model.selectors';
 import { RequestSettingsActions } from '../../../core/actions';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pre-solve-global-settings',
@@ -124,21 +123,22 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
   }
 
   initData(): void {
-    combineLatest([
-      this.store.pipe(select(selectTimezone)),
-      this.store.pipe(select(ShipmentModelSelectors.selectGlobalStartTime)),
-      this.store.pipe(select(ShipmentModelSelectors.selectGlobalEndTime)),
-      this.store.pipe(select(RequestSettingsSelectors.selectTimeout)),
-      this.store.pipe(select(RequestSettingsSelectors.selectGlobalConstraintRelaxations)),
-      this.store.pipe(select(RequestSettingsSelectors.selectInjectedSolution)),
-      this.store.pipe(select(RequestSettingsSelectors.selectInterpretInjectedSolutionsUsingLabels)),
-      this.store.pipe(select(RequestSettingsSelectors.selectPopulateTransitionPolylines)),
-      this.store.pipe(
-        select(RequestSettingsSelectors.selectAllowLargeDeadlineDespiteInterruptionRisk)
-      ),
-    ])
-      .pipe(take(1))
-      .subscribe(
+    this.subscriptions.push(
+      combineLatest([
+        this.store.pipe(select(selectTimezone)),
+        this.store.pipe(select(ShipmentModelSelectors.selectGlobalStartTime)),
+        this.store.pipe(select(ShipmentModelSelectors.selectGlobalEndTime)),
+        this.store.pipe(select(RequestSettingsSelectors.selectTimeout)),
+        this.store.pipe(select(RequestSettingsSelectors.selectGlobalConstraintRelaxations)),
+        this.store.pipe(select(RequestSettingsSelectors.selectInjectedSolution)),
+        this.store.pipe(
+          select(RequestSettingsSelectors.selectInterpretInjectedSolutionsUsingLabels)
+        ),
+        this.store.pipe(select(RequestSettingsSelectors.selectPopulateTransitionPolylines)),
+        this.store.pipe(
+          select(RequestSettingsSelectors.selectAllowLargeDeadlineDespiteInterruptionRisk)
+        ),
+      ]).subscribe(
         ([
           selectTimezone,
           selectGlobalStartTime,
@@ -177,30 +177,39 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
             selectAllowLargeDeadlineDespiteInterruptionRisk as boolean
           );
         }
-      );
+      )
+    );
 
-    this.store
-      .pipe(select(RequestSettingsSelectors.selectGlobalConstraintRelaxations), take(1))
-      .subscribe((relaxations) => {
-        this.updatedTimeThresholds = this.constraintRelaxationToTimeThresholds(
-          relaxations as IConstraintRelaxation
-        );
-        this.constraintRelaxations.reset(this.constraintRelaxationsToFormValues(relaxations));
-      });
+    this.subscriptions.push(
+      this.store
+        .pipe(select(RequestSettingsSelectors.selectGlobalConstraintRelaxations))
+        .subscribe((relaxations) => {
+          this.updatedTimeThresholds = this.constraintRelaxationToTimeThresholds(
+            relaxations as IConstraintRelaxation
+          );
+          this.constraintRelaxations.reset(this.constraintRelaxationsToFormValues(relaxations));
+        })
+    );
 
-    this.store
-      .pipe(select(RequestSettingsSelectors.selectSearchMode), take(1))
-      .subscribe((currentSearchMode) => {
-        this.currentSearchMode = (currentSearchMode || '').toString();
-      });
+    this.subscriptions.push(
+      this.store
+        .pipe(select(RequestSettingsSelectors.selectSearchMode))
+        .subscribe((currentSearchMode) => {
+          this.currentSearchMode = (currentSearchMode || '').toString();
+        })
+    );
 
-    this.store
-      .pipe(select(RequestSettingsSelectors.selectLabel), take(1))
-      .subscribe((value) => (this.globalSettings.label = value));
-    this.store
-      .pipe(select(RequestSettingsSelectors.selectTraffic), take(1))
-      .subscribe((value) => (this.globalSettings.traffic = value));
-    this.hasSolution$ = this.store.pipe(select(fromSolution.selectHasSolution), take(1));
+    this.subscriptions.push(
+      this.store
+        .pipe(select(RequestSettingsSelectors.selectLabel))
+        .subscribe((value) => (this.globalSettings.label = value))
+    );
+    this.subscriptions.push(
+      this.store
+        .pipe(select(RequestSettingsSelectors.selectTraffic))
+        .subscribe((value) => (this.globalSettings.traffic = value))
+    );
+    this.hasSolution$ = this.store.pipe(select(fromSolution.selectHasSolution));
   }
 
   ngOnDestroy(): void {
