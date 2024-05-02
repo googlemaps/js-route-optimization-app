@@ -32,37 +32,25 @@
   <div>
     Shipment:
     <span [ngClass]="{ link: navigation }" (click)="onShipmentClick()">
-      {{ shipment | entityName }}
+      <span class="strong">{{ shipment | entityName }}</span>
     </span>
   </div>
-  <div *ngIf="shipment?.shipmentType">Shipment Type: {{ shipment.shipmentType }}</div>
   <div *ngIf="visit">
-    <div>Arrival: {{ buildFormattedArrival() }}</div>
+    Visit Type: <span class="strong">{{ visit.isPickup ? 'Pickup' : 'Delivery' }}</span>
+  </div>
+  <div *ngIf="shipment?.shipmentType">
+    Shipment Type: <span class="strong">{{ shipment.shipmentType }}</span>
+  </div>
+  <div *ngIf="visit">
+    <div>
+      Arrival: <span class="strong">{{ buildFormattedArrival() }}</span>
+    </div>
     <div *ngIf="buildFormattedDeparture() as formattedDeparture">
-      Departure: {{ formattedDeparture }}
+      Departure: <span class="strong">{{ formattedDeparture }}</span>
     </div>
-    <div>Vehicle: {{ getVehicleName(vehicle) }}</div>
-  </div>
-  <mat-divider class="mt-1 mb-1"></mat-divider>
-  <div>Optional? {{ shipment?.penaltyCost ? 'Yes' : 'No' }}</div>
-  <div *ngIf="shipment?.penaltyCost">
-    <span>Penalty Cost: </span>
-    <span class="skipped-shipment">
-      {{ shipment.penaltyCost || '0.0' }}
-    </span>
-  </div>
-  <ng-container *ngIf="chosenTimeWindow as timeWindow">
-    <div *ngIf="softStartTimeMissedCost as missedCost">
-      <span>Missed Soft Start Cost: </span>
-      <span class="missed-soft-window">{{ missedCost }}</span>
+    <div>
+      Vehicle: <span class="strong">{{ getVehicleName(vehicle) }}</span>
     </div>
-    <div *ngIf="softEndTimeMissedCost as missedCost">
-      <span>Missed Soft End Cost: </span>
-      <span class="missed-soft-window">{{ missedCost }}</span>
-    </div>
-  </ng-container>
-  <div *ngIf="postSolve" class="mt-1">
-    <em>{{ visit ? 'VISITED' : 'NOT VISITED' }}</em>
   </div>
 </div>
 <div *ngIf="savePending" class="updating-overlay">

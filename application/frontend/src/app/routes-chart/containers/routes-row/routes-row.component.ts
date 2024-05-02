@@ -201,7 +201,6 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onPointOfInterestClick(pointOfInterestClick: PointOfInterestClick): void {
-    console.log(pointOfInterestClick);
     if (pointOfInterestClick.visitId < 1) {
       return;
     }
