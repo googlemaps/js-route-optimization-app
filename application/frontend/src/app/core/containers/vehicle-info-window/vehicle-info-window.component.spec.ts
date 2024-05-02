@@ -18,10 +18,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createSelector } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { Vehicle } from '../../models';
+import { ShipmentRoute, Vehicle } from '../../models';
 import ShipmentRouteSelectors from '../../selectors/shipment-route.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
+import * as fromShipmentRoute from '../../selectors/shipment-route.selectors';
 import { VehicleInfoWindowComponent } from './vehicle-info-window.component';
+import * as fromConfig from '../../selectors/config.selectors';
 
 @Component({
   selector: 'app-base-vehicle-info-window',
@@ -30,6 +32,8 @@ import { VehicleInfoWindowComponent } from './vehicle-info-window.component';
 class MockBaseVehicleInfoWindowComponent {
   @Input() vehicle: Vehicle;
   @Input() shipmentCount?: number;
+  @Input() route: ShipmentRoute;
+  @Input() timezoneOffset = 0;
   @Input() navigation = false;
   @Output() vehicleClick = new EventEmitter<Vehicle>();
 }
@@ -45,6 +49,11 @@ describe('VehicleInfoWindowComponent', () => {
         provideMockStore({
           selectors: [
             { selector: fromVehicle.selectVehicleState, value: { entities: {}, ids: [] } },
+            {
+              selector: fromShipmentRoute.selectShipmentRouteState,
+              value: { entities: {}, ids: [] },
+            },
+            { selector: fromConfig.selectTimezoneOffset, value: 0 },
           ],
         }),
       ],

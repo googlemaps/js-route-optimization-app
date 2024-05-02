@@ -3,4 +3,23 @@
     {{ vehicle | entityName: 'Vehicle' }}
   </span>
 </div>
-<div *ngIf="shipmentCount != null" class="text__caption">Shipments: {{ shipmentCount }}</div>
+<div *ngIf="route" class="text__caption">
+  Route Start: <span class="strong">{{ formatDate(route.vehicleStartTime) }}</span>
+</div>
+<div *ngIf="route" class="text__caption">
+  Route End: <span class="strong">{{ formatDate(route.vehicleEndTime) }}</span>
+</div>
+<div *ngIf="shipmentCount != null" class="text__caption">
+  Shipments: <span class="strong">{{ shipmentCount }}</span>
+</div>
+<div *ngIf="route?.metrics?.maxLoads" class="d-flex text__caption">
+  <div class="mr-1">Max load:</div>
+  <div ngClass="d-flex flex-column">
+    <div *ngFor="let load of ObjectKeys(route.metrics?.maxLoads); let first = first">
+      <span class="strong"
+        >{{ route.metrics.maxLoads[load].amount }} / {{ vehicle.loadLimits[load].maxLoad }}
+        {{ load }}</span
+      >
+    </div>
+  </div>
+</div>

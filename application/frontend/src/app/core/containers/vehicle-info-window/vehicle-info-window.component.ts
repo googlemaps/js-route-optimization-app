@@ -19,9 +19,11 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as fromRoot from 'src/app/reducers';
 import { MapActions } from '../../actions';
-import { Vehicle } from '../../models';
+import { ShipmentRoute, Vehicle } from '../../models';
 import ShipmentRouteSelectors from '../../selectors/shipment-route.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
+import { map } from 'rxjs/operators';
+import * as fromConfig from '../../selectors/config.selectors';
 
 @Component({
   selector: 'app-vehicle-info-window',
@@ -32,16 +34,23 @@ import * as fromVehicle from '../../selectors/vehicle.selectors';
 export class VehicleInfoWindowComponent implements OnInit {
   @Input() vehicleId: number;
 
+  route$: Observable<ShipmentRoute>;
   vehicle$: Observable<Vehicle>;
   shipmentCount$: Observable<number>;
+  timezoneOffset$: Observable<number>;
 
   constructor(private store: Store<fromRoot.State>) {}
 
   ngOnInit(): void {
+    this.route$ = this.store.pipe(
+      select(ShipmentRouteSelectors.selectRoutesByIds([this.vehicleId])),
+      map((routes) => routes[this.vehicleId])
+    );
     this.vehicle$ = this.store.pipe(select(fromVehicle.selectById(this.vehicleId)));
     this.shipmentCount$ = this.store.pipe(
       select(ShipmentRouteSelectors.selectRouteShipmentCount(this.vehicleId))
     );
+    this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
   }
 
   onVehicleClick(vehicle: Vehicle): void {
