@@ -106,6 +106,14 @@ export class MapComponent implements OnInit, OnDestroy {
         )
         .subscribe((bounds) => {
           if (bounds) {
+            // If initial load, try to set the bounds after the map has settled
+            if (this.mapService.hasEmptyBounds) {
+              const listener = this.map.addListener('idle', () => {
+                this.mapService.setBounds(bounds);
+                this.changeDetector.markForCheck();
+                listener.remove();
+              });
+            }
             this.mapService.setBounds(bounds);
             this.changeDetector.markForCheck();
           }
@@ -124,7 +132,10 @@ export class MapComponent implements OnInit, OnDestroy {
         this.depotLayer.visible = hasMap;
       }),
 
-      this.store.pipe(select(selectPage)).subscribe((page) => (this.page = page))
+      this.store.pipe(select(selectPage)).subscribe((page) => {
+        this.page = page;
+        this.changeDetector.markForCheck();
+      })
     );
 
     this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
