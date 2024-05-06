@@ -133,7 +133,10 @@ export class MapComponent implements OnInit, OnDestroy {
         this.depotLayer.visible = hasMap;
       }),
 
-      this.store.pipe(select(selectPage)).subscribe((page) => (this.page = page))
+      this.store.pipe(select(selectPage)).subscribe((page) => {
+        this.page = page;
+        this.changeDetector.markForCheck();
+      })
     );
 
     this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
