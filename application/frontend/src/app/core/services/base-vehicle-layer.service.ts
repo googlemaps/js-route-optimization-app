@@ -48,7 +48,7 @@ export abstract class BaseVehicleLayer {
 
   private _visible: boolean;
 
-  readonly iconSize = [300, 272];
+  readonly iconSize = [48, 48];
   private iconMapping = {};
   readonly defaultColor = 'blue-grey';
   readonly defaultSelectedColor = 'red';
@@ -107,7 +107,6 @@ export abstract class BaseVehicleLayer {
       getSize: 22,
       sizeScale: 10,
       getPosition: (d) => d.position,
-      getAngle: (d) => d.heading,
       pickable: true,
       onHover: ({ object }) => {
         this.mapService.map.setOptions({ draggableCursor: object ? 'pointer' : 'grab' });
@@ -142,7 +141,6 @@ export abstract class BaseVehicleLayer {
       getSize: 22,
       sizeScale: 10,
       getPosition: (d) => d.position,
-      getAngle: (d) => d.heading,
       pickable: false,
     });
     this.gLayer.setProps({ layers: [this.layer, this.selectedDataLayer] });
