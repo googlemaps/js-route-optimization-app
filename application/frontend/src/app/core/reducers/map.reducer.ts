@@ -31,11 +31,6 @@ export const initialState: State = {
       icon: 'pickup',
       visible: true,
     },
-    [MapLayerId.Routes]: {
-      name: 'Routes',
-      icon: 'route',
-      visible: true,
-    },
     [MapLayerId.PostSolveFourWheel]: {
       name: 'Driving',
       icon: 'vehicle_icon',

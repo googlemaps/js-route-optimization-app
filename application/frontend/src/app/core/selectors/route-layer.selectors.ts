@@ -20,6 +20,7 @@ import RoutesChartSelectors from './routes-chart.selectors';
 import { ShipmentRoute } from '../models';
 import { Feature, LineString } from '@turf/helpers';
 import { toTurfLineString } from 'src/app/util';
+import { selectPostSolveMapLayers } from './map.selectors';
 
 const routeToDeckGL = (route: ShipmentRoute, path: google.maps.LatLng[]) => {
   return {
@@ -42,7 +43,8 @@ export const selectRoutes = createSelector(
 export const selectFilteredRoutes = createSelector(
   selectRoutes,
   RoutesChartSelectors.selectFilteredRouteIds,
-  (paths, filteredRouteIds) => {
+  selectPostSolveMapLayers,
+  (paths, filteredRouteIds, mapLayers) => {
     return filteredRouteIds ? paths.filter((p) => filteredRouteIds.has(p.id)) : paths;
   }
 );
@@ -52,7 +54,8 @@ export const selectFilteredRoutesSelected = createSelector(
   RoutesChartSelectors.selectFilteredRouteIds,
   RoutesChartSelectors.selectSelectedRoutesLookup,
   RoutesChartSelectors.selectSelectedRoutesColors,
-  (paths, filteredRouteIds, selectedRoutesLookup, colors) => {
+  selectPostSolveMapLayers,
+  (paths, filteredRouteIds, selectedRoutesLookup, colors, mapLayers) => {
     const selectedRoutes = paths.filter(
       (p) => (filteredRouteIds == null || filteredRouteIds.has(p.id)) && selectedRoutesLookup[p.id]
     );
