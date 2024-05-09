@@ -63,7 +63,17 @@
       "disableDefaultUI": true,
       "zoomControl": true,
       "gestureHandling": "auto",
-      "clickableIcons": false
+      "clickableIcons": false,
+      "styles": [
+        {
+          "elementType": "labels.icon",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        }
+      ]
     }
   }
 }
