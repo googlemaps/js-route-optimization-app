@@ -23,6 +23,10 @@ import {
   selectFilteredVehiclesSelected,
 } from '../selectors/post-solve-vehicle-layer.selectors';
 import { BaseVehicleLayer } from './base-vehicle-layer.service';
+import { combineLatest, forkJoin } from 'rxjs';
+import { selectPostSolveMapLayers } from '../selectors/map.selectors';
+import { TravelMode, Vehicle } from '../models';
+import { MapLayer, MapLayerId } from '../models/map';
 
 @Injectable({
   providedIn: 'root',
@@ -30,13 +34,23 @@ import { BaseVehicleLayer } from './base-vehicle-layer.service';
 export class PostSolveVehicleLayer extends BaseVehicleLayer {
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone);
-    this.store.pipe(select(selectFilteredVehicles)).subscribe((vehicles) => {
-      this.onDataFiltered(vehicles);
+    combineLatest([
+      this.store.select(selectFilteredVehicles),
+      this.store.select(selectPostSolveMapLayers)
+    ]).subscribe(([vehicles, mapLayers]) => {
+      this.onDataFiltered(vehicles.filter(vehicle => this.isVehicleTravelModeVisible(vehicle, mapLayers)));
     });
 
-    this.store.pipe(select(selectFilteredVehiclesSelected)).subscribe((vehicles) => {
-      this.onDataSelected(vehicles);
+    combineLatest([
+      this.store.select(selectFilteredVehiclesSelected),
+      this.store.select(selectPostSolveMapLayers)
+    ]).subscribe(([vehicles, mapLayers]) => {
+      this.onDataSelected(vehicles.filter(vehicle => this.isVehicleTravelModeVisible(vehicle, mapLayers)));
     });
+  }
+
+  isVehicleTravelModeVisible(vehicle: Vehicle, mapLayers: { [id in MapLayerId]: MapLayer }): boolean {
+    return (vehicle.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING ? mapLayers[MapLayerId.PostSolveFourWheel].visible : mapLayers[MapLayerId.PostSolveWalking].visible;
   }
 
   layerId = 'post-solve-vehicles';

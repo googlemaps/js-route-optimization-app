@@ -15,7 +15,7 @@ import { MapLayer, MapLayerId } from '../../models/map';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostSolveMapLegendComponent {
-  @Input() mapLayers: { [id: string]: MapLayer } = {};
+  @Input() mapLayers: { [id in MapLayerId]?: MapLayer } = {};
   @Output() setLayerVisibility = new EventEmitter<{ layerId: MapLayerId; visible: boolean }>();
   @HostBinding('class.app-map-panel') readonly mapPanel = true;
 

@@ -21,7 +21,7 @@ import { MapActions } from '../actions';
 export const mapFeatureKey = 'map';
 
 export interface State {
-  postSolveMapLayers: { [id: string]: MapLayer };
+  postSolveMapLayers: { [id in MapLayerId]: MapLayer };
 }
 
 export const initialState: State = {
@@ -36,11 +36,16 @@ export const initialState: State = {
       icon: 'route',
       visible: true,
     },
-    [MapLayerId.PostSolveVehicles]: {
-      name: 'Vehicles',
+    [MapLayerId.PostSolveFourWheel]: {
+      name: 'Driving',
       icon: 'vehicle_icon',
       visible: true,
     },
+    [MapLayerId.PostSolveWalking]: {
+        name: 'Walking',
+        icon: 'walking',
+        visible: true,
+      },
   },
 };
 
@@ -58,5 +63,5 @@ export const reducer = createReducer(
   }))
 );
 
-export const selectPostSolveMapLayers = (state: State): { [id: string]: MapLayer } =>
+export const selectPostSolveMapLayers = (state: State): { [id in MapLayerId]: MapLayer } =>
   state.postSolveMapLayers;

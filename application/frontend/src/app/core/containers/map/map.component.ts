@@ -70,7 +70,7 @@ export class MapComponent implements OnInit, OnDestroy {
   mapSelectionToolsVisible$: Observable<boolean>;
   selectionFilterActive$: Observable<boolean>;
   timezoneOffset$: Observable<number>;
-  layers$: Observable<{ [id: string]: MapLayer }>;
+  layers$: Observable<{ [id in MapLayerId]: MapLayer }>;
 
   get bounds(): google.maps.LatLngBounds {
     return this.mapService.bounds;
@@ -133,7 +133,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.preSolveVehicleLayer.visible = hasMap && preSolve;
         this.preSolveVisitRequestLayer.visible = hasMap && preSolve;
         this.postSolveVehicleLayer.visible =
-          hasMap && postSolve && postSolveMapLayers[MapLayerId.PostSolveVehicles].visible;
+          hasMap && postSolve;
         this.postSolveVisitRequestLayer.visible =
           hasMap && postSolve && postSolveMapLayers[MapLayerId.PostSolveVisitRequests].visible;
         this.depotLayer.visible = hasMap;

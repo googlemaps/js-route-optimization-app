@@ -98,6 +98,7 @@ export class AppComponent {
       'select_bbox_active',
       'select_polygon',
       'select_polygon_active',
+      'walking',
       'zip',
     ];
     icons.forEach((icon) =>
