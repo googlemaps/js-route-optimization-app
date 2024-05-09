@@ -59,7 +59,7 @@ export abstract class BaseVehicleLayer {
     [TravelMode.TRAVEL_MODE_UNSPECIFIED]: 'four-wheel',
     [TravelMode.DRIVING]: 'four-wheel',
     [TravelMode.WALKING]: 'walking',
-  }
+  };
 
   // top-down/left-right icon order as layed out in sprite
   readonly iconMappingOrder = [
@@ -122,7 +122,11 @@ export abstract class BaseVehicleLayer {
   }
 
   getDefaultIconFn(data: any): string {
-    return data.atDepot ? null : `${this.travelModeIconMapping[data.travelMode ?? TravelMode.TRAVEL_MODE_UNSPECIFIED]}-${this.defaultColor}`;
+    return data.atDepot
+      ? null
+      : `${this.travelModeIconMapping[data.travelMode ?? TravelMode.TRAVEL_MODE_UNSPECIFIED]}-${
+          this.defaultColor
+        }`;
   }
   protected onDataFiltered(data): void {
     this.layer = new IconLayer({
@@ -155,7 +159,8 @@ export abstract class BaseVehicleLayer {
       return null;
     }
     const color = (data.color && data.color.name) || this.defaultSelectedColor;
-    const travelModeKey = this.travelModeIconMapping[data.travelMode ?? TravelMode.TRAVEL_MODE_UNSPECIFIED];
+    const travelModeKey =
+      this.travelModeIconMapping[data.travelMode ?? TravelMode.TRAVEL_MODE_UNSPECIFIED];
     const key = `${travelModeKey}-${color}`;
     return key in this.iconMapping ? key : `${travelModeKey}-${this.defaultSelectedColor}`;
   }

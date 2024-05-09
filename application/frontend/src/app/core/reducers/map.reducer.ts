@@ -42,10 +42,10 @@ export const initialState: State = {
       visible: true,
     },
     [MapLayerId.PostSolveWalking]: {
-        name: 'Walking',
-        icon: 'walking',
-        visible: true,
-      },
+      name: 'Walking',
+      icon: 'walking',
+      visible: true,
+    },
   },
 };
 

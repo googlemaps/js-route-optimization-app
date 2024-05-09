@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Injectable, NgZone } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import { MapService } from './map.service';
 import {
@@ -23,7 +23,7 @@ import {
   selectFilteredVehiclesSelected,
 } from '../selectors/post-solve-vehicle-layer.selectors';
 import { BaseVehicleLayer } from './base-vehicle-layer.service';
-import { combineLatest, forkJoin } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { selectPostSolveMapLayers } from '../selectors/map.selectors';
 import { TravelMode, Vehicle } from '../models';
 import { MapLayer, MapLayerId } from '../models/map';
@@ -36,21 +36,30 @@ export class PostSolveVehicleLayer extends BaseVehicleLayer {
     super(mapService, store, zone);
     combineLatest([
       this.store.select(selectFilteredVehicles),
-      this.store.select(selectPostSolveMapLayers)
+      this.store.select(selectPostSolveMapLayers),
     ]).subscribe(([vehicles, mapLayers]) => {
-      this.onDataFiltered(vehicles.filter(vehicle => this.isVehicleTravelModeVisible(vehicle, mapLayers)));
+      this.onDataFiltered(
+        vehicles.filter((vehicle) => this.isVehicleTravelModeVisible(vehicle, mapLayers))
+      );
     });
 
     combineLatest([
       this.store.select(selectFilteredVehiclesSelected),
-      this.store.select(selectPostSolveMapLayers)
+      this.store.select(selectPostSolveMapLayers),
     ]).subscribe(([vehicles, mapLayers]) => {
-      this.onDataSelected(vehicles.filter(vehicle => this.isVehicleTravelModeVisible(vehicle, mapLayers)));
+      this.onDataSelected(
+        vehicles.filter((vehicle) => this.isVehicleTravelModeVisible(vehicle, mapLayers))
+      );
     });
   }
 
-  isVehicleTravelModeVisible(vehicle: Vehicle, mapLayers: { [id in MapLayerId]: MapLayer }): boolean {
-    return (vehicle.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING ? mapLayers[MapLayerId.PostSolveFourWheel].visible : mapLayers[MapLayerId.PostSolveWalking].visible;
+  isVehicleTravelModeVisible(
+    vehicle: Vehicle,
+    mapLayers: { [id in MapLayerId]: MapLayer }
+  ): boolean {
+    return (vehicle.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
+      ? mapLayers[MapLayerId.PostSolveFourWheel].visible
+      : mapLayers[MapLayerId.PostSolveWalking].visible;
   }
 
   layerId = 'post-solve-vehicles';

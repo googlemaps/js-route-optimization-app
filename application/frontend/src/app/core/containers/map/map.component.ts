@@ -132,8 +132,7 @@ export class MapComponent implements OnInit, OnDestroy {
           hasMap && postSolve && postSolveMapLayers[MapLayerId.Routes].visible;
         this.preSolveVehicleLayer.visible = hasMap && preSolve;
         this.preSolveVisitRequestLayer.visible = hasMap && preSolve;
-        this.postSolveVehicleLayer.visible =
-          hasMap && postSolve;
+        this.postSolveVehicleLayer.visible = hasMap && postSolve;
         this.postSolveVisitRequestLayer.visible =
           hasMap && postSolve && postSolveMapLayers[MapLayerId.PostSolveVisitRequests].visible;
         this.depotLayer.visible = hasMap;

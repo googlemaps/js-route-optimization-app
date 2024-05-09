@@ -2,7 +2,7 @@ export enum MapLayerId {
   PostSolveVisitRequests,
   Routes,
   PostSolveFourWheel,
-  PostSolveWalking
+  PostSolveWalking,
 }
 
 export interface MapLayer {
