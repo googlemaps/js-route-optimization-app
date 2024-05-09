@@ -57,10 +57,12 @@ export const selectFilteredVehiclesSelected = createSelector(
   RoutesChartSelectors.selectSelectedRoutesColors,
   selectPostSolveMapLayers,
   (vehicles, startLocations, headings, selectedRoutesLookup, colors, mapLayers) => {
-    const selectedVehicles = Object.values(vehicles).filter((v) =>
-      selectedRoutesLookup.has(v.id) && ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
-    ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-    : mapLayers[MapLayerId.PostSolveWalking].visible)
+    const selectedVehicles = Object.values(vehicles).filter(
+      (v) =>
+        selectedRoutesLookup.has(v.id) &&
+        ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
+          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
+          : mapLayers[MapLayerId.PostSolveWalking].visible)
     );
     return selectedVehicles.map((vehicle) => ({
       ...vehicleToDeckGL(vehicle, startLocations[vehicle.id], headings[vehicle.id]),
