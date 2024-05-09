@@ -57,6 +57,7 @@ import { PostSolveVisitRequestLayer } from '../../services/post-solve-visit-requ
 import { PreSolveVehicleLayer } from '../../services/pre-solve-vehicle-layer.service';
 import { PreSolveVisitRequestLayer } from '../../services/pre-solve-visit-request-layer.service';
 import { RouteLayer } from '../../services/route-layer.service';
+import { MapLayer, MapLayerId } from '../../models/map';
 
 @Component({
   selector: 'app-map',
@@ -69,6 +70,7 @@ export class MapComponent implements OnInit, OnDestroy {
   mapSelectionToolsVisible$: Observable<boolean>;
   selectionFilterActive$: Observable<boolean>;
   timezoneOffset$: Observable<number>;
+  layers$: Observable<{ [id: string]: MapLayer }>;
 
   get bounds(): google.maps.LatLngBounds {
     return this.mapService.bounds;
@@ -97,6 +99,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.options$ = this.store.pipe(select(fromConfig.selectMapOptions), take(1));
     this.mapSelectionToolsVisible$ = this.store.pipe(select(selectMapSelectionToolsVisible));
     this.selectionFilterActive$ = this.store.pipe(select(selectSelectionFilterActive));
+    this.layers$ = this.store.pipe(select(fromMap.selectPostSolveMapLayers));
 
     this.subscriptions.push(
       this.store
@@ -123,12 +126,16 @@ export class MapComponent implements OnInit, OnDestroy {
         this.store.pipe(select(fromPreSolve.selectActive)),
         this.store.pipe(select(fromPostSolve.selectActive)),
         this.store.pipe(select(fromUI.selectHasMap)),
-      ]).subscribe(([preSolve, postSolve, hasMap]) => {
-        this.routeLayer.visible = hasMap && postSolve;
+        this.store.pipe(select(fromMap.selectPostSolveMapLayers)),
+      ]).subscribe(([preSolve, postSolve, hasMap, postSolveMapLayers]) => {
+        this.routeLayer.visible =
+          hasMap && postSolve && postSolveMapLayers[MapLayerId.Routes].visible;
         this.preSolveVehicleLayer.visible = hasMap && preSolve;
         this.preSolveVisitRequestLayer.visible = hasMap && preSolve;
-        this.postSolveVehicleLayer.visible = hasMap && postSolve;
-        this.postSolveVisitRequestLayer.visible = hasMap && postSolve;
+        this.postSolveVehicleLayer.visible =
+          hasMap && postSolve && postSolveMapLayers[MapLayerId.PostSolveVehicles].visible;
+        this.postSolveVisitRequestLayer.visible =
+          hasMap && postSolve && postSolveMapLayers[MapLayerId.PostSolveVisitRequests].visible;
         this.depotLayer.visible = hasMap;
       }),
 
@@ -248,5 +255,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
   addVehicle(): void {
     this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
+  }
+
+  onSetLayerVisibility(event: { layerId: MapLayerId; visible: boolean }): void {
+    this.store.dispatch(
+      MapActions.setPostSolveLayerVisible({ layerId: event.layerId, visible: event.visible })
+    );
   }
 }

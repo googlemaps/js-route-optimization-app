@@ -97,6 +97,7 @@ import { ShipmentTypeRequirementDialogComponent } from './components/shipment-ty
 import { TransitionAttributesDialogComponent } from './components/transition-attributes-dialog/transition-attributes-dialog.component';
 import { PrecedenceRulesDialogComponent } from './components/precedence-rules-dialog/precedence-rules-dialog.component';
 import { ShipmentModelSettingsComponent } from './containers/shipment-model-settings/shipment-model-settings.component';
+import { PostSolveMapLegendComponent } from './components/post-solve-map-legend/post-solve-map-legend.component';
 
 export const COMPONENTS = [
   BaseDocumentationDialogComponent,
@@ -189,6 +190,7 @@ export const CONTAINERS = [
     TransitionAttributesDialogComponent,
     PrecedenceRulesDialogComponent,
     ShipmentModelSettingsComponent,
+    PostSolveMapLegendComponent,
   ],
   exports: [COMPONENTS, CONTAINERS, CsvUploadDialogComponent],
 })

@@ -1,5 +1,10 @@
 <app-map-wrapper [options]="options$ | async" (mapInitialize)="onMapInitialize($event)">
 </app-map-wrapper>
+<app-post-solve-map-legend
+  *ngIf="!isPreSolve()"
+  [mapLayers]="layers$ | async"
+  (setLayerVisibility)="onSetLayerVisibility($event)">
+</app-post-solve-map-legend>
 <app-map-add-buttons
   *ngIf="isPreSolve()"
   (addShipment)="addShipment()"
