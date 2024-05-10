@@ -2,7 +2,6 @@
 
 :host {
   display: block;
-  text-align: justify;
   overflow: auto;
 }
 
@@ -133,6 +132,7 @@ section:last-child {
   max-width: 25%;
   font-size: 16px;
   line-height: 24px;
+  text-align: center;
 }
 
 .preview {
