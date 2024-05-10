@@ -100,6 +100,10 @@ body {
   justify-content: space-between;
 }
 
+.justify-content-center {
+  justify-content: center;
+}
+
 .content__title {
   font-size: 17px;
   font-weight: 500;
@@ -917,4 +921,16 @@ app-bulk-edit-unset {
   min-height: fit-content;
   padding: 0 0.5rem;
   max-width: 50vw;
+}
+
+.mat-stroked-button-blue-outline {
+  border-color: $blue !important;
+}
+
+.icon-green svg path {
+  fill: #34a853;
+}
+
+.icon-red svg path {
+  fill: #ea4335;
 }
