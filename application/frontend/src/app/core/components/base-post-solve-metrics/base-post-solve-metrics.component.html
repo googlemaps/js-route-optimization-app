@@ -1,31 +1,31 @@
-<div class="metrics">
+<div class="metrics-box-container">
   <div class="metric-box">
-    <div class="mat-h3 mb-1 metric-box-title">Average across all vehicles</div>
-    <div class="mat-h3 mb-0 metric-box-value">
+    <div class="mb-1 metric-box-title">Average across all vehicles</div>
+    <div class="mb-0 metric-box-value">
       {{ numberOfRoutes }} route{{ numberOfRoutes > 1 ? 's' : '' }} in
       {{ solveSeconds | number: '1.2-2' }} seconds
     </div>
   </div>
   <div class="metric-box">
-    <div class="mat-h3 mb-1 metric-box-title">Average across all vehicles</div>
+    <div class="mb-1 metric-box-title">Average across all vehicles</div>
     <app-post-solve-timeline-legend
       [vehicleTimeAverages]="vehicleTimeAverages"></app-post-solve-timeline-legend>
   </div>
   <div class="metric-box">
-    <div class="mat-h3 mb-1 metric-box-title">Total cost</div>
-    <div class="mat-h3 mb-0 metric-box-value">
+    <div class="mb-1 metric-box-title">Total cost</div>
+    <div class="mb-0 metric-box-value">
       {{ totalCost | currency }}
     </div>
   </div>
   <div class="metric-box">
-    <div class="mat-h3 mb-1 metric-box-title">Total km driven</div>
-    <div class="mat-h3 mb-0 metric-box-value">
+    <div class="mb-1 metric-box-title">Total km driven</div>
+    <div class="mb-0 metric-box-value">
       {{ totalDistance / 1000 | number: '1.1-1' }}
     </div>
   </div>
   <div class="metric-box">
-    <div class="mat-h3 mb-1 metric-box-title">Total km driven</div>
-    <div class="mat-h3 mb-0 metric-box-value">
+    <div class="mb-1 metric-box-title">Total km driven</div>
+    <div class="mb-0 metric-box-value">
       {{ totalDistance / 1000 | number: '1.1-1' }}
     </div>
   </div>
@@ -40,23 +40,23 @@
     </button>
   </div>
   <div class="metric-box">
-    <div class="mat-h3 mb-1 metric-box-title">Number of vehicles</div>
-    <div class="mat-h3 mb-0 metric-box-value">
+    <div class="mb-1 metric-box-title">Number of vehicles</div>
+    <div class="mb-0 metric-box-value">
       {{ numberOfRoutes }}
     </div>
   </div>
   <div class="metric-box">
-    <div class="mat-h3 mb-1 metric-box-title">Duration</div>
-    <div class="mat-h3 mb-0 metric-box-value">
+    <div class="mb-1 metric-box-title">Duration</div>
+    <div class="mb-0 metric-box-value">
       {{ formattedStart }}-{{ formattedEnd }}{{ totalDays > 0 ? '+' + totalDays : '' }}
     </div>
   </div>
 </div>
 
 <ng-template #skippedShipmentsMetric>
-  <div class="mat-h3 mb-1 metric-box-title">Shipments performed</div>
-  <div class="mat-h3 mb-0 metric-box-value">{{ madeShipments }}/{{ shipmentsCount }}</div>
-  <div class="mat-h3 mb-0 metric-box-value">
+  <div class="mb-1 metric-box-title">Shipments performed</div>
+  <div class="mb-0 metric-box-value">{{ madeShipments }}/{{ shipmentsCount }}</div>
+  <div class="mb-0 metric-box-value">
     {{ skippedShipmentsCount }} shipment{{ skippedShipmentsCount === 1 ? '' : 's' }} skipped
   </div>
 </ng-template>

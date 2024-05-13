@@ -14,32 +14,3 @@
   font-size: 16px;
   line-height: 24px;
 }
-
-.metrics {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-}
-
-.metric-box {
-  background-color: #f3f8ff;
-  border-radius: 5px;
-  padding: 5px 20px;
-  text-align: center;
-  flex-grow: 1;
-  border: 1px solid #d5dee5;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-}
-
-.metric-box-title {
-  color: #5f6368;
-  font-weight: 300;
-  font-size: 14px;
-}
-
-.metric-box-value {
-  color: $blue;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-}
