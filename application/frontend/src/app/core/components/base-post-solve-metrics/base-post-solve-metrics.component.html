@@ -24,12 +24,6 @@
     </div>
   </div>
   <div class="metric-box">
-    <div class="mb-1 metric-box-title">Total km driven</div>
-    <div class="mb-0 metric-box-value">
-      {{ totalDistance / 1000 | number: '1.1-1' }}
-    </div>
-  </div>
-  <div class="metric-box">
     <button
       *ngIf="skippedShipmentsCount > 0; else skippedShipmentsMetric"
       mat-flat-button
