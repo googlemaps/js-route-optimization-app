@@ -1,7 +1,11 @@
 @import '../../../../styles/variables.scss';
 
 :host {
-  background-color: #ffffff;
+  background-color: #00000000;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 100;
 }
 
 mat-divider {
