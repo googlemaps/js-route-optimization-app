@@ -2,6 +2,13 @@
   position: relative;
 }
 
+app-post-solve-map-legend {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 50px;
+}
+
 app-map-type-button {
   position: absolute;
   z-index: 1;

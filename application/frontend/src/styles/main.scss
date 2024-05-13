@@ -923,6 +923,7 @@ app-bulk-edit-unset {
   max-width: 50vw;
 }
 
+
 .mat-stroked-button-blue-outline {
   border-color: $blue !important;
 }
@@ -933,4 +934,14 @@ app-bulk-edit-unset {
 
 .icon-red svg path {
   fill: #ea4335;
+
+app-post-solve-map-legend .legend-panel mat-checkbox label .mat-checkbox-label {
+  display: flex !important;
+  align-items: center !important;
+
+  .mat-icon {
+    width: 1em !important;
+    margin: 0 0.25em;
+  }
+
 }

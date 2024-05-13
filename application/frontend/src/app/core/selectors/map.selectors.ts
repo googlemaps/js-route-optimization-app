@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import buffer from '@turf/buffer';
 import lineIntersect from '@turf/line-intersect';
 import {
@@ -38,8 +38,11 @@ import { selectPage } from './ui.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import VisitSelectors from './visit.selectors';
 import VisitRequestSelectors from './visit-request.selectors';
+import * as fromMap from '../reducers/map.reducer';
 
 type MapLatLng = google.maps.LatLng;
+
+export const selectMapState = createFeatureSelector<fromMap.State>(fromMap.mapFeatureKey);
 
 const findAlternativeStartLocation = (path: MapLatLng[]): MapLatLng => {
   const distanceAlongPath = google.maps.geometry.spherical.computeLength(path) / 10;
@@ -254,4 +257,9 @@ export const selectSelectionFilterActive = createSelector(
       return routesActive;
     }
   }
+);
+
+export const selectPostSolveMapLayers = createSelector(
+  selectMapState,
+  fromMap.selectPostSolveMapLayers
 );
