@@ -4,8 +4,8 @@
   display: flex;
   flex-direction: column;
   padding: 15px;
-  padding-bottom: 0;
   gap: 7px;
+  border-bottom: 1px solid #d7e3f1;
 }
 
 .kpis-title {
@@ -21,13 +21,13 @@
 }
 
 .metric-box {
-  background-color: #F3F8FF;
+  background-color: #f3f8ff;
   border-radius: 5px;
   padding: 5px 20px;
   text-align: center;
   flex-grow: 1;
-  border: 1px solid #D5DEE5;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, .1);
+  border: 1px solid #d5dee5;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
 .metric-box-title {

@@ -1,56 +1,44 @@
 @import '../../../../styles/variables.scss';
 
-.metrics-container {
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 7px;
+  border-bottom: 1px solid #d7e3f1;
+  overflow-x: auto;
+}
+
+.kpis-title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.metrics {
   display: flex;
   flex-direction: row;
-  padding: 1rem;
-  border-bottom: 1px solid #d7e3f1;
+  gap: 15px;
+}
 
-  .metric-group {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: center;
-    padding: 0 1rem;
+.metric-box {
+  background-color: #f3f8ff;
+  border-radius: 5px;
+  padding: 5px 20px;
+  text-align: center;
+  flex-grow: 1;
+  border: 1px solid #d5dee5;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
 
-    &.left-border {
-      border-left: 1px solid #d7e3f1;
-    }
+.metric-box-title {
+  color: #5f6368;
+  font-weight: 300;
+}
 
-    p {
-      margin: 0;
-      line-height: 1.5rem;
-    }
-
-    h3 {
-      font-weight: 500;
-      margin: 0;
-    }
-
-    .lighter-text {
-      color: $dark;
-    }
-
-    .darker-text {
-      color: $darker;
-    }
-
-    button {
-      text-align: left;
-      white-space: normal;
-    }
-
-    .warning-button {
-      color: white;
-      background-color: $orange;
-    }
-
-    .top-text {
-      padding-top: 0.5rem;
-    }
-
-    .bottom-text {
-      padding-bottom: 0.5rem;
-    }
-  }
+.metric-box-value {
+  color: $blue;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
 }
