@@ -1,5 +1,4 @@
 <app-progress-bar *ngIf="!isWelcomePage" [loading]="loading"></app-progress-bar>
-<app-post-solve-metrics *ngIf="isPostSolve"></app-post-solve-metrics>
 
 <main>
   <app-map id="main-map" [ngClass]="{ 'map-hidden': !hasMap }"></app-map>
@@ -16,6 +15,7 @@
       <ng-container *ngIf="isPreSolve">
         <app-scenario-kpis></app-scenario-kpis>
       </ng-container>
+      <app-post-solve-metrics *ngIf="isPostSolve"></app-post-solve-metrics>
       <router-outlet></router-outlet>
     </div>
   </div>
