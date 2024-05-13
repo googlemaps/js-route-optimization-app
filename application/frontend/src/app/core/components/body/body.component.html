@@ -1,9 +1,4 @@
 <app-progress-bar *ngIf="!isWelcomePage" [loading]="loading"></app-progress-bar>
-
-<ng-container *ngIf="isPreSolve">
-  <app-scenario-kpis></app-scenario-kpis>
-</ng-container>
-
 <app-post-solve-metrics *ngIf="isPostSolve"></app-post-solve-metrics>
 
 <main>
@@ -18,6 +13,9 @@
       </ng-container>
       <app-routes-chart-control-bar *ngIf="isRoutesChartPage"></app-routes-chart-control-bar>
       <app-metadata-control-bar *ngIf="isMetadata"></app-metadata-control-bar>
+      <ng-container *ngIf="isPreSolve">
+        <app-scenario-kpis></app-scenario-kpis>
+      </ng-container>
       <router-outlet></router-outlet>
     </div>
   </div>
