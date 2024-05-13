@@ -10,9 +10,7 @@ button {
   color: $gray;
   border-radius: 0;
   text-align: left;
-  &:not(:first-of-type) {
-    margin-top: 0.75rem;
-  }
+  margin-top: 0.25rem;
   *:first-child {
     margin-right: 1rem;
   }
