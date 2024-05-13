@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import { createAction, props } from '@ngrx/store';
+import { MapLayerId } from '../models/map';
 
 export const hideMap = createAction('[Map] Hide Map');
 
@@ -52,3 +53,8 @@ export const editPreSolveVehicle = createAction(
 );
 
 export const editVisit = createAction('[Map] Edit Visit', props<{ visitId: number }>());
+
+export const setPostSolveLayerVisible = createAction(
+  '[Map] Set Post Solve Layer Visible',
+  props<{ layerId: MapLayerId; visible: boolean }>()
+);

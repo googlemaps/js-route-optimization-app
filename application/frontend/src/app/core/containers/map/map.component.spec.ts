@@ -34,6 +34,7 @@ import {
   VisitRequestInfoWindowService,
 } from '../../services';
 import { MapComponent } from './map.component';
+import { MapLayer, MapLayerId } from '../../models/map';
 
 @Component({
   selector: 'app-map-wrapper',
@@ -71,6 +72,15 @@ class MockZoomHomeButtonComponent {
   @Output() zoomToHome = new EventEmitter<void>();
 }
 
+@Component({
+  selector: 'app-post-solve-map-legend',
+  template: '',
+})
+class MockPostSolveMapLegendComponent {
+  @Input() mapLayers: { [id in MapLayerId]?: MapLayer } = {};
+  @Output() setLayerVisibility = new EventEmitter<{ layerId: MapLayerId; visible: boolean }>();
+}
+
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
@@ -88,6 +98,7 @@ describe('MapComponent', () => {
         MockMapTypeButtonComponent,
         MockMapWrapperComponent,
         MockZoomHomeButtonComponent,
+        MockPostSolveMapLegendComponent,
         MapComponent,
       ],
       providers: [

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Injectable, NgZone } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import { MapService } from './map.service';
 import {
@@ -30,13 +30,12 @@ import { BaseVehicleLayer } from './base-vehicle-layer.service';
 export class PostSolveVehicleLayer extends BaseVehicleLayer {
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone);
-    this.store.pipe(select(selectFilteredVehicles)).subscribe((vehicles) => {
-      this.onDataFiltered(vehicles);
-    });
-
-    this.store.pipe(select(selectFilteredVehiclesSelected)).subscribe((vehicles) => {
-      this.onDataSelected(vehicles);
-    });
+    this.store
+      .pipe(select(selectFilteredVehicles))
+      .subscribe((vehicles) => this.onDataFiltered(vehicles));
+    this.store
+      .pipe(select(selectFilteredVehiclesSelected))
+      .subscribe((vehicles) => this.onDataSelected(vehicles));
   }
 
   layerId = 'post-solve-vehicles';

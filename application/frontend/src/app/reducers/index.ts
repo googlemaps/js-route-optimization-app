@@ -30,6 +30,7 @@ import * as fromConfig from '../core/reducers/config.reducer';
 import * as fromDispatcherApi from '../core/reducers/dispatcher-api.reducer';
 import * as fromDispatcher from '../core/reducers/dispatcher.reducer';
 import * as fromEditVisit from '../core/reducers/edit-visit.reducer';
+import * as fromMap from '../core/reducers/map.reducer';
 import * as fromMapApi from '../core/reducers/map-api.reducer';
 import * as fromPointsOfInterest from '../core/reducers/points-of-interest.reducer';
 import * as fromPreSolveShipment from '../core/reducers/pre-solve-shipment.reducer';
@@ -69,6 +70,7 @@ export interface State {
   [fromRequestSettings.requestSettingsFeatureKey]: fromRequestSettings.State;
   [fromShipmentModel.shipmentModelFeatureKey]: fromShipmentModel.State;
   [fromUndoRedo.undoRedoFeatureKey]: fromUndoRedo.State;
+  [fromMap.mapFeatureKey]: fromMap.State;
   router: fromRouter.RouterReducerState<any>;
 }
 
@@ -96,6 +98,7 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
       [fromVehicle.vehiclesFeatureKey]: fromVehicle.reducer,
       [fromVisit.visitsFeatureKey]: fromVisit.reducer,
       [fromVisitRequest.visitRequestsFeatureKey]: fromVisitRequest.reducer,
+      [fromMap.mapFeatureKey]: fromMap.reducer,
       router: fromRouter.routerReducer,
     }),
   }
