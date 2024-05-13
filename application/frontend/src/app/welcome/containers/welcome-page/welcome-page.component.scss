@@ -2,13 +2,7 @@
 
 :host {
   display: block;
-  text-align: justify;
-}
-
-.page-content {
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  overflow: auto;
 }
 
 section .mat-title {
@@ -53,16 +47,28 @@ section:last-child {
   margin-bottom: 0 !important;
 }
 
-.entry-points {
-  border-radius: 0.625rem;
-  background: rgba(66, 133, 244, 0.05);
+.entry-points,
+.preview {
+  padding: 50px 0;
+  background-color: #f8f9fa;
+}
 
-  display: flex;
-  padding: 0.9375rem;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.5625rem;
-  align-self: stretch;
+.entry-points {
+  gap: 6rem;
+  background-image: url('/assets/images/curve.svg');
+  background-repeat: no-repeat;
+  background-position: 1% bottom;
+}
+
+.entry-title {
+  font-size: 56px;
+  line-height: 64px;
+}
+
+.entry-cta {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
 }
 
 .cloud-invisible {
@@ -89,14 +95,84 @@ section:last-child {
   }
 }
 
+.entry-points-container {
+  width: fit-content;
+}
+
 .main-entry-points {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  gap: 15px;
   border-radius: var(--none, 0rem);
+  padding: 20px 0;
 }
 
 .inline-link-icon {
   height: 1em;
   width: unset;
+}
+
+.overview {
+  gap: 4rem;
+  padding: 40px 0;
+  color: #3c4043;
+}
+
+.overview-icon {
+  height: 44px;
+  width: auto;
+}
+
+.overview-title {
+  font-size: 28px;
+  line-height: 36px;
+  margin: 0.5rem 0;
+}
+
+.overview-entry {
+  max-width: 25%;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.preview {
+  gap: 1rem;
+}
+
+.preview-title {
+  font-size: 36px;
+  line-height: 44px;
+  color: #202124;
+}
+
+.preview-content-item {
+  max-width: 25%;
+}
+
+.preview-contents {
+  gap: 4rem;
+  color: #3c4043;
+}
+
+.preview-contents-title {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.preview-contents-text {
+  font-size: 16px;
+  line-height: 24px;
+  margin-top: 1em;
+}
+
+.more-info-section {
+  margin: auto;
+  max-width: 1080px;
+  padding: 40px 0;
+  color: #3c4043;
+}
+
+.more-info-title {
+  font-size: 28px;
+  line-height: 45px;
 }
