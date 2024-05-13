@@ -1,8 +1,7 @@
 <button
   mat-button
   (click)="onLoad()"
-  *ngIf="(hasStorageApi$ | async) && (allowUserStorage$ | async)"
-  >
+  *ngIf="(hasStorageApi$ | async) && (allowUserStorage$ | async)">
   <mat-icon svgIcon="cloud_upload"></mat-icon>
   From cloud
 </button>
