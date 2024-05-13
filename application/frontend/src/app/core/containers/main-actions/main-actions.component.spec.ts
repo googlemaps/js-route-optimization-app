@@ -23,6 +23,7 @@ import * as fromDownload from '../../selectors/download.selectors';
 import { MainActionsComponent } from './main-actions.component';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import * as fromSolution from 'src/app/core/selectors/solution.selectors';
+import { selectPage } from '../../selectors/ui.selectors';
 
 describe('MainActionsComponent', () => {
   let component: MainActionsComponent;
@@ -38,6 +39,7 @@ describe('MainActionsComponent', () => {
             { selector: fromConfig.selectHasStorageApiRoot, value: false },
             { selector: fromSolution.selectHasSolution, value: false },
             { selector: fromConfig.selectAllowUserStorage, value: false },
+            { selector: selectPage, value: null },
           ],
         }),
       ],
