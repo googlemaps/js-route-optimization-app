@@ -1,70 +1,100 @@
-<app-logo></app-logo>
-<section id="page-title" class="page-content mb-0">
-  <span>What is Fleet Routing App?</span>
-</section>
-<section class="intro page-content">
-  <p>
-    Fleet Routing App is an open source web application intended to showcase the functionality of
-    GMP Route Optimization API (formerly Cloud Fleet Routing / CFR), and help developers better
-    evaluate and onboard to the product. It also serves as a sample UI implementation that
-    demonstrates how a dispatcher planning app integrates with the Route Optimization API.
-  </p>
-  <p>
-    GMP Route Optimization API solves Vehicle Routing Problems (VRPs) for developers from across
-    different industries such as Logistics, On Demand Deliveries, Field Services and more.
-  </p>
-  <p>
-    <a href="https://cloud.google.com/optimization/docs/introduction/get_started" target="_blank"
-      >Learn more <mat-icon svgIcon="open_in_new" class="inline-link-icon"></mat-icon
-    ></a>
-  </p>
-</section>
-<section class="entry-points d-flex page-content">
-  <p class="mat-body-strong mb-0">Select one of the options below to start.</p>
-  <div class="d-flex main-entry-points">
-    <button
-      type="button"
-      mat-stroked-button
-      color="primary"
-      class="light-stroked-button"
-      (click)="upload()">
-      <mat-icon svgIcon="input"></mat-icon>
-      <span class="ml-3">Load...</span>
-    </button>
-    <div class="col"></div>
-    <div class="col">
-      <button
-        type="button"
-        mat-stroked-button
-        color="primary"
-        class="light-stroked-button"
-        (click)="newScenario()">
-        <mat-icon svgIcon="add"></mat-icon>
-        <span class="ml-2">Create new</span>
-      </button>
+<div class="entry-points d-flex flex-row justify-content-center align-items-center">
+  <div>
+    <p class="mat-body-strong mb-0">GOOGLE MAPS FLEET ROUTING OPTIMIZATION</p>
+    <p class="entry-title mb-0">Demo App</p>
+    <p class="entry-cta mb-0">Upload your request data to get started</p>
+    <div class="entry-points-container">
+      <div class="d-flex main-entry-points">
+        <button type="button" mat-flat-button color="primary" (click)="upload()">
+          <mat-icon svgIcon="input"></mat-icon>
+          <span class="ml-3">Load...</span>
+        </button>
+        <div class="col">
+          <button type="button" mat-flat-button color="primary" (click)="newScenario()">
+            <mat-icon svgIcon="add"></mat-icon>
+            <span class="ml-2">Create new</span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="col cloud-invisible"
+        [ngClass]="{ 'cloud-visible': (hasStorageApi$ | async) && (allowUserStorage$ | async) }">
+        <button
+          type="button"
+          mat-stroked-button
+          color="primary"
+          class="w-100 mat-stroked-button-blue-outline"
+          (click)="loadFromStorage()">
+          <mat-icon svgIcon="cloud_upload_filled"></mat-icon>
+          <span class="ml-2">Open from Cloud Project</span>
+        </button>
+      </div>
     </div>
   </div>
-  <div
-    class="col cloud-invisible"
-    [ngClass]="{ 'cloud-visible': (hasStorageApi$ | async) && (allowUserStorage$ | async) }">
-    <a class="cloud-button" (click)="loadFromStorage()">
-      <mat-icon svgIcon="bookmark"></mat-icon>
-      Open from a Cloud Project
-    </a>
+  <img src="/assets/images/route_planning.png" />
+</div>
+<div class="overview d-flex justify-content-center">
+  <div class="d-flex flex-column align-items-center overview-entry">
+    <mat-icon class="overview-icon" svgIcon="upload_alt"></mat-icon>
+    <p class="overview-title">Upload your request data</p>
+    <p class="overview-text">You can upload your orders as a request in JSON or CSV format.</p>
   </div>
-</section>
-<section class="page-content">
-  <p class="mat-body-strong">More information</p>
+  <div class="d-flex flex-column align-items-center overview-entry">
+    <mat-icon class="overview-icon icon-green" svgIcon="settings"></mat-icon>
+    <p class="overview-title">Define objectives</p>
+    <p class="overview-text">
+      Define constraints and costs to meet business requirements such as capacities, costs, time
+      windows, breaks, and a heterogenous fleet.
+    </p>
+  </div>
+  <div class="d-flex flex-column align-items-center overview-entry">
+    <mat-icon class="overview-icon icon-red" svgIcon="route"></mat-icon>
+    <p class="overview-title">View optimized route plans</p>
+    <p class="overview-text">Visualize and simulate the routes for your entire fleet.</p>
+  </div>
+</div>
+<div class="preview d-flex flex-column justify-content-center align-items-center">
+  <div class="preview-title">Route Optimization for your entire fleet</div>
+  <img src="/assets/images/routes_map.png" />
+  <div class="d-flex flex-row justify-content-center preview-contents">
+    <div class="d-flex flex-column preview-content-item">
+      <div class="preview-contents-title">Enterprise Scale</div>
+      <div class="preview-contents-text">
+        Google Maps fleet routing solves your routing problems rapidly and at massive scale.
+      </div>
+    </div>
+    <div class="d-flex flex-column preview-content-item">
+      <div class="preview-contents-title">Global routing</div>
+      <div class="preview-contents-text">
+        Global route plans optimizied by Google algorithms for multi-modal journeys including
+        bicycles, driving, and walking.
+      </div>
+    </div>
+    <div class="d-flex flex-column preview-content-item">
+      <div class="preview-contents-title">Customizable to match use case</div>
+      <div class="preview-contents-text">
+        Flexible and scalable to meet your unique business needs.
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-flex flex-column more-info-section">
+  <p class="more-info-title">More information</p>
   <p>
     <a (click)="onHelp()"
       >App help docs <mat-icon svgIcon="open_in_new" class="inline-link-icon"></mat-icon
     ></a>
+    and
+    <a href="https://developers.google.com/maps/tt/route-optimization" target="_blank"
+      >Route Optimization API Documentation
+      <mat-icon svgIcon="open_in_new" class="inline-link-icon"></mat-icon
+    ></a>
   </p>
-  <p>For questions, reach out at gmpro-support@google.com</p>
+  <p>For questions, reach out at <span class="mat-body-strong">gmpro-support@google.com</span></p>
   <p>
     By using this demo app you agree to the terms and conditions of the following license:
     <a href="https://cloud.google.com/maps-platform/terms" target="_blank"
       >Google Maps Platform <mat-icon svgIcon="open_in_new" class="inline-link-icon"></mat-icon
     ></a>
   </p>
-</section>
+</div>

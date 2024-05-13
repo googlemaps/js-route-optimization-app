@@ -1,5 +1,5 @@
 <app-logo></app-logo>
-<app-dataset></app-dataset>
-<a (click)="onHelp()" class="help-icon blue-svg-icon">
+<app-dataset *ngIf="started"></app-dataset>
+<a (click)="onHelp()" class="help-icon blue-svg-icon" *ngIf="started">
   <mat-icon svgIcon="help-filled"></mat-icon>
 </a>
