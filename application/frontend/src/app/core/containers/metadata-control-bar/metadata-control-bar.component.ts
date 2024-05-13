@@ -51,6 +51,7 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
   filters$: Observable<ActiveFilter[]>;
   displayColumns$: Observable<Column[]>;
   page$: Observable<Page>;
+  pageToggle$: Observable<Page>;
   private pageSelectors$: Observable<{ page: Page; selectors: MetadataSelectors }>;
   private addSubscription: Subscription;
   private editSubscription: Subscription;
@@ -63,6 +64,12 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.page$ = this.store.pipe(select(fromUI.selectPage));
+    // Treat both metadata views as the same for the purposes of setting the toggle state
+    this.pageToggle$ = this.store.pipe(
+      select(fromUI.selectPage),
+      map((page) => (page === Page.ShipmentsMetadata ? Page.RoutesMetadata : page))
+    );
+
     this.pageSelectors$ = this.page$.pipe(
       map((page) => ({
         page,
