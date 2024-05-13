@@ -1,8 +1,16 @@
 @import '../../../../styles/variables.scss';
 
-.file-input input[type='file'] {
-  opacity: 0;
-  height: 0;
+.file-input {
+  margin-bottom: -1rem;
+
+  input[type='file'] {
+    opacity: 0;
+    height: 0;
+  }
+
+  mat-form-field {
+    pointer-events: none;
+  }
 }
 
 .mat-dialog-content {
