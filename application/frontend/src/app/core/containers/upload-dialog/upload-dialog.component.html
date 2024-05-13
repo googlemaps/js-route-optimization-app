@@ -50,13 +50,20 @@
         </div>
       </div>
       <div class="file-input">
-        <mat-form-field class="w-100 mb-3" [hideRequiredMarker]="true">
+        <button
+          type="button"
+          mat-raised-button
+          color="primary"
+          (click)="selectFile()"
+          [disabled]="validatingUpload">
+          {{ validatingUpload ? 'Validating...' : 'Choose a File' }}
+        </button>
+        <mat-form-field class="w-100 mt-3" [hideRequiredMarker]="true">
           <input
             matInput
-            placeholder="Select file"
+            [placeholder]="fileName.value ? 'Selected file' : 'Select file'"
             [readonly]="true"
             [formControl]="fileName"
-            (click)="selectFile()"
             [errorStateMatcher]="fileUploadErrorStateMatcher"
             required />
           <mat-error
@@ -74,16 +81,7 @@
           <mat-error *ngIf="fileName.errors?.requestFormat && (fileName.touched || fileName.dirty)">
             The provided request is not valid.
           </mat-error>
-          <mat-hint>.json or .zip</mat-hint>
         </mat-form-field>
-        <button
-          type="button"
-          mat-raised-button
-          color="primary"
-          (click)="selectFile()"
-          [disabled]="validatingUpload">
-          {{ validatingUpload ? 'Validating...' : 'Choose a File' }}
-        </button>
         <!-- resolve place ids -->
         <div
           *ngIf="scenarioHasPlaceIds && placeIdProgress < placeIdCount"
