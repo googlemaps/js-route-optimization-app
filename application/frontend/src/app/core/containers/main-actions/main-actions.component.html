@@ -3,11 +3,11 @@
   (click)="onLoad()"
   *ngIf="(hasStorageApi$ | async) && (allowUserStorage$ | async)"
   >
-  <mat-icon svgIcon="cloud_download"></mat-icon>
+  <mat-icon svgIcon="cloud_upload"></mat-icon>
   From cloud
 </button>
 <button mat-button (click)="onUpload()">
-  <mat-icon svgIcon="upload"></mat-icon>
+  <mat-icon svgIcon="input"></mat-icon>
   From JSON
 </button>
 <cdk-accordion>
@@ -32,7 +32,7 @@
         (click)="onSave()"
         *ngIf="(hasStorageApi$ | async) && (allowUserStorage$ | async)"
         class="main-actions-accordion-button">
-        <mat-icon svgIcon="cloud_upload"></mat-icon>
+        <mat-icon svgIcon="cloud_download"></mat-icon>
         To cloud
       </button>
       <button
