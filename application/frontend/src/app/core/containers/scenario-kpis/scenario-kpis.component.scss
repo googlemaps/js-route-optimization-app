@@ -1,21 +1,33 @@
+@import '../../../../styles/variables.scss';
+
 :host {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
+  padding: 15px;
+  padding-bottom: 0;
+  gap: 7px;
+}
+
+.kpis-title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .metrics {
   display: flex;
   flex-direction: row;
-  gap: 3px;
+  gap: 15px;
 }
 
 .metric-box {
-  background-color: #eaa23514;
+  background-color: #F3F8FF;
   border-radius: 5px;
   padding: 5px 20px;
   text-align: center;
   flex-grow: 1;
+  border: 1px solid #D5DEE5;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .1);
 }
 
 .metric-box-title {
@@ -24,6 +36,8 @@
 }
 
 .metric-box-value {
-  color: #000000;
-  font-weight: 500;
+  color: $blue;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
 }
