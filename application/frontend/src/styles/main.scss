@@ -959,6 +959,17 @@ app-post-solve-map-legend .legend-panel mat-checkbox label .mat-checkbox-label {
   flex-grow: 1;
   border: 1px solid #d5dee5;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+
+  &.metric-box-warning {
+    // background-color: #fffbf3;
+    background-color: #e98000 !important;
+    cursor: pointer;
+
+    .metric-box-title,
+    .metric-box-value {
+      color: white;
+    }
+  }
 }
 
 .metric-box-title {
