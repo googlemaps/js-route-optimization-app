@@ -43,6 +43,7 @@ export class RouteLayer {
   private layer: PathLayer = new PathLayer({});
   private outlineLayer: PathLayer = new PathLayer({});
   private selectedDataLayer: PathLayer = new PathLayer({});
+  private selectedDataOutlineLayer: PathLayer = new PathLayer({});
 
   private _visible: boolean;
   get visible(): boolean {
@@ -65,8 +66,8 @@ export class RouteLayer {
     this.layer = new PathLayer({
       id: 'routes',
       data,
-      widthMinPixels: 2,
-      widthMaxPixels: 50,
+      widthMinPixels: 4,
+      widthMaxPixels: 60,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
@@ -75,15 +76,22 @@ export class RouteLayer {
     this.outlineLayer = new PathLayer({
       id: 'routes-outline',
       data,
-      widthMinPixels: 4,
-      widthMaxPixels: 52,
+      widthMinPixels: 8,
+      widthMaxPixels: 80,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 27,
-      getColor: MATERIAL_COLORS.White.rgb,
+      getWidth: 40,
+      getColor: MATERIAL_COLORS.BlueGrey.strokeRgb,
     });
-    this.gLayer.setProps({ layers: [this.outlineLayer, this.layer, this.selectedDataLayer] });
+    this.gLayer.setProps({
+      layers: [
+        this.outlineLayer,
+        this.selectedDataOutlineLayer,
+        this.layer,
+        this.selectedDataLayer,
+      ],
+    });
   }
 
   private onDataSelected(data): void {
@@ -91,14 +99,32 @@ export class RouteLayer {
     this.selectedDataLayer = new PathLayer({
       id: 'selected-routes',
       data,
-      widthMinPixels: 2,
-      widthMaxPixels: 50,
+      widthMinPixels: 4,
+      widthMaxPixels: 60,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
       getWidth: 25,
       getColor: (d) => d.color.rgb,
     });
-    this.gLayer.setProps({ layers: [this.outlineLayer, this.layer, this.selectedDataLayer] });
+    this.selectedDataOutlineLayer = new PathLayer({
+      id: 'selected-routes-outline',
+      data,
+      widthMinPixels: 8,
+      widthMaxPixels: 80,
+      capRounded: true,
+      jointRounded: true,
+      getPath: (d) => d.path,
+      getWidth: 40,
+      getColor: (d) => d.color.strokeRgb,
+    });
+    this.gLayer.setProps({
+      layers: [
+        this.outlineLayer,
+        this.layer,
+        this.selectedDataOutlineLayer,
+        this.selectedDataLayer,
+      ],
+    });
   }
 }

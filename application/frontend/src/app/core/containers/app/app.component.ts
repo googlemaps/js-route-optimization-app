@@ -80,6 +80,7 @@ export class AppComponent {
       'open_in_new',
       'pdf',
       'pickup',
+      'route',
       'satellite',
       'save_alt',
       'settings',
@@ -90,12 +91,14 @@ export class AppComponent {
       'visibility',
       'visibility_off',
       'visit',
+      'vehicle_icon',
       'vehicles_nav',
       'shipments_nav',
       'select_bbox',
       'select_bbox_active',
       'select_polygon',
       'select_polygon_active',
+      'walking',
       'zip',
     ];
     icons.forEach((icon) =>

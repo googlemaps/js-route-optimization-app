@@ -15,20 +15,33 @@ limitations under the License.
 */
 
 import { createSelector } from '@ngrx/store';
-import { selectVehicleHeadings, selectVehicleStartLocationsOnRoute } from './map.selectors';
+import {
+  selectPostSolveMapLayers,
+  selectVehicleHeadings,
+  selectVehicleStartLocationsOnRoute,
+} from './map.selectors';
 import { vehicleToDeckGL } from './pre-solve-vehicle-layer.selectors';
 import RoutesChartSelectors from './routes-chart.selectors';
 import * as fromVehicle from './vehicle.selectors';
+import { MapLayerId } from '../models/map';
+import { TravelMode } from '../models';
 
 export const selectFilteredVehicles = createSelector(
   fromVehicle.selectEntities,
   selectVehicleStartLocationsOnRoute,
   selectVehicleHeadings,
   RoutesChartSelectors.selectFilteredRoutesWithVisitsLookup,
-  (vehicles, startLocations, headings, filteredRoutesLookup) => {
+  selectPostSolveMapLayers,
+  (vehicles, startLocations, headings, filteredRoutesLookup, mapLayers) => {
     const vehiclesArray = Object.values(vehicles);
     const filteredVehicles = filteredRoutesLookup.size
-      ? vehiclesArray.filter((v) => filteredRoutesLookup.has(v.id))
+      ? vehiclesArray.filter(
+          (v) =>
+            filteredRoutesLookup.has(v.id) &&
+            ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
+              ? mapLayers[MapLayerId.PostSolveFourWheel].visible
+              : mapLayers[MapLayerId.PostSolveWalking].visible)
+        )
       : [];
     return filteredVehicles.map((vehicle) =>
       vehicleToDeckGL(vehicle, startLocations[vehicle.id], headings[vehicle.id])
@@ -42,8 +55,15 @@ export const selectFilteredVehiclesSelected = createSelector(
   selectVehicleHeadings,
   RoutesChartSelectors.selectFilteredRoutesSelectedWithVisitsLookup,
   RoutesChartSelectors.selectSelectedRoutesColors,
-  (vehicles, startLocations, headings, selectedRoutesLookup, colors) => {
-    const selectedVehicles = Object.values(vehicles).filter((v) => selectedRoutesLookup.has(v.id));
+  selectPostSolveMapLayers,
+  (vehicles, startLocations, headings, selectedRoutesLookup, colors, mapLayers) => {
+    const selectedVehicles = Object.values(vehicles).filter(
+      (v) =>
+        selectedRoutesLookup.has(v.id) &&
+        ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
+          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
+          : mapLayers[MapLayerId.PostSolveWalking].visible)
+    );
     return selectedVehicles.map((vehicle) => ({
       ...vehicleToDeckGL(vehicle, startLocations[vehicle.id], headings[vehicle.id]),
       color: colors[vehicle.id],

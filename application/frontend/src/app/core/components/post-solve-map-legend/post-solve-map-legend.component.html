@@ -1,0 +1,10 @@
+<div class="legend-panel">
+  <mat-checkbox
+    *ngFor="let layerId of objectKeys(mapLayers)"
+    color="primary"
+    [checked]="mapLayers[layerId].visible"
+    (change)="setLayerVisibility.emit({ layerId, visible: $event.checked })"
+    ><mat-icon [svgIcon]="mapLayers[layerId].icon"></mat-icon
+    >{{ mapLayers[layerId].name }}</mat-checkbox
+  >
+</div>
