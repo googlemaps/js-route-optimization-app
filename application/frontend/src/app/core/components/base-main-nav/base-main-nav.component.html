@@ -81,17 +81,6 @@
       <mat-icon svgIcon="add"></mat-icon>
     </button>
   </div>
-  <div
-    class="nav-item nav-subitem"
-    *ngIf="page === pages.Shipments || page === pages.Vehicles || page === pages.ScenarioPlanning">
-    <app-generate-button
-      class="nav-generate"
-      [disabled]="disabled"
-      [prompt]="isSolutionIllegal"
-      [solving]="solving"
-      [label]="label"
-      *ngIf="!disabled; else selectionMessage"></app-generate-button>
-  </div>
   <div class="nav-item nav-page-button nav-solution" [ngClass]="{ warning: hasSolutionWarning }">
     <button
       mat-flat-button
@@ -113,31 +102,21 @@
   <div class="border"></div>
 </div>
 <div class="nav-container mat-body-strong">
-  <ng-container
-    *ngIf="
-      hasSolutionWarning &&
-      page !== pages.Shipments &&
-      page !== pages.Vehicles &&
-      page !== pages.ScenarioPlanning
-    ">
-    <div class="nav-item nav-subitem">
-      <app-post-solve-message class="nav-message"></app-post-solve-message>
-    </div>
-    <div class="nav-item nav-subitem">
-      <app-generate-button
-        class="nav-generate"
-        [disabled]="disabled"
-        [prompt]="isSolutionIllegal"
-        [solving]="solving"
-        [label]="label"
-        *ngIf="!disabled"></app-generate-button>
-    </div>
-  </ng-container>
+  <div class="nav-item nav-subitem">
+    <app-generate-button
+      class="nav-generate"
+      [disabled]="disabled"
+      [prompt]="isSolutionIllegal"
+      [solving]="solving"
+      [label]="label"></app-generate-button>
+  </div>
+  <div class="nav-item nav-subitem" *ngIf="hasSolutionWarning">
+    <app-post-solve-message class="nav-message"></app-post-solve-message>
+  </div>
+  <div class="nav-item nav-subitem" *ngIf="disabled">
+    <app-pre-solve-message class="nav-message"></app-pre-solve-message>
+  </div>
 </div>
-
-<ng-template #selectionMessage>
-  <app-pre-solve-message class="nav-message"></app-pre-solve-message>
-</ng-template>
 
 <ng-template #bulletLarge>
   <svg height="24" width="24">
