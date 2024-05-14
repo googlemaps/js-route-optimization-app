@@ -69,7 +69,7 @@ describe('PostSolveMetricsComponent', () => {
             { selector: fromSolution.selectUsedRoutesCount, value: 0 },
             { selector: selectShipmentRouteState, value: { entities: {}, ids: [] } },
             { selector: fromTimeline.selectTimelineSelectors, value: {} },
-            { selector: PreSolveShipmentSelectors.selectSelected, value: [] }
+            { selector: PreSolveShipmentSelectors.selectSelected, value: [] },
           ],
         }),
       ],

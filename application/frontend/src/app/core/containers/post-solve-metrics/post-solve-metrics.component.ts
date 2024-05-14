@@ -20,7 +20,6 @@ import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
-import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 import * as fromPostSolveShipment from 'src/app/core/selectors/post-solve-shipment.selectors';
 import PreSolveShipmentSelectors from 'src/app/core/selectors/pre-solve-shipment.selectors';
 import ShipmentRouteSelectors, * as fromShipmentRoute from 'src/app/core/selectors/shipment-route.selectors';
