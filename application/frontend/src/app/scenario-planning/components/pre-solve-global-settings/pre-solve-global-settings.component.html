@@ -72,13 +72,12 @@
       </div>
     </div>
     <div class="d-flex flex-row global-row">
-      <div>
+      <div *ngIf="(hasSolution$ | async)">
         <div class="mat-body-strong">Iterate on solution</div>
         <mat-slide-toggle
           color="primary"
           [checked]="injectedSolution && (hasSolution$ | async)"
-          (change)="toggleInjectedSolution($event)"
-          [disabled]="(hasSolution$ | async) === false">
+          (change)="toggleInjectedSolution($event)">
           {{ injectedSolution ? 'On' : 'Off' }}
         </mat-slide-toggle>
       </div>
