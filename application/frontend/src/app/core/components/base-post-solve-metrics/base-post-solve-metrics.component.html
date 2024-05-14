@@ -1,12 +1,5 @@
 <div class="metrics-box-container">
   <div class="metric-box">
-    <div class="mb-1 metric-box-title">Generated routes</div>
-    <div class="mb-0 metric-box-value">
-      {{ numberOfRoutes }} route{{ numberOfRoutes > 1 ? 's' : '' }} in
-      {{ solveSeconds | number: '1.2-2' }} seconds
-    </div>
-  </div>
-  <div class="metric-box">
     <div class="mb-1 metric-box-title">Average across all vehicles</div>
     <app-post-solve-timeline-legend
       [vehicleTimeAverages]="vehicleTimeAverages"></app-post-solve-timeline-legend>
@@ -24,15 +17,12 @@
     </div>
   </div>
   <button
-    *ngIf="skippedShipmentsCount > 0"
+    *ngIf="skippedShipmentsCount > 0; else noSkippedShipmentsCard"
     class="metric-box metric-box-warning"
     (click)="skippedShipmentsClick.emit()"
     title="Go to skipped shipments metadata">
     <ng-container *ngTemplateOutlet="skippedShipmentsMetric"></ng-container>
   </button>
-  <div class="metric-box">
-    <ng-container *ngTemplateOutlet="skippedShipmentsMetric"></ng-container>
-  </div>
   <div class="metric-box">
     <div class="mb-1 metric-box-title"># of vehicles used</div>
     <div class="mb-0 metric-box-value">
@@ -50,6 +40,11 @@
   </div>
 </div>
 
+<ng-template #noSkippedShipmentsCard>
+  <div class="metric-box">
+    <ng-container *ngTemplateOutlet="skippedShipmentsMetric"></ng-container>
+  </div>
+</ng-template>
 <ng-template #skippedShipmentsMetric>
   <div class="mb-1 metric-box-title">Shipments assigned</div>
   <div class="mb-0 metric-box-value">{{ madeShipments }}/{{ shipmentsCount }}</div>

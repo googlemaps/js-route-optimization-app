@@ -36,7 +36,6 @@ export class BasePostSolveMetricsComponent implements OnChanges {
   @Input() duration: [Long, Long];
   @Input() numberOfRoutes: number;
   @Input() numberOfVehicles: number;
-  @Input() solveTime: number;
   @Input() skippedShipmentsCount: number;
   @Input() shipmentsCount: number;
   @Input() totalCost: number;
@@ -45,7 +44,6 @@ export class BasePostSolveMetricsComponent implements OnChanges {
   @Input() vehicleTimeAverages: TimeSet;
   @Output() skippedShipmentsClick = new EventEmitter<void>();
 
-  solveSeconds: number;
   formattedStart: string;
   formattedEnd: string;
   totalDays: number;
@@ -55,9 +53,6 @@ export class BasePostSolveMetricsComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.solveTime) {
-      this.solveSeconds = this.solveTime / 1000;
-    }
     if (changes.duration) {
       this.formattedStart = formatLongTime(this.duration[0], null, this.timezoneOffset);
       this.formattedEnd = formatLongTime(this.duration[1], null, this.timezoneOffset);

@@ -42,7 +42,6 @@ export class PostSolveMetricsComponent implements OnInit {
   totalDistance$: Observable<number>;
   skippedShipmentsCount$: Observable<number>;
   shipmentsCount$: Observable<number>;
-  solutionTime$: Observable<number>;
   totalCost$: Observable<number>;
   timezoneOffset$: Observable<number>;
   timeline$: Observable<Timeline>;
@@ -55,7 +54,6 @@ export class PostSolveMetricsComponent implements OnInit {
     this.duration$ = this.store.pipe(select(ShipmentRouteSelectors.selectRoutesDuration));
     this.numberOfRoutes$ = this.store.pipe(select(fromSolution.selectUsedRoutesCount));
     this.totalDistance$ = this.store.pipe(select(fromSolution.selectTotalRoutesDistanceMeters));
-    this.solutionTime$ = this.store.pipe(select(fromDispatcher.selectSolutionTime));
     this.skippedShipmentsCount$ = this.store.pipe(
       select(fromPostSolveShipment.selectTotalSkippedShipments)
     );
