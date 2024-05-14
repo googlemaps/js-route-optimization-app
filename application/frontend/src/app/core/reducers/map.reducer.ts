@@ -17,6 +17,7 @@ limitations under the License.
 import { createReducer, on } from '@ngrx/store';
 import { MapLayer, MapLayerId } from '../models/map';
 import { MapActions } from '../actions';
+import { TravelMode } from '../models';
 
 export const mapFeatureKey = 'map';
 
@@ -35,11 +36,13 @@ export const initialState: State = {
       name: 'Driving',
       icon: 'vehicle_icon',
       visible: true,
+      travelMode: TravelMode.DRIVING,
     },
     [MapLayerId.PostSolveWalking]: {
       name: 'Walking',
       icon: 'walking',
       visible: true,
+      travelMode: TravelMode.WALKING,
     },
   },
 };

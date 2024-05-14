@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { TravelMode } from './dispatcher.model';
+
 export enum MapLayerId {
   PostSolveVisitRequests,
   PostSolveFourWheel,
@@ -24,4 +26,5 @@ export interface MapLayer {
   name: string;
   icon: string;
   visible?: boolean;
+  travelMode?: TravelMode;
 }

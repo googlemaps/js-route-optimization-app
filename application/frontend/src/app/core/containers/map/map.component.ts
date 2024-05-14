@@ -70,7 +70,7 @@ export class MapComponent implements OnInit, OnDestroy {
   mapSelectionToolsVisible$: Observable<boolean>;
   selectionFilterActive$: Observable<boolean>;
   timezoneOffset$: Observable<number>;
-  layers$: Observable<{ [id in MapLayerId]: MapLayer }>;
+  layers$: Observable<{ [id in MapLayerId]?: MapLayer }>;
 
   get bounds(): google.maps.LatLngBounds {
     return this.mapService.bounds;

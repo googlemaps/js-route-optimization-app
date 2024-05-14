@@ -28,7 +28,7 @@ import {
   toTurfLineString,
   toTurfPoint,
 } from 'src/app/util';
-import { ILatLng, Page, VisitRequest } from '../models';
+import { ILatLng, Page, TravelMode, VisitRequest } from '../models';
 import * as fromDepot from './depot.selectors';
 import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
@@ -39,6 +39,7 @@ import * as fromVehicle from './vehicle.selectors';
 import VisitSelectors from './visit.selectors';
 import VisitRequestSelectors from './visit-request.selectors';
 import * as fromMap from '../reducers/map.reducer';
+import { MapLayer, MapLayerId } from '../models/map';
 
 type MapLatLng = google.maps.LatLng;
 
@@ -259,7 +260,28 @@ export const selectSelectionFilterActive = createSelector(
   }
 );
 
+export const selectAllMapLayers = createSelector(selectMapState, fromMap.selectPostSolveMapLayers);
+
 export const selectPostSolveMapLayers = createSelector(
-  selectMapState,
-  fromMap.selectPostSolveMapLayers
+  selectAllMapLayers,
+  fromVehicle.selectAll,
+  (layers, vehicles) => {
+    const mapLayers: { [id in MapLayerId]?: MapLayer } = {};
+
+    const usedTravelModes = new Set();
+    vehicles.forEach((vehicle) => usedTravelModes.add(vehicle.travelMode ?? TravelMode.DRIVING));
+
+    Object.keys(layers).forEach((layerId) => {
+      const layer = layers[layerId];
+      if (!layer.travelMode) {
+        mapLayers[layerId] = layer;
+        return;
+      }
+      if (usedTravelModes.has(layer.travelMode)) {
+        mapLayers[layerId] = layer;
+      }
+    });
+
+    return mapLayers;
+  }
 );
