@@ -140,7 +140,7 @@ export abstract class BaseVehicleLayer {
       sizeMaxPixels: 60,
       getSize: 28,
       sizeScale: 12,
-      getAngle: (d) => d.heading,
+      getAngle: (d) => d.travelMode === TravelMode.DRIVING ? d.heading : 0,
       getPosition: (d) => d.position,
       pickable: true,
       onHover: ({ object }) => {
@@ -175,7 +175,7 @@ export abstract class BaseVehicleLayer {
       sizeUnits: 'meters',
       sizeMinPixels: 28,
       sizeMaxPixels: 60,
-      getAngle: (d) => d.heading,
+      getAngle: (d) => d.travelMode === TravelMode.DRIVING ? d.heading : 0,
       getSize: 28,
       sizeScale: 12,
       getPosition: (d) => d.position,
