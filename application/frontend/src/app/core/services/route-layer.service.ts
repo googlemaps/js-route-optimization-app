@@ -76,12 +76,12 @@ export class RouteLayer {
     this.outlineLayer = new PathLayer({
       id: 'routes-outline',
       data,
-      widthMinPixels: 8,
+      widthMinPixels: 6,
       widthMaxPixels: 80,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 40,
+      getWidth: 30,
       getColor: MATERIAL_COLORS.BlueGrey.strokeRgb,
     });
     this.gLayer.setProps({
@@ -99,23 +99,23 @@ export class RouteLayer {
     this.selectedDataLayer = new PathLayer({
       id: 'selected-routes',
       data,
-      widthMinPixels: 4,
+      widthMinPixels: 2,
       widthMaxPixels: 60,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 25,
+      getWidth: 20,
       getColor: (d) => d.color.rgb,
     });
     this.selectedDataOutlineLayer = new PathLayer({
       id: 'selected-routes-outline',
       data,
-      widthMinPixels: 8,
+      widthMinPixels: 6,
       widthMaxPixels: 80,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 40,
+      getWidth: 30,
       getColor: (d) => d.color.strokeRgb,
     });
     this.gLayer.setProps({
