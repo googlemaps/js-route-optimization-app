@@ -9,7 +9,7 @@
     name="responseViews"
     aria-label="Response Views"
     (change)="onToggleChange($event.value)"
-    [value]="page$ | async">
+    [value]="pageToggle$ | async">
     <mat-button-toggle class="main-toggle" [value]="Page.RoutesChart" [disableRipple]="true"
       >Timeline
     </mat-button-toggle>
