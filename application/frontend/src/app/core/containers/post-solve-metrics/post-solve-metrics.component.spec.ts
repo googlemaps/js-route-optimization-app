@@ -38,6 +38,7 @@ import { PostSolveMetricsComponent } from './post-solve-metrics.component';
 class MockBasePostSolveMetricsComponent {
   @Input() duration: [Long, Long];
   @Input() numberOfRoutes: number;
+  @Input() numberOfVehicles: number;
   @Input() solveTime: number;
   @Input() skippedShipmentsCount: number;
   @Input() shipmentsCount: number;
@@ -69,6 +70,7 @@ describe('PostSolveMetricsComponent', () => {
             { selector: fromSolution.selectUsedRoutesCount, value: 0 },
             { selector: selectShipmentRouteState, value: { entities: {}, ids: [] } },
             { selector: fromTimeline.selectTimelineSelectors, value: {} },
+            { selector: PreSolveShipmentSelectors.selectSelected, value: [] }
           ],
         }),
       ],

@@ -28,6 +28,7 @@ import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import * as fromTimeline from 'src/app/core/selectors/timeline.selectors';
 import { PostSolveMetricsActions } from '../../actions';
 import { Page, Timeline, TimelineCategory, TimeSet } from '../../models';
+import PreSolveVehicleSelectors from 'src/app/core/selectors/pre-solve-vehicle.selectors';
 
 @Component({
   selector: 'app-post-solve-metrics',
@@ -46,6 +47,7 @@ export class PostSolveMetricsComponent implements OnInit {
   timezoneOffset$: Observable<number>;
   timeline$: Observable<Timeline>;
   vehicleTimeAverages$: Observable<TimeSet>;
+  numberOfVehicles$: Observable<number>;
 
   constructor(private router: Router, private store: Store) {}
 
@@ -71,6 +73,11 @@ export class PostSolveMetricsComponent implements OnInit {
       map((res) => {
         return this.calculateVehicleTimeAverages(res);
       })
+    );
+
+    this.numberOfVehicles$ = this.store.pipe(
+      select(PreSolveVehicleSelectors.selectSelected),
+      map((selected) => selected.length)
     );
   }
 

@@ -35,6 +35,7 @@ import { TimeSet } from '../../models';
 export class BasePostSolveMetricsComponent implements OnChanges {
   @Input() duration: [Long, Long];
   @Input() numberOfRoutes: number;
+  @Input() numberOfVehicles: number;
   @Input() solveTime: number;
   @Input() skippedShipmentsCount: number;
   @Input() shipmentsCount: number;
