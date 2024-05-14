@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#    https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Sequence
 import copy
 import unittest
 
@@ -90,6 +91,111 @@ class MakeAllShipmentsOptional(unittest.TestCase):
             ]
         },
     )
+
+
+class RemoveShipmentsTest(unittest.TestCase):
+  """Tests for remove_shipments."""
+
+  maxDiff = None
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {"label": "S001"},
+          {"label": "S002"},
+          {"label": "S003"},
+          {"label": "S004"},
+          {"label": "S005"},
+      ]
+  }
+  _NUM_SHIPMENTS = len(_MODEL["shipments"])
+
+  def test_remove_no_shipments(self):
+    model = copy.deepcopy(self._MODEL)
+    new_shipment_for_old_shipment = transforms.remove_shipments(model, ())
+    self.assertEqual(
+        new_shipment_for_old_shipment,
+        {i: i for i in range(self._NUM_SHIPMENTS)},
+    )
+    self.assertEqual(model, self._MODEL)
+
+  def test_remove_some_shipments(self):
+    model = copy.deepcopy(self._MODEL)
+    new_shipment_for_old_shipment = transforms.remove_shipments(
+        model, {0, 2, 4}
+    )
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {"label": "S002"},
+                {"label": "S004"},
+            ]
+        },
+    )
+    self.assertEqual(new_shipment_for_old_shipment, {1: 0, 3: 1})
+
+  def test_remove_all_shipments(self):
+    model = copy.deepcopy(self._MODEL)
+    new_shipment_for_old_shipment = transforms.remove_shipments(
+        model, set(range(self._NUM_SHIPMENTS))
+    )
+    self.assertEqual(model, {"shipments": []})
+    self.assertEqual(new_shipment_for_old_shipment, {})
+
+
+class TestUpdateShipmentIndicesInShipmentRoutes(unittest.TestCase):
+  """Tests for update_shipment_indices_in_shipment_routes."""
+
+  _SHIPMENT_ROUTES: Sequence[cfr_json.ShipmentRoute] = (
+      {
+          "visits": [
+              {"shipmentIndex": 1, "isPickup": True},
+              {"shipmentIndex": 2},
+              {"shipmentIndex": 1},
+          ]
+      },
+      {"visits": []},
+      {"visits": [{"shipmentIndex": 4}, {"shipmentIndex": 3}]},
+      {"visits": [{}]},
+  )
+
+  def test_no_change(self):
+    routes = copy.deepcopy(self._SHIPMENT_ROUTES)
+    expected_routes = copy.deepcopy(self._SHIPMENT_ROUTES)
+    # The code replaces an implicit shipmentIndex=0 with an explicit one.
+    expected_routes[3]["visits"][0]["shipmentIndex"] = 0
+    transforms.update_shipment_indices_in_shipment_routes(
+        routes, {i: i for i in range(5)}
+    )
+    self.assertEqual(routes, expected_routes)
+
+  def test_some_changes(self):
+    routes = copy.deepcopy(self._SHIPMENT_ROUTES)
+    transforms.update_shipment_indices_in_shipment_routes(
+        routes, {0: 7, 1: 0, 2: 1, 3: 2, 4: 3}
+    )
+    self.assertSequenceEqual(
+        routes,
+        (
+            {
+                "visits": [
+                    {"shipmentIndex": 0, "isPickup": True},
+                    {"shipmentIndex": 1},
+                    {"shipmentIndex": 0},
+                ]
+            },
+            {"visits": []},
+            {"visits": [{"shipmentIndex": 3}, {"shipmentIndex": 2}]},
+            {"visits": [{"shipmentIndex": 7}]},
+        ),
+    )
+
+  def test_invalid_shipment_index_map(self):
+    routes = copy.deepcopy(self._SHIPMENT_ROUTES)
+    with self.assertRaises(ValueError):
+      transforms.update_shipment_indices_in_shipment_routes(
+          routes, {2: 1, 3: 2, 4: 3}
+      )
 
 
 class DuplicateVehicleTest(unittest.TestCase):
@@ -341,6 +447,111 @@ class RemoveVehiclesTest(unittest.TestCase):
     model = copy.deepcopy(self._MODEL)
     with self.assertRaisesRegex(ValueError, "becomes infeasible"):
       transforms.remove_vehicles(model, (1,))
+
+  def test_remove_infeasible_shipment(self):
+    model = copy.deepcopy(self._MODEL)
+    transforms.remove_vehicles(
+        model, (1,), transforms.OnInfeasibleShipment.REMOVE
+    )
+    self.assertEqual(
+        model,
+        {
+            "shipments": [
+                {
+                    "label": "S002",
+                    "costsPerVehicle": [100],
+                    "costsPerVehicleIndices": [0],
+                    "allowedVehicleIndices": [1],
+                },
+                {
+                    "label": "S003",
+                    "costsPerVehicle": [100, 300],
+                },
+            ],
+            "vehicles": [
+                {
+                    "label": "V001",
+                    "costPerKilometer": 5,
+                    "costPerHour": 180,
+                },
+                {
+                    "label": "V003",
+                    "costPerHour": 80,
+                },
+            ],
+        },
+    )
+
+
+class RemoveVehiclesFromInjectedFirstSolutionRoutesTest(unittest.TestCase):
+  """Tests for remove_vehicles_from_injected_first_solution_routes."""
+
+  maxDiff = None
+
+  def test_no_injected_first_solution(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+            ]
+        }
+    }
+    expected_request = copy.deepcopy(request)
+    transforms.remove_vehicles_from_injected_first_solution_routes(
+        request, {0: 0, 2: 1, 3: 2}, {}
+    )
+    self.assertEqual(request, expected_request)
+
+  def test_remove_some_vehicles(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+            ]
+        },
+        "injectedFirstSolutionRoutes": [
+            {"vehicleLabel": "V001"},
+            {
+                "vehicleIndex": 1,
+                "vehicleLabel": "V004",
+                "visits": [{"shipmentIndex": 3, "visitRequestIndex": 0}],
+            },
+            {
+                "vehicleIndex": 5,
+                "vehicleLabel": "V007",
+                "visits": [{"visitRequestIndex": 0}],
+            },
+        ],
+    }
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+            ]
+        },
+        "injectedFirstSolutionRoutes": [
+            {
+                "vehicleIndex": 1,
+                "vehicleLabel": "V004",
+                "visits": [{"shipmentIndex": 2, "visitRequestIndex": 0}],
+            },
+            {
+                "vehicleIndex": 2,
+                "vehicleLabel": "V007",
+                "visits": [{"shipmentIndex": 0, "visitRequestIndex": 0}],
+            },
+        ],
+    }
+    transforms.remove_vehicles_from_injected_first_solution_routes(
+        request, {1: 1, 5: 2}, {0: 0, 1: 1, 3: 2}
+    )
+    self.assertEqual(request, expected_request)
 
 
 class SoftenShipmentAllowedVehicleIndicesTest(unittest.TestCase):

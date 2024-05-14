@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#    https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -378,7 +378,7 @@ class CombinedLoadDemandsTest(unittest.TestCase):
   def test_no_shipments(self):
     self.assertEqual(cfr_json.combined_load_demands(()), {})
 
-  def test_some_shipments(self):
+  def test_some_deliveries(self):
     shipments = [
         cfr_json.make_shipment(
             "S001",
@@ -407,6 +407,64 @@ class CombinedLoadDemandsTest(unittest.TestCase):
         },
     )
 
+  def test_some_pickups(self):
+    shipments: Sequence[cfr_json.Shipment] = (
+        cfr_json.make_shipment(
+            "S001",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+            load_demands={"wheat": 3, "wood": 1},
+        ),
+        cfr_json.make_shipment(
+            "S002",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+            load_demands={"wood": 5, "ore": 2},
+        ),
+        cfr_json.make_shipment(
+            "S002",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+        ),
+    )
+    self.assertEqual(
+        cfr_json.combined_load_demands(shipments),
+        {
+            "wheat": {"amount": "3"},
+            "wood": {"amount": "6"},
+            "ore": {"amount": "2"},
+        },
+    )
+
+  def test_pickups_and_deliveries(self):
+    shipments: Sequence[cfr_json.Shipment] = (
+        cfr_json.make_shipment(
+            "S001",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+            load_demands={"wheat": 3, "wood": 1},
+        ),
+        cfr_json.make_shipment(
+            "S002",
+            delivery_latlng=(48.86471, 2.34901),
+            delivery_duration="120s",
+            load_demands={"wood": 5, "ore": 2},
+        ),
+        cfr_json.make_shipment(
+            "S002",
+            pickup_latlng=(48.86471, 2.34901),
+            pickup_duration="120s",
+        ),
+    )
+    self.assertEqual(
+        cfr_json.combined_load_demands(shipments),
+        {
+            "wheat": {"amount": "3"},
+            "wood": {"amount": "5"},
+            "ore": {"amount": "2"},
+        },
+    )
+
 
 class GetShipmentsTest(unittest.TestCase):
   """Tests for get_shipments."""
@@ -423,6 +481,90 @@ class GetShipmentsTest(unittest.TestCase):
         "shipments": list(shipments),
     }
     self.assertSequenceEqual(cfr_json.get_shipments(model), shipments)
+
+
+class GetDeliveryOrNoneTest(unittest.TestCase):
+  """Tests for get_delivery."""
+
+  def test_no_deliveries(self):
+    shipment: cfr_json.Shipment = {
+        "pickups": [
+            {"arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}}
+        ]
+    }
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 0))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 1))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 5))
+
+  def test_one_delivery(self):
+    delivery: cfr_json.VisitRequest = {
+        "arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}
+    }
+    shipment: cfr_json.Shipment = {"deliveries": [delivery]}
+    self.assertIs(cfr_json.get_delivery_or_none(shipment), delivery)
+    self.assertIs(cfr_json.get_delivery_or_none(shipment, 0), delivery)
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 1))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 5))
+
+  def test_more_deliveries(self):
+    deliveries: list[cfr_json.VisitRequest] = [
+        {"arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}},
+        {
+            "arrivalLocation": {
+                "latitude": 48.86593,
+                "longitude": 2.34886,
+            }
+        },
+    ]
+    shipment: cfr_json.Shipment = {"deliveries": deliveries}
+    self.assertIs(cfr_json.get_delivery_or_none(shipment), deliveries[0])
+    self.assertIs(cfr_json.get_delivery_or_none(shipment, 0), deliveries[0])
+    self.assertIs(cfr_json.get_delivery_or_none(shipment, 1), deliveries[1])
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 2))
+    self.assertIsNone(cfr_json.get_delivery_or_none(shipment, 5))
+
+
+class GetPickupOrNoneTest(unittest.TestCase):
+  """Tests for get_pickup."""
+
+  def test_no_pickups(self):
+    shipment: cfr_json.Shipment = {
+        "deliveries": [
+            {"arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}}
+        ]
+    }
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 0))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 1))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 5))
+
+  def test_one_pickup(self):
+    pickup: cfr_json.VisitRequest = {
+        "arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}
+    }
+    shipment: cfr_json.Shipment = {"pickups": [pickup]}
+    self.assertIs(cfr_json.get_pickup_or_none(shipment), pickup)
+    self.assertIs(cfr_json.get_pickup_or_none(shipment, 0), pickup)
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 1))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 5))
+
+  def test_more_pickups(self):
+    pickups: list[cfr_json.VisitRequest] = [
+        {"arrivalLocation": {"latitude": 48.86471, "longitude": 2.34901}},
+        {
+            "arrivalLocation": {
+                "latitude": 48.86593,
+                "longitude": 2.34886,
+            }
+        },
+    ]
+    shipment: cfr_json.Shipment = {"pickups": pickups}
+    self.assertIs(cfr_json.get_pickup_or_none(shipment), pickups[0])
+    self.assertIs(cfr_json.get_pickup_or_none(shipment, 0), pickups[0])
+    self.assertIs(cfr_json.get_pickup_or_none(shipment, 1), pickups[1])
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 2))
+    self.assertIsNone(cfr_json.get_pickup_or_none(shipment, 5))
 
 
 class GetRoutesTest(unittest.TestCase):
@@ -985,6 +1127,61 @@ class GetShipmentLoadDemandTest(unittest.TestCase):
     self.assertEqual(cfr_json.get_shipment_load_demand(shipment, "wheat"), 0)
 
 
+class GetPerformedShipmentsFromRoutesTest(unittest.TestCase):
+  """Tests for get_performed_shipments_from_routes."""
+
+  def test_no_routes(self):
+    self.assertSetEqual(
+        cfr_json.get_performed_shipments_from_routes(()), frozenset()
+    )
+
+  def test_some_routes(self):
+    routes: Sequence[cfr_json.ShipmentRoute] = (
+        {"visits": [{"shipmentIndex": 0}, {"shipmentIndex": 3}]},
+        {},
+        {"visits": [{"shipmentIndex": 4}]},
+    )
+    expected_performed_shipments = frozenset((0, 3, 4))
+    self.assertSetEqual(
+        cfr_json.get_performed_shipments_from_routes(routes),
+        expected_performed_shipments,
+    )
+
+
+class GetSkippedShipmentsFromRoutesTest(unittest.TestCase):
+  """Tests for get_skipped_shipments_from_routes."""
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {"label": "S001"},
+          {"label": "S002"},
+          {"label": "S003"},
+          {"label": "S004"},
+          {"label": "S005"},
+          {"label": "S006"},
+      ],
+      "vehicles": [{"label": "V001"}, {"label": "V002"}, {"label": "V003"}],
+  }
+
+  def test_empty_routes(self):
+    routes: Sequence[cfr_json.ShipmentRoute] = ({}, {}, {})
+    self.assertSetEqual(
+        cfr_json.get_skipped_shipments_from_routes(self._MODEL, routes),
+        frozenset(range(6)),
+    )
+
+  def test_some_routes(self):
+    routes: Sequence[cfr_json.ShipmentRoute] = (
+        {"visits": [{"shipmentIndex": 0}]},
+        {},
+        {"visits": [{"shipmentIndex": 3}, {"shipmentIndex": 2}]},
+    )
+    self.assertSetEqual(
+        cfr_json.get_skipped_shipments_from_routes(self._MODEL, routes),
+        frozenset((1, 4, 5)),
+    )
+
+
 class GetVehicleEarliestStartTest(unittest.TestCase):
   """Tests for get_vehicle_earliest_start."""
 
@@ -1325,6 +1522,72 @@ class GetVehicleActualWorkingHoursTest(unittest.TestCase):
         cfr_json.get_vehicle_actual_working_hours(route),
         datetime.timedelta(hours=2, minutes=35),
     )
+
+
+class RecomputeTravelStepsFromTransitions(unittest.TestCase):
+  """Tests for recompute_travel_steps_from_transitions."""
+
+  maxDiff = None
+
+  def test_unused_vehicle(self):
+    route: cfr_json.ShipmentRoute = {}
+    cfr_json.recompute_travel_steps_from_transitions(route)
+    self.assertEqual(route, {})
+
+  def test_with_some_transitions(self):
+    route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {
+                "travelDuration": "421s",
+                "travelDistanceMeters": 1249,
+                "waitDuration": "0s",
+                "totalDuration": "421s",
+                "startTime": "2023-08-11T08:00:00Z",
+                "routePolyline": {"points": "not_a_real_polyline"},
+            },
+            {
+                "travelDuration": "238s",
+                "travelDistanceMeters": 719,
+                "waitDuration": "20265s",
+                "totalDuration": "20503s",
+                "startTime": "2023-08-11T08:09:31Z",
+            },
+            {
+                "travelDuration": "0s",
+                "waitDuration": "0s",
+                "totalDuration": "0s",
+                "startTime": "2023-08-11T14:05:37Z",
+            },
+        ]
+    }
+    expected_travel_steps: list[cfr_json.TravelStep] = [
+        {
+            "duration": "421s",
+            "distanceMeters": 1249,
+            "routePolyline": {"points": "not_a_real_polyline"},
+        },
+        {"duration": "238s", "distanceMeters": 719},
+        {"duration": "0s", "distanceMeters": 0},
+    ]
+    expected_route = copy.deepcopy(route)
+    expected_route["travelSteps"] = expected_travel_steps
+    cfr_json.recompute_travel_steps_from_transitions(route)
+    self.assertEqual(route, expected_route)
+
+  def test_remove_unnecessary_travel_steps(self):
+    route: cfr_json.ShipmentRoute = {
+        "travelSteps": [
+            {
+                "duration": "421s",
+                "distanceMeters": 1249,
+                "routePolyline": {"points": "not_a_real_polyline"},
+            },
+            {"duration": "238s", "distanceMeters": 719},
+            {"duration": "0s", "distanceMeters": 0},
+        ]
+    }
+    cfr_json.recompute_travel_steps_from_transitions(route)
+    self.assertEqual(route, {})
 
 
 class GetNumDecreasingVisitTimesTest(unittest.TestCase):
@@ -1837,7 +2100,9 @@ class RecomputeTransitionStartsAndDurations(unittest.TestCase):
 
       if transitions:
         self.assertNotEqual(route, expected_route)
-      cfr_json.recompute_transition_starts_and_durations(model, route)
+      cfr_json.recompute_transition_starts_and_durations(
+          model, route, allow_negative_wait_duration=False
+      )
       self.assertEqual(route, expected_route)
 
   def test_moderate_local(self):
@@ -1872,7 +2137,58 @@ class RecomputeTransitionStartsAndDurations(unittest.TestCase):
         ],
     }
     with self.assertRaisesRegex(ValueError, "minimal duration"):
-      cfr_json.recompute_transition_starts_and_durations(model, route)
+      cfr_json.recompute_transition_starts_and_durations(
+          model, route, allow_negative_wait_duration=False
+      )
+
+  def test_insufficient_time_allow_negative_duration(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [{"deliveries": [{"duration": "120s"}]}],
+    }
+    route: cfr_json.ShipmentRoute = {
+        "vehicleIndex": 0,
+        "vehicleStartTime": "2024-01-15T10:00:00Z",
+        "vehicleEndTime": "2024-01-15T11:00:00z",
+        "visits": [{
+            "shipmentIndex": 0,
+            "visitRequestIndex": 0,
+            "isPickup": False,
+            "startTime": "2024-01-15T10:10:00Z",
+        }],
+        "transitions": [
+            {},
+            {"breakDuration": "1800s", "travelDuration": "1200s"},
+        ],
+    }
+    expected_route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {
+                "startTime": "2024-01-15T10:00:00Z",
+                "totalDuration": "600s",
+                "waitDuration": "600s",
+            },
+            {
+                "breakDuration": "1800s",
+                "startTime": "2024-01-15T10:12:00Z",
+                "totalDuration": "2880s",
+                "travelDuration": "1200s",
+                "waitDuration": "-120s",
+            },
+        ],
+        "vehicleEndTime": "2024-01-15T11:00:00z",
+        "vehicleIndex": 0,
+        "vehicleStartTime": "2024-01-15T10:00:00Z",
+        "visits": [{
+            "isPickup": False,
+            "shipmentIndex": 0,
+            "startTime": "2024-01-15T10:10:00Z",
+            "visitRequestIndex": 0,
+        }],
+    }
+    cfr_json.recompute_transition_starts_and_durations(
+        model, route, allow_negative_wait_duration=True
+    )
+    self.assertEqual(route, expected_route)
 
 
 class UpdateTimeStringTest(unittest.TestCase):
@@ -1947,6 +2263,11 @@ class MakeDurationStringTest(unittest.TestCase):
     self.assertEqual(
         cfr_json.as_duration_string(datetime.timedelta(milliseconds=500)),
         "0.5s",
+    )
+
+  def test_negative_time(self):
+    self.assertEqual(
+        cfr_json.as_duration_string(datetime.timedelta(seconds=-100)), "-100s"
     )
 
 

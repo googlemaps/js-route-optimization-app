@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#    https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 from os import path
 import tempfile
 import textwrap
 import unittest
+from unittest import mock
 
 from . import io_utils
 
@@ -31,6 +33,15 @@ class ReadJsonFromFileTest(unittest.TestCase):
       tmp_file.flush()
 
       json_data = io_utils.read_json_from_file(tmp_file.name)
+    self.assertEqual(json_data, {"foo": [1, 2, 3], "bar": True})
+
+  def test_read_from_stdin(self):
+    mock_stdin = io.StringIO("""{
+            "foo": [1, 2, 3],
+            "bar": true
+        }""")
+    with mock.patch("sys.stdin", mock_stdin):
+      json_data = io_utils.read_json_from_file("")
     self.assertEqual(json_data, {"foo": [1, 2, 3], "bar": True})
 
 
@@ -68,6 +79,14 @@ class WriteJsonToFileTest(unittest.TestCase):
       with open(json_filename, encoding="utf-8") as f:
         serialized_json = f.read()
         self.assertEqual(serialized_json, '{"foo":[1,2,3],"bar":true}')
+
+  def test_write_to_stdout(self):
+    mock_stdout = io.StringIO("")
+    with mock.patch("sys.stdout", mock_stdout):
+      io_utils.write_json_to_file(
+          "", {"foo": [1, 2, 3], "bar": True}, human_readable=False
+      )
+    self.assertEqual(mock_stdout.getvalue(), '{"foo":[1,2,3],"bar":true}')
 
 
 if __name__ == "__main__":

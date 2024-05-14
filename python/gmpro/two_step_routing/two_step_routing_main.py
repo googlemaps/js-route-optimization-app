@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#    https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,12 +37,10 @@ and have an access token for using the HTTP API:
 
 import argparse
 import dataclasses
-from http import client
-import json
 import logging
 import os
-import socket
 
+from ..json import cfr_api
 from ..json import cfr_json
 from ..json import io_utils
 from . import two_step_routing
@@ -53,206 +51,155 @@ class PlannerError(Exception):
 
 
 @dataclasses.dataclass(frozen=True)
-class Flags:
+class Flags(cfr_api.Flags):
   """Holds the values of command-line flags of this script.
 
-  Attributes:
-    request_file: The value of the --request flag.
-    parking_file: The value of the --parking flag.
-    google_cloud_project: The value of the --project flag.
-    google_cloud_token: The value of the --token flag.
-    reuse_existing: The value of the --reuse_existing flag. When a file with a
-      response exists, load it instead of resolving the request.
-    num_refinements: The value of the --use_refinements flag.
-    use_refinement: The value of the --use_refinement flag. When True, the
-      planner uses a third solve to reoptimize local routes from the same
-      parking if they are performed in a sequence (allowing the planner to merge
-      and reorganize them) and a fourth phase to clean up the global routes with
-      the updated local routes.
-    local_grouping: The value of the --local_grouping flag or the default value.
-    travel_mode_in_merged_transitions: The value of the
-      --travel_mode_in_merged_transitions flag.
-    local_timeout: The value of the --local_timeout flag or the default value.
-    global_timeout: The value of the --global_timeout flag or the default value.
-    local_refinement_timeout: The value of the --local_refinement_timeout flag
-      or the default value.
-    global_refinement_timeout: The value of the --global_refinement_timeout flag
-      or the default value.
+  Each attribute corresponds to a command-line flag defined in _parse_flags()
+  with the same name. See the help strings of the command-line flags for more
+  information about its value.
   """
 
-  request_file: str
-  parking_file: str
-  google_cloud_project: str
-  google_cloud_token: str
+  request: str
+  parking: str
   reuse_existing: bool
   num_refinements: int
-  local_grouping: two_step_routing.LocalModelGrouping
+  end_with_local_refinement: bool
+  local_grouping: two_step_routing.InitialLocalModelGrouping
+  local_model_vehicle_fixed_cost: float | None
   travel_mode_in_merged_transitions: bool
+  no_deprecated_fields: bool
+  inject_start_times_to_refinement_first_solution: bool
   local_timeout: cfr_json.DurationString
   global_timeout: cfr_json.DurationString
   local_refinement_timeout: cfr_json.DurationString
   global_refinement_timeout: cfr_json.DurationString
 
-
-def _parse_flags() -> Flags:
-  """Parses the command-line flags from sys.argv."""
-  parser = argparse.ArgumentParser(prog="two_step_routing_main")
-  parser.add_argument(
-      "--request",
-      required=True,
-      help=(
-          "The name of the file that contains the input CFR request in the JSON"
-          " format."
-      ),
-  )
-  parser.add_argument(
-      "--parking",
-      required=True,
-      help=(
-          "The name of the file that contains the parking data in the JSON"
-          " format. "
-      ),
-  )
-  parser.add_argument(
-      "--project",
-      required=True,
-      help="The Google Cloud project ID used for the CFR API requests.",
-  )
-  parser.add_argument(
-      "--token", required=True, help="The Google Cloud auth key."
-  )
-  two_step_routing.LocalModelGrouping.add_as_argument(
-      parser,
-      "--local_grouping",
-      help="Controls the grouping mode in the local model.",
-      default=two_step_routing.LocalModelGrouping.PARKING_AND_TIME,
-  )
-  parser.add_argument(
-      "--travel_mode_in_merged_transitions",
-      help="Add travel mode information to transitions in the merged solution.",
-      default=False,
-      action="store_true",
-  )
-  parser.add_argument(
-      "--local_timeout",
-      help=(
-          "The timeout used for the local model. Uses the duration string"
-          " format."
-      ),
-      default="240s",
-  )
-  parser.add_argument(
-      "--global_timeout",
-      help="The timeout for the global model. Uses the duration string format.",
-      default="1800s",
-  )
-  parser.add_argument(
-      "--local_refinement_timeout",
-      help=(
-          "The timeout for the local refinement model. Uses the duration string"
-          " format."
-      ),
-      default="240s",
-  )
-  parser.add_argument(
-      "--global_refinement_timeout",
-      help=(
-          "The timeout for the global refinement model. Uses the duration"
-          " string format."
-      ),
-      default="240s",
-  )
-  parser.add_argument(
-      "--num_refinements",
-      help=(
-          "The number of refinement rounds applied to the solution. In each"
-          " refinement round, the solver first re-optimizes local routes when"
-          " there are two or more visits to the parking in a sequence, and then"
-          " updates the global solution to reflect and take advantage of the"
-          " potentially more optimized local routes. When 0, no refinement is"
-          " applied."
-      ),
-      default=0,
-      type=int,
-      action="store",
-  )
-  parser.add_argument(
-      "--reuse_existing",
-      help="Reuse existing solution files, if they exist.",
-      default=False,
-      action="store_true",
-  )
-  flags = parser.parse_args()
-
-  return Flags(
-      request_file=flags.request,
-      parking_file=flags.parking,
-      google_cloud_project=flags.project,
-      google_cloud_token=flags.token,
-      local_timeout=flags.local_timeout,
-      local_grouping=flags.local_grouping,
-      travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
-      global_timeout=flags.global_timeout,
-      local_refinement_timeout=flags.local_refinement_timeout,
-      global_refinement_timeout=flags.global_refinement_timeout,
-      num_refinements=flags.num_refinements,
-      reuse_existing=flags.reuse_existing,
-  )
-
-
-def _run_optimize_tours(
-    request: cfr_json.OptimizeToursRequest,
-    flags: Flags,
-    timeout: cfr_json.DurationString,
-) -> cfr_json.OptimizeToursResponse:
-  """Solves request using the Google CFR API.
-
-  Args:
-    request: The request to be solved.
-    flags: The command-line flags.
-    timeout: The solve deadline for the request.
-
-  Returns:
-    Upon success, returns the response from the server.
-
-  Raises:
-    PlannerError: When the CFR API invocation fails. The exception contains the
-      status, explanation, and the body of the response.
-  """
-  host = "cloudoptimization.googleapis.com"
-  path = f"/v1/projects/{flags.google_cloud_project}:optimizeTours"
-  timeout_seconds = cfr_json.parse_duration_string(timeout).total_seconds()
-  headers = {
-      "Content-Type": "application/json",
-      "Authorization": f"Bearer {flags.google_cloud_token}",
-      "x-goog-user-project": flags.google_cloud_project,
-      "X-Server-Timeout": str(timeout_seconds),
-  }
-  connection = client.HTTPSConnection(host)
-  connection.connect()
-  # Set up TCP keepalive pings for the connection to avoid losing it due to
-  # inactivity. This is important when using deadlines longer than a few
-  # minutes. The parameters used below were sufficient to successfully complete
-  # requests running up to one hour.
-  sock = connection.sock
-  sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-  sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
-  sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 60)
-  sock.setsockopt(
-      socket.IPPROTO_TCP, socket.TCP_KEEPCNT, max(int(timeout_seconds) // 30, 1)
-  )
-
-  # For longer running requests, it may be necessary to set an explicit deadline
-  # and set up keepalive pings so that the connection is not dropped before the
-  # server returns.
-  connection.request("POST", path, body=json.dumps(request), headers=headers)
-  response = connection.getresponse()
-  if response.status != 200:
-    body = response.read()
-    raise PlannerError(
-        f"Request failed: {response.status}  {response.reason}\n{body}"
+  @classmethod
+  def add_arguments(cls, parser: argparse.ArgumentParser) -> None:
+    """See base class."""
+    super().add_arguments(parser)
+    parser.add_argument(
+        "--request",
+        required=True,
+        help=(
+            "The name of the file that contains the input CFR request in the"
+            " JSON format."
+        ),
     )
-  return json.load(response)
+    parser.add_argument(
+        "--parking",
+        required=True,
+        help=(
+            "The name of the file that contains the parking data in the JSON"
+            " format. "
+        ),
+    )
+    parser.add_argument(
+        "--local_grouping",
+        help="Controls the initial grouping of shipments in the local model.",
+        type=two_step_routing.InitialLocalModelGrouping.from_string,
+        default=two_step_routing.InitialLocalModelGrouping(time_windows=True),
+    )
+    parser.add_argument(
+        "--local_model_vehicle_fixed_cost",
+        default=0,
+        type=float,
+        help=(
+            "The cost of a vehicle in the initial local model. When None, the"
+            " default cost determined by the solver is used."
+        ),
+    )
+    parser.add_argument(
+        "--no_deprecated_fields",
+        help=(
+            "Do not use fields in CFR requests and responses that are marked as"
+            " deprecated. This concerns in particular `travelSteps`."
+        ),
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
+    parser.add_argument(
+        "--travel_mode_in_merged_transitions",
+        help=(
+            "Add travel mode information to transitions in the merged solution."
+        ),
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
+    parser.add_argument(
+        "--inject_start_times_to_refinement_first_solution",
+        help=(
+            "Use visit start times in the first solution injected to the"
+            " request in the global refinement request. This can make the"
+            " solver more efficient when loading the solution; however, it can"
+            " also make the refinement request infeasible when the travel times"
+            " change, e.g. because of map data update between the original"
+            " request and the refinement."
+        ),
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
+    parser.add_argument(
+        "--local_timeout",
+        help=(
+            "The timeout used for the local model. Uses the duration string"
+            " format."
+        ),
+        default="240s",
+    )
+    parser.add_argument(
+        "--global_timeout",
+        help=(
+            "The timeout for the global model. Uses the duration string format."
+        ),
+        default="1800s",
+    )
+    parser.add_argument(
+        "--local_refinement_timeout",
+        help=(
+            "The timeout for the local refinement model. Uses the duration"
+            " string format."
+        ),
+        default="240s",
+    )
+    parser.add_argument(
+        "--global_refinement_timeout",
+        help=(
+            "The timeout for the global refinement model. Uses the duration"
+            " string format."
+        ),
+        default="240s",
+    )
+    parser.add_argument(
+        "--num_refinements",
+        help=(
+            "The number of refinement rounds applied to the solution. In each"
+            " refinement round, the solver first re-optimizes local routes when"
+            " there are two or more visits to the parking in a sequence, and"
+            " then updates the global solution to reflect and take advantage of"
+            " the potentially more optimized local routes. When 0, no"
+            " refinement is applied."
+        ),
+        default=0,
+        type=int,
+        action="store",
+    )
+    parser.add_argument(
+        "--end_with_local_refinement",
+        help=(
+            "End the refinement with a local refinement phase. The last global"
+            " refinement is obtained only by integrating the local refinement"
+            " response."
+        ),
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
+    parser.add_argument(
+        "--reuse_existing",
+        help="Reuse existing solution files, if they exist.",
+        default=False,
+        action=argparse.BooleanOptionalAction,
+    )
 
 
 def _optimize_tours_and_write_response(
@@ -283,7 +230,14 @@ def _optimize_tours_and_write_response(
   """
   if flags.reuse_existing and os.path.isfile(output_filename):
     return io_utils.read_json_from_file(output_filename)
-  response = _run_optimize_tours(request, flags, timeout)
+  response = cfr_api.optimize_tours(
+      request=request,
+      google_cloud_project=flags.project,
+      google_cloud_token=flags.token,
+      timeout=timeout,
+      host=flags.api_host,
+      path=flags.api_path,
+  )
   io_utils.write_json_to_file(
       output_filename,
       response,
@@ -293,16 +247,16 @@ def _optimize_tours_and_write_response(
 
 def _run_two_step_planner() -> None:
   """Runs the two-step planner with parameters from command-line flags."""
-  flags = _parse_flags()
+  flags = Flags.from_command_line("two_step_routing_main")
 
-  logging.info("Parsing %s", flags.request_file)
+  logging.info("Parsing %s", flags.request)
   request_json: cfr_json.OptimizeToursRequest = io_utils.read_json_from_file(
-      flags.request_file
+      flags.request
   )
-  logging.info("Parsing %s", flags.parking_file)
-  parking_json = io_utils.read_json_from_file(flags.parking_file)
+  logging.info("Parsing %s", flags.parking)
+  parking_json = io_utils.read_json_from_file(flags.parking)
 
-  base_filename, _ = os.path.splitext(flags.request_file)
+  base_filename, _ = os.path.splitext(flags.request)
 
   logging.info("Extracting parking locations")
   parking_locations, parking_for_shipment = (
@@ -310,22 +264,12 @@ def _run_two_step_planner() -> None:
   )
 
   logging.info("Creating local model")
-  match flags.local_grouping:
-    case two_step_routing.LocalModelGrouping.PARKING:
-      options = two_step_routing.Options(
-          local_model_grouping=two_step_routing.LocalModelGrouping.PARKING,
-          local_model_vehicle_fixed_cost=0,
-          travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
-      )
-    case two_step_routing.LocalModelGrouping.PARKING_AND_TIME:
-      options = two_step_routing.Options(
-          travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions
-      )
-    case _:
-      raise ValueError(
-          "Unexpected value of --local_grouping: {flags.local_grouping!r}"
-      )
-
+  options = two_step_routing.Options(
+      initial_local_model_grouping=flags.local_grouping,
+      local_model_vehicle_fixed_cost=flags.local_model_vehicle_fixed_cost,
+      travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
+      use_deprecated_fields=not flags.no_deprecated_fields,
+  )
   planner = two_step_routing.Planner(
       request_json, parking_locations, parking_for_shipment, options
   )
@@ -421,21 +365,38 @@ def _run_two_step_planner() -> None:
         make_filename("local_response"),
     )
 
+    is_last_refinement = refinement_index == flags.num_refinements
+    is_last_global_cfr_request = (
+        refinement_index == flags.num_refinements - 1
+        if flags.end_with_local_refinement
+        else is_last_refinement
+    )
+    integration_mode = (
+        two_step_routing.IntegrationMode.VISITS_AND_START_TIMES
+        if flags.inject_start_times_to_refinement_first_solution
+        else two_step_routing.IntegrationMode.VISITS_ONLY
+    )
+    if flags.end_with_local_refinement and is_last_refinement:
+      integration_mode = two_step_routing.IntegrationMode.FULL_ROUTES
+
     logging.info("Integrating the refinement")
     (
         integrated_local_request,
         integrated_local_response,
         integrated_global_request,
+        integrated_global_response,
     ) = planner.integrate_local_refinement(
         local_request,
         local_response,
         global_request,
         global_response,
         local_refinement_response,
+        integration_mode=integration_mode,
     )
-    if refinement_index != flags.num_refinements:
+    if not is_last_global_cfr_request:
       # Override the live traffic option for all but the last global request.
       integrated_global_request["considerRoadTraffic"] = False
+
     io_utils.write_json_to_file(
         make_filename("integrated_local_request"),
         integrated_local_request,
@@ -450,12 +411,13 @@ def _run_two_step_planner() -> None:
     )
 
     logging.info("Solving the integrated global model")
-    integrated_global_response = _optimize_tours_and_write_response(
-        integrated_global_request,
-        flags,
-        flags.global_refinement_timeout,
-        make_filename("integrated_global_response"),
-    )
+    if integrated_global_response is None:
+      integrated_global_response = _optimize_tours_and_write_response(
+          integrated_global_request,
+          flags,
+          flags.global_refinement_timeout,
+          make_filename("integrated_global_response"),
+      )
 
     logging.info("Merging the results")
     merged_request, merged_response = planner.merge_local_and_global_result(

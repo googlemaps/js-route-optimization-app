@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#    https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ Typical usage:
 """
 
 import argparse
-from collections.abc import Callable, Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence, Set
 import dataclasses
 import enum
 import logging
@@ -36,6 +36,7 @@ from .. import utils
 from . import cfr_json
 from . import io_utils
 from . import transforms
+from . import transforms_breaks
 
 
 class ItemsPerShipment(utils.EnumForArgparse):
@@ -77,13 +78,40 @@ def _parse_comma_separated_list(value: str) -> Sequence[str]:
   return value.split(",")
 
 
+def _parse_comma_separated_index_list(value: str) -> Sequence[int]:
+  try:
+    indices = tuple(int(index) for index in value.split(",") if index.strip())
+    if any(index < 0 for index in indices):
+      # On error fall use the same error handling as when parsing the numbers
+      # fails.
+      raise ValueError()
+    return indices
+  except ValueError:
+    raise argparse.ArgumentTypeError(
+        "expected a list of non-negative integers separated by commas, got"
+        " {value!r}"
+    ) from None
+
+
 def _non_negative_float(value: str) -> float:
   value_as_float = float(value)
   if value_as_float < 0:
     raise argparse.ArgumentTypeError(
-        f"expected a non-negative value, got {value}"
+        f"expected a non-negative value, got {value!r}"
     )
   return value_as_float
+
+
+def _explicit_true_or_false(value: str) -> bool:
+  match value.casefold():
+    case "true":
+      return True
+    case "false":
+      return False
+    case _:
+      raise argparse.ArgumentTypeError(
+          "Expected 'true' or 'false', got {value!r}"
+      )
 
 
 @dataclasses.dataclass(slots=True)
@@ -106,6 +134,13 @@ class Flags:
 
   duplicate_vehicles_by_label: Sequence[str] | None
   remove_vehicles_by_label: Sequence[str] | None
+  reduce_to_vehicles_by_label: Sequence[str] | None
+  reduce_to_vehicles_by_index: Sequence[int] | None
+  infeasible_shipment_after_removing_vehicle: transforms.OnInfeasibleShipment
+
+  transform_breaks: str | None
+
+  override_consider_road_traffic: bool | None
 
   @property
   def items_per_shipment_callback(self) -> Callable[[cfr_json.Shipment], int]:
@@ -219,38 +254,173 @@ class Flags:
             " same label, and it appears in this list, all of them are removed."
         ),
     )
+    parser.add_argument(
+        "--reduce_to_vehicles_by_index",
+        type=_parse_comma_separated_index_list,
+        help=(
+            "A comma separated list of vehicle indices. Removes all vehicles"
+            " whose indices do not appear in this list. Removes all shipments"
+            " that become trivially infeasible when the vehicles are removed."
+            " When both --reduce_to_vehicles_by_index and"
+            " --reduce_to_vehicles_by_label are used, vehicles specified by any"
+            " of the two are preserved in the request."
+        ),
+    )
+    parser.add_argument(
+        "--reduce_to_vehicles_by_label",
+        type=_parse_comma_separated_list,
+        help=(
+            "A comma-separated list of vehicle labels. Removes all vehicles"
+            " whose labels do not appear in this list. When multiple vehicles"
+            " have the same label, and it appears in the list, all of them are"
+            " preserved. Removes all shipments that become trivially infeasible"
+            " when the vehicles are removed. When both"
+            " --reduce_to_vehicles_by_index and --reduce_to_vehicles_by_label"
+            " are used, vehicles specified by any of the two are preserved in"
+            " the request."
+        ),
+    )
+    parser.add_argument(
+        "--transform_breaks",
+        required=False,
+        help=(
+            "Rules for transforming breaks in the model. See the module"
+            " docstring of transform_breaks.py for more details on the"
+            " transformation language."
+        ),
+    )
+    parser.add_argument(
+        "--override_consider_road_traffic",
+        help=(
+            "Specifies an override for the value of `considerRoadTraffic` in"
+            " the request. When unspecified, the original value is preserved."
+        ),
+        type=_explicit_true_or_false,
+        default=None,
+    )
+    transforms.OnInfeasibleShipment.add_as_argument(
+        parser,
+        "--infeasible_shipment_after_removing_vehicle",
+        help=(
+            "Specifies how to deal with shipments that become trivially"
+            " infeasible after removing a vehicle."
+        ),
+        default=transforms.OnInfeasibleShipment.FAIL,
+    )
 
     parsed_args = parser.parse_args(args)
     return cls(**vars(parsed_args))
 
 
-def _remove_vehicles_by_label(
-    model: cfr_json.ShipmentModel, vehicle_labels: Iterable[str]
-) -> None:
-  """Removes all vehicles in the model whose label is in `vehicle_labels`.
+def _get_indices_of_vehicles_with_labels(
+    model: cfr_json.ShipmentModel,
+    vehicle_labels: Iterable[str],
+) -> tuple[Sequence[int], Set[str]]:
+  """Translates vehicle labels into vehicle indices.
+
+  When multiple vehicles use the same label, the indices of all of them will be
+  in the returned sequence.
 
   Args:
-    model: The model from which the vehicles are removed. Modified in place.
-    vehicle_labels: The labels of vehicles to be removed from the model.
+    model: The model in which the vehicle labels are translated.
+    vehicle_labels: The vehicle labels to translate.
+
+  Returns:
+    A tuple (vehicle_indices, unseen_labels) where vehicle_indices is a sequence
+    of vehicle indices selected by the labels, and unseen_labels is a set of
+    labels from `vehicle_labels` that did not match any vehicle in the model.
   """
-  indices_to_remove = set()
-  labels_to_remove = set(vehicle_labels)
-  removed_labels = set()
+  selected_labels = set(vehicle_labels)
+  unseen_labels = set(selected_labels)
+  selected_indices = []
   for vehicle_index, vehicle in enumerate(cfr_json.get_vehicles(model)):
     vehicle_label = vehicle.get("label", "")
-    if not vehicle_label or vehicle_label not in labels_to_remove:
-      continue
-    indices_to_remove.add(vehicle_index)
-    removed_labels.add(vehicle_label)
+    if vehicle_label and vehicle_label in selected_labels:
+      selected_indices.append(vehicle_index)
+      unseen_labels.remove(vehicle_label)
 
-  if len(removed_labels) != len(labels_to_remove):
-    missing_labels = sorted(labels_to_remove - removed_labels)
+  return selected_indices, unseen_labels
+
+
+def _remove_vehicles_by_label(
+    request: cfr_json.OptimizeToursRequest,
+    vehicle_labels: Iterable[str],
+    on_infeasible_shipment: transforms.OnInfeasibleShipment,
+) -> None:
+  """Removes all vehicles in the request whose label is in `vehicle_labels`.
+
+  Args:
+    request: The request in which the vehicles are removed.
+    vehicle_labels: The labels of vehicles to be removed from the model.
+    on_infeasible_shipment: The behavior of the tool when a shipment becomes
+      trivially infeasible after removing a vehicle.
+  """
+  model = request["model"]
+  indices_to_remove, unseen_labels = _get_indices_of_vehicles_with_labels(
+      model, vehicle_labels
+  )
+
+  if unseen_labels:
     raise ValueError(
         "Vehicle labels from --remove_vehicles_by_label do not appear in the"
-        f" model: {', '.join(repr(label) for label in missing_labels)}"
+        f" model: {', '.join(repr(label) for label in sorted(unseen_labels))}"
     )
 
-  transforms.remove_vehicles(model, indices_to_remove)
+  new_vehicle_for_old_vehicle, new_shipment_for_old_shipment = (
+      transforms.remove_vehicles(
+          model, set(indices_to_remove), on_infeasible_shipment
+      )
+  )
+  transforms.remove_vehicles_from_injected_first_solution_routes(
+      request, new_vehicle_for_old_vehicle, new_shipment_for_old_shipment
+  )
+
+
+def _reduce_to_vehicles(
+    request: cfr_json.OptimizeToursRequest,
+    vehicle_indices: Iterable[int] | None,
+    vehicle_labels: Iterable[str] | None,
+) -> None:
+  """Removes all vehicles in the request whose label is not in `vehicle_labels`.
+
+  Removes also all shipments that become trivially infeasible after removing the
+  vehicles.
+
+  Args:
+    request: The request in which the vehicles are removed.
+    vehicle_indices: The indices of vehicles to be kept in the model.
+    vehicle_labels: The labels of vehicles to be kept in the model.
+  """
+  model = request["model"]
+  num_vehicles = len(cfr_json.get_vehicles(model))
+  indices_to_remove = set(range(num_vehicles))
+
+  if vehicle_indices is not None:
+    indices_to_remove.difference_update(vehicle_indices)
+  if vehicle_labels is not None:
+    indices_to_keep, unseen_labels = _get_indices_of_vehicles_with_labels(
+        model, vehicle_labels
+    )
+
+    if unseen_labels:
+      raise ValueError(
+          "Vehicle labels from --reduce_to_vehicles_by_label do not appear in"
+          " the model:"
+          f" {', '.join(repr(label) for label in sorted(unseen_labels))}"
+      )
+
+    indices_to_remove.difference_update(indices_to_keep)
+
+  logging.info("Removing vehicle indices %r", indices_to_remove)
+
+  new_vehicle_for_old_vehicle, new_shipment_for_old_shipment = (
+      transforms.remove_vehicles(
+          model, indices_to_remove, transforms.OnInfeasibleShipment.REMOVE
+      )
+  )
+  transforms.remove_vehicles_from_injected_first_solution_routes(
+      request, new_vehicle_for_old_vehicle, new_shipment_for_old_shipment
+  )
 
 
 def _duplicate_vehicles_by_label(
@@ -293,6 +463,8 @@ def main(args: Sequence[str] | None = None) -> None:
 
   model = request["model"]
 
+  if flags.override_consider_road_traffic is not None:
+    request["considerRoadTraffic"] = flags.override_consider_road_traffic
   if flags.shipment_penalty_cost_per_item is not None:
     transforms.make_all_shipments_optional(
         model,
@@ -310,9 +482,27 @@ def main(args: Sequence[str] | None = None) -> None:
         model, factor=flags.visit_duration_scaling_factor
     )
   if removed_labels := flags.remove_vehicles_by_label:
-    _remove_vehicles_by_label(model, removed_labels)
+    _remove_vehicles_by_label(
+        request,
+        removed_labels,
+        flags.infeasible_shipment_after_removing_vehicle,
+    )
+  preserved_vehicle_labels = flags.reduce_to_vehicles_by_label
+  preserved_vehicle_indices = flags.reduce_to_vehicles_by_index
+  if (
+      preserved_vehicle_labels is not None
+      or preserved_vehicle_indices is not None
+  ):
+    _reduce_to_vehicles(
+        request, preserved_vehicle_indices, preserved_vehicle_labels
+    )
   if duplicated_labels := flags.duplicate_vehicles_by_label:
     _duplicate_vehicles_by_label(model, duplicated_labels)
+  if flags.transform_breaks is not None:
+    break_transform_rules = transforms_breaks.compile_rules(
+        flags.transform_breaks
+    )
+    transforms_breaks.transform_breaks(model, break_transform_rules)
 
   io_utils.write_json_to_file(flags.output_file, request)
 
