@@ -20,9 +20,7 @@
   </span>
   <!-- title -->
   <ng-container *ngIf="postSolve && visit; else visitRequestTitleTemplate">
-    <span [ngClass]="{ link: navigation }" (click)="onVisitClick()">{{
-      visit | entityName: 'Visit'
-    }}</span>
+    <span>{{ visit | entityName: 'Visit' }}</span>
   </ng-container>
   <ng-template #visitRequestTitleTemplate>
     <span>{{ visitRequest | entityName: 'Visit Request' }}</span>

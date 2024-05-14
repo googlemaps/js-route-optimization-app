@@ -1,7 +1,5 @@
 <div class="text__title">
-  <span [ngClass]="{ link: navigation }" (click)="onVehicleClick()">
-    {{ vehicle | entityName: 'Vehicle' }}
-  </span>
+  {{ vehicle | entityName: 'Vehicle' }}
 </div>
 <div *ngIf="route" class="text__caption">
   Route Start: <span class="strong">{{ formatDate(route.vehicleStartTime) }}</span>
