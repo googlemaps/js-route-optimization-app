@@ -41,6 +41,8 @@ export class BaseMainNavComponent implements OnChanges {
   @Input() selectedVehicleCount: number;
   @Input() solving: boolean;
   @Input() page: Page;
+  @Input() solutionTime: number;
+  @Input() routeCount: number;
   @Output() scenarioClick = new EventEmitter();
   @Output() shipmentsClick = new EventEmitter();
   @Output() solutionClick = new EventEmitter();
@@ -48,6 +50,7 @@ export class BaseMainNavComponent implements OnChanges {
   @Output() addShipment = new EventEmitter();
   @Output() addVehicle = new EventEmitter();
 
+  solveSeconds: number;
   label: string;
   pages = Page;
 
@@ -56,6 +59,9 @@ export class BaseMainNavComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.solutionTime) {
+      this.solveSeconds = this.solutionTime / 1000;
+    }
     if (changes.hasSolution || changes.solving) {
       if (this.solving) {
         this.label = 'Cancel';

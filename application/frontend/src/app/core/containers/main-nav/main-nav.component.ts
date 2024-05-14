@@ -28,6 +28,7 @@ import * as fromUI from 'src/app/core/selectors/ui.selectors';
 import PreSolveVehicleSelectors from 'src/app/core/selectors/pre-solve-vehicle.selectors';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import { PreSolveShipmentActions, PreSolveVehicleActions } from '../../actions';
+import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 
 @Component({
   selector: 'app-main-nav',
@@ -44,7 +45,8 @@ export class MainNavComponent {
   readonly selectedShipmentCount$: Observable<number>;
   readonly selectedVehicleCount$: Observable<number>;
   readonly allowExperimentalFeatures$: Observable<boolean>;
-
+  readonly solutionTime$: Observable<number>;
+  readonly routeCount$: Observable<number>;
   readonly solving$: Observable<boolean>;
 
   get Page(): typeof Page {
@@ -52,8 +54,10 @@ export class MainNavComponent {
   }
 
   constructor(private router: Router, private store: Store) {
+    this.solutionTime$ = this.store.pipe(select(fromDispatcher.selectSolutionTime));
     this.disabled$ = this.store.pipe(select(fromPreSolve.selectGenerateDisabled));
     this.hasSolution$ = this.store.pipe(select(fromSolution.selectHasSolution));
+    this.routeCount$ = this.store.pipe(select(fromSolution.selectUsedRoutesCount));
     this.isSolutionStale$ = this.store.pipe(select(DenormalizeSelectors.selectIsSolutionStale));
     this.isSolutionIllegal$ = this.store.pipe(select(DenormalizeSelectors.selectIsSolutionIllegal));
     this.selectedShipmentCount$ = this.store.pipe(

@@ -27,6 +27,7 @@ import * as fromUI from 'src/app/core/selectors/ui.selectors';
 import { Page } from '../../models';
 import DispatcherApiSelectors from '../../selectors/dispatcher-api.selectors';
 import { MainNavComponent } from './main-nav.component';
+import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 
 @Component({
   selector: 'app-base-main-nav',
@@ -42,6 +43,8 @@ class MockBaseMainNavComponent {
   @Input() selectedVehicleCount: number;
   @Input() solving: boolean;
   @Input() page: Page;
+  @Input() solutionTime: number;
+  @Input() routeCount: number;
   @Output() shipmentsClick = new EventEmitter();
   @Output() solutionClick = new EventEmitter();
   @Output() vehiclesClick = new EventEmitter();
@@ -67,6 +70,8 @@ describe('MainNavComponent', () => {
             { selector: PreSolveVehicleSelectors.selectTotalSelected, value: 0 },
             { selector: DispatcherApiSelectors.selectOptimizeToursLoading, value: false },
             { selector: fromUI.selectPage, value: null },
+            { selector: fromSolution.selectUsedRoutesCount, value: 0 },
+            { selector: fromDispatcher.selectSolutionTime, value: 0 },
           ],
         }),
       ],

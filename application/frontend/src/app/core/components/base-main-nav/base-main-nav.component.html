@@ -102,6 +102,10 @@
   <div class="border"></div>
 </div>
 <div class="nav-container mat-body-strong">
+  <div class="nav-item nav-subitem generation-label" *ngIf="solutionTime">
+    Generated {{ routeCount }} route{{ routeCount > 1 ? 's' : '' }} in
+    {{ solveSeconds | number: '1.2-2' }} seconds
+  </div>
   <div class="nav-item nav-subitem">
     <app-generate-button
       class="nav-generate"

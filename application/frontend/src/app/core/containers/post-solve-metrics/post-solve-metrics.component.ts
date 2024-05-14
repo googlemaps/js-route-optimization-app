@@ -20,7 +20,6 @@ import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
-import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 import * as fromPostSolveShipment from 'src/app/core/selectors/post-solve-shipment.selectors';
 import PreSolveShipmentSelectors from 'src/app/core/selectors/pre-solve-shipment.selectors';
 import ShipmentRouteSelectors, * as fromShipmentRoute from 'src/app/core/selectors/shipment-route.selectors';
@@ -28,6 +27,7 @@ import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import * as fromTimeline from 'src/app/core/selectors/timeline.selectors';
 import { PostSolveMetricsActions } from '../../actions';
 import { Page, Timeline, TimelineCategory, TimeSet } from '../../models';
+import PreSolveVehicleSelectors from 'src/app/core/selectors/pre-solve-vehicle.selectors';
 
 @Component({
   selector: 'app-post-solve-metrics',
@@ -41,11 +41,11 @@ export class PostSolveMetricsComponent implements OnInit {
   totalDistance$: Observable<number>;
   skippedShipmentsCount$: Observable<number>;
   shipmentsCount$: Observable<number>;
-  solutionTime$: Observable<number>;
   totalCost$: Observable<number>;
   timezoneOffset$: Observable<number>;
   timeline$: Observable<Timeline>;
   vehicleTimeAverages$: Observable<TimeSet>;
+  numberOfVehicles$: Observable<number>;
 
   constructor(private router: Router, private store: Store) {}
 
@@ -53,7 +53,6 @@ export class PostSolveMetricsComponent implements OnInit {
     this.duration$ = this.store.pipe(select(ShipmentRouteSelectors.selectRoutesDuration));
     this.numberOfRoutes$ = this.store.pipe(select(fromSolution.selectUsedRoutesCount));
     this.totalDistance$ = this.store.pipe(select(fromSolution.selectTotalRoutesDistanceMeters));
-    this.solutionTime$ = this.store.pipe(select(fromDispatcher.selectSolutionTime));
     this.skippedShipmentsCount$ = this.store.pipe(
       select(fromPostSolveShipment.selectTotalSkippedShipments)
     );
@@ -71,6 +70,11 @@ export class PostSolveMetricsComponent implements OnInit {
       map((res) => {
         return this.calculateVehicleTimeAverages(res);
       })
+    );
+
+    this.numberOfVehicles$ = this.store.pipe(
+      select(PreSolveVehicleSelectors.selectSelected),
+      map((selected) => selected.length)
     );
   }
 
