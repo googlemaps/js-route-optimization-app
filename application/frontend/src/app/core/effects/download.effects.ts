@@ -283,7 +283,8 @@ export class DownloadEffects {
   }
 
   localizedDateString(dateVal, locale = "pt-Br", timezone = "America/Sao_Paulo") {
-    return new Date(dateVal).toLocaleString(locale, {timeZone: timezone});
+    const dateObj = new Date(dateVal);
+    return dateObj.toLocaleString(locale, {timeZone: timezone});
   }
 
   parseVisitData(
