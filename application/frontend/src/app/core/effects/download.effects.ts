@@ -209,9 +209,7 @@ export class DownloadEffects {
           vehicleOperatorIndices: vehicleOperatorIndices,
           vehicleOperatorLabels: vehicleOperatorLabels,
           visitType: 'Start of day',
-          visitEnd: new Date(
-            durationSeconds(route.vehicleStartTime).toNumber() * 1000
-          ).toUTCString(),
+          visitEnd: this.localizedDateString(durationSeconds(route.vehicleStartTime).toNumber() * 1000),
           timeToNextStop: formattedDurationSeconds(
             durationSeconds(route.visits[0]?.startTime || route.vehicleEndTime)
               .subtract(durationSeconds(route.vehicleStartTime))
@@ -242,9 +240,7 @@ export class DownloadEffects {
           vehicleIndex: route.vehicleIndex || 0,
           vehicleLabel: vehicle.label,
           visitType: 'End of day',
-          visitStart: new Date(
-            durationSeconds(route.vehicleEndTime).toNumber() * 1000
-          ).toUTCString(),
+          visitStart: this.localizedDateString(durationSeconds(route.vehicleEndTime).toNumber() * 1000),
         });
       }
     });
@@ -286,6 +282,10 @@ export class DownloadEffects {
     };
   }
 
+  localizedDateString(dateVal, locale = "pt-Br", timezone = "America/Sao_Paulo") {
+    return new Date(dateVal).toLocaleString(locale, {timeZone: timezone});
+  }
+
   parseVisitData(
     vehicle: IVehicle,
     shipments: IShipment[],
@@ -317,8 +317,8 @@ export class DownloadEffects {
       );
     }
 
-    const visitStart = new Date(1000 * startSeconds.toNumber()).toUTCString();
-    const visitEnd = new Date(1000 * endSeconds.toNumber()).toUTCString();
+    const visitStart = this.localizedDateString(1000 * startSeconds.toNumber());
+    const visitEnd = this.localizedDateString(1000 * endSeconds.toNumber())
 
     return {
       visitStart,

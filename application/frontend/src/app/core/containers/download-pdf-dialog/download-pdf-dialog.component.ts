@@ -17,7 +17,7 @@ import {
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { combineLatest, of, Subscription } from 'rxjs';
-import { CsvData, DeckGLRoute, Vehicle } from '../../models';
+import { CSV_COLUMNS_FOR_PDF, CsvData, DeckGLRoute, Vehicle } from '../../models';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { FileService } from '../../services';
@@ -41,7 +41,7 @@ enum GenerationState {
   styleUrls: ['./download-pdf-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DownloadPdfDialogComponent implements OnInit, OnDestroy {
+export class DownloadPdfDialogComponent implements OnDestroy {
   mapSizeInches = {
     width: 7.5,
     height: 4,
@@ -56,7 +56,6 @@ export class DownloadPdfDialogComponent implements OnInit, OnDestroy {
     unit: 'in',
     format: 'letter',
   };
-  tableKeys = [];
 
   GenerationState = GenerationState;
   state = GenerationState.Waiting;
@@ -82,19 +81,6 @@ export class DownloadPdfDialogComponent implements OnInit, OnDestroy {
     private service: PdfDownloadService,
     private store: Store
   ) {}
-
-  ngOnInit(): void {
-    // Map all keys from CSV data except the vehicle index and label, since that will be included in the title for each page
-    const uniqueKeys = new Set();
-    this.csvData.forEach((entry) =>
-      Object.keys(entry).forEach((key) => {
-        if (key.toLowerCase() !== 'vehicle index' && key.toLowerCase() !== 'vehicle label') {
-          uniqueKeys.add(key);
-        }
-      })
-    );
-    this.tableKeys = Array.from(uniqueKeys);
-  }
 
   ngOnDestroy(): void {
     if (this.mapSubscription) {
@@ -178,7 +164,7 @@ export class DownloadPdfDialogComponent implements OnInit, OnDestroy {
   }
 
   addTitle(doc: jsPDF, vehicleIndex: number, label: string): void {
-    const title = `Route for Vehicle #${vehicleIndex}` + (label ? ` - ${label}` : '');
+    const title = `Rota para a técnica ` + (label ? ` - ${label}` : '');
     const splitTitle = doc.setFont(undefined, 'bold').splitTextToSize(title, 7.5);
     doc.text(splitTitle, 8.5 / 2, 0.5, { align: 'center' });
   }
@@ -192,11 +178,13 @@ export class DownloadPdfDialogComponent implements OnInit, OnDestroy {
   addTable(doc, vehicleIndex: number): void {
     doc.setFont(undefined, 'normal');
 
+    const vehicleCsvData = this.csvData.filter((data) => data['Vehicle index'] === vehicleIndex);
+    const tableKeys = Object.keys(CSV_COLUMNS_FOR_PDF);
+    const vehiclePdfTableData = vehicleCsvData.map((data) => tableKeys.map((key) => (key in data ? data[key] : '')))
+
     autoTable(doc, {
-      head: [this.tableKeys],
-      body: this.csvData
-        .filter((data) => data['Vehicle index'] === vehicleIndex)
-        .map((data) => this.tableKeys.map((key) => (key in data ? data[key] : ''))),
+      head: [Object.values(CSV_COLUMNS_FOR_PDF)],
+      body: vehiclePdfTableData,
       startY: 5.35,
       headStyles: {
         fillColor: '#555',

@@ -99,6 +99,14 @@ export interface CsvData {
   location: string;
 }
 
+// SETUP COLUMN:LABEL
+export const CSV_COLUMNS_FOR_PDF = {
+  'Ship label': 'Agendamento',
+  'Visit start': 'Horário de chegada',
+  'Visit end': 'Horário de termino',
+  'Time to next stop': 'Tempo até o proximo',
+}
+
 export const CSV_COLUMN_ORDER = [
   'vehicleIndex',
   'vehicleLabel',
