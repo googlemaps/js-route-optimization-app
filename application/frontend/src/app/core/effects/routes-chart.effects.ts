@@ -20,7 +20,7 @@ import { select, Store } from '@ngrx/store';
 import { map, mergeMap, take, withLatestFrom } from 'rxjs/operators';
 import * as fromRoot from 'src/app/reducers';
 import RoutesChartSelectors from '../../core/selectors/routes-chart.selectors';
-import { RoutesChartActions } from '../actions';
+import { DispatcherActions, RoutesChartActions } from '../actions';
 import ShipmentModelSelectors from '../selectors/shipment-model.selectors';
 
 @Injectable()
@@ -58,6 +58,19 @@ export class RoutesChartEffects {
                 range.unitStep.value;
             return RoutesChartActions.anchorRangeOffset({ rangeOffset });
           })
+        )
+      )
+    )
+  );
+
+  loadSolutionEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DispatcherActions.loadSolution),
+      mergeMap(() =>
+        this.store.pipe(
+          select(RoutesChartSelectors.selectFilteredRoutes),
+          take(1),
+          map((routes) => RoutesChartActions.selectRoutes({ routeIds: routes.map((r) => r.id) }))
         )
       )
     )
