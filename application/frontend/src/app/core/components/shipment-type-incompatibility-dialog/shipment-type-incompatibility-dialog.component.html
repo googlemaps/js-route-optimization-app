@@ -1,0 +1,136 @@
+<form [formGroup]="form" autocomplete="off">
+  <section class="shipment-type">
+    <header>
+      <div>
+        <mat-error class="mb-4" *ngIf="shipmentTypeIncompatsControl.getError('duplicate')">
+          Cannot have duplicate incompatibility rules
+        </mat-error>
+      </div>
+    </header>
+
+    <div formArrayName="shipmentTypeIncompatibilities" class="w-100">
+      <div
+        *ngFor="
+          let shipmentTypeIncompat of shipmentTypeIncompatsControl.controls;
+          let shipmentTypeIncompatsIndex = index
+        "
+        [formGroupName]="shipmentTypeIncompatsIndex"
+        class="d-flex flex-row align-items-center w-100 mb-2">
+        <!-- types -->
+        <div class="settings-item item-xl pad-right">
+          <mat-form-field class="flex-grow-1 pb-0">
+            <mat-label>Shipment types*</mat-label>
+            <mat-chip-list #shipmentTypeIncompatibilityChipList aria-label="Shipment types">
+              <mat-chip
+                *ngFor="let shipmentType of shipmentTypeIncompat.value?.types"
+                [selectable]="false"
+                (removed)="
+                  removeTypeFromShipmentTypeIncompat(shipmentType, shipmentTypeIncompatsIndex)
+                ">
+                {{ shipmentType }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <input
+                #shipmentTypeIncompatibilityInput
+                [matAutocomplete]="autoIncompatTypes"
+                [matChipInputFor]="shipmentTypeIncompatibilityChipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="
+                  addTypeToShipmentTypeIncompat(
+                    $event.value,
+                    shipmentTypeIncompatsIndex,
+                    $event.input
+                  )
+                "
+                (focusout)="
+                  addTypeToShipmentTypeIncompat(
+                    $event.target.value,
+                    shipmentTypeIncompatsIndex,
+                    $event.target
+                  )
+                "
+                (input)="updateFilteredAvailableIncompatShipmentTypes($event.data)"
+                (keydown)="onShipmentTypeIncompatTypeKeyDown($event, shipmentTypeIncompatsIndex)" />
+            </mat-chip-list>
+
+            <mat-autocomplete
+              class="cost-vehicles-panel"
+              #autoIncompatTypes="matAutocomplete"
+              (optionSelected)="
+                addTypeToShipmentTypeIncompat(
+                  $event.option.value,
+                  shipmentTypeIncompatsIndex,
+                  shipmentTypeIncompatibilityInput
+                )
+              ">
+              <cdk-virtual-scroll-viewport
+                style="height: 200px"
+                [itemSize]="48"
+                minBufferPx="200"
+                maxBufferPx="400">
+                <mat-option
+                  [style.height.px]="48"
+                  *cdkVirtualFor="
+                    let shipmentType of (filteredAvailableIncompatShipmentTypes$ | async)[
+                      shipmentTypeIncompatsIndex
+                    ]
+                  "
+                  [value]="shipmentType">
+                  {{ shipmentType }}
+                </mat-option>
+              </cdk-virtual-scroll-viewport>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-error
+            *ngIf="
+              shipmentTypeIncompat.getError('required', 'types') ||
+              shipmentTypeIncompat.getError('minlength', 'types')
+            ">
+            At least 2 types required
+          </mat-error>
+          <div
+            class="unused-shipment-type-warning"
+            *ngIf="unusedShipmentIncompatTypes[shipmentTypeIncompatsIndex]">
+            Shipment type(s) not used on any shipments:
+            {{ unusedShipmentIncompatTypes[shipmentTypeIncompatsIndex] }}
+          </div>
+        </div>
+
+        <!-- mode -->
+        <div class="settings-item pad-right">
+          <div class="mat-body-strong">Incompatibility mode*</div>
+          <mat-form-field appearance="outline" class="pb-0">
+            <mat-select formControlName="incompatibilityMode">
+              <mat-option
+                *ngFor="let mode of keys(shipmentTypeIncompatModeLabels)"
+                [value]="parseInt(mode)">
+                {{ shipmentTypeIncompatModeLabels[mode] }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngIf="shipmentTypeIncompat.getError('required', 'incompatibilityMode')">
+            Required
+          </mat-error>
+        </div>
+
+        <!-- remove -->
+        <button
+          type="button"
+          class="clear-place"
+          (click)="removeShipmentTypeIncompat(shipmentTypeIncompatsIndex)"
+          mat-icon-button
+          title="Remove Shipment Type Incompatibility">
+          <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+        </button>
+      </div>
+    </div>
+    <button
+      type="button"
+      mat-stroked-button
+      color="primary"
+      class="light-stroked-button"
+      (click)="addShipmentTypeIncompat()">
+      Add shipment type incompatibility
+    </button>
+  </section>
+</form>

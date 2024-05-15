@@ -1,24 +1,29 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 export * from './capacity-quantity/capacity-quantity.component';
 export * from './load-demands-form/load-demands-form.component';
 export * from './confirm-overwrite-dialog/confirm-overwrite-dialog.component';
 export * from './filter-boolean-form/filter-boolean-form.component';
 export * from './filter-date-form/filter-date-form.component';
-export * from './filter-list/filter-list.component';
 export * from './filter-menu/filter-menu.component';
 export * from './filter-number-form/filter-number-form.component';
 export * from './filter-select-form/filter-select-form.component';
 export * from './filter-string-form/filter-string-form.component';
 export * from './filter/filter.component';
-export * from './gantt-chart-control-bar/gantt-chart-control-bar.component';
 export * from './gantt-chart/gantt-chart.component';
 export * from './gantt-settings-dialog/gantt-settings-dialog.component';
 export * from './injected-relaxation-constraints-form/injected-relaxation-constraints-form.component';

@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Action, ActionReducer } from '@ngrx/store';
 import { State } from '.';
@@ -20,7 +27,6 @@ import {
   PostSolveControlBarActions,
   PreSolveShipmentActions,
   PreSolveVehicleActions,
-  PreSolveVehicleOperatorActions,
   RequestSettingsActions,
   RoutesChartActions,
   RoutesMetadataActions,
@@ -30,14 +36,13 @@ import {
   UIActions,
   UndoRedoActions,
   VehicleActions,
-  VehicleOperatorActions,
 } from '../core/actions';
 import { Page } from '../core/models';
 import { Frame, State as UndoRedoState } from '../core/reducers/undo-redo.reducer';
 
 const maxUndos = 100;
 
-const preSolvePages = new Set([Page.Welcome, Page.Vehicles, Page.Shipments, Page.VehicleOperators]);
+const preSolvePages = new Set([Page.Welcome, Page.Vehicles, Page.Shipments, Page.ScenarioPlanning]);
 
 const ignoreActions = new Set<string>([
   UndoRedoActions.changePage.type,
@@ -84,17 +89,6 @@ const ignoreActions = new Set<string>([
   PreSolveVehicleActions.changeDisplayColumns.type,
   PreSolveVehicleActions.changePage.type,
   PreSolveVehicleActions.changeSort.type,
-  PreSolveVehicleOperatorActions.selectVehicleOperator.type,
-  PreSolveVehicleOperatorActions.selectVehicleOperators.type,
-  PreSolveVehicleOperatorActions.deselectVehicleOperator.type,
-  PreSolveVehicleOperatorActions.deselectVehicleOperators.type,
-  PreSolveVehicleOperatorActions.updateVehicleOperatorsSelection.type,
-  PreSolveVehicleOperatorActions.addFilter.type,
-  PreSolveVehicleOperatorActions.editFilter.type,
-  PreSolveVehicleOperatorActions.removeFilter.type,
-  PreSolveVehicleOperatorActions.changeDisplayColumns.type,
-  PreSolveVehicleOperatorActions.changePage.type,
-  PreSolveVehicleOperatorActions.changeSort.type,
   ShipmentModelActions.setGlobalEndTime.type,
   ShipmentModelActions.setGlobalStartTime.type,
   RequestSettingsActions.setLabel.type,
@@ -188,10 +182,6 @@ const config: Config = {
   [VehicleActions.upsertVehicles.type]: {},
   [VehicleActions.deleteVehicle.type]: {},
   [VehicleActions.deleteVehicles.type]: {},
-  [VehicleOperatorActions.upsertVehicleOperator.type]: {},
-  [VehicleOperatorActions.upsertVehicleOperators.type]: {},
-  [VehicleOperatorActions.deleteVehicleOperator.type]: {},
-  [VehicleOperatorActions.deleteVehicleOperators.type]: {},
 };
 
 export function undoRedo(reducer: ActionReducer<State>): ActionReducer<State> {

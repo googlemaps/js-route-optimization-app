@@ -1,0 +1,178 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: block;
+  overflow: auto;
+}
+
+section .mat-title {
+  display: inline-block;
+  margin: 0;
+}
+
+section {
+  margin-bottom: 28px;
+}
+
+section:last-child {
+  margin-bottom: 0;
+}
+
+.intro {
+  margin-top: 8px;
+}
+
+.intro p {
+  margin-bottom: 1.6rem;
+}
+
+.intro > :last-child {
+  margin-bottom: 0;
+}
+
+.guide {
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.info-panel {
+  margin: 12px;
+}
+
+.info-panel__content > * {
+  text-align: center;
+}
+
+.info-panel__content > :last-child {
+  margin-bottom: 0 !important;
+}
+
+.entry-points,
+.preview {
+  padding: 50px 0;
+  background-color: #f8f9fa;
+}
+
+.entry-points {
+  gap: 6rem;
+  background-image: url('/assets/images/curve.svg');
+  background-repeat: no-repeat;
+  background-position: 1% bottom;
+}
+
+.entry-title {
+  font-size: 56px;
+  line-height: 64px;
+}
+
+.entry-cta {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.cloud-invisible {
+  visibility: hidden;
+}
+
+.cloud-visible {
+  visibility: visible;
+}
+
+#page-title {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 160%;
+}
+
+.cloud-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    fill: $blue !important;
+  }
+}
+
+.entry-points-container {
+  width: fit-content;
+}
+
+.main-entry-points {
+  display: flex;
+  gap: 15px;
+  border-radius: var(--none, 0rem);
+  padding: 20px 0;
+}
+
+.inline-link-icon {
+  height: 1em;
+  width: unset;
+}
+
+.overview {
+  gap: 4rem;
+  padding: 40px 0;
+  color: #3c4043;
+}
+
+.overview-icon {
+  height: 44px;
+  width: auto;
+}
+
+.overview-title {
+  font-size: 28px;
+  line-height: 36px;
+  margin: 0.5rem 0;
+}
+
+.overview-entry {
+  max-width: 25%;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.preview {
+  gap: 1rem;
+}
+
+.preview-title {
+  font-size: 36px;
+  line-height: 44px;
+  color: #202124;
+}
+
+.preview-content-item {
+  max-width: 25%;
+}
+
+.preview-contents {
+  gap: 4rem;
+  color: #3c4043;
+}
+
+.preview-contents-title {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.preview-contents-text {
+  font-size: 16px;
+  line-height: 24px;
+  margin-top: 1em;
+}
+
+.more-info-section {
+  margin: auto;
+  max-width: 1080px;
+  padding: 40px 0;
+  color: #3c4043;
+}
+
+.more-info-title {
+  font-size: 28px;
+  line-height: 45px;
+}

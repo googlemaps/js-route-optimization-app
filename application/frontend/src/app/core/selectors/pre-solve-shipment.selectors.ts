@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
@@ -13,7 +20,7 @@ import * as Long from 'long';
 import { FilterNumberFormComponent } from 'src/app/shared/components/filter-number-form/filter-number-form.component';
 import { NumberFilterParams } from 'src/app/shared/models/filter';
 import { ShipmentColumn, shipmentColumns, ShipmentItem } from 'src/app/shipments/models';
-import { applyLongValueFilter } from 'src/app/util';
+import { applyLongValueFilter, durationSeconds } from 'src/app/util';
 import {
   selectedShipmentFilterOption,
   Shipment,
@@ -401,10 +408,7 @@ const selectColumnsToDisplay = createSelector(
     const displayColumns = displayColumnOptions
       .filter((column) => column.active)
       .map((column) => column.id);
-    return displayColumns
-      .slice(0, displayColumns.length - 1)
-      .concat('_filler')
-      .concat(displayColumns[displayColumns.length - 1]);
+    return displayColumns.slice(0, 3).concat('_filler').concat(displayColumns.slice(3));
   }
 );
 
@@ -421,12 +425,34 @@ const selectShipmentsKpis = createSelector(
   selectFilteredShipments,
   selectSelectedLookup,
   selectFilteredShipmentsSelected,
-  (filteredShipments, selectedLookup, filteredSelected) => {
+  fromVisitRequest.selectEntities,
+  (filteredShipments, selectedLookup, filteredSelected, visitRequests) => {
     const kpis = {
       total: filteredShipments.length,
       selected: filteredSelected.length,
       demands: [],
+      pickups: 0,
+      deliveries: 0,
+      dwellTime: 0,
     };
+
+    filteredSelected.forEach((shipment) => {
+      kpis.pickups += shipment.pickups.length > 0 ? 1 : 0;
+      kpis.deliveries += shipment.deliveries.length > 0 ? 1 : 0;
+
+      kpis.dwellTime += shipment.pickups.reduce(
+        (total, pickup) =>
+          total +
+          durationSeconds(visitRequests[pickup].duration).toNumber() / shipment.pickups.length,
+        0
+      );
+      kpis.dwellTime += shipment.deliveries.reduce(
+        (total, delivery) =>
+          total +
+          durationSeconds(visitRequests[delivery].duration).toNumber() / shipment.deliveries.length,
+        0
+      );
+    });
 
     filteredShipments.forEach((shipment) => {
       if (!shipment.loadDemands) {
@@ -444,14 +470,13 @@ const selectShipmentsKpis = createSelector(
           }
         } else {
           kpis.demands.push({
-            selected: demandValue,
+            selected: selectedLookup[shipment.id] ? demandValue : 0,
             total: demandValue,
             type: loadType,
           });
         }
       }
     });
-
     return kpis;
   }
 );

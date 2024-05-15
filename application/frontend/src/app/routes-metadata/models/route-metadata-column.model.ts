@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Column } from 'src/app/core/models';
 import { RouteMetadata } from './route-metadata.model';
@@ -39,28 +46,6 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
     active: true,
     toggleable: true,
     selector: ({ route }) => route.vehicleLabel,
-    valueComparer: (a: string, b: string): number => a.localeCompare(b),
-  },
-  {
-    id: 'vehicleOperator.ids',
-    label: 'Vehicle Operator IDs',
-    active: true,
-    toggleable: true,
-    selector: ({ route }) => {
-      return route.vehicleOperatorIndices?.length > 0 ? route.vehicleOperatorIndices.join(',') : '';
-    },
-    valueComparer: (a: string, b: string): number => a.localeCompare(b),
-  },
-  {
-    id: 'vehicleOperator.label',
-    label: 'Vehicle Operator Label',
-    active: true,
-    toggleable: true,
-    selector: ({ route }) => {
-      return route.vehicleOperatorLabels?.length > 0
-        ? '-' + route.vehicleOperatorLabels.join(',')
-        : '';
-    },
     valueComparer: (a: string, b: string): number => a.localeCompare(b),
   },
   {

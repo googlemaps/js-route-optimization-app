@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,560 +17,20 @@ import Long = require("long");
 /** Namespace google. */
 export namespace google {
 
-    /** Namespace cloud. */
-    namespace cloud {
+    /** Namespace maps. */
+    namespace maps {
 
-        /** Namespace optimization. */
-        namespace optimization {
+        /** Namespace routeoptimization. */
+        namespace routeoptimization {
 
             /** Namespace v1. */
             namespace v1 {
 
-                /** Properties of an InputConfig. */
-                interface IInputConfig {
-
-                    /** InputConfig gcsSource */
-                    gcsSource?: (google.cloud.optimization.v1.IGcsSource|null);
-
-                    /** InputConfig dataFormat */
-                    dataFormat?: (google.cloud.optimization.v1.DataFormat|keyof typeof google.cloud.optimization.v1.DataFormat|null);
-                }
-
-                /** Represents an InputConfig. */
-                class InputConfig implements IInputConfig {
+                /** Represents a RouteOptimization */
+                class RouteOptimization extends $protobuf.rpc.Service {
 
                     /**
-                     * Constructs a new InputConfig.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IInputConfig);
-
-                    /** InputConfig gcsSource. */
-                    public gcsSource?: (google.cloud.optimization.v1.IGcsSource|null);
-
-                    /** InputConfig dataFormat. */
-                    public dataFormat: (google.cloud.optimization.v1.DataFormat|keyof typeof google.cloud.optimization.v1.DataFormat);
-
-                    /** InputConfig source. */
-                    public source?: "gcsSource";
-
-                    /**
-                     * Creates a new InputConfig instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns InputConfig instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IInputConfig): google.cloud.optimization.v1.InputConfig;
-
-                    /**
-                     * Encodes the specified InputConfig message. Does not implicitly {@link google.cloud.optimization.v1.InputConfig.verify|verify} messages.
-                     * @param message InputConfig message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IInputConfig, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified InputConfig message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.InputConfig.verify|verify} messages.
-                     * @param message InputConfig message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IInputConfig, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes an InputConfig message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns InputConfig
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.InputConfig;
-
-                    /**
-                     * Decodes an InputConfig message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns InputConfig
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.InputConfig;
-
-                    /**
-                     * Verifies an InputConfig message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates an InputConfig message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns InputConfig
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.InputConfig;
-
-                    /**
-                     * Creates a plain object from an InputConfig message. Also converts values to other types if specified.
-                     * @param message InputConfig
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.InputConfig, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this InputConfig to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for InputConfig
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of an OutputConfig. */
-                interface IOutputConfig {
-
-                    /** OutputConfig gcsDestination */
-                    gcsDestination?: (google.cloud.optimization.v1.IGcsDestination|null);
-
-                    /** OutputConfig dataFormat */
-                    dataFormat?: (google.cloud.optimization.v1.DataFormat|keyof typeof google.cloud.optimization.v1.DataFormat|null);
-                }
-
-                /** Represents an OutputConfig. */
-                class OutputConfig implements IOutputConfig {
-
-                    /**
-                     * Constructs a new OutputConfig.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IOutputConfig);
-
-                    /** OutputConfig gcsDestination. */
-                    public gcsDestination?: (google.cloud.optimization.v1.IGcsDestination|null);
-
-                    /** OutputConfig dataFormat. */
-                    public dataFormat: (google.cloud.optimization.v1.DataFormat|keyof typeof google.cloud.optimization.v1.DataFormat);
-
-                    /** OutputConfig destination. */
-                    public destination?: "gcsDestination";
-
-                    /**
-                     * Creates a new OutputConfig instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns OutputConfig instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IOutputConfig): google.cloud.optimization.v1.OutputConfig;
-
-                    /**
-                     * Encodes the specified OutputConfig message. Does not implicitly {@link google.cloud.optimization.v1.OutputConfig.verify|verify} messages.
-                     * @param message OutputConfig message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IOutputConfig, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified OutputConfig message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.OutputConfig.verify|verify} messages.
-                     * @param message OutputConfig message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IOutputConfig, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes an OutputConfig message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns OutputConfig
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.OutputConfig;
-
-                    /**
-                     * Decodes an OutputConfig message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns OutputConfig
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.OutputConfig;
-
-                    /**
-                     * Verifies an OutputConfig message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates an OutputConfig message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns OutputConfig
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.OutputConfig;
-
-                    /**
-                     * Creates a plain object from an OutputConfig message. Also converts values to other types if specified.
-                     * @param message OutputConfig
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.OutputConfig, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this OutputConfig to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for OutputConfig
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a GcsSource. */
-                interface IGcsSource {
-
-                    /** GcsSource uri */
-                    uri?: (string|null);
-                }
-
-                /** Represents a GcsSource. */
-                class GcsSource implements IGcsSource {
-
-                    /**
-                     * Constructs a new GcsSource.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IGcsSource);
-
-                    /** GcsSource uri. */
-                    public uri: string;
-
-                    /**
-                     * Creates a new GcsSource instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns GcsSource instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IGcsSource): google.cloud.optimization.v1.GcsSource;
-
-                    /**
-                     * Encodes the specified GcsSource message. Does not implicitly {@link google.cloud.optimization.v1.GcsSource.verify|verify} messages.
-                     * @param message GcsSource message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IGcsSource, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified GcsSource message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.GcsSource.verify|verify} messages.
-                     * @param message GcsSource message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IGcsSource, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a GcsSource message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns GcsSource
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.GcsSource;
-
-                    /**
-                     * Decodes a GcsSource message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns GcsSource
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.GcsSource;
-
-                    /**
-                     * Verifies a GcsSource message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a GcsSource message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns GcsSource
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.GcsSource;
-
-                    /**
-                     * Creates a plain object from a GcsSource message. Also converts values to other types if specified.
-                     * @param message GcsSource
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.GcsSource, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this GcsSource to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for GcsSource
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a GcsDestination. */
-                interface IGcsDestination {
-
-                    /** GcsDestination uri */
-                    uri?: (string|null);
-                }
-
-                /** Represents a GcsDestination. */
-                class GcsDestination implements IGcsDestination {
-
-                    /**
-                     * Constructs a new GcsDestination.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IGcsDestination);
-
-                    /** GcsDestination uri. */
-                    public uri: string;
-
-                    /**
-                     * Creates a new GcsDestination instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns GcsDestination instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IGcsDestination): google.cloud.optimization.v1.GcsDestination;
-
-                    /**
-                     * Encodes the specified GcsDestination message. Does not implicitly {@link google.cloud.optimization.v1.GcsDestination.verify|verify} messages.
-                     * @param message GcsDestination message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IGcsDestination, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified GcsDestination message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.GcsDestination.verify|verify} messages.
-                     * @param message GcsDestination message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IGcsDestination, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a GcsDestination message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns GcsDestination
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.GcsDestination;
-
-                    /**
-                     * Decodes a GcsDestination message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns GcsDestination
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.GcsDestination;
-
-                    /**
-                     * Verifies a GcsDestination message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a GcsDestination message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns GcsDestination
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.GcsDestination;
-
-                    /**
-                     * Creates a plain object from a GcsDestination message. Also converts values to other types if specified.
-                     * @param message GcsDestination
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.GcsDestination, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this GcsDestination to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for GcsDestination
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of an AsyncModelMetadata. */
-                interface IAsyncModelMetadata {
-
-                    /** AsyncModelMetadata state */
-                    state?: (google.cloud.optimization.v1.AsyncModelMetadata.State|keyof typeof google.cloud.optimization.v1.AsyncModelMetadata.State|null);
-
-                    /** AsyncModelMetadata stateMessage */
-                    stateMessage?: (string|null);
-
-                    /** AsyncModelMetadata createTime */
-                    createTime?: (google.protobuf.ITimestamp|null);
-
-                    /** AsyncModelMetadata updateTime */
-                    updateTime?: (google.protobuf.ITimestamp|null);
-                }
-
-                /** Represents an AsyncModelMetadata. */
-                class AsyncModelMetadata implements IAsyncModelMetadata {
-
-                    /**
-                     * Constructs a new AsyncModelMetadata.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IAsyncModelMetadata);
-
-                    /** AsyncModelMetadata state. */
-                    public state: (google.cloud.optimization.v1.AsyncModelMetadata.State|keyof typeof google.cloud.optimization.v1.AsyncModelMetadata.State);
-
-                    /** AsyncModelMetadata stateMessage. */
-                    public stateMessage: string;
-
-                    /** AsyncModelMetadata createTime. */
-                    public createTime?: (google.protobuf.ITimestamp|null);
-
-                    /** AsyncModelMetadata updateTime. */
-                    public updateTime?: (google.protobuf.ITimestamp|null);
-
-                    /**
-                     * Creates a new AsyncModelMetadata instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns AsyncModelMetadata instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IAsyncModelMetadata): google.cloud.optimization.v1.AsyncModelMetadata;
-
-                    /**
-                     * Encodes the specified AsyncModelMetadata message. Does not implicitly {@link google.cloud.optimization.v1.AsyncModelMetadata.verify|verify} messages.
-                     * @param message AsyncModelMetadata message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IAsyncModelMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified AsyncModelMetadata message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.AsyncModelMetadata.verify|verify} messages.
-                     * @param message AsyncModelMetadata message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IAsyncModelMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes an AsyncModelMetadata message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns AsyncModelMetadata
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.AsyncModelMetadata;
-
-                    /**
-                     * Decodes an AsyncModelMetadata message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns AsyncModelMetadata
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.AsyncModelMetadata;
-
-                    /**
-                     * Verifies an AsyncModelMetadata message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates an AsyncModelMetadata message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns AsyncModelMetadata
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.AsyncModelMetadata;
-
-                    /**
-                     * Creates a plain object from an AsyncModelMetadata message. Also converts values to other types if specified.
-                     * @param message AsyncModelMetadata
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.AsyncModelMetadata, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this AsyncModelMetadata to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for AsyncModelMetadata
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                namespace AsyncModelMetadata {
-
-                    /** State enum. */
-                    enum State {
-                        STATE_UNSPECIFIED = 0,
-                        RUNNING = 1,
-                        SUCCEEDED = 2,
-                        CANCELLED = 3,
-                        FAILED = 4
-                    }
-                }
-
-                /** DataFormat enum. */
-                enum DataFormat {
-                    DATA_FORMAT_UNSPECIFIED = 0,
-                    JSON = 1,
-                    STRING = 2
-                }
-
-                /** Represents a FleetRouting */
-                class FleetRouting extends $protobuf.rpc.Service {
-
-                    /**
-                     * Constructs a new FleetRouting service.
+                     * Constructs a new RouteOptimization service.
                      * @param rpcImpl RPC implementation
                      * @param [requestDelimited=false] Whether requests are length-delimited
                      * @param [responseDelimited=false] Whether responses are length-delimited
@@ -578,58 +38,37 @@ export namespace google {
                     constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
 
                     /**
-                     * Creates new FleetRouting service using the specified rpc implementation.
+                     * Creates new RouteOptimization service using the specified rpc implementation.
                      * @param rpcImpl RPC implementation
                      * @param [requestDelimited=false] Whether requests are length-delimited
                      * @param [responseDelimited=false] Whether responses are length-delimited
                      * @returns RPC service. Useful where requests and/or responses are streamed.
                      */
-                    public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): FleetRouting;
+                    public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): RouteOptimization;
 
                     /**
                      * Calls OptimizeTours.
                      * @param request OptimizeToursRequest message or plain object
                      * @param callback Node-style callback called with the error, if any, and OptimizeToursResponse
                      */
-                    public optimizeTours(request: google.cloud.optimization.v1.IOptimizeToursRequest, callback: google.cloud.optimization.v1.FleetRouting.OptimizeToursCallback): void;
+                    public optimizeTours(request: google.maps.routeoptimization.v1.IOptimizeToursRequest, callback: google.maps.routeoptimization.v1.RouteOptimization.OptimizeToursCallback): void;
 
                     /**
                      * Calls OptimizeTours.
                      * @param request OptimizeToursRequest message or plain object
                      * @returns Promise
                      */
-                    public optimizeTours(request: google.cloud.optimization.v1.IOptimizeToursRequest): Promise<google.cloud.optimization.v1.OptimizeToursResponse>;
-
-                    /**
-                     * Calls BatchOptimizeTours.
-                     * @param request BatchOptimizeToursRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Operation
-                     */
-                    public batchOptimizeTours(request: google.cloud.optimization.v1.IBatchOptimizeToursRequest, callback: google.cloud.optimization.v1.FleetRouting.BatchOptimizeToursCallback): void;
-
-                    /**
-                     * Calls BatchOptimizeTours.
-                     * @param request BatchOptimizeToursRequest message or plain object
-                     * @returns Promise
-                     */
-                    public batchOptimizeTours(request: google.cloud.optimization.v1.IBatchOptimizeToursRequest): Promise<google.longrunning.Operation>;
+                    public optimizeTours(request: google.maps.routeoptimization.v1.IOptimizeToursRequest): Promise<google.maps.routeoptimization.v1.OptimizeToursResponse>;
                 }
 
-                namespace FleetRouting {
+                namespace RouteOptimization {
 
                     /**
-                     * Callback as used by {@link google.cloud.optimization.v1.FleetRouting|optimizeTours}.
+                     * Callback as used by {@link google.maps.routeoptimization.v1.RouteOptimization|optimizeTours}.
                      * @param error Error, if any
                      * @param [response] OptimizeToursResponse
                      */
-                    type OptimizeToursCallback = (error: (Error|null), response?: google.cloud.optimization.v1.OptimizeToursResponse) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.FleetRouting|batchOptimizeTours}.
-                     * @param error Error, if any
-                     * @param [response] Operation
-                     */
-                    type BatchOptimizeToursCallback = (error: (Error|null), response?: google.longrunning.Operation) => void;
+                    type OptimizeToursCallback = (error: (Error|null), response?: google.maps.routeoptimization.v1.OptimizeToursResponse) => void;
                 }
 
                 /** Properties of an OptimizeToursRequest. */
@@ -642,25 +81,22 @@ export namespace google {
                     timeout?: (google.protobuf.IDuration|null);
 
                     /** OptimizeToursRequest model */
-                    model?: (google.cloud.optimization.v1.IShipmentModel|null);
+                    model?: (google.maps.routeoptimization.v1.IShipmentModel|null);
 
                     /** OptimizeToursRequest solvingMode */
-                    solvingMode?: (google.cloud.optimization.v1.OptimizeToursRequest.SolvingMode|keyof typeof google.cloud.optimization.v1.OptimizeToursRequest.SolvingMode|null);
-
-                    /** OptimizeToursRequest maxValidationErrors */
-                    maxValidationErrors?: (number|null);
+                    solvingMode?: (google.maps.routeoptimization.v1.OptimizeToursRequest.SolvingMode|keyof typeof google.maps.routeoptimization.v1.OptimizeToursRequest.SolvingMode|null);
 
                     /** OptimizeToursRequest searchMode */
-                    searchMode?: (google.cloud.optimization.v1.OptimizeToursRequest.SearchMode|keyof typeof google.cloud.optimization.v1.OptimizeToursRequest.SearchMode|null);
+                    searchMode?: (google.maps.routeoptimization.v1.OptimizeToursRequest.SearchMode|keyof typeof google.maps.routeoptimization.v1.OptimizeToursRequest.SearchMode|null);
 
                     /** OptimizeToursRequest injectedFirstSolutionRoutes */
-                    injectedFirstSolutionRoutes?: (google.cloud.optimization.v1.IShipmentRoute[]|null);
+                    injectedFirstSolutionRoutes?: (google.maps.routeoptimization.v1.IShipmentRoute[]|null);
 
                     /** OptimizeToursRequest injectedSolutionConstraint */
-                    injectedSolutionConstraint?: (google.cloud.optimization.v1.IInjectedSolutionConstraint|null);
+                    injectedSolutionConstraint?: (google.maps.routeoptimization.v1.IInjectedSolutionConstraint|null);
 
                     /** OptimizeToursRequest refreshDetailsRoutes */
-                    refreshDetailsRoutes?: (google.cloud.optimization.v1.IShipmentRoute[]|null);
+                    refreshDetailsRoutes?: (google.maps.routeoptimization.v1.IShipmentRoute[]|null);
 
                     /** OptimizeToursRequest interpretInjectedSolutionsUsingLabels */
                     interpretInjectedSolutionsUsingLabels?: (boolean|null);
@@ -683,14 +119,11 @@ export namespace google {
                     /** OptimizeToursRequest geodesicMetersPerSecond */
                     geodesicMetersPerSecond?: (number|null);
 
+                    /** OptimizeToursRequest maxValidationErrors */
+                    maxValidationErrors?: (number|null);
+
                     /** OptimizeToursRequest label */
                     label?: (string|null);
-
-                    /** OptimizeToursRequest internalParameters */
-                    internalParameters?: (string|null);
-
-                    /** OptimizeToursRequest populateTravelStepPolylines */
-                    populateTravelStepPolylines?: (boolean|null);
                 }
 
                 /** Represents an OptimizeToursRequest. */
@@ -700,7 +133,7 @@ export namespace google {
                      * Constructs a new OptimizeToursRequest.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IOptimizeToursRequest);
+                    constructor(properties?: google.maps.routeoptimization.v1.IOptimizeToursRequest);
 
                     /** OptimizeToursRequest parent. */
                     public parent: string;
@@ -709,25 +142,22 @@ export namespace google {
                     public timeout?: (google.protobuf.IDuration|null);
 
                     /** OptimizeToursRequest model. */
-                    public model?: (google.cloud.optimization.v1.IShipmentModel|null);
+                    public model?: (google.maps.routeoptimization.v1.IShipmentModel|null);
 
                     /** OptimizeToursRequest solvingMode. */
-                    public solvingMode: (google.cloud.optimization.v1.OptimizeToursRequest.SolvingMode|keyof typeof google.cloud.optimization.v1.OptimizeToursRequest.SolvingMode);
-
-                    /** OptimizeToursRequest maxValidationErrors. */
-                    public maxValidationErrors?: (number|null);
+                    public solvingMode: (google.maps.routeoptimization.v1.OptimizeToursRequest.SolvingMode|keyof typeof google.maps.routeoptimization.v1.OptimizeToursRequest.SolvingMode);
 
                     /** OptimizeToursRequest searchMode. */
-                    public searchMode: (google.cloud.optimization.v1.OptimizeToursRequest.SearchMode|keyof typeof google.cloud.optimization.v1.OptimizeToursRequest.SearchMode);
+                    public searchMode: (google.maps.routeoptimization.v1.OptimizeToursRequest.SearchMode|keyof typeof google.maps.routeoptimization.v1.OptimizeToursRequest.SearchMode);
 
                     /** OptimizeToursRequest injectedFirstSolutionRoutes. */
-                    public injectedFirstSolutionRoutes: google.cloud.optimization.v1.IShipmentRoute[];
+                    public injectedFirstSolutionRoutes: google.maps.routeoptimization.v1.IShipmentRoute[];
 
                     /** OptimizeToursRequest injectedSolutionConstraint. */
-                    public injectedSolutionConstraint?: (google.cloud.optimization.v1.IInjectedSolutionConstraint|null);
+                    public injectedSolutionConstraint?: (google.maps.routeoptimization.v1.IInjectedSolutionConstraint|null);
 
                     /** OptimizeToursRequest refreshDetailsRoutes. */
-                    public refreshDetailsRoutes: google.cloud.optimization.v1.IShipmentRoute[];
+                    public refreshDetailsRoutes: google.maps.routeoptimization.v1.IShipmentRoute[];
 
                     /** OptimizeToursRequest interpretInjectedSolutionsUsingLabels. */
                     public interpretInjectedSolutionsUsingLabels: boolean;
@@ -750,43 +180,40 @@ export namespace google {
                     /** OptimizeToursRequest geodesicMetersPerSecond. */
                     public geodesicMetersPerSecond?: (number|null);
 
+                    /** OptimizeToursRequest maxValidationErrors. */
+                    public maxValidationErrors?: (number|null);
+
                     /** OptimizeToursRequest label. */
                     public label: string;
 
-                    /** OptimizeToursRequest internalParameters. */
-                    public internalParameters: string;
-
-                    /** OptimizeToursRequest populateTravelStepPolylines. */
-                    public populateTravelStepPolylines: boolean;
+                    /** OptimizeToursRequest _geodesicMetersPerSecond. */
+                    public _geodesicMetersPerSecond?: "geodesicMetersPerSecond";
 
                     /** OptimizeToursRequest _maxValidationErrors. */
                     public _maxValidationErrors?: "maxValidationErrors";
-
-                    /** OptimizeToursRequest _geodesicMetersPerSecond. */
-                    public _geodesicMetersPerSecond?: "geodesicMetersPerSecond";
 
                     /**
                      * Creates a new OptimizeToursRequest instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns OptimizeToursRequest instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IOptimizeToursRequest): google.cloud.optimization.v1.OptimizeToursRequest;
+                    public static create(properties?: google.maps.routeoptimization.v1.IOptimizeToursRequest): google.maps.routeoptimization.v1.OptimizeToursRequest;
 
                     /**
-                     * Encodes the specified OptimizeToursRequest message. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursRequest.verify|verify} messages.
+                     * Encodes the specified OptimizeToursRequest message. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursRequest.verify|verify} messages.
                      * @param message OptimizeToursRequest message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IOptimizeToursRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IOptimizeToursRequest, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified OptimizeToursRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursRequest.verify|verify} messages.
+                     * Encodes the specified OptimizeToursRequest message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursRequest.verify|verify} messages.
                      * @param message OptimizeToursRequest message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IOptimizeToursRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IOptimizeToursRequest, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes an OptimizeToursRequest message from the specified reader or buffer.
@@ -796,7 +223,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.OptimizeToursRequest;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.OptimizeToursRequest;
 
                     /**
                      * Decodes an OptimizeToursRequest message from the specified reader or buffer, length delimited.
@@ -805,7 +232,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.OptimizeToursRequest;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.OptimizeToursRequest;
 
                     /**
                      * Verifies an OptimizeToursRequest message.
@@ -819,7 +246,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns OptimizeToursRequest
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.OptimizeToursRequest;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.OptimizeToursRequest;
 
                     /**
                      * Creates a plain object from an OptimizeToursRequest message. Also converts values to other types if specified.
@@ -827,7 +254,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.OptimizeToursRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.OptimizeToursRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this OptimizeToursRequest to JSON.
@@ -864,22 +291,19 @@ export namespace google {
                 interface IOptimizeToursResponse {
 
                     /** OptimizeToursResponse routes */
-                    routes?: (google.cloud.optimization.v1.IShipmentRoute[]|null);
+                    routes?: (google.maps.routeoptimization.v1.IShipmentRoute[]|null);
 
                     /** OptimizeToursResponse requestLabel */
                     requestLabel?: (string|null);
 
                     /** OptimizeToursResponse skippedShipments */
-                    skippedShipments?: (google.cloud.optimization.v1.ISkippedShipment[]|null);
+                    skippedShipments?: (google.maps.routeoptimization.v1.ISkippedShipment[]|null);
 
                     /** OptimizeToursResponse validationErrors */
-                    validationErrors?: (google.cloud.optimization.v1.IOptimizeToursValidationError[]|null);
+                    validationErrors?: (google.maps.routeoptimization.v1.IOptimizeToursValidationError[]|null);
 
                     /** OptimizeToursResponse metrics */
-                    metrics?: (google.cloud.optimization.v1.OptimizeToursResponse.IMetrics|null);
-
-                    /** OptimizeToursResponse totalCost */
-                    totalCost?: (number|null);
+                    metrics?: (google.maps.routeoptimization.v1.OptimizeToursResponse.IMetrics|null);
                 }
 
                 /** Represents an OptimizeToursResponse. */
@@ -889,48 +313,45 @@ export namespace google {
                      * Constructs a new OptimizeToursResponse.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IOptimizeToursResponse);
+                    constructor(properties?: google.maps.routeoptimization.v1.IOptimizeToursResponse);
 
                     /** OptimizeToursResponse routes. */
-                    public routes: google.cloud.optimization.v1.IShipmentRoute[];
+                    public routes: google.maps.routeoptimization.v1.IShipmentRoute[];
 
                     /** OptimizeToursResponse requestLabel. */
                     public requestLabel: string;
 
                     /** OptimizeToursResponse skippedShipments. */
-                    public skippedShipments: google.cloud.optimization.v1.ISkippedShipment[];
+                    public skippedShipments: google.maps.routeoptimization.v1.ISkippedShipment[];
 
                     /** OptimizeToursResponse validationErrors. */
-                    public validationErrors: google.cloud.optimization.v1.IOptimizeToursValidationError[];
+                    public validationErrors: google.maps.routeoptimization.v1.IOptimizeToursValidationError[];
 
                     /** OptimizeToursResponse metrics. */
-                    public metrics?: (google.cloud.optimization.v1.OptimizeToursResponse.IMetrics|null);
-
-                    /** OptimizeToursResponse totalCost. */
-                    public totalCost: number;
+                    public metrics?: (google.maps.routeoptimization.v1.OptimizeToursResponse.IMetrics|null);
 
                     /**
                      * Creates a new OptimizeToursResponse instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns OptimizeToursResponse instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IOptimizeToursResponse): google.cloud.optimization.v1.OptimizeToursResponse;
+                    public static create(properties?: google.maps.routeoptimization.v1.IOptimizeToursResponse): google.maps.routeoptimization.v1.OptimizeToursResponse;
 
                     /**
-                     * Encodes the specified OptimizeToursResponse message. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursResponse.verify|verify} messages.
+                     * Encodes the specified OptimizeToursResponse message. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursResponse.verify|verify} messages.
                      * @param message OptimizeToursResponse message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IOptimizeToursResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IOptimizeToursResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified OptimizeToursResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursResponse.verify|verify} messages.
+                     * Encodes the specified OptimizeToursResponse message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursResponse.verify|verify} messages.
                      * @param message OptimizeToursResponse message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IOptimizeToursResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IOptimizeToursResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes an OptimizeToursResponse message from the specified reader or buffer.
@@ -940,7 +361,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.OptimizeToursResponse;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.OptimizeToursResponse;
 
                     /**
                      * Decodes an OptimizeToursResponse message from the specified reader or buffer, length delimited.
@@ -949,7 +370,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.OptimizeToursResponse;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.OptimizeToursResponse;
 
                     /**
                      * Verifies an OptimizeToursResponse message.
@@ -963,7 +384,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns OptimizeToursResponse
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.OptimizeToursResponse;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.OptimizeToursResponse;
 
                     /**
                      * Creates a plain object from an OptimizeToursResponse message. Also converts values to other types if specified.
@@ -971,7 +392,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.OptimizeToursResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.OptimizeToursResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this OptimizeToursResponse to JSON.
@@ -993,7 +414,7 @@ export namespace google {
                     interface IMetrics {
 
                         /** Metrics aggregatedRouteMetrics */
-                        aggregatedRouteMetrics?: (google.cloud.optimization.v1.IAggregatedMetrics|null);
+                        aggregatedRouteMetrics?: (google.maps.routeoptimization.v1.IAggregatedMetrics|null);
 
                         /** Metrics skippedMandatoryShipmentCount */
                         skippedMandatoryShipmentCount?: (number|null);
@@ -1012,15 +433,6 @@ export namespace google {
 
                         /** Metrics totalCost */
                         totalCost?: (number|null);
-
-                        /** Metrics minVehicleFullness */
-                        minVehicleFullness?: (google.cloud.optimization.v1.IVehicleFullness|null);
-
-                        /** Metrics avgVehicleFullness */
-                        avgVehicleFullness?: (google.cloud.optimization.v1.IVehicleFullness|null);
-
-                        /** Metrics maxVehicleFullness */
-                        maxVehicleFullness?: (google.cloud.optimization.v1.IVehicleFullness|null);
                     }
 
                     /** Represents a Metrics. */
@@ -1030,10 +442,10 @@ export namespace google {
                          * Constructs a new Metrics.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.OptimizeToursResponse.IMetrics);
+                        constructor(properties?: google.maps.routeoptimization.v1.OptimizeToursResponse.IMetrics);
 
                         /** Metrics aggregatedRouteMetrics. */
-                        public aggregatedRouteMetrics?: (google.cloud.optimization.v1.IAggregatedMetrics|null);
+                        public aggregatedRouteMetrics?: (google.maps.routeoptimization.v1.IAggregatedMetrics|null);
 
                         /** Metrics skippedMandatoryShipmentCount. */
                         public skippedMandatoryShipmentCount: number;
@@ -1053,37 +465,28 @@ export namespace google {
                         /** Metrics totalCost. */
                         public totalCost: number;
 
-                        /** Metrics minVehicleFullness. */
-                        public minVehicleFullness?: (google.cloud.optimization.v1.IVehicleFullness|null);
-
-                        /** Metrics avgVehicleFullness. */
-                        public avgVehicleFullness?: (google.cloud.optimization.v1.IVehicleFullness|null);
-
-                        /** Metrics maxVehicleFullness. */
-                        public maxVehicleFullness?: (google.cloud.optimization.v1.IVehicleFullness|null);
-
                         /**
                          * Creates a new Metrics instance using the specified properties.
                          * @param [properties] Properties to set
                          * @returns Metrics instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.OptimizeToursResponse.IMetrics): google.cloud.optimization.v1.OptimizeToursResponse.Metrics;
+                        public static create(properties?: google.maps.routeoptimization.v1.OptimizeToursResponse.IMetrics): google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics;
 
                         /**
-                         * Encodes the specified Metrics message. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursResponse.Metrics.verify|verify} messages.
+                         * Encodes the specified Metrics message. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics.verify|verify} messages.
                          * @param message Metrics message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.OptimizeToursResponse.IMetrics, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.OptimizeToursResponse.IMetrics, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified Metrics message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursResponse.Metrics.verify|verify} messages.
+                         * Encodes the specified Metrics message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics.verify|verify} messages.
                          * @param message Metrics message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.OptimizeToursResponse.IMetrics, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.OptimizeToursResponse.IMetrics, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a Metrics message from the specified reader or buffer.
@@ -1093,7 +496,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.OptimizeToursResponse.Metrics;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics;
 
                         /**
                          * Decodes a Metrics message from the specified reader or buffer, length delimited.
@@ -1102,7 +505,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.OptimizeToursResponse.Metrics;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics;
 
                         /**
                          * Verifies a Metrics message.
@@ -1116,7 +519,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns Metrics
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.OptimizeToursResponse.Metrics;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics;
 
                         /**
                          * Creates a plain object from a Metrics message. Also converts values to other types if specified.
@@ -1124,7 +527,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.OptimizeToursResponse.Metrics, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this Metrics to JSON.
@@ -1141,329 +544,14 @@ export namespace google {
                     }
                 }
 
-                /** Properties of a BatchOptimizeToursRequest. */
-                interface IBatchOptimizeToursRequest {
-
-                    /** BatchOptimizeToursRequest parent */
-                    parent?: (string|null);
-
-                    /** BatchOptimizeToursRequest modelConfigs */
-                    modelConfigs?: (google.cloud.optimization.v1.BatchOptimizeToursRequest.IAsyncModelConfig[]|null);
-                }
-
-                /** Represents a BatchOptimizeToursRequest. */
-                class BatchOptimizeToursRequest implements IBatchOptimizeToursRequest {
-
-                    /**
-                     * Constructs a new BatchOptimizeToursRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IBatchOptimizeToursRequest);
-
-                    /** BatchOptimizeToursRequest parent. */
-                    public parent: string;
-
-                    /** BatchOptimizeToursRequest modelConfigs. */
-                    public modelConfigs: google.cloud.optimization.v1.BatchOptimizeToursRequest.IAsyncModelConfig[];
-
-                    /**
-                     * Creates a new BatchOptimizeToursRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns BatchOptimizeToursRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IBatchOptimizeToursRequest): google.cloud.optimization.v1.BatchOptimizeToursRequest;
-
-                    /**
-                     * Encodes the specified BatchOptimizeToursRequest message. Does not implicitly {@link google.cloud.optimization.v1.BatchOptimizeToursRequest.verify|verify} messages.
-                     * @param message BatchOptimizeToursRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IBatchOptimizeToursRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified BatchOptimizeToursRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.BatchOptimizeToursRequest.verify|verify} messages.
-                     * @param message BatchOptimizeToursRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IBatchOptimizeToursRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a BatchOptimizeToursRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns BatchOptimizeToursRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.BatchOptimizeToursRequest;
-
-                    /**
-                     * Decodes a BatchOptimizeToursRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns BatchOptimizeToursRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.BatchOptimizeToursRequest;
-
-                    /**
-                     * Verifies a BatchOptimizeToursRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a BatchOptimizeToursRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns BatchOptimizeToursRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.BatchOptimizeToursRequest;
-
-                    /**
-                     * Creates a plain object from a BatchOptimizeToursRequest message. Also converts values to other types if specified.
-                     * @param message BatchOptimizeToursRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.BatchOptimizeToursRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this BatchOptimizeToursRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for BatchOptimizeToursRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                namespace BatchOptimizeToursRequest {
-
-                    /** Properties of an AsyncModelConfig. */
-                    interface IAsyncModelConfig {
-
-                        /** AsyncModelConfig displayName */
-                        displayName?: (string|null);
-
-                        /** AsyncModelConfig inputConfig */
-                        inputConfig?: (google.cloud.optimization.v1.IInputConfig|null);
-
-                        /** AsyncModelConfig outputConfig */
-                        outputConfig?: (google.cloud.optimization.v1.IOutputConfig|null);
-
-                        /** AsyncModelConfig enableCheckpoints */
-                        enableCheckpoints?: (boolean|null);
-                    }
-
-                    /** Represents an AsyncModelConfig. */
-                    class AsyncModelConfig implements IAsyncModelConfig {
-
-                        /**
-                         * Constructs a new AsyncModelConfig.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.BatchOptimizeToursRequest.IAsyncModelConfig);
-
-                        /** AsyncModelConfig displayName. */
-                        public displayName: string;
-
-                        /** AsyncModelConfig inputConfig. */
-                        public inputConfig?: (google.cloud.optimization.v1.IInputConfig|null);
-
-                        /** AsyncModelConfig outputConfig. */
-                        public outputConfig?: (google.cloud.optimization.v1.IOutputConfig|null);
-
-                        /** AsyncModelConfig enableCheckpoints. */
-                        public enableCheckpoints: boolean;
-
-                        /**
-                         * Creates a new AsyncModelConfig instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns AsyncModelConfig instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.BatchOptimizeToursRequest.IAsyncModelConfig): google.cloud.optimization.v1.BatchOptimizeToursRequest.AsyncModelConfig;
-
-                        /**
-                         * Encodes the specified AsyncModelConfig message. Does not implicitly {@link google.cloud.optimization.v1.BatchOptimizeToursRequest.AsyncModelConfig.verify|verify} messages.
-                         * @param message AsyncModelConfig message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.BatchOptimizeToursRequest.IAsyncModelConfig, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified AsyncModelConfig message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.BatchOptimizeToursRequest.AsyncModelConfig.verify|verify} messages.
-                         * @param message AsyncModelConfig message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.BatchOptimizeToursRequest.IAsyncModelConfig, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes an AsyncModelConfig message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns AsyncModelConfig
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.BatchOptimizeToursRequest.AsyncModelConfig;
-
-                        /**
-                         * Decodes an AsyncModelConfig message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns AsyncModelConfig
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.BatchOptimizeToursRequest.AsyncModelConfig;
-
-                        /**
-                         * Verifies an AsyncModelConfig message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates an AsyncModelConfig message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns AsyncModelConfig
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.BatchOptimizeToursRequest.AsyncModelConfig;
-
-                        /**
-                         * Creates a plain object from an AsyncModelConfig message. Also converts values to other types if specified.
-                         * @param message AsyncModelConfig
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.BatchOptimizeToursRequest.AsyncModelConfig, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this AsyncModelConfig to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for AsyncModelConfig
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-                }
-
-                /** Properties of a BatchOptimizeToursResponse. */
-                interface IBatchOptimizeToursResponse {
-                }
-
-                /** Represents a BatchOptimizeToursResponse. */
-                class BatchOptimizeToursResponse implements IBatchOptimizeToursResponse {
-
-                    /**
-                     * Constructs a new BatchOptimizeToursResponse.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IBatchOptimizeToursResponse);
-
-                    /**
-                     * Creates a new BatchOptimizeToursResponse instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns BatchOptimizeToursResponse instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IBatchOptimizeToursResponse): google.cloud.optimization.v1.BatchOptimizeToursResponse;
-
-                    /**
-                     * Encodes the specified BatchOptimizeToursResponse message. Does not implicitly {@link google.cloud.optimization.v1.BatchOptimizeToursResponse.verify|verify} messages.
-                     * @param message BatchOptimizeToursResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IBatchOptimizeToursResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified BatchOptimizeToursResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.BatchOptimizeToursResponse.verify|verify} messages.
-                     * @param message BatchOptimizeToursResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IBatchOptimizeToursResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a BatchOptimizeToursResponse message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns BatchOptimizeToursResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.BatchOptimizeToursResponse;
-
-                    /**
-                     * Decodes a BatchOptimizeToursResponse message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns BatchOptimizeToursResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.BatchOptimizeToursResponse;
-
-                    /**
-                     * Verifies a BatchOptimizeToursResponse message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a BatchOptimizeToursResponse message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns BatchOptimizeToursResponse
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.BatchOptimizeToursResponse;
-
-                    /**
-                     * Creates a plain object from a BatchOptimizeToursResponse message. Also converts values to other types if specified.
-                     * @param message BatchOptimizeToursResponse
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.BatchOptimizeToursResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this BatchOptimizeToursResponse to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for BatchOptimizeToursResponse
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
                 /** Properties of a ShipmentModel. */
                 interface IShipmentModel {
 
                     /** ShipmentModel shipments */
-                    shipments?: (google.cloud.optimization.v1.IShipment[]|null);
+                    shipments?: (google.maps.routeoptimization.v1.IShipment[]|null);
 
                     /** ShipmentModel vehicles */
-                    vehicles?: (google.cloud.optimization.v1.IVehicle[]|null);
-
-                    /** ShipmentModel vehicleOperators */
-                    vehicleOperators?: (google.cloud.optimization.v1.IVehicleOperator[]|null);
+                    vehicles?: (google.maps.routeoptimization.v1.IVehicle[]|null);
 
                     /** ShipmentModel maxActiveVehicles */
                     maxActiveVehicles?: (number|null);
@@ -1478,7 +566,7 @@ export namespace google {
                     globalDurationCostPerHour?: (number|null);
 
                     /** ShipmentModel durationDistanceMatrices */
-                    durationDistanceMatrices?: (google.cloud.optimization.v1.ShipmentModel.IDurationDistanceMatrix[]|null);
+                    durationDistanceMatrices?: (google.maps.routeoptimization.v1.ShipmentModel.IDurationDistanceMatrix[]|null);
 
                     /** ShipmentModel durationDistanceMatrixSrcTags */
                     durationDistanceMatrixSrcTags?: (string[]|null);
@@ -1487,19 +575,16 @@ export namespace google {
                     durationDistanceMatrixDstTags?: (string[]|null);
 
                     /** ShipmentModel transitionAttributes */
-                    transitionAttributes?: (google.cloud.optimization.v1.ITransitionAttributes[]|null);
+                    transitionAttributes?: (google.maps.routeoptimization.v1.ITransitionAttributes[]|null);
 
                     /** ShipmentModel shipmentTypeIncompatibilities */
-                    shipmentTypeIncompatibilities?: (google.cloud.optimization.v1.IShipmentTypeIncompatibility[]|null);
+                    shipmentTypeIncompatibilities?: (google.maps.routeoptimization.v1.IShipmentTypeIncompatibility[]|null);
 
                     /** ShipmentModel shipmentTypeRequirements */
-                    shipmentTypeRequirements?: (google.cloud.optimization.v1.IShipmentTypeRequirement[]|null);
+                    shipmentTypeRequirements?: (google.maps.routeoptimization.v1.IShipmentTypeRequirement[]|null);
 
                     /** ShipmentModel precedenceRules */
-                    precedenceRules?: (google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule[]|null);
-
-                    /** ShipmentModel breakRules */
-                    breakRules?: (google.cloud.optimization.v1.ShipmentModel.IBreakRule[]|null);
+                    precedenceRules?: (google.maps.routeoptimization.v1.ShipmentModel.IPrecedenceRule[]|null);
                 }
 
                 /** Represents a ShipmentModel. */
@@ -1509,16 +594,13 @@ export namespace google {
                      * Constructs a new ShipmentModel.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IShipmentModel);
+                    constructor(properties?: google.maps.routeoptimization.v1.IShipmentModel);
 
                     /** ShipmentModel shipments. */
-                    public shipments: google.cloud.optimization.v1.IShipment[];
+                    public shipments: google.maps.routeoptimization.v1.IShipment[];
 
                     /** ShipmentModel vehicles. */
-                    public vehicles: google.cloud.optimization.v1.IVehicle[];
-
-                    /** ShipmentModel vehicleOperators. */
-                    public vehicleOperators: google.cloud.optimization.v1.IVehicleOperator[];
+                    public vehicles: google.maps.routeoptimization.v1.IVehicle[];
 
                     /** ShipmentModel maxActiveVehicles. */
                     public maxActiveVehicles?: (number|null);
@@ -1533,7 +615,7 @@ export namespace google {
                     public globalDurationCostPerHour: number;
 
                     /** ShipmentModel durationDistanceMatrices. */
-                    public durationDistanceMatrices: google.cloud.optimization.v1.ShipmentModel.IDurationDistanceMatrix[];
+                    public durationDistanceMatrices: google.maps.routeoptimization.v1.ShipmentModel.IDurationDistanceMatrix[];
 
                     /** ShipmentModel durationDistanceMatrixSrcTags. */
                     public durationDistanceMatrixSrcTags: string[];
@@ -1542,19 +624,16 @@ export namespace google {
                     public durationDistanceMatrixDstTags: string[];
 
                     /** ShipmentModel transitionAttributes. */
-                    public transitionAttributes: google.cloud.optimization.v1.ITransitionAttributes[];
+                    public transitionAttributes: google.maps.routeoptimization.v1.ITransitionAttributes[];
 
                     /** ShipmentModel shipmentTypeIncompatibilities. */
-                    public shipmentTypeIncompatibilities: google.cloud.optimization.v1.IShipmentTypeIncompatibility[];
+                    public shipmentTypeIncompatibilities: google.maps.routeoptimization.v1.IShipmentTypeIncompatibility[];
 
                     /** ShipmentModel shipmentTypeRequirements. */
-                    public shipmentTypeRequirements: google.cloud.optimization.v1.IShipmentTypeRequirement[];
+                    public shipmentTypeRequirements: google.maps.routeoptimization.v1.IShipmentTypeRequirement[];
 
                     /** ShipmentModel precedenceRules. */
-                    public precedenceRules: google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule[];
-
-                    /** ShipmentModel breakRules. */
-                    public breakRules: google.cloud.optimization.v1.ShipmentModel.IBreakRule[];
+                    public precedenceRules: google.maps.routeoptimization.v1.ShipmentModel.IPrecedenceRule[];
 
                     /** ShipmentModel _maxActiveVehicles. */
                     public _maxActiveVehicles?: "maxActiveVehicles";
@@ -1564,23 +643,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns ShipmentModel instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IShipmentModel): google.cloud.optimization.v1.ShipmentModel;
+                    public static create(properties?: google.maps.routeoptimization.v1.IShipmentModel): google.maps.routeoptimization.v1.ShipmentModel;
 
                     /**
-                     * Encodes the specified ShipmentModel message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.verify|verify} messages.
+                     * Encodes the specified ShipmentModel message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentModel.verify|verify} messages.
                      * @param message ShipmentModel message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IShipmentModel, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IShipmentModel, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified ShipmentModel message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.verify|verify} messages.
+                     * Encodes the specified ShipmentModel message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentModel.verify|verify} messages.
                      * @param message ShipmentModel message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IShipmentModel, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IShipmentModel, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a ShipmentModel message from the specified reader or buffer.
@@ -1590,7 +669,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentModel;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentModel;
 
                     /**
                      * Decodes a ShipmentModel message from the specified reader or buffer, length delimited.
@@ -1599,7 +678,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentModel;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentModel;
 
                     /**
                      * Verifies a ShipmentModel message.
@@ -1613,7 +692,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns ShipmentModel
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentModel;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentModel;
 
                     /**
                      * Creates a plain object from a ShipmentModel message. Also converts values to other types if specified.
@@ -1621,7 +700,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.ShipmentModel, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.ShipmentModel, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this ShipmentModel to JSON.
@@ -1643,7 +722,7 @@ export namespace google {
                     interface IDurationDistanceMatrix {
 
                         /** DurationDistanceMatrix rows */
-                        rows?: (google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.IRow[]|null);
+                        rows?: (google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.IRow[]|null);
 
                         /** DurationDistanceMatrix vehicleStartTag */
                         vehicleStartTag?: (string|null);
@@ -1656,10 +735,10 @@ export namespace google {
                          * Constructs a new DurationDistanceMatrix.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentModel.IDurationDistanceMatrix);
+                        constructor(properties?: google.maps.routeoptimization.v1.ShipmentModel.IDurationDistanceMatrix);
 
                         /** DurationDistanceMatrix rows. */
-                        public rows: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.IRow[];
+                        public rows: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.IRow[];
 
                         /** DurationDistanceMatrix vehicleStartTag. */
                         public vehicleStartTag: string;
@@ -1669,23 +748,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns DurationDistanceMatrix instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentModel.IDurationDistanceMatrix): google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix;
+                        public static create(properties?: google.maps.routeoptimization.v1.ShipmentModel.IDurationDistanceMatrix): google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix;
 
                         /**
-                         * Encodes the specified DurationDistanceMatrix message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.verify|verify} messages.
+                         * Encodes the specified DurationDistanceMatrix message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.verify|verify} messages.
                          * @param message DurationDistanceMatrix message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentModel.IDurationDistanceMatrix, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.ShipmentModel.IDurationDistanceMatrix, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified DurationDistanceMatrix message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.verify|verify} messages.
+                         * Encodes the specified DurationDistanceMatrix message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.verify|verify} messages.
                          * @param message DurationDistanceMatrix message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentModel.IDurationDistanceMatrix, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.ShipmentModel.IDurationDistanceMatrix, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a DurationDistanceMatrix message from the specified reader or buffer.
@@ -1695,7 +774,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix;
 
                         /**
                          * Decodes a DurationDistanceMatrix message from the specified reader or buffer, length delimited.
@@ -1704,7 +783,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix;
 
                         /**
                          * Verifies a DurationDistanceMatrix message.
@@ -1718,7 +797,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns DurationDistanceMatrix
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix;
 
                         /**
                          * Creates a plain object from a DurationDistanceMatrix message. Also converts values to other types if specified.
@@ -1726,7 +805,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this DurationDistanceMatrix to JSON.
@@ -1761,7 +840,7 @@ export namespace google {
                              * Constructs a new Row.
                              * @param [properties] Properties to set
                              */
-                            constructor(properties?: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.IRow);
+                            constructor(properties?: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.IRow);
 
                             /** Row durations. */
                             public durations: google.protobuf.IDuration[];
@@ -1774,23 +853,23 @@ export namespace google {
                              * @param [properties] Properties to set
                              * @returns Row instance
                              */
-                            public static create(properties?: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.IRow): google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row;
+                            public static create(properties?: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.IRow): google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row;
 
                             /**
-                             * Encodes the specified Row message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row.verify|verify} messages.
+                             * Encodes the specified Row message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.verify|verify} messages.
                              * @param message Row message or plain object to encode
                              * @param [writer] Writer to encode to
                              * @returns Writer
                              */
-                            public static encode(message: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.IRow, writer?: $protobuf.Writer): $protobuf.Writer;
+                            public static encode(message: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.IRow, writer?: $protobuf.Writer): $protobuf.Writer;
 
                             /**
-                             * Encodes the specified Row message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row.verify|verify} messages.
+                             * Encodes the specified Row message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.verify|verify} messages.
                              * @param message Row message or plain object to encode
                              * @param [writer] Writer to encode to
                              * @returns Writer
                              */
-                            public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.IRow, writer?: $protobuf.Writer): $protobuf.Writer;
+                            public static encodeDelimited(message: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.IRow, writer?: $protobuf.Writer): $protobuf.Writer;
 
                             /**
                              * Decodes a Row message from the specified reader or buffer.
@@ -1800,7 +879,7 @@ export namespace google {
                              * @throws {Error} If the payload is not a reader or valid buffer
                              * @throws {$protobuf.util.ProtocolError} If required fields are missing
                              */
-                            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row;
+                            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row;
 
                             /**
                              * Decodes a Row message from the specified reader or buffer, length delimited.
@@ -1809,7 +888,7 @@ export namespace google {
                              * @throws {Error} If the payload is not a reader or valid buffer
                              * @throws {$protobuf.util.ProtocolError} If required fields are missing
                              */
-                            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row;
+                            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row;
 
                             /**
                              * Verifies a Row message.
@@ -1823,7 +902,7 @@ export namespace google {
                              * @param object Plain object
                              * @returns Row
                              */
-                            public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row;
+                            public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row;
 
                             /**
                              * Creates a plain object from a Row message. Also converts values to other types if specified.
@@ -1831,7 +910,7 @@ export namespace google {
                              * @param [options] Conversion options
                              * @returns Plain object
                              */
-                            public static toObject(message: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                            public static toObject(message: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                             /**
                              * Converts this Row to JSON.
@@ -1874,7 +953,7 @@ export namespace google {
                          * Constructs a new PrecedenceRule.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule);
+                        constructor(properties?: google.maps.routeoptimization.v1.ShipmentModel.IPrecedenceRule);
 
                         /** PrecedenceRule firstIndex. */
                         public firstIndex?: (number|null);
@@ -1902,23 +981,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns PrecedenceRule instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule): google.cloud.optimization.v1.ShipmentModel.PrecedenceRule;
+                        public static create(properties?: google.maps.routeoptimization.v1.ShipmentModel.IPrecedenceRule): google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule;
 
                         /**
-                         * Encodes the specified PrecedenceRule message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.PrecedenceRule.verify|verify} messages.
+                         * Encodes the specified PrecedenceRule message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule.verify|verify} messages.
                          * @param message PrecedenceRule message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.ShipmentModel.IPrecedenceRule, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified PrecedenceRule message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.PrecedenceRule.verify|verify} messages.
+                         * Encodes the specified PrecedenceRule message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule.verify|verify} messages.
                          * @param message PrecedenceRule message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.ShipmentModel.IPrecedenceRule, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a PrecedenceRule message from the specified reader or buffer.
@@ -1928,7 +1007,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentModel.PrecedenceRule;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule;
 
                         /**
                          * Decodes a PrecedenceRule message from the specified reader or buffer, length delimited.
@@ -1937,7 +1016,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentModel.PrecedenceRule;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule;
 
                         /**
                          * Verifies a PrecedenceRule message.
@@ -1951,7 +1030,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns PrecedenceRule
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentModel.PrecedenceRule;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule;
 
                         /**
                          * Creates a plain object from a PrecedenceRule message. Also converts values to other types if specified.
@@ -1959,7 +1038,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentModel.PrecedenceRule, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this PrecedenceRule to JSON.
@@ -1974,343 +1053,22 @@ export namespace google {
                          */
                         public static getTypeUrl(typeUrlPrefix?: string): string;
                     }
-
-                    /** Properties of a BreakRule. */
-                    interface IBreakRule {
-
-                        /** BreakRule breakRequests */
-                        breakRequests?: (google.cloud.optimization.v1.ShipmentModel.BreakRule.IBreakRequest[]|null);
-
-                        /** BreakRule frequencyConstraints */
-                        frequencyConstraints?: (google.cloud.optimization.v1.ShipmentModel.BreakRule.IFrequencyConstraint[]|null);
-                    }
-
-                    /** Represents a BreakRule. */
-                    class BreakRule implements IBreakRule {
-
-                        /**
-                         * Constructs a new BreakRule.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentModel.IBreakRule);
-
-                        /** BreakRule breakRequests. */
-                        public breakRequests: google.cloud.optimization.v1.ShipmentModel.BreakRule.IBreakRequest[];
-
-                        /** BreakRule frequencyConstraints. */
-                        public frequencyConstraints: google.cloud.optimization.v1.ShipmentModel.BreakRule.IFrequencyConstraint[];
-
-                        /**
-                         * Creates a new BreakRule instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns BreakRule instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentModel.IBreakRule): google.cloud.optimization.v1.ShipmentModel.BreakRule;
-
-                        /**
-                         * Encodes the specified BreakRule message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.BreakRule.verify|verify} messages.
-                         * @param message BreakRule message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentModel.IBreakRule, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified BreakRule message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.BreakRule.verify|verify} messages.
-                         * @param message BreakRule message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentModel.IBreakRule, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes a BreakRule message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns BreakRule
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentModel.BreakRule;
-
-                        /**
-                         * Decodes a BreakRule message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns BreakRule
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentModel.BreakRule;
-
-                        /**
-                         * Verifies a BreakRule message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates a BreakRule message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns BreakRule
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentModel.BreakRule;
-
-                        /**
-                         * Creates a plain object from a BreakRule message. Also converts values to other types if specified.
-                         * @param message BreakRule
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentModel.BreakRule, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this BreakRule to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for BreakRule
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-
-                    namespace BreakRule {
-
-                        /** Properties of a BreakRequest. */
-                        interface IBreakRequest {
-
-                            /** BreakRequest earliestStartTime */
-                            earliestStartTime?: (google.protobuf.ITimestamp|null);
-
-                            /** BreakRequest latestStartTime */
-                            latestStartTime?: (google.protobuf.ITimestamp|null);
-
-                            /** BreakRequest minDuration */
-                            minDuration?: (google.protobuf.IDuration|null);
-                        }
-
-                        /** Represents a BreakRequest. */
-                        class BreakRequest implements IBreakRequest {
-
-                            /**
-                             * Constructs a new BreakRequest.
-                             * @param [properties] Properties to set
-                             */
-                            constructor(properties?: google.cloud.optimization.v1.ShipmentModel.BreakRule.IBreakRequest);
-
-                            /** BreakRequest earliestStartTime. */
-                            public earliestStartTime?: (google.protobuf.ITimestamp|null);
-
-                            /** BreakRequest latestStartTime. */
-                            public latestStartTime?: (google.protobuf.ITimestamp|null);
-
-                            /** BreakRequest minDuration. */
-                            public minDuration?: (google.protobuf.IDuration|null);
-
-                            /**
-                             * Creates a new BreakRequest instance using the specified properties.
-                             * @param [properties] Properties to set
-                             * @returns BreakRequest instance
-                             */
-                            public static create(properties?: google.cloud.optimization.v1.ShipmentModel.BreakRule.IBreakRequest): google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest;
-
-                            /**
-                             * Encodes the specified BreakRequest message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest.verify|verify} messages.
-                             * @param message BreakRequest message or plain object to encode
-                             * @param [writer] Writer to encode to
-                             * @returns Writer
-                             */
-                            public static encode(message: google.cloud.optimization.v1.ShipmentModel.BreakRule.IBreakRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                            /**
-                             * Encodes the specified BreakRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest.verify|verify} messages.
-                             * @param message BreakRequest message or plain object to encode
-                             * @param [writer] Writer to encode to
-                             * @returns Writer
-                             */
-                            public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentModel.BreakRule.IBreakRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                            /**
-                             * Decodes a BreakRequest message from the specified reader or buffer.
-                             * @param reader Reader or buffer to decode from
-                             * @param [length] Message length if known beforehand
-                             * @returns BreakRequest
-                             * @throws {Error} If the payload is not a reader or valid buffer
-                             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                             */
-                            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest;
-
-                            /**
-                             * Decodes a BreakRequest message from the specified reader or buffer, length delimited.
-                             * @param reader Reader or buffer to decode from
-                             * @returns BreakRequest
-                             * @throws {Error} If the payload is not a reader or valid buffer
-                             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                             */
-                            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest;
-
-                            /**
-                             * Verifies a BreakRequest message.
-                             * @param message Plain object to verify
-                             * @returns `null` if valid, otherwise the reason why it is not
-                             */
-                            public static verify(message: { [k: string]: any }): (string|null);
-
-                            /**
-                             * Creates a BreakRequest message from a plain object. Also converts values to their respective internal types.
-                             * @param object Plain object
-                             * @returns BreakRequest
-                             */
-                            public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest;
-
-                            /**
-                             * Creates a plain object from a BreakRequest message. Also converts values to other types if specified.
-                             * @param message BreakRequest
-                             * @param [options] Conversion options
-                             * @returns Plain object
-                             */
-                            public static toObject(message: google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                            /**
-                             * Converts this BreakRequest to JSON.
-                             * @returns JSON object
-                             */
-                            public toJSON(): { [k: string]: any };
-
-                            /**
-                             * Gets the default type url for BreakRequest
-                             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                             * @returns The default type url
-                             */
-                            public static getTypeUrl(typeUrlPrefix?: string): string;
-                        }
-
-                        /** Properties of a FrequencyConstraint. */
-                        interface IFrequencyConstraint {
-
-                            /** FrequencyConstraint minBreakDuration */
-                            minBreakDuration?: (google.protobuf.IDuration|null);
-
-                            /** FrequencyConstraint maxInterBreakDuration */
-                            maxInterBreakDuration?: (google.protobuf.IDuration|null);
-                        }
-
-                        /** Represents a FrequencyConstraint. */
-                        class FrequencyConstraint implements IFrequencyConstraint {
-
-                            /**
-                             * Constructs a new FrequencyConstraint.
-                             * @param [properties] Properties to set
-                             */
-                            constructor(properties?: google.cloud.optimization.v1.ShipmentModel.BreakRule.IFrequencyConstraint);
-
-                            /** FrequencyConstraint minBreakDuration. */
-                            public minBreakDuration?: (google.protobuf.IDuration|null);
-
-                            /** FrequencyConstraint maxInterBreakDuration. */
-                            public maxInterBreakDuration?: (google.protobuf.IDuration|null);
-
-                            /**
-                             * Creates a new FrequencyConstraint instance using the specified properties.
-                             * @param [properties] Properties to set
-                             * @returns FrequencyConstraint instance
-                             */
-                            public static create(properties?: google.cloud.optimization.v1.ShipmentModel.BreakRule.IFrequencyConstraint): google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint;
-
-                            /**
-                             * Encodes the specified FrequencyConstraint message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint.verify|verify} messages.
-                             * @param message FrequencyConstraint message or plain object to encode
-                             * @param [writer] Writer to encode to
-                             * @returns Writer
-                             */
-                            public static encode(message: google.cloud.optimization.v1.ShipmentModel.BreakRule.IFrequencyConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                            /**
-                             * Encodes the specified FrequencyConstraint message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint.verify|verify} messages.
-                             * @param message FrequencyConstraint message or plain object to encode
-                             * @param [writer] Writer to encode to
-                             * @returns Writer
-                             */
-                            public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentModel.BreakRule.IFrequencyConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                            /**
-                             * Decodes a FrequencyConstraint message from the specified reader or buffer.
-                             * @param reader Reader or buffer to decode from
-                             * @param [length] Message length if known beforehand
-                             * @returns FrequencyConstraint
-                             * @throws {Error} If the payload is not a reader or valid buffer
-                             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                             */
-                            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint;
-
-                            /**
-                             * Decodes a FrequencyConstraint message from the specified reader or buffer, length delimited.
-                             * @param reader Reader or buffer to decode from
-                             * @returns FrequencyConstraint
-                             * @throws {Error} If the payload is not a reader or valid buffer
-                             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                             */
-                            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint;
-
-                            /**
-                             * Verifies a FrequencyConstraint message.
-                             * @param message Plain object to verify
-                             * @returns `null` if valid, otherwise the reason why it is not
-                             */
-                            public static verify(message: { [k: string]: any }): (string|null);
-
-                            /**
-                             * Creates a FrequencyConstraint message from a plain object. Also converts values to their respective internal types.
-                             * @param object Plain object
-                             * @returns FrequencyConstraint
-                             */
-                            public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint;
-
-                            /**
-                             * Creates a plain object from a FrequencyConstraint message. Also converts values to other types if specified.
-                             * @param message FrequencyConstraint
-                             * @param [options] Conversion options
-                             * @returns Plain object
-                             */
-                            public static toObject(message: google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                            /**
-                             * Converts this FrequencyConstraint to JSON.
-                             * @returns JSON object
-                             */
-                            public toJSON(): { [k: string]: any };
-
-                            /**
-                             * Gets the default type url for FrequencyConstraint
-                             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                             * @returns The default type url
-                             */
-                            public static getTypeUrl(typeUrlPrefix?: string): string;
-                        }
-                    }
                 }
 
                 /** Properties of a Shipment. */
                 interface IShipment {
 
-                    /** Shipment name */
-                    name?: (string|null);
-
                     /** Shipment displayName */
                     displayName?: (string|null);
 
                     /** Shipment pickups */
-                    pickups?: (google.cloud.optimization.v1.Shipment.IVisitRequest[]|null);
+                    pickups?: (google.maps.routeoptimization.v1.Shipment.IVisitRequest[]|null);
 
                     /** Shipment deliveries */
-                    deliveries?: (google.cloud.optimization.v1.Shipment.IVisitRequest[]|null);
+                    deliveries?: (google.maps.routeoptimization.v1.Shipment.IVisitRequest[]|null);
 
                     /** Shipment loadDemands */
-                    loadDemands?: ({ [k: string]: google.cloud.optimization.v1.Shipment.ILoad }|null);
+                    loadDemands?: ({ [k: string]: google.maps.routeoptimization.v1.Shipment.ILoad }|null);
 
                     /** Shipment penaltyCost */
                     penaltyCost?: (number|null);
@@ -2341,9 +1099,6 @@ export namespace google {
 
                     /** Shipment ignore */
                     ignore?: (boolean|null);
-
-                    /** Shipment demands */
-                    demands?: (google.cloud.optimization.v1.ICapacityQuantity[]|null);
                 }
 
                 /** Represents a Shipment. */
@@ -2353,22 +1108,19 @@ export namespace google {
                      * Constructs a new Shipment.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IShipment);
-
-                    /** Shipment name. */
-                    public name: string;
+                    constructor(properties?: google.maps.routeoptimization.v1.IShipment);
 
                     /** Shipment displayName. */
                     public displayName: string;
 
                     /** Shipment pickups. */
-                    public pickups: google.cloud.optimization.v1.Shipment.IVisitRequest[];
+                    public pickups: google.maps.routeoptimization.v1.Shipment.IVisitRequest[];
 
                     /** Shipment deliveries. */
-                    public deliveries: google.cloud.optimization.v1.Shipment.IVisitRequest[];
+                    public deliveries: google.maps.routeoptimization.v1.Shipment.IVisitRequest[];
 
                     /** Shipment loadDemands. */
-                    public loadDemands: { [k: string]: google.cloud.optimization.v1.Shipment.ILoad };
+                    public loadDemands: { [k: string]: google.maps.routeoptimization.v1.Shipment.ILoad };
 
                     /** Shipment penaltyCost. */
                     public penaltyCost?: (number|null);
@@ -2400,9 +1152,6 @@ export namespace google {
                     /** Shipment ignore. */
                     public ignore: boolean;
 
-                    /** Shipment demands. */
-                    public demands: google.cloud.optimization.v1.ICapacityQuantity[];
-
                     /** Shipment _penaltyCost. */
                     public _penaltyCost?: "penaltyCost";
 
@@ -2414,23 +1163,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns Shipment instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IShipment): google.cloud.optimization.v1.Shipment;
+                    public static create(properties?: google.maps.routeoptimization.v1.IShipment): google.maps.routeoptimization.v1.Shipment;
 
                     /**
-                     * Encodes the specified Shipment message. Does not implicitly {@link google.cloud.optimization.v1.Shipment.verify|verify} messages.
+                     * Encodes the specified Shipment message. Does not implicitly {@link google.maps.routeoptimization.v1.Shipment.verify|verify} messages.
                      * @param message Shipment message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IShipment, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IShipment, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified Shipment message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Shipment.verify|verify} messages.
+                     * Encodes the specified Shipment message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Shipment.verify|verify} messages.
                      * @param message Shipment message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IShipment, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IShipment, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a Shipment message from the specified reader or buffer.
@@ -2440,7 +1189,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Shipment;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Shipment;
 
                     /**
                      * Decodes a Shipment message from the specified reader or buffer, length delimited.
@@ -2449,7 +1198,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Shipment;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Shipment;
 
                     /**
                      * Verifies a Shipment message.
@@ -2463,7 +1212,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns Shipment
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Shipment;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Shipment;
 
                     /**
                      * Creates a plain object from a Shipment message. Also converts values to other types if specified.
@@ -2471,7 +1220,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.Shipment, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.Shipment, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this Shipment to JSON.
@@ -2496,19 +1245,19 @@ export namespace google {
                         arrivalLocation?: (google.type.ILatLng|null);
 
                         /** VisitRequest arrivalWaypoint */
-                        arrivalWaypoint?: (google.cloud.optimization.v1.IWaypoint|null);
+                        arrivalWaypoint?: (google.maps.routeoptimization.v1.IWaypoint|null);
 
                         /** VisitRequest departureLocation */
                         departureLocation?: (google.type.ILatLng|null);
 
                         /** VisitRequest departureWaypoint */
-                        departureWaypoint?: (google.cloud.optimization.v1.IWaypoint|null);
+                        departureWaypoint?: (google.maps.routeoptimization.v1.IWaypoint|null);
 
                         /** VisitRequest tags */
                         tags?: (string[]|null);
 
                         /** VisitRequest timeWindows */
-                        timeWindows?: (google.cloud.optimization.v1.ITimeWindow[]|null);
+                        timeWindows?: (google.maps.routeoptimization.v1.ITimeWindow[]|null);
 
                         /** VisitRequest duration */
                         duration?: (google.protobuf.IDuration|null);
@@ -2517,16 +1266,13 @@ export namespace google {
                         cost?: (number|null);
 
                         /** VisitRequest loadDemands */
-                        loadDemands?: ({ [k: string]: google.cloud.optimization.v1.Shipment.ILoad }|null);
+                        loadDemands?: ({ [k: string]: google.maps.routeoptimization.v1.Shipment.ILoad }|null);
 
                         /** VisitRequest visitTypes */
                         visitTypes?: (string[]|null);
 
                         /** VisitRequest label */
                         label?: (string|null);
-
-                        /** VisitRequest demands */
-                        demands?: (google.cloud.optimization.v1.ICapacityQuantity[]|null);
                     }
 
                     /** Represents a VisitRequest. */
@@ -2536,25 +1282,25 @@ export namespace google {
                          * Constructs a new VisitRequest.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.Shipment.IVisitRequest);
+                        constructor(properties?: google.maps.routeoptimization.v1.Shipment.IVisitRequest);
 
                         /** VisitRequest arrivalLocation. */
                         public arrivalLocation?: (google.type.ILatLng|null);
 
                         /** VisitRequest arrivalWaypoint. */
-                        public arrivalWaypoint?: (google.cloud.optimization.v1.IWaypoint|null);
+                        public arrivalWaypoint?: (google.maps.routeoptimization.v1.IWaypoint|null);
 
                         /** VisitRequest departureLocation. */
                         public departureLocation?: (google.type.ILatLng|null);
 
                         /** VisitRequest departureWaypoint. */
-                        public departureWaypoint?: (google.cloud.optimization.v1.IWaypoint|null);
+                        public departureWaypoint?: (google.maps.routeoptimization.v1.IWaypoint|null);
 
                         /** VisitRequest tags. */
                         public tags: string[];
 
                         /** VisitRequest timeWindows. */
-                        public timeWindows: google.cloud.optimization.v1.ITimeWindow[];
+                        public timeWindows: google.maps.routeoptimization.v1.ITimeWindow[];
 
                         /** VisitRequest duration. */
                         public duration?: (google.protobuf.IDuration|null);
@@ -2563,7 +1309,7 @@ export namespace google {
                         public cost: number;
 
                         /** VisitRequest loadDemands. */
-                        public loadDemands: { [k: string]: google.cloud.optimization.v1.Shipment.ILoad };
+                        public loadDemands: { [k: string]: google.maps.routeoptimization.v1.Shipment.ILoad };
 
                         /** VisitRequest visitTypes. */
                         public visitTypes: string[];
@@ -2571,31 +1317,28 @@ export namespace google {
                         /** VisitRequest label. */
                         public label: string;
 
-                        /** VisitRequest demands. */
-                        public demands: google.cloud.optimization.v1.ICapacityQuantity[];
-
                         /**
                          * Creates a new VisitRequest instance using the specified properties.
                          * @param [properties] Properties to set
                          * @returns VisitRequest instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.Shipment.IVisitRequest): google.cloud.optimization.v1.Shipment.VisitRequest;
+                        public static create(properties?: google.maps.routeoptimization.v1.Shipment.IVisitRequest): google.maps.routeoptimization.v1.Shipment.VisitRequest;
 
                         /**
-                         * Encodes the specified VisitRequest message. Does not implicitly {@link google.cloud.optimization.v1.Shipment.VisitRequest.verify|verify} messages.
+                         * Encodes the specified VisitRequest message. Does not implicitly {@link google.maps.routeoptimization.v1.Shipment.VisitRequest.verify|verify} messages.
                          * @param message VisitRequest message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.Shipment.IVisitRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.Shipment.IVisitRequest, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified VisitRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Shipment.VisitRequest.verify|verify} messages.
+                         * Encodes the specified VisitRequest message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Shipment.VisitRequest.verify|verify} messages.
                          * @param message VisitRequest message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.Shipment.IVisitRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.Shipment.IVisitRequest, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a VisitRequest message from the specified reader or buffer.
@@ -2605,7 +1348,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Shipment.VisitRequest;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Shipment.VisitRequest;
 
                         /**
                          * Decodes a VisitRequest message from the specified reader or buffer, length delimited.
@@ -2614,7 +1357,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Shipment.VisitRequest;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Shipment.VisitRequest;
 
                         /**
                          * Verifies a VisitRequest message.
@@ -2628,7 +1371,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns VisitRequest
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Shipment.VisitRequest;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Shipment.VisitRequest;
 
                         /**
                          * Creates a plain object from a VisitRequest message. Also converts values to other types if specified.
@@ -2636,7 +1379,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.Shipment.VisitRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.Shipment.VisitRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this VisitRequest to JSON.
@@ -2666,7 +1409,7 @@ export namespace google {
                          * Constructs a new Load.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.Shipment.ILoad);
+                        constructor(properties?: google.maps.routeoptimization.v1.Shipment.ILoad);
 
                         /** Load amount. */
                         public amount: (number|Long|string);
@@ -2676,23 +1419,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns Load instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.Shipment.ILoad): google.cloud.optimization.v1.Shipment.Load;
+                        public static create(properties?: google.maps.routeoptimization.v1.Shipment.ILoad): google.maps.routeoptimization.v1.Shipment.Load;
 
                         /**
-                         * Encodes the specified Load message. Does not implicitly {@link google.cloud.optimization.v1.Shipment.Load.verify|verify} messages.
+                         * Encodes the specified Load message. Does not implicitly {@link google.maps.routeoptimization.v1.Shipment.Load.verify|verify} messages.
                          * @param message Load message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.Shipment.ILoad, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.Shipment.ILoad, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified Load message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Shipment.Load.verify|verify} messages.
+                         * Encodes the specified Load message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Shipment.Load.verify|verify} messages.
                          * @param message Load message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.Shipment.ILoad, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.Shipment.ILoad, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a Load message from the specified reader or buffer.
@@ -2702,7 +1445,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Shipment.Load;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Shipment.Load;
 
                         /**
                          * Decodes a Load message from the specified reader or buffer, length delimited.
@@ -2711,7 +1454,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Shipment.Load;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Shipment.Load;
 
                         /**
                          * Verifies a Load message.
@@ -2725,7 +1468,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns Load
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Shipment.Load;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Shipment.Load;
 
                         /**
                          * Creates a plain object from a Load message. Also converts values to other types if specified.
@@ -2733,7 +1476,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.Shipment.Load, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.Shipment.Load, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this Load to JSON.
@@ -2757,7 +1500,7 @@ export namespace google {
                     types?: (string[]|null);
 
                     /** ShipmentTypeIncompatibility incompatibilityMode */
-                    incompatibilityMode?: (google.cloud.optimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode|keyof typeof google.cloud.optimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode|null);
+                    incompatibilityMode?: (google.maps.routeoptimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode|keyof typeof google.maps.routeoptimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode|null);
                 }
 
                 /** Represents a ShipmentTypeIncompatibility. */
@@ -2767,36 +1510,36 @@ export namespace google {
                      * Constructs a new ShipmentTypeIncompatibility.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IShipmentTypeIncompatibility);
+                    constructor(properties?: google.maps.routeoptimization.v1.IShipmentTypeIncompatibility);
 
                     /** ShipmentTypeIncompatibility types. */
                     public types: string[];
 
                     /** ShipmentTypeIncompatibility incompatibilityMode. */
-                    public incompatibilityMode: (google.cloud.optimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode|keyof typeof google.cloud.optimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode);
+                    public incompatibilityMode: (google.maps.routeoptimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode|keyof typeof google.maps.routeoptimization.v1.ShipmentTypeIncompatibility.IncompatibilityMode);
 
                     /**
                      * Creates a new ShipmentTypeIncompatibility instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns ShipmentTypeIncompatibility instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IShipmentTypeIncompatibility): google.cloud.optimization.v1.ShipmentTypeIncompatibility;
+                    public static create(properties?: google.maps.routeoptimization.v1.IShipmentTypeIncompatibility): google.maps.routeoptimization.v1.ShipmentTypeIncompatibility;
 
                     /**
-                     * Encodes the specified ShipmentTypeIncompatibility message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentTypeIncompatibility.verify|verify} messages.
+                     * Encodes the specified ShipmentTypeIncompatibility message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentTypeIncompatibility.verify|verify} messages.
                      * @param message ShipmentTypeIncompatibility message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IShipmentTypeIncompatibility, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IShipmentTypeIncompatibility, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified ShipmentTypeIncompatibility message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentTypeIncompatibility.verify|verify} messages.
+                     * Encodes the specified ShipmentTypeIncompatibility message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentTypeIncompatibility.verify|verify} messages.
                      * @param message ShipmentTypeIncompatibility message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IShipmentTypeIncompatibility, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IShipmentTypeIncompatibility, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a ShipmentTypeIncompatibility message from the specified reader or buffer.
@@ -2806,7 +1549,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentTypeIncompatibility;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentTypeIncompatibility;
 
                     /**
                      * Decodes a ShipmentTypeIncompatibility message from the specified reader or buffer, length delimited.
@@ -2815,7 +1558,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentTypeIncompatibility;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentTypeIncompatibility;
 
                     /**
                      * Verifies a ShipmentTypeIncompatibility message.
@@ -2829,7 +1572,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns ShipmentTypeIncompatibility
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentTypeIncompatibility;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentTypeIncompatibility;
 
                     /**
                      * Creates a plain object from a ShipmentTypeIncompatibility message. Also converts values to other types if specified.
@@ -2837,7 +1580,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.ShipmentTypeIncompatibility, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.ShipmentTypeIncompatibility, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this ShipmentTypeIncompatibility to JSON.
@@ -2873,7 +1616,7 @@ export namespace google {
                     dependentShipmentTypes?: (string[]|null);
 
                     /** ShipmentTypeRequirement requirementMode */
-                    requirementMode?: (google.cloud.optimization.v1.ShipmentTypeRequirement.RequirementMode|keyof typeof google.cloud.optimization.v1.ShipmentTypeRequirement.RequirementMode|null);
+                    requirementMode?: (google.maps.routeoptimization.v1.ShipmentTypeRequirement.RequirementMode|keyof typeof google.maps.routeoptimization.v1.ShipmentTypeRequirement.RequirementMode|null);
                 }
 
                 /** Represents a ShipmentTypeRequirement. */
@@ -2883,7 +1626,7 @@ export namespace google {
                      * Constructs a new ShipmentTypeRequirement.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IShipmentTypeRequirement);
+                    constructor(properties?: google.maps.routeoptimization.v1.IShipmentTypeRequirement);
 
                     /** ShipmentTypeRequirement requiredShipmentTypeAlternatives. */
                     public requiredShipmentTypeAlternatives: string[];
@@ -2892,30 +1635,30 @@ export namespace google {
                     public dependentShipmentTypes: string[];
 
                     /** ShipmentTypeRequirement requirementMode. */
-                    public requirementMode: (google.cloud.optimization.v1.ShipmentTypeRequirement.RequirementMode|keyof typeof google.cloud.optimization.v1.ShipmentTypeRequirement.RequirementMode);
+                    public requirementMode: (google.maps.routeoptimization.v1.ShipmentTypeRequirement.RequirementMode|keyof typeof google.maps.routeoptimization.v1.ShipmentTypeRequirement.RequirementMode);
 
                     /**
                      * Creates a new ShipmentTypeRequirement instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns ShipmentTypeRequirement instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IShipmentTypeRequirement): google.cloud.optimization.v1.ShipmentTypeRequirement;
+                    public static create(properties?: google.maps.routeoptimization.v1.IShipmentTypeRequirement): google.maps.routeoptimization.v1.ShipmentTypeRequirement;
 
                     /**
-                     * Encodes the specified ShipmentTypeRequirement message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentTypeRequirement.verify|verify} messages.
+                     * Encodes the specified ShipmentTypeRequirement message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentTypeRequirement.verify|verify} messages.
                      * @param message ShipmentTypeRequirement message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IShipmentTypeRequirement, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IShipmentTypeRequirement, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified ShipmentTypeRequirement message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentTypeRequirement.verify|verify} messages.
+                     * Encodes the specified ShipmentTypeRequirement message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentTypeRequirement.verify|verify} messages.
                      * @param message ShipmentTypeRequirement message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IShipmentTypeRequirement, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IShipmentTypeRequirement, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a ShipmentTypeRequirement message from the specified reader or buffer.
@@ -2925,7 +1668,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentTypeRequirement;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentTypeRequirement;
 
                     /**
                      * Decodes a ShipmentTypeRequirement message from the specified reader or buffer, length delimited.
@@ -2934,7 +1677,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentTypeRequirement;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentTypeRequirement;
 
                     /**
                      * Verifies a ShipmentTypeRequirement message.
@@ -2948,7 +1691,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns ShipmentTypeRequirement
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentTypeRequirement;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentTypeRequirement;
 
                     /**
                      * Creates a plain object from a ShipmentTypeRequirement message. Also converts values to other types if specified.
@@ -2956,7 +1699,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.ShipmentTypeRequirement, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.ShipmentTypeRequirement, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this ShipmentTypeRequirement to JSON.
@@ -2983,374 +1726,26 @@ export namespace google {
                     }
                 }
 
-                /** Properties of a RouteModifiers. */
-                interface IRouteModifiers {
-
-                    /** RouteModifiers avoidTolls */
-                    avoidTolls?: (boolean|null);
-
-                    /** RouteModifiers avoidHighways */
-                    avoidHighways?: (boolean|null);
-
-                    /** RouteModifiers avoidFerries */
-                    avoidFerries?: (boolean|null);
-                }
-
-                /** Represents a RouteModifiers. */
-                class RouteModifiers implements IRouteModifiers {
-
-                    /**
-                     * Constructs a new RouteModifiers.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IRouteModifiers);
-
-                    /** RouteModifiers avoidTolls. */
-                    public avoidTolls: boolean;
-
-                    /** RouteModifiers avoidHighways. */
-                    public avoidHighways: boolean;
-
-                    /** RouteModifiers avoidFerries. */
-                    public avoidFerries: boolean;
-
-                    /**
-                     * Creates a new RouteModifiers instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns RouteModifiers instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IRouteModifiers): google.cloud.optimization.v1.RouteModifiers;
-
-                    /**
-                     * Encodes the specified RouteModifiers message. Does not implicitly {@link google.cloud.optimization.v1.RouteModifiers.verify|verify} messages.
-                     * @param message RouteModifiers message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IRouteModifiers, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified RouteModifiers message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.RouteModifiers.verify|verify} messages.
-                     * @param message RouteModifiers message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IRouteModifiers, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a RouteModifiers message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns RouteModifiers
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.RouteModifiers;
-
-                    /**
-                     * Decodes a RouteModifiers message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns RouteModifiers
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.RouteModifiers;
-
-                    /**
-                     * Verifies a RouteModifiers message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a RouteModifiers message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns RouteModifiers
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.RouteModifiers;
-
-                    /**
-                     * Creates a plain object from a RouteModifiers message. Also converts values to other types if specified.
-                     * @param message RouteModifiers
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.RouteModifiers, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this RouteModifiers to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for RouteModifiers
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a RouteCommitments. */
-                interface IRouteCommitments {
-
-                    /** RouteCommitments routeStartTime */
-                    routeStartTime?: (google.protobuf.ITimestamp|null);
-
-                    /** RouteCommitments pastVisits */
-                    pastVisits?: (google.cloud.optimization.v1.RouteCommitments.IVisit[]|null);
-
-                    /** RouteCommitments nextVisits */
-                    nextVisits?: (google.cloud.optimization.v1.RouteCommitments.IVisit[]|null);
-                }
-
-                /** Represents a RouteCommitments. */
-                class RouteCommitments implements IRouteCommitments {
-
-                    /**
-                     * Constructs a new RouteCommitments.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IRouteCommitments);
-
-                    /** RouteCommitments routeStartTime. */
-                    public routeStartTime?: (google.protobuf.ITimestamp|null);
-
-                    /** RouteCommitments pastVisits. */
-                    public pastVisits: google.cloud.optimization.v1.RouteCommitments.IVisit[];
-
-                    /** RouteCommitments nextVisits. */
-                    public nextVisits: google.cloud.optimization.v1.RouteCommitments.IVisit[];
-
-                    /** RouteCommitments _routeStartTime. */
-                    public _routeStartTime?: "routeStartTime";
-
-                    /**
-                     * Creates a new RouteCommitments instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns RouteCommitments instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IRouteCommitments): google.cloud.optimization.v1.RouteCommitments;
-
-                    /**
-                     * Encodes the specified RouteCommitments message. Does not implicitly {@link google.cloud.optimization.v1.RouteCommitments.verify|verify} messages.
-                     * @param message RouteCommitments message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IRouteCommitments, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified RouteCommitments message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.RouteCommitments.verify|verify} messages.
-                     * @param message RouteCommitments message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IRouteCommitments, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a RouteCommitments message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns RouteCommitments
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.RouteCommitments;
-
-                    /**
-                     * Decodes a RouteCommitments message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns RouteCommitments
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.RouteCommitments;
-
-                    /**
-                     * Verifies a RouteCommitments message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a RouteCommitments message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns RouteCommitments
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.RouteCommitments;
-
-                    /**
-                     * Creates a plain object from a RouteCommitments message. Also converts values to other types if specified.
-                     * @param message RouteCommitments
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.RouteCommitments, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this RouteCommitments to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for RouteCommitments
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                namespace RouteCommitments {
-
-                    /** Properties of a Visit. */
-                    interface IVisit {
-
-                        /** Visit shipmentName */
-                        shipmentName?: (string|null);
-
-                        /** Visit isPickup */
-                        isPickup?: (boolean|null);
-
-                        /** Visit visitRequestIndex */
-                        visitRequestIndex?: (number|null);
-
-                        /** Visit startTime */
-                        startTime?: (google.protobuf.ITimestamp|null);
-                    }
-
-                    /** Represents a Visit. */
-                    class Visit implements IVisit {
-
-                        /**
-                         * Constructs a new Visit.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.RouteCommitments.IVisit);
-
-                        /** Visit shipmentName. */
-                        public shipmentName: string;
-
-                        /** Visit isPickup. */
-                        public isPickup: boolean;
-
-                        /** Visit visitRequestIndex. */
-                        public visitRequestIndex: number;
-
-                        /** Visit startTime. */
-                        public startTime?: (google.protobuf.ITimestamp|null);
-
-                        /** Visit _startTime. */
-                        public _startTime?: "startTime";
-
-                        /**
-                         * Creates a new Visit instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns Visit instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.RouteCommitments.IVisit): google.cloud.optimization.v1.RouteCommitments.Visit;
-
-                        /**
-                         * Encodes the specified Visit message. Does not implicitly {@link google.cloud.optimization.v1.RouteCommitments.Visit.verify|verify} messages.
-                         * @param message Visit message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.RouteCommitments.IVisit, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified Visit message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.RouteCommitments.Visit.verify|verify} messages.
-                         * @param message Visit message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.RouteCommitments.IVisit, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes a Visit message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns Visit
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.RouteCommitments.Visit;
-
-                        /**
-                         * Decodes a Visit message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns Visit
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.RouteCommitments.Visit;
-
-                        /**
-                         * Verifies a Visit message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates a Visit message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns Visit
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.RouteCommitments.Visit;
-
-                        /**
-                         * Creates a plain object from a Visit message. Also converts values to other types if specified.
-                         * @param message Visit
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.RouteCommitments.Visit, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this Visit to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for Visit
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-                }
-
                 /** Properties of a Vehicle. */
                 interface IVehicle {
-
-                    /** Vehicle name */
-                    name?: (string|null);
 
                     /** Vehicle displayName */
                     displayName?: (string|null);
 
                     /** Vehicle travelMode */
-                    travelMode?: (google.cloud.optimization.v1.Vehicle.TravelMode|keyof typeof google.cloud.optimization.v1.Vehicle.TravelMode|null);
-
-                    /** Vehicle routeModifiers */
-                    routeModifiers?: (google.cloud.optimization.v1.IRouteModifiers|null);
+                    travelMode?: (google.maps.routeoptimization.v1.Vehicle.TravelMode|keyof typeof google.maps.routeoptimization.v1.Vehicle.TravelMode|null);
 
                     /** Vehicle startLocation */
                     startLocation?: (google.type.ILatLng|null);
 
                     /** Vehicle startWaypoint */
-                    startWaypoint?: (google.cloud.optimization.v1.IWaypoint|null);
+                    startWaypoint?: (google.maps.routeoptimization.v1.IWaypoint|null);
 
                     /** Vehicle endLocation */
                     endLocation?: (google.type.ILatLng|null);
 
                     /** Vehicle endWaypoint */
-                    endWaypoint?: (google.cloud.optimization.v1.IWaypoint|null);
+                    endWaypoint?: (google.maps.routeoptimization.v1.IWaypoint|null);
 
                     /** Vehicle startTags */
                     startTags?: (string[]|null);
@@ -3359,19 +1754,19 @@ export namespace google {
                     endTags?: (string[]|null);
 
                     /** Vehicle startTimeWindows */
-                    startTimeWindows?: (google.cloud.optimization.v1.ITimeWindow[]|null);
+                    startTimeWindows?: (google.maps.routeoptimization.v1.ITimeWindow[]|null);
 
                     /** Vehicle endTimeWindows */
-                    endTimeWindows?: (google.cloud.optimization.v1.ITimeWindow[]|null);
+                    endTimeWindows?: (google.maps.routeoptimization.v1.ITimeWindow[]|null);
 
                     /** Vehicle travelDurationMultiple */
                     travelDurationMultiple?: (number|null);
 
                     /** Vehicle unloadingPolicy */
-                    unloadingPolicy?: (google.cloud.optimization.v1.Vehicle.UnloadingPolicy|keyof typeof google.cloud.optimization.v1.Vehicle.UnloadingPolicy|null);
+                    unloadingPolicy?: (google.maps.routeoptimization.v1.Vehicle.UnloadingPolicy|keyof typeof google.maps.routeoptimization.v1.Vehicle.UnloadingPolicy|null);
 
                     /** Vehicle loadLimits */
-                    loadLimits?: ({ [k: string]: google.cloud.optimization.v1.Vehicle.ILoadLimit }|null);
+                    loadLimits?: ({ [k: string]: google.maps.routeoptimization.v1.Vehicle.ILoadLimit }|null);
 
                     /** Vehicle costPerHour */
                     costPerHour?: (number|null);
@@ -3389,43 +1784,25 @@ export namespace google {
                     usedIfRouteIsEmpty?: (boolean|null);
 
                     /** Vehicle routeDurationLimit */
-                    routeDurationLimit?: (google.cloud.optimization.v1.Vehicle.IDurationLimit|null);
+                    routeDurationLimit?: (google.maps.routeoptimization.v1.Vehicle.IDurationLimit|null);
 
                     /** Vehicle travelDurationLimit */
-                    travelDurationLimit?: (google.cloud.optimization.v1.Vehicle.IDurationLimit|null);
+                    travelDurationLimit?: (google.maps.routeoptimization.v1.Vehicle.IDurationLimit|null);
 
                     /** Vehicle routeDistanceLimit */
-                    routeDistanceLimit?: (google.cloud.optimization.v1.IDistanceLimit|null);
+                    routeDistanceLimit?: (google.maps.routeoptimization.v1.IDistanceLimit|null);
 
                     /** Vehicle extraVisitDurationForVisitType */
                     extraVisitDurationForVisitType?: ({ [k: string]: google.protobuf.IDuration }|null);
 
                     /** Vehicle breakRule */
-                    breakRule?: (google.cloud.optimization.v1.IBreakRule|null);
-
-                    /** Vehicle requiredOperatorTypes */
-                    requiredOperatorTypes?: (string[]|null);
+                    breakRule?: (google.maps.routeoptimization.v1.IBreakRule|null);
 
                     /** Vehicle label */
                     label?: (string|null);
 
                     /** Vehicle ignore */
                     ignore?: (boolean|null);
-
-                    /** Vehicle routeCommitments */
-                    routeCommitments?: (google.cloud.optimization.v1.IRouteCommitments|null);
-
-                    /** Vehicle breakRuleIndices */
-                    breakRuleIndices?: (number[]|null);
-
-                    /** Vehicle capacities */
-                    capacities?: (google.cloud.optimization.v1.ICapacityQuantity[]|null);
-
-                    /** Vehicle startLoadIntervals */
-                    startLoadIntervals?: (google.cloud.optimization.v1.ICapacityQuantityInterval[]|null);
-
-                    /** Vehicle endLoadIntervals */
-                    endLoadIntervals?: (google.cloud.optimization.v1.ICapacityQuantityInterval[]|null);
                 }
 
                 /** Represents a Vehicle. */
@@ -3435,31 +1812,25 @@ export namespace google {
                      * Constructs a new Vehicle.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IVehicle);
-
-                    /** Vehicle name. */
-                    public name: string;
+                    constructor(properties?: google.maps.routeoptimization.v1.IVehicle);
 
                     /** Vehicle displayName. */
                     public displayName: string;
 
                     /** Vehicle travelMode. */
-                    public travelMode: (google.cloud.optimization.v1.Vehicle.TravelMode|keyof typeof google.cloud.optimization.v1.Vehicle.TravelMode);
-
-                    /** Vehicle routeModifiers. */
-                    public routeModifiers?: (google.cloud.optimization.v1.IRouteModifiers|null);
+                    public travelMode: (google.maps.routeoptimization.v1.Vehicle.TravelMode|keyof typeof google.maps.routeoptimization.v1.Vehicle.TravelMode);
 
                     /** Vehicle startLocation. */
                     public startLocation?: (google.type.ILatLng|null);
 
                     /** Vehicle startWaypoint. */
-                    public startWaypoint?: (google.cloud.optimization.v1.IWaypoint|null);
+                    public startWaypoint?: (google.maps.routeoptimization.v1.IWaypoint|null);
 
                     /** Vehicle endLocation. */
                     public endLocation?: (google.type.ILatLng|null);
 
                     /** Vehicle endWaypoint. */
-                    public endWaypoint?: (google.cloud.optimization.v1.IWaypoint|null);
+                    public endWaypoint?: (google.maps.routeoptimization.v1.IWaypoint|null);
 
                     /** Vehicle startTags. */
                     public startTags: string[];
@@ -3468,19 +1839,19 @@ export namespace google {
                     public endTags: string[];
 
                     /** Vehicle startTimeWindows. */
-                    public startTimeWindows: google.cloud.optimization.v1.ITimeWindow[];
+                    public startTimeWindows: google.maps.routeoptimization.v1.ITimeWindow[];
 
                     /** Vehicle endTimeWindows. */
-                    public endTimeWindows: google.cloud.optimization.v1.ITimeWindow[];
+                    public endTimeWindows: google.maps.routeoptimization.v1.ITimeWindow[];
 
                     /** Vehicle travelDurationMultiple. */
                     public travelDurationMultiple?: (number|null);
 
                     /** Vehicle unloadingPolicy. */
-                    public unloadingPolicy: (google.cloud.optimization.v1.Vehicle.UnloadingPolicy|keyof typeof google.cloud.optimization.v1.Vehicle.UnloadingPolicy);
+                    public unloadingPolicy: (google.maps.routeoptimization.v1.Vehicle.UnloadingPolicy|keyof typeof google.maps.routeoptimization.v1.Vehicle.UnloadingPolicy);
 
                     /** Vehicle loadLimits. */
-                    public loadLimits: { [k: string]: google.cloud.optimization.v1.Vehicle.ILoadLimit };
+                    public loadLimits: { [k: string]: google.maps.routeoptimization.v1.Vehicle.ILoadLimit };
 
                     /** Vehicle costPerHour. */
                     public costPerHour: number;
@@ -3498,43 +1869,25 @@ export namespace google {
                     public usedIfRouteIsEmpty: boolean;
 
                     /** Vehicle routeDurationLimit. */
-                    public routeDurationLimit?: (google.cloud.optimization.v1.Vehicle.IDurationLimit|null);
+                    public routeDurationLimit?: (google.maps.routeoptimization.v1.Vehicle.IDurationLimit|null);
 
                     /** Vehicle travelDurationLimit. */
-                    public travelDurationLimit?: (google.cloud.optimization.v1.Vehicle.IDurationLimit|null);
+                    public travelDurationLimit?: (google.maps.routeoptimization.v1.Vehicle.IDurationLimit|null);
 
                     /** Vehicle routeDistanceLimit. */
-                    public routeDistanceLimit?: (google.cloud.optimization.v1.IDistanceLimit|null);
+                    public routeDistanceLimit?: (google.maps.routeoptimization.v1.IDistanceLimit|null);
 
                     /** Vehicle extraVisitDurationForVisitType. */
                     public extraVisitDurationForVisitType: { [k: string]: google.protobuf.IDuration };
 
                     /** Vehicle breakRule. */
-                    public breakRule?: (google.cloud.optimization.v1.IBreakRule|null);
-
-                    /** Vehicle requiredOperatorTypes. */
-                    public requiredOperatorTypes: string[];
+                    public breakRule?: (google.maps.routeoptimization.v1.IBreakRule|null);
 
                     /** Vehicle label. */
                     public label: string;
 
                     /** Vehicle ignore. */
                     public ignore: boolean;
-
-                    /** Vehicle routeCommitments. */
-                    public routeCommitments?: (google.cloud.optimization.v1.IRouteCommitments|null);
-
-                    /** Vehicle breakRuleIndices. */
-                    public breakRuleIndices: number[];
-
-                    /** Vehicle capacities. */
-                    public capacities: google.cloud.optimization.v1.ICapacityQuantity[];
-
-                    /** Vehicle startLoadIntervals. */
-                    public startLoadIntervals: google.cloud.optimization.v1.ICapacityQuantityInterval[];
-
-                    /** Vehicle endLoadIntervals. */
-                    public endLoadIntervals: google.cloud.optimization.v1.ICapacityQuantityInterval[];
 
                     /** Vehicle _travelDurationMultiple. */
                     public _travelDurationMultiple?: "travelDurationMultiple";
@@ -3544,23 +1897,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns Vehicle instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IVehicle): google.cloud.optimization.v1.Vehicle;
+                    public static create(properties?: google.maps.routeoptimization.v1.IVehicle): google.maps.routeoptimization.v1.Vehicle;
 
                     /**
-                     * Encodes the specified Vehicle message. Does not implicitly {@link google.cloud.optimization.v1.Vehicle.verify|verify} messages.
+                     * Encodes the specified Vehicle message. Does not implicitly {@link google.maps.routeoptimization.v1.Vehicle.verify|verify} messages.
                      * @param message Vehicle message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IVehicle, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IVehicle, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified Vehicle message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Vehicle.verify|verify} messages.
+                     * Encodes the specified Vehicle message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Vehicle.verify|verify} messages.
                      * @param message Vehicle message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IVehicle, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IVehicle, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a Vehicle message from the specified reader or buffer.
@@ -3570,7 +1923,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Vehicle;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Vehicle;
 
                     /**
                      * Decodes a Vehicle message from the specified reader or buffer, length delimited.
@@ -3579,7 +1932,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Vehicle;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Vehicle;
 
                     /**
                      * Verifies a Vehicle message.
@@ -3593,7 +1946,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns Vehicle
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Vehicle;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Vehicle;
 
                     /**
                      * Creates a plain object from a Vehicle message. Also converts values to other types if specified.
@@ -3601,7 +1954,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.Vehicle, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.Vehicle, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this Vehicle to JSON.
@@ -3623,7 +1976,7 @@ export namespace google {
                     enum TravelMode {
                         TRAVEL_MODE_UNSPECIFIED = 0,
                         DRIVING = 1,
-                        TWO_WHEELER = 5
+                        WALKING = 2
                     }
 
                     /** UnloadingPolicy enum. */
@@ -3646,10 +1999,10 @@ export namespace google {
                         costPerUnitAboveSoftMax?: (number|null);
 
                         /** LoadLimit startLoadInterval */
-                        startLoadInterval?: (google.cloud.optimization.v1.Vehicle.LoadLimit.IInterval|null);
+                        startLoadInterval?: (google.maps.routeoptimization.v1.Vehicle.LoadLimit.IInterval|null);
 
                         /** LoadLimit endLoadInterval */
-                        endLoadInterval?: (google.cloud.optimization.v1.Vehicle.LoadLimit.IInterval|null);
+                        endLoadInterval?: (google.maps.routeoptimization.v1.Vehicle.LoadLimit.IInterval|null);
                     }
 
                     /** Represents a LoadLimit. */
@@ -3659,7 +2012,7 @@ export namespace google {
                          * Constructs a new LoadLimit.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.Vehicle.ILoadLimit);
+                        constructor(properties?: google.maps.routeoptimization.v1.Vehicle.ILoadLimit);
 
                         /** LoadLimit maxLoad. */
                         public maxLoad?: (number|Long|string|null);
@@ -3671,10 +2024,10 @@ export namespace google {
                         public costPerUnitAboveSoftMax: number;
 
                         /** LoadLimit startLoadInterval. */
-                        public startLoadInterval?: (google.cloud.optimization.v1.Vehicle.LoadLimit.IInterval|null);
+                        public startLoadInterval?: (google.maps.routeoptimization.v1.Vehicle.LoadLimit.IInterval|null);
 
                         /** LoadLimit endLoadInterval. */
-                        public endLoadInterval?: (google.cloud.optimization.v1.Vehicle.LoadLimit.IInterval|null);
+                        public endLoadInterval?: (google.maps.routeoptimization.v1.Vehicle.LoadLimit.IInterval|null);
 
                         /** LoadLimit _maxLoad. */
                         public _maxLoad?: "maxLoad";
@@ -3684,23 +2037,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns LoadLimit instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.Vehicle.ILoadLimit): google.cloud.optimization.v1.Vehicle.LoadLimit;
+                        public static create(properties?: google.maps.routeoptimization.v1.Vehicle.ILoadLimit): google.maps.routeoptimization.v1.Vehicle.LoadLimit;
 
                         /**
-                         * Encodes the specified LoadLimit message. Does not implicitly {@link google.cloud.optimization.v1.Vehicle.LoadLimit.verify|verify} messages.
+                         * Encodes the specified LoadLimit message. Does not implicitly {@link google.maps.routeoptimization.v1.Vehicle.LoadLimit.verify|verify} messages.
                          * @param message LoadLimit message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.Vehicle.ILoadLimit, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.Vehicle.ILoadLimit, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified LoadLimit message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Vehicle.LoadLimit.verify|verify} messages.
+                         * Encodes the specified LoadLimit message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Vehicle.LoadLimit.verify|verify} messages.
                          * @param message LoadLimit message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.Vehicle.ILoadLimit, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.Vehicle.ILoadLimit, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a LoadLimit message from the specified reader or buffer.
@@ -3710,7 +2063,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Vehicle.LoadLimit;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Vehicle.LoadLimit;
 
                         /**
                          * Decodes a LoadLimit message from the specified reader or buffer, length delimited.
@@ -3719,7 +2072,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Vehicle.LoadLimit;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Vehicle.LoadLimit;
 
                         /**
                          * Verifies a LoadLimit message.
@@ -3733,7 +2086,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns LoadLimit
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Vehicle.LoadLimit;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Vehicle.LoadLimit;
 
                         /**
                          * Creates a plain object from a LoadLimit message. Also converts values to other types if specified.
@@ -3741,7 +2094,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.Vehicle.LoadLimit, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.Vehicle.LoadLimit, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this LoadLimit to JSON.
@@ -3776,7 +2129,7 @@ export namespace google {
                              * Constructs a new Interval.
                              * @param [properties] Properties to set
                              */
-                            constructor(properties?: google.cloud.optimization.v1.Vehicle.LoadLimit.IInterval);
+                            constructor(properties?: google.maps.routeoptimization.v1.Vehicle.LoadLimit.IInterval);
 
                             /** Interval min. */
                             public min: (number|Long|string);
@@ -3792,23 +2145,23 @@ export namespace google {
                              * @param [properties] Properties to set
                              * @returns Interval instance
                              */
-                            public static create(properties?: google.cloud.optimization.v1.Vehicle.LoadLimit.IInterval): google.cloud.optimization.v1.Vehicle.LoadLimit.Interval;
+                            public static create(properties?: google.maps.routeoptimization.v1.Vehicle.LoadLimit.IInterval): google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval;
 
                             /**
-                             * Encodes the specified Interval message. Does not implicitly {@link google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.verify|verify} messages.
+                             * Encodes the specified Interval message. Does not implicitly {@link google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval.verify|verify} messages.
                              * @param message Interval message or plain object to encode
                              * @param [writer] Writer to encode to
                              * @returns Writer
                              */
-                            public static encode(message: google.cloud.optimization.v1.Vehicle.LoadLimit.IInterval, writer?: $protobuf.Writer): $protobuf.Writer;
+                            public static encode(message: google.maps.routeoptimization.v1.Vehicle.LoadLimit.IInterval, writer?: $protobuf.Writer): $protobuf.Writer;
 
                             /**
-                             * Encodes the specified Interval message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.verify|verify} messages.
+                             * Encodes the specified Interval message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval.verify|verify} messages.
                              * @param message Interval message or plain object to encode
                              * @param [writer] Writer to encode to
                              * @returns Writer
                              */
-                            public static encodeDelimited(message: google.cloud.optimization.v1.Vehicle.LoadLimit.IInterval, writer?: $protobuf.Writer): $protobuf.Writer;
+                            public static encodeDelimited(message: google.maps.routeoptimization.v1.Vehicle.LoadLimit.IInterval, writer?: $protobuf.Writer): $protobuf.Writer;
 
                             /**
                              * Decodes an Interval message from the specified reader or buffer.
@@ -3818,7 +2171,7 @@ export namespace google {
                              * @throws {Error} If the payload is not a reader or valid buffer
                              * @throws {$protobuf.util.ProtocolError} If required fields are missing
                              */
-                            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Vehicle.LoadLimit.Interval;
+                            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval;
 
                             /**
                              * Decodes an Interval message from the specified reader or buffer, length delimited.
@@ -3827,7 +2180,7 @@ export namespace google {
                              * @throws {Error} If the payload is not a reader or valid buffer
                              * @throws {$protobuf.util.ProtocolError} If required fields are missing
                              */
-                            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Vehicle.LoadLimit.Interval;
+                            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval;
 
                             /**
                              * Verifies an Interval message.
@@ -3841,7 +2194,7 @@ export namespace google {
                              * @param object Plain object
                              * @returns Interval
                              */
-                            public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Vehicle.LoadLimit.Interval;
+                            public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval;
 
                             /**
                              * Creates a plain object from an Interval message. Also converts values to other types if specified.
@@ -3849,7 +2202,7 @@ export namespace google {
                              * @param [options] Conversion options
                              * @returns Plain object
                              */
-                            public static toObject(message: google.cloud.optimization.v1.Vehicle.LoadLimit.Interval, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                            public static toObject(message: google.maps.routeoptimization.v1.Vehicle.LoadLimit.Interval, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                             /**
                              * Converts this Interval to JSON.
@@ -3892,7 +2245,7 @@ export namespace google {
                          * Constructs a new DurationLimit.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.Vehicle.IDurationLimit);
+                        constructor(properties?: google.maps.routeoptimization.v1.Vehicle.IDurationLimit);
 
                         /** DurationLimit maxDuration. */
                         public maxDuration?: (google.protobuf.IDuration|null);
@@ -3920,23 +2273,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns DurationLimit instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.Vehicle.IDurationLimit): google.cloud.optimization.v1.Vehicle.DurationLimit;
+                        public static create(properties?: google.maps.routeoptimization.v1.Vehicle.IDurationLimit): google.maps.routeoptimization.v1.Vehicle.DurationLimit;
 
                         /**
-                         * Encodes the specified DurationLimit message. Does not implicitly {@link google.cloud.optimization.v1.Vehicle.DurationLimit.verify|verify} messages.
+                         * Encodes the specified DurationLimit message. Does not implicitly {@link google.maps.routeoptimization.v1.Vehicle.DurationLimit.verify|verify} messages.
                          * @param message DurationLimit message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.Vehicle.IDurationLimit, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.Vehicle.IDurationLimit, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified DurationLimit message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Vehicle.DurationLimit.verify|verify} messages.
+                         * Encodes the specified DurationLimit message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Vehicle.DurationLimit.verify|verify} messages.
                          * @param message DurationLimit message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.Vehicle.IDurationLimit, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.Vehicle.IDurationLimit, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a DurationLimit message from the specified reader or buffer.
@@ -3946,7 +2299,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Vehicle.DurationLimit;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Vehicle.DurationLimit;
 
                         /**
                          * Decodes a DurationLimit message from the specified reader or buffer, length delimited.
@@ -3955,7 +2308,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Vehicle.DurationLimit;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Vehicle.DurationLimit;
 
                         /**
                          * Verifies a DurationLimit message.
@@ -3969,7 +2322,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns DurationLimit
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Vehicle.DurationLimit;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Vehicle.DurationLimit;
 
                         /**
                          * Creates a plain object from a DurationLimit message. Also converts values to other types if specified.
@@ -3977,7 +2330,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.Vehicle.DurationLimit, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.Vehicle.DurationLimit, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this DurationLimit to JSON.
@@ -4023,7 +2376,7 @@ export namespace google {
                      * Constructs a new TimeWindow.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.ITimeWindow);
+                    constructor(properties?: google.maps.routeoptimization.v1.ITimeWindow);
 
                     /** TimeWindow startTime. */
                     public startTime?: (google.protobuf.ITimestamp|null);
@@ -4054,23 +2407,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns TimeWindow instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.ITimeWindow): google.cloud.optimization.v1.TimeWindow;
+                    public static create(properties?: google.maps.routeoptimization.v1.ITimeWindow): google.maps.routeoptimization.v1.TimeWindow;
 
                     /**
-                     * Encodes the specified TimeWindow message. Does not implicitly {@link google.cloud.optimization.v1.TimeWindow.verify|verify} messages.
+                     * Encodes the specified TimeWindow message. Does not implicitly {@link google.maps.routeoptimization.v1.TimeWindow.verify|verify} messages.
                      * @param message TimeWindow message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.ITimeWindow, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.ITimeWindow, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified TimeWindow message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.TimeWindow.verify|verify} messages.
+                     * Encodes the specified TimeWindow message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.TimeWindow.verify|verify} messages.
                      * @param message TimeWindow message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ITimeWindow, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.ITimeWindow, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a TimeWindow message from the specified reader or buffer.
@@ -4080,7 +2433,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.TimeWindow;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.TimeWindow;
 
                     /**
                      * Decodes a TimeWindow message from the specified reader or buffer, length delimited.
@@ -4089,7 +2442,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.TimeWindow;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.TimeWindow;
 
                     /**
                      * Verifies a TimeWindow message.
@@ -4103,7 +2456,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns TimeWindow
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.TimeWindow;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.TimeWindow;
 
                     /**
                      * Creates a plain object from a TimeWindow message. Also converts values to other types if specified.
@@ -4111,7 +2464,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.TimeWindow, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.TimeWindow, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this TimeWindow to JSON.
@@ -4121,224 +2474,6 @@ export namespace google {
 
                     /**
                      * Gets the default type url for TimeWindow
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a CapacityQuantity. */
-                interface ICapacityQuantity {
-
-                    /** CapacityQuantity type */
-                    type?: (string|null);
-
-                    /** CapacityQuantity value */
-                    value?: (number|Long|string|null);
-                }
-
-                /** Represents a CapacityQuantity. */
-                class CapacityQuantity implements ICapacityQuantity {
-
-                    /**
-                     * Constructs a new CapacityQuantity.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.ICapacityQuantity);
-
-                    /** CapacityQuantity type. */
-                    public type: string;
-
-                    /** CapacityQuantity value. */
-                    public value: (number|Long|string);
-
-                    /**
-                     * Creates a new CapacityQuantity instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns CapacityQuantity instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.ICapacityQuantity): google.cloud.optimization.v1.CapacityQuantity;
-
-                    /**
-                     * Encodes the specified CapacityQuantity message. Does not implicitly {@link google.cloud.optimization.v1.CapacityQuantity.verify|verify} messages.
-                     * @param message CapacityQuantity message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.ICapacityQuantity, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified CapacityQuantity message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.CapacityQuantity.verify|verify} messages.
-                     * @param message CapacityQuantity message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ICapacityQuantity, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a CapacityQuantity message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns CapacityQuantity
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.CapacityQuantity;
-
-                    /**
-                     * Decodes a CapacityQuantity message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns CapacityQuantity
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.CapacityQuantity;
-
-                    /**
-                     * Verifies a CapacityQuantity message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a CapacityQuantity message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns CapacityQuantity
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.CapacityQuantity;
-
-                    /**
-                     * Creates a plain object from a CapacityQuantity message. Also converts values to other types if specified.
-                     * @param message CapacityQuantity
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.CapacityQuantity, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this CapacityQuantity to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for CapacityQuantity
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a CapacityQuantityInterval. */
-                interface ICapacityQuantityInterval {
-
-                    /** CapacityQuantityInterval type */
-                    type?: (string|null);
-
-                    /** CapacityQuantityInterval minValue */
-                    minValue?: (number|Long|string|null);
-
-                    /** CapacityQuantityInterval maxValue */
-                    maxValue?: (number|Long|string|null);
-                }
-
-                /** Represents a CapacityQuantityInterval. */
-                class CapacityQuantityInterval implements ICapacityQuantityInterval {
-
-                    /**
-                     * Constructs a new CapacityQuantityInterval.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.ICapacityQuantityInterval);
-
-                    /** CapacityQuantityInterval type. */
-                    public type: string;
-
-                    /** CapacityQuantityInterval minValue. */
-                    public minValue?: (number|Long|string|null);
-
-                    /** CapacityQuantityInterval maxValue. */
-                    public maxValue?: (number|Long|string|null);
-
-                    /** CapacityQuantityInterval _minValue. */
-                    public _minValue?: "minValue";
-
-                    /** CapacityQuantityInterval _maxValue. */
-                    public _maxValue?: "maxValue";
-
-                    /**
-                     * Creates a new CapacityQuantityInterval instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns CapacityQuantityInterval instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.ICapacityQuantityInterval): google.cloud.optimization.v1.CapacityQuantityInterval;
-
-                    /**
-                     * Encodes the specified CapacityQuantityInterval message. Does not implicitly {@link google.cloud.optimization.v1.CapacityQuantityInterval.verify|verify} messages.
-                     * @param message CapacityQuantityInterval message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.ICapacityQuantityInterval, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified CapacityQuantityInterval message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.CapacityQuantityInterval.verify|verify} messages.
-                     * @param message CapacityQuantityInterval message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ICapacityQuantityInterval, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a CapacityQuantityInterval message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns CapacityQuantityInterval
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.CapacityQuantityInterval;
-
-                    /**
-                     * Decodes a CapacityQuantityInterval message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns CapacityQuantityInterval
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.CapacityQuantityInterval;
-
-                    /**
-                     * Verifies a CapacityQuantityInterval message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a CapacityQuantityInterval message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns CapacityQuantityInterval
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.CapacityQuantityInterval;
-
-                    /**
-                     * Creates a plain object from a CapacityQuantityInterval message. Also converts values to other types if specified.
-                     * @param message CapacityQuantityInterval
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.CapacityQuantityInterval, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this CapacityQuantityInterval to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for CapacityQuantityInterval
                      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                      * @returns The default type url
                      */
@@ -4365,7 +2500,7 @@ export namespace google {
                      * Constructs a new DistanceLimit.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IDistanceLimit);
+                    constructor(properties?: google.maps.routeoptimization.v1.IDistanceLimit);
 
                     /** DistanceLimit maxMeters. */
                     public maxMeters?: (number|Long|string|null);
@@ -4390,23 +2525,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns DistanceLimit instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IDistanceLimit): google.cloud.optimization.v1.DistanceLimit;
+                    public static create(properties?: google.maps.routeoptimization.v1.IDistanceLimit): google.maps.routeoptimization.v1.DistanceLimit;
 
                     /**
-                     * Encodes the specified DistanceLimit message. Does not implicitly {@link google.cloud.optimization.v1.DistanceLimit.verify|verify} messages.
+                     * Encodes the specified DistanceLimit message. Does not implicitly {@link google.maps.routeoptimization.v1.DistanceLimit.verify|verify} messages.
                      * @param message DistanceLimit message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IDistanceLimit, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IDistanceLimit, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified DistanceLimit message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.DistanceLimit.verify|verify} messages.
+                     * Encodes the specified DistanceLimit message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.DistanceLimit.verify|verify} messages.
                      * @param message DistanceLimit message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IDistanceLimit, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IDistanceLimit, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a DistanceLimit message from the specified reader or buffer.
@@ -4416,7 +2551,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.DistanceLimit;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.DistanceLimit;
 
                     /**
                      * Decodes a DistanceLimit message from the specified reader or buffer, length delimited.
@@ -4425,7 +2560,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.DistanceLimit;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.DistanceLimit;
 
                     /**
                      * Verifies a DistanceLimit message.
@@ -4439,7 +2574,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns DistanceLimit
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.DistanceLimit;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.DistanceLimit;
 
                     /**
                      * Creates a plain object from a DistanceLimit message. Also converts values to other types if specified.
@@ -4447,7 +2582,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.DistanceLimit, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.DistanceLimit, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this DistanceLimit to JSON.
@@ -4485,7 +2620,7 @@ export namespace google {
                     costPerKilometer?: (number|null);
 
                     /** TransitionAttributes distanceLimit */
-                    distanceLimit?: (google.cloud.optimization.v1.IDistanceLimit|null);
+                    distanceLimit?: (google.maps.routeoptimization.v1.IDistanceLimit|null);
 
                     /** TransitionAttributes delay */
                     delay?: (google.protobuf.IDuration|null);
@@ -4498,7 +2633,7 @@ export namespace google {
                      * Constructs a new TransitionAttributes.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.ITransitionAttributes);
+                    constructor(properties?: google.maps.routeoptimization.v1.ITransitionAttributes);
 
                     /** TransitionAttributes srcTag. */
                     public srcTag: string;
@@ -4519,7 +2654,7 @@ export namespace google {
                     public costPerKilometer: number;
 
                     /** TransitionAttributes distanceLimit. */
-                    public distanceLimit?: (google.cloud.optimization.v1.IDistanceLimit|null);
+                    public distanceLimit?: (google.maps.routeoptimization.v1.IDistanceLimit|null);
 
                     /** TransitionAttributes delay. */
                     public delay?: (google.protobuf.IDuration|null);
@@ -4529,23 +2664,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns TransitionAttributes instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.ITransitionAttributes): google.cloud.optimization.v1.TransitionAttributes;
+                    public static create(properties?: google.maps.routeoptimization.v1.ITransitionAttributes): google.maps.routeoptimization.v1.TransitionAttributes;
 
                     /**
-                     * Encodes the specified TransitionAttributes message. Does not implicitly {@link google.cloud.optimization.v1.TransitionAttributes.verify|verify} messages.
+                     * Encodes the specified TransitionAttributes message. Does not implicitly {@link google.maps.routeoptimization.v1.TransitionAttributes.verify|verify} messages.
                      * @param message TransitionAttributes message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.ITransitionAttributes, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.ITransitionAttributes, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified TransitionAttributes message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.TransitionAttributes.verify|verify} messages.
+                     * Encodes the specified TransitionAttributes message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.TransitionAttributes.verify|verify} messages.
                      * @param message TransitionAttributes message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ITransitionAttributes, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.ITransitionAttributes, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a TransitionAttributes message from the specified reader or buffer.
@@ -4555,7 +2690,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.TransitionAttributes;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.TransitionAttributes;
 
                     /**
                      * Decodes a TransitionAttributes message from the specified reader or buffer, length delimited.
@@ -4564,7 +2699,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.TransitionAttributes;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.TransitionAttributes;
 
                     /**
                      * Verifies a TransitionAttributes message.
@@ -4578,7 +2713,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns TransitionAttributes
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.TransitionAttributes;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.TransitionAttributes;
 
                     /**
                      * Creates a plain object from a TransitionAttributes message. Also converts values to other types if specified.
@@ -4586,7 +2721,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.TransitionAttributes, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.TransitionAttributes, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this TransitionAttributes to JSON.
@@ -4606,7 +2741,7 @@ export namespace google {
                 interface IWaypoint {
 
                     /** Waypoint location */
-                    location?: (google.cloud.optimization.v1.ILocation|null);
+                    location?: (google.maps.routeoptimization.v1.ILocation|null);
 
                     /** Waypoint placeId */
                     placeId?: (string|null);
@@ -4622,10 +2757,10 @@ export namespace google {
                      * Constructs a new Waypoint.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IWaypoint);
+                    constructor(properties?: google.maps.routeoptimization.v1.IWaypoint);
 
                     /** Waypoint location. */
-                    public location?: (google.cloud.optimization.v1.ILocation|null);
+                    public location?: (google.maps.routeoptimization.v1.ILocation|null);
 
                     /** Waypoint placeId. */
                     public placeId?: (string|null);
@@ -4641,23 +2776,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns Waypoint instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IWaypoint): google.cloud.optimization.v1.Waypoint;
+                    public static create(properties?: google.maps.routeoptimization.v1.IWaypoint): google.maps.routeoptimization.v1.Waypoint;
 
                     /**
-                     * Encodes the specified Waypoint message. Does not implicitly {@link google.cloud.optimization.v1.Waypoint.verify|verify} messages.
+                     * Encodes the specified Waypoint message. Does not implicitly {@link google.maps.routeoptimization.v1.Waypoint.verify|verify} messages.
                      * @param message Waypoint message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IWaypoint, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IWaypoint, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified Waypoint message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Waypoint.verify|verify} messages.
+                     * Encodes the specified Waypoint message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Waypoint.verify|verify} messages.
                      * @param message Waypoint message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IWaypoint, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IWaypoint, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a Waypoint message from the specified reader or buffer.
@@ -4667,7 +2802,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Waypoint;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Waypoint;
 
                     /**
                      * Decodes a Waypoint message from the specified reader or buffer, length delimited.
@@ -4676,7 +2811,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Waypoint;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Waypoint;
 
                     /**
                      * Verifies a Waypoint message.
@@ -4690,7 +2825,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns Waypoint
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Waypoint;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Waypoint;
 
                     /**
                      * Creates a plain object from a Waypoint message. Also converts values to other types if specified.
@@ -4698,7 +2833,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.Waypoint, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.Waypoint, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this Waypoint to JSON.
@@ -4731,7 +2866,7 @@ export namespace google {
                      * Constructs a new Location.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.ILocation);
+                    constructor(properties?: google.maps.routeoptimization.v1.ILocation);
 
                     /** Location latLng. */
                     public latLng?: (google.type.ILatLng|null);
@@ -4747,23 +2882,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns Location instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.ILocation): google.cloud.optimization.v1.Location;
+                    public static create(properties?: google.maps.routeoptimization.v1.ILocation): google.maps.routeoptimization.v1.Location;
 
                     /**
-                     * Encodes the specified Location message. Does not implicitly {@link google.cloud.optimization.v1.Location.verify|verify} messages.
+                     * Encodes the specified Location message. Does not implicitly {@link google.maps.routeoptimization.v1.Location.verify|verify} messages.
                      * @param message Location message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.ILocation, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.ILocation, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified Location message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Location.verify|verify} messages.
+                     * Encodes the specified Location message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.Location.verify|verify} messages.
                      * @param message Location message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ILocation, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.ILocation, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a Location message from the specified reader or buffer.
@@ -4773,7 +2908,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Location;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.Location;
 
                     /**
                      * Decodes a Location message from the specified reader or buffer, length delimited.
@@ -4782,7 +2917,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Location;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.Location;
 
                     /**
                      * Verifies a Location message.
@@ -4796,7 +2931,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns Location
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Location;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.Location;
 
                     /**
                      * Creates a plain object from a Location message. Also converts values to other types if specified.
@@ -4804,7 +2939,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.Location, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.Location, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this Location to JSON.
@@ -4824,10 +2959,10 @@ export namespace google {
                 interface IBreakRule {
 
                     /** BreakRule breakRequests */
-                    breakRequests?: (google.cloud.optimization.v1.BreakRule.IBreakRequest[]|null);
+                    breakRequests?: (google.maps.routeoptimization.v1.BreakRule.IBreakRequest[]|null);
 
                     /** BreakRule frequencyConstraints */
-                    frequencyConstraints?: (google.cloud.optimization.v1.BreakRule.IFrequencyConstraint[]|null);
+                    frequencyConstraints?: (google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint[]|null);
                 }
 
                 /** Represents a BreakRule. */
@@ -4837,36 +2972,36 @@ export namespace google {
                      * Constructs a new BreakRule.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IBreakRule);
+                    constructor(properties?: google.maps.routeoptimization.v1.IBreakRule);
 
                     /** BreakRule breakRequests. */
-                    public breakRequests: google.cloud.optimization.v1.BreakRule.IBreakRequest[];
+                    public breakRequests: google.maps.routeoptimization.v1.BreakRule.IBreakRequest[];
 
                     /** BreakRule frequencyConstraints. */
-                    public frequencyConstraints: google.cloud.optimization.v1.BreakRule.IFrequencyConstraint[];
+                    public frequencyConstraints: google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint[];
 
                     /**
                      * Creates a new BreakRule instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns BreakRule instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IBreakRule): google.cloud.optimization.v1.BreakRule;
+                    public static create(properties?: google.maps.routeoptimization.v1.IBreakRule): google.maps.routeoptimization.v1.BreakRule;
 
                     /**
-                     * Encodes the specified BreakRule message. Does not implicitly {@link google.cloud.optimization.v1.BreakRule.verify|verify} messages.
+                     * Encodes the specified BreakRule message. Does not implicitly {@link google.maps.routeoptimization.v1.BreakRule.verify|verify} messages.
                      * @param message BreakRule message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IBreakRule, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IBreakRule, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified BreakRule message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.BreakRule.verify|verify} messages.
+                     * Encodes the specified BreakRule message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.BreakRule.verify|verify} messages.
                      * @param message BreakRule message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IBreakRule, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IBreakRule, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a BreakRule message from the specified reader or buffer.
@@ -4876,7 +3011,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.BreakRule;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.BreakRule;
 
                     /**
                      * Decodes a BreakRule message from the specified reader or buffer, length delimited.
@@ -4885,7 +3020,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.BreakRule;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.BreakRule;
 
                     /**
                      * Verifies a BreakRule message.
@@ -4899,7 +3034,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns BreakRule
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.BreakRule;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.BreakRule;
 
                     /**
                      * Creates a plain object from a BreakRule message. Also converts values to other types if specified.
@@ -4907,7 +3042,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.BreakRule, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.BreakRule, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this BreakRule to JSON.
@@ -4945,7 +3080,7 @@ export namespace google {
                          * Constructs a new BreakRequest.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.BreakRule.IBreakRequest);
+                        constructor(properties?: google.maps.routeoptimization.v1.BreakRule.IBreakRequest);
 
                         /** BreakRequest earliestStartTime. */
                         public earliestStartTime?: (google.protobuf.ITimestamp|null);
@@ -4961,23 +3096,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns BreakRequest instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.BreakRule.IBreakRequest): google.cloud.optimization.v1.BreakRule.BreakRequest;
+                        public static create(properties?: google.maps.routeoptimization.v1.BreakRule.IBreakRequest): google.maps.routeoptimization.v1.BreakRule.BreakRequest;
 
                         /**
-                         * Encodes the specified BreakRequest message. Does not implicitly {@link google.cloud.optimization.v1.BreakRule.BreakRequest.verify|verify} messages.
+                         * Encodes the specified BreakRequest message. Does not implicitly {@link google.maps.routeoptimization.v1.BreakRule.BreakRequest.verify|verify} messages.
                          * @param message BreakRequest message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.BreakRule.IBreakRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.BreakRule.IBreakRequest, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified BreakRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.BreakRule.BreakRequest.verify|verify} messages.
+                         * Encodes the specified BreakRequest message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.BreakRule.BreakRequest.verify|verify} messages.
                          * @param message BreakRequest message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.BreakRule.IBreakRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.BreakRule.IBreakRequest, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a BreakRequest message from the specified reader or buffer.
@@ -4987,7 +3122,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.BreakRule.BreakRequest;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.BreakRule.BreakRequest;
 
                         /**
                          * Decodes a BreakRequest message from the specified reader or buffer, length delimited.
@@ -4996,7 +3131,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.BreakRule.BreakRequest;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.BreakRule.BreakRequest;
 
                         /**
                          * Verifies a BreakRequest message.
@@ -5010,7 +3145,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns BreakRequest
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.BreakRule.BreakRequest;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.BreakRule.BreakRequest;
 
                         /**
                          * Creates a plain object from a BreakRequest message. Also converts values to other types if specified.
@@ -5018,7 +3153,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.BreakRule.BreakRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.BreakRule.BreakRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this BreakRequest to JSON.
@@ -5051,7 +3186,7 @@ export namespace google {
                          * Constructs a new FrequencyConstraint.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.BreakRule.IFrequencyConstraint);
+                        constructor(properties?: google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint);
 
                         /** FrequencyConstraint minBreakDuration. */
                         public minBreakDuration?: (google.protobuf.IDuration|null);
@@ -5064,23 +3199,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns FrequencyConstraint instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.BreakRule.IFrequencyConstraint): google.cloud.optimization.v1.BreakRule.FrequencyConstraint;
+                        public static create(properties?: google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint): google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint;
 
                         /**
-                         * Encodes the specified FrequencyConstraint message. Does not implicitly {@link google.cloud.optimization.v1.BreakRule.FrequencyConstraint.verify|verify} messages.
+                         * Encodes the specified FrequencyConstraint message. Does not implicitly {@link google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.verify|verify} messages.
                          * @param message FrequencyConstraint message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.BreakRule.IFrequencyConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified FrequencyConstraint message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.BreakRule.FrequencyConstraint.verify|verify} messages.
+                         * Encodes the specified FrequencyConstraint message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.verify|verify} messages.
                          * @param message FrequencyConstraint message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.BreakRule.IFrequencyConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a FrequencyConstraint message from the specified reader or buffer.
@@ -5090,7 +3225,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.BreakRule.FrequencyConstraint;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint;
 
                         /**
                          * Decodes a FrequencyConstraint message from the specified reader or buffer, length delimited.
@@ -5099,7 +3234,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.BreakRule.FrequencyConstraint;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint;
 
                         /**
                          * Verifies a FrequencyConstraint message.
@@ -5113,7 +3248,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns FrequencyConstraint
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.BreakRule.FrequencyConstraint;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint;
 
                         /**
                          * Creates a plain object from a FrequencyConstraint message. Also converts values to other types if specified.
@@ -5121,7 +3256,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.BreakRule.FrequencyConstraint, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this FrequencyConstraint to JSON.
@@ -5138,121 +3273,6 @@ export namespace google {
                     }
                 }
 
-                /** Properties of a VehicleOperator. */
-                interface IVehicleOperator {
-
-                    /** VehicleOperator startTimeWindows */
-                    startTimeWindows?: (google.cloud.optimization.v1.ITimeWindow[]|null);
-
-                    /** VehicleOperator endTimeWindows */
-                    endTimeWindows?: (google.cloud.optimization.v1.ITimeWindow[]|null);
-
-                    /** VehicleOperator type */
-                    type?: (string|null);
-
-                    /** VehicleOperator label */
-                    label?: (string|null);
-                }
-
-                /** Represents a VehicleOperator. */
-                class VehicleOperator implements IVehicleOperator {
-
-                    /**
-                     * Constructs a new VehicleOperator.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IVehicleOperator);
-
-                    /** VehicleOperator startTimeWindows. */
-                    public startTimeWindows: google.cloud.optimization.v1.ITimeWindow[];
-
-                    /** VehicleOperator endTimeWindows. */
-                    public endTimeWindows: google.cloud.optimization.v1.ITimeWindow[];
-
-                    /** VehicleOperator type. */
-                    public type: string;
-
-                    /** VehicleOperator label. */
-                    public label: string;
-
-                    /**
-                     * Creates a new VehicleOperator instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns VehicleOperator instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IVehicleOperator): google.cloud.optimization.v1.VehicleOperator;
-
-                    /**
-                     * Encodes the specified VehicleOperator message. Does not implicitly {@link google.cloud.optimization.v1.VehicleOperator.verify|verify} messages.
-                     * @param message VehicleOperator message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IVehicleOperator, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified VehicleOperator message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.VehicleOperator.verify|verify} messages.
-                     * @param message VehicleOperator message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IVehicleOperator, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a VehicleOperator message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns VehicleOperator
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.VehicleOperator;
-
-                    /**
-                     * Decodes a VehicleOperator message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns VehicleOperator
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.VehicleOperator;
-
-                    /**
-                     * Verifies a VehicleOperator message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a VehicleOperator message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns VehicleOperator
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.VehicleOperator;
-
-                    /**
-                     * Creates a plain object from a VehicleOperator message. Also converts values to other types if specified.
-                     * @param message VehicleOperator
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.VehicleOperator, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this VehicleOperator to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for VehicleOperator
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
                 /** Properties of a ShipmentRoute. */
                 interface IShipmentRoute {
 
@@ -5262,15 +3282,6 @@ export namespace google {
                     /** ShipmentRoute vehicleLabel */
                     vehicleLabel?: (string|null);
 
-                    /** ShipmentRoute vehicleName */
-                    vehicleName?: (string|null);
-
-                    /** ShipmentRoute vehicleOperatorIndices */
-                    vehicleOperatorIndices?: (number[]|null);
-
-                    /** ShipmentRoute vehicleOperatorLabels */
-                    vehicleOperatorLabels?: (string[]|null);
-
                     /** ShipmentRoute vehicleStartTime */
                     vehicleStartTime?: (google.protobuf.ITimestamp|null);
 
@@ -5278,43 +3289,28 @@ export namespace google {
                     vehicleEndTime?: (google.protobuf.ITimestamp|null);
 
                     /** ShipmentRoute visits */
-                    visits?: (google.cloud.optimization.v1.ShipmentRoute.IVisit[]|null);
+                    visits?: (google.maps.routeoptimization.v1.ShipmentRoute.IVisit[]|null);
 
                     /** ShipmentRoute transitions */
-                    transitions?: (google.cloud.optimization.v1.ShipmentRoute.ITransition[]|null);
+                    transitions?: (google.maps.routeoptimization.v1.ShipmentRoute.ITransition[]|null);
 
                     /** ShipmentRoute hasTrafficInfeasibilities */
                     hasTrafficInfeasibilities?: (boolean|null);
 
                     /** ShipmentRoute routePolyline */
-                    routePolyline?: (google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline|null);
+                    routePolyline?: (google.maps.routeoptimization.v1.ShipmentRoute.IEncodedPolyline|null);
 
                     /** ShipmentRoute breaks */
-                    breaks?: (google.cloud.optimization.v1.ShipmentRoute.IBreak[]|null);
+                    breaks?: (google.maps.routeoptimization.v1.ShipmentRoute.IBreak[]|null);
 
                     /** ShipmentRoute metrics */
-                    metrics?: (google.cloud.optimization.v1.IAggregatedMetrics|null);
-
-                    /** ShipmentRoute vehicleFullness */
-                    vehicleFullness?: (google.cloud.optimization.v1.IVehicleFullness|null);
+                    metrics?: (google.maps.routeoptimization.v1.IAggregatedMetrics|null);
 
                     /** ShipmentRoute routeCosts */
                     routeCosts?: ({ [k: string]: number }|null);
 
                     /** ShipmentRoute routeTotalCost */
                     routeTotalCost?: (number|null);
-
-                    /** ShipmentRoute endLoads */
-                    endLoads?: (google.cloud.optimization.v1.ICapacityQuantity[]|null);
-
-                    /** ShipmentRoute travelSteps */
-                    travelSteps?: (google.cloud.optimization.v1.ShipmentRoute.ITravelStep[]|null);
-
-                    /** ShipmentRoute vehicleDetour */
-                    vehicleDetour?: (google.protobuf.IDuration|null);
-
-                    /** ShipmentRoute delayBeforeVehicleEnd */
-                    delayBeforeVehicleEnd?: (google.cloud.optimization.v1.ShipmentRoute.IDelay|null);
                 }
 
                 /** Represents a ShipmentRoute. */
@@ -5324,22 +3320,13 @@ export namespace google {
                      * Constructs a new ShipmentRoute.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IShipmentRoute);
+                    constructor(properties?: google.maps.routeoptimization.v1.IShipmentRoute);
 
                     /** ShipmentRoute vehicleIndex. */
                     public vehicleIndex: number;
 
                     /** ShipmentRoute vehicleLabel. */
                     public vehicleLabel: string;
-
-                    /** ShipmentRoute vehicleName. */
-                    public vehicleName: string;
-
-                    /** ShipmentRoute vehicleOperatorIndices. */
-                    public vehicleOperatorIndices: number[];
-
-                    /** ShipmentRoute vehicleOperatorLabels. */
-                    public vehicleOperatorLabels: string[];
 
                     /** ShipmentRoute vehicleStartTime. */
                     public vehicleStartTime?: (google.protobuf.ITimestamp|null);
@@ -5348,25 +3335,22 @@ export namespace google {
                     public vehicleEndTime?: (google.protobuf.ITimestamp|null);
 
                     /** ShipmentRoute visits. */
-                    public visits: google.cloud.optimization.v1.ShipmentRoute.IVisit[];
+                    public visits: google.maps.routeoptimization.v1.ShipmentRoute.IVisit[];
 
                     /** ShipmentRoute transitions. */
-                    public transitions: google.cloud.optimization.v1.ShipmentRoute.ITransition[];
+                    public transitions: google.maps.routeoptimization.v1.ShipmentRoute.ITransition[];
 
                     /** ShipmentRoute hasTrafficInfeasibilities. */
                     public hasTrafficInfeasibilities: boolean;
 
                     /** ShipmentRoute routePolyline. */
-                    public routePolyline?: (google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline|null);
+                    public routePolyline?: (google.maps.routeoptimization.v1.ShipmentRoute.IEncodedPolyline|null);
 
                     /** ShipmentRoute breaks. */
-                    public breaks: google.cloud.optimization.v1.ShipmentRoute.IBreak[];
+                    public breaks: google.maps.routeoptimization.v1.ShipmentRoute.IBreak[];
 
                     /** ShipmentRoute metrics. */
-                    public metrics?: (google.cloud.optimization.v1.IAggregatedMetrics|null);
-
-                    /** ShipmentRoute vehicleFullness. */
-                    public vehicleFullness?: (google.cloud.optimization.v1.IVehicleFullness|null);
+                    public metrics?: (google.maps.routeoptimization.v1.IAggregatedMetrics|null);
 
                     /** ShipmentRoute routeCosts. */
                     public routeCosts: { [k: string]: number };
@@ -5374,40 +3358,28 @@ export namespace google {
                     /** ShipmentRoute routeTotalCost. */
                     public routeTotalCost: number;
 
-                    /** ShipmentRoute endLoads. */
-                    public endLoads: google.cloud.optimization.v1.ICapacityQuantity[];
-
-                    /** ShipmentRoute travelSteps. */
-                    public travelSteps: google.cloud.optimization.v1.ShipmentRoute.ITravelStep[];
-
-                    /** ShipmentRoute vehicleDetour. */
-                    public vehicleDetour?: (google.protobuf.IDuration|null);
-
-                    /** ShipmentRoute delayBeforeVehicleEnd. */
-                    public delayBeforeVehicleEnd?: (google.cloud.optimization.v1.ShipmentRoute.IDelay|null);
-
                     /**
                      * Creates a new ShipmentRoute instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns ShipmentRoute instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IShipmentRoute): google.cloud.optimization.v1.ShipmentRoute;
+                    public static create(properties?: google.maps.routeoptimization.v1.IShipmentRoute): google.maps.routeoptimization.v1.ShipmentRoute;
 
                     /**
-                     * Encodes the specified ShipmentRoute message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.verify|verify} messages.
+                     * Encodes the specified ShipmentRoute message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.verify|verify} messages.
                      * @param message ShipmentRoute message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IShipmentRoute, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IShipmentRoute, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified ShipmentRoute message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.verify|verify} messages.
+                     * Encodes the specified ShipmentRoute message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.verify|verify} messages.
                      * @param message ShipmentRoute message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IShipmentRoute, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IShipmentRoute, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a ShipmentRoute message from the specified reader or buffer.
@@ -5417,7 +3389,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentRoute;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentRoute;
 
                     /**
                      * Decodes a ShipmentRoute message from the specified reader or buffer, length delimited.
@@ -5426,7 +3398,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentRoute;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentRoute;
 
                     /**
                      * Verifies a ShipmentRoute message.
@@ -5440,7 +3412,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns ShipmentRoute
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentRoute;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentRoute;
 
                     /**
                      * Creates a plain object from a ShipmentRoute message. Also converts values to other types if specified.
@@ -5448,7 +3420,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.ShipmentRoute, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.ShipmentRoute, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this ShipmentRoute to JSON.
@@ -5466,117 +3438,11 @@ export namespace google {
 
                 namespace ShipmentRoute {
 
-                    /** Properties of a Delay. */
-                    interface IDelay {
-
-                        /** Delay startTime */
-                        startTime?: (google.protobuf.ITimestamp|null);
-
-                        /** Delay duration */
-                        duration?: (google.protobuf.IDuration|null);
-                    }
-
-                    /** Represents a Delay. */
-                    class Delay implements IDelay {
-
-                        /**
-                         * Constructs a new Delay.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentRoute.IDelay);
-
-                        /** Delay startTime. */
-                        public startTime?: (google.protobuf.ITimestamp|null);
-
-                        /** Delay duration. */
-                        public duration?: (google.protobuf.IDuration|null);
-
-                        /**
-                         * Creates a new Delay instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns Delay instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentRoute.IDelay): google.cloud.optimization.v1.ShipmentRoute.Delay;
-
-                        /**
-                         * Encodes the specified Delay message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.Delay.verify|verify} messages.
-                         * @param message Delay message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentRoute.IDelay, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified Delay message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.Delay.verify|verify} messages.
-                         * @param message Delay message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentRoute.IDelay, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes a Delay message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns Delay
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentRoute.Delay;
-
-                        /**
-                         * Decodes a Delay message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns Delay
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentRoute.Delay;
-
-                        /**
-                         * Verifies a Delay message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates a Delay message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns Delay
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentRoute.Delay;
-
-                        /**
-                         * Creates a plain object from a Delay message. Also converts values to other types if specified.
-                         * @param message Delay
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentRoute.Delay, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this Delay to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for Delay
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-
                     /** Properties of a Visit. */
                     interface IVisit {
 
                         /** Visit shipmentIndex */
                         shipmentIndex?: (number|null);
-
-                        /** Visit shipmentName */
-                        shipmentName?: (string|null);
 
                         /** Visit isPickup */
                         isPickup?: (boolean|null);
@@ -5588,7 +3454,7 @@ export namespace google {
                         startTime?: (google.protobuf.ITimestamp|null);
 
                         /** Visit loadDemands */
-                        loadDemands?: ({ [k: string]: google.cloud.optimization.v1.Shipment.ILoad }|null);
+                        loadDemands?: ({ [k: string]: google.maps.routeoptimization.v1.Shipment.ILoad }|null);
 
                         /** Visit detour */
                         detour?: (google.protobuf.IDuration|null);
@@ -5598,15 +3464,6 @@ export namespace google {
 
                         /** Visit visitLabel */
                         visitLabel?: (string|null);
-
-                        /** Visit arrivalLoads */
-                        arrivalLoads?: (google.cloud.optimization.v1.ICapacityQuantity[]|null);
-
-                        /** Visit delayBeforeStart */
-                        delayBeforeStart?: (google.cloud.optimization.v1.ShipmentRoute.IDelay|null);
-
-                        /** Visit demands */
-                        demands?: (google.cloud.optimization.v1.ICapacityQuantity[]|null);
                     }
 
                     /** Represents a Visit. */
@@ -5616,13 +3473,10 @@ export namespace google {
                          * Constructs a new Visit.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentRoute.IVisit);
+                        constructor(properties?: google.maps.routeoptimization.v1.ShipmentRoute.IVisit);
 
                         /** Visit shipmentIndex. */
                         public shipmentIndex: number;
-
-                        /** Visit shipmentName. */
-                        public shipmentName: string;
 
                         /** Visit isPickup. */
                         public isPickup: boolean;
@@ -5634,7 +3488,7 @@ export namespace google {
                         public startTime?: (google.protobuf.ITimestamp|null);
 
                         /** Visit loadDemands. */
-                        public loadDemands: { [k: string]: google.cloud.optimization.v1.Shipment.ILoad };
+                        public loadDemands: { [k: string]: google.maps.routeoptimization.v1.Shipment.ILoad };
 
                         /** Visit detour. */
                         public detour?: (google.protobuf.IDuration|null);
@@ -5645,37 +3499,28 @@ export namespace google {
                         /** Visit visitLabel. */
                         public visitLabel: string;
 
-                        /** Visit arrivalLoads. */
-                        public arrivalLoads: google.cloud.optimization.v1.ICapacityQuantity[];
-
-                        /** Visit delayBeforeStart. */
-                        public delayBeforeStart?: (google.cloud.optimization.v1.ShipmentRoute.IDelay|null);
-
-                        /** Visit demands. */
-                        public demands: google.cloud.optimization.v1.ICapacityQuantity[];
-
                         /**
                          * Creates a new Visit instance using the specified properties.
                          * @param [properties] Properties to set
                          * @returns Visit instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentRoute.IVisit): google.cloud.optimization.v1.ShipmentRoute.Visit;
+                        public static create(properties?: google.maps.routeoptimization.v1.ShipmentRoute.IVisit): google.maps.routeoptimization.v1.ShipmentRoute.Visit;
 
                         /**
-                         * Encodes the specified Visit message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.Visit.verify|verify} messages.
+                         * Encodes the specified Visit message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.Visit.verify|verify} messages.
                          * @param message Visit message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentRoute.IVisit, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.ShipmentRoute.IVisit, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified Visit message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.Visit.verify|verify} messages.
+                         * Encodes the specified Visit message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.Visit.verify|verify} messages.
                          * @param message Visit message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentRoute.IVisit, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.ShipmentRoute.IVisit, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a Visit message from the specified reader or buffer.
@@ -5685,7 +3530,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentRoute.Visit;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentRoute.Visit;
 
                         /**
                          * Decodes a Visit message from the specified reader or buffer, length delimited.
@@ -5694,7 +3539,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentRoute.Visit;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentRoute.Visit;
 
                         /**
                          * Verifies a Visit message.
@@ -5708,7 +3553,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns Visit
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentRoute.Visit;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentRoute.Visit;
 
                         /**
                          * Creates a plain object from a Visit message. Also converts values to other types if specified.
@@ -5716,7 +3561,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentRoute.Visit, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.ShipmentRoute.Visit, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this Visit to JSON.
@@ -5760,13 +3605,10 @@ export namespace google {
                         startTime?: (google.protobuf.ITimestamp|null);
 
                         /** Transition routePolyline */
-                        routePolyline?: (google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline|null);
+                        routePolyline?: (google.maps.routeoptimization.v1.ShipmentRoute.IEncodedPolyline|null);
 
                         /** Transition vehicleLoads */
-                        vehicleLoads?: ({ [k: string]: google.cloud.optimization.v1.ShipmentRoute.IVehicleLoad }|null);
-
-                        /** Transition loads */
-                        loads?: (google.cloud.optimization.v1.ICapacityQuantity[]|null);
+                        vehicleLoads?: ({ [k: string]: google.maps.routeoptimization.v1.ShipmentRoute.IVehicleLoad }|null);
                     }
 
                     /** Represents a Transition. */
@@ -5776,7 +3618,7 @@ export namespace google {
                          * Constructs a new Transition.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentRoute.ITransition);
+                        constructor(properties?: google.maps.routeoptimization.v1.ShipmentRoute.ITransition);
 
                         /** Transition travelDuration. */
                         public travelDuration?: (google.protobuf.IDuration|null);
@@ -5803,36 +3645,33 @@ export namespace google {
                         public startTime?: (google.protobuf.ITimestamp|null);
 
                         /** Transition routePolyline. */
-                        public routePolyline?: (google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline|null);
+                        public routePolyline?: (google.maps.routeoptimization.v1.ShipmentRoute.IEncodedPolyline|null);
 
                         /** Transition vehicleLoads. */
-                        public vehicleLoads: { [k: string]: google.cloud.optimization.v1.ShipmentRoute.IVehicleLoad };
-
-                        /** Transition loads. */
-                        public loads: google.cloud.optimization.v1.ICapacityQuantity[];
+                        public vehicleLoads: { [k: string]: google.maps.routeoptimization.v1.ShipmentRoute.IVehicleLoad };
 
                         /**
                          * Creates a new Transition instance using the specified properties.
                          * @param [properties] Properties to set
                          * @returns Transition instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentRoute.ITransition): google.cloud.optimization.v1.ShipmentRoute.Transition;
+                        public static create(properties?: google.maps.routeoptimization.v1.ShipmentRoute.ITransition): google.maps.routeoptimization.v1.ShipmentRoute.Transition;
 
                         /**
-                         * Encodes the specified Transition message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.Transition.verify|verify} messages.
+                         * Encodes the specified Transition message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.Transition.verify|verify} messages.
                          * @param message Transition message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentRoute.ITransition, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.ShipmentRoute.ITransition, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified Transition message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.Transition.verify|verify} messages.
+                         * Encodes the specified Transition message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.Transition.verify|verify} messages.
                          * @param message Transition message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentRoute.ITransition, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.ShipmentRoute.ITransition, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a Transition message from the specified reader or buffer.
@@ -5842,7 +3681,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentRoute.Transition;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentRoute.Transition;
 
                         /**
                          * Decodes a Transition message from the specified reader or buffer, length delimited.
@@ -5851,7 +3690,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentRoute.Transition;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentRoute.Transition;
 
                         /**
                          * Verifies a Transition message.
@@ -5865,7 +3704,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns Transition
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentRoute.Transition;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentRoute.Transition;
 
                         /**
                          * Creates a plain object from a Transition message. Also converts values to other types if specified.
@@ -5873,7 +3712,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentRoute.Transition, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.ShipmentRoute.Transition, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this Transition to JSON.
@@ -5903,7 +3742,7 @@ export namespace google {
                          * Constructs a new VehicleLoad.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentRoute.IVehicleLoad);
+                        constructor(properties?: google.maps.routeoptimization.v1.ShipmentRoute.IVehicleLoad);
 
                         /** VehicleLoad amount. */
                         public amount: (number|Long|string);
@@ -5913,23 +3752,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns VehicleLoad instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentRoute.IVehicleLoad): google.cloud.optimization.v1.ShipmentRoute.VehicleLoad;
+                        public static create(properties?: google.maps.routeoptimization.v1.ShipmentRoute.IVehicleLoad): google.maps.routeoptimization.v1.ShipmentRoute.VehicleLoad;
 
                         /**
-                         * Encodes the specified VehicleLoad message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.VehicleLoad.verify|verify} messages.
+                         * Encodes the specified VehicleLoad message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.VehicleLoad.verify|verify} messages.
                          * @param message VehicleLoad message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentRoute.IVehicleLoad, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.ShipmentRoute.IVehicleLoad, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified VehicleLoad message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.VehicleLoad.verify|verify} messages.
+                         * Encodes the specified VehicleLoad message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.VehicleLoad.verify|verify} messages.
                          * @param message VehicleLoad message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentRoute.IVehicleLoad, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.ShipmentRoute.IVehicleLoad, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a VehicleLoad message from the specified reader or buffer.
@@ -5939,7 +3778,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentRoute.VehicleLoad;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentRoute.VehicleLoad;
 
                         /**
                          * Decodes a VehicleLoad message from the specified reader or buffer, length delimited.
@@ -5948,7 +3787,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentRoute.VehicleLoad;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentRoute.VehicleLoad;
 
                         /**
                          * Verifies a VehicleLoad message.
@@ -5962,7 +3801,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns VehicleLoad
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentRoute.VehicleLoad;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentRoute.VehicleLoad;
 
                         /**
                          * Creates a plain object from a VehicleLoad message. Also converts values to other types if specified.
@@ -5970,7 +3809,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentRoute.VehicleLoad, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.ShipmentRoute.VehicleLoad, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this VehicleLoad to JSON.
@@ -6000,7 +3839,7 @@ export namespace google {
                          * Constructs a new EncodedPolyline.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline);
+                        constructor(properties?: google.maps.routeoptimization.v1.ShipmentRoute.IEncodedPolyline);
 
                         /** EncodedPolyline points. */
                         public points: string;
@@ -6010,23 +3849,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns EncodedPolyline instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline): google.cloud.optimization.v1.ShipmentRoute.EncodedPolyline;
+                        public static create(properties?: google.maps.routeoptimization.v1.ShipmentRoute.IEncodedPolyline): google.maps.routeoptimization.v1.ShipmentRoute.EncodedPolyline;
 
                         /**
-                         * Encodes the specified EncodedPolyline message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.EncodedPolyline.verify|verify} messages.
+                         * Encodes the specified EncodedPolyline message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.EncodedPolyline.verify|verify} messages.
                          * @param message EncodedPolyline message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.ShipmentRoute.IEncodedPolyline, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified EncodedPolyline message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.EncodedPolyline.verify|verify} messages.
+                         * Encodes the specified EncodedPolyline message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.EncodedPolyline.verify|verify} messages.
                          * @param message EncodedPolyline message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.ShipmentRoute.IEncodedPolyline, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes an EncodedPolyline message from the specified reader or buffer.
@@ -6036,7 +3875,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentRoute.EncodedPolyline;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentRoute.EncodedPolyline;
 
                         /**
                          * Decodes an EncodedPolyline message from the specified reader or buffer, length delimited.
@@ -6045,7 +3884,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentRoute.EncodedPolyline;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentRoute.EncodedPolyline;
 
                         /**
                          * Verifies an EncodedPolyline message.
@@ -6059,7 +3898,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns EncodedPolyline
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentRoute.EncodedPolyline;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentRoute.EncodedPolyline;
 
                         /**
                          * Creates a plain object from an EncodedPolyline message. Also converts values to other types if specified.
@@ -6067,7 +3906,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentRoute.EncodedPolyline, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.ShipmentRoute.EncodedPolyline, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this EncodedPolyline to JSON.
@@ -6100,7 +3939,7 @@ export namespace google {
                          * Constructs a new Break.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentRoute.IBreak);
+                        constructor(properties?: google.maps.routeoptimization.v1.ShipmentRoute.IBreak);
 
                         /** Break startTime. */
                         public startTime?: (google.protobuf.ITimestamp|null);
@@ -6113,23 +3952,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns Break instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentRoute.IBreak): google.cloud.optimization.v1.ShipmentRoute.Break;
+                        public static create(properties?: google.maps.routeoptimization.v1.ShipmentRoute.IBreak): google.maps.routeoptimization.v1.ShipmentRoute.Break;
 
                         /**
-                         * Encodes the specified Break message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.Break.verify|verify} messages.
+                         * Encodes the specified Break message. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.Break.verify|verify} messages.
                          * @param message Break message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentRoute.IBreak, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.ShipmentRoute.IBreak, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified Break message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.Break.verify|verify} messages.
+                         * Encodes the specified Break message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.ShipmentRoute.Break.verify|verify} messages.
                          * @param message Break message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentRoute.IBreak, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.ShipmentRoute.IBreak, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a Break message from the specified reader or buffer.
@@ -6139,7 +3978,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentRoute.Break;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.ShipmentRoute.Break;
 
                         /**
                          * Decodes a Break message from the specified reader or buffer, length delimited.
@@ -6148,7 +3987,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentRoute.Break;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.ShipmentRoute.Break;
 
                         /**
                          * Verifies a Break message.
@@ -6162,7 +4001,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns Break
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentRoute.Break;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.ShipmentRoute.Break;
 
                         /**
                          * Creates a plain object from a Break message. Also converts values to other types if specified.
@@ -6170,7 +4009,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentRoute.Break, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.ShipmentRoute.Break, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this Break to JSON.
@@ -6180,121 +4019,6 @@ export namespace google {
 
                         /**
                          * Gets the default type url for Break
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-
-                    /** Properties of a TravelStep. */
-                    interface ITravelStep {
-
-                        /** TravelStep duration */
-                        duration?: (google.protobuf.IDuration|null);
-
-                        /** TravelStep distanceMeters */
-                        distanceMeters?: (number|null);
-
-                        /** TravelStep trafficInfoUnavailable */
-                        trafficInfoUnavailable?: (boolean|null);
-
-                        /** TravelStep routePolyline */
-                        routePolyline?: (google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline|null);
-                    }
-
-                    /** Represents a TravelStep. */
-                    class TravelStep implements ITravelStep {
-
-                        /**
-                         * Constructs a new TravelStep.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.ShipmentRoute.ITravelStep);
-
-                        /** TravelStep duration. */
-                        public duration?: (google.protobuf.IDuration|null);
-
-                        /** TravelStep distanceMeters. */
-                        public distanceMeters: number;
-
-                        /** TravelStep trafficInfoUnavailable. */
-                        public trafficInfoUnavailable: boolean;
-
-                        /** TravelStep routePolyline. */
-                        public routePolyline?: (google.cloud.optimization.v1.ShipmentRoute.IEncodedPolyline|null);
-
-                        /**
-                         * Creates a new TravelStep instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns TravelStep instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.ShipmentRoute.ITravelStep): google.cloud.optimization.v1.ShipmentRoute.TravelStep;
-
-                        /**
-                         * Encodes the specified TravelStep message. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.TravelStep.verify|verify} messages.
-                         * @param message TravelStep message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.ShipmentRoute.ITravelStep, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified TravelStep message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ShipmentRoute.TravelStep.verify|verify} messages.
-                         * @param message TravelStep message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.ShipmentRoute.ITravelStep, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes a TravelStep message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns TravelStep
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ShipmentRoute.TravelStep;
-
-                        /**
-                         * Decodes a TravelStep message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns TravelStep
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ShipmentRoute.TravelStep;
-
-                        /**
-                         * Verifies a TravelStep message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates a TravelStep message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns TravelStep
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ShipmentRoute.TravelStep;
-
-                        /**
-                         * Creates a plain object from a TravelStep message. Also converts values to other types if specified.
-                         * @param message TravelStep
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.ShipmentRoute.TravelStep, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this TravelStep to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for TravelStep
                          * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                          * @returns The default type url
                          */
@@ -6311,11 +4035,8 @@ export namespace google {
                     /** SkippedShipment label */
                     label?: (string|null);
 
-                    /** SkippedShipment shipmentName */
-                    shipmentName?: (string|null);
-
                     /** SkippedShipment reasons */
-                    reasons?: (google.cloud.optimization.v1.SkippedShipment.IReason[]|null);
+                    reasons?: (google.maps.routeoptimization.v1.SkippedShipment.IReason[]|null);
                 }
 
                 /** Represents a SkippedShipment. */
@@ -6325,7 +4046,7 @@ export namespace google {
                      * Constructs a new SkippedShipment.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.ISkippedShipment);
+                    constructor(properties?: google.maps.routeoptimization.v1.ISkippedShipment);
 
                     /** SkippedShipment index. */
                     public index: number;
@@ -6333,34 +4054,31 @@ export namespace google {
                     /** SkippedShipment label. */
                     public label: string;
 
-                    /** SkippedShipment shipmentName. */
-                    public shipmentName: string;
-
                     /** SkippedShipment reasons. */
-                    public reasons: google.cloud.optimization.v1.SkippedShipment.IReason[];
+                    public reasons: google.maps.routeoptimization.v1.SkippedShipment.IReason[];
 
                     /**
                      * Creates a new SkippedShipment instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns SkippedShipment instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.ISkippedShipment): google.cloud.optimization.v1.SkippedShipment;
+                    public static create(properties?: google.maps.routeoptimization.v1.ISkippedShipment): google.maps.routeoptimization.v1.SkippedShipment;
 
                     /**
-                     * Encodes the specified SkippedShipment message. Does not implicitly {@link google.cloud.optimization.v1.SkippedShipment.verify|verify} messages.
+                     * Encodes the specified SkippedShipment message. Does not implicitly {@link google.maps.routeoptimization.v1.SkippedShipment.verify|verify} messages.
                      * @param message SkippedShipment message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.ISkippedShipment, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.ISkippedShipment, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified SkippedShipment message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.SkippedShipment.verify|verify} messages.
+                     * Encodes the specified SkippedShipment message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.SkippedShipment.verify|verify} messages.
                      * @param message SkippedShipment message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ISkippedShipment, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.ISkippedShipment, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes a SkippedShipment message from the specified reader or buffer.
@@ -6370,7 +4088,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.SkippedShipment;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.SkippedShipment;
 
                     /**
                      * Decodes a SkippedShipment message from the specified reader or buffer, length delimited.
@@ -6379,7 +4097,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.SkippedShipment;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.SkippedShipment;
 
                     /**
                      * Verifies a SkippedShipment message.
@@ -6393,7 +4111,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns SkippedShipment
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.SkippedShipment;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.SkippedShipment;
 
                     /**
                      * Creates a plain object from a SkippedShipment message. Also converts values to other types if specified.
@@ -6401,7 +4119,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.SkippedShipment, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.SkippedShipment, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this SkippedShipment to JSON.
@@ -6423,7 +4141,7 @@ export namespace google {
                     interface IReason {
 
                         /** Reason code */
-                        code?: (google.cloud.optimization.v1.SkippedShipment.Reason.Code|keyof typeof google.cloud.optimization.v1.SkippedShipment.Reason.Code|null);
+                        code?: (google.maps.routeoptimization.v1.SkippedShipment.Reason.Code|keyof typeof google.maps.routeoptimization.v1.SkippedShipment.Reason.Code|null);
 
                         /** Reason exampleVehicleIndex */
                         exampleVehicleIndex?: (number|null);
@@ -6439,10 +4157,10 @@ export namespace google {
                          * Constructs a new Reason.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.SkippedShipment.IReason);
+                        constructor(properties?: google.maps.routeoptimization.v1.SkippedShipment.IReason);
 
                         /** Reason code. */
-                        public code: (google.cloud.optimization.v1.SkippedShipment.Reason.Code|keyof typeof google.cloud.optimization.v1.SkippedShipment.Reason.Code);
+                        public code: (google.maps.routeoptimization.v1.SkippedShipment.Reason.Code|keyof typeof google.maps.routeoptimization.v1.SkippedShipment.Reason.Code);
 
                         /** Reason exampleVehicleIndex. */
                         public exampleVehicleIndex?: (number|null);
@@ -6458,23 +4176,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns Reason instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.SkippedShipment.IReason): google.cloud.optimization.v1.SkippedShipment.Reason;
+                        public static create(properties?: google.maps.routeoptimization.v1.SkippedShipment.IReason): google.maps.routeoptimization.v1.SkippedShipment.Reason;
 
                         /**
-                         * Encodes the specified Reason message. Does not implicitly {@link google.cloud.optimization.v1.SkippedShipment.Reason.verify|verify} messages.
+                         * Encodes the specified Reason message. Does not implicitly {@link google.maps.routeoptimization.v1.SkippedShipment.Reason.verify|verify} messages.
                          * @param message Reason message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.SkippedShipment.IReason, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.SkippedShipment.IReason, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified Reason message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.SkippedShipment.Reason.verify|verify} messages.
+                         * Encodes the specified Reason message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.SkippedShipment.Reason.verify|verify} messages.
                          * @param message Reason message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.SkippedShipment.IReason, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.SkippedShipment.IReason, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a Reason message from the specified reader or buffer.
@@ -6484,7 +4202,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.SkippedShipment.Reason;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.SkippedShipment.Reason;
 
                         /**
                          * Decodes a Reason message from the specified reader or buffer, length delimited.
@@ -6493,7 +4211,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.SkippedShipment.Reason;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.SkippedShipment.Reason;
 
                         /**
                          * Verifies a Reason message.
@@ -6507,7 +4225,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns Reason
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.SkippedShipment.Reason;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.SkippedShipment.Reason;
 
                         /**
                          * Creates a plain object from a Reason message. Also converts values to other types if specified.
@@ -6515,7 +4233,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.SkippedShipment.Reason, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.SkippedShipment.Reason, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this Reason to JSON.
@@ -6542,12 +4260,7 @@ export namespace google {
                             CANNOT_BE_PERFORMED_WITHIN_VEHICLE_DURATION_LIMIT = 4,
                             CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TRAVEL_DURATION_LIMIT = 5,
                             CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TIME_WINDOWS = 6,
-                            VEHICLE_NOT_ALLOWED = 7,
-                            VEHICLE_IGNORED = 8,
-                            SHIPMENT_IGNORED = 9,
-                            SKIPPED_IN_INJECTED_SOLUTION_CONSTRAINT = 10,
-                            VEHICLE_ROUTE_IS_FULLY_SEQUENCE_CONSTRAINED = 11,
-                            VEHICLE_REQUIRED_OPERATOR_TYPE_NOT_FOUND = 12
+                            VEHICLE_NOT_ALLOWED = 7
                         }
                     }
                 }
@@ -6557,12 +4270,6 @@ export namespace google {
 
                     /** AggregatedMetrics performedShipmentCount */
                     performedShipmentCount?: (number|null);
-
-                    /** AggregatedMetrics performedMandatoryShipmentCount */
-                    performedMandatoryShipmentCount?: (number|null);
-
-                    /** AggregatedMetrics penaltyCostAvoided */
-                    penaltyCostAvoided?: (number|null);
 
                     /** AggregatedMetrics travelDuration */
                     travelDuration?: (google.protobuf.IDuration|null);
@@ -6586,13 +4293,7 @@ export namespace google {
                     travelDistanceMeters?: (number|null);
 
                     /** AggregatedMetrics maxLoads */
-                    maxLoads?: ({ [k: string]: google.cloud.optimization.v1.ShipmentRoute.IVehicleLoad }|null);
-
-                    /** AggregatedMetrics costs */
-                    costs?: ({ [k: string]: number }|null);
-
-                    /** AggregatedMetrics totalCost */
-                    totalCost?: (number|null);
+                    maxLoads?: ({ [k: string]: google.maps.routeoptimization.v1.ShipmentRoute.IVehicleLoad }|null);
                 }
 
                 /** Represents an AggregatedMetrics. */
@@ -6602,16 +4303,10 @@ export namespace google {
                      * Constructs a new AggregatedMetrics.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IAggregatedMetrics);
+                    constructor(properties?: google.maps.routeoptimization.v1.IAggregatedMetrics);
 
                     /** AggregatedMetrics performedShipmentCount. */
                     public performedShipmentCount: number;
-
-                    /** AggregatedMetrics performedMandatoryShipmentCount. */
-                    public performedMandatoryShipmentCount?: (number|null);
-
-                    /** AggregatedMetrics penaltyCostAvoided. */
-                    public penaltyCostAvoided?: (number|null);
 
                     /** AggregatedMetrics travelDuration. */
                     public travelDuration?: (google.protobuf.IDuration|null);
@@ -6635,42 +4330,30 @@ export namespace google {
                     public travelDistanceMeters: number;
 
                     /** AggregatedMetrics maxLoads. */
-                    public maxLoads: { [k: string]: google.cloud.optimization.v1.ShipmentRoute.IVehicleLoad };
-
-                    /** AggregatedMetrics costs. */
-                    public costs: { [k: string]: number };
-
-                    /** AggregatedMetrics totalCost. */
-                    public totalCost: number;
-
-                    /** AggregatedMetrics _performedMandatoryShipmentCount. */
-                    public _performedMandatoryShipmentCount?: "performedMandatoryShipmentCount";
-
-                    /** AggregatedMetrics _penaltyCostAvoided. */
-                    public _penaltyCostAvoided?: "penaltyCostAvoided";
+                    public maxLoads: { [k: string]: google.maps.routeoptimization.v1.ShipmentRoute.IVehicleLoad };
 
                     /**
                      * Creates a new AggregatedMetrics instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns AggregatedMetrics instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IAggregatedMetrics): google.cloud.optimization.v1.AggregatedMetrics;
+                    public static create(properties?: google.maps.routeoptimization.v1.IAggregatedMetrics): google.maps.routeoptimization.v1.AggregatedMetrics;
 
                     /**
-                     * Encodes the specified AggregatedMetrics message. Does not implicitly {@link google.cloud.optimization.v1.AggregatedMetrics.verify|verify} messages.
+                     * Encodes the specified AggregatedMetrics message. Does not implicitly {@link google.maps.routeoptimization.v1.AggregatedMetrics.verify|verify} messages.
                      * @param message AggregatedMetrics message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IAggregatedMetrics, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IAggregatedMetrics, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified AggregatedMetrics message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.AggregatedMetrics.verify|verify} messages.
+                     * Encodes the specified AggregatedMetrics message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.AggregatedMetrics.verify|verify} messages.
                      * @param message AggregatedMetrics message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IAggregatedMetrics, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IAggregatedMetrics, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes an AggregatedMetrics message from the specified reader or buffer.
@@ -6680,7 +4363,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.AggregatedMetrics;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.AggregatedMetrics;
 
                     /**
                      * Decodes an AggregatedMetrics message from the specified reader or buffer, length delimited.
@@ -6689,7 +4372,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.AggregatedMetrics;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.AggregatedMetrics;
 
                     /**
                      * Verifies an AggregatedMetrics message.
@@ -6703,7 +4386,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns AggregatedMetrics
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.AggregatedMetrics;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.AggregatedMetrics;
 
                     /**
                      * Creates a plain object from an AggregatedMetrics message. Also converts values to other types if specified.
@@ -6711,7 +4394,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.AggregatedMetrics, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.AggregatedMetrics, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this AggregatedMetrics to JSON.
@@ -6727,162 +4410,17 @@ export namespace google {
                     public static getTypeUrl(typeUrlPrefix?: string): string;
                 }
 
-                /** Properties of a VehicleFullness. */
-                interface IVehicleFullness {
-
-                    /** VehicleFullness maxFullness */
-                    maxFullness?: (number|null);
-
-                    /** VehicleFullness distance */
-                    distance?: (number|null);
-
-                    /** VehicleFullness travelDuration */
-                    travelDuration?: (number|null);
-
-                    /** VehicleFullness activeDuration */
-                    activeDuration?: (number|null);
-
-                    /** VehicleFullness maxLoad */
-                    maxLoad?: (number|null);
-
-                    /** VehicleFullness activeSpan */
-                    activeSpan?: (number|null);
-                }
-
-                /** Represents a VehicleFullness. */
-                class VehicleFullness implements IVehicleFullness {
-
-                    /**
-                     * Constructs a new VehicleFullness.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IVehicleFullness);
-
-                    /** VehicleFullness maxFullness. */
-                    public maxFullness?: (number|null);
-
-                    /** VehicleFullness distance. */
-                    public distance?: (number|null);
-
-                    /** VehicleFullness travelDuration. */
-                    public travelDuration?: (number|null);
-
-                    /** VehicleFullness activeDuration. */
-                    public activeDuration?: (number|null);
-
-                    /** VehicleFullness maxLoad. */
-                    public maxLoad?: (number|null);
-
-                    /** VehicleFullness activeSpan. */
-                    public activeSpan?: (number|null);
-
-                    /** VehicleFullness _maxFullness. */
-                    public _maxFullness?: "maxFullness";
-
-                    /** VehicleFullness _distance. */
-                    public _distance?: "distance";
-
-                    /** VehicleFullness _travelDuration. */
-                    public _travelDuration?: "travelDuration";
-
-                    /** VehicleFullness _activeDuration. */
-                    public _activeDuration?: "activeDuration";
-
-                    /** VehicleFullness _maxLoad. */
-                    public _maxLoad?: "maxLoad";
-
-                    /** VehicleFullness _activeSpan. */
-                    public _activeSpan?: "activeSpan";
-
-                    /**
-                     * Creates a new VehicleFullness instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns VehicleFullness instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IVehicleFullness): google.cloud.optimization.v1.VehicleFullness;
-
-                    /**
-                     * Encodes the specified VehicleFullness message. Does not implicitly {@link google.cloud.optimization.v1.VehicleFullness.verify|verify} messages.
-                     * @param message VehicleFullness message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IVehicleFullness, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified VehicleFullness message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.VehicleFullness.verify|verify} messages.
-                     * @param message VehicleFullness message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IVehicleFullness, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a VehicleFullness message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns VehicleFullness
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.VehicleFullness;
-
-                    /**
-                     * Decodes a VehicleFullness message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns VehicleFullness
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.VehicleFullness;
-
-                    /**
-                     * Verifies a VehicleFullness message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a VehicleFullness message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns VehicleFullness
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.VehicleFullness;
-
-                    /**
-                     * Creates a plain object from a VehicleFullness message. Also converts values to other types if specified.
-                     * @param message VehicleFullness
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.VehicleFullness, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this VehicleFullness to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for VehicleFullness
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
                 /** Properties of an InjectedSolutionConstraint. */
                 interface IInjectedSolutionConstraint {
 
                     /** InjectedSolutionConstraint routes */
-                    routes?: (google.cloud.optimization.v1.IShipmentRoute[]|null);
+                    routes?: (google.maps.routeoptimization.v1.IShipmentRoute[]|null);
 
                     /** InjectedSolutionConstraint skippedShipments */
-                    skippedShipments?: (google.cloud.optimization.v1.ISkippedShipment[]|null);
+                    skippedShipments?: (google.maps.routeoptimization.v1.ISkippedShipment[]|null);
 
                     /** InjectedSolutionConstraint constraintRelaxations */
-                    constraintRelaxations?: (google.cloud.optimization.v1.InjectedSolutionConstraint.IConstraintRelaxation[]|null);
+                    constraintRelaxations?: (google.maps.routeoptimization.v1.InjectedSolutionConstraint.IConstraintRelaxation[]|null);
                 }
 
                 /** Represents an InjectedSolutionConstraint. */
@@ -6892,39 +4430,39 @@ export namespace google {
                      * Constructs a new InjectedSolutionConstraint.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IInjectedSolutionConstraint);
+                    constructor(properties?: google.maps.routeoptimization.v1.IInjectedSolutionConstraint);
 
                     /** InjectedSolutionConstraint routes. */
-                    public routes: google.cloud.optimization.v1.IShipmentRoute[];
+                    public routes: google.maps.routeoptimization.v1.IShipmentRoute[];
 
                     /** InjectedSolutionConstraint skippedShipments. */
-                    public skippedShipments: google.cloud.optimization.v1.ISkippedShipment[];
+                    public skippedShipments: google.maps.routeoptimization.v1.ISkippedShipment[];
 
                     /** InjectedSolutionConstraint constraintRelaxations. */
-                    public constraintRelaxations: google.cloud.optimization.v1.InjectedSolutionConstraint.IConstraintRelaxation[];
+                    public constraintRelaxations: google.maps.routeoptimization.v1.InjectedSolutionConstraint.IConstraintRelaxation[];
 
                     /**
                      * Creates a new InjectedSolutionConstraint instance using the specified properties.
                      * @param [properties] Properties to set
                      * @returns InjectedSolutionConstraint instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IInjectedSolutionConstraint): google.cloud.optimization.v1.InjectedSolutionConstraint;
+                    public static create(properties?: google.maps.routeoptimization.v1.IInjectedSolutionConstraint): google.maps.routeoptimization.v1.InjectedSolutionConstraint;
 
                     /**
-                     * Encodes the specified InjectedSolutionConstraint message. Does not implicitly {@link google.cloud.optimization.v1.InjectedSolutionConstraint.verify|verify} messages.
+                     * Encodes the specified InjectedSolutionConstraint message. Does not implicitly {@link google.maps.routeoptimization.v1.InjectedSolutionConstraint.verify|verify} messages.
                      * @param message InjectedSolutionConstraint message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IInjectedSolutionConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IInjectedSolutionConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified InjectedSolutionConstraint message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.InjectedSolutionConstraint.verify|verify} messages.
+                     * Encodes the specified InjectedSolutionConstraint message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.InjectedSolutionConstraint.verify|verify} messages.
                      * @param message InjectedSolutionConstraint message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IInjectedSolutionConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IInjectedSolutionConstraint, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes an InjectedSolutionConstraint message from the specified reader or buffer.
@@ -6934,7 +4472,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.InjectedSolutionConstraint;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.InjectedSolutionConstraint;
 
                     /**
                      * Decodes an InjectedSolutionConstraint message from the specified reader or buffer, length delimited.
@@ -6943,7 +4481,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.InjectedSolutionConstraint;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.InjectedSolutionConstraint;
 
                     /**
                      * Verifies an InjectedSolutionConstraint message.
@@ -6957,7 +4495,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns InjectedSolutionConstraint
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.InjectedSolutionConstraint;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.InjectedSolutionConstraint;
 
                     /**
                      * Creates a plain object from an InjectedSolutionConstraint message. Also converts values to other types if specified.
@@ -6965,7 +4503,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.InjectedSolutionConstraint, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.InjectedSolutionConstraint, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this InjectedSolutionConstraint to JSON.
@@ -6987,7 +4525,7 @@ export namespace google {
                     interface IConstraintRelaxation {
 
                         /** ConstraintRelaxation relaxations */
-                        relaxations?: (google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation[]|null);
+                        relaxations?: (google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation[]|null);
 
                         /** ConstraintRelaxation vehicleIndices */
                         vehicleIndices?: (number[]|null);
@@ -7000,10 +4538,10 @@ export namespace google {
                          * Constructs a new ConstraintRelaxation.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.InjectedSolutionConstraint.IConstraintRelaxation);
+                        constructor(properties?: google.maps.routeoptimization.v1.InjectedSolutionConstraint.IConstraintRelaxation);
 
                         /** ConstraintRelaxation relaxations. */
-                        public relaxations: google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation[];
+                        public relaxations: google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation[];
 
                         /** ConstraintRelaxation vehicleIndices. */
                         public vehicleIndices: number[];
@@ -7013,23 +4551,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns ConstraintRelaxation instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.InjectedSolutionConstraint.IConstraintRelaxation): google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation;
+                        public static create(properties?: google.maps.routeoptimization.v1.InjectedSolutionConstraint.IConstraintRelaxation): google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation;
 
                         /**
-                         * Encodes the specified ConstraintRelaxation message. Does not implicitly {@link google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.verify|verify} messages.
+                         * Encodes the specified ConstraintRelaxation message. Does not implicitly {@link google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.verify|verify} messages.
                          * @param message ConstraintRelaxation message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.InjectedSolutionConstraint.IConstraintRelaxation, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.InjectedSolutionConstraint.IConstraintRelaxation, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified ConstraintRelaxation message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.verify|verify} messages.
+                         * Encodes the specified ConstraintRelaxation message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.verify|verify} messages.
                          * @param message ConstraintRelaxation message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.InjectedSolutionConstraint.IConstraintRelaxation, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.InjectedSolutionConstraint.IConstraintRelaxation, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a ConstraintRelaxation message from the specified reader or buffer.
@@ -7039,7 +4577,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation;
 
                         /**
                          * Decodes a ConstraintRelaxation message from the specified reader or buffer, length delimited.
@@ -7048,7 +4586,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation;
 
                         /**
                          * Verifies a ConstraintRelaxation message.
@@ -7062,7 +4600,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns ConstraintRelaxation
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation;
 
                         /**
                          * Creates a plain object from a ConstraintRelaxation message. Also converts values to other types if specified.
@@ -7070,7 +4608,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this ConstraintRelaxation to JSON.
@@ -7092,7 +4630,7 @@ export namespace google {
                         interface IRelaxation {
 
                             /** Relaxation level */
-                            level?: (google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level|keyof typeof google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level|null);
+                            level?: (google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level|keyof typeof google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level|null);
 
                             /** Relaxation thresholdTime */
                             thresholdTime?: (google.protobuf.ITimestamp|null);
@@ -7108,10 +4646,10 @@ export namespace google {
                              * Constructs a new Relaxation.
                              * @param [properties] Properties to set
                              */
-                            constructor(properties?: google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation);
+                            constructor(properties?: google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation);
 
                             /** Relaxation level. */
-                            public level: (google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level|keyof typeof google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level);
+                            public level: (google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level|keyof typeof google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level);
 
                             /** Relaxation thresholdTime. */
                             public thresholdTime?: (google.protobuf.ITimestamp|null);
@@ -7124,23 +4662,23 @@ export namespace google {
                              * @param [properties] Properties to set
                              * @returns Relaxation instance
                              */
-                            public static create(properties?: google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation): google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation;
+                            public static create(properties?: google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation): google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation;
 
                             /**
-                             * Encodes the specified Relaxation message. Does not implicitly {@link google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.verify|verify} messages.
+                             * Encodes the specified Relaxation message. Does not implicitly {@link google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.verify|verify} messages.
                              * @param message Relaxation message or plain object to encode
                              * @param [writer] Writer to encode to
                              * @returns Writer
                              */
-                            public static encode(message: google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation, writer?: $protobuf.Writer): $protobuf.Writer;
+                            public static encode(message: google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation, writer?: $protobuf.Writer): $protobuf.Writer;
 
                             /**
-                             * Encodes the specified Relaxation message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.verify|verify} messages.
+                             * Encodes the specified Relaxation message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.verify|verify} messages.
                              * @param message Relaxation message or plain object to encode
                              * @param [writer] Writer to encode to
                              * @returns Writer
                              */
-                            public static encodeDelimited(message: google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation, writer?: $protobuf.Writer): $protobuf.Writer;
+                            public static encodeDelimited(message: google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.IRelaxation, writer?: $protobuf.Writer): $protobuf.Writer;
 
                             /**
                              * Decodes a Relaxation message from the specified reader or buffer.
@@ -7150,7 +4688,7 @@ export namespace google {
                              * @throws {Error} If the payload is not a reader or valid buffer
                              * @throws {$protobuf.util.ProtocolError} If required fields are missing
                              */
-                            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation;
+                            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation;
 
                             /**
                              * Decodes a Relaxation message from the specified reader or buffer, length delimited.
@@ -7159,7 +4697,7 @@ export namespace google {
                              * @throws {Error} If the payload is not a reader or valid buffer
                              * @throws {$protobuf.util.ProtocolError} If required fields are missing
                              */
-                            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation;
+                            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation;
 
                             /**
                              * Verifies a Relaxation message.
@@ -7173,7 +4711,7 @@ export namespace google {
                              * @param object Plain object
                              * @returns Relaxation
                              */
-                            public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation;
+                            public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation;
 
                             /**
                              * Creates a plain object from a Relaxation message. Also converts values to other types if specified.
@@ -7181,7 +4719,7 @@ export namespace google {
                              * @param [options] Conversion options
                              * @returns Plain object
                              */
-                            public static toObject(message: google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                            public static toObject(message: google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                             /**
                              * Converts this Relaxation to JSON.
@@ -7220,7 +4758,7 @@ export namespace google {
                     displayName?: (string|null);
 
                     /** OptimizeToursValidationError fields */
-                    fields?: (google.cloud.optimization.v1.OptimizeToursValidationError.IFieldReference[]|null);
+                    fields?: (google.maps.routeoptimization.v1.OptimizeToursValidationError.IFieldReference[]|null);
 
                     /** OptimizeToursValidationError errorMessage */
                     errorMessage?: (string|null);
@@ -7236,7 +4774,7 @@ export namespace google {
                      * Constructs a new OptimizeToursValidationError.
                      * @param [properties] Properties to set
                      */
-                    constructor(properties?: google.cloud.optimization.v1.IOptimizeToursValidationError);
+                    constructor(properties?: google.maps.routeoptimization.v1.IOptimizeToursValidationError);
 
                     /** OptimizeToursValidationError code. */
                     public code: number;
@@ -7245,7 +4783,7 @@ export namespace google {
                     public displayName: string;
 
                     /** OptimizeToursValidationError fields. */
-                    public fields: google.cloud.optimization.v1.OptimizeToursValidationError.IFieldReference[];
+                    public fields: google.maps.routeoptimization.v1.OptimizeToursValidationError.IFieldReference[];
 
                     /** OptimizeToursValidationError errorMessage. */
                     public errorMessage: string;
@@ -7258,23 +4796,23 @@ export namespace google {
                      * @param [properties] Properties to set
                      * @returns OptimizeToursValidationError instance
                      */
-                    public static create(properties?: google.cloud.optimization.v1.IOptimizeToursValidationError): google.cloud.optimization.v1.OptimizeToursValidationError;
+                    public static create(properties?: google.maps.routeoptimization.v1.IOptimizeToursValidationError): google.maps.routeoptimization.v1.OptimizeToursValidationError;
 
                     /**
-                     * Encodes the specified OptimizeToursValidationError message. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursValidationError.verify|verify} messages.
+                     * Encodes the specified OptimizeToursValidationError message. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursValidationError.verify|verify} messages.
                      * @param message OptimizeToursValidationError message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encode(message: google.cloud.optimization.v1.IOptimizeToursValidationError, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encode(message: google.maps.routeoptimization.v1.IOptimizeToursValidationError, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
-                     * Encodes the specified OptimizeToursValidationError message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursValidationError.verify|verify} messages.
+                     * Encodes the specified OptimizeToursValidationError message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursValidationError.verify|verify} messages.
                      * @param message OptimizeToursValidationError message or plain object to encode
                      * @param [writer] Writer to encode to
                      * @returns Writer
                      */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IOptimizeToursValidationError, writer?: $protobuf.Writer): $protobuf.Writer;
+                    public static encodeDelimited(message: google.maps.routeoptimization.v1.IOptimizeToursValidationError, writer?: $protobuf.Writer): $protobuf.Writer;
 
                     /**
                      * Decodes an OptimizeToursValidationError message from the specified reader or buffer.
@@ -7284,7 +4822,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.OptimizeToursValidationError;
+                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.OptimizeToursValidationError;
 
                     /**
                      * Decodes an OptimizeToursValidationError message from the specified reader or buffer, length delimited.
@@ -7293,7 +4831,7 @@ export namespace google {
                      * @throws {Error} If the payload is not a reader or valid buffer
                      * @throws {$protobuf.util.ProtocolError} If required fields are missing
                      */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.OptimizeToursValidationError;
+                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.OptimizeToursValidationError;
 
                     /**
                      * Verifies an OptimizeToursValidationError message.
@@ -7307,7 +4845,7 @@ export namespace google {
                      * @param object Plain object
                      * @returns OptimizeToursValidationError
                      */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.OptimizeToursValidationError;
+                    public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.OptimizeToursValidationError;
 
                     /**
                      * Creates a plain object from an OptimizeToursValidationError message. Also converts values to other types if specified.
@@ -7315,7 +4853,7 @@ export namespace google {
                      * @param [options] Conversion options
                      * @returns Plain object
                      */
-                    public static toObject(message: google.cloud.optimization.v1.OptimizeToursValidationError, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                    public static toObject(message: google.maps.routeoptimization.v1.OptimizeToursValidationError, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                     /**
                      * Converts this OptimizeToursValidationError to JSON.
@@ -7346,7 +4884,7 @@ export namespace google {
                         key?: (string|null);
 
                         /** FieldReference subField */
-                        subField?: (google.cloud.optimization.v1.OptimizeToursValidationError.IFieldReference|null);
+                        subField?: (google.maps.routeoptimization.v1.OptimizeToursValidationError.IFieldReference|null);
                     }
 
                     /** Represents a FieldReference. */
@@ -7356,7 +4894,7 @@ export namespace google {
                          * Constructs a new FieldReference.
                          * @param [properties] Properties to set
                          */
-                        constructor(properties?: google.cloud.optimization.v1.OptimizeToursValidationError.IFieldReference);
+                        constructor(properties?: google.maps.routeoptimization.v1.OptimizeToursValidationError.IFieldReference);
 
                         /** FieldReference name. */
                         public name: string;
@@ -7368,7 +4906,7 @@ export namespace google {
                         public key?: (string|null);
 
                         /** FieldReference subField. */
-                        public subField?: (google.cloud.optimization.v1.OptimizeToursValidationError.IFieldReference|null);
+                        public subField?: (google.maps.routeoptimization.v1.OptimizeToursValidationError.IFieldReference|null);
 
                         /** FieldReference indexOrKey. */
                         public indexOrKey?: ("index"|"key");
@@ -7378,23 +4916,23 @@ export namespace google {
                          * @param [properties] Properties to set
                          * @returns FieldReference instance
                          */
-                        public static create(properties?: google.cloud.optimization.v1.OptimizeToursValidationError.IFieldReference): google.cloud.optimization.v1.OptimizeToursValidationError.FieldReference;
+                        public static create(properties?: google.maps.routeoptimization.v1.OptimizeToursValidationError.IFieldReference): google.maps.routeoptimization.v1.OptimizeToursValidationError.FieldReference;
 
                         /**
-                         * Encodes the specified FieldReference message. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursValidationError.FieldReference.verify|verify} messages.
+                         * Encodes the specified FieldReference message. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursValidationError.FieldReference.verify|verify} messages.
                          * @param message FieldReference message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encode(message: google.cloud.optimization.v1.OptimizeToursValidationError.IFieldReference, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encode(message: google.maps.routeoptimization.v1.OptimizeToursValidationError.IFieldReference, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
-                         * Encodes the specified FieldReference message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.OptimizeToursValidationError.FieldReference.verify|verify} messages.
+                         * Encodes the specified FieldReference message, length delimited. Does not implicitly {@link google.maps.routeoptimization.v1.OptimizeToursValidationError.FieldReference.verify|verify} messages.
                          * @param message FieldReference message or plain object to encode
                          * @param [writer] Writer to encode to
                          * @returns Writer
                          */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.OptimizeToursValidationError.IFieldReference, writer?: $protobuf.Writer): $protobuf.Writer;
+                        public static encodeDelimited(message: google.maps.routeoptimization.v1.OptimizeToursValidationError.IFieldReference, writer?: $protobuf.Writer): $protobuf.Writer;
 
                         /**
                          * Decodes a FieldReference message from the specified reader or buffer.
@@ -7404,7 +4942,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.OptimizeToursValidationError.FieldReference;
+                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.maps.routeoptimization.v1.OptimizeToursValidationError.FieldReference;
 
                         /**
                          * Decodes a FieldReference message from the specified reader or buffer, length delimited.
@@ -7413,7 +4951,7 @@ export namespace google {
                          * @throws {Error} If the payload is not a reader or valid buffer
                          * @throws {$protobuf.util.ProtocolError} If required fields are missing
                          */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.OptimizeToursValidationError.FieldReference;
+                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.maps.routeoptimization.v1.OptimizeToursValidationError.FieldReference;
 
                         /**
                          * Verifies a FieldReference message.
@@ -7427,7 +4965,7 @@ export namespace google {
                          * @param object Plain object
                          * @returns FieldReference
                          */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.OptimizeToursValidationError.FieldReference;
+                        public static fromObject(object: { [k: string]: any }): google.maps.routeoptimization.v1.OptimizeToursValidationError.FieldReference;
 
                         /**
                          * Creates a plain object from a FieldReference message. Also converts values to other types if specified.
@@ -7435,7 +4973,7 @@ export namespace google {
                          * @param [options] Conversion options
                          * @returns Plain object
                          */
-                        public static toObject(message: google.cloud.optimization.v1.OptimizeToursValidationError.FieldReference, options?: $protobuf.IConversionOptions): { [k: string]: any };
+                        public static toObject(message: google.maps.routeoptimization.v1.OptimizeToursValidationError.FieldReference, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
                         /**
                          * Converts this FieldReference to JSON.
@@ -7451,4705 +4989,12 @@ export namespace google {
                         public static getTypeUrl(typeUrlPrefix?: string): string;
                     }
                 }
-
-                /** Properties of a Workspace. */
-                interface IWorkspace {
-
-                    /** Workspace name */
-                    name?: (string|null);
-
-                    /** Workspace displayName */
-                    displayName?: (string|null);
-                }
-
-                /** Represents a Workspace. */
-                class Workspace implements IWorkspace {
-
-                    /**
-                     * Constructs a new Workspace.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IWorkspace);
-
-                    /** Workspace name. */
-                    public name: string;
-
-                    /** Workspace displayName. */
-                    public displayName: string;
-
-                    /**
-                     * Creates a new Workspace instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns Workspace instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IWorkspace): google.cloud.optimization.v1.Workspace;
-
-                    /**
-                     * Encodes the specified Workspace message. Does not implicitly {@link google.cloud.optimization.v1.Workspace.verify|verify} messages.
-                     * @param message Workspace message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IWorkspace, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified Workspace message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Workspace.verify|verify} messages.
-                     * @param message Workspace message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IWorkspace, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a Workspace message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns Workspace
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Workspace;
-
-                    /**
-                     * Decodes a Workspace message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns Workspace
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Workspace;
-
-                    /**
-                     * Verifies a Workspace message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a Workspace message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns Workspace
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Workspace;
-
-                    /**
-                     * Creates a plain object from a Workspace message. Also converts values to other types if specified.
-                     * @param message Workspace
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.Workspace, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this Workspace to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for Workspace
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of an Optimizer. */
-                interface IOptimizer {
-
-                    /** Optimizer name */
-                    name?: (string|null);
-
-                    /** Optimizer displayName */
-                    displayName?: (string|null);
-
-                    /** Optimizer modelSpec */
-                    modelSpec?: (google.cloud.optimization.v1.Optimizer.IModelSpec|null);
-
-                    /** Optimizer optimizeToursSpec */
-                    optimizeToursSpec?: (google.cloud.optimization.v1.Optimizer.IOptimizeToursSpec|null);
-
-                    /** Optimizer filters */
-                    filters?: (google.cloud.optimization.v1.Optimizer.IFilters|null);
-                }
-
-                /** Represents an Optimizer. */
-                class Optimizer implements IOptimizer {
-
-                    /**
-                     * Constructs a new Optimizer.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IOptimizer);
-
-                    /** Optimizer name. */
-                    public name: string;
-
-                    /** Optimizer displayName. */
-                    public displayName: string;
-
-                    /** Optimizer modelSpec. */
-                    public modelSpec?: (google.cloud.optimization.v1.Optimizer.IModelSpec|null);
-
-                    /** Optimizer optimizeToursSpec. */
-                    public optimizeToursSpec?: (google.cloud.optimization.v1.Optimizer.IOptimizeToursSpec|null);
-
-                    /** Optimizer filters. */
-                    public filters?: (google.cloud.optimization.v1.Optimizer.IFilters|null);
-
-                    /**
-                     * Creates a new Optimizer instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns Optimizer instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IOptimizer): google.cloud.optimization.v1.Optimizer;
-
-                    /**
-                     * Encodes the specified Optimizer message. Does not implicitly {@link google.cloud.optimization.v1.Optimizer.verify|verify} messages.
-                     * @param message Optimizer message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IOptimizer, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified Optimizer message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Optimizer.verify|verify} messages.
-                     * @param message Optimizer message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IOptimizer, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes an Optimizer message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns Optimizer
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Optimizer;
-
-                    /**
-                     * Decodes an Optimizer message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns Optimizer
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Optimizer;
-
-                    /**
-                     * Verifies an Optimizer message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates an Optimizer message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns Optimizer
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Optimizer;
-
-                    /**
-                     * Creates a plain object from an Optimizer message. Also converts values to other types if specified.
-                     * @param message Optimizer
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.Optimizer, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this Optimizer to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for Optimizer
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                namespace Optimizer {
-
-                    /** Properties of a ModelSpec. */
-                    interface IModelSpec {
-
-                        /** ModelSpec globalStartTime */
-                        globalStartTime?: (google.protobuf.ITimestamp|null);
-
-                        /** ModelSpec globalEndTime */
-                        globalEndTime?: (google.protobuf.ITimestamp|null);
-
-                        /** ModelSpec globalDurationCostPerHour */
-                        globalDurationCostPerHour?: (number|null);
-
-                        /** ModelSpec maxActiveVehicles */
-                        maxActiveVehicles?: (number|null);
-
-                        /** ModelSpec transitionAttributes */
-                        transitionAttributes?: (google.cloud.optimization.v1.ITransitionAttributes[]|null);
-
-                        /** ModelSpec shipmentTypeIncompatibilities */
-                        shipmentTypeIncompatibilities?: (google.cloud.optimization.v1.IShipmentTypeIncompatibility[]|null);
-
-                        /** ModelSpec shipmentTypeRequirements */
-                        shipmentTypeRequirements?: (google.cloud.optimization.v1.IShipmentTypeRequirement[]|null);
-
-                        /** ModelSpec precedenceRules */
-                        precedenceRules?: (google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule[]|null);
-                    }
-
-                    /** Represents a ModelSpec. */
-                    class ModelSpec implements IModelSpec {
-
-                        /**
-                         * Constructs a new ModelSpec.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.Optimizer.IModelSpec);
-
-                        /** ModelSpec globalStartTime. */
-                        public globalStartTime?: (google.protobuf.ITimestamp|null);
-
-                        /** ModelSpec globalEndTime. */
-                        public globalEndTime?: (google.protobuf.ITimestamp|null);
-
-                        /** ModelSpec globalDurationCostPerHour. */
-                        public globalDurationCostPerHour: number;
-
-                        /** ModelSpec maxActiveVehicles. */
-                        public maxActiveVehicles?: (number|null);
-
-                        /** ModelSpec transitionAttributes. */
-                        public transitionAttributes: google.cloud.optimization.v1.ITransitionAttributes[];
-
-                        /** ModelSpec shipmentTypeIncompatibilities. */
-                        public shipmentTypeIncompatibilities: google.cloud.optimization.v1.IShipmentTypeIncompatibility[];
-
-                        /** ModelSpec shipmentTypeRequirements. */
-                        public shipmentTypeRequirements: google.cloud.optimization.v1.IShipmentTypeRequirement[];
-
-                        /** ModelSpec precedenceRules. */
-                        public precedenceRules: google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule[];
-
-                        /** ModelSpec _maxActiveVehicles. */
-                        public _maxActiveVehicles?: "maxActiveVehicles";
-
-                        /**
-                         * Creates a new ModelSpec instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns ModelSpec instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.Optimizer.IModelSpec): google.cloud.optimization.v1.Optimizer.ModelSpec;
-
-                        /**
-                         * Encodes the specified ModelSpec message. Does not implicitly {@link google.cloud.optimization.v1.Optimizer.ModelSpec.verify|verify} messages.
-                         * @param message ModelSpec message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.Optimizer.IModelSpec, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified ModelSpec message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Optimizer.ModelSpec.verify|verify} messages.
-                         * @param message ModelSpec message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.Optimizer.IModelSpec, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes a ModelSpec message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns ModelSpec
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Optimizer.ModelSpec;
-
-                        /**
-                         * Decodes a ModelSpec message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns ModelSpec
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Optimizer.ModelSpec;
-
-                        /**
-                         * Verifies a ModelSpec message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates a ModelSpec message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns ModelSpec
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Optimizer.ModelSpec;
-
-                        /**
-                         * Creates a plain object from a ModelSpec message. Also converts values to other types if specified.
-                         * @param message ModelSpec
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.Optimizer.ModelSpec, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this ModelSpec to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for ModelSpec
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-
-                    /** Properties of an OptimizeToursSpec. */
-                    interface IOptimizeToursSpec {
-
-                        /** OptimizeToursSpec timeout */
-                        timeout?: (google.protobuf.IDuration|null);
-
-                        /** OptimizeToursSpec searchMode */
-                        searchMode?: (google.cloud.optimization.v1.OptimizeToursRequest.SearchMode|keyof typeof google.cloud.optimization.v1.OptimizeToursRequest.SearchMode|null);
-
-                        /** OptimizeToursSpec considerRoadTraffic */
-                        considerRoadTraffic?: (boolean|null);
-
-                        /** OptimizeToursSpec populatePolylines */
-                        populatePolylines?: (boolean|null);
-
-                        /** OptimizeToursSpec populateTransitionPolylines */
-                        populateTransitionPolylines?: (boolean|null);
-
-                        /** OptimizeToursSpec allowLargeDeadlineDespiteInterruptionRisk */
-                        allowLargeDeadlineDespiteInterruptionRisk?: (boolean|null);
-
-                        /** OptimizeToursSpec useGeodesicDistances */
-                        useGeodesicDistances?: (boolean|null);
-
-                        /** OptimizeToursSpec geodesicMetersPerSecond */
-                        geodesicMetersPerSecond?: (number|null);
-                    }
-
-                    /** Represents an OptimizeToursSpec. */
-                    class OptimizeToursSpec implements IOptimizeToursSpec {
-
-                        /**
-                         * Constructs a new OptimizeToursSpec.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.Optimizer.IOptimizeToursSpec);
-
-                        /** OptimizeToursSpec timeout. */
-                        public timeout?: (google.protobuf.IDuration|null);
-
-                        /** OptimizeToursSpec searchMode. */
-                        public searchMode: (google.cloud.optimization.v1.OptimizeToursRequest.SearchMode|keyof typeof google.cloud.optimization.v1.OptimizeToursRequest.SearchMode);
-
-                        /** OptimizeToursSpec considerRoadTraffic. */
-                        public considerRoadTraffic: boolean;
-
-                        /** OptimizeToursSpec populatePolylines. */
-                        public populatePolylines: boolean;
-
-                        /** OptimizeToursSpec populateTransitionPolylines. */
-                        public populateTransitionPolylines: boolean;
-
-                        /** OptimizeToursSpec allowLargeDeadlineDespiteInterruptionRisk. */
-                        public allowLargeDeadlineDespiteInterruptionRisk: boolean;
-
-                        /** OptimizeToursSpec useGeodesicDistances. */
-                        public useGeodesicDistances: boolean;
-
-                        /** OptimizeToursSpec geodesicMetersPerSecond. */
-                        public geodesicMetersPerSecond?: (number|null);
-
-                        /** OptimizeToursSpec _geodesicMetersPerSecond. */
-                        public _geodesicMetersPerSecond?: "geodesicMetersPerSecond";
-
-                        /**
-                         * Creates a new OptimizeToursSpec instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns OptimizeToursSpec instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.Optimizer.IOptimizeToursSpec): google.cloud.optimization.v1.Optimizer.OptimizeToursSpec;
-
-                        /**
-                         * Encodes the specified OptimizeToursSpec message. Does not implicitly {@link google.cloud.optimization.v1.Optimizer.OptimizeToursSpec.verify|verify} messages.
-                         * @param message OptimizeToursSpec message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.Optimizer.IOptimizeToursSpec, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified OptimizeToursSpec message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Optimizer.OptimizeToursSpec.verify|verify} messages.
-                         * @param message OptimizeToursSpec message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.Optimizer.IOptimizeToursSpec, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes an OptimizeToursSpec message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns OptimizeToursSpec
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Optimizer.OptimizeToursSpec;
-
-                        /**
-                         * Decodes an OptimizeToursSpec message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns OptimizeToursSpec
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Optimizer.OptimizeToursSpec;
-
-                        /**
-                         * Verifies an OptimizeToursSpec message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates an OptimizeToursSpec message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns OptimizeToursSpec
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Optimizer.OptimizeToursSpec;
-
-                        /**
-                         * Creates a plain object from an OptimizeToursSpec message. Also converts values to other types if specified.
-                         * @param message OptimizeToursSpec
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.Optimizer.OptimizeToursSpec, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this OptimizeToursSpec to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for OptimizeToursSpec
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-
-                    /** Properties of a Filters. */
-                    interface IFilters {
-
-                        /** Filters shipmentFilter */
-                        shipmentFilter?: (string|null);
-
-                        /** Filters vehicleFilter */
-                        vehicleFilter?: (string|null);
-                    }
-
-                    /** Represents a Filters. */
-                    class Filters implements IFilters {
-
-                        /**
-                         * Constructs a new Filters.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.Optimizer.IFilters);
-
-                        /** Filters shipmentFilter. */
-                        public shipmentFilter: string;
-
-                        /** Filters vehicleFilter. */
-                        public vehicleFilter: string;
-
-                        /**
-                         * Creates a new Filters instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns Filters instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.Optimizer.IFilters): google.cloud.optimization.v1.Optimizer.Filters;
-
-                        /**
-                         * Encodes the specified Filters message. Does not implicitly {@link google.cloud.optimization.v1.Optimizer.Filters.verify|verify} messages.
-                         * @param message Filters message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.Optimizer.IFilters, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified Filters message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Optimizer.Filters.verify|verify} messages.
-                         * @param message Filters message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.Optimizer.IFilters, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes a Filters message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns Filters
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Optimizer.Filters;
-
-                        /**
-                         * Decodes a Filters message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns Filters
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Optimizer.Filters;
-
-                        /**
-                         * Verifies a Filters message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates a Filters message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns Filters
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Optimizer.Filters;
-
-                        /**
-                         * Creates a plain object from a Filters message. Also converts values to other types if specified.
-                         * @param message Filters
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.Optimizer.Filters, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this Filters to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for Filters
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-                }
-
-                /** Properties of a Solution. */
-                interface ISolution {
-
-                    /** Solution name */
-                    name?: (string|null);
-
-                    /** Solution displayName */
-                    displayName?: (string|null);
-
-                    /** Solution optimizationResponse */
-                    optimizationResponse?: (google.cloud.optimization.v1.IOptimizeToursResponse|null);
-
-                    /** Solution metadata */
-                    metadata?: (google.cloud.optimization.v1.Solution.ISolutionMetadata|null);
-                }
-
-                /** Represents a Solution. */
-                class Solution implements ISolution {
-
-                    /**
-                     * Constructs a new Solution.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.ISolution);
-
-                    /** Solution name. */
-                    public name: string;
-
-                    /** Solution displayName. */
-                    public displayName: string;
-
-                    /** Solution optimizationResponse. */
-                    public optimizationResponse?: (google.cloud.optimization.v1.IOptimizeToursResponse|null);
-
-                    /** Solution metadata. */
-                    public metadata?: (google.cloud.optimization.v1.Solution.ISolutionMetadata|null);
-
-                    /**
-                     * Creates a new Solution instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns Solution instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.ISolution): google.cloud.optimization.v1.Solution;
-
-                    /**
-                     * Encodes the specified Solution message. Does not implicitly {@link google.cloud.optimization.v1.Solution.verify|verify} messages.
-                     * @param message Solution message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.ISolution, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified Solution message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Solution.verify|verify} messages.
-                     * @param message Solution message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ISolution, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a Solution message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns Solution
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Solution;
-
-                    /**
-                     * Decodes a Solution message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns Solution
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Solution;
-
-                    /**
-                     * Verifies a Solution message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a Solution message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns Solution
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Solution;
-
-                    /**
-                     * Creates a plain object from a Solution message. Also converts values to other types if specified.
-                     * @param message Solution
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.Solution, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this Solution to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for Solution
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                namespace Solution {
-
-                    /** Properties of a SolutionMetadata. */
-                    interface ISolutionMetadata {
-
-                        /** SolutionMetadata optimizer */
-                        optimizer?: (string|null);
-
-                        /** SolutionMetadata optimizationStartTime */
-                        optimizationStartTime?: (google.protobuf.ITimestamp|null);
-                    }
-
-                    /** Represents a SolutionMetadata. */
-                    class SolutionMetadata implements ISolutionMetadata {
-
-                        /**
-                         * Constructs a new SolutionMetadata.
-                         * @param [properties] Properties to set
-                         */
-                        constructor(properties?: google.cloud.optimization.v1.Solution.ISolutionMetadata);
-
-                        /** SolutionMetadata optimizer. */
-                        public optimizer: string;
-
-                        /** SolutionMetadata optimizationStartTime. */
-                        public optimizationStartTime?: (google.protobuf.ITimestamp|null);
-
-                        /**
-                         * Creates a new SolutionMetadata instance using the specified properties.
-                         * @param [properties] Properties to set
-                         * @returns SolutionMetadata instance
-                         */
-                        public static create(properties?: google.cloud.optimization.v1.Solution.ISolutionMetadata): google.cloud.optimization.v1.Solution.SolutionMetadata;
-
-                        /**
-                         * Encodes the specified SolutionMetadata message. Does not implicitly {@link google.cloud.optimization.v1.Solution.SolutionMetadata.verify|verify} messages.
-                         * @param message SolutionMetadata message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encode(message: google.cloud.optimization.v1.Solution.ISolutionMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Encodes the specified SolutionMetadata message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.Solution.SolutionMetadata.verify|verify} messages.
-                         * @param message SolutionMetadata message or plain object to encode
-                         * @param [writer] Writer to encode to
-                         * @returns Writer
-                         */
-                        public static encodeDelimited(message: google.cloud.optimization.v1.Solution.ISolutionMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                        /**
-                         * Decodes a SolutionMetadata message from the specified reader or buffer.
-                         * @param reader Reader or buffer to decode from
-                         * @param [length] Message length if known beforehand
-                         * @returns SolutionMetadata
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.Solution.SolutionMetadata;
-
-                        /**
-                         * Decodes a SolutionMetadata message from the specified reader or buffer, length delimited.
-                         * @param reader Reader or buffer to decode from
-                         * @returns SolutionMetadata
-                         * @throws {Error} If the payload is not a reader or valid buffer
-                         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                         */
-                        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.Solution.SolutionMetadata;
-
-                        /**
-                         * Verifies a SolutionMetadata message.
-                         * @param message Plain object to verify
-                         * @returns `null` if valid, otherwise the reason why it is not
-                         */
-                        public static verify(message: { [k: string]: any }): (string|null);
-
-                        /**
-                         * Creates a SolutionMetadata message from a plain object. Also converts values to their respective internal types.
-                         * @param object Plain object
-                         * @returns SolutionMetadata
-                         */
-                        public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.Solution.SolutionMetadata;
-
-                        /**
-                         * Creates a plain object from a SolutionMetadata message. Also converts values to other types if specified.
-                         * @param message SolutionMetadata
-                         * @param [options] Conversion options
-                         * @returns Plain object
-                         */
-                        public static toObject(message: google.cloud.optimization.v1.Solution.SolutionMetadata, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                        /**
-                         * Converts this SolutionMetadata to JSON.
-                         * @returns JSON object
-                         */
-                        public toJSON(): { [k: string]: any };
-
-                        /**
-                         * Gets the default type url for SolutionMetadata
-                         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                         * @returns The default type url
-                         */
-                        public static getTypeUrl(typeUrlPrefix?: string): string;
-                    }
-                }
-
-                /** Represents a StatefulFleetRouting */
-                class StatefulFleetRouting extends $protobuf.rpc.Service {
-
-                    /**
-                     * Constructs a new StatefulFleetRouting service.
-                     * @param rpcImpl RPC implementation
-                     * @param [requestDelimited=false] Whether requests are length-delimited
-                     * @param [responseDelimited=false] Whether responses are length-delimited
-                     */
-                    constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
-
-                    /**
-                     * Creates new StatefulFleetRouting service using the specified rpc implementation.
-                     * @param rpcImpl RPC implementation
-                     * @param [requestDelimited=false] Whether requests are length-delimited
-                     * @param [responseDelimited=false] Whether responses are length-delimited
-                     * @returns RPC service. Useful where requests and/or responses are streamed.
-                     */
-                    public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): StatefulFleetRouting;
-
-                    /**
-                     * Calls CreateWorkspace.
-                     * @param request CreateWorkspaceRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Workspace
-                     */
-                    public createWorkspace(request: google.cloud.optimization.v1.ICreateWorkspaceRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.CreateWorkspaceCallback): void;
-
-                    /**
-                     * Calls CreateWorkspace.
-                     * @param request CreateWorkspaceRequest message or plain object
-                     * @returns Promise
-                     */
-                    public createWorkspace(request: google.cloud.optimization.v1.ICreateWorkspaceRequest): Promise<google.cloud.optimization.v1.Workspace>;
-
-                    /**
-                     * Calls ListWorkspaces.
-                     * @param request ListWorkspacesRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and ListWorkspacesResponse
-                     */
-                    public listWorkspaces(request: google.cloud.optimization.v1.IListWorkspacesRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.ListWorkspacesCallback): void;
-
-                    /**
-                     * Calls ListWorkspaces.
-                     * @param request ListWorkspacesRequest message or plain object
-                     * @returns Promise
-                     */
-                    public listWorkspaces(request: google.cloud.optimization.v1.IListWorkspacesRequest): Promise<google.cloud.optimization.v1.ListWorkspacesResponse>;
-
-                    /**
-                     * Calls UpdateWorkspace.
-                     * @param request UpdateWorkspaceRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Workspace
-                     */
-                    public updateWorkspace(request: google.cloud.optimization.v1.IUpdateWorkspaceRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.UpdateWorkspaceCallback): void;
-
-                    /**
-                     * Calls UpdateWorkspace.
-                     * @param request UpdateWorkspaceRequest message or plain object
-                     * @returns Promise
-                     */
-                    public updateWorkspace(request: google.cloud.optimization.v1.IUpdateWorkspaceRequest): Promise<google.cloud.optimization.v1.Workspace>;
-
-                    /**
-                     * Calls DeleteWorkspace.
-                     * @param request DeleteWorkspaceRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Empty
-                     */
-                    public deleteWorkspace(request: google.cloud.optimization.v1.IDeleteWorkspaceRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.DeleteWorkspaceCallback): void;
-
-                    /**
-                     * Calls DeleteWorkspace.
-                     * @param request DeleteWorkspaceRequest message or plain object
-                     * @returns Promise
-                     */
-                    public deleteWorkspace(request: google.cloud.optimization.v1.IDeleteWorkspaceRequest): Promise<google.protobuf.Empty>;
-
-                    /**
-                     * Calls CreateVehicle.
-                     * @param request CreateVehicleRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Vehicle
-                     */
-                    public createVehicle(request: google.cloud.optimization.v1.ICreateVehicleRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.CreateVehicleCallback): void;
-
-                    /**
-                     * Calls CreateVehicle.
-                     * @param request CreateVehicleRequest message or plain object
-                     * @returns Promise
-                     */
-                    public createVehicle(request: google.cloud.optimization.v1.ICreateVehicleRequest): Promise<google.cloud.optimization.v1.Vehicle>;
-
-                    /**
-                     * Calls GetVehicle.
-                     * @param request GetVehicleRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Vehicle
-                     */
-                    public getVehicle(request: google.cloud.optimization.v1.IGetVehicleRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.GetVehicleCallback): void;
-
-                    /**
-                     * Calls GetVehicle.
-                     * @param request GetVehicleRequest message or plain object
-                     * @returns Promise
-                     */
-                    public getVehicle(request: google.cloud.optimization.v1.IGetVehicleRequest): Promise<google.cloud.optimization.v1.Vehicle>;
-
-                    /**
-                     * Calls ListVehicles.
-                     * @param request ListVehiclesRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and ListVehiclesResponse
-                     */
-                    public listVehicles(request: google.cloud.optimization.v1.IListVehiclesRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.ListVehiclesCallback): void;
-
-                    /**
-                     * Calls ListVehicles.
-                     * @param request ListVehiclesRequest message or plain object
-                     * @returns Promise
-                     */
-                    public listVehicles(request: google.cloud.optimization.v1.IListVehiclesRequest): Promise<google.cloud.optimization.v1.ListVehiclesResponse>;
-
-                    /**
-                     * Calls UpdateVehicle.
-                     * @param request UpdateVehicleRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Vehicle
-                     */
-                    public updateVehicle(request: google.cloud.optimization.v1.IUpdateVehicleRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.UpdateVehicleCallback): void;
-
-                    /**
-                     * Calls UpdateVehicle.
-                     * @param request UpdateVehicleRequest message or plain object
-                     * @returns Promise
-                     */
-                    public updateVehicle(request: google.cloud.optimization.v1.IUpdateVehicleRequest): Promise<google.cloud.optimization.v1.Vehicle>;
-
-                    /**
-                     * Calls DeleteVehicle.
-                     * @param request DeleteVehicleRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Empty
-                     */
-                    public deleteVehicle(request: google.cloud.optimization.v1.IDeleteVehicleRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.DeleteVehicleCallback): void;
-
-                    /**
-                     * Calls DeleteVehicle.
-                     * @param request DeleteVehicleRequest message or plain object
-                     * @returns Promise
-                     */
-                    public deleteVehicle(request: google.cloud.optimization.v1.IDeleteVehicleRequest): Promise<google.protobuf.Empty>;
-
-                    /**
-                     * Calls CreateShipment.
-                     * @param request CreateShipmentRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Shipment
-                     */
-                    public createShipment(request: google.cloud.optimization.v1.ICreateShipmentRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.CreateShipmentCallback): void;
-
-                    /**
-                     * Calls CreateShipment.
-                     * @param request CreateShipmentRequest message or plain object
-                     * @returns Promise
-                     */
-                    public createShipment(request: google.cloud.optimization.v1.ICreateShipmentRequest): Promise<google.cloud.optimization.v1.Shipment>;
-
-                    /**
-                     * Calls GetShipment.
-                     * @param request GetShipmentRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Shipment
-                     */
-                    public getShipment(request: google.cloud.optimization.v1.IGetShipmentRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.GetShipmentCallback): void;
-
-                    /**
-                     * Calls GetShipment.
-                     * @param request GetShipmentRequest message or plain object
-                     * @returns Promise
-                     */
-                    public getShipment(request: google.cloud.optimization.v1.IGetShipmentRequest): Promise<google.cloud.optimization.v1.Shipment>;
-
-                    /**
-                     * Calls ListShipments.
-                     * @param request ListShipmentsRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and ListShipmentsResponse
-                     */
-                    public listShipments(request: google.cloud.optimization.v1.IListShipmentsRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.ListShipmentsCallback): void;
-
-                    /**
-                     * Calls ListShipments.
-                     * @param request ListShipmentsRequest message or plain object
-                     * @returns Promise
-                     */
-                    public listShipments(request: google.cloud.optimization.v1.IListShipmentsRequest): Promise<google.cloud.optimization.v1.ListShipmentsResponse>;
-
-                    /**
-                     * Calls UpdateShipment.
-                     * @param request UpdateShipmentRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Shipment
-                     */
-                    public updateShipment(request: google.cloud.optimization.v1.IUpdateShipmentRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.UpdateShipmentCallback): void;
-
-                    /**
-                     * Calls UpdateShipment.
-                     * @param request UpdateShipmentRequest message or plain object
-                     * @returns Promise
-                     */
-                    public updateShipment(request: google.cloud.optimization.v1.IUpdateShipmentRequest): Promise<google.cloud.optimization.v1.Shipment>;
-
-                    /**
-                     * Calls DeleteShipment.
-                     * @param request DeleteShipmentRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Empty
-                     */
-                    public deleteShipment(request: google.cloud.optimization.v1.IDeleteShipmentRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.DeleteShipmentCallback): void;
-
-                    /**
-                     * Calls DeleteShipment.
-                     * @param request DeleteShipmentRequest message or plain object
-                     * @returns Promise
-                     */
-                    public deleteShipment(request: google.cloud.optimization.v1.IDeleteShipmentRequest): Promise<google.protobuf.Empty>;
-
-                    /**
-                     * Calls GetSolution.
-                     * @param request GetSolutionRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Solution
-                     */
-                    public getSolution(request: google.cloud.optimization.v1.IGetSolutionRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.GetSolutionCallback): void;
-
-                    /**
-                     * Calls GetSolution.
-                     * @param request GetSolutionRequest message or plain object
-                     * @returns Promise
-                     */
-                    public getSolution(request: google.cloud.optimization.v1.IGetSolutionRequest): Promise<google.cloud.optimization.v1.Solution>;
-
-                    /**
-                     * Calls ListSolutions.
-                     * @param request ListSolutionsRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and ListSolutionsResponse
-                     */
-                    public listSolutions(request: google.cloud.optimization.v1.IListSolutionsRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.ListSolutionsCallback): void;
-
-                    /**
-                     * Calls ListSolutions.
-                     * @param request ListSolutionsRequest message or plain object
-                     * @returns Promise
-                     */
-                    public listSolutions(request: google.cloud.optimization.v1.IListSolutionsRequest): Promise<google.cloud.optimization.v1.ListSolutionsResponse>;
-
-                    /**
-                     * Calls DeleteSolution.
-                     * @param request DeleteSolutionRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Empty
-                     */
-                    public deleteSolution(request: google.cloud.optimization.v1.IDeleteSolutionRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.DeleteSolutionCallback): void;
-
-                    /**
-                     * Calls DeleteSolution.
-                     * @param request DeleteSolutionRequest message or plain object
-                     * @returns Promise
-                     */
-                    public deleteSolution(request: google.cloud.optimization.v1.IDeleteSolutionRequest): Promise<google.protobuf.Empty>;
-
-                    /**
-                     * Calls RetrieveInput.
-                     * @param request RetrieveInputRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and RetrieveInputResponse
-                     */
-                    public retrieveInput(request: google.cloud.optimization.v1.IRetrieveInputRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.RetrieveInputCallback): void;
-
-                    /**
-                     * Calls RetrieveInput.
-                     * @param request RetrieveInputRequest message or plain object
-                     * @returns Promise
-                     */
-                    public retrieveInput(request: google.cloud.optimization.v1.IRetrieveInputRequest): Promise<google.cloud.optimization.v1.RetrieveInputResponse>;
-
-                    /**
-                     * Calls CreateOptimizer.
-                     * @param request CreateOptimizerRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Optimizer
-                     */
-                    public createOptimizer(request: google.cloud.optimization.v1.ICreateOptimizerRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.CreateOptimizerCallback): void;
-
-                    /**
-                     * Calls CreateOptimizer.
-                     * @param request CreateOptimizerRequest message or plain object
-                     * @returns Promise
-                     */
-                    public createOptimizer(request: google.cloud.optimization.v1.ICreateOptimizerRequest): Promise<google.cloud.optimization.v1.Optimizer>;
-
-                    /**
-                     * Calls GetOptimizer.
-                     * @param request GetOptimizerRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Optimizer
-                     */
-                    public getOptimizer(request: google.cloud.optimization.v1.IGetOptimizerRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.GetOptimizerCallback): void;
-
-                    /**
-                     * Calls GetOptimizer.
-                     * @param request GetOptimizerRequest message or plain object
-                     * @returns Promise
-                     */
-                    public getOptimizer(request: google.cloud.optimization.v1.IGetOptimizerRequest): Promise<google.cloud.optimization.v1.Optimizer>;
-
-                    /**
-                     * Calls UpdateOptimizer.
-                     * @param request UpdateOptimizerRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Optimizer
-                     */
-                    public updateOptimizer(request: google.cloud.optimization.v1.IUpdateOptimizerRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.UpdateOptimizerCallback): void;
-
-                    /**
-                     * Calls UpdateOptimizer.
-                     * @param request UpdateOptimizerRequest message or plain object
-                     * @returns Promise
-                     */
-                    public updateOptimizer(request: google.cloud.optimization.v1.IUpdateOptimizerRequest): Promise<google.cloud.optimization.v1.Optimizer>;
-
-                    /**
-                     * Calls DeleteOptimizer.
-                     * @param request DeleteOptimizerRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Empty
-                     */
-                    public deleteOptimizer(request: google.cloud.optimization.v1.IDeleteOptimizerRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.DeleteOptimizerCallback): void;
-
-                    /**
-                     * Calls DeleteOptimizer.
-                     * @param request DeleteOptimizerRequest message or plain object
-                     * @returns Promise
-                     */
-                    public deleteOptimizer(request: google.cloud.optimization.v1.IDeleteOptimizerRequest): Promise<google.protobuf.Empty>;
-
-                    /**
-                     * Calls ListOptimizers.
-                     * @param request ListOptimizersRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and ListOptimizersResponse
-                     */
-                    public listOptimizers(request: google.cloud.optimization.v1.IListOptimizersRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.ListOptimizersCallback): void;
-
-                    /**
-                     * Calls ListOptimizers.
-                     * @param request ListOptimizersRequest message or plain object
-                     * @returns Promise
-                     */
-                    public listOptimizers(request: google.cloud.optimization.v1.IListOptimizersRequest): Promise<google.cloud.optimization.v1.ListOptimizersResponse>;
-
-                    /**
-                     * Calls RunOptimizer.
-                     * @param request RunOptimizerRequest message or plain object
-                     * @param callback Node-style callback called with the error, if any, and Operation
-                     */
-                    public runOptimizer(request: google.cloud.optimization.v1.IRunOptimizerRequest, callback: google.cloud.optimization.v1.StatefulFleetRouting.RunOptimizerCallback): void;
-
-                    /**
-                     * Calls RunOptimizer.
-                     * @param request RunOptimizerRequest message or plain object
-                     * @returns Promise
-                     */
-                    public runOptimizer(request: google.cloud.optimization.v1.IRunOptimizerRequest): Promise<google.longrunning.Operation>;
-                }
-
-                namespace StatefulFleetRouting {
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|createWorkspace}.
-                     * @param error Error, if any
-                     * @param [response] Workspace
-                     */
-                    type CreateWorkspaceCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Workspace) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|listWorkspaces}.
-                     * @param error Error, if any
-                     * @param [response] ListWorkspacesResponse
-                     */
-                    type ListWorkspacesCallback = (error: (Error|null), response?: google.cloud.optimization.v1.ListWorkspacesResponse) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|updateWorkspace}.
-                     * @param error Error, if any
-                     * @param [response] Workspace
-                     */
-                    type UpdateWorkspaceCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Workspace) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|deleteWorkspace}.
-                     * @param error Error, if any
-                     * @param [response] Empty
-                     */
-                    type DeleteWorkspaceCallback = (error: (Error|null), response?: google.protobuf.Empty) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|createVehicle}.
-                     * @param error Error, if any
-                     * @param [response] Vehicle
-                     */
-                    type CreateVehicleCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Vehicle) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|getVehicle}.
-                     * @param error Error, if any
-                     * @param [response] Vehicle
-                     */
-                    type GetVehicleCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Vehicle) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|listVehicles}.
-                     * @param error Error, if any
-                     * @param [response] ListVehiclesResponse
-                     */
-                    type ListVehiclesCallback = (error: (Error|null), response?: google.cloud.optimization.v1.ListVehiclesResponse) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|updateVehicle}.
-                     * @param error Error, if any
-                     * @param [response] Vehicle
-                     */
-                    type UpdateVehicleCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Vehicle) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|deleteVehicle}.
-                     * @param error Error, if any
-                     * @param [response] Empty
-                     */
-                    type DeleteVehicleCallback = (error: (Error|null), response?: google.protobuf.Empty) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|createShipment}.
-                     * @param error Error, if any
-                     * @param [response] Shipment
-                     */
-                    type CreateShipmentCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Shipment) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|getShipment}.
-                     * @param error Error, if any
-                     * @param [response] Shipment
-                     */
-                    type GetShipmentCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Shipment) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|listShipments}.
-                     * @param error Error, if any
-                     * @param [response] ListShipmentsResponse
-                     */
-                    type ListShipmentsCallback = (error: (Error|null), response?: google.cloud.optimization.v1.ListShipmentsResponse) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|updateShipment}.
-                     * @param error Error, if any
-                     * @param [response] Shipment
-                     */
-                    type UpdateShipmentCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Shipment) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|deleteShipment}.
-                     * @param error Error, if any
-                     * @param [response] Empty
-                     */
-                    type DeleteShipmentCallback = (error: (Error|null), response?: google.protobuf.Empty) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|getSolution}.
-                     * @param error Error, if any
-                     * @param [response] Solution
-                     */
-                    type GetSolutionCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Solution) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|listSolutions}.
-                     * @param error Error, if any
-                     * @param [response] ListSolutionsResponse
-                     */
-                    type ListSolutionsCallback = (error: (Error|null), response?: google.cloud.optimization.v1.ListSolutionsResponse) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|deleteSolution}.
-                     * @param error Error, if any
-                     * @param [response] Empty
-                     */
-                    type DeleteSolutionCallback = (error: (Error|null), response?: google.protobuf.Empty) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|retrieveInput}.
-                     * @param error Error, if any
-                     * @param [response] RetrieveInputResponse
-                     */
-                    type RetrieveInputCallback = (error: (Error|null), response?: google.cloud.optimization.v1.RetrieveInputResponse) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|createOptimizer}.
-                     * @param error Error, if any
-                     * @param [response] Optimizer
-                     */
-                    type CreateOptimizerCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Optimizer) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|getOptimizer}.
-                     * @param error Error, if any
-                     * @param [response] Optimizer
-                     */
-                    type GetOptimizerCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Optimizer) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|updateOptimizer}.
-                     * @param error Error, if any
-                     * @param [response] Optimizer
-                     */
-                    type UpdateOptimizerCallback = (error: (Error|null), response?: google.cloud.optimization.v1.Optimizer) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|deleteOptimizer}.
-                     * @param error Error, if any
-                     * @param [response] Empty
-                     */
-                    type DeleteOptimizerCallback = (error: (Error|null), response?: google.protobuf.Empty) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|listOptimizers}.
-                     * @param error Error, if any
-                     * @param [response] ListOptimizersResponse
-                     */
-                    type ListOptimizersCallback = (error: (Error|null), response?: google.cloud.optimization.v1.ListOptimizersResponse) => void;
-
-                    /**
-                     * Callback as used by {@link google.cloud.optimization.v1.StatefulFleetRouting|runOptimizer}.
-                     * @param error Error, if any
-                     * @param [response] Operation
-                     */
-                    type RunOptimizerCallback = (error: (Error|null), response?: google.longrunning.Operation) => void;
-                }
-
-                /** Properties of a CreateWorkspaceRequest. */
-                interface ICreateWorkspaceRequest {
-
-                    /** CreateWorkspaceRequest parent */
-                    parent?: (string|null);
-
-                    /** CreateWorkspaceRequest workspace */
-                    workspace?: (google.cloud.optimization.v1.IWorkspace|null);
-
-                    /** CreateWorkspaceRequest workspaceId */
-                    workspaceId?: (string|null);
-                }
-
-                /** Represents a CreateWorkspaceRequest. */
-                class CreateWorkspaceRequest implements ICreateWorkspaceRequest {
-
-                    /**
-                     * Constructs a new CreateWorkspaceRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.ICreateWorkspaceRequest);
-
-                    /** CreateWorkspaceRequest parent. */
-                    public parent: string;
-
-                    /** CreateWorkspaceRequest workspace. */
-                    public workspace?: (google.cloud.optimization.v1.IWorkspace|null);
-
-                    /** CreateWorkspaceRequest workspaceId. */
-                    public workspaceId: string;
-
-                    /**
-                     * Creates a new CreateWorkspaceRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns CreateWorkspaceRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.ICreateWorkspaceRequest): google.cloud.optimization.v1.CreateWorkspaceRequest;
-
-                    /**
-                     * Encodes the specified CreateWorkspaceRequest message. Does not implicitly {@link google.cloud.optimization.v1.CreateWorkspaceRequest.verify|verify} messages.
-                     * @param message CreateWorkspaceRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.ICreateWorkspaceRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified CreateWorkspaceRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.CreateWorkspaceRequest.verify|verify} messages.
-                     * @param message CreateWorkspaceRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ICreateWorkspaceRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a CreateWorkspaceRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns CreateWorkspaceRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.CreateWorkspaceRequest;
-
-                    /**
-                     * Decodes a CreateWorkspaceRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns CreateWorkspaceRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.CreateWorkspaceRequest;
-
-                    /**
-                     * Verifies a CreateWorkspaceRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a CreateWorkspaceRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns CreateWorkspaceRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.CreateWorkspaceRequest;
-
-                    /**
-                     * Creates a plain object from a CreateWorkspaceRequest message. Also converts values to other types if specified.
-                     * @param message CreateWorkspaceRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.CreateWorkspaceRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this CreateWorkspaceRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for CreateWorkspaceRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListWorkspacesRequest. */
-                interface IListWorkspacesRequest {
-
-                    /** ListWorkspacesRequest parent */
-                    parent?: (string|null);
-
-                    /** ListWorkspacesRequest pageSize */
-                    pageSize?: (number|null);
-
-                    /** ListWorkspacesRequest pageToken */
-                    pageToken?: (string|null);
-
-                    /** ListWorkspacesRequest filter */
-                    filter?: (string|null);
-                }
-
-                /** Represents a ListWorkspacesRequest. */
-                class ListWorkspacesRequest implements IListWorkspacesRequest {
-
-                    /**
-                     * Constructs a new ListWorkspacesRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListWorkspacesRequest);
-
-                    /** ListWorkspacesRequest parent. */
-                    public parent: string;
-
-                    /** ListWorkspacesRequest pageSize. */
-                    public pageSize: number;
-
-                    /** ListWorkspacesRequest pageToken. */
-                    public pageToken: string;
-
-                    /** ListWorkspacesRequest filter. */
-                    public filter: string;
-
-                    /**
-                     * Creates a new ListWorkspacesRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListWorkspacesRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListWorkspacesRequest): google.cloud.optimization.v1.ListWorkspacesRequest;
-
-                    /**
-                     * Encodes the specified ListWorkspacesRequest message. Does not implicitly {@link google.cloud.optimization.v1.ListWorkspacesRequest.verify|verify} messages.
-                     * @param message ListWorkspacesRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListWorkspacesRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListWorkspacesRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListWorkspacesRequest.verify|verify} messages.
-                     * @param message ListWorkspacesRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListWorkspacesRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListWorkspacesRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListWorkspacesRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListWorkspacesRequest;
-
-                    /**
-                     * Decodes a ListWorkspacesRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListWorkspacesRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListWorkspacesRequest;
-
-                    /**
-                     * Verifies a ListWorkspacesRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListWorkspacesRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListWorkspacesRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListWorkspacesRequest;
-
-                    /**
-                     * Creates a plain object from a ListWorkspacesRequest message. Also converts values to other types if specified.
-                     * @param message ListWorkspacesRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListWorkspacesRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListWorkspacesRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListWorkspacesRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListWorkspacesResponse. */
-                interface IListWorkspacesResponse {
-
-                    /** ListWorkspacesResponse workspaces */
-                    workspaces?: (google.cloud.optimization.v1.IWorkspace[]|null);
-
-                    /** ListWorkspacesResponse nextPageToken */
-                    nextPageToken?: (string|null);
-                }
-
-                /** Represents a ListWorkspacesResponse. */
-                class ListWorkspacesResponse implements IListWorkspacesResponse {
-
-                    /**
-                     * Constructs a new ListWorkspacesResponse.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListWorkspacesResponse);
-
-                    /** ListWorkspacesResponse workspaces. */
-                    public workspaces: google.cloud.optimization.v1.IWorkspace[];
-
-                    /** ListWorkspacesResponse nextPageToken. */
-                    public nextPageToken: string;
-
-                    /**
-                     * Creates a new ListWorkspacesResponse instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListWorkspacesResponse instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListWorkspacesResponse): google.cloud.optimization.v1.ListWorkspacesResponse;
-
-                    /**
-                     * Encodes the specified ListWorkspacesResponse message. Does not implicitly {@link google.cloud.optimization.v1.ListWorkspacesResponse.verify|verify} messages.
-                     * @param message ListWorkspacesResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListWorkspacesResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListWorkspacesResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListWorkspacesResponse.verify|verify} messages.
-                     * @param message ListWorkspacesResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListWorkspacesResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListWorkspacesResponse message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListWorkspacesResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListWorkspacesResponse;
-
-                    /**
-                     * Decodes a ListWorkspacesResponse message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListWorkspacesResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListWorkspacesResponse;
-
-                    /**
-                     * Verifies a ListWorkspacesResponse message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListWorkspacesResponse message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListWorkspacesResponse
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListWorkspacesResponse;
-
-                    /**
-                     * Creates a plain object from a ListWorkspacesResponse message. Also converts values to other types if specified.
-                     * @param message ListWorkspacesResponse
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListWorkspacesResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListWorkspacesResponse to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListWorkspacesResponse
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of an UpdateWorkspaceRequest. */
-                interface IUpdateWorkspaceRequest {
-
-                    /** UpdateWorkspaceRequest workspace */
-                    workspace?: (google.cloud.optimization.v1.IWorkspace|null);
-
-                    /** UpdateWorkspaceRequest updateMask */
-                    updateMask?: (google.protobuf.IFieldMask|null);
-                }
-
-                /** Represents an UpdateWorkspaceRequest. */
-                class UpdateWorkspaceRequest implements IUpdateWorkspaceRequest {
-
-                    /**
-                     * Constructs a new UpdateWorkspaceRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IUpdateWorkspaceRequest);
-
-                    /** UpdateWorkspaceRequest workspace. */
-                    public workspace?: (google.cloud.optimization.v1.IWorkspace|null);
-
-                    /** UpdateWorkspaceRequest updateMask. */
-                    public updateMask?: (google.protobuf.IFieldMask|null);
-
-                    /**
-                     * Creates a new UpdateWorkspaceRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns UpdateWorkspaceRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IUpdateWorkspaceRequest): google.cloud.optimization.v1.UpdateWorkspaceRequest;
-
-                    /**
-                     * Encodes the specified UpdateWorkspaceRequest message. Does not implicitly {@link google.cloud.optimization.v1.UpdateWorkspaceRequest.verify|verify} messages.
-                     * @param message UpdateWorkspaceRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IUpdateWorkspaceRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified UpdateWorkspaceRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.UpdateWorkspaceRequest.verify|verify} messages.
-                     * @param message UpdateWorkspaceRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IUpdateWorkspaceRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes an UpdateWorkspaceRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns UpdateWorkspaceRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.UpdateWorkspaceRequest;
-
-                    /**
-                     * Decodes an UpdateWorkspaceRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns UpdateWorkspaceRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.UpdateWorkspaceRequest;
-
-                    /**
-                     * Verifies an UpdateWorkspaceRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates an UpdateWorkspaceRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns UpdateWorkspaceRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.UpdateWorkspaceRequest;
-
-                    /**
-                     * Creates a plain object from an UpdateWorkspaceRequest message. Also converts values to other types if specified.
-                     * @param message UpdateWorkspaceRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.UpdateWorkspaceRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this UpdateWorkspaceRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for UpdateWorkspaceRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a DeleteWorkspaceRequest. */
-                interface IDeleteWorkspaceRequest {
-
-                    /** DeleteWorkspaceRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a DeleteWorkspaceRequest. */
-                class DeleteWorkspaceRequest implements IDeleteWorkspaceRequest {
-
-                    /**
-                     * Constructs a new DeleteWorkspaceRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IDeleteWorkspaceRequest);
-
-                    /** DeleteWorkspaceRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new DeleteWorkspaceRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns DeleteWorkspaceRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IDeleteWorkspaceRequest): google.cloud.optimization.v1.DeleteWorkspaceRequest;
-
-                    /**
-                     * Encodes the specified DeleteWorkspaceRequest message. Does not implicitly {@link google.cloud.optimization.v1.DeleteWorkspaceRequest.verify|verify} messages.
-                     * @param message DeleteWorkspaceRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IDeleteWorkspaceRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified DeleteWorkspaceRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.DeleteWorkspaceRequest.verify|verify} messages.
-                     * @param message DeleteWorkspaceRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IDeleteWorkspaceRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a DeleteWorkspaceRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns DeleteWorkspaceRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.DeleteWorkspaceRequest;
-
-                    /**
-                     * Decodes a DeleteWorkspaceRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns DeleteWorkspaceRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.DeleteWorkspaceRequest;
-
-                    /**
-                     * Verifies a DeleteWorkspaceRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a DeleteWorkspaceRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns DeleteWorkspaceRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.DeleteWorkspaceRequest;
-
-                    /**
-                     * Creates a plain object from a DeleteWorkspaceRequest message. Also converts values to other types if specified.
-                     * @param message DeleteWorkspaceRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.DeleteWorkspaceRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this DeleteWorkspaceRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for DeleteWorkspaceRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a CreateVehicleRequest. */
-                interface ICreateVehicleRequest {
-
-                    /** CreateVehicleRequest parent */
-                    parent?: (string|null);
-
-                    /** CreateVehicleRequest vehicle */
-                    vehicle?: (google.cloud.optimization.v1.IVehicle|null);
-
-                    /** CreateVehicleRequest vehicleId */
-                    vehicleId?: (string|null);
-                }
-
-                /** Represents a CreateVehicleRequest. */
-                class CreateVehicleRequest implements ICreateVehicleRequest {
-
-                    /**
-                     * Constructs a new CreateVehicleRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.ICreateVehicleRequest);
-
-                    /** CreateVehicleRequest parent. */
-                    public parent: string;
-
-                    /** CreateVehicleRequest vehicle. */
-                    public vehicle?: (google.cloud.optimization.v1.IVehicle|null);
-
-                    /** CreateVehicleRequest vehicleId. */
-                    public vehicleId: string;
-
-                    /**
-                     * Creates a new CreateVehicleRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns CreateVehicleRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.ICreateVehicleRequest): google.cloud.optimization.v1.CreateVehicleRequest;
-
-                    /**
-                     * Encodes the specified CreateVehicleRequest message. Does not implicitly {@link google.cloud.optimization.v1.CreateVehicleRequest.verify|verify} messages.
-                     * @param message CreateVehicleRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.ICreateVehicleRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified CreateVehicleRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.CreateVehicleRequest.verify|verify} messages.
-                     * @param message CreateVehicleRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ICreateVehicleRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a CreateVehicleRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns CreateVehicleRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.CreateVehicleRequest;
-
-                    /**
-                     * Decodes a CreateVehicleRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns CreateVehicleRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.CreateVehicleRequest;
-
-                    /**
-                     * Verifies a CreateVehicleRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a CreateVehicleRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns CreateVehicleRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.CreateVehicleRequest;
-
-                    /**
-                     * Creates a plain object from a CreateVehicleRequest message. Also converts values to other types if specified.
-                     * @param message CreateVehicleRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.CreateVehicleRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this CreateVehicleRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for CreateVehicleRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a GetVehicleRequest. */
-                interface IGetVehicleRequest {
-
-                    /** GetVehicleRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a GetVehicleRequest. */
-                class GetVehicleRequest implements IGetVehicleRequest {
-
-                    /**
-                     * Constructs a new GetVehicleRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IGetVehicleRequest);
-
-                    /** GetVehicleRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new GetVehicleRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns GetVehicleRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IGetVehicleRequest): google.cloud.optimization.v1.GetVehicleRequest;
-
-                    /**
-                     * Encodes the specified GetVehicleRequest message. Does not implicitly {@link google.cloud.optimization.v1.GetVehicleRequest.verify|verify} messages.
-                     * @param message GetVehicleRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IGetVehicleRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified GetVehicleRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.GetVehicleRequest.verify|verify} messages.
-                     * @param message GetVehicleRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IGetVehicleRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a GetVehicleRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns GetVehicleRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.GetVehicleRequest;
-
-                    /**
-                     * Decodes a GetVehicleRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns GetVehicleRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.GetVehicleRequest;
-
-                    /**
-                     * Verifies a GetVehicleRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a GetVehicleRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns GetVehicleRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.GetVehicleRequest;
-
-                    /**
-                     * Creates a plain object from a GetVehicleRequest message. Also converts values to other types if specified.
-                     * @param message GetVehicleRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.GetVehicleRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this GetVehicleRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for GetVehicleRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListVehiclesRequest. */
-                interface IListVehiclesRequest {
-
-                    /** ListVehiclesRequest parent */
-                    parent?: (string|null);
-
-                    /** ListVehiclesRequest pageSize */
-                    pageSize?: (number|null);
-
-                    /** ListVehiclesRequest pageToken */
-                    pageToken?: (string|null);
-
-                    /** ListVehiclesRequest filter */
-                    filter?: (string|null);
-                }
-
-                /** Represents a ListVehiclesRequest. */
-                class ListVehiclesRequest implements IListVehiclesRequest {
-
-                    /**
-                     * Constructs a new ListVehiclesRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListVehiclesRequest);
-
-                    /** ListVehiclesRequest parent. */
-                    public parent: string;
-
-                    /** ListVehiclesRequest pageSize. */
-                    public pageSize: number;
-
-                    /** ListVehiclesRequest pageToken. */
-                    public pageToken: string;
-
-                    /** ListVehiclesRequest filter. */
-                    public filter: string;
-
-                    /**
-                     * Creates a new ListVehiclesRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListVehiclesRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListVehiclesRequest): google.cloud.optimization.v1.ListVehiclesRequest;
-
-                    /**
-                     * Encodes the specified ListVehiclesRequest message. Does not implicitly {@link google.cloud.optimization.v1.ListVehiclesRequest.verify|verify} messages.
-                     * @param message ListVehiclesRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListVehiclesRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListVehiclesRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListVehiclesRequest.verify|verify} messages.
-                     * @param message ListVehiclesRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListVehiclesRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListVehiclesRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListVehiclesRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListVehiclesRequest;
-
-                    /**
-                     * Decodes a ListVehiclesRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListVehiclesRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListVehiclesRequest;
-
-                    /**
-                     * Verifies a ListVehiclesRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListVehiclesRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListVehiclesRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListVehiclesRequest;
-
-                    /**
-                     * Creates a plain object from a ListVehiclesRequest message. Also converts values to other types if specified.
-                     * @param message ListVehiclesRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListVehiclesRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListVehiclesRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListVehiclesRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListVehiclesResponse. */
-                interface IListVehiclesResponse {
-
-                    /** ListVehiclesResponse vehicles */
-                    vehicles?: (google.cloud.optimization.v1.IVehicle[]|null);
-
-                    /** ListVehiclesResponse nextPageToken */
-                    nextPageToken?: (string|null);
-                }
-
-                /** Represents a ListVehiclesResponse. */
-                class ListVehiclesResponse implements IListVehiclesResponse {
-
-                    /**
-                     * Constructs a new ListVehiclesResponse.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListVehiclesResponse);
-
-                    /** ListVehiclesResponse vehicles. */
-                    public vehicles: google.cloud.optimization.v1.IVehicle[];
-
-                    /** ListVehiclesResponse nextPageToken. */
-                    public nextPageToken: string;
-
-                    /**
-                     * Creates a new ListVehiclesResponse instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListVehiclesResponse instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListVehiclesResponse): google.cloud.optimization.v1.ListVehiclesResponse;
-
-                    /**
-                     * Encodes the specified ListVehiclesResponse message. Does not implicitly {@link google.cloud.optimization.v1.ListVehiclesResponse.verify|verify} messages.
-                     * @param message ListVehiclesResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListVehiclesResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListVehiclesResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListVehiclesResponse.verify|verify} messages.
-                     * @param message ListVehiclesResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListVehiclesResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListVehiclesResponse message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListVehiclesResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListVehiclesResponse;
-
-                    /**
-                     * Decodes a ListVehiclesResponse message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListVehiclesResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListVehiclesResponse;
-
-                    /**
-                     * Verifies a ListVehiclesResponse message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListVehiclesResponse message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListVehiclesResponse
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListVehiclesResponse;
-
-                    /**
-                     * Creates a plain object from a ListVehiclesResponse message. Also converts values to other types if specified.
-                     * @param message ListVehiclesResponse
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListVehiclesResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListVehiclesResponse to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListVehiclesResponse
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of an UpdateVehicleRequest. */
-                interface IUpdateVehicleRequest {
-
-                    /** UpdateVehicleRequest vehicle */
-                    vehicle?: (google.cloud.optimization.v1.IVehicle|null);
-
-                    /** UpdateVehicleRequest updateMask */
-                    updateMask?: (google.protobuf.IFieldMask|null);
-                }
-
-                /** Represents an UpdateVehicleRequest. */
-                class UpdateVehicleRequest implements IUpdateVehicleRequest {
-
-                    /**
-                     * Constructs a new UpdateVehicleRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IUpdateVehicleRequest);
-
-                    /** UpdateVehicleRequest vehicle. */
-                    public vehicle?: (google.cloud.optimization.v1.IVehicle|null);
-
-                    /** UpdateVehicleRequest updateMask. */
-                    public updateMask?: (google.protobuf.IFieldMask|null);
-
-                    /**
-                     * Creates a new UpdateVehicleRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns UpdateVehicleRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IUpdateVehicleRequest): google.cloud.optimization.v1.UpdateVehicleRequest;
-
-                    /**
-                     * Encodes the specified UpdateVehicleRequest message. Does not implicitly {@link google.cloud.optimization.v1.UpdateVehicleRequest.verify|verify} messages.
-                     * @param message UpdateVehicleRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IUpdateVehicleRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified UpdateVehicleRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.UpdateVehicleRequest.verify|verify} messages.
-                     * @param message UpdateVehicleRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IUpdateVehicleRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes an UpdateVehicleRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns UpdateVehicleRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.UpdateVehicleRequest;
-
-                    /**
-                     * Decodes an UpdateVehicleRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns UpdateVehicleRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.UpdateVehicleRequest;
-
-                    /**
-                     * Verifies an UpdateVehicleRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates an UpdateVehicleRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns UpdateVehicleRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.UpdateVehicleRequest;
-
-                    /**
-                     * Creates a plain object from an UpdateVehicleRequest message. Also converts values to other types if specified.
-                     * @param message UpdateVehicleRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.UpdateVehicleRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this UpdateVehicleRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for UpdateVehicleRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a DeleteVehicleRequest. */
-                interface IDeleteVehicleRequest {
-
-                    /** DeleteVehicleRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a DeleteVehicleRequest. */
-                class DeleteVehicleRequest implements IDeleteVehicleRequest {
-
-                    /**
-                     * Constructs a new DeleteVehicleRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IDeleteVehicleRequest);
-
-                    /** DeleteVehicleRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new DeleteVehicleRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns DeleteVehicleRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IDeleteVehicleRequest): google.cloud.optimization.v1.DeleteVehicleRequest;
-
-                    /**
-                     * Encodes the specified DeleteVehicleRequest message. Does not implicitly {@link google.cloud.optimization.v1.DeleteVehicleRequest.verify|verify} messages.
-                     * @param message DeleteVehicleRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IDeleteVehicleRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified DeleteVehicleRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.DeleteVehicleRequest.verify|verify} messages.
-                     * @param message DeleteVehicleRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IDeleteVehicleRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a DeleteVehicleRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns DeleteVehicleRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.DeleteVehicleRequest;
-
-                    /**
-                     * Decodes a DeleteVehicleRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns DeleteVehicleRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.DeleteVehicleRequest;
-
-                    /**
-                     * Verifies a DeleteVehicleRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a DeleteVehicleRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns DeleteVehicleRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.DeleteVehicleRequest;
-
-                    /**
-                     * Creates a plain object from a DeleteVehicleRequest message. Also converts values to other types if specified.
-                     * @param message DeleteVehicleRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.DeleteVehicleRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this DeleteVehicleRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for DeleteVehicleRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a CreateShipmentRequest. */
-                interface ICreateShipmentRequest {
-
-                    /** CreateShipmentRequest parent */
-                    parent?: (string|null);
-
-                    /** CreateShipmentRequest shipment */
-                    shipment?: (google.cloud.optimization.v1.IShipment|null);
-
-                    /** CreateShipmentRequest shipmentId */
-                    shipmentId?: (string|null);
-                }
-
-                /** Represents a CreateShipmentRequest. */
-                class CreateShipmentRequest implements ICreateShipmentRequest {
-
-                    /**
-                     * Constructs a new CreateShipmentRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.ICreateShipmentRequest);
-
-                    /** CreateShipmentRequest parent. */
-                    public parent: string;
-
-                    /** CreateShipmentRequest shipment. */
-                    public shipment?: (google.cloud.optimization.v1.IShipment|null);
-
-                    /** CreateShipmentRequest shipmentId. */
-                    public shipmentId: string;
-
-                    /**
-                     * Creates a new CreateShipmentRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns CreateShipmentRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.ICreateShipmentRequest): google.cloud.optimization.v1.CreateShipmentRequest;
-
-                    /**
-                     * Encodes the specified CreateShipmentRequest message. Does not implicitly {@link google.cloud.optimization.v1.CreateShipmentRequest.verify|verify} messages.
-                     * @param message CreateShipmentRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.ICreateShipmentRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified CreateShipmentRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.CreateShipmentRequest.verify|verify} messages.
-                     * @param message CreateShipmentRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ICreateShipmentRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a CreateShipmentRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns CreateShipmentRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.CreateShipmentRequest;
-
-                    /**
-                     * Decodes a CreateShipmentRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns CreateShipmentRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.CreateShipmentRequest;
-
-                    /**
-                     * Verifies a CreateShipmentRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a CreateShipmentRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns CreateShipmentRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.CreateShipmentRequest;
-
-                    /**
-                     * Creates a plain object from a CreateShipmentRequest message. Also converts values to other types if specified.
-                     * @param message CreateShipmentRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.CreateShipmentRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this CreateShipmentRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for CreateShipmentRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a GetShipmentRequest. */
-                interface IGetShipmentRequest {
-
-                    /** GetShipmentRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a GetShipmentRequest. */
-                class GetShipmentRequest implements IGetShipmentRequest {
-
-                    /**
-                     * Constructs a new GetShipmentRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IGetShipmentRequest);
-
-                    /** GetShipmentRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new GetShipmentRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns GetShipmentRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IGetShipmentRequest): google.cloud.optimization.v1.GetShipmentRequest;
-
-                    /**
-                     * Encodes the specified GetShipmentRequest message. Does not implicitly {@link google.cloud.optimization.v1.GetShipmentRequest.verify|verify} messages.
-                     * @param message GetShipmentRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IGetShipmentRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified GetShipmentRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.GetShipmentRequest.verify|verify} messages.
-                     * @param message GetShipmentRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IGetShipmentRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a GetShipmentRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns GetShipmentRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.GetShipmentRequest;
-
-                    /**
-                     * Decodes a GetShipmentRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns GetShipmentRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.GetShipmentRequest;
-
-                    /**
-                     * Verifies a GetShipmentRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a GetShipmentRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns GetShipmentRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.GetShipmentRequest;
-
-                    /**
-                     * Creates a plain object from a GetShipmentRequest message. Also converts values to other types if specified.
-                     * @param message GetShipmentRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.GetShipmentRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this GetShipmentRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for GetShipmentRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListShipmentsRequest. */
-                interface IListShipmentsRequest {
-
-                    /** ListShipmentsRequest parent */
-                    parent?: (string|null);
-
-                    /** ListShipmentsRequest pageSize */
-                    pageSize?: (number|null);
-
-                    /** ListShipmentsRequest pageToken */
-                    pageToken?: (string|null);
-
-                    /** ListShipmentsRequest filter */
-                    filter?: (string|null);
-                }
-
-                /** Represents a ListShipmentsRequest. */
-                class ListShipmentsRequest implements IListShipmentsRequest {
-
-                    /**
-                     * Constructs a new ListShipmentsRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListShipmentsRequest);
-
-                    /** ListShipmentsRequest parent. */
-                    public parent: string;
-
-                    /** ListShipmentsRequest pageSize. */
-                    public pageSize: number;
-
-                    /** ListShipmentsRequest pageToken. */
-                    public pageToken: string;
-
-                    /** ListShipmentsRequest filter. */
-                    public filter: string;
-
-                    /**
-                     * Creates a new ListShipmentsRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListShipmentsRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListShipmentsRequest): google.cloud.optimization.v1.ListShipmentsRequest;
-
-                    /**
-                     * Encodes the specified ListShipmentsRequest message. Does not implicitly {@link google.cloud.optimization.v1.ListShipmentsRequest.verify|verify} messages.
-                     * @param message ListShipmentsRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListShipmentsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListShipmentsRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListShipmentsRequest.verify|verify} messages.
-                     * @param message ListShipmentsRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListShipmentsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListShipmentsRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListShipmentsRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListShipmentsRequest;
-
-                    /**
-                     * Decodes a ListShipmentsRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListShipmentsRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListShipmentsRequest;
-
-                    /**
-                     * Verifies a ListShipmentsRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListShipmentsRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListShipmentsRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListShipmentsRequest;
-
-                    /**
-                     * Creates a plain object from a ListShipmentsRequest message. Also converts values to other types if specified.
-                     * @param message ListShipmentsRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListShipmentsRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListShipmentsRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListShipmentsRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListShipmentsResponse. */
-                interface IListShipmentsResponse {
-
-                    /** ListShipmentsResponse shipments */
-                    shipments?: (google.cloud.optimization.v1.IShipment[]|null);
-
-                    /** ListShipmentsResponse nextPageToken */
-                    nextPageToken?: (string|null);
-                }
-
-                /** Represents a ListShipmentsResponse. */
-                class ListShipmentsResponse implements IListShipmentsResponse {
-
-                    /**
-                     * Constructs a new ListShipmentsResponse.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListShipmentsResponse);
-
-                    /** ListShipmentsResponse shipments. */
-                    public shipments: google.cloud.optimization.v1.IShipment[];
-
-                    /** ListShipmentsResponse nextPageToken. */
-                    public nextPageToken: string;
-
-                    /**
-                     * Creates a new ListShipmentsResponse instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListShipmentsResponse instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListShipmentsResponse): google.cloud.optimization.v1.ListShipmentsResponse;
-
-                    /**
-                     * Encodes the specified ListShipmentsResponse message. Does not implicitly {@link google.cloud.optimization.v1.ListShipmentsResponse.verify|verify} messages.
-                     * @param message ListShipmentsResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListShipmentsResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListShipmentsResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListShipmentsResponse.verify|verify} messages.
-                     * @param message ListShipmentsResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListShipmentsResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListShipmentsResponse message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListShipmentsResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListShipmentsResponse;
-
-                    /**
-                     * Decodes a ListShipmentsResponse message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListShipmentsResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListShipmentsResponse;
-
-                    /**
-                     * Verifies a ListShipmentsResponse message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListShipmentsResponse message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListShipmentsResponse
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListShipmentsResponse;
-
-                    /**
-                     * Creates a plain object from a ListShipmentsResponse message. Also converts values to other types if specified.
-                     * @param message ListShipmentsResponse
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListShipmentsResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListShipmentsResponse to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListShipmentsResponse
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of an UpdateShipmentRequest. */
-                interface IUpdateShipmentRequest {
-
-                    /** UpdateShipmentRequest shipment */
-                    shipment?: (google.cloud.optimization.v1.IShipment|null);
-
-                    /** UpdateShipmentRequest updateMask */
-                    updateMask?: (google.protobuf.IFieldMask|null);
-                }
-
-                /** Represents an UpdateShipmentRequest. */
-                class UpdateShipmentRequest implements IUpdateShipmentRequest {
-
-                    /**
-                     * Constructs a new UpdateShipmentRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IUpdateShipmentRequest);
-
-                    /** UpdateShipmentRequest shipment. */
-                    public shipment?: (google.cloud.optimization.v1.IShipment|null);
-
-                    /** UpdateShipmentRequest updateMask. */
-                    public updateMask?: (google.protobuf.IFieldMask|null);
-
-                    /**
-                     * Creates a new UpdateShipmentRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns UpdateShipmentRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IUpdateShipmentRequest): google.cloud.optimization.v1.UpdateShipmentRequest;
-
-                    /**
-                     * Encodes the specified UpdateShipmentRequest message. Does not implicitly {@link google.cloud.optimization.v1.UpdateShipmentRequest.verify|verify} messages.
-                     * @param message UpdateShipmentRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IUpdateShipmentRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified UpdateShipmentRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.UpdateShipmentRequest.verify|verify} messages.
-                     * @param message UpdateShipmentRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IUpdateShipmentRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes an UpdateShipmentRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns UpdateShipmentRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.UpdateShipmentRequest;
-
-                    /**
-                     * Decodes an UpdateShipmentRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns UpdateShipmentRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.UpdateShipmentRequest;
-
-                    /**
-                     * Verifies an UpdateShipmentRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates an UpdateShipmentRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns UpdateShipmentRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.UpdateShipmentRequest;
-
-                    /**
-                     * Creates a plain object from an UpdateShipmentRequest message. Also converts values to other types if specified.
-                     * @param message UpdateShipmentRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.UpdateShipmentRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this UpdateShipmentRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for UpdateShipmentRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a DeleteShipmentRequest. */
-                interface IDeleteShipmentRequest {
-
-                    /** DeleteShipmentRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a DeleteShipmentRequest. */
-                class DeleteShipmentRequest implements IDeleteShipmentRequest {
-
-                    /**
-                     * Constructs a new DeleteShipmentRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IDeleteShipmentRequest);
-
-                    /** DeleteShipmentRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new DeleteShipmentRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns DeleteShipmentRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IDeleteShipmentRequest): google.cloud.optimization.v1.DeleteShipmentRequest;
-
-                    /**
-                     * Encodes the specified DeleteShipmentRequest message. Does not implicitly {@link google.cloud.optimization.v1.DeleteShipmentRequest.verify|verify} messages.
-                     * @param message DeleteShipmentRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IDeleteShipmentRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified DeleteShipmentRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.DeleteShipmentRequest.verify|verify} messages.
-                     * @param message DeleteShipmentRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IDeleteShipmentRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a DeleteShipmentRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns DeleteShipmentRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.DeleteShipmentRequest;
-
-                    /**
-                     * Decodes a DeleteShipmentRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns DeleteShipmentRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.DeleteShipmentRequest;
-
-                    /**
-                     * Verifies a DeleteShipmentRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a DeleteShipmentRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns DeleteShipmentRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.DeleteShipmentRequest;
-
-                    /**
-                     * Creates a plain object from a DeleteShipmentRequest message. Also converts values to other types if specified.
-                     * @param message DeleteShipmentRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.DeleteShipmentRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this DeleteShipmentRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for DeleteShipmentRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a GetSolutionRequest. */
-                interface IGetSolutionRequest {
-
-                    /** GetSolutionRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a GetSolutionRequest. */
-                class GetSolutionRequest implements IGetSolutionRequest {
-
-                    /**
-                     * Constructs a new GetSolutionRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IGetSolutionRequest);
-
-                    /** GetSolutionRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new GetSolutionRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns GetSolutionRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IGetSolutionRequest): google.cloud.optimization.v1.GetSolutionRequest;
-
-                    /**
-                     * Encodes the specified GetSolutionRequest message. Does not implicitly {@link google.cloud.optimization.v1.GetSolutionRequest.verify|verify} messages.
-                     * @param message GetSolutionRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IGetSolutionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified GetSolutionRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.GetSolutionRequest.verify|verify} messages.
-                     * @param message GetSolutionRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IGetSolutionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a GetSolutionRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns GetSolutionRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.GetSolutionRequest;
-
-                    /**
-                     * Decodes a GetSolutionRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns GetSolutionRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.GetSolutionRequest;
-
-                    /**
-                     * Verifies a GetSolutionRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a GetSolutionRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns GetSolutionRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.GetSolutionRequest;
-
-                    /**
-                     * Creates a plain object from a GetSolutionRequest message. Also converts values to other types if specified.
-                     * @param message GetSolutionRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.GetSolutionRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this GetSolutionRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for GetSolutionRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListSolutionsRequest. */
-                interface IListSolutionsRequest {
-
-                    /** ListSolutionsRequest parent */
-                    parent?: (string|null);
-
-                    /** ListSolutionsRequest pageSize */
-                    pageSize?: (number|null);
-
-                    /** ListSolutionsRequest pageToken */
-                    pageToken?: (string|null);
-
-                    /** ListSolutionsRequest filter */
-                    filter?: (string|null);
-                }
-
-                /** Represents a ListSolutionsRequest. */
-                class ListSolutionsRequest implements IListSolutionsRequest {
-
-                    /**
-                     * Constructs a new ListSolutionsRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListSolutionsRequest);
-
-                    /** ListSolutionsRequest parent. */
-                    public parent: string;
-
-                    /** ListSolutionsRequest pageSize. */
-                    public pageSize: number;
-
-                    /** ListSolutionsRequest pageToken. */
-                    public pageToken: string;
-
-                    /** ListSolutionsRequest filter. */
-                    public filter: string;
-
-                    /**
-                     * Creates a new ListSolutionsRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListSolutionsRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListSolutionsRequest): google.cloud.optimization.v1.ListSolutionsRequest;
-
-                    /**
-                     * Encodes the specified ListSolutionsRequest message. Does not implicitly {@link google.cloud.optimization.v1.ListSolutionsRequest.verify|verify} messages.
-                     * @param message ListSolutionsRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListSolutionsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListSolutionsRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListSolutionsRequest.verify|verify} messages.
-                     * @param message ListSolutionsRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListSolutionsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListSolutionsRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListSolutionsRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListSolutionsRequest;
-
-                    /**
-                     * Decodes a ListSolutionsRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListSolutionsRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListSolutionsRequest;
-
-                    /**
-                     * Verifies a ListSolutionsRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListSolutionsRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListSolutionsRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListSolutionsRequest;
-
-                    /**
-                     * Creates a plain object from a ListSolutionsRequest message. Also converts values to other types if specified.
-                     * @param message ListSolutionsRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListSolutionsRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListSolutionsRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListSolutionsRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListSolutionsResponse. */
-                interface IListSolutionsResponse {
-
-                    /** ListSolutionsResponse solutions */
-                    solutions?: (google.cloud.optimization.v1.ISolution[]|null);
-
-                    /** ListSolutionsResponse nextPageToken */
-                    nextPageToken?: (string|null);
-                }
-
-                /** Represents a ListSolutionsResponse. */
-                class ListSolutionsResponse implements IListSolutionsResponse {
-
-                    /**
-                     * Constructs a new ListSolutionsResponse.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListSolutionsResponse);
-
-                    /** ListSolutionsResponse solutions. */
-                    public solutions: google.cloud.optimization.v1.ISolution[];
-
-                    /** ListSolutionsResponse nextPageToken. */
-                    public nextPageToken: string;
-
-                    /**
-                     * Creates a new ListSolutionsResponse instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListSolutionsResponse instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListSolutionsResponse): google.cloud.optimization.v1.ListSolutionsResponse;
-
-                    /**
-                     * Encodes the specified ListSolutionsResponse message. Does not implicitly {@link google.cloud.optimization.v1.ListSolutionsResponse.verify|verify} messages.
-                     * @param message ListSolutionsResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListSolutionsResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListSolutionsResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListSolutionsResponse.verify|verify} messages.
-                     * @param message ListSolutionsResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListSolutionsResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListSolutionsResponse message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListSolutionsResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListSolutionsResponse;
-
-                    /**
-                     * Decodes a ListSolutionsResponse message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListSolutionsResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListSolutionsResponse;
-
-                    /**
-                     * Verifies a ListSolutionsResponse message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListSolutionsResponse message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListSolutionsResponse
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListSolutionsResponse;
-
-                    /**
-                     * Creates a plain object from a ListSolutionsResponse message. Also converts values to other types if specified.
-                     * @param message ListSolutionsResponse
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListSolutionsResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListSolutionsResponse to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListSolutionsResponse
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a DeleteSolutionRequest. */
-                interface IDeleteSolutionRequest {
-
-                    /** DeleteSolutionRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a DeleteSolutionRequest. */
-                class DeleteSolutionRequest implements IDeleteSolutionRequest {
-
-                    /**
-                     * Constructs a new DeleteSolutionRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IDeleteSolutionRequest);
-
-                    /** DeleteSolutionRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new DeleteSolutionRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns DeleteSolutionRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IDeleteSolutionRequest): google.cloud.optimization.v1.DeleteSolutionRequest;
-
-                    /**
-                     * Encodes the specified DeleteSolutionRequest message. Does not implicitly {@link google.cloud.optimization.v1.DeleteSolutionRequest.verify|verify} messages.
-                     * @param message DeleteSolutionRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IDeleteSolutionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified DeleteSolutionRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.DeleteSolutionRequest.verify|verify} messages.
-                     * @param message DeleteSolutionRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IDeleteSolutionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a DeleteSolutionRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns DeleteSolutionRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.DeleteSolutionRequest;
-
-                    /**
-                     * Decodes a DeleteSolutionRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns DeleteSolutionRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.DeleteSolutionRequest;
-
-                    /**
-                     * Verifies a DeleteSolutionRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a DeleteSolutionRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns DeleteSolutionRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.DeleteSolutionRequest;
-
-                    /**
-                     * Creates a plain object from a DeleteSolutionRequest message. Also converts values to other types if specified.
-                     * @param message DeleteSolutionRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.DeleteSolutionRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this DeleteSolutionRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for DeleteSolutionRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a RetrieveInputRequest. */
-                interface IRetrieveInputRequest {
-
-                    /** RetrieveInputRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a RetrieveInputRequest. */
-                class RetrieveInputRequest implements IRetrieveInputRequest {
-
-                    /**
-                     * Constructs a new RetrieveInputRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IRetrieveInputRequest);
-
-                    /** RetrieveInputRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new RetrieveInputRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns RetrieveInputRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IRetrieveInputRequest): google.cloud.optimization.v1.RetrieveInputRequest;
-
-                    /**
-                     * Encodes the specified RetrieveInputRequest message. Does not implicitly {@link google.cloud.optimization.v1.RetrieveInputRequest.verify|verify} messages.
-                     * @param message RetrieveInputRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IRetrieveInputRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified RetrieveInputRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.RetrieveInputRequest.verify|verify} messages.
-                     * @param message RetrieveInputRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IRetrieveInputRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a RetrieveInputRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns RetrieveInputRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.RetrieveInputRequest;
-
-                    /**
-                     * Decodes a RetrieveInputRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns RetrieveInputRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.RetrieveInputRequest;
-
-                    /**
-                     * Verifies a RetrieveInputRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a RetrieveInputRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns RetrieveInputRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.RetrieveInputRequest;
-
-                    /**
-                     * Creates a plain object from a RetrieveInputRequest message. Also converts values to other types if specified.
-                     * @param message RetrieveInputRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.RetrieveInputRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this RetrieveInputRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for RetrieveInputRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a RetrieveInputResponse. */
-                interface IRetrieveInputResponse {
-
-                    /** RetrieveInputResponse optimizationRequest */
-                    optimizationRequest?: (google.cloud.optimization.v1.IOptimizeToursRequest|null);
-                }
-
-                /** Represents a RetrieveInputResponse. */
-                class RetrieveInputResponse implements IRetrieveInputResponse {
-
-                    /**
-                     * Constructs a new RetrieveInputResponse.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IRetrieveInputResponse);
-
-                    /** RetrieveInputResponse optimizationRequest. */
-                    public optimizationRequest?: (google.cloud.optimization.v1.IOptimizeToursRequest|null);
-
-                    /**
-                     * Creates a new RetrieveInputResponse instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns RetrieveInputResponse instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IRetrieveInputResponse): google.cloud.optimization.v1.RetrieveInputResponse;
-
-                    /**
-                     * Encodes the specified RetrieveInputResponse message. Does not implicitly {@link google.cloud.optimization.v1.RetrieveInputResponse.verify|verify} messages.
-                     * @param message RetrieveInputResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IRetrieveInputResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified RetrieveInputResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.RetrieveInputResponse.verify|verify} messages.
-                     * @param message RetrieveInputResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IRetrieveInputResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a RetrieveInputResponse message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns RetrieveInputResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.RetrieveInputResponse;
-
-                    /**
-                     * Decodes a RetrieveInputResponse message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns RetrieveInputResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.RetrieveInputResponse;
-
-                    /**
-                     * Verifies a RetrieveInputResponse message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a RetrieveInputResponse message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns RetrieveInputResponse
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.RetrieveInputResponse;
-
-                    /**
-                     * Creates a plain object from a RetrieveInputResponse message. Also converts values to other types if specified.
-                     * @param message RetrieveInputResponse
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.RetrieveInputResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this RetrieveInputResponse to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for RetrieveInputResponse
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a CreateOptimizerRequest. */
-                interface ICreateOptimizerRequest {
-
-                    /** CreateOptimizerRequest parent */
-                    parent?: (string|null);
-
-                    /** CreateOptimizerRequest optimizer */
-                    optimizer?: (google.cloud.optimization.v1.IOptimizer|null);
-
-                    /** CreateOptimizerRequest optimizerId */
-                    optimizerId?: (string|null);
-                }
-
-                /** Represents a CreateOptimizerRequest. */
-                class CreateOptimizerRequest implements ICreateOptimizerRequest {
-
-                    /**
-                     * Constructs a new CreateOptimizerRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.ICreateOptimizerRequest);
-
-                    /** CreateOptimizerRequest parent. */
-                    public parent: string;
-
-                    /** CreateOptimizerRequest optimizer. */
-                    public optimizer?: (google.cloud.optimization.v1.IOptimizer|null);
-
-                    /** CreateOptimizerRequest optimizerId. */
-                    public optimizerId: string;
-
-                    /**
-                     * Creates a new CreateOptimizerRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns CreateOptimizerRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.ICreateOptimizerRequest): google.cloud.optimization.v1.CreateOptimizerRequest;
-
-                    /**
-                     * Encodes the specified CreateOptimizerRequest message. Does not implicitly {@link google.cloud.optimization.v1.CreateOptimizerRequest.verify|verify} messages.
-                     * @param message CreateOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.ICreateOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified CreateOptimizerRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.CreateOptimizerRequest.verify|verify} messages.
-                     * @param message CreateOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.ICreateOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a CreateOptimizerRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns CreateOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.CreateOptimizerRequest;
-
-                    /**
-                     * Decodes a CreateOptimizerRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns CreateOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.CreateOptimizerRequest;
-
-                    /**
-                     * Verifies a CreateOptimizerRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a CreateOptimizerRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns CreateOptimizerRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.CreateOptimizerRequest;
-
-                    /**
-                     * Creates a plain object from a CreateOptimizerRequest message. Also converts values to other types if specified.
-                     * @param message CreateOptimizerRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.CreateOptimizerRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this CreateOptimizerRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for CreateOptimizerRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a GetOptimizerRequest. */
-                interface IGetOptimizerRequest {
-
-                    /** GetOptimizerRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a GetOptimizerRequest. */
-                class GetOptimizerRequest implements IGetOptimizerRequest {
-
-                    /**
-                     * Constructs a new GetOptimizerRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IGetOptimizerRequest);
-
-                    /** GetOptimizerRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new GetOptimizerRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns GetOptimizerRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IGetOptimizerRequest): google.cloud.optimization.v1.GetOptimizerRequest;
-
-                    /**
-                     * Encodes the specified GetOptimizerRequest message. Does not implicitly {@link google.cloud.optimization.v1.GetOptimizerRequest.verify|verify} messages.
-                     * @param message GetOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IGetOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified GetOptimizerRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.GetOptimizerRequest.verify|verify} messages.
-                     * @param message GetOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IGetOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a GetOptimizerRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns GetOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.GetOptimizerRequest;
-
-                    /**
-                     * Decodes a GetOptimizerRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns GetOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.GetOptimizerRequest;
-
-                    /**
-                     * Verifies a GetOptimizerRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a GetOptimizerRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns GetOptimizerRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.GetOptimizerRequest;
-
-                    /**
-                     * Creates a plain object from a GetOptimizerRequest message. Also converts values to other types if specified.
-                     * @param message GetOptimizerRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.GetOptimizerRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this GetOptimizerRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for GetOptimizerRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of an UpdateOptimizerRequest. */
-                interface IUpdateOptimizerRequest {
-
-                    /** UpdateOptimizerRequest optimizer */
-                    optimizer?: (google.cloud.optimization.v1.IOptimizer|null);
-
-                    /** UpdateOptimizerRequest updateMask */
-                    updateMask?: (google.protobuf.IFieldMask|null);
-                }
-
-                /** Represents an UpdateOptimizerRequest. */
-                class UpdateOptimizerRequest implements IUpdateOptimizerRequest {
-
-                    /**
-                     * Constructs a new UpdateOptimizerRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IUpdateOptimizerRequest);
-
-                    /** UpdateOptimizerRequest optimizer. */
-                    public optimizer?: (google.cloud.optimization.v1.IOptimizer|null);
-
-                    /** UpdateOptimizerRequest updateMask. */
-                    public updateMask?: (google.protobuf.IFieldMask|null);
-
-                    /**
-                     * Creates a new UpdateOptimizerRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns UpdateOptimizerRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IUpdateOptimizerRequest): google.cloud.optimization.v1.UpdateOptimizerRequest;
-
-                    /**
-                     * Encodes the specified UpdateOptimizerRequest message. Does not implicitly {@link google.cloud.optimization.v1.UpdateOptimizerRequest.verify|verify} messages.
-                     * @param message UpdateOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IUpdateOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified UpdateOptimizerRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.UpdateOptimizerRequest.verify|verify} messages.
-                     * @param message UpdateOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IUpdateOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes an UpdateOptimizerRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns UpdateOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.UpdateOptimizerRequest;
-
-                    /**
-                     * Decodes an UpdateOptimizerRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns UpdateOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.UpdateOptimizerRequest;
-
-                    /**
-                     * Verifies an UpdateOptimizerRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates an UpdateOptimizerRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns UpdateOptimizerRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.UpdateOptimizerRequest;
-
-                    /**
-                     * Creates a plain object from an UpdateOptimizerRequest message. Also converts values to other types if specified.
-                     * @param message UpdateOptimizerRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.UpdateOptimizerRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this UpdateOptimizerRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for UpdateOptimizerRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a DeleteOptimizerRequest. */
-                interface IDeleteOptimizerRequest {
-
-                    /** DeleteOptimizerRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a DeleteOptimizerRequest. */
-                class DeleteOptimizerRequest implements IDeleteOptimizerRequest {
-
-                    /**
-                     * Constructs a new DeleteOptimizerRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IDeleteOptimizerRequest);
-
-                    /** DeleteOptimizerRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new DeleteOptimizerRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns DeleteOptimizerRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IDeleteOptimizerRequest): google.cloud.optimization.v1.DeleteOptimizerRequest;
-
-                    /**
-                     * Encodes the specified DeleteOptimizerRequest message. Does not implicitly {@link google.cloud.optimization.v1.DeleteOptimizerRequest.verify|verify} messages.
-                     * @param message DeleteOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IDeleteOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified DeleteOptimizerRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.DeleteOptimizerRequest.verify|verify} messages.
-                     * @param message DeleteOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IDeleteOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a DeleteOptimizerRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns DeleteOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.DeleteOptimizerRequest;
-
-                    /**
-                     * Decodes a DeleteOptimizerRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns DeleteOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.DeleteOptimizerRequest;
-
-                    /**
-                     * Verifies a DeleteOptimizerRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a DeleteOptimizerRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns DeleteOptimizerRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.DeleteOptimizerRequest;
-
-                    /**
-                     * Creates a plain object from a DeleteOptimizerRequest message. Also converts values to other types if specified.
-                     * @param message DeleteOptimizerRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.DeleteOptimizerRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this DeleteOptimizerRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for DeleteOptimizerRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListOptimizersRequest. */
-                interface IListOptimizersRequest {
-
-                    /** ListOptimizersRequest parent */
-                    parent?: (string|null);
-
-                    /** ListOptimizersRequest pageSize */
-                    pageSize?: (number|null);
-
-                    /** ListOptimizersRequest pageToken */
-                    pageToken?: (string|null);
-
-                    /** ListOptimizersRequest filter */
-                    filter?: (string|null);
-                }
-
-                /** Represents a ListOptimizersRequest. */
-                class ListOptimizersRequest implements IListOptimizersRequest {
-
-                    /**
-                     * Constructs a new ListOptimizersRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListOptimizersRequest);
-
-                    /** ListOptimizersRequest parent. */
-                    public parent: string;
-
-                    /** ListOptimizersRequest pageSize. */
-                    public pageSize: number;
-
-                    /** ListOptimizersRequest pageToken. */
-                    public pageToken: string;
-
-                    /** ListOptimizersRequest filter. */
-                    public filter: string;
-
-                    /**
-                     * Creates a new ListOptimizersRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListOptimizersRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListOptimizersRequest): google.cloud.optimization.v1.ListOptimizersRequest;
-
-                    /**
-                     * Encodes the specified ListOptimizersRequest message. Does not implicitly {@link google.cloud.optimization.v1.ListOptimizersRequest.verify|verify} messages.
-                     * @param message ListOptimizersRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListOptimizersRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListOptimizersRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListOptimizersRequest.verify|verify} messages.
-                     * @param message ListOptimizersRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListOptimizersRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListOptimizersRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListOptimizersRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListOptimizersRequest;
-
-                    /**
-                     * Decodes a ListOptimizersRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListOptimizersRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListOptimizersRequest;
-
-                    /**
-                     * Verifies a ListOptimizersRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListOptimizersRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListOptimizersRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListOptimizersRequest;
-
-                    /**
-                     * Creates a plain object from a ListOptimizersRequest message. Also converts values to other types if specified.
-                     * @param message ListOptimizersRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListOptimizersRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListOptimizersRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListOptimizersRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a ListOptimizersResponse. */
-                interface IListOptimizersResponse {
-
-                    /** ListOptimizersResponse optimizers */
-                    optimizers?: (google.cloud.optimization.v1.IOptimizer[]|null);
-
-                    /** ListOptimizersResponse nextPageToken */
-                    nextPageToken?: (string|null);
-                }
-
-                /** Represents a ListOptimizersResponse. */
-                class ListOptimizersResponse implements IListOptimizersResponse {
-
-                    /**
-                     * Constructs a new ListOptimizersResponse.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IListOptimizersResponse);
-
-                    /** ListOptimizersResponse optimizers. */
-                    public optimizers: google.cloud.optimization.v1.IOptimizer[];
-
-                    /** ListOptimizersResponse nextPageToken. */
-                    public nextPageToken: string;
-
-                    /**
-                     * Creates a new ListOptimizersResponse instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns ListOptimizersResponse instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IListOptimizersResponse): google.cloud.optimization.v1.ListOptimizersResponse;
-
-                    /**
-                     * Encodes the specified ListOptimizersResponse message. Does not implicitly {@link google.cloud.optimization.v1.ListOptimizersResponse.verify|verify} messages.
-                     * @param message ListOptimizersResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IListOptimizersResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified ListOptimizersResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.ListOptimizersResponse.verify|verify} messages.
-                     * @param message ListOptimizersResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IListOptimizersResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a ListOptimizersResponse message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns ListOptimizersResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.ListOptimizersResponse;
-
-                    /**
-                     * Decodes a ListOptimizersResponse message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns ListOptimizersResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.ListOptimizersResponse;
-
-                    /**
-                     * Verifies a ListOptimizersResponse message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a ListOptimizersResponse message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns ListOptimizersResponse
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.ListOptimizersResponse;
-
-                    /**
-                     * Creates a plain object from a ListOptimizersResponse message. Also converts values to other types if specified.
-                     * @param message ListOptimizersResponse
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.ListOptimizersResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this ListOptimizersResponse to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for ListOptimizersResponse
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a RunOptimizerRequest. */
-                interface IRunOptimizerRequest {
-
-                    /** RunOptimizerRequest name */
-                    name?: (string|null);
-                }
-
-                /** Represents a RunOptimizerRequest. */
-                class RunOptimizerRequest implements IRunOptimizerRequest {
-
-                    /**
-                     * Constructs a new RunOptimizerRequest.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IRunOptimizerRequest);
-
-                    /** RunOptimizerRequest name. */
-                    public name: string;
-
-                    /**
-                     * Creates a new RunOptimizerRequest instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns RunOptimizerRequest instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IRunOptimizerRequest): google.cloud.optimization.v1.RunOptimizerRequest;
-
-                    /**
-                     * Encodes the specified RunOptimizerRequest message. Does not implicitly {@link google.cloud.optimization.v1.RunOptimizerRequest.verify|verify} messages.
-                     * @param message RunOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IRunOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified RunOptimizerRequest message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.RunOptimizerRequest.verify|verify} messages.
-                     * @param message RunOptimizerRequest message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IRunOptimizerRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a RunOptimizerRequest message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns RunOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.RunOptimizerRequest;
-
-                    /**
-                     * Decodes a RunOptimizerRequest message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns RunOptimizerRequest
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.RunOptimizerRequest;
-
-                    /**
-                     * Verifies a RunOptimizerRequest message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a RunOptimizerRequest message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns RunOptimizerRequest
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.RunOptimizerRequest;
-
-                    /**
-                     * Creates a plain object from a RunOptimizerRequest message. Also converts values to other types if specified.
-                     * @param message RunOptimizerRequest
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.RunOptimizerRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this RunOptimizerRequest to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for RunOptimizerRequest
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a RunOptimizerResponse. */
-                interface IRunOptimizerResponse {
-
-                    /** RunOptimizerResponse solution */
-                    solution?: (string|null);
-                }
-
-                /** Represents a RunOptimizerResponse. */
-                class RunOptimizerResponse implements IRunOptimizerResponse {
-
-                    /**
-                     * Constructs a new RunOptimizerResponse.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IRunOptimizerResponse);
-
-                    /** RunOptimizerResponse solution. */
-                    public solution: string;
-
-                    /**
-                     * Creates a new RunOptimizerResponse instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns RunOptimizerResponse instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IRunOptimizerResponse): google.cloud.optimization.v1.RunOptimizerResponse;
-
-                    /**
-                     * Encodes the specified RunOptimizerResponse message. Does not implicitly {@link google.cloud.optimization.v1.RunOptimizerResponse.verify|verify} messages.
-                     * @param message RunOptimizerResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IRunOptimizerResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified RunOptimizerResponse message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.RunOptimizerResponse.verify|verify} messages.
-                     * @param message RunOptimizerResponse message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IRunOptimizerResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a RunOptimizerResponse message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns RunOptimizerResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.RunOptimizerResponse;
-
-                    /**
-                     * Decodes a RunOptimizerResponse message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns RunOptimizerResponse
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.RunOptimizerResponse;
-
-                    /**
-                     * Verifies a RunOptimizerResponse message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a RunOptimizerResponse message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns RunOptimizerResponse
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.RunOptimizerResponse;
-
-                    /**
-                     * Creates a plain object from a RunOptimizerResponse message. Also converts values to other types if specified.
-                     * @param message RunOptimizerResponse
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.RunOptimizerResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this RunOptimizerResponse to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for RunOptimizerResponse
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                /** Properties of a RunOptimizerMetadata. */
-                interface IRunOptimizerMetadata {
-
-                    /** RunOptimizerMetadata state */
-                    state?: (google.cloud.optimization.v1.RunOptimizerMetadata.State|keyof typeof google.cloud.optimization.v1.RunOptimizerMetadata.State|null);
-
-                    /** RunOptimizerMetadata createTime */
-                    createTime?: (google.protobuf.ITimestamp|null);
-
-                    /** RunOptimizerMetadata updateTime */
-                    updateTime?: (google.protobuf.ITimestamp|null);
-                }
-
-                /** Represents a RunOptimizerMetadata. */
-                class RunOptimizerMetadata implements IRunOptimizerMetadata {
-
-                    /**
-                     * Constructs a new RunOptimizerMetadata.
-                     * @param [properties] Properties to set
-                     */
-                    constructor(properties?: google.cloud.optimization.v1.IRunOptimizerMetadata);
-
-                    /** RunOptimizerMetadata state. */
-                    public state: (google.cloud.optimization.v1.RunOptimizerMetadata.State|keyof typeof google.cloud.optimization.v1.RunOptimizerMetadata.State);
-
-                    /** RunOptimizerMetadata createTime. */
-                    public createTime?: (google.protobuf.ITimestamp|null);
-
-                    /** RunOptimizerMetadata updateTime. */
-                    public updateTime?: (google.protobuf.ITimestamp|null);
-
-                    /**
-                     * Creates a new RunOptimizerMetadata instance using the specified properties.
-                     * @param [properties] Properties to set
-                     * @returns RunOptimizerMetadata instance
-                     */
-                    public static create(properties?: google.cloud.optimization.v1.IRunOptimizerMetadata): google.cloud.optimization.v1.RunOptimizerMetadata;
-
-                    /**
-                     * Encodes the specified RunOptimizerMetadata message. Does not implicitly {@link google.cloud.optimization.v1.RunOptimizerMetadata.verify|verify} messages.
-                     * @param message RunOptimizerMetadata message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encode(message: google.cloud.optimization.v1.IRunOptimizerMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Encodes the specified RunOptimizerMetadata message, length delimited. Does not implicitly {@link google.cloud.optimization.v1.RunOptimizerMetadata.verify|verify} messages.
-                     * @param message RunOptimizerMetadata message or plain object to encode
-                     * @param [writer] Writer to encode to
-                     * @returns Writer
-                     */
-                    public static encodeDelimited(message: google.cloud.optimization.v1.IRunOptimizerMetadata, writer?: $protobuf.Writer): $protobuf.Writer;
-
-                    /**
-                     * Decodes a RunOptimizerMetadata message from the specified reader or buffer.
-                     * @param reader Reader or buffer to decode from
-                     * @param [length] Message length if known beforehand
-                     * @returns RunOptimizerMetadata
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.cloud.optimization.v1.RunOptimizerMetadata;
-
-                    /**
-                     * Decodes a RunOptimizerMetadata message from the specified reader or buffer, length delimited.
-                     * @param reader Reader or buffer to decode from
-                     * @returns RunOptimizerMetadata
-                     * @throws {Error} If the payload is not a reader or valid buffer
-                     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-                     */
-                    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.cloud.optimization.v1.RunOptimizerMetadata;
-
-                    /**
-                     * Verifies a RunOptimizerMetadata message.
-                     * @param message Plain object to verify
-                     * @returns `null` if valid, otherwise the reason why it is not
-                     */
-                    public static verify(message: { [k: string]: any }): (string|null);
-
-                    /**
-                     * Creates a RunOptimizerMetadata message from a plain object. Also converts values to their respective internal types.
-                     * @param object Plain object
-                     * @returns RunOptimizerMetadata
-                     */
-                    public static fromObject(object: { [k: string]: any }): google.cloud.optimization.v1.RunOptimizerMetadata;
-
-                    /**
-                     * Creates a plain object from a RunOptimizerMetadata message. Also converts values to other types if specified.
-                     * @param message RunOptimizerMetadata
-                     * @param [options] Conversion options
-                     * @returns Plain object
-                     */
-                    public static toObject(message: google.cloud.optimization.v1.RunOptimizerMetadata, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-                    /**
-                     * Converts this RunOptimizerMetadata to JSON.
-                     * @returns JSON object
-                     */
-                    public toJSON(): { [k: string]: any };
-
-                    /**
-                     * Gets the default type url for RunOptimizerMetadata
-                     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-                     * @returns The default type url
-                     */
-                    public static getTypeUrl(typeUrlPrefix?: string): string;
-                }
-
-                namespace RunOptimizerMetadata {
-
-                    /** State enum. */
-                    enum State {
-                        STATE_UNSPECIFIED = 0,
-                        RUNNING = 1,
-                        DONE = 2
-                    }
-                }
             }
         }
     }
 
     /** Namespace api. */
     namespace api {
-
-        /** FieldBehavior enum. */
-        enum FieldBehavior {
-            FIELD_BEHAVIOR_UNSPECIFIED = 0,
-            OPTIONAL = 1,
-            REQUIRED = 2,
-            OUTPUT_ONLY = 3,
-            INPUT_ONLY = 4,
-            IMMUTABLE = 5,
-            UNORDERED_LIST = 6,
-            NON_EMPTY_DEFAULT = 7
-        }
 
         /** Properties of a Http. */
         interface IHttp {
@@ -12511,256 +5356,1510 @@ export namespace google {
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
-        /** Properties of a ResourceDescriptor. */
-        interface IResourceDescriptor {
+        /** Properties of a CommonLanguageSettings. */
+        interface ICommonLanguageSettings {
 
-            /** ResourceDescriptor type */
-            type?: (string|null);
+            /** CommonLanguageSettings referenceDocsUri */
+            referenceDocsUri?: (string|null);
 
-            /** ResourceDescriptor pattern */
-            pattern?: (string[]|null);
-
-            /** ResourceDescriptor nameField */
-            nameField?: (string|null);
-
-            /** ResourceDescriptor history */
-            history?: (google.api.ResourceDescriptor.History|keyof typeof google.api.ResourceDescriptor.History|null);
-
-            /** ResourceDescriptor plural */
-            plural?: (string|null);
-
-            /** ResourceDescriptor singular */
-            singular?: (string|null);
-
-            /** ResourceDescriptor style */
-            style?: (google.api.ResourceDescriptor.Style[]|null);
+            /** CommonLanguageSettings destinations */
+            destinations?: (google.api.ClientLibraryDestination[]|null);
         }
 
-        /** Represents a ResourceDescriptor. */
-        class ResourceDescriptor implements IResourceDescriptor {
+        /** Represents a CommonLanguageSettings. */
+        class CommonLanguageSettings implements ICommonLanguageSettings {
 
             /**
-             * Constructs a new ResourceDescriptor.
+             * Constructs a new CommonLanguageSettings.
              * @param [properties] Properties to set
              */
-            constructor(properties?: google.api.IResourceDescriptor);
+            constructor(properties?: google.api.ICommonLanguageSettings);
 
-            /** ResourceDescriptor type. */
-            public type: string;
+            /** CommonLanguageSettings referenceDocsUri. */
+            public referenceDocsUri: string;
 
-            /** ResourceDescriptor pattern. */
-            public pattern: string[];
-
-            /** ResourceDescriptor nameField. */
-            public nameField: string;
-
-            /** ResourceDescriptor history. */
-            public history: (google.api.ResourceDescriptor.History|keyof typeof google.api.ResourceDescriptor.History);
-
-            /** ResourceDescriptor plural. */
-            public plural: string;
-
-            /** ResourceDescriptor singular. */
-            public singular: string;
-
-            /** ResourceDescriptor style. */
-            public style: google.api.ResourceDescriptor.Style[];
+            /** CommonLanguageSettings destinations. */
+            public destinations: google.api.ClientLibraryDestination[];
 
             /**
-             * Creates a new ResourceDescriptor instance using the specified properties.
+             * Creates a new CommonLanguageSettings instance using the specified properties.
              * @param [properties] Properties to set
-             * @returns ResourceDescriptor instance
+             * @returns CommonLanguageSettings instance
              */
-            public static create(properties?: google.api.IResourceDescriptor): google.api.ResourceDescriptor;
+            public static create(properties?: google.api.ICommonLanguageSettings): google.api.CommonLanguageSettings;
 
             /**
-             * Encodes the specified ResourceDescriptor message. Does not implicitly {@link google.api.ResourceDescriptor.verify|verify} messages.
-             * @param message ResourceDescriptor message or plain object to encode
+             * Encodes the specified CommonLanguageSettings message. Does not implicitly {@link google.api.CommonLanguageSettings.verify|verify} messages.
+             * @param message CommonLanguageSettings message or plain object to encode
              * @param [writer] Writer to encode to
              * @returns Writer
              */
-            public static encode(message: google.api.IResourceDescriptor, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encode(message: google.api.ICommonLanguageSettings, writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Encodes the specified ResourceDescriptor message, length delimited. Does not implicitly {@link google.api.ResourceDescriptor.verify|verify} messages.
-             * @param message ResourceDescriptor message or plain object to encode
+             * Encodes the specified CommonLanguageSettings message, length delimited. Does not implicitly {@link google.api.CommonLanguageSettings.verify|verify} messages.
+             * @param message CommonLanguageSettings message or plain object to encode
              * @param [writer] Writer to encode to
              * @returns Writer
              */
-            public static encodeDelimited(message: google.api.IResourceDescriptor, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.api.ICommonLanguageSettings, writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Decodes a ResourceDescriptor message from the specified reader or buffer.
+             * Decodes a CommonLanguageSettings message from the specified reader or buffer.
              * @param reader Reader or buffer to decode from
              * @param [length] Message length if known beforehand
-             * @returns ResourceDescriptor
+             * @returns CommonLanguageSettings
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.ResourceDescriptor;
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.CommonLanguageSettings;
 
             /**
-             * Decodes a ResourceDescriptor message from the specified reader or buffer, length delimited.
+             * Decodes a CommonLanguageSettings message from the specified reader or buffer, length delimited.
              * @param reader Reader or buffer to decode from
-             * @returns ResourceDescriptor
+             * @returns CommonLanguageSettings
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.ResourceDescriptor;
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.CommonLanguageSettings;
 
             /**
-             * Verifies a ResourceDescriptor message.
+             * Verifies a CommonLanguageSettings message.
              * @param message Plain object to verify
              * @returns `null` if valid, otherwise the reason why it is not
              */
             public static verify(message: { [k: string]: any }): (string|null);
 
             /**
-             * Creates a ResourceDescriptor message from a plain object. Also converts values to their respective internal types.
+             * Creates a CommonLanguageSettings message from a plain object. Also converts values to their respective internal types.
              * @param object Plain object
-             * @returns ResourceDescriptor
+             * @returns CommonLanguageSettings
              */
-            public static fromObject(object: { [k: string]: any }): google.api.ResourceDescriptor;
+            public static fromObject(object: { [k: string]: any }): google.api.CommonLanguageSettings;
 
             /**
-             * Creates a plain object from a ResourceDescriptor message. Also converts values to other types if specified.
-             * @param message ResourceDescriptor
+             * Creates a plain object from a CommonLanguageSettings message. Also converts values to other types if specified.
+             * @param message CommonLanguageSettings
              * @param [options] Conversion options
              * @returns Plain object
              */
-            public static toObject(message: google.api.ResourceDescriptor, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public static toObject(message: google.api.CommonLanguageSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
             /**
-             * Converts this ResourceDescriptor to JSON.
+             * Converts this CommonLanguageSettings to JSON.
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
 
             /**
-             * Gets the default type url for ResourceDescriptor
+             * Gets the default type url for CommonLanguageSettings
              * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns The default type url
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
-        namespace ResourceDescriptor {
+        /** Properties of a ClientLibrarySettings. */
+        interface IClientLibrarySettings {
 
-            /** History enum. */
-            enum History {
-                HISTORY_UNSPECIFIED = 0,
-                ORIGINALLY_SINGLE_PATTERN = 1,
-                FUTURE_MULTI_PATTERN = 2
-            }
+            /** ClientLibrarySettings version */
+            version?: (string|null);
 
-            /** Style enum. */
-            enum Style {
-                STYLE_UNSPECIFIED = 0,
-                DECLARATIVE_FRIENDLY = 1
-            }
+            /** ClientLibrarySettings launchStage */
+            launchStage?: (google.api.LaunchStage|keyof typeof google.api.LaunchStage|null);
+
+            /** ClientLibrarySettings restNumericEnums */
+            restNumericEnums?: (boolean|null);
+
+            /** ClientLibrarySettings javaSettings */
+            javaSettings?: (google.api.IJavaSettings|null);
+
+            /** ClientLibrarySettings cppSettings */
+            cppSettings?: (google.api.ICppSettings|null);
+
+            /** ClientLibrarySettings phpSettings */
+            phpSettings?: (google.api.IPhpSettings|null);
+
+            /** ClientLibrarySettings pythonSettings */
+            pythonSettings?: (google.api.IPythonSettings|null);
+
+            /** ClientLibrarySettings nodeSettings */
+            nodeSettings?: (google.api.INodeSettings|null);
+
+            /** ClientLibrarySettings dotnetSettings */
+            dotnetSettings?: (google.api.IDotnetSettings|null);
+
+            /** ClientLibrarySettings rubySettings */
+            rubySettings?: (google.api.IRubySettings|null);
+
+            /** ClientLibrarySettings goSettings */
+            goSettings?: (google.api.IGoSettings|null);
         }
 
-        /** Properties of a ResourceReference. */
-        interface IResourceReference {
-
-            /** ResourceReference type */
-            type?: (string|null);
-
-            /** ResourceReference childType */
-            childType?: (string|null);
-        }
-
-        /** Represents a ResourceReference. */
-        class ResourceReference implements IResourceReference {
+        /** Represents a ClientLibrarySettings. */
+        class ClientLibrarySettings implements IClientLibrarySettings {
 
             /**
-             * Constructs a new ResourceReference.
+             * Constructs a new ClientLibrarySettings.
              * @param [properties] Properties to set
              */
-            constructor(properties?: google.api.IResourceReference);
+            constructor(properties?: google.api.IClientLibrarySettings);
 
-            /** ResourceReference type. */
-            public type: string;
+            /** ClientLibrarySettings version. */
+            public version: string;
 
-            /** ResourceReference childType. */
-            public childType: string;
+            /** ClientLibrarySettings launchStage. */
+            public launchStage: (google.api.LaunchStage|keyof typeof google.api.LaunchStage);
+
+            /** ClientLibrarySettings restNumericEnums. */
+            public restNumericEnums: boolean;
+
+            /** ClientLibrarySettings javaSettings. */
+            public javaSettings?: (google.api.IJavaSettings|null);
+
+            /** ClientLibrarySettings cppSettings. */
+            public cppSettings?: (google.api.ICppSettings|null);
+
+            /** ClientLibrarySettings phpSettings. */
+            public phpSettings?: (google.api.IPhpSettings|null);
+
+            /** ClientLibrarySettings pythonSettings. */
+            public pythonSettings?: (google.api.IPythonSettings|null);
+
+            /** ClientLibrarySettings nodeSettings. */
+            public nodeSettings?: (google.api.INodeSettings|null);
+
+            /** ClientLibrarySettings dotnetSettings. */
+            public dotnetSettings?: (google.api.IDotnetSettings|null);
+
+            /** ClientLibrarySettings rubySettings. */
+            public rubySettings?: (google.api.IRubySettings|null);
+
+            /** ClientLibrarySettings goSettings. */
+            public goSettings?: (google.api.IGoSettings|null);
 
             /**
-             * Creates a new ResourceReference instance using the specified properties.
+             * Creates a new ClientLibrarySettings instance using the specified properties.
              * @param [properties] Properties to set
-             * @returns ResourceReference instance
+             * @returns ClientLibrarySettings instance
              */
-            public static create(properties?: google.api.IResourceReference): google.api.ResourceReference;
+            public static create(properties?: google.api.IClientLibrarySettings): google.api.ClientLibrarySettings;
 
             /**
-             * Encodes the specified ResourceReference message. Does not implicitly {@link google.api.ResourceReference.verify|verify} messages.
-             * @param message ResourceReference message or plain object to encode
+             * Encodes the specified ClientLibrarySettings message. Does not implicitly {@link google.api.ClientLibrarySettings.verify|verify} messages.
+             * @param message ClientLibrarySettings message or plain object to encode
              * @param [writer] Writer to encode to
              * @returns Writer
              */
-            public static encode(message: google.api.IResourceReference, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encode(message: google.api.IClientLibrarySettings, writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Encodes the specified ResourceReference message, length delimited. Does not implicitly {@link google.api.ResourceReference.verify|verify} messages.
-             * @param message ResourceReference message or plain object to encode
+             * Encodes the specified ClientLibrarySettings message, length delimited. Does not implicitly {@link google.api.ClientLibrarySettings.verify|verify} messages.
+             * @param message ClientLibrarySettings message or plain object to encode
              * @param [writer] Writer to encode to
              * @returns Writer
              */
-            public static encodeDelimited(message: google.api.IResourceReference, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.api.IClientLibrarySettings, writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Decodes a ResourceReference message from the specified reader or buffer.
+             * Decodes a ClientLibrarySettings message from the specified reader or buffer.
              * @param reader Reader or buffer to decode from
              * @param [length] Message length if known beforehand
-             * @returns ResourceReference
+             * @returns ClientLibrarySettings
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.ResourceReference;
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.ClientLibrarySettings;
 
             /**
-             * Decodes a ResourceReference message from the specified reader or buffer, length delimited.
+             * Decodes a ClientLibrarySettings message from the specified reader or buffer, length delimited.
              * @param reader Reader or buffer to decode from
-             * @returns ResourceReference
+             * @returns ClientLibrarySettings
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.ResourceReference;
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.ClientLibrarySettings;
 
             /**
-             * Verifies a ResourceReference message.
+             * Verifies a ClientLibrarySettings message.
              * @param message Plain object to verify
              * @returns `null` if valid, otherwise the reason why it is not
              */
             public static verify(message: { [k: string]: any }): (string|null);
 
             /**
-             * Creates a ResourceReference message from a plain object. Also converts values to their respective internal types.
+             * Creates a ClientLibrarySettings message from a plain object. Also converts values to their respective internal types.
              * @param object Plain object
-             * @returns ResourceReference
+             * @returns ClientLibrarySettings
              */
-            public static fromObject(object: { [k: string]: any }): google.api.ResourceReference;
+            public static fromObject(object: { [k: string]: any }): google.api.ClientLibrarySettings;
 
             /**
-             * Creates a plain object from a ResourceReference message. Also converts values to other types if specified.
-             * @param message ResourceReference
+             * Creates a plain object from a ClientLibrarySettings message. Also converts values to other types if specified.
+             * @param message ClientLibrarySettings
              * @param [options] Conversion options
              * @returns Plain object
              */
-            public static toObject(message: google.api.ResourceReference, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public static toObject(message: google.api.ClientLibrarySettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
             /**
-             * Converts this ResourceReference to JSON.
+             * Converts this ClientLibrarySettings to JSON.
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
 
             /**
-             * Gets the default type url for ResourceReference
+             * Gets the default type url for ClientLibrarySettings
              * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns The default type url
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a Publishing. */
+        interface IPublishing {
+
+            /** Publishing methodSettings */
+            methodSettings?: (google.api.IMethodSettings[]|null);
+
+            /** Publishing newIssueUri */
+            newIssueUri?: (string|null);
+
+            /** Publishing documentationUri */
+            documentationUri?: (string|null);
+
+            /** Publishing apiShortName */
+            apiShortName?: (string|null);
+
+            /** Publishing githubLabel */
+            githubLabel?: (string|null);
+
+            /** Publishing codeownerGithubTeams */
+            codeownerGithubTeams?: (string[]|null);
+
+            /** Publishing docTagPrefix */
+            docTagPrefix?: (string|null);
+
+            /** Publishing organization */
+            organization?: (google.api.ClientLibraryOrganization|keyof typeof google.api.ClientLibraryOrganization|null);
+
+            /** Publishing librarySettings */
+            librarySettings?: (google.api.IClientLibrarySettings[]|null);
+
+            /** Publishing protoReferenceDocumentationUri */
+            protoReferenceDocumentationUri?: (string|null);
+
+            /** Publishing restReferenceDocumentationUri */
+            restReferenceDocumentationUri?: (string|null);
+        }
+
+        /** Represents a Publishing. */
+        class Publishing implements IPublishing {
+
+            /**
+             * Constructs a new Publishing.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.IPublishing);
+
+            /** Publishing methodSettings. */
+            public methodSettings: google.api.IMethodSettings[];
+
+            /** Publishing newIssueUri. */
+            public newIssueUri: string;
+
+            /** Publishing documentationUri. */
+            public documentationUri: string;
+
+            /** Publishing apiShortName. */
+            public apiShortName: string;
+
+            /** Publishing githubLabel. */
+            public githubLabel: string;
+
+            /** Publishing codeownerGithubTeams. */
+            public codeownerGithubTeams: string[];
+
+            /** Publishing docTagPrefix. */
+            public docTagPrefix: string;
+
+            /** Publishing organization. */
+            public organization: (google.api.ClientLibraryOrganization|keyof typeof google.api.ClientLibraryOrganization);
+
+            /** Publishing librarySettings. */
+            public librarySettings: google.api.IClientLibrarySettings[];
+
+            /** Publishing protoReferenceDocumentationUri. */
+            public protoReferenceDocumentationUri: string;
+
+            /** Publishing restReferenceDocumentationUri. */
+            public restReferenceDocumentationUri: string;
+
+            /**
+             * Creates a new Publishing instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns Publishing instance
+             */
+            public static create(properties?: google.api.IPublishing): google.api.Publishing;
+
+            /**
+             * Encodes the specified Publishing message. Does not implicitly {@link google.api.Publishing.verify|verify} messages.
+             * @param message Publishing message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.IPublishing, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified Publishing message, length delimited. Does not implicitly {@link google.api.Publishing.verify|verify} messages.
+             * @param message Publishing message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.IPublishing, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a Publishing message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns Publishing
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.Publishing;
+
+            /**
+             * Decodes a Publishing message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns Publishing
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.Publishing;
+
+            /**
+             * Verifies a Publishing message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a Publishing message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns Publishing
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.Publishing;
+
+            /**
+             * Creates a plain object from a Publishing message. Also converts values to other types if specified.
+             * @param message Publishing
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.Publishing, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this Publishing to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for Publishing
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a JavaSettings. */
+        interface IJavaSettings {
+
+            /** JavaSettings libraryPackage */
+            libraryPackage?: (string|null);
+
+            /** JavaSettings serviceClassNames */
+            serviceClassNames?: ({ [k: string]: string }|null);
+
+            /** JavaSettings common */
+            common?: (google.api.ICommonLanguageSettings|null);
+        }
+
+        /** Represents a JavaSettings. */
+        class JavaSettings implements IJavaSettings {
+
+            /**
+             * Constructs a new JavaSettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.IJavaSettings);
+
+            /** JavaSettings libraryPackage. */
+            public libraryPackage: string;
+
+            /** JavaSettings serviceClassNames. */
+            public serviceClassNames: { [k: string]: string };
+
+            /** JavaSettings common. */
+            public common?: (google.api.ICommonLanguageSettings|null);
+
+            /**
+             * Creates a new JavaSettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns JavaSettings instance
+             */
+            public static create(properties?: google.api.IJavaSettings): google.api.JavaSettings;
+
+            /**
+             * Encodes the specified JavaSettings message. Does not implicitly {@link google.api.JavaSettings.verify|verify} messages.
+             * @param message JavaSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.IJavaSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified JavaSettings message, length delimited. Does not implicitly {@link google.api.JavaSettings.verify|verify} messages.
+             * @param message JavaSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.IJavaSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a JavaSettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns JavaSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.JavaSettings;
+
+            /**
+             * Decodes a JavaSettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns JavaSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.JavaSettings;
+
+            /**
+             * Verifies a JavaSettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a JavaSettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns JavaSettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.JavaSettings;
+
+            /**
+             * Creates a plain object from a JavaSettings message. Also converts values to other types if specified.
+             * @param message JavaSettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.JavaSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this JavaSettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for JavaSettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a CppSettings. */
+        interface ICppSettings {
+
+            /** CppSettings common */
+            common?: (google.api.ICommonLanguageSettings|null);
+        }
+
+        /** Represents a CppSettings. */
+        class CppSettings implements ICppSettings {
+
+            /**
+             * Constructs a new CppSettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.ICppSettings);
+
+            /** CppSettings common. */
+            public common?: (google.api.ICommonLanguageSettings|null);
+
+            /**
+             * Creates a new CppSettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns CppSettings instance
+             */
+            public static create(properties?: google.api.ICppSettings): google.api.CppSettings;
+
+            /**
+             * Encodes the specified CppSettings message. Does not implicitly {@link google.api.CppSettings.verify|verify} messages.
+             * @param message CppSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.ICppSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified CppSettings message, length delimited. Does not implicitly {@link google.api.CppSettings.verify|verify} messages.
+             * @param message CppSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.ICppSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a CppSettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns CppSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.CppSettings;
+
+            /**
+             * Decodes a CppSettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns CppSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.CppSettings;
+
+            /**
+             * Verifies a CppSettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a CppSettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns CppSettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.CppSettings;
+
+            /**
+             * Creates a plain object from a CppSettings message. Also converts values to other types if specified.
+             * @param message CppSettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.CppSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this CppSettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for CppSettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a PhpSettings. */
+        interface IPhpSettings {
+
+            /** PhpSettings common */
+            common?: (google.api.ICommonLanguageSettings|null);
+        }
+
+        /** Represents a PhpSettings. */
+        class PhpSettings implements IPhpSettings {
+
+            /**
+             * Constructs a new PhpSettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.IPhpSettings);
+
+            /** PhpSettings common. */
+            public common?: (google.api.ICommonLanguageSettings|null);
+
+            /**
+             * Creates a new PhpSettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns PhpSettings instance
+             */
+            public static create(properties?: google.api.IPhpSettings): google.api.PhpSettings;
+
+            /**
+             * Encodes the specified PhpSettings message. Does not implicitly {@link google.api.PhpSettings.verify|verify} messages.
+             * @param message PhpSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.IPhpSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified PhpSettings message, length delimited. Does not implicitly {@link google.api.PhpSettings.verify|verify} messages.
+             * @param message PhpSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.IPhpSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a PhpSettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns PhpSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.PhpSettings;
+
+            /**
+             * Decodes a PhpSettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns PhpSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.PhpSettings;
+
+            /**
+             * Verifies a PhpSettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a PhpSettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns PhpSettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.PhpSettings;
+
+            /**
+             * Creates a plain object from a PhpSettings message. Also converts values to other types if specified.
+             * @param message PhpSettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.PhpSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this PhpSettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for PhpSettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a PythonSettings. */
+        interface IPythonSettings {
+
+            /** PythonSettings common */
+            common?: (google.api.ICommonLanguageSettings|null);
+        }
+
+        /** Represents a PythonSettings. */
+        class PythonSettings implements IPythonSettings {
+
+            /**
+             * Constructs a new PythonSettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.IPythonSettings);
+
+            /** PythonSettings common. */
+            public common?: (google.api.ICommonLanguageSettings|null);
+
+            /**
+             * Creates a new PythonSettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns PythonSettings instance
+             */
+            public static create(properties?: google.api.IPythonSettings): google.api.PythonSettings;
+
+            /**
+             * Encodes the specified PythonSettings message. Does not implicitly {@link google.api.PythonSettings.verify|verify} messages.
+             * @param message PythonSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.IPythonSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified PythonSettings message, length delimited. Does not implicitly {@link google.api.PythonSettings.verify|verify} messages.
+             * @param message PythonSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.IPythonSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a PythonSettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns PythonSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.PythonSettings;
+
+            /**
+             * Decodes a PythonSettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns PythonSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.PythonSettings;
+
+            /**
+             * Verifies a PythonSettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a PythonSettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns PythonSettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.PythonSettings;
+
+            /**
+             * Creates a plain object from a PythonSettings message. Also converts values to other types if specified.
+             * @param message PythonSettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.PythonSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this PythonSettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for PythonSettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a NodeSettings. */
+        interface INodeSettings {
+
+            /** NodeSettings common */
+            common?: (google.api.ICommonLanguageSettings|null);
+        }
+
+        /** Represents a NodeSettings. */
+        class NodeSettings implements INodeSettings {
+
+            /**
+             * Constructs a new NodeSettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.INodeSettings);
+
+            /** NodeSettings common. */
+            public common?: (google.api.ICommonLanguageSettings|null);
+
+            /**
+             * Creates a new NodeSettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns NodeSettings instance
+             */
+            public static create(properties?: google.api.INodeSettings): google.api.NodeSettings;
+
+            /**
+             * Encodes the specified NodeSettings message. Does not implicitly {@link google.api.NodeSettings.verify|verify} messages.
+             * @param message NodeSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.INodeSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified NodeSettings message, length delimited. Does not implicitly {@link google.api.NodeSettings.verify|verify} messages.
+             * @param message NodeSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.INodeSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a NodeSettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns NodeSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.NodeSettings;
+
+            /**
+             * Decodes a NodeSettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns NodeSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.NodeSettings;
+
+            /**
+             * Verifies a NodeSettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a NodeSettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns NodeSettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.NodeSettings;
+
+            /**
+             * Creates a plain object from a NodeSettings message. Also converts values to other types if specified.
+             * @param message NodeSettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.NodeSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this NodeSettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for NodeSettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a DotnetSettings. */
+        interface IDotnetSettings {
+
+            /** DotnetSettings common */
+            common?: (google.api.ICommonLanguageSettings|null);
+
+            /** DotnetSettings renamedServices */
+            renamedServices?: ({ [k: string]: string }|null);
+
+            /** DotnetSettings renamedResources */
+            renamedResources?: ({ [k: string]: string }|null);
+
+            /** DotnetSettings ignoredResources */
+            ignoredResources?: (string[]|null);
+
+            /** DotnetSettings forcedNamespaceAliases */
+            forcedNamespaceAliases?: (string[]|null);
+
+            /** DotnetSettings handwrittenSignatures */
+            handwrittenSignatures?: (string[]|null);
+        }
+
+        /** Represents a DotnetSettings. */
+        class DotnetSettings implements IDotnetSettings {
+
+            /**
+             * Constructs a new DotnetSettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.IDotnetSettings);
+
+            /** DotnetSettings common. */
+            public common?: (google.api.ICommonLanguageSettings|null);
+
+            /** DotnetSettings renamedServices. */
+            public renamedServices: { [k: string]: string };
+
+            /** DotnetSettings renamedResources. */
+            public renamedResources: { [k: string]: string };
+
+            /** DotnetSettings ignoredResources. */
+            public ignoredResources: string[];
+
+            /** DotnetSettings forcedNamespaceAliases. */
+            public forcedNamespaceAliases: string[];
+
+            /** DotnetSettings handwrittenSignatures. */
+            public handwrittenSignatures: string[];
+
+            /**
+             * Creates a new DotnetSettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns DotnetSettings instance
+             */
+            public static create(properties?: google.api.IDotnetSettings): google.api.DotnetSettings;
+
+            /**
+             * Encodes the specified DotnetSettings message. Does not implicitly {@link google.api.DotnetSettings.verify|verify} messages.
+             * @param message DotnetSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.IDotnetSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified DotnetSettings message, length delimited. Does not implicitly {@link google.api.DotnetSettings.verify|verify} messages.
+             * @param message DotnetSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.IDotnetSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a DotnetSettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns DotnetSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.DotnetSettings;
+
+            /**
+             * Decodes a DotnetSettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns DotnetSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.DotnetSettings;
+
+            /**
+             * Verifies a DotnetSettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a DotnetSettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns DotnetSettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.DotnetSettings;
+
+            /**
+             * Creates a plain object from a DotnetSettings message. Also converts values to other types if specified.
+             * @param message DotnetSettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.DotnetSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this DotnetSettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for DotnetSettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a RubySettings. */
+        interface IRubySettings {
+
+            /** RubySettings common */
+            common?: (google.api.ICommonLanguageSettings|null);
+        }
+
+        /** Represents a RubySettings. */
+        class RubySettings implements IRubySettings {
+
+            /**
+             * Constructs a new RubySettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.IRubySettings);
+
+            /** RubySettings common. */
+            public common?: (google.api.ICommonLanguageSettings|null);
+
+            /**
+             * Creates a new RubySettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns RubySettings instance
+             */
+            public static create(properties?: google.api.IRubySettings): google.api.RubySettings;
+
+            /**
+             * Encodes the specified RubySettings message. Does not implicitly {@link google.api.RubySettings.verify|verify} messages.
+             * @param message RubySettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.IRubySettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified RubySettings message, length delimited. Does not implicitly {@link google.api.RubySettings.verify|verify} messages.
+             * @param message RubySettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.IRubySettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a RubySettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns RubySettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.RubySettings;
+
+            /**
+             * Decodes a RubySettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns RubySettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.RubySettings;
+
+            /**
+             * Verifies a RubySettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a RubySettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns RubySettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.RubySettings;
+
+            /**
+             * Creates a plain object from a RubySettings message. Also converts values to other types if specified.
+             * @param message RubySettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.RubySettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this RubySettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for RubySettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a GoSettings. */
+        interface IGoSettings {
+
+            /** GoSettings common */
+            common?: (google.api.ICommonLanguageSettings|null);
+        }
+
+        /** Represents a GoSettings. */
+        class GoSettings implements IGoSettings {
+
+            /**
+             * Constructs a new GoSettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.IGoSettings);
+
+            /** GoSettings common. */
+            public common?: (google.api.ICommonLanguageSettings|null);
+
+            /**
+             * Creates a new GoSettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns GoSettings instance
+             */
+            public static create(properties?: google.api.IGoSettings): google.api.GoSettings;
+
+            /**
+             * Encodes the specified GoSettings message. Does not implicitly {@link google.api.GoSettings.verify|verify} messages.
+             * @param message GoSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.IGoSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified GoSettings message, length delimited. Does not implicitly {@link google.api.GoSettings.verify|verify} messages.
+             * @param message GoSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.IGoSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a GoSettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns GoSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.GoSettings;
+
+            /**
+             * Decodes a GoSettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns GoSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.GoSettings;
+
+            /**
+             * Verifies a GoSettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a GoSettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns GoSettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.GoSettings;
+
+            /**
+             * Creates a plain object from a GoSettings message. Also converts values to other types if specified.
+             * @param message GoSettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.GoSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this GoSettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for GoSettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        /** Properties of a MethodSettings. */
+        interface IMethodSettings {
+
+            /** MethodSettings selector */
+            selector?: (string|null);
+
+            /** MethodSettings longRunning */
+            longRunning?: (google.api.MethodSettings.ILongRunning|null);
+
+            /** MethodSettings autoPopulatedFields */
+            autoPopulatedFields?: (string[]|null);
+        }
+
+        /** Represents a MethodSettings. */
+        class MethodSettings implements IMethodSettings {
+
+            /**
+             * Constructs a new MethodSettings.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.api.IMethodSettings);
+
+            /** MethodSettings selector. */
+            public selector: string;
+
+            /** MethodSettings longRunning. */
+            public longRunning?: (google.api.MethodSettings.ILongRunning|null);
+
+            /** MethodSettings autoPopulatedFields. */
+            public autoPopulatedFields: string[];
+
+            /**
+             * Creates a new MethodSettings instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns MethodSettings instance
+             */
+            public static create(properties?: google.api.IMethodSettings): google.api.MethodSettings;
+
+            /**
+             * Encodes the specified MethodSettings message. Does not implicitly {@link google.api.MethodSettings.verify|verify} messages.
+             * @param message MethodSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.api.IMethodSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified MethodSettings message, length delimited. Does not implicitly {@link google.api.MethodSettings.verify|verify} messages.
+             * @param message MethodSettings message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.api.IMethodSettings, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a MethodSettings message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns MethodSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.MethodSettings;
+
+            /**
+             * Decodes a MethodSettings message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns MethodSettings
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.MethodSettings;
+
+            /**
+             * Verifies a MethodSettings message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a MethodSettings message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns MethodSettings
+             */
+            public static fromObject(object: { [k: string]: any }): google.api.MethodSettings;
+
+            /**
+             * Creates a plain object from a MethodSettings message. Also converts values to other types if specified.
+             * @param message MethodSettings
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.api.MethodSettings, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this MethodSettings to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for MethodSettings
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace MethodSettings {
+
+            /** Properties of a LongRunning. */
+            interface ILongRunning {
+
+                /** LongRunning initialPollDelay */
+                initialPollDelay?: (google.protobuf.IDuration|null);
+
+                /** LongRunning pollDelayMultiplier */
+                pollDelayMultiplier?: (number|null);
+
+                /** LongRunning maxPollDelay */
+                maxPollDelay?: (google.protobuf.IDuration|null);
+
+                /** LongRunning totalPollTimeout */
+                totalPollTimeout?: (google.protobuf.IDuration|null);
+            }
+
+            /** Represents a LongRunning. */
+            class LongRunning implements ILongRunning {
+
+                /**
+                 * Constructs a new LongRunning.
+                 * @param [properties] Properties to set
+                 */
+                constructor(properties?: google.api.MethodSettings.ILongRunning);
+
+                /** LongRunning initialPollDelay. */
+                public initialPollDelay?: (google.protobuf.IDuration|null);
+
+                /** LongRunning pollDelayMultiplier. */
+                public pollDelayMultiplier: number;
+
+                /** LongRunning maxPollDelay. */
+                public maxPollDelay?: (google.protobuf.IDuration|null);
+
+                /** LongRunning totalPollTimeout. */
+                public totalPollTimeout?: (google.protobuf.IDuration|null);
+
+                /**
+                 * Creates a new LongRunning instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns LongRunning instance
+                 */
+                public static create(properties?: google.api.MethodSettings.ILongRunning): google.api.MethodSettings.LongRunning;
+
+                /**
+                 * Encodes the specified LongRunning message. Does not implicitly {@link google.api.MethodSettings.LongRunning.verify|verify} messages.
+                 * @param message LongRunning message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(message: google.api.MethodSettings.ILongRunning, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Encodes the specified LongRunning message, length delimited. Does not implicitly {@link google.api.MethodSettings.LongRunning.verify|verify} messages.
+                 * @param message LongRunning message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encodeDelimited(message: google.api.MethodSettings.ILongRunning, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a LongRunning message from the specified reader or buffer.
+                 * @param reader Reader or buffer to decode from
+                 * @param [length] Message length if known beforehand
+                 * @returns LongRunning
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.api.MethodSettings.LongRunning;
+
+                /**
+                 * Decodes a LongRunning message from the specified reader or buffer, length delimited.
+                 * @param reader Reader or buffer to decode from
+                 * @returns LongRunning
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.api.MethodSettings.LongRunning;
+
+                /**
+                 * Verifies a LongRunning message.
+                 * @param message Plain object to verify
+                 * @returns `null` if valid, otherwise the reason why it is not
+                 */
+                public static verify(message: { [k: string]: any }): (string|null);
+
+                /**
+                 * Creates a LongRunning message from a plain object. Also converts values to their respective internal types.
+                 * @param object Plain object
+                 * @returns LongRunning
+                 */
+                public static fromObject(object: { [k: string]: any }): google.api.MethodSettings.LongRunning;
+
+                /**
+                 * Creates a plain object from a LongRunning message. Also converts values to other types if specified.
+                 * @param message LongRunning
+                 * @param [options] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(message: google.api.MethodSettings.LongRunning, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this LongRunning to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+
+                /**
+                 * Gets the default type url for LongRunning
+                 * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                 * @returns The default type url
+                 */
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+        }
+
+        /** ClientLibraryOrganization enum. */
+        enum ClientLibraryOrganization {
+            CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED = 0,
+            CLOUD = 1,
+            ADS = 2,
+            PHOTOS = 3,
+            STREET_VIEW = 4,
+            SHOPPING = 5,
+            GEO = 6,
+            GENERATIVE_AI = 7
+        }
+
+        /** ClientLibraryDestination enum. */
+        enum ClientLibraryDestination {
+            CLIENT_LIBRARY_DESTINATION_UNSPECIFIED = 0,
+            GITHUB = 10,
+            PACKAGE_MANAGER = 20
+        }
+
+        /** LaunchStage enum. */
+        enum LaunchStage {
+            LAUNCH_STAGE_UNSPECIFIED = 0,
+            UNIMPLEMENTED = 6,
+            PRELAUNCH = 7,
+            EARLY_ACCESS = 1,
+            ALPHA = 2,
+            BETA = 3,
+            GA = 4,
+            DEPRECATED = 5
+        }
+
+        /** FieldBehavior enum. */
+        enum FieldBehavior {
+            FIELD_BEHAVIOR_UNSPECIFIED = 0,
+            OPTIONAL = 1,
+            REQUIRED = 2,
+            OUTPUT_ONLY = 3,
+            INPUT_ONLY = 4,
+            IMMUTABLE = 5,
+            UNORDERED_LIST = 6,
+            NON_EMPTY_DEFAULT = 7,
+            IDENTIFIER = 8
         }
     }
 
@@ -12864,6 +6963,21 @@ export namespace google {
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
+        /** Edition enum. */
+        enum Edition {
+            EDITION_UNKNOWN = 0,
+            EDITION_PROTO2 = 998,
+            EDITION_PROTO3 = 999,
+            EDITION_2023 = 1000,
+            EDITION_2024 = 1001,
+            EDITION_1_TEST_ONLY = 1,
+            EDITION_2_TEST_ONLY = 2,
+            EDITION_99997_TEST_ONLY = 99997,
+            EDITION_99998_TEST_ONLY = 99998,
+            EDITION_99999_TEST_ONLY = 99999,
+            EDITION_MAX = 2147483647
+        }
+
         /** Properties of a FileDescriptorProto. */
         interface IFileDescriptorProto {
 
@@ -12904,7 +7018,7 @@ export namespace google {
             syntax?: (string|null);
 
             /** FileDescriptorProto edition */
-            edition?: (string|null);
+            edition?: (google.protobuf.Edition|keyof typeof google.protobuf.Edition|null);
         }
 
         /** Represents a FileDescriptorProto. */
@@ -12953,7 +7067,7 @@ export namespace google {
             public syntax: string;
 
             /** FileDescriptorProto edition. */
-            public edition: string;
+            public edition: (google.protobuf.Edition|keyof typeof google.protobuf.Edition);
 
             /**
              * Creates a new FileDescriptorProto instance using the specified properties.
@@ -13404,6 +7518,15 @@ export namespace google {
 
             /** ExtensionRangeOptions uninterpretedOption */
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
+
+            /** ExtensionRangeOptions declaration */
+            declaration?: (google.protobuf.ExtensionRangeOptions.IDeclaration[]|null);
+
+            /** ExtensionRangeOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
+
+            /** ExtensionRangeOptions verification */
+            verification?: (google.protobuf.ExtensionRangeOptions.VerificationState|keyof typeof google.protobuf.ExtensionRangeOptions.VerificationState|null);
         }
 
         /** Represents an ExtensionRangeOptions. */
@@ -13417,6 +7540,15 @@ export namespace google {
 
             /** ExtensionRangeOptions uninterpretedOption. */
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
+
+            /** ExtensionRangeOptions declaration. */
+            public declaration: google.protobuf.ExtensionRangeOptions.IDeclaration[];
+
+            /** ExtensionRangeOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
+
+            /** ExtensionRangeOptions verification. */
+            public verification: (google.protobuf.ExtensionRangeOptions.VerificationState|keyof typeof google.protobuf.ExtensionRangeOptions.VerificationState);
 
             /**
              * Creates a new ExtensionRangeOptions instance using the specified properties.
@@ -13494,6 +7626,136 @@ export namespace google {
              * @returns The default type url
              */
             public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace ExtensionRangeOptions {
+
+            /** Properties of a Declaration. */
+            interface IDeclaration {
+
+                /** Declaration number */
+                number?: (number|null);
+
+                /** Declaration fullName */
+                fullName?: (string|null);
+
+                /** Declaration type */
+                type?: (string|null);
+
+                /** Declaration reserved */
+                reserved?: (boolean|null);
+
+                /** Declaration repeated */
+                repeated?: (boolean|null);
+            }
+
+            /** Represents a Declaration. */
+            class Declaration implements IDeclaration {
+
+                /**
+                 * Constructs a new Declaration.
+                 * @param [properties] Properties to set
+                 */
+                constructor(properties?: google.protobuf.ExtensionRangeOptions.IDeclaration);
+
+                /** Declaration number. */
+                public number: number;
+
+                /** Declaration fullName. */
+                public fullName: string;
+
+                /** Declaration type. */
+                public type: string;
+
+                /** Declaration reserved. */
+                public reserved: boolean;
+
+                /** Declaration repeated. */
+                public repeated: boolean;
+
+                /**
+                 * Creates a new Declaration instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns Declaration instance
+                 */
+                public static create(properties?: google.protobuf.ExtensionRangeOptions.IDeclaration): google.protobuf.ExtensionRangeOptions.Declaration;
+
+                /**
+                 * Encodes the specified Declaration message. Does not implicitly {@link google.protobuf.ExtensionRangeOptions.Declaration.verify|verify} messages.
+                 * @param message Declaration message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(message: google.protobuf.ExtensionRangeOptions.IDeclaration, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Encodes the specified Declaration message, length delimited. Does not implicitly {@link google.protobuf.ExtensionRangeOptions.Declaration.verify|verify} messages.
+                 * @param message Declaration message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encodeDelimited(message: google.protobuf.ExtensionRangeOptions.IDeclaration, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a Declaration message from the specified reader or buffer.
+                 * @param reader Reader or buffer to decode from
+                 * @param [length] Message length if known beforehand
+                 * @returns Declaration
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.ExtensionRangeOptions.Declaration;
+
+                /**
+                 * Decodes a Declaration message from the specified reader or buffer, length delimited.
+                 * @param reader Reader or buffer to decode from
+                 * @returns Declaration
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.ExtensionRangeOptions.Declaration;
+
+                /**
+                 * Verifies a Declaration message.
+                 * @param message Plain object to verify
+                 * @returns `null` if valid, otherwise the reason why it is not
+                 */
+                public static verify(message: { [k: string]: any }): (string|null);
+
+                /**
+                 * Creates a Declaration message from a plain object. Also converts values to their respective internal types.
+                 * @param object Plain object
+                 * @returns Declaration
+                 */
+                public static fromObject(object: { [k: string]: any }): google.protobuf.ExtensionRangeOptions.Declaration;
+
+                /**
+                 * Creates a plain object from a Declaration message. Also converts values to other types if specified.
+                 * @param message Declaration
+                 * @param [options] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(message: google.protobuf.ExtensionRangeOptions.Declaration, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this Declaration to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+
+                /**
+                 * Gets the default type url for Declaration
+                 * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                 * @returns The default type url
+                 */
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+
+            /** VerificationState enum. */
+            enum VerificationState {
+                DECLARATION = 0,
+                UNVERIFIED = 1
+            }
         }
 
         /** Properties of a FieldDescriptorProto. */
@@ -13680,8 +7942,8 @@ export namespace google {
             /** Label enum. */
             enum Label {
                 LABEL_OPTIONAL = 1,
-                LABEL_REQUIRED = 2,
-                LABEL_REPEATED = 3
+                LABEL_REPEATED = 3,
+                LABEL_REQUIRED = 2
             }
         }
 
@@ -14393,9 +8655,6 @@ export namespace google {
             /** FileOptions pyGenericServices */
             pyGenericServices?: (boolean|null);
 
-            /** FileOptions phpGenericServices */
-            phpGenericServices?: (boolean|null);
-
             /** FileOptions deprecated */
             deprecated?: (boolean|null);
 
@@ -14423,11 +8682,11 @@ export namespace google {
             /** FileOptions rubyPackage */
             rubyPackage?: (string|null);
 
+            /** FileOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
+
             /** FileOptions uninterpretedOption */
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
-
-            /** FileOptions .google.api.resourceDefinition */
-            ".google.api.resourceDefinition"?: (google.api.IResourceDescriptor[]|null);
         }
 
         /** Represents a FileOptions. */
@@ -14469,9 +8728,6 @@ export namespace google {
             /** FileOptions pyGenericServices. */
             public pyGenericServices: boolean;
 
-            /** FileOptions phpGenericServices. */
-            public phpGenericServices: boolean;
-
             /** FileOptions deprecated. */
             public deprecated: boolean;
 
@@ -14498,6 +8754,9 @@ export namespace google {
 
             /** FileOptions rubyPackage. */
             public rubyPackage: string;
+
+            /** FileOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
 
             /** FileOptions uninterpretedOption. */
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
@@ -14605,11 +8864,14 @@ export namespace google {
             /** MessageOptions mapEntry */
             mapEntry?: (boolean|null);
 
+            /** MessageOptions deprecatedLegacyJsonFieldConflicts */
+            deprecatedLegacyJsonFieldConflicts?: (boolean|null);
+
+            /** MessageOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
+
             /** MessageOptions uninterpretedOption */
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
-
-            /** MessageOptions .google.api.resource */
-            ".google.api.resource"?: (google.api.IResourceDescriptor|null);
         }
 
         /** Represents a MessageOptions. */
@@ -14632,6 +8894,12 @@ export namespace google {
 
             /** MessageOptions mapEntry. */
             public mapEntry: boolean;
+
+            /** MessageOptions deprecatedLegacyJsonFieldConflicts. */
+            public deprecatedLegacyJsonFieldConflicts: boolean;
+
+            /** MessageOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
 
             /** MessageOptions uninterpretedOption. */
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
@@ -14738,14 +9006,26 @@ export namespace google {
             /** FieldOptions weak */
             weak?: (boolean|null);
 
+            /** FieldOptions debugRedact */
+            debugRedact?: (boolean|null);
+
+            /** FieldOptions retention */
+            retention?: (google.protobuf.FieldOptions.OptionRetention|keyof typeof google.protobuf.FieldOptions.OptionRetention|null);
+
+            /** FieldOptions targets */
+            targets?: (google.protobuf.FieldOptions.OptionTargetType[]|null);
+
+            /** FieldOptions editionDefaults */
+            editionDefaults?: (google.protobuf.FieldOptions.IEditionDefault[]|null);
+
+            /** FieldOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
+
             /** FieldOptions uninterpretedOption */
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
 
             /** FieldOptions .google.api.fieldBehavior */
             ".google.api.fieldBehavior"?: (google.api.FieldBehavior[]|null);
-
-            /** FieldOptions .google.api.resourceReference */
-            ".google.api.resourceReference"?: (google.api.IResourceReference|null);
         }
 
         /** Represents a FieldOptions. */
@@ -14777,6 +9057,21 @@ export namespace google {
 
             /** FieldOptions weak. */
             public weak: boolean;
+
+            /** FieldOptions debugRedact. */
+            public debugRedact: boolean;
+
+            /** FieldOptions retention. */
+            public retention: (google.protobuf.FieldOptions.OptionRetention|keyof typeof google.protobuf.FieldOptions.OptionRetention);
+
+            /** FieldOptions targets. */
+            public targets: google.protobuf.FieldOptions.OptionTargetType[];
+
+            /** FieldOptions editionDefaults. */
+            public editionDefaults: google.protobuf.FieldOptions.IEditionDefault[];
+
+            /** FieldOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
 
             /** FieldOptions uninterpretedOption. */
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
@@ -14874,10 +9169,137 @@ export namespace google {
                 JS_STRING = 1,
                 JS_NUMBER = 2
             }
+
+            /** OptionRetention enum. */
+            enum OptionRetention {
+                RETENTION_UNKNOWN = 0,
+                RETENTION_RUNTIME = 1,
+                RETENTION_SOURCE = 2
+            }
+
+            /** OptionTargetType enum. */
+            enum OptionTargetType {
+                TARGET_TYPE_UNKNOWN = 0,
+                TARGET_TYPE_FILE = 1,
+                TARGET_TYPE_EXTENSION_RANGE = 2,
+                TARGET_TYPE_MESSAGE = 3,
+                TARGET_TYPE_FIELD = 4,
+                TARGET_TYPE_ONEOF = 5,
+                TARGET_TYPE_ENUM = 6,
+                TARGET_TYPE_ENUM_ENTRY = 7,
+                TARGET_TYPE_SERVICE = 8,
+                TARGET_TYPE_METHOD = 9
+            }
+
+            /** Properties of an EditionDefault. */
+            interface IEditionDefault {
+
+                /** EditionDefault edition */
+                edition?: (google.protobuf.Edition|keyof typeof google.protobuf.Edition|null);
+
+                /** EditionDefault value */
+                value?: (string|null);
+            }
+
+            /** Represents an EditionDefault. */
+            class EditionDefault implements IEditionDefault {
+
+                /**
+                 * Constructs a new EditionDefault.
+                 * @param [properties] Properties to set
+                 */
+                constructor(properties?: google.protobuf.FieldOptions.IEditionDefault);
+
+                /** EditionDefault edition. */
+                public edition: (google.protobuf.Edition|keyof typeof google.protobuf.Edition);
+
+                /** EditionDefault value. */
+                public value: string;
+
+                /**
+                 * Creates a new EditionDefault instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns EditionDefault instance
+                 */
+                public static create(properties?: google.protobuf.FieldOptions.IEditionDefault): google.protobuf.FieldOptions.EditionDefault;
+
+                /**
+                 * Encodes the specified EditionDefault message. Does not implicitly {@link google.protobuf.FieldOptions.EditionDefault.verify|verify} messages.
+                 * @param message EditionDefault message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(message: google.protobuf.FieldOptions.IEditionDefault, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Encodes the specified EditionDefault message, length delimited. Does not implicitly {@link google.protobuf.FieldOptions.EditionDefault.verify|verify} messages.
+                 * @param message EditionDefault message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encodeDelimited(message: google.protobuf.FieldOptions.IEditionDefault, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes an EditionDefault message from the specified reader or buffer.
+                 * @param reader Reader or buffer to decode from
+                 * @param [length] Message length if known beforehand
+                 * @returns EditionDefault
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldOptions.EditionDefault;
+
+                /**
+                 * Decodes an EditionDefault message from the specified reader or buffer, length delimited.
+                 * @param reader Reader or buffer to decode from
+                 * @returns EditionDefault
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FieldOptions.EditionDefault;
+
+                /**
+                 * Verifies an EditionDefault message.
+                 * @param message Plain object to verify
+                 * @returns `null` if valid, otherwise the reason why it is not
+                 */
+                public static verify(message: { [k: string]: any }): (string|null);
+
+                /**
+                 * Creates an EditionDefault message from a plain object. Also converts values to their respective internal types.
+                 * @param object Plain object
+                 * @returns EditionDefault
+                 */
+                public static fromObject(object: { [k: string]: any }): google.protobuf.FieldOptions.EditionDefault;
+
+                /**
+                 * Creates a plain object from an EditionDefault message. Also converts values to other types if specified.
+                 * @param message EditionDefault
+                 * @param [options] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(message: google.protobuf.FieldOptions.EditionDefault, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this EditionDefault to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+
+                /**
+                 * Gets the default type url for EditionDefault
+                 * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                 * @returns The default type url
+                 */
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
         }
 
         /** Properties of an OneofOptions. */
         interface IOneofOptions {
+
+            /** OneofOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
 
             /** OneofOptions uninterpretedOption */
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
@@ -14891,6 +9313,9 @@ export namespace google {
              * @param [properties] Properties to set
              */
             constructor(properties?: google.protobuf.IOneofOptions);
+
+            /** OneofOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
 
             /** OneofOptions uninterpretedOption. */
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
@@ -14982,6 +9407,12 @@ export namespace google {
             /** EnumOptions deprecated */
             deprecated?: (boolean|null);
 
+            /** EnumOptions deprecatedLegacyJsonFieldConflicts */
+            deprecatedLegacyJsonFieldConflicts?: (boolean|null);
+
+            /** EnumOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
+
             /** EnumOptions uninterpretedOption */
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
@@ -15000,6 +9431,12 @@ export namespace google {
 
             /** EnumOptions deprecated. */
             public deprecated: boolean;
+
+            /** EnumOptions deprecatedLegacyJsonFieldConflicts. */
+            public deprecatedLegacyJsonFieldConflicts: boolean;
+
+            /** EnumOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
 
             /** EnumOptions uninterpretedOption. */
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
@@ -15088,6 +9525,12 @@ export namespace google {
             /** EnumValueOptions deprecated */
             deprecated?: (boolean|null);
 
+            /** EnumValueOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
+
+            /** EnumValueOptions debugRedact */
+            debugRedact?: (boolean|null);
+
             /** EnumValueOptions uninterpretedOption */
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
         }
@@ -15103,6 +9546,12 @@ export namespace google {
 
             /** EnumValueOptions deprecated. */
             public deprecated: boolean;
+
+            /** EnumValueOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
+
+            /** EnumValueOptions debugRedact. */
+            public debugRedact: boolean;
 
             /** EnumValueOptions uninterpretedOption. */
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
@@ -15188,6 +9637,9 @@ export namespace google {
         /** Properties of a ServiceOptions. */
         interface IServiceOptions {
 
+            /** ServiceOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
+
             /** ServiceOptions deprecated */
             deprecated?: (boolean|null);
 
@@ -15199,6 +9651,9 @@ export namespace google {
 
             /** ServiceOptions .google.api.oauthScopes */
             ".google.api.oauthScopes"?: (string|null);
+
+            /** ServiceOptions .google.api.apiVersion */
+            ".google.api.apiVersion"?: (string|null);
         }
 
         /** Represents a ServiceOptions. */
@@ -15209,6 +9664,9 @@ export namespace google {
              * @param [properties] Properties to set
              */
             constructor(properties?: google.protobuf.IServiceOptions);
+
+            /** ServiceOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
 
             /** ServiceOptions deprecated. */
             public deprecated: boolean;
@@ -15303,6 +9761,9 @@ export namespace google {
             /** MethodOptions idempotencyLevel */
             idempotencyLevel?: (google.protobuf.MethodOptions.IdempotencyLevel|keyof typeof google.protobuf.MethodOptions.IdempotencyLevel|null);
 
+            /** MethodOptions features */
+            features?: (google.protobuf.IFeatureSet|null);
+
             /** MethodOptions uninterpretedOption */
             uninterpretedOption?: (google.protobuf.IUninterpretedOption[]|null);
 
@@ -15311,9 +9772,6 @@ export namespace google {
 
             /** MethodOptions .google.api.methodSignature */
             ".google.api.methodSignature"?: (string[]|null);
-
-            /** MethodOptions .google.longrunning.operationInfo */
-            ".google.longrunning.operationInfo"?: (google.longrunning.IOperationInfo|null);
         }
 
         /** Represents a MethodOptions. */
@@ -15330,6 +9788,9 @@ export namespace google {
 
             /** MethodOptions idempotencyLevel. */
             public idempotencyLevel: (google.protobuf.MethodOptions.IdempotencyLevel|keyof typeof google.protobuf.MethodOptions.IdempotencyLevel);
+
+            /** MethodOptions features. */
+            public features?: (google.protobuf.IFeatureSet|null);
 
             /** MethodOptions uninterpretedOption. */
             public uninterpretedOption: google.protobuf.IUninterpretedOption[];
@@ -15654,6 +10115,394 @@ export namespace google {
 
                 /**
                  * Gets the default type url for NamePart
+                 * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+                 * @returns The default type url
+                 */
+                public static getTypeUrl(typeUrlPrefix?: string): string;
+            }
+        }
+
+        /** Properties of a FeatureSet. */
+        interface IFeatureSet {
+
+            /** FeatureSet fieldPresence */
+            fieldPresence?: (google.protobuf.FeatureSet.FieldPresence|keyof typeof google.protobuf.FeatureSet.FieldPresence|null);
+
+            /** FeatureSet enumType */
+            enumType?: (google.protobuf.FeatureSet.EnumType|keyof typeof google.protobuf.FeatureSet.EnumType|null);
+
+            /** FeatureSet repeatedFieldEncoding */
+            repeatedFieldEncoding?: (google.protobuf.FeatureSet.RepeatedFieldEncoding|keyof typeof google.protobuf.FeatureSet.RepeatedFieldEncoding|null);
+
+            /** FeatureSet utf8Validation */
+            utf8Validation?: (google.protobuf.FeatureSet.Utf8Validation|keyof typeof google.protobuf.FeatureSet.Utf8Validation|null);
+
+            /** FeatureSet messageEncoding */
+            messageEncoding?: (google.protobuf.FeatureSet.MessageEncoding|keyof typeof google.protobuf.FeatureSet.MessageEncoding|null);
+
+            /** FeatureSet jsonFormat */
+            jsonFormat?: (google.protobuf.FeatureSet.JsonFormat|keyof typeof google.protobuf.FeatureSet.JsonFormat|null);
+        }
+
+        /** Represents a FeatureSet. */
+        class FeatureSet implements IFeatureSet {
+
+            /**
+             * Constructs a new FeatureSet.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.protobuf.IFeatureSet);
+
+            /** FeatureSet fieldPresence. */
+            public fieldPresence: (google.protobuf.FeatureSet.FieldPresence|keyof typeof google.protobuf.FeatureSet.FieldPresence);
+
+            /** FeatureSet enumType. */
+            public enumType: (google.protobuf.FeatureSet.EnumType|keyof typeof google.protobuf.FeatureSet.EnumType);
+
+            /** FeatureSet repeatedFieldEncoding. */
+            public repeatedFieldEncoding: (google.protobuf.FeatureSet.RepeatedFieldEncoding|keyof typeof google.protobuf.FeatureSet.RepeatedFieldEncoding);
+
+            /** FeatureSet utf8Validation. */
+            public utf8Validation: (google.protobuf.FeatureSet.Utf8Validation|keyof typeof google.protobuf.FeatureSet.Utf8Validation);
+
+            /** FeatureSet messageEncoding. */
+            public messageEncoding: (google.protobuf.FeatureSet.MessageEncoding|keyof typeof google.protobuf.FeatureSet.MessageEncoding);
+
+            /** FeatureSet jsonFormat. */
+            public jsonFormat: (google.protobuf.FeatureSet.JsonFormat|keyof typeof google.protobuf.FeatureSet.JsonFormat);
+
+            /**
+             * Creates a new FeatureSet instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns FeatureSet instance
+             */
+            public static create(properties?: google.protobuf.IFeatureSet): google.protobuf.FeatureSet;
+
+            /**
+             * Encodes the specified FeatureSet message. Does not implicitly {@link google.protobuf.FeatureSet.verify|verify} messages.
+             * @param message FeatureSet message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.protobuf.IFeatureSet, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified FeatureSet message, length delimited. Does not implicitly {@link google.protobuf.FeatureSet.verify|verify} messages.
+             * @param message FeatureSet message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.protobuf.IFeatureSet, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a FeatureSet message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns FeatureSet
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FeatureSet;
+
+            /**
+             * Decodes a FeatureSet message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns FeatureSet
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FeatureSet;
+
+            /**
+             * Verifies a FeatureSet message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a FeatureSet message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns FeatureSet
+             */
+            public static fromObject(object: { [k: string]: any }): google.protobuf.FeatureSet;
+
+            /**
+             * Creates a plain object from a FeatureSet message. Also converts values to other types if specified.
+             * @param message FeatureSet
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.protobuf.FeatureSet, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this FeatureSet to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for FeatureSet
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace FeatureSet {
+
+            /** FieldPresence enum. */
+            enum FieldPresence {
+                FIELD_PRESENCE_UNKNOWN = 0,
+                EXPLICIT = 1,
+                IMPLICIT = 2,
+                LEGACY_REQUIRED = 3
+            }
+
+            /** EnumType enum. */
+            enum EnumType {
+                ENUM_TYPE_UNKNOWN = 0,
+                OPEN = 1,
+                CLOSED = 2
+            }
+
+            /** RepeatedFieldEncoding enum. */
+            enum RepeatedFieldEncoding {
+                REPEATED_FIELD_ENCODING_UNKNOWN = 0,
+                PACKED = 1,
+                EXPANDED = 2
+            }
+
+            /** Utf8Validation enum. */
+            enum Utf8Validation {
+                UTF8_VALIDATION_UNKNOWN = 0,
+                VERIFY = 2,
+                NONE = 3
+            }
+
+            /** MessageEncoding enum. */
+            enum MessageEncoding {
+                MESSAGE_ENCODING_UNKNOWN = 0,
+                LENGTH_PREFIXED = 1,
+                DELIMITED = 2
+            }
+
+            /** JsonFormat enum. */
+            enum JsonFormat {
+                JSON_FORMAT_UNKNOWN = 0,
+                ALLOW = 1,
+                LEGACY_BEST_EFFORT = 2
+            }
+        }
+
+        /** Properties of a FeatureSetDefaults. */
+        interface IFeatureSetDefaults {
+
+            /** FeatureSetDefaults defaults */
+            defaults?: (google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault[]|null);
+
+            /** FeatureSetDefaults minimumEdition */
+            minimumEdition?: (google.protobuf.Edition|keyof typeof google.protobuf.Edition|null);
+
+            /** FeatureSetDefaults maximumEdition */
+            maximumEdition?: (google.protobuf.Edition|keyof typeof google.protobuf.Edition|null);
+        }
+
+        /** Represents a FeatureSetDefaults. */
+        class FeatureSetDefaults implements IFeatureSetDefaults {
+
+            /**
+             * Constructs a new FeatureSetDefaults.
+             * @param [properties] Properties to set
+             */
+            constructor(properties?: google.protobuf.IFeatureSetDefaults);
+
+            /** FeatureSetDefaults defaults. */
+            public defaults: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault[];
+
+            /** FeatureSetDefaults minimumEdition. */
+            public minimumEdition: (google.protobuf.Edition|keyof typeof google.protobuf.Edition);
+
+            /** FeatureSetDefaults maximumEdition. */
+            public maximumEdition: (google.protobuf.Edition|keyof typeof google.protobuf.Edition);
+
+            /**
+             * Creates a new FeatureSetDefaults instance using the specified properties.
+             * @param [properties] Properties to set
+             * @returns FeatureSetDefaults instance
+             */
+            public static create(properties?: google.protobuf.IFeatureSetDefaults): google.protobuf.FeatureSetDefaults;
+
+            /**
+             * Encodes the specified FeatureSetDefaults message. Does not implicitly {@link google.protobuf.FeatureSetDefaults.verify|verify} messages.
+             * @param message FeatureSetDefaults message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encode(message: google.protobuf.IFeatureSetDefaults, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Encodes the specified FeatureSetDefaults message, length delimited. Does not implicitly {@link google.protobuf.FeatureSetDefaults.verify|verify} messages.
+             * @param message FeatureSetDefaults message or plain object to encode
+             * @param [writer] Writer to encode to
+             * @returns Writer
+             */
+            public static encodeDelimited(message: google.protobuf.IFeatureSetDefaults, writer?: $protobuf.Writer): $protobuf.Writer;
+
+            /**
+             * Decodes a FeatureSetDefaults message from the specified reader or buffer.
+             * @param reader Reader or buffer to decode from
+             * @param [length] Message length if known beforehand
+             * @returns FeatureSetDefaults
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FeatureSetDefaults;
+
+            /**
+             * Decodes a FeatureSetDefaults message from the specified reader or buffer, length delimited.
+             * @param reader Reader or buffer to decode from
+             * @returns FeatureSetDefaults
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FeatureSetDefaults;
+
+            /**
+             * Verifies a FeatureSetDefaults message.
+             * @param message Plain object to verify
+             * @returns `null` if valid, otherwise the reason why it is not
+             */
+            public static verify(message: { [k: string]: any }): (string|null);
+
+            /**
+             * Creates a FeatureSetDefaults message from a plain object. Also converts values to their respective internal types.
+             * @param object Plain object
+             * @returns FeatureSetDefaults
+             */
+            public static fromObject(object: { [k: string]: any }): google.protobuf.FeatureSetDefaults;
+
+            /**
+             * Creates a plain object from a FeatureSetDefaults message. Also converts values to other types if specified.
+             * @param message FeatureSetDefaults
+             * @param [options] Conversion options
+             * @returns Plain object
+             */
+            public static toObject(message: google.protobuf.FeatureSetDefaults, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+            /**
+             * Converts this FeatureSetDefaults to JSON.
+             * @returns JSON object
+             */
+            public toJSON(): { [k: string]: any };
+
+            /**
+             * Gets the default type url for FeatureSetDefaults
+             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+             * @returns The default type url
+             */
+            public static getTypeUrl(typeUrlPrefix?: string): string;
+        }
+
+        namespace FeatureSetDefaults {
+
+            /** Properties of a FeatureSetEditionDefault. */
+            interface IFeatureSetEditionDefault {
+
+                /** FeatureSetEditionDefault edition */
+                edition?: (google.protobuf.Edition|keyof typeof google.protobuf.Edition|null);
+
+                /** FeatureSetEditionDefault features */
+                features?: (google.protobuf.IFeatureSet|null);
+            }
+
+            /** Represents a FeatureSetEditionDefault. */
+            class FeatureSetEditionDefault implements IFeatureSetEditionDefault {
+
+                /**
+                 * Constructs a new FeatureSetEditionDefault.
+                 * @param [properties] Properties to set
+                 */
+                constructor(properties?: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault);
+
+                /** FeatureSetEditionDefault edition. */
+                public edition: (google.protobuf.Edition|keyof typeof google.protobuf.Edition);
+
+                /** FeatureSetEditionDefault features. */
+                public features?: (google.protobuf.IFeatureSet|null);
+
+                /**
+                 * Creates a new FeatureSetEditionDefault instance using the specified properties.
+                 * @param [properties] Properties to set
+                 * @returns FeatureSetEditionDefault instance
+                 */
+                public static create(properties?: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault): google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault;
+
+                /**
+                 * Encodes the specified FeatureSetEditionDefault message. Does not implicitly {@link google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.verify|verify} messages.
+                 * @param message FeatureSetEditionDefault message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encode(message: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Encodes the specified FeatureSetEditionDefault message, length delimited. Does not implicitly {@link google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.verify|verify} messages.
+                 * @param message FeatureSetEditionDefault message or plain object to encode
+                 * @param [writer] Writer to encode to
+                 * @returns Writer
+                 */
+                public static encodeDelimited(message: google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault, writer?: $protobuf.Writer): $protobuf.Writer;
+
+                /**
+                 * Decodes a FeatureSetEditionDefault message from the specified reader or buffer.
+                 * @param reader Reader or buffer to decode from
+                 * @param [length] Message length if known beforehand
+                 * @returns FeatureSetEditionDefault
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault;
+
+                /**
+                 * Decodes a FeatureSetEditionDefault message from the specified reader or buffer, length delimited.
+                 * @param reader Reader or buffer to decode from
+                 * @returns FeatureSetEditionDefault
+                 * @throws {Error} If the payload is not a reader or valid buffer
+                 * @throws {$protobuf.util.ProtocolError} If required fields are missing
+                 */
+                public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault;
+
+                /**
+                 * Verifies a FeatureSetEditionDefault message.
+                 * @param message Plain object to verify
+                 * @returns `null` if valid, otherwise the reason why it is not
+                 */
+                public static verify(message: { [k: string]: any }): (string|null);
+
+                /**
+                 * Creates a FeatureSetEditionDefault message from a plain object. Also converts values to their respective internal types.
+                 * @param object Plain object
+                 * @returns FeatureSetEditionDefault
+                 */
+                public static fromObject(object: { [k: string]: any }): google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault;
+
+                /**
+                 * Creates a plain object from a FeatureSetEditionDefault message. Also converts values to other types if specified.
+                 * @param message FeatureSetEditionDefault
+                 * @param [options] Conversion options
+                 * @returns Plain object
+                 */
+                public static toObject(message: google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+                /**
+                 * Converts this FeatureSetEditionDefault to JSON.
+                 * @returns JSON object
+                 */
+                public toJSON(): { [k: string]: any };
+
+                /**
+                 * Gets the default type url for FeatureSetEditionDefault
                  * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
                  * @returns The default type url
                  */
@@ -16113,212 +10962,6 @@ export namespace google {
             }
         }
 
-        /** Properties of a Timestamp. */
-        interface ITimestamp {
-
-            /** Timestamp seconds */
-            seconds?: (number|Long|string|null);
-
-            /** Timestamp nanos */
-            nanos?: (number|null);
-        }
-
-        /** Represents a Timestamp. */
-        class Timestamp implements ITimestamp {
-
-            /**
-             * Constructs a new Timestamp.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.protobuf.ITimestamp);
-
-            /** Timestamp seconds. */
-            public seconds: (number|Long|string);
-
-            /** Timestamp nanos. */
-            public nanos: number;
-
-            /**
-             * Creates a new Timestamp instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Timestamp instance
-             */
-            public static create(properties?: google.protobuf.ITimestamp): google.protobuf.Timestamp;
-
-            /**
-             * Encodes the specified Timestamp message. Does not implicitly {@link google.protobuf.Timestamp.verify|verify} messages.
-             * @param message Timestamp message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.protobuf.ITimestamp, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified Timestamp message, length delimited. Does not implicitly {@link google.protobuf.Timestamp.verify|verify} messages.
-             * @param message Timestamp message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.protobuf.ITimestamp, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Timestamp message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns Timestamp
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.Timestamp;
-
-            /**
-             * Decodes a Timestamp message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns Timestamp
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.Timestamp;
-
-            /**
-             * Verifies a Timestamp message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a Timestamp message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns Timestamp
-             */
-            public static fromObject(object: { [k: string]: any }): google.protobuf.Timestamp;
-
-            /**
-             * Creates a plain object from a Timestamp message. Also converts values to other types if specified.
-             * @param message Timestamp
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.protobuf.Timestamp, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this Timestamp to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for Timestamp
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of an Any. */
-        interface IAny {
-
-            /** Any type_url */
-            type_url?: (string|null);
-
-            /** Any value */
-            value?: (Uint8Array|string|null);
-        }
-
-        /** Represents an Any. */
-        class Any implements IAny {
-
-            /**
-             * Constructs a new Any.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.protobuf.IAny);
-
-            /** Any type_url. */
-            public type_url: string;
-
-            /** Any value. */
-            public value: (Uint8Array|string);
-
-            /**
-             * Creates a new Any instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Any instance
-             */
-            public static create(properties?: google.protobuf.IAny): google.protobuf.Any;
-
-            /**
-             * Encodes the specified Any message. Does not implicitly {@link google.protobuf.Any.verify|verify} messages.
-             * @param message Any message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.protobuf.IAny, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified Any message, length delimited. Does not implicitly {@link google.protobuf.Any.verify|verify} messages.
-             * @param message Any message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.protobuf.IAny, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes an Any message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns Any
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.Any;
-
-            /**
-             * Decodes an Any message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns Any
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.Any;
-
-            /**
-             * Verifies an Any message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates an Any message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns Any
-             */
-            public static fromObject(object: { [k: string]: any }): google.protobuf.Any;
-
-            /**
-             * Creates a plain object from an Any message. Also converts values to other types if specified.
-             * @param message Any
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.protobuf.Any, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this Any to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for Any
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
         /** Properties of a Duration. */
         interface IDuration {
 
@@ -16422,1273 +11065,103 @@ export namespace google {
             public static getTypeUrl(typeUrlPrefix?: string): string;
         }
 
-        /** Properties of an Empty. */
-        interface IEmpty {
+        /** Properties of a Timestamp. */
+        interface ITimestamp {
+
+            /** Timestamp seconds */
+            seconds?: (number|Long|string|null);
+
+            /** Timestamp nanos */
+            nanos?: (number|null);
         }
 
-        /** Represents an Empty. */
-        class Empty implements IEmpty {
+        /** Represents a Timestamp. */
+        class Timestamp implements ITimestamp {
 
             /**
-             * Constructs a new Empty.
+             * Constructs a new Timestamp.
              * @param [properties] Properties to set
              */
-            constructor(properties?: google.protobuf.IEmpty);
+            constructor(properties?: google.protobuf.ITimestamp);
+
+            /** Timestamp seconds. */
+            public seconds: (number|Long|string);
+
+            /** Timestamp nanos. */
+            public nanos: number;
 
             /**
-             * Creates a new Empty instance using the specified properties.
+             * Creates a new Timestamp instance using the specified properties.
              * @param [properties] Properties to set
-             * @returns Empty instance
+             * @returns Timestamp instance
              */
-            public static create(properties?: google.protobuf.IEmpty): google.protobuf.Empty;
+            public static create(properties?: google.protobuf.ITimestamp): google.protobuf.Timestamp;
 
             /**
-             * Encodes the specified Empty message. Does not implicitly {@link google.protobuf.Empty.verify|verify} messages.
-             * @param message Empty message or plain object to encode
+             * Encodes the specified Timestamp message. Does not implicitly {@link google.protobuf.Timestamp.verify|verify} messages.
+             * @param message Timestamp message or plain object to encode
              * @param [writer] Writer to encode to
              * @returns Writer
              */
-            public static encode(message: google.protobuf.IEmpty, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encode(message: google.protobuf.ITimestamp, writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Encodes the specified Empty message, length delimited. Does not implicitly {@link google.protobuf.Empty.verify|verify} messages.
-             * @param message Empty message or plain object to encode
+             * Encodes the specified Timestamp message, length delimited. Does not implicitly {@link google.protobuf.Timestamp.verify|verify} messages.
+             * @param message Timestamp message or plain object to encode
              * @param [writer] Writer to encode to
              * @returns Writer
              */
-            public static encodeDelimited(message: google.protobuf.IEmpty, writer?: $protobuf.Writer): $protobuf.Writer;
+            public static encodeDelimited(message: google.protobuf.ITimestamp, writer?: $protobuf.Writer): $protobuf.Writer;
 
             /**
-             * Decodes an Empty message from the specified reader or buffer.
+             * Decodes a Timestamp message from the specified reader or buffer.
              * @param reader Reader or buffer to decode from
              * @param [length] Message length if known beforehand
-             * @returns Empty
+             * @returns Timestamp
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.Empty;
+            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.Timestamp;
 
             /**
-             * Decodes an Empty message from the specified reader or buffer, length delimited.
+             * Decodes a Timestamp message from the specified reader or buffer, length delimited.
              * @param reader Reader or buffer to decode from
-             * @returns Empty
+             * @returns Timestamp
              * @throws {Error} If the payload is not a reader or valid buffer
              * @throws {$protobuf.util.ProtocolError} If required fields are missing
              */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.Empty;
+            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.Timestamp;
 
             /**
-             * Verifies an Empty message.
+             * Verifies a Timestamp message.
              * @param message Plain object to verify
              * @returns `null` if valid, otherwise the reason why it is not
              */
             public static verify(message: { [k: string]: any }): (string|null);
 
             /**
-             * Creates an Empty message from a plain object. Also converts values to their respective internal types.
+             * Creates a Timestamp message from a plain object. Also converts values to their respective internal types.
              * @param object Plain object
-             * @returns Empty
+             * @returns Timestamp
              */
-            public static fromObject(object: { [k: string]: any }): google.protobuf.Empty;
+            public static fromObject(object: { [k: string]: any }): google.protobuf.Timestamp;
 
             /**
-             * Creates a plain object from an Empty message. Also converts values to other types if specified.
-             * @param message Empty
+             * Creates a plain object from a Timestamp message. Also converts values to other types if specified.
+             * @param message Timestamp
              * @param [options] Conversion options
              * @returns Plain object
              */
-            public static toObject(message: google.protobuf.Empty, options?: $protobuf.IConversionOptions): { [k: string]: any };
+            public static toObject(message: google.protobuf.Timestamp, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
             /**
-             * Converts this Empty to JSON.
+             * Converts this Timestamp to JSON.
              * @returns JSON object
              */
             public toJSON(): { [k: string]: any };
 
             /**
-             * Gets the default type url for Empty
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of a FieldMask. */
-        interface IFieldMask {
-
-            /** FieldMask paths */
-            paths?: (string[]|null);
-        }
-
-        /** Represents a FieldMask. */
-        class FieldMask implements IFieldMask {
-
-            /**
-             * Constructs a new FieldMask.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.protobuf.IFieldMask);
-
-            /** FieldMask paths. */
-            public paths: string[];
-
-            /**
-             * Creates a new FieldMask instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns FieldMask instance
-             */
-            public static create(properties?: google.protobuf.IFieldMask): google.protobuf.FieldMask;
-
-            /**
-             * Encodes the specified FieldMask message. Does not implicitly {@link google.protobuf.FieldMask.verify|verify} messages.
-             * @param message FieldMask message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.protobuf.IFieldMask, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified FieldMask message, length delimited. Does not implicitly {@link google.protobuf.FieldMask.verify|verify} messages.
-             * @param message FieldMask message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.protobuf.IFieldMask, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a FieldMask message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns FieldMask
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.protobuf.FieldMask;
-
-            /**
-             * Decodes a FieldMask message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns FieldMask
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.protobuf.FieldMask;
-
-            /**
-             * Verifies a FieldMask message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a FieldMask message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns FieldMask
-             */
-            public static fromObject(object: { [k: string]: any }): google.protobuf.FieldMask;
-
-            /**
-             * Creates a plain object from a FieldMask message. Also converts values to other types if specified.
-             * @param message FieldMask
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.protobuf.FieldMask, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this FieldMask to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for FieldMask
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-    }
-
-    /** Namespace longrunning. */
-    namespace longrunning {
-
-        /** Represents an Operations */
-        class Operations extends $protobuf.rpc.Service {
-
-            /**
-             * Constructs a new Operations service.
-             * @param rpcImpl RPC implementation
-             * @param [requestDelimited=false] Whether requests are length-delimited
-             * @param [responseDelimited=false] Whether responses are length-delimited
-             */
-            constructor(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean);
-
-            /**
-             * Creates new Operations service using the specified rpc implementation.
-             * @param rpcImpl RPC implementation
-             * @param [requestDelimited=false] Whether requests are length-delimited
-             * @param [responseDelimited=false] Whether responses are length-delimited
-             * @returns RPC service. Useful where requests and/or responses are streamed.
-             */
-            public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): Operations;
-
-            /**
-             * Calls ListOperations.
-             * @param request ListOperationsRequest message or plain object
-             * @param callback Node-style callback called with the error, if any, and ListOperationsResponse
-             */
-            public listOperations(request: google.longrunning.IListOperationsRequest, callback: google.longrunning.Operations.ListOperationsCallback): void;
-
-            /**
-             * Calls ListOperations.
-             * @param request ListOperationsRequest message or plain object
-             * @returns Promise
-             */
-            public listOperations(request: google.longrunning.IListOperationsRequest): Promise<google.longrunning.ListOperationsResponse>;
-
-            /**
-             * Calls GetOperation.
-             * @param request GetOperationRequest message or plain object
-             * @param callback Node-style callback called with the error, if any, and Operation
-             */
-            public getOperation(request: google.longrunning.IGetOperationRequest, callback: google.longrunning.Operations.GetOperationCallback): void;
-
-            /**
-             * Calls GetOperation.
-             * @param request GetOperationRequest message or plain object
-             * @returns Promise
-             */
-            public getOperation(request: google.longrunning.IGetOperationRequest): Promise<google.longrunning.Operation>;
-
-            /**
-             * Calls DeleteOperation.
-             * @param request DeleteOperationRequest message or plain object
-             * @param callback Node-style callback called with the error, if any, and Empty
-             */
-            public deleteOperation(request: google.longrunning.IDeleteOperationRequest, callback: google.longrunning.Operations.DeleteOperationCallback): void;
-
-            /**
-             * Calls DeleteOperation.
-             * @param request DeleteOperationRequest message or plain object
-             * @returns Promise
-             */
-            public deleteOperation(request: google.longrunning.IDeleteOperationRequest): Promise<google.protobuf.Empty>;
-
-            /**
-             * Calls CancelOperation.
-             * @param request CancelOperationRequest message or plain object
-             * @param callback Node-style callback called with the error, if any, and Empty
-             */
-            public cancelOperation(request: google.longrunning.ICancelOperationRequest, callback: google.longrunning.Operations.CancelOperationCallback): void;
-
-            /**
-             * Calls CancelOperation.
-             * @param request CancelOperationRequest message or plain object
-             * @returns Promise
-             */
-            public cancelOperation(request: google.longrunning.ICancelOperationRequest): Promise<google.protobuf.Empty>;
-
-            /**
-             * Calls WaitOperation.
-             * @param request WaitOperationRequest message or plain object
-             * @param callback Node-style callback called with the error, if any, and Operation
-             */
-            public waitOperation(request: google.longrunning.IWaitOperationRequest, callback: google.longrunning.Operations.WaitOperationCallback): void;
-
-            /**
-             * Calls WaitOperation.
-             * @param request WaitOperationRequest message or plain object
-             * @returns Promise
-             */
-            public waitOperation(request: google.longrunning.IWaitOperationRequest): Promise<google.longrunning.Operation>;
-        }
-
-        namespace Operations {
-
-            /**
-             * Callback as used by {@link google.longrunning.Operations|listOperations}.
-             * @param error Error, if any
-             * @param [response] ListOperationsResponse
-             */
-            type ListOperationsCallback = (error: (Error|null), response?: google.longrunning.ListOperationsResponse) => void;
-
-            /**
-             * Callback as used by {@link google.longrunning.Operations|getOperation}.
-             * @param error Error, if any
-             * @param [response] Operation
-             */
-            type GetOperationCallback = (error: (Error|null), response?: google.longrunning.Operation) => void;
-
-            /**
-             * Callback as used by {@link google.longrunning.Operations|deleteOperation}.
-             * @param error Error, if any
-             * @param [response] Empty
-             */
-            type DeleteOperationCallback = (error: (Error|null), response?: google.protobuf.Empty) => void;
-
-            /**
-             * Callback as used by {@link google.longrunning.Operations|cancelOperation}.
-             * @param error Error, if any
-             * @param [response] Empty
-             */
-            type CancelOperationCallback = (error: (Error|null), response?: google.protobuf.Empty) => void;
-
-            /**
-             * Callback as used by {@link google.longrunning.Operations|waitOperation}.
-             * @param error Error, if any
-             * @param [response] Operation
-             */
-            type WaitOperationCallback = (error: (Error|null), response?: google.longrunning.Operation) => void;
-        }
-
-        /** Properties of an Operation. */
-        interface IOperation {
-
-            /** Operation name */
-            name?: (string|null);
-
-            /** Operation metadata */
-            metadata?: (google.protobuf.IAny|null);
-
-            /** Operation done */
-            done?: (boolean|null);
-
-            /** Operation error */
-            error?: (google.rpc.IStatus|null);
-
-            /** Operation response */
-            response?: (google.protobuf.IAny|null);
-        }
-
-        /** Represents an Operation. */
-        class Operation implements IOperation {
-
-            /**
-             * Constructs a new Operation.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.longrunning.IOperation);
-
-            /** Operation name. */
-            public name: string;
-
-            /** Operation metadata. */
-            public metadata?: (google.protobuf.IAny|null);
-
-            /** Operation done. */
-            public done: boolean;
-
-            /** Operation error. */
-            public error?: (google.rpc.IStatus|null);
-
-            /** Operation response. */
-            public response?: (google.protobuf.IAny|null);
-
-            /** Operation result. */
-            public result?: ("error"|"response");
-
-            /**
-             * Creates a new Operation instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Operation instance
-             */
-            public static create(properties?: google.longrunning.IOperation): google.longrunning.Operation;
-
-            /**
-             * Encodes the specified Operation message. Does not implicitly {@link google.longrunning.Operation.verify|verify} messages.
-             * @param message Operation message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.longrunning.IOperation, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified Operation message, length delimited. Does not implicitly {@link google.longrunning.Operation.verify|verify} messages.
-             * @param message Operation message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.longrunning.IOperation, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes an Operation message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns Operation
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.longrunning.Operation;
-
-            /**
-             * Decodes an Operation message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns Operation
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.longrunning.Operation;
-
-            /**
-             * Verifies an Operation message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates an Operation message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns Operation
-             */
-            public static fromObject(object: { [k: string]: any }): google.longrunning.Operation;
-
-            /**
-             * Creates a plain object from an Operation message. Also converts values to other types if specified.
-             * @param message Operation
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.longrunning.Operation, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this Operation to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for Operation
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of a GetOperationRequest. */
-        interface IGetOperationRequest {
-
-            /** GetOperationRequest name */
-            name?: (string|null);
-        }
-
-        /** Represents a GetOperationRequest. */
-        class GetOperationRequest implements IGetOperationRequest {
-
-            /**
-             * Constructs a new GetOperationRequest.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.longrunning.IGetOperationRequest);
-
-            /** GetOperationRequest name. */
-            public name: string;
-
-            /**
-             * Creates a new GetOperationRequest instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns GetOperationRequest instance
-             */
-            public static create(properties?: google.longrunning.IGetOperationRequest): google.longrunning.GetOperationRequest;
-
-            /**
-             * Encodes the specified GetOperationRequest message. Does not implicitly {@link google.longrunning.GetOperationRequest.verify|verify} messages.
-             * @param message GetOperationRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.longrunning.IGetOperationRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified GetOperationRequest message, length delimited. Does not implicitly {@link google.longrunning.GetOperationRequest.verify|verify} messages.
-             * @param message GetOperationRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.longrunning.IGetOperationRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a GetOperationRequest message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns GetOperationRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.longrunning.GetOperationRequest;
-
-            /**
-             * Decodes a GetOperationRequest message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns GetOperationRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.longrunning.GetOperationRequest;
-
-            /**
-             * Verifies a GetOperationRequest message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a GetOperationRequest message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns GetOperationRequest
-             */
-            public static fromObject(object: { [k: string]: any }): google.longrunning.GetOperationRequest;
-
-            /**
-             * Creates a plain object from a GetOperationRequest message. Also converts values to other types if specified.
-             * @param message GetOperationRequest
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.longrunning.GetOperationRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this GetOperationRequest to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for GetOperationRequest
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of a ListOperationsRequest. */
-        interface IListOperationsRequest {
-
-            /** ListOperationsRequest name */
-            name?: (string|null);
-
-            /** ListOperationsRequest filter */
-            filter?: (string|null);
-
-            /** ListOperationsRequest pageSize */
-            pageSize?: (number|null);
-
-            /** ListOperationsRequest pageToken */
-            pageToken?: (string|null);
-        }
-
-        /** Represents a ListOperationsRequest. */
-        class ListOperationsRequest implements IListOperationsRequest {
-
-            /**
-             * Constructs a new ListOperationsRequest.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.longrunning.IListOperationsRequest);
-
-            /** ListOperationsRequest name. */
-            public name: string;
-
-            /** ListOperationsRequest filter. */
-            public filter: string;
-
-            /** ListOperationsRequest pageSize. */
-            public pageSize: number;
-
-            /** ListOperationsRequest pageToken. */
-            public pageToken: string;
-
-            /**
-             * Creates a new ListOperationsRequest instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns ListOperationsRequest instance
-             */
-            public static create(properties?: google.longrunning.IListOperationsRequest): google.longrunning.ListOperationsRequest;
-
-            /**
-             * Encodes the specified ListOperationsRequest message. Does not implicitly {@link google.longrunning.ListOperationsRequest.verify|verify} messages.
-             * @param message ListOperationsRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.longrunning.IListOperationsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified ListOperationsRequest message, length delimited. Does not implicitly {@link google.longrunning.ListOperationsRequest.verify|verify} messages.
-             * @param message ListOperationsRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.longrunning.IListOperationsRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a ListOperationsRequest message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns ListOperationsRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.longrunning.ListOperationsRequest;
-
-            /**
-             * Decodes a ListOperationsRequest message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns ListOperationsRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.longrunning.ListOperationsRequest;
-
-            /**
-             * Verifies a ListOperationsRequest message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a ListOperationsRequest message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns ListOperationsRequest
-             */
-            public static fromObject(object: { [k: string]: any }): google.longrunning.ListOperationsRequest;
-
-            /**
-             * Creates a plain object from a ListOperationsRequest message. Also converts values to other types if specified.
-             * @param message ListOperationsRequest
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.longrunning.ListOperationsRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this ListOperationsRequest to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for ListOperationsRequest
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of a ListOperationsResponse. */
-        interface IListOperationsResponse {
-
-            /** ListOperationsResponse operations */
-            operations?: (google.longrunning.IOperation[]|null);
-
-            /** ListOperationsResponse nextPageToken */
-            nextPageToken?: (string|null);
-        }
-
-        /** Represents a ListOperationsResponse. */
-        class ListOperationsResponse implements IListOperationsResponse {
-
-            /**
-             * Constructs a new ListOperationsResponse.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.longrunning.IListOperationsResponse);
-
-            /** ListOperationsResponse operations. */
-            public operations: google.longrunning.IOperation[];
-
-            /** ListOperationsResponse nextPageToken. */
-            public nextPageToken: string;
-
-            /**
-             * Creates a new ListOperationsResponse instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns ListOperationsResponse instance
-             */
-            public static create(properties?: google.longrunning.IListOperationsResponse): google.longrunning.ListOperationsResponse;
-
-            /**
-             * Encodes the specified ListOperationsResponse message. Does not implicitly {@link google.longrunning.ListOperationsResponse.verify|verify} messages.
-             * @param message ListOperationsResponse message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.longrunning.IListOperationsResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified ListOperationsResponse message, length delimited. Does not implicitly {@link google.longrunning.ListOperationsResponse.verify|verify} messages.
-             * @param message ListOperationsResponse message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.longrunning.IListOperationsResponse, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a ListOperationsResponse message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns ListOperationsResponse
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.longrunning.ListOperationsResponse;
-
-            /**
-             * Decodes a ListOperationsResponse message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns ListOperationsResponse
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.longrunning.ListOperationsResponse;
-
-            /**
-             * Verifies a ListOperationsResponse message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a ListOperationsResponse message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns ListOperationsResponse
-             */
-            public static fromObject(object: { [k: string]: any }): google.longrunning.ListOperationsResponse;
-
-            /**
-             * Creates a plain object from a ListOperationsResponse message. Also converts values to other types if specified.
-             * @param message ListOperationsResponse
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.longrunning.ListOperationsResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this ListOperationsResponse to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for ListOperationsResponse
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of a CancelOperationRequest. */
-        interface ICancelOperationRequest {
-
-            /** CancelOperationRequest name */
-            name?: (string|null);
-        }
-
-        /** Represents a CancelOperationRequest. */
-        class CancelOperationRequest implements ICancelOperationRequest {
-
-            /**
-             * Constructs a new CancelOperationRequest.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.longrunning.ICancelOperationRequest);
-
-            /** CancelOperationRequest name. */
-            public name: string;
-
-            /**
-             * Creates a new CancelOperationRequest instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns CancelOperationRequest instance
-             */
-            public static create(properties?: google.longrunning.ICancelOperationRequest): google.longrunning.CancelOperationRequest;
-
-            /**
-             * Encodes the specified CancelOperationRequest message. Does not implicitly {@link google.longrunning.CancelOperationRequest.verify|verify} messages.
-             * @param message CancelOperationRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.longrunning.ICancelOperationRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified CancelOperationRequest message, length delimited. Does not implicitly {@link google.longrunning.CancelOperationRequest.verify|verify} messages.
-             * @param message CancelOperationRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.longrunning.ICancelOperationRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a CancelOperationRequest message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns CancelOperationRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.longrunning.CancelOperationRequest;
-
-            /**
-             * Decodes a CancelOperationRequest message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns CancelOperationRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.longrunning.CancelOperationRequest;
-
-            /**
-             * Verifies a CancelOperationRequest message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a CancelOperationRequest message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns CancelOperationRequest
-             */
-            public static fromObject(object: { [k: string]: any }): google.longrunning.CancelOperationRequest;
-
-            /**
-             * Creates a plain object from a CancelOperationRequest message. Also converts values to other types if specified.
-             * @param message CancelOperationRequest
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.longrunning.CancelOperationRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this CancelOperationRequest to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for CancelOperationRequest
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of a DeleteOperationRequest. */
-        interface IDeleteOperationRequest {
-
-            /** DeleteOperationRequest name */
-            name?: (string|null);
-        }
-
-        /** Represents a DeleteOperationRequest. */
-        class DeleteOperationRequest implements IDeleteOperationRequest {
-
-            /**
-             * Constructs a new DeleteOperationRequest.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.longrunning.IDeleteOperationRequest);
-
-            /** DeleteOperationRequest name. */
-            public name: string;
-
-            /**
-             * Creates a new DeleteOperationRequest instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns DeleteOperationRequest instance
-             */
-            public static create(properties?: google.longrunning.IDeleteOperationRequest): google.longrunning.DeleteOperationRequest;
-
-            /**
-             * Encodes the specified DeleteOperationRequest message. Does not implicitly {@link google.longrunning.DeleteOperationRequest.verify|verify} messages.
-             * @param message DeleteOperationRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.longrunning.IDeleteOperationRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified DeleteOperationRequest message, length delimited. Does not implicitly {@link google.longrunning.DeleteOperationRequest.verify|verify} messages.
-             * @param message DeleteOperationRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.longrunning.IDeleteOperationRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a DeleteOperationRequest message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns DeleteOperationRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.longrunning.DeleteOperationRequest;
-
-            /**
-             * Decodes a DeleteOperationRequest message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns DeleteOperationRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.longrunning.DeleteOperationRequest;
-
-            /**
-             * Verifies a DeleteOperationRequest message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a DeleteOperationRequest message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns DeleteOperationRequest
-             */
-            public static fromObject(object: { [k: string]: any }): google.longrunning.DeleteOperationRequest;
-
-            /**
-             * Creates a plain object from a DeleteOperationRequest message. Also converts values to other types if specified.
-             * @param message DeleteOperationRequest
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.longrunning.DeleteOperationRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this DeleteOperationRequest to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for DeleteOperationRequest
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of a WaitOperationRequest. */
-        interface IWaitOperationRequest {
-
-            /** WaitOperationRequest name */
-            name?: (string|null);
-
-            /** WaitOperationRequest timeout */
-            timeout?: (google.protobuf.IDuration|null);
-        }
-
-        /** Represents a WaitOperationRequest. */
-        class WaitOperationRequest implements IWaitOperationRequest {
-
-            /**
-             * Constructs a new WaitOperationRequest.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.longrunning.IWaitOperationRequest);
-
-            /** WaitOperationRequest name. */
-            public name: string;
-
-            /** WaitOperationRequest timeout. */
-            public timeout?: (google.protobuf.IDuration|null);
-
-            /**
-             * Creates a new WaitOperationRequest instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns WaitOperationRequest instance
-             */
-            public static create(properties?: google.longrunning.IWaitOperationRequest): google.longrunning.WaitOperationRequest;
-
-            /**
-             * Encodes the specified WaitOperationRequest message. Does not implicitly {@link google.longrunning.WaitOperationRequest.verify|verify} messages.
-             * @param message WaitOperationRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.longrunning.IWaitOperationRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified WaitOperationRequest message, length delimited. Does not implicitly {@link google.longrunning.WaitOperationRequest.verify|verify} messages.
-             * @param message WaitOperationRequest message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.longrunning.IWaitOperationRequest, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a WaitOperationRequest message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns WaitOperationRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.longrunning.WaitOperationRequest;
-
-            /**
-             * Decodes a WaitOperationRequest message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns WaitOperationRequest
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.longrunning.WaitOperationRequest;
-
-            /**
-             * Verifies a WaitOperationRequest message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a WaitOperationRequest message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns WaitOperationRequest
-             */
-            public static fromObject(object: { [k: string]: any }): google.longrunning.WaitOperationRequest;
-
-            /**
-             * Creates a plain object from a WaitOperationRequest message. Also converts values to other types if specified.
-             * @param message WaitOperationRequest
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.longrunning.WaitOperationRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this WaitOperationRequest to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for WaitOperationRequest
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-
-        /** Properties of an OperationInfo. */
-        interface IOperationInfo {
-
-            /** OperationInfo responseType */
-            responseType?: (string|null);
-
-            /** OperationInfo metadataType */
-            metadataType?: (string|null);
-        }
-
-        /** Represents an OperationInfo. */
-        class OperationInfo implements IOperationInfo {
-
-            /**
-             * Constructs a new OperationInfo.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.longrunning.IOperationInfo);
-
-            /** OperationInfo responseType. */
-            public responseType: string;
-
-            /** OperationInfo metadataType. */
-            public metadataType: string;
-
-            /**
-             * Creates a new OperationInfo instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns OperationInfo instance
-             */
-            public static create(properties?: google.longrunning.IOperationInfo): google.longrunning.OperationInfo;
-
-            /**
-             * Encodes the specified OperationInfo message. Does not implicitly {@link google.longrunning.OperationInfo.verify|verify} messages.
-             * @param message OperationInfo message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.longrunning.IOperationInfo, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified OperationInfo message, length delimited. Does not implicitly {@link google.longrunning.OperationInfo.verify|verify} messages.
-             * @param message OperationInfo message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.longrunning.IOperationInfo, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes an OperationInfo message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns OperationInfo
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.longrunning.OperationInfo;
-
-            /**
-             * Decodes an OperationInfo message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns OperationInfo
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.longrunning.OperationInfo;
-
-            /**
-             * Verifies an OperationInfo message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates an OperationInfo message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns OperationInfo
-             */
-            public static fromObject(object: { [k: string]: any }): google.longrunning.OperationInfo;
-
-            /**
-             * Creates a plain object from an OperationInfo message. Also converts values to other types if specified.
-             * @param message OperationInfo
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.longrunning.OperationInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this OperationInfo to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for OperationInfo
-             * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-             * @returns The default type url
-             */
-            public static getTypeUrl(typeUrlPrefix?: string): string;
-        }
-    }
-
-    /** Namespace rpc. */
-    namespace rpc {
-
-        /** Properties of a Status. */
-        interface IStatus {
-
-            /** Status code */
-            code?: (number|null);
-
-            /** Status message */
-            message?: (string|null);
-
-            /** Status details */
-            details?: (google.protobuf.IAny[]|null);
-        }
-
-        /** Represents a Status. */
-        class Status implements IStatus {
-
-            /**
-             * Constructs a new Status.
-             * @param [properties] Properties to set
-             */
-            constructor(properties?: google.rpc.IStatus);
-
-            /** Status code. */
-            public code: number;
-
-            /** Status message. */
-            public message: string;
-
-            /** Status details. */
-            public details: google.protobuf.IAny[];
-
-            /**
-             * Creates a new Status instance using the specified properties.
-             * @param [properties] Properties to set
-             * @returns Status instance
-             */
-            public static create(properties?: google.rpc.IStatus): google.rpc.Status;
-
-            /**
-             * Encodes the specified Status message. Does not implicitly {@link google.rpc.Status.verify|verify} messages.
-             * @param message Status message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encode(message: google.rpc.IStatus, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Encodes the specified Status message, length delimited. Does not implicitly {@link google.rpc.Status.verify|verify} messages.
-             * @param message Status message or plain object to encode
-             * @param [writer] Writer to encode to
-             * @returns Writer
-             */
-            public static encodeDelimited(message: google.rpc.IStatus, writer?: $protobuf.Writer): $protobuf.Writer;
-
-            /**
-             * Decodes a Status message from the specified reader or buffer.
-             * @param reader Reader or buffer to decode from
-             * @param [length] Message length if known beforehand
-             * @returns Status
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): google.rpc.Status;
-
-            /**
-             * Decodes a Status message from the specified reader or buffer, length delimited.
-             * @param reader Reader or buffer to decode from
-             * @returns Status
-             * @throws {Error} If the payload is not a reader or valid buffer
-             * @throws {$protobuf.util.ProtocolError} If required fields are missing
-             */
-            public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): google.rpc.Status;
-
-            /**
-             * Verifies a Status message.
-             * @param message Plain object to verify
-             * @returns `null` if valid, otherwise the reason why it is not
-             */
-            public static verify(message: { [k: string]: any }): (string|null);
-
-            /**
-             * Creates a Status message from a plain object. Also converts values to their respective internal types.
-             * @param object Plain object
-             * @returns Status
-             */
-            public static fromObject(object: { [k: string]: any }): google.rpc.Status;
-
-            /**
-             * Creates a plain object from a Status message. Also converts values to other types if specified.
-             * @param message Status
-             * @param [options] Conversion options
-             * @returns Plain object
-             */
-            public static toObject(message: google.rpc.Status, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-            /**
-             * Converts this Status to JSON.
-             * @returns JSON object
-             */
-            public toJSON(): { [k: string]: any };
-
-            /**
-             * Gets the default type url for Status
+             * Gets the default type url for Timestamp
              * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
              * @returns The default type url
              */

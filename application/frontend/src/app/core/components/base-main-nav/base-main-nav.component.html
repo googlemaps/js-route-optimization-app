@@ -2,18 +2,23 @@
   class="nav-container mat-body-strong"
   [ngClass]="{
     'extended-border':
-      page === pages.Shipments || page === pages.Vehicles || page === pages.VehicleOperators
+      page === pages.Shipments || page === pages.Vehicles || page == pages.ScenarioPlanning
   }">
   <div class="nav-item nav-scenario nav-page-button">
-    <button mat-flat-button (click)="shipmentsClick.emit()">
+    <button
+      mat-flat-button
+      class="nav-button"
+      (click)="scenarioClick.emit()"
+      [ngClass]="{ selected: page === pages.ScenarioPlanning }">
       <ng-container *ngTemplateOutlet="disabled ? bulletLarge : checkmarkLarge"></ng-container>
-      <span class="nav-subtitle">Planning Scenario</span>
+      <span class="nav-subtitle">Request Planning</span>
     </button>
   </div>
   <div class="nav-item nav-subitem nav-page-button">
     <button
       mat-flat-button
       (click)="shipmentsClick.emit()"
+      class="nav-button"
       [ngClass]="{ selected: page === pages.Shipments }">
       <ng-container *ngIf="!selectedShipmentCount; else checkmark">
         <svg height="24" width="24" class="nav-subitem-bullet">
@@ -33,14 +38,22 @@
             </g>
           </g>
         </svg>
-        Shipments{{ selectedShipmentCount ? ' (' + (selectedShipmentCount | number) + ')' : '' }}
+        Shipments
       </span>
+    </button>
+    <button
+      mat-mini-fab
+      aria-label="Add shipment"
+      class="main-nav-add-button blue-svg-icon"
+      (click)="addShipment.emit()">
+      <mat-icon svgIcon="add"></mat-icon>
     </button>
   </div>
   <div class="nav-item nav-subitem nav-page-button">
     <button
       mat-flat-button
       (click)="vehiclesClick.emit()"
+      class="nav-button"
       [ngClass]="{ selected: page === pages.Vehicles }">
       <ng-container *ngIf="!selectedVehicleCount; else checkmark">
         <svg height="24" width="24" class="nav-subitem-bullet">
@@ -57,53 +70,29 @@
               fill="rgba(0, 0, 0, 0.87)" />
           </g>
         </svg>
-        Vehicles{{ selectedVehicleCount ? ' (' + (selectedVehicleCount | number) + ')' : '' }}
+        Vehicles
       </span>
     </button>
-  </div>
-  <div class="nav-item nav-subitem nav-page-button" *ngIf="allowExperimentalFeatures">
     <button
-      mat-flat-button
-      (click)="vehicleOperatorsClick.emit()"
-      [ngClass]="{ selected: page === pages.VehicleOperators }">
-      <ng-container *ngIf="!selectedVehicleOperatorCount; else checkmark">
-        <svg height="24" width="24" class="nav-subitem-bullet">
-          <circle cx="12" cy="12" r="4" stroke-width="3" stroke="white" fill="#757575" />
-        </svg>
-      </ng-container>
-      <span class="nav-subtitle">
-        <svg width="24" height="24">
-          <path
-            d="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 10c2.7 0 5.8 1.29 6 2H6c.23-.72 3.31-2 6-2m0-12C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-        </svg>
-        Operators{{
-          selectedVehicleOperatorCount ? ' (' + (selectedVehicleOperatorCount | number) + ')' : ''
-        }}
-      </span>
+      mat-mini-fab
+      aria-label="Add vehicle"
+      class="main-nav-add-button blue-svg-icon"
+      (click)="addVehicle.emit()">
+      <mat-icon svgIcon="add"></mat-icon>
     </button>
-  </div>
-  <div
-    class="nav-item nav-subitem"
-    *ngIf="page === pages.Shipments || page === pages.Vehicles || page === pages.VehicleOperators">
-    <app-generate-button
-      class="nav-generate"
-      [disabled]="disabled"
-      [prompt]="isSolutionIllegal"
-      [solving]="solving"
-      [label]="label"
-      *ngIf="!disabled; else selectionMessage"></app-generate-button>
   </div>
   <div class="nav-item nav-page-button nav-solution" [ngClass]="{ warning: hasSolutionWarning }">
     <button
       mat-flat-button
       (click)="hasSolution && solutionClick.emit()"
-      [ngClass]="{ selected: page === pages.RoutesChart }">
+      class="nav-button"
+      [ngClass]="{ selected: page === pages.RoutesChart || page === pages.RoutesMetadata }">
       <ng-container
         *ngTemplateOutlet="
           hasSolution ? (hasSolutionWarning ? cautionLarge : checkmarkLarge) : bulletLarge
         ">
       </ng-container>
-      <span class="nav-subtitle"> Solution </span>
+      <span class="nav-subtitle"> Response </span>
       <span class="warning-label" [ngSwitch]="isSolutionIllegal" *ngIf="hasSolutionWarning">
         <ng-container *ngSwitchCase="true">Illegal</ng-container>
         <ng-container *ngSwitchDefault>Stale</ng-container>
@@ -113,31 +102,25 @@
   <div class="border"></div>
 </div>
 <div class="nav-container mat-body-strong">
-  <ng-container
-    *ngIf="
-      hasSolutionWarning &&
-      page !== pages.Shipments &&
-      page !== pages.Vehicles &&
-      page !== pages.VehicleOperators
-    ">
-    <div class="nav-item nav-subitem">
-      <app-post-solve-message class="nav-message"></app-post-solve-message>
-    </div>
-    <div class="nav-item nav-subitem">
-      <app-generate-button
-        class="nav-generate"
-        [disabled]="disabled"
-        [prompt]="isSolutionIllegal"
-        [solving]="solving"
-        [label]="label"
-        *ngIf="!disabled"></app-generate-button>
-    </div>
-  </ng-container>
+  <div class="nav-item nav-subitem generation-label" *ngIf="solutionTime">
+    Generated {{ routeCount }} route{{ routeCount > 1 ? 's' : '' }} in
+    {{ solveSeconds | number: '1.2-2' }} seconds
+  </div>
+  <div class="nav-item nav-subitem">
+    <app-generate-button
+      class="nav-generate"
+      [disabled]="disabled"
+      [prompt]="isSolutionIllegal"
+      [solving]="solving"
+      [label]="label"></app-generate-button>
+  </div>
+  <div class="nav-item nav-subitem" *ngIf="hasSolutionWarning">
+    <app-post-solve-message class="nav-message"></app-post-solve-message>
+  </div>
+  <div class="nav-item nav-subitem" *ngIf="disabled">
+    <app-pre-solve-message class="nav-message"></app-pre-solve-message>
+  </div>
 </div>
-
-<ng-template #selectionMessage>
-  <app-pre-solve-message class="nav-message"></app-pre-solve-message>
-</ng-template>
 
 <ng-template #bulletLarge>
   <svg height="24" width="24">

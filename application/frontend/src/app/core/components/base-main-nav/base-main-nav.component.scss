@@ -5,11 +5,12 @@
   margin-left: 1.5rem;
   display: flex;
   flex-direction: column;
+  min-width: 200px;
   color: rgba(0, 0, 0, 0.87);
   .border {
     position: absolute;
-    top: 0;
-    height: 100%;
+    top: 5px;
+    height: 96%;
     border: 1px solid#757575;
     border-image: linear-gradient(
       to bottom,
@@ -44,7 +45,7 @@
 }
 
 .nav-generate {
-  padding: 1rem 0 1rem 34px;
+  padding: 1rem 0 0.5rem 34px;
 }
 
 .nav-message {
@@ -60,7 +61,7 @@
 }
 
 .nav-page-button {
-  button {
+  .nav-button {
     padding: 0.5rem 0;
     width: 100%;
     text-align: left;
@@ -91,4 +92,21 @@
   line-height: 1;
   background-color: #feefe3 !important;
   color: $darker !important;
+}
+
+.main-nav-add-button {
+  position: absolute;
+  right: 0.5rem;
+  background-color: white;
+
+  mat-icon {
+    margin-bottom: 0.25rem;
+  }
+
+  z-index: 1;
+}
+
+.generation-label {
+  width: 10rem;
+  padding: 0 1rem;
 }

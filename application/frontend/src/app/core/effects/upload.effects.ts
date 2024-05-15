@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -27,6 +34,7 @@ import { Modal } from '../models';
 import { UploadType } from '../models/upload';
 import * as fromUI from '../selectors/ui.selectors';
 import { MessageService, NormalizationService } from '../services';
+import { forkJoin, of } from 'rxjs';
 
 @Injectable()
 export class UploadEffects {
@@ -46,8 +54,17 @@ export class UploadEffects {
           })
           .afterClosed()
       ),
-      mergeMap((dialogResult) => {
+      mergeMap((dialogResult) =>
+        forkJoin([
+          of(dialogResult),
+          this.store.pipe(select(fromUI.selectOpenUploadDialogOnClose), first()),
+        ])
+      ),
+      mergeMap(([dialogResult, openUploadDialog]) => {
         if (!dialogResult) {
+          if (openUploadDialog) {
+            return [UploadActions.openDialog()];
+          }
           return [];
         }
         const actions: Action[] = [UploadActions.closeCsvDialog()];
@@ -67,11 +84,11 @@ export class UploadEffects {
         this.dialog
           .open(UploadDialogComponent, {
             id: Modal.Upload,
-            maxWidth: '420px',
+            width: '700px',
           })
           .afterClosed()
       ),
-      mergeMap((dialogResult: { uploadType: UploadType; content: any }) => {
+      mergeMap((dialogResult: { uploadType: UploadType; content: any; scenarioName: string }) => {
         const actions: Action[] = [UploadActions.closeDialog()];
         if (dialogResult) {
           switch (dialogResult.uploadType) {
@@ -82,7 +99,10 @@ export class UploadEffects {
               );
 
               actions.push(
-                DispatcherActions.uploadScenarioSuccess({ scenario: normalizedScenario })
+                DispatcherActions.uploadScenarioSuccess({
+                  scenario: normalizedScenario,
+                  scenarioName: dialogResult.scenarioName,
+                })
               );
               break;
             }
@@ -96,7 +116,10 @@ export class UploadEffects {
               const requestedVehicleIds = vehicles.filter((v) => !v.ignore).map((v) => v.id);
 
               actions.push(
-                DispatcherActions.uploadScenarioSuccess({ scenario: normalizedScenario })
+                DispatcherActions.uploadScenarioSuccess({
+                  scenario: normalizedScenario,
+                  scenarioName: dialogResult.scenarioName,
+                })
               );
               actions.push(
                 DispatcherApiActions.applySolution({
@@ -137,7 +160,6 @@ export class UploadEffects {
           timeout,
           traffic,
           vehicles,
-          vehicleOperators,
           visitRequests,
           allowLargeDeadlineDespiteInterruptionRisk,
           interpretInjectedSolutionsUsingLabels,
@@ -160,11 +182,6 @@ export class UploadEffects {
           }
         });
 
-        const selectedVehicleOperators: number[] = [];
-        vehicleOperators.forEach((vehicleOperator) =>
-          selectedVehicleOperators.push(vehicleOperator.id)
-        );
-
         if (injectedModelConstraint?.routes) {
           this.messageService.warning(
             'The uploaded scenario contains injected routes, which will be ignored by the application.',
@@ -176,11 +193,9 @@ export class UploadEffects {
           DispatcherActions.loadScenario({
             shipments,
             vehicles,
-            vehicleOperators,
             visitRequests,
             selectedShipments,
             selectedVehicles,
-            selectedVehicleOperators,
             changeTime,
           }),
           RequestSettingsActions.setRequestSettings({

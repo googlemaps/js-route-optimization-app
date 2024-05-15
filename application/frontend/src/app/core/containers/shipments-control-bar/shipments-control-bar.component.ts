@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -22,9 +29,12 @@ import { FilterMenuComponent } from 'src/app/shared/components';
 import { ActiveFilter } from 'src/app/shared/models';
 import { FilterService } from 'src/app/shared/services';
 import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
-import { PreSolveShipmentActions, ShipmentActions } from '../../actions';
-import { Column, ShipmentFilterOption } from '../../models';
+import { PreSolveShipmentActions } from '../../actions';
+import { Column, Modal, Page, ShipmentFilterOption } from '../../models';
 import PreSolveShipmentSelectors from '../../selectors/pre-solve-shipment.selectors';
+import { selectPage } from '../../selectors/ui.selectors';
+import { MatDialog } from '@angular/material/dialog';
+import { ShipmentModelSettingsComponent } from '../shipment-model-settings/shipment-model-settings.component';
 
 @Component({
   selector: 'app-shipments-control-bar',
@@ -39,13 +49,16 @@ export class ShipmentsControlBarComponent implements OnDestroy {
   readonly filterOptions$: Observable<ShipmentFilterOption[]>;
   readonly filters$: Observable<ActiveFilter[]>;
   readonly displayColumns$: Observable<Column[]>;
-  readonly showBulkEdit$: Observable<boolean>;
-  readonly showBulkDelete$: Observable<boolean>;
+  readonly page$: Observable<Page>;
 
   private addSubscription: Subscription;
   private editSubscription: Subscription;
 
-  constructor(private filterService: FilterService, private store: Store<fromRoot.State>) {
+  constructor(
+    private filterService: FilterService,
+    private store: Store<fromRoot.State>,
+    private dialog: MatDialog
+  ) {
     this.filterOptions$ = store.pipe(
       select(PreSolveShipmentSelectors.selectAvailableFiltersOptions)
     );
@@ -53,8 +66,7 @@ export class ShipmentsControlBarComponent implements OnDestroy {
     this.displayColumns$ = store.pipe(
       select(PreSolveShipmentSelectors.selectAvailableDisplayColumnsOptions)
     );
-    this.showBulkEdit$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkEdit));
-    this.showBulkDelete$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkDelete));
+    this.page$ = store.pipe(select(selectPage));
   }
 
   ngOnDestroy(): void {
@@ -111,19 +123,13 @@ export class ShipmentsControlBarComponent implements OnDestroy {
       });
   }
 
-  onBulkEdit(): void {
-    this.store
-      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
-      .subscribe((shipmentIds) => {
-        this.store.dispatch(PreSolveShipmentActions.editShipments({ shipmentIds }));
-      });
-  }
-
-  onBulkDelete(): void {
-    this.store
-      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
-      .subscribe((ids) => {
-        this.store.dispatch(ShipmentActions.confirmDeleteShipments({ ids }));
-      });
+  onOpenShipmentModelSettings(): void {
+    this.dialog.open(ShipmentModelSettingsComponent, {
+      id: Modal.EditShipmentModelSettings,
+      maxHeight: '100%',
+      maxWidth: '100%',
+      position: { right: '0' },
+      panelClass: 'fly-out-dialog',
+    });
   }
 }

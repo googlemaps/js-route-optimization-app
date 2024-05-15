@@ -1,18 +1,28 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { createSelector } from '@ngrx/store';
 import ShipmentRouteSelectors, * as fromShipmentRoute from './shipment-route.selectors';
 import RoutesChartSelectors from './routes-chart.selectors';
-import { ShipmentRoute } from '../models';
+import { ShipmentRoute, TravelMode } from '../models';
 import { Feature, LineString } from '@turf/helpers';
 import { toTurfLineString } from 'src/app/util';
+import { selectPostSolveMapLayers } from './map.selectors';
+import * as fromVehicle from './vehicle.selectors';
+import { MapLayerId } from '../models/map';
 
 const routeToDeckGL = (route: ShipmentRoute, path: google.maps.LatLng[]) => {
   return {
@@ -35,8 +45,17 @@ export const selectRoutes = createSelector(
 export const selectFilteredRoutes = createSelector(
   selectRoutes,
   RoutesChartSelectors.selectFilteredRouteIds,
-  (paths, filteredRouteIds) => {
-    return filteredRouteIds ? paths.filter((p) => filteredRouteIds.has(p.id)) : paths;
+  fromVehicle.selectAll,
+  selectPostSolveMapLayers,
+  (paths, filteredRouteIds, vehicles, mapLayers) => {
+    return (filteredRouteIds ? paths.filter((p) => filteredRouteIds.has(p.id)) : paths).filter(
+      (route) => {
+        return (vehicles[route.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) ===
+          TravelMode.DRIVING
+          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
+          : mapLayers[MapLayerId.PostSolveWalking].visible;
+      }
+    );
   }
 );
 
@@ -45,9 +64,16 @@ export const selectFilteredRoutesSelected = createSelector(
   RoutesChartSelectors.selectFilteredRouteIds,
   RoutesChartSelectors.selectSelectedRoutesLookup,
   RoutesChartSelectors.selectSelectedRoutesColors,
-  (paths, filteredRouteIds, selectedRoutesLookup, colors) => {
+  fromVehicle.selectAll,
+  selectPostSolveMapLayers,
+  (paths, filteredRouteIds, selectedRoutesLookup, colors, vehicles, mapLayers) => {
     const selectedRoutes = paths.filter(
-      (p) => (filteredRouteIds == null || filteredRouteIds.has(p.id)) && selectedRoutesLookup[p.id]
+      (p) =>
+        (filteredRouteIds == null || filteredRouteIds.has(p.id)) &&
+        selectedRoutesLookup[p.id] &&
+        ((vehicles[p.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
+          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
+          : mapLayers[MapLayerId.PostSolveWalking].visible)
     );
     return selectedRoutes.map((route) => ({
       ...route,

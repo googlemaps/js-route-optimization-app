@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -20,7 +27,6 @@ import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import * as fromMap from '../../selectors/map.selectors';
 import * as fromScenario from '../../selectors/scenario.selectors';
 import * as fromVehicles from '../../selectors/vehicle.selectors';
-import * as fromVehicleOperators from '../../selectors/pre-solve-vehicle-operator.selectors';
 import { MapService, MessageService, VehicleLayer } from '../../services';
 import * as fromCapacityQuantity from '../../selectors/capacity-quantity.selectors';
 import { TimeThreshold } from '../../models/request-settings';
@@ -51,8 +57,6 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
   scenarioCapacities$: Observable<Set<string>>;
   scenarioDemands$: Observable<Set<string>>;
   visitTags$: Observable<string[]>;
-  operatorTypes$: Observable<Set<string>>;
-  existingOperatorTypes$: Observable<Set<string>>;
   visitTypes$: Observable<string[]>;
   timezoneOffset$: Observable<number>;
   timeThresholds$: Observable<IConstraintRelaxation>;
@@ -97,11 +101,6 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
     }
     // Form map bounds will remember the initial bounds
     this.scenarioBounds$ = this.store.pipe(select(fromMap.selectFormScenarioBounds), take(1));
-    this.operatorTypes$ = this.store.pipe(select(fromScenario.selectVehicleOperatorTypes), take(1));
-    this.existingOperatorTypes$ = this.store.pipe(
-      select(fromVehicleOperators.selectVehicleOperatorTypes),
-      take(1)
-    );
   }
 
   onCancel(): void {
@@ -190,9 +189,6 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
     if (unsetFields.includes(VehicleFormFields.EndVisitTags)) {
       vehicle.endTags = [];
     }
-    if (unsetFields.includes(VehicleFormFields.OperatorTypes)) {
-      vehicle.requiredOperatorTypes = [];
-    }
     if (unsetFields.includes(VehicleFormFields.StartTimeWindows)) {
       vehicle.startTimeWindows = [];
     }
@@ -271,12 +267,6 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
     }
     if (vehicle.endTags || unsetFields.includes(VehicleFormFields.EndVisitTags)) {
       fields.push('End Tags');
-    }
-    if (
-      vehicle.requiredOperatorTypes.length > 0 ||
-      unsetFields.includes(VehicleFormFields.OperatorTypes)
-    ) {
-      fields.push('Vehicle Operator Types');
     }
     if (
       vehicle.startTimeWindows.length > 0 ||

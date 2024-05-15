@@ -310,56 +310,6 @@
       </div>
       <div
         class="edit-menu-content padded-content"
-        *ngIf="allowExperimentalFeatures"
-        [ngClass]="{
-          highlighted: bulkEdit && requiredOperatorTypes.length,
-          unsethighlighted: isUnset(formFields.OperatorTypes)
-        }">
-        <mat-form-field class="w-100">
-          <mat-chip-list
-            #operatorChipList
-            aria-label="Vehicle Operator Types"
-            [disabled]="disabled">
-            <mat-chip
-              *ngFor="let operatorType of requiredOperatorTypes; let i = index"
-              class="vehicle-chip"
-              (removed)="removeOperatorType(i)"
-              [removable]="!disabled"
-              selected>
-              {{ operatorType }}
-              <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-            <input
-              placeholder="Vehicle Operator Types"
-              [matChipInputFor]="operatorChipList"
-              (matChipInputTokenEnd)="addOperatorTypeInputToken($event.value, $event.input)"
-              (focusout)="addOperatorTypeInputToken($event.target.value, $event.target)"
-              (keydown)="onOperatorTypeKeyDown($event)"
-              [matChipInputSeparatorKeyCodes]="operatorTypeKeysCodes"
-              [matAutocomplete]="autoVehicleOperatorTypes" />
-          </mat-chip-list>
-          <mat-autocomplete
-            #autoVehicleOperatorTypes="matAutocomplete"
-            (optionSelected)="onOperatorTypesSelected($event)">
-            <mat-option
-              *ngFor="let operatorType of filteredAvailableOperatorTypes | async"
-              [value]="operatorType">
-              {{ operatorType }}
-            </mat-option>
-          </mat-autocomplete>
-          <app-bulk-edit-unset
-            *ngIf="bulkEdit"
-            matSuffix
-            [fieldName]="formFields.OperatorTypes"
-            [isUnset]="isUnset(formFields.OperatorTypes)"
-            (unsetEvent)="onUnsetChange($event)"></app-bulk-edit-unset>
-        </mat-form-field>
-        <p class="unused-vehicle-operator-warning" *ngIf="isOperatorTypeError">
-          An operator type does not exist.
-        </p>
-      </div>
-      <div
-        class="edit-menu-content padded-content"
         *ngIf="injectedSolution"
         [ngClass]="{ highlighted: bulkEdit && relaxationSettingsForm.value.length }">
         <header>

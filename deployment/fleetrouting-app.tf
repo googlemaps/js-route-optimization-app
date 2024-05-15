@@ -7,7 +7,7 @@ resource "google_service_account" "fleetrouting_app" {
 # Optimization IAM
 resource "google_project_iam_binding" "cloudoptimization_editor" {
   project = data.google_project.project.id
-  role    = "roles/cloudoptimization.editor"
+  role    = "roles/routeoptimization.editor"
 
   members = [
     "serviceAccount:${google_service_account.fleetrouting_app.email}",

@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -36,14 +43,14 @@ export class BodyComponent implements OnChanges {
   private split: Split.Instance;
   private splitPanels = [
     {
-      id: 'main-page',
-      index: 0,
-      collapsed: false,
-    },
-    {
       id: 'main-map',
       index: 1,
       collapsed: true,
+    },
+    {
+      id: 'main-page',
+      index: 0,
+      collapsed: false,
     },
   ];
 
@@ -67,12 +74,15 @@ export class BodyComponent implements OnChanges {
 
   private createSplit(): void {
     this.split = Split([`#${this.splitPanels[0].id}`, `#${this.splitPanels[1].id}`], {
-      direction: 'horizontal',
+      direction: 'vertical',
       sizes: [50, 50],
       minSize: 0,
       gutterStyle: () => {
         return {
-          width: '15px',
+          height: '15px',
+          borderWidth: '1px 0px',
+          borderColor: '#b4b4b4',
+          borderStyle: 'solid',
         };
       },
       onDragEnd: (sizes) => {
@@ -80,7 +90,7 @@ export class BodyComponent implements OnChanges {
       },
     });
 
-    const gutter = document.querySelector('.gutter.gutter-horizontal');
+    const gutter = document.querySelector('.gutter.gutter-vertical');
     gutter.addEventListener('dblclick', () => {
       this.splitPanels.forEach((p) => {
         p.collapsed = !p.collapsed;
@@ -101,8 +111,8 @@ export class BodyComponent implements OnChanges {
   get isVehiclesPage(): boolean {
     return this.page === Page.Vehicles;
   }
-  get isVehicleOperatorsPage(): boolean {
-    return this.page === Page.VehicleOperators;
+  get isScenarioPlanningPage(): boolean {
+    return this.page === Page.ScenarioPlanning;
   }
   get isRoutesChartPage(): boolean {
     return this.page === Page.RoutesChart;
@@ -111,7 +121,7 @@ export class BodyComponent implements OnChanges {
     return this.page === Page.RoutesMetadata || this.page === Page.ShipmentsMetadata;
   }
   get isPreSolve(): boolean {
-    return this.isShipmentsPage || this.isVehiclesPage || this.isVehicleOperatorsPage;
+    return this.isShipmentsPage || this.isVehiclesPage || this.isScenarioPlanningPage;
   }
   get isPostSolve(): boolean {
     return this.isRoutesChartPage || this.isMetadata;

@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -20,6 +27,7 @@ import * as fromUI from 'src/app/core/selectors/ui.selectors';
 import { Page } from '../../models';
 import DispatcherApiSelectors from '../../selectors/dispatcher-api.selectors';
 import { MainNavComponent } from './main-nav.component';
+import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 
 @Component({
   selector: 'app-base-main-nav',
@@ -33,13 +41,15 @@ class MockBaseMainNavComponent {
   @Input() isSolutionIllegal: boolean;
   @Input() selectedShipmentCount: number;
   @Input() selectedVehicleCount: number;
-  @Input() selectedVehicleOperatorCount: number;
   @Input() solving: boolean;
   @Input() page: Page;
+  @Input() solutionTime: number;
+  @Input() routeCount: number;
   @Output() shipmentsClick = new EventEmitter();
   @Output() solutionClick = new EventEmitter();
   @Output() vehiclesClick = new EventEmitter();
-  @Output() vehicleOperatorsClick = new EventEmitter();
+  @Output() addShipment = new EventEmitter();
+  @Output() addVehicle = new EventEmitter();
 }
 
 describe('MainNavComponent', () => {
@@ -60,6 +70,8 @@ describe('MainNavComponent', () => {
             { selector: PreSolveVehicleSelectors.selectTotalSelected, value: 0 },
             { selector: DispatcherApiSelectors.selectOptimizeToursLoading, value: false },
             { selector: fromUI.selectPage, value: null },
+            { selector: fromSolution.selectUsedRoutesCount, value: 0 },
+            { selector: fromDispatcher.selectSolutionTime, value: 0 },
           ],
         }),
       ],

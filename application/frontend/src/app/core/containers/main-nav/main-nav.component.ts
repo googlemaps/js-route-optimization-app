@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
@@ -19,8 +26,9 @@ import PreSolveShipmentSelectors from 'src/app/core/selectors/pre-solve-shipment
 import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
 import PreSolveVehicleSelectors from 'src/app/core/selectors/pre-solve-vehicle.selectors';
-import PreSolveVehicleOperatorSelectors from '../../selectors/pre-solve-vehicle-operator.selectors';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
+import { PreSolveShipmentActions, PreSolveVehicleActions } from '../../actions';
+import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 
 @Component({
   selector: 'app-main-nav',
@@ -37,8 +45,8 @@ export class MainNavComponent {
   readonly selectedShipmentCount$: Observable<number>;
   readonly selectedVehicleCount$: Observable<number>;
   readonly allowExperimentalFeatures$: Observable<boolean>;
-  readonly selectedVehicleOperatorCount$: Observable<number>;
-
+  readonly solutionTime$: Observable<number>;
+  readonly routeCount$: Observable<number>;
   readonly solving$: Observable<boolean>;
 
   get Page(): typeof Page {
@@ -46,8 +54,10 @@ export class MainNavComponent {
   }
 
   constructor(private router: Router, private store: Store) {
+    this.solutionTime$ = this.store.pipe(select(fromDispatcher.selectSolutionTime));
     this.disabled$ = this.store.pipe(select(fromPreSolve.selectGenerateDisabled));
     this.hasSolution$ = this.store.pipe(select(fromSolution.selectHasSolution));
+    this.routeCount$ = this.store.pipe(select(fromSolution.selectUsedRoutesCount));
     this.isSolutionStale$ = this.store.pipe(select(DenormalizeSelectors.selectIsSolutionStale));
     this.isSolutionIllegal$ = this.store.pipe(select(DenormalizeSelectors.selectIsSolutionIllegal));
     this.selectedShipmentCount$ = this.store.pipe(
@@ -56,14 +66,15 @@ export class MainNavComponent {
     this.selectedVehicleCount$ = this.store.pipe(
       select(PreSolveVehicleSelectors.selectTotalSelected)
     );
-    this.selectedVehicleOperatorCount$ = this.store.pipe(
-      select(PreSolveVehicleOperatorSelectors.selectTotalSelected)
-    );
     this.solving$ = store.pipe(select(DispatcherApiSelectors.selectOptimizeToursLoading));
     this.page$ = this.store.pipe(select(fromUI.selectPage));
     this.allowExperimentalFeatures$ = this.store.pipe(
       select(fromConfig.selectAllowExperimentalFeatures)
     );
+  }
+
+  onScenarioClick(): void {
+    this.router.navigateByUrl('/scenarioPlanning', { skipLocationChange: true });
   }
 
   onShipmentsClick(): void {
@@ -78,7 +89,11 @@ export class MainNavComponent {
     this.router.navigateByUrl('/vehicles', { skipLocationChange: true });
   }
 
-  onVehicleOperatorsClick(): void {
-    this.router.navigateByUrl('/vehicleOperators', { skipLocationChange: true });
+  addShipment(): void {
+    this.store.dispatch(PreSolveShipmentActions.addShipment({}));
+  }
+
+  addVehicle(): void {
+    this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
   }
 }

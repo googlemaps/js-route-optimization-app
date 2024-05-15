@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -44,6 +51,7 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
   filters$: Observable<ActiveFilter[]>;
   displayColumns$: Observable<Column[]>;
   page$: Observable<Page>;
+  pageToggle$: Observable<Page>;
   private pageSelectors$: Observable<{ page: Page; selectors: MetadataSelectors }>;
   private addSubscription: Subscription;
   private editSubscription: Subscription;
@@ -56,6 +64,12 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.page$ = this.store.pipe(select(fromUI.selectPage));
+    // Treat both metadata views as the same for the purposes of setting the toggle state
+    this.pageToggle$ = this.store.pipe(
+      select(fromUI.selectPage),
+      map((page) => (page === Page.ShipmentsMetadata ? Page.RoutesMetadata : page))
+    );
+
     this.pageSelectors$ = this.page$.pipe(
       map((page) => ({
         page,
@@ -162,6 +176,10 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
   }
 
   onSelectionChange(selection: Page): void {
+    this.router.navigateByUrl('/' + selection, { skipLocationChange: true });
+  }
+
+  onToggleChange(selection: Page): void {
     this.router.navigateByUrl('/' + selection, { skipLocationChange: true });
   }
 }

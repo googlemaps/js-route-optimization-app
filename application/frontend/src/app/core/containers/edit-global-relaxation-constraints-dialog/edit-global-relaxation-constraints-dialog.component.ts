@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -14,7 +21,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { take, withLatestFrom } from 'rxjs/operators';
@@ -43,12 +50,12 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditGlobalRelaxationConstraintsDialogComponent implements OnInit, OnChanges {
-  get formConstraintRelaxations(): FormArray {
-    return this.form.get('constraintRelaxations') as FormArray;
+  get formConstraintRelaxations(): UntypedFormArray {
+    return this.form.get('constraintRelaxations') as UntypedFormArray;
   }
 
   currentTimezoneOffset: number;
-  form: FormGroup;
+  form: UntypedFormGroup;
   globalStartSeconds: Long;
   globalEndSeconds: Long;
 
@@ -56,7 +63,7 @@ export class EditGlobalRelaxationConstraintsDialogComponent implements OnInit, O
 
   constructor(
     private dialogRef: MatDialogRef<EditGlobalRelaxationConstraintsDialogComponent>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private store: Store
   ) {
     this.form = this.fb.group({

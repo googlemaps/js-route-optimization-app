@@ -1,0 +1,15 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 7px;
+  border-bottom: 1px solid #d7e3f1;
+}
+
+.kpis-title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}

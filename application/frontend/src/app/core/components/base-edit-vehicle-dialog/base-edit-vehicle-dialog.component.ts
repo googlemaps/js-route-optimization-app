@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
@@ -27,10 +34,10 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -106,7 +113,10 @@ enum EditState {
 }
 
 class DurationMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.softMaxLessThanMax ||
       ngForm?.errors?.quadraticMaxLessThanMax ||
@@ -122,7 +132,10 @@ class DurationMaxErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DurationSoftMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.softMaxLessThanMax || control?.invalid;
     const show =
       ngForm &&
@@ -134,7 +147,10 @@ class DurationSoftMaxErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DurationSoftCostErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.softCostRequired || control?.invalid;
     const show =
       ngForm &&
@@ -146,7 +162,10 @@ class DurationSoftCostErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DurationQuadraticCostErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.quadraticCostRequired || control?.invalid;
     const show =
       ngForm &&
@@ -158,7 +177,10 @@ class DurationQuadraticCostErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DurationQuadraticMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.quadraticMaxLessThanMax || control?.invalid;
     const show =
       ngForm &&
@@ -170,7 +192,10 @@ class DurationQuadraticMaxErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DistanceSoftMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.durationALessThanB || control?.invalid;
     const show =
       ngForm &&
@@ -182,7 +207,10 @@ class DistanceSoftMaxErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class DistanceSoftCostErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.aRequiredIfB || control?.invalid;
     const show =
       ngForm &&
@@ -216,8 +244,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   @Input() scenarioBounds?: google.maps.LatLngBounds;
   @Input() visitTags?: string[];
   @Input() visitTypes?: string[];
-  @Input() operatorTypes?: Set<string>;
-  @Input() existingOperatorTypes?: Set<string>;
   @Input() timezoneOffset?: number;
   @Input() vehicle: Vehicle;
   @Output() cancel = new EventEmitter<void>();
@@ -257,17 +283,17 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   get endLocationSideOfRoad(): AbstractControl {
     return this.form.get('endLocationSideOfRoad');
   }
-  get startTimeWindows(): FormArray {
-    return this.form.get('startTimeWindows') as FormArray;
+  get startTimeWindows(): UntypedFormArray {
+    return this.form.get('startTimeWindows') as UntypedFormArray;
   }
-  get endTimeWindows(): FormArray {
-    return this.form.get('endTimeWindows') as FormArray;
+  get endTimeWindows(): UntypedFormArray {
+    return this.form.get('endTimeWindows') as UntypedFormArray;
   }
-  get routeDistanceLimit(): FormGroup {
-    return this.form.get('routeDistanceLimit') as FormGroup;
+  get routeDistanceLimit(): UntypedFormGroup {
+    return this.form.get('routeDistanceLimit') as UntypedFormGroup;
   }
-  get travelDurationLimit(): FormGroup {
-    return this.form.get('travelDurationLimit') as FormGroup;
+  get travelDurationLimit(): UntypedFormGroup {
+    return this.form.get('travelDurationLimit') as UntypedFormGroup;
   }
   get routeDistanceMax(): AbstractControl {
     return this.routeDistanceLimit.get('maxDistance');
@@ -278,26 +304,26 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   get routeDistanceCostPerKm(): AbstractControl {
     return this.routeDistanceLimit.get('softCost');
   }
-  get routeDurationLimit(): FormGroup {
-    return this.form.get('routeDurationLimit') as FormGroup;
+  get routeDurationLimit(): UntypedFormGroup {
+    return this.form.get('routeDurationLimit') as UntypedFormGroup;
   }
-  get routeDurationMax(): FormGroup {
-    return this.routeDurationLimit.get('maxDuration') as FormGroup;
+  get routeDurationMax(): UntypedFormGroup {
+    return this.routeDurationLimit.get('maxDuration') as UntypedFormGroup;
   }
-  get routeDurationSoftMax(): FormGroup {
-    return this.routeDurationLimit.get('softMaxDuration') as FormGroup;
+  get routeDurationSoftMax(): UntypedFormGroup {
+    return this.routeDurationLimit.get('softMaxDuration') as UntypedFormGroup;
   }
   get routeDurationSoftCost(): AbstractControl {
     return this.routeDurationLimit.get('softCost');
   }
-  get routeDurationQuadraticMaxDuration(): FormGroup {
-    return this.routeDurationLimit.get('quadraticMaxDuration') as FormGroup;
+  get routeDurationQuadraticMaxDuration(): UntypedFormGroup {
+    return this.routeDurationLimit.get('quadraticMaxDuration') as UntypedFormGroup;
   }
   get routeDurationQuadraticCost(): AbstractControl {
     return this.routeDurationLimit.get('quadraticCost');
   }
-  get travelCosts(): FormGroup {
-    return this.form.get('travelCosts') as FormGroup;
+  get travelCosts(): UntypedFormGroup {
+    return this.form.get('travelCosts') as UntypedFormGroup;
   }
   get travelFixedCost(): AbstractControl {
     return this.travelCosts.get('fixedCost');
@@ -311,17 +337,17 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   get travelCostPerTraveledHour(): AbstractControl {
     return this.travelCosts.get('costPerTraveledHour');
   }
-  get travelDurationMax(): FormGroup {
-    return this.travelDurationLimit.get('maxDuration') as FormGroup;
+  get travelDurationMax(): UntypedFormGroup {
+    return this.travelDurationLimit.get('maxDuration') as UntypedFormGroup;
   }
-  get travelDurationSoftMax(): FormGroup {
-    return this.travelDurationLimit.get('softMaxDuration') as FormGroup;
+  get travelDurationSoftMax(): UntypedFormGroup {
+    return this.travelDurationLimit.get('softMaxDuration') as UntypedFormGroup;
   }
   get travelDurationCostAfterSoftMax(): AbstractControl {
     return this.travelDurationLimit.get('softCost');
   }
-  get travelDurationQuadraticMaxDuration(): FormGroup {
-    return this.travelDurationLimit.get('quadraticMaxDuration') as FormGroup;
+  get travelDurationQuadraticMaxDuration(): UntypedFormGroup {
+    return this.travelDurationLimit.get('quadraticMaxDuration') as UntypedFormGroup;
   }
   get travelDurationQuadraticCostAfterSoftMax(): AbstractControl {
     return this.travelDurationLimit.get('quadraticCost');
@@ -335,29 +361,29 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   get unloadingPolicy(): AbstractControl {
     return this.form.get('unloadingPolicy');
   }
-  get loadLimits(): FormArray {
-    return this.form.get('loadLimits') as FormArray;
+  get loadLimits(): UntypedFormArray {
+    return this.form.get('loadLimits') as UntypedFormArray;
   }
-  get extraVisitDurationForVisitType(): FormArray {
-    return this.form.get('extraVisitDurationForVisitType') as FormArray;
+  get extraVisitDurationForVisitType(): UntypedFormArray {
+    return this.form.get('extraVisitDurationForVisitType') as UntypedFormArray;
   }
-  get breakRule(): FormGroup {
-    return this.form.get('breakRule') as FormGroup;
+  get breakRule(): UntypedFormGroup {
+    return this.form.get('breakRule') as UntypedFormGroup;
   }
-  get breakRequests(): FormArray {
-    return this.breakRule.get('breakRequests') as FormArray;
+  get breakRequests(): UntypedFormArray {
+    return this.breakRule.get('breakRequests') as UntypedFormArray;
   }
-  get frequencyConstraints(): FormArray {
-    return this.breakRule.get('frequencyConstraints') as FormArray;
+  get frequencyConstraints(): UntypedFormArray {
+    return this.breakRule.get('frequencyConstraints') as UntypedFormArray;
   }
-  get relaxationSettingsForm(): FormArray {
-    return this.form.get('relaxationSettings') as FormArray;
+  get relaxationSettingsForm(): UntypedFormArray {
+    return this.form.get('relaxationSettings') as UntypedFormArray;
   }
   get usedIfRouteIsEmpty(): AbstractControl {
     return this.form.get('usedIfRouteIsEmpty');
   }
 
-  readonly form: FormGroup;
+  readonly form: UntypedFormGroup;
   readonly durationMaxErrorStateMatcher = new DurationMaxErrorStateMatcher();
   readonly durationSoftMaxErrorStateMatcher = new DurationSoftMaxErrorStateMatcher();
   readonly durationSoftCostErrorStateMatcher = new DurationSoftCostErrorStateMatcher();
@@ -372,25 +398,19 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   unloadingPolicyKeys = Object.keys(this.UnloadingPolicy);
   labelSeparatorKeysCodes: number[] = [ENTER, COMMA];
   visitTagsSeparatorKeysCodes: number[] = [ENTER, COMMA];
-  operatorTypeKeysCodes: number[] = [ENTER, COMMA];
 
   private availableStartVisitTags: string[] = [];
-  startVisitTagsCtrl = new FormControl();
+  startVisitTagsCtrl = new UntypedFormControl();
   filteredAvailableStartVisitTags: Observable<string[]>;
 
   private availableEndVisitTags: string[] = [];
-  endVisitTagsCtrl = new FormControl();
+  endVisitTagsCtrl = new UntypedFormControl();
   filteredAvailableEndVisitTags: Observable<string[]>;
 
   durationSeconds = durationSeconds;
   replaceAll = replaceAll;
   labels: string[] = [];
-  requiredOperatorTypes: string[] = [];
-  private availableOperatorTypes: string[] = [];
-  requiredOperatorTypesCtrl = new FormControl();
-  filteredAvailableOperatorTypes: Observable<string[]>;
 
-  isOperatorTypeError: boolean;
   updatedVehicle: Vehicle;
 
   editState: EditState = EditState.Off;
@@ -406,13 +426,15 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
   constructor(
     public overwriteDialog: MatDialog,
     private changeDetector: ChangeDetectorRef,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private formMapService: FormMapService,
     private vehicleLayer: VehicleLayer,
     private store: Store<fromRoot.State>
   ) {
     this.form = fb.group({
-      loadLimits: fb.array([], (formArray: FormArray) => noDuplicateCapacitiesValidator(formArray)),
+      loadLimits: fb.array([], (formArray: UntypedFormArray) =>
+        noDuplicateCapacitiesValidator(formArray)
+      ),
       startLocation: [null],
       startLocationHeading: [null],
       startLocationSideOfRoad: [null],
@@ -420,9 +442,8 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       endLocationHeading: [null],
       endLocationSideOfRoad: [null],
       relaxationSettings: fb.array([]),
-      requiredOperatorTypes: [null],
-      startTimeWindows: fb.array([], (formArray: FormArray) => overlapValidator(formArray)),
-      endTimeWindows: fb.array([], (formArray: FormArray) => overlapValidator(formArray)),
+      startTimeWindows: fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
+      endTimeWindows: fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
       routeDistanceLimit: fb.group(
         {
           maxDistance: [null, [Validators.min(0)]],
@@ -504,7 +525,7 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
           ],
         }
       ),
-      extraVisitDurationForVisitType: fb.array([], (formArray: FormArray) =>
+      extraVisitDurationForVisitType: fb.array([], (formArray: UntypedFormArray) =>
         noDuplicateExtraDurationValidator(formArray)
       ),
       breakRule: fb.group({
@@ -558,14 +579,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
         );
       })
     );
-    this.filteredAvailableOperatorTypes = this.requiredOperatorTypesCtrl.valueChanges.pipe(
-      startWith(null as string),
-      map((value: string) => {
-        return [...this.availableOperatorTypes].filter(
-          this.getOperatorTypesPredicateFn(this.updatedVehicle?.requiredOperatorTypes, value)
-        );
-      })
-    );
   }
 
   ngOnDestroy(): void {
@@ -605,13 +618,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       this.startVisitTagsCtrl.setValue(null);
       this.endVisitTagsCtrl.setValue(null);
     }
-
-    if (changes.operatorTypes) {
-      const operatorTypes = (changes.operatorTypes.currentValue as string[]) || [];
-      this.availableOperatorTypes = operatorTypes;
-      this.requiredOperatorTypesCtrl.setValue(null);
-      this.checkOperatorTypeError();
-    }
   }
 
   ngAfterViewInit(): void {
@@ -628,7 +634,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       };
     }
     this.parseLabels();
-    this.setRequiredOperatorTypes();
     this.vehicleLayer.load(this.updatedVehicle);
   }
 
@@ -677,7 +682,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       endLocationHeading: this.updatedVehicle.endWaypoint?.location?.heading,
       endLocationSideOfRoad: this.updatedVehicle.endWaypoint?.sideOfRoad,
       relaxationSettings: this.loadRelaxationSettings(),
-      requiredOperatorTypes: this.updatedVehicle.requiredOperatorTypes,
       startTimeWindows: TimeWindowComponent.createFormValues(startTimeWindows, this.timezoneOffset),
       endTimeWindows: TimeWindowComponent.createFormValues(endTimeWindows, this.timezoneOffset),
       travelDurationMultiple: this.updatedVehicle.travelDurationMultiple,
@@ -847,7 +851,7 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     return bounds.isEmpty() ? this.scenarioBounds : bounds;
   }
 
-  resetTimeWindows(source: ITimeWindow[], formRef: FormArray): ITimeWindow[] {
+  resetTimeWindows(source: ITimeWindow[], formRef: UntypedFormArray): ITimeWindow[] {
     const timeWindows = source || [];
     while (formRef.length > timeWindows.length) {
       formRef.removeAt(formRef.length - 1);
@@ -875,7 +879,7 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     );
   }
 
-  resetBreakRequests(source: IBreakRequest[], formRef: FormArray): IBreakRequest[] {
+  resetBreakRequests(source: IBreakRequest[], formRef: UntypedFormArray): IBreakRequest[] {
     const breakRequests = source || [];
     while (formRef.length > breakRequests.length) {
       formRef.removeAt(formRef.length - 1);
@@ -888,7 +892,7 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
 
   resetFrequencyConstraints(
     source: IFrequencyConstraint[],
-    formRef: FormArray
+    formRef: UntypedFormArray
   ): IFrequencyConstraint[] {
     const frequencyConstraints = source || [];
     while (formRef.length > frequencyConstraints.length) {
@@ -1010,10 +1014,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     this.labels = splitLabel(this.updatedVehicle.label) || [];
   }
 
-  setRequiredOperatorTypes(): void {
-    this.requiredOperatorTypes = this.updatedVehicle.requiredOperatorTypes || [];
-  }
-
   addLabel(rawValue: any, input: HTMLInputElement): void {
     const value = (rawValue || '').trim();
     if (value) {
@@ -1030,55 +1030,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     }
   }
 
-  addOperatorTypeInputToken(rawValue: any, input?: HTMLInputElement): void {
-    const value = (rawValue || '').trim();
-    if (value) {
-      const operatorType = [...this.availableOperatorTypes].find(
-        this.getOperatorTypesPredicateFn(this.updatedVehicle.requiredOperatorTypes, value)
-      );
-      if (operatorType) {
-        this.addOperatorType(operatorType);
-      } else if (!(this.updatedVehicle.requiredOperatorTypes || []).includes(value)) {
-        this.addOperatorType(value);
-      }
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  private addOperatorType(value: string): void {
-    this.updatedVehicle.requiredOperatorTypes = (
-      this.updatedVehicle.requiredOperatorTypes || []
-    ).concat(value);
-    this.setRequiredOperatorTypes();
-    this.requiredOperatorTypesCtrl.setValue(null);
-    this.checkOperatorTypeError();
-  }
-
-  removeOperatorType(index: number): void {
-    if (index >= 0) {
-      const types = this.requiredOperatorTypes.slice();
-      types.splice(index, 1);
-      this.updatedVehicle.requiredOperatorTypes = types;
-      this.setRequiredOperatorTypes();
-      this.requiredOperatorTypesCtrl.setValue(null);
-      this.checkOperatorTypeError();
-    }
-  }
-
-  checkOperatorTypeError(): void {
-    this.isOperatorTypeError = false;
-    this.updatedVehicle.requiredOperatorTypes?.forEach((type) => {
-      if (![...this.existingOperatorTypes].includes(type)) {
-        this.isOperatorTypeError = true;
-        return;
-      }
-    });
-  }
-
   onLabelKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Tab') {
       const input = event.target as HTMLInputElement;
@@ -1090,13 +1041,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     if (event.key === 'Tab') {
       const input = event.target as HTMLInputElement;
       this.addStartVisitTagsInputToken(input.value, input);
-    }
-  }
-
-  onOperatorTypeKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Tab') {
-      const input = event.target as HTMLInputElement;
-      this.addOperatorTypeInputToken(input.value, input);
     }
   }
 
@@ -1244,7 +1188,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
 
   formToUpdatedVehicle(): void {
     this.updatedVehicle.label = joinLabel(this.labels);
-    this.updatedVehicle.requiredOperatorTypes = this.requiredOperatorTypes;
     this.updatedVehicle.loadLimits = LoadLimitsFormComponent.readFormValues(this.loadLimits.value);
     this.updatedVehicle.extraVisitDurationForVisitType =
       ExtraVisitDurationFormComponent.readFormValues(this.extraVisitDurationForVisitType.value);
@@ -1407,7 +1350,7 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
     );
   }
 
-  formGroupHasValue(fg: FormGroup): boolean {
+  formGroupHasValue(fg: UntypedFormGroup): boolean {
     let result = false;
     const iterate = (obj): any => {
       Object.keys(obj).forEach((key) => {
@@ -1442,32 +1385,6 @@ export class BaseEditVehicleDialogComponent implements OnChanges, OnInit, OnDest
       vehicle: this.updatedVehicle,
       unsetFields: this.unsetFields,
     });
-  }
-
-  onOperatorTypesSelected(event: MatAutocompleteSelectedEvent): void {
-    this.addOperatorType(event.option.value);
-  }
-
-  /** Gets a operator Types predicate function for find/filter */
-  private getOperatorTypesPredicateFn(
-    currentValues: string[],
-    value: string
-  ): (operatorType: string) => boolean {
-    // Exclude options already part of the operator Types (control value)
-    const isAvailable = ((operatorType: string) =>
-      !(currentValues || []).includes(operatorType)).bind(this);
-    if (value == null) {
-      return isAvailable;
-    }
-
-    // If a filter value is provided, compose the isAvailable filter with a value filter
-    const lowerValue = value.toLowerCase();
-    return ((operatorType: string) =>
-      isAvailable(operatorType) && operatorType.toLowerCase().includes(lowerValue)).bind(this);
-  }
-
-  onOperatorsTypeSelected(event: MatAutocompleteSelectedEvent): void {
-    this.addOperatorType(event.option.value);
   }
 
   isUnset(field: string): boolean {

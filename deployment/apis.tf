@@ -8,7 +8,7 @@ resource "google_project_service" "maps_for_fleet_routing" {
 }
 
 resource "google_project_service" "optimization" {
-  service = "cloudoptimization.googleapis.com"
+  service = "routeoptimization.googleapis.com"
   depends_on = [
     google_project_service.maps_for_fleet_routing
   ]

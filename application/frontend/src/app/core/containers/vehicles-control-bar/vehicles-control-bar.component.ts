@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -22,7 +29,7 @@ import { FilterMenuComponent } from 'src/app/shared/components';
 import { ActiveFilter } from 'src/app/shared/models';
 import { FilterService } from 'src/app/shared/services';
 import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
-import { PreSolveVehicleActions, VehicleActions } from '../../actions';
+import { PreSolveVehicleActions } from '../../actions';
 import { Column, VehicleFilterOption } from '../../models';
 import PreSolveVehicleSelectors from '../../selectors/pre-solve-vehicle.selectors';
 
@@ -38,8 +45,6 @@ export class VehiclesControlBarComponent implements OnDestroy {
   readonly filterOptions$: Observable<VehicleFilterOption[]>;
   readonly filters$: Observable<ActiveFilter[]>;
   readonly displayColumns$: Observable<Column[]>;
-  readonly showBulkEdit$: Observable<boolean>;
-  readonly showBulkDelete$: Observable<boolean>;
 
   private addSubscription: Subscription;
   private editSubscription: Subscription;
@@ -52,8 +57,6 @@ export class VehiclesControlBarComponent implements OnDestroy {
     this.displayColumns$ = store.pipe(
       select(PreSolveVehicleSelectors.selectAvailableDisplayColumnsOptions)
     );
-    this.showBulkEdit$ = store.pipe(select(PreSolveVehicleSelectors.selectShowBulkEdit));
-    this.showBulkDelete$ = store.pipe(select(PreSolveVehicleSelectors.selectShowBulkDelete));
   }
 
   ngOnDestroy(): void {
@@ -107,22 +110,6 @@ export class VehiclesControlBarComponent implements OnDestroy {
             displayColumns: { ...displayColumns, [columnId]: active },
           })
         );
-      });
-  }
-
-  onBulkEdit(): void {
-    this.store
-      .pipe(select(PreSolveVehicleSelectors.selectFilteredVehiclesSelectedIds), take(1))
-      .subscribe((vehicleIds) => {
-        this.store.dispatch(PreSolveVehicleActions.editVehicles({ vehicleIds }));
-      });
-  }
-
-  onBulkDelete(): void {
-    this.store
-      .pipe(select(PreSolveVehicleSelectors.selectFilteredVehiclesSelectedIds), take(1))
-      .subscribe((ids) => {
-        this.store.dispatch(VehicleActions.confirmDeleteVehicles({ ids }));
       });
   }
 }

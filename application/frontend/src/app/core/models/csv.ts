@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 export enum ShipmentFields {
   Label,
@@ -70,25 +77,11 @@ export enum VehicleFields {
   LoadLimit3Value,
   LoadLimit4Type,
   LoadLimit4Value,
-  RequiredOperatorType1,
-  RequiredOperatorType2,
-  RequiredOperatorType3,
-}
-
-export enum VehicleOperatorFields {
-  Label,
-  Type,
-  StartTimeWindowStartTime,
-  StartTimeWindowEndTime,
-  EndTimeWindowStartTime,
-  EndTimeWindowEndTime,
 }
 
 export interface CsvData {
   vehicleIndex: number;
   vehicleLabel: string;
-  vehicleOperatorIndices: string;
-  vehicleOperatorLabels: string;
   visitType: string;
   visitLabel: string;
   visitStart: string;
@@ -102,8 +95,6 @@ export interface CsvData {
 export const CSV_COLUMN_ORDER = [
   'vehicleIndex',
   'vehicleLabel',
-  'vehicleOperatorIndices',
-  'vehicleOperatorLabels',
   'visitType',
   'visitLabel',
   'visitStart',
@@ -117,8 +108,6 @@ export const CSV_COLUMN_ORDER = [
 export const CSV_DATA_LABELS = {
   vehicleIndex: 'Vehicle index',
   vehicleLabel: 'Vehicle label',
-  vehicleOperatorIndices: 'Vehicle operator indices',
-  vehicleOperatorLabels: 'Vehicle Operator Labels',
   visitType: 'Visit type',
   visitLabel: 'Visit label',
   visitStart: 'Visit start',
@@ -149,8 +138,4 @@ export interface GeocodeErrorResponse extends ValidationErrorResponse {
   location: string;
 }
 
-export const EXPERIMENTAL_API_FIELDS_VEHICLES = [
-  'requiredOperatorType1',
-  'requiredOperatorType2',
-  'requiredOperatorType3',
-];
+export const EXPERIMENTAL_API_FIELDS_VEHICLES = [];

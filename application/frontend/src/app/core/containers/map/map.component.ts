@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -50,6 +57,7 @@ import { PostSolveVisitRequestLayer } from '../../services/post-solve-visit-requ
 import { PreSolveVehicleLayer } from '../../services/pre-solve-vehicle-layer.service';
 import { PreSolveVisitRequestLayer } from '../../services/pre-solve-visit-request-layer.service';
 import { RouteLayer } from '../../services/route-layer.service';
+import { MapLayer, MapLayerId } from '../../models/map';
 
 @Component({
   selector: 'app-map',
@@ -62,6 +70,7 @@ export class MapComponent implements OnInit, OnDestroy {
   mapSelectionToolsVisible$: Observable<boolean>;
   selectionFilterActive$: Observable<boolean>;
   timezoneOffset$: Observable<number>;
+  layers$: Observable<{ [id in MapLayerId]?: MapLayer }>;
 
   get bounds(): google.maps.LatLngBounds {
     return this.mapService.bounds;
@@ -90,6 +99,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.options$ = this.store.pipe(select(fromConfig.selectMapOptions), take(1));
     this.mapSelectionToolsVisible$ = this.store.pipe(select(selectMapSelectionToolsVisible));
     this.selectionFilterActive$ = this.store.pipe(select(selectSelectionFilterActive));
+    this.layers$ = this.store.pipe(select(fromMap.selectPostSolveMapLayers));
 
     this.subscriptions.push(
       this.store
@@ -99,6 +109,14 @@ export class MapComponent implements OnInit, OnDestroy {
         )
         .subscribe((bounds) => {
           if (bounds) {
+            // If initial load, try to set the bounds after the map has settled
+            if (this.mapService.hasEmptyBounds) {
+              const listener = this.map.addListener('idle', () => {
+                this.mapService.setBounds(bounds);
+                this.changeDetector.markForCheck();
+                listener.remove();
+              });
+            }
             this.mapService.setBounds(bounds);
             this.changeDetector.markForCheck();
           }
@@ -108,16 +126,21 @@ export class MapComponent implements OnInit, OnDestroy {
         this.store.pipe(select(fromPreSolve.selectActive)),
         this.store.pipe(select(fromPostSolve.selectActive)),
         this.store.pipe(select(fromUI.selectHasMap)),
-      ]).subscribe(([preSolve, postSolve, hasMap]) => {
+        this.store.pipe(select(fromMap.selectPostSolveMapLayers)),
+      ]).subscribe(([preSolve, postSolve, hasMap, postSolveMapLayers]) => {
         this.routeLayer.visible = hasMap && postSolve;
         this.preSolveVehicleLayer.visible = hasMap && preSolve;
         this.preSolveVisitRequestLayer.visible = hasMap && preSolve;
         this.postSolveVehicleLayer.visible = hasMap && postSolve;
-        this.postSolveVisitRequestLayer.visible = hasMap && postSolve;
+        this.postSolveVisitRequestLayer.visible =
+          hasMap && postSolve && postSolveMapLayers[MapLayerId.PostSolveVisitRequests].visible;
         this.depotLayer.visible = hasMap;
       }),
 
-      this.store.pipe(select(selectPage)).subscribe((page) => (this.page = page))
+      this.store.pipe(select(selectPage)).subscribe((page) => {
+        this.page = page;
+        this.changeDetector.markForCheck();
+      })
     );
 
     this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
@@ -176,10 +199,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.setMapTypeId(satellite ? 'satellite' : 'roadmap');
   }
 
-  onHideMap(): void {
-    this.store.dispatch(MapActions.hideMap());
-  }
-
   onZoomToHome(): void {
     this.mapService.zoomToHome();
   }
@@ -222,5 +241,23 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
     return drawingManager;
+  }
+
+  isPreSolve(): boolean {
+    return [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(this.page);
+  }
+
+  addShipment(): void {
+    this.store.dispatch(PreSolveShipmentActions.addShipment({}));
+  }
+
+  addVehicle(): void {
+    this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
+  }
+
+  onSetLayerVisibility(event: { layerId: MapLayerId; visible: boolean }): void {
+    this.store.dispatch(
+      MapActions.setPostSolveLayerVisible({ layerId: event.layerId, visible: event.visible })
+    );
   }
 }

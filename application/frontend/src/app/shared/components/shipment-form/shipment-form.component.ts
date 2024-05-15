@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
@@ -22,10 +29,10 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -57,8 +64,8 @@ import { ShipmentFormFields } from 'src/app/core/models/shipment-form-fields';
   encapsulation: ViewEncapsulation.None,
 })
 export class ShipmentFormComponent implements OnChanges, OnInit {
-  get loadDemands(): FormArray {
-    return this.form.get('loadDemands') as FormArray;
+  get loadDemands(): UntypedFormArray {
+    return this.form.get('loadDemands') as UntypedFormArray;
   }
 
   @Input() abbreviations: { [unit: string]: string };
@@ -78,7 +85,7 @@ export class ShipmentFormComponent implements OnChanges, OnInit {
   @Input() unsetFields: string[] = [];
   formFields = ShipmentFormFields;
 
-  readonly form: FormGroup;
+  readonly form: UntypedFormGroup;
 
   get shipmentType(): AbstractControl {
     return this.form.get('shipmentType');
@@ -89,20 +96,20 @@ export class ShipmentFormComponent implements OnChanges, OnInit {
   get invalid(): boolean {
     return this.form.invalid;
   }
-  get perVehicleCosts(): FormArray {
-    return this.form.get('perVehicleCosts') as FormArray;
+  get perVehicleCosts(): UntypedFormArray {
+    return this.form.get('perVehicleCosts') as UntypedFormArray;
   }
-  get pickupToDeliveryLimits(): FormGroup {
-    return this.form.get('pickupToDeliveryLimits') as FormGroup;
+  get pickupToDeliveryLimits(): UntypedFormGroup {
+    return this.form.get('pickupToDeliveryLimits') as UntypedFormGroup;
   }
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   labels: string[] = [];
-  labelCtrl = new FormControl();
+  labelCtrl = new UntypedFormControl();
 
   // shipment type
-  shipmentTypeCtrl = new FormControl();
+  shipmentTypeCtrl = new UntypedFormControl();
   private availableShipmentTypes: string[] = [];
   filteredAvailableShipmentTypes$: Observable<string[]>;
 
@@ -110,7 +117,7 @@ export class ShipmentFormComponent implements OnChanges, OnInit {
   allowedVehicles: Vehicle[] = [];
   private allowedVehicleIds = new Set<number>();
   private availableAllowedVehicles: Vehicle[] = [];
-  allowedVehicleCtrl = new FormControl();
+  allowedVehicleCtrl = new UntypedFormControl();
   filteredAvailableAllowedVehicles$: Observable<Vehicle[]>;
   readonly optionItemSize = 48;
 
@@ -141,9 +148,9 @@ export class ShipmentFormComponent implements OnChanges, OnInit {
     return this.costsPerVehicleMap.flatMap((c) => c[1].map((v) => this.vehicleIds.indexOf(v.id)));
   }
 
-  constructor(private changeDetector: ChangeDetectorRef, private fb: FormBuilder) {
+  constructor(private changeDetector: ChangeDetectorRef, private fb: UntypedFormBuilder) {
     this.form = this.fb.group({
-      loadDemands: fb.array([], (formArray: FormArray) =>
+      loadDemands: fb.array([], (formArray: UntypedFormArray) =>
         noDuplicateCapacitiesValidator(formArray)
       ),
       shipmentType: this.shipmentTypeCtrl,

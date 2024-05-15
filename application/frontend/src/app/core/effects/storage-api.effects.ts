@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -29,7 +36,11 @@ export class StorageApiEffects {
         return dialogRef.afterClosed();
       }),
       mergeMap(
-        (dialogResult: { scenario: IOptimizeToursRequest; solution?: IOptimizeToursResponse }) => {
+        (dialogResult: {
+          scenario: IOptimizeToursRequest;
+          solution?: IOptimizeToursResponse;
+          scenarioName: string;
+        }) => {
           if (!dialogResult) {
             return EMPTY;
           }
@@ -38,7 +49,10 @@ export class StorageApiEffects {
           const { shipments, vehicles, normalizedScenario } =
             this.normalizationService.normalizeScenario(scenario, requestTime);
           const actions: Action[] = [
-            DispatcherActions.uploadScenarioSuccess({ scenario: normalizedScenario }),
+            DispatcherActions.uploadScenarioSuccess({
+              scenario: normalizedScenario,
+              scenarioName: dialogResult.scenarioName,
+            }),
           ];
           if (solution) {
             const requestedShipmentIds = shipments.filter((s) => !s.ignore).map((s) => s.id);

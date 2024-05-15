@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   Component,
@@ -19,10 +26,10 @@ import {
 } from '@angular/core';
 import {
   ControlContainer,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -36,7 +43,7 @@ import { aLessThanB, nonNegativeIntegerValidator } from 'src/app/util';
 import { LoadLimitFormValue } from '../../models/load-limit';
 
 export class StartLoadErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl, form: FormGroupDirective | NgForm): boolean {
+  isErrorState(control: UntypedFormControl, form: FormGroupDirective | NgForm): boolean {
     const isSubmitted = form && form.submitted;
     return (
       form.errors?.startMinLessThanMax ||
@@ -46,7 +53,7 @@ export class StartLoadErrorStateMatcher implements ErrorStateMatcher {
 }
 
 export class EndLoadErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl, form: FormGroupDirective | NgForm): boolean {
+  isErrorState(control: UntypedFormControl, form: FormGroupDirective | NgForm): boolean {
     const isSubmitted = form && form.submitted;
     return (
       form.errors?.endMinLessThanMax ||
@@ -56,7 +63,7 @@ export class EndLoadErrorStateMatcher implements ErrorStateMatcher {
 }
 
 export class SoftMaxErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl, form: FormGroupDirective | NgForm): boolean {
+  isErrorState(control: UntypedFormControl, form: FormGroupDirective | NgForm): boolean {
     const isSubmitted = form && form.submitted;
     return (
       form.errors?.softMaxLessThanMax ||
@@ -78,7 +85,7 @@ export class LoadLimitsFormComponent implements OnChanges, OnDestroy, OnInit {
   @Input() scenarioLoadLimits: Set<string>;
   @Input() scenarioLoadDemands: Set<string>;
 
-  control: FormArray;
+  control: UntypedFormArray;
   changeSub: Subscription;
 
   currentFilterIndex: number;
@@ -90,7 +97,7 @@ export class LoadLimitsFormComponent implements OnChanges, OnDestroy, OnInit {
   endLoadErrorStateMatcher = new EndLoadErrorStateMatcher();
   softMaxErrorStateMatcher = new SoftMaxErrorStateMatcher();
 
-  static createFormGroup(fb: FormBuilder): FormGroup {
+  static createFormGroup(fb: UntypedFormBuilder): UntypedFormGroup {
     return fb.group(
       {
         type: fb.control(null, [Validators.required]),
@@ -184,7 +191,7 @@ export class LoadLimitsFormComponent implements OnChanges, OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.control = this.controlContainer.control as FormArray;
+    this.control = this.controlContainer.control as UntypedFormArray;
     this.changeSub = this.control?.valueChanges.subscribe(() => {
       this.changeDetector.detectChanges();
     });

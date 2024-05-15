@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { NgZone } from '@angular/core';
 import { GoogleMapsOverlay } from '@deck.gl/google-maps';
@@ -14,6 +21,7 @@ import { Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import { UIActions } from '../actions';
 import { MapService } from './map.service';
+import { TravelMode } from '../models';
 
 export abstract class BaseVehicleLayer {
   constructor(
@@ -41,43 +49,72 @@ export abstract class BaseVehicleLayer {
 
   private _visible: boolean;
 
-  readonly iconSize = [300, 272];
+  readonly iconSize = [48, 48];
+  readonly columnCount = 2;
   private iconMapping = {};
   readonly defaultColor = 'blue-grey';
   readonly defaultSelectedColor = 'red';
 
+  readonly travelModeIconMapping = {
+    [TravelMode.TRAVEL_MODE_UNSPECIFIED]: 'four-wheel',
+    [TravelMode.DRIVING]: 'four-wheel',
+    [TravelMode.WALKING]: 'walking',
+  };
+
   // top-down/left-right icon order as layed out in sprite
   readonly iconMappingOrder = [
-    'vehicle-amber',
-    'vehicle-black',
-    'vehicle-blue-grey',
-    'vehicle-blue',
-    'vehicle-brown',
-    'vehicle-cyan',
-    'vehicle-deep-orange',
-    'vehicle-deep-purple',
-    'vehicle-green',
-    'vehicle-grey',
-    'vehicle-indigo',
-    'vehicle-light-blue',
-    'vehicle-light-green',
-    'vehicle-lime',
-    'vehicle-orange',
-    'vehicle-pink',
-    'vehicle-purple',
-    'vehicle-red',
-    'vehicle-teal',
-    'vehicle-white',
-    'vehicle-yellow',
+    'four-wheel-amber',
+    'four-wheel-black',
+    'four-wheel-blue-grey',
+    'four-wheel-blue',
+    'four-wheel-brown',
+    'four-wheel-cyan',
+    'four-wheel-deep-orange',
+    'four-wheel-deep-purple',
+    'four-wheel-green',
+    'four-wheel-grey',
+    'four-wheel-indigo',
+    'four-wheel-light-blue',
+    'four-wheel-light-green',
+    'four-wheel-lime',
+    'four-wheel-orange',
+    'four-wheel-pink',
+    'four-wheel-purple',
+    'four-wheel-red',
+    'four-wheel-teal',
+    'four-wheel-white',
+    'four-wheel-yellow',
+    'walking-amber',
+    'walking-black',
+    'walking-blue-grey',
+    'walking-blue',
+    'walking-brown',
+    'walking-cyan',
+    'walking-deep-orange',
+    'walking-deep-purple',
+    'walking-green',
+    'walking-grey',
+    'walking-indigo',
+    'walking-light-blue',
+    'walking-light-green',
+    'walking-lime',
+    'walking-orange',
+    'walking-pink',
+    'walking-purple',
+    'walking-red',
+    'walking-teal',
+    'walking-white',
+    'walking-yellow',
   ];
 
   private getIconMapping(): void {
     // dynamically create icon mapping based on sprite
+    const columnLength = this.iconMappingOrder.length / this.columnCount;
     for (let i = 0; i < this.iconMappingOrder.length; i++) {
       const icon = this.iconMappingOrder[i];
       this.iconMapping[icon] = {
-        x: 0,
-        y: this.iconSize[1] * i,
+        x: this.iconSize[0] * Math.floor(i / columnLength),
+        y: this.iconSize[1] * (i % columnLength),
         width: this.iconSize[0],
         height: this.iconSize[1],
       };
@@ -85,7 +122,11 @@ export abstract class BaseVehicleLayer {
   }
 
   getDefaultIconFn(data: any): string {
-    return data.atDepot ? null : `vehicle-${this.defaultColor}`;
+    return data.atDepot
+      ? null
+      : `${this.travelModeIconMapping[data.travelMode ?? TravelMode.TRAVEL_MODE_UNSPECIFIED]}-${
+          this.defaultColor
+        }`;
   }
   protected onDataFiltered(data): void {
     this.layer = new IconLayer({
@@ -95,12 +136,12 @@ export abstract class BaseVehicleLayer {
       iconMapping: this.iconMapping,
       getIcon: (d) => this.getDefaultIconFn(d),
       sizeUnits: 'meters',
-      sizeMinPixels: 26.5,
-      sizeMaxPixels: 66.5,
-      getSize: 22,
-      sizeScale: 10,
+      sizeMinPixels: 28,
+      sizeMaxPixels: 60,
+      getSize: 28,
+      sizeScale: 12,
+      getAngle: (d) => (d.travelMode === TravelMode.WALKING ? 0 : d.heading),
       getPosition: (d) => d.position,
-      getAngle: (d) => d.heading,
       pickable: true,
       onHover: ({ object }) => {
         this.mapService.map.setOptions({ draggableCursor: object ? 'pointer' : 'grab' });
@@ -119,8 +160,10 @@ export abstract class BaseVehicleLayer {
       return null;
     }
     const color = (data.color && data.color.name) || this.defaultSelectedColor;
-    const key = `vehicle-${color}`;
-    return key in this.iconMapping ? key : `vehicle-${this.defaultSelectedColor}`;
+    const travelModeKey =
+      this.travelModeIconMapping[data.travelMode ?? TravelMode.TRAVEL_MODE_UNSPECIFIED];
+    const key = `${travelModeKey}-${color}`;
+    return key in this.iconMapping ? key : `${travelModeKey}-${this.defaultSelectedColor}`;
   }
   protected onDataSelected(data): void {
     this.selectedDataLayer = new IconLayer({
@@ -130,12 +173,12 @@ export abstract class BaseVehicleLayer {
       iconMapping: this.iconMapping,
       getIcon: (d) => this.getSelectedIconFn(d),
       sizeUnits: 'meters',
-      sizeMinPixels: 26.5,
-      sizeMaxPixels: 66.5,
-      getSize: 22,
-      sizeScale: 10,
+      sizeMinPixels: 28,
+      sizeMaxPixels: 60,
+      getAngle: (d) => (d.travelMode === TravelMode.WALKING ? 0 : d.heading),
+      getSize: 28,
+      sizeScale: 12,
       getPosition: (d) => d.position,
-      getAngle: (d) => d.heading,
       pickable: false,
     });
     this.gLayer.setProps({ layers: [this.layer, this.selectedDataLayer] });

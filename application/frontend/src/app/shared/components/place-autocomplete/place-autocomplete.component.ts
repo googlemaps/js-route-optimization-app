@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import {
@@ -25,9 +32,9 @@ import {
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgControl,
   NgForm,
@@ -41,6 +48,7 @@ import { isLatLngString, stringToLatLng, toDispatcherLatLng } from 'src/app/util
 
 /** Mimic the Angular material error state implementation to play nice with the material stepper */
 class PlaceAutocompleteComponentBase {
+  stateChanges: Subject<void>;
   constructor(
     public _defaultErrorStateMatcher: ErrorStateMatcher,
     public _parentForm: NgForm,
@@ -133,10 +141,10 @@ export class PlaceAutocompleteComponent
   controlType = 'app-place-autocomplete';
   focused = false;
   stateChanges = new Subject<void>();
-  readonly form: FormGroup;
-  readonly search: FormControl;
-  private readonly location: FormControl;
-  private readonly placeId: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly search: UntypedFormControl;
+  private readonly location: UntypedFormControl;
+  private readonly placeId: UntypedFormControl;
   private autocomplete: google.maps.places.Autocomplete;
   private subscription: Subscription;
   private autocompleteSelection = true;
@@ -152,7 +160,7 @@ export class PlaceAutocompleteComponent
     @Optional() _parentForm: NgForm,
     @Optional() _parentFormGroup: FormGroupDirective,
     _defaultErrorStateMatcher: ErrorStateMatcher,
-    fb: FormBuilder,
+    fb: UntypedFormBuilder,
     private placesService: PlacesService,
     private fm: FocusMonitor,
     private zone: NgZone

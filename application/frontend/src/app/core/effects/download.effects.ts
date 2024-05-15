@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Injectable, Inject, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
@@ -29,7 +36,7 @@ import {
   exhaustMap,
   mergeMap,
 } from 'rxjs/operators';
-import { of, defer, throwError } from 'rxjs';
+import { of, defer, throwError, zip } from 'rxjs';
 import {
   CsvData,
   CSV_COLUMN_ORDER,
@@ -56,6 +63,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DownloadPdfDialogComponent } from '../containers/download-pdf-dialog/download-pdf-dialog.component';
 import protobuf from 'protobufjs';
 import { ExtendedConversionOptions } from 'src/app/util/canonical-protobuf';
+import { selectScenarioName } from '../selectors/dispatcher.selectors';
 
 @Injectable()
 export class DownloadEffects {
@@ -66,8 +74,13 @@ export class DownloadEffects {
       filter(
         (modal) => modal === Modal.DownloadPDF && !this.dialog.getDialogById(Modal.DownloadPDF)
       ),
-      switchMap(() => this.store.select(fromDownload.selectDownload).pipe(first())),
-      exhaustMap((data) => {
+      switchMap(() =>
+        zip(
+          this.store.select(fromDownload.selectDownload).pipe(first()),
+          this.store.select(selectScenarioName).pipe(first())
+        )
+      ),
+      exhaustMap(([data, scenarioName]) => {
         const csvData = this.getCsvDataForSolution(data, false);
         const dialog = this.dialog.open(DownloadPdfDialogComponent, {
           id: Modal.DownloadPDF,
@@ -76,6 +89,7 @@ export class DownloadEffects {
           disableClose: true,
         });
         dialog.componentInstance.csvData = this.csvDataToLabeledCsvData(csvData, true);
+        dialog.componentInstance.scenarioName = scenarioName;
         return dialog.afterClosed();
       }),
       mergeMap((_) => {
@@ -105,12 +119,16 @@ export class DownloadEffects {
             )
             .map((key: string) => this.getColumnLabel(key));
 
-          return of(unparse({ fields: csvColumns, data: labeledCsvData }));
+          return zip(
+            of(unparse({ fields: csvColumns, data: labeledCsvData })),
+            this.store.select(selectScenarioName).pipe(first())
+          );
         }).pipe(
-          map((csvData) => {
+          map(([csvData, scenarioName]) => {
             const blob = new Blob([csvData], { type: 'text/csv' });
-            const name =
-              'routes_' + formatDate(new Date(), 'yyyyMMddHHmmss', this.locale, 'UTC') + '.csv';
+            const name = scenarioName.length
+              ? scenarioName
+              : 'routes_' + formatDate(new Date(), 'yyyyMMddHHmmss', this.locale, 'UTC') + '.csv';
             this.fileService.download(name, [csvData], 'text/csv');
             return downloadSuccess({ name, blob });
           }),
@@ -152,10 +170,13 @@ export class DownloadEffects {
           } as ExtendedConversionOptions;
           return of(files);
         }).pipe(
-          switchMap((files) => this.fileService.zip(files)),
-          map((blob) => {
-            const name =
-              'dispatcher_' + formatDate(new Date(), 'yyyyMMddHHmmss', this.locale, 'UTC');
+          switchMap((files) =>
+            zip(this.fileService.zip(files), this.store.select(selectScenarioName).pipe(first()))
+          ),
+          map(([blob, scenarioName]) => {
+            const name = scenarioName.length
+              ? scenarioName
+              : 'gmpro_' + formatDate(new Date(), 'yyyyMMddHHmmss', this.locale, 'UTC');
             this.fileService.download(name, [blob], 'application/zip');
             return downloadSuccess({ name, blob });
           }),
@@ -197,17 +218,11 @@ export class DownloadEffects {
 
     data.solution.routes.forEach((route) => {
       const vehicle = data.scenario.model.vehicles[route.vehicleIndex || 0];
-      const vehicleOperatorIndices =
-        route.vehicleOperatorIndices?.length > 0 ? route.vehicleOperatorIndices.join(',') : '';
-      const vehicleOperatorLabels =
-        route.vehicleOperatorLabels?.length > 0 ? route.vehicleOperatorLabels.join(',') : '';
 
       if (vehicle.startWaypoint) {
         csvData.push({
           vehicleIndex: route.vehicleIndex || 0,
           vehicleLabel: vehicle.label,
-          vehicleOperatorIndices: vehicleOperatorIndices,
-          vehicleOperatorLabels: vehicleOperatorLabels,
           visitType: 'Start of day',
           visitEnd: new Date(
             durationSeconds(route.vehicleStartTime).toNumber() * 1000

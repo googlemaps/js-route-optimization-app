@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Injectable } from '@angular/core';
 import { GoogleMapsOverlay } from '@deck.gl/google-maps';
@@ -36,6 +43,7 @@ export class RouteLayer {
   private layer: PathLayer = new PathLayer({});
   private outlineLayer: PathLayer = new PathLayer({});
   private selectedDataLayer: PathLayer = new PathLayer({});
+  private selectedDataOutlineLayer: PathLayer = new PathLayer({});
 
   private _visible: boolean;
   get visible(): boolean {
@@ -58,8 +66,8 @@ export class RouteLayer {
     this.layer = new PathLayer({
       id: 'routes',
       data,
-      widthMinPixels: 2,
-      widthMaxPixels: 50,
+      widthMinPixels: 4,
+      widthMaxPixels: 60,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
@@ -68,15 +76,22 @@ export class RouteLayer {
     this.outlineLayer = new PathLayer({
       id: 'routes-outline',
       data,
-      widthMinPixels: 4,
-      widthMaxPixels: 52,
+      widthMinPixels: 6,
+      widthMaxPixels: 80,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 27,
-      getColor: MATERIAL_COLORS.White.rgb,
+      getWidth: 30,
+      getColor: MATERIAL_COLORS.BlueGrey.strokeRgb,
     });
-    this.gLayer.setProps({ layers: [this.outlineLayer, this.layer, this.selectedDataLayer] });
+    this.gLayer.setProps({
+      layers: [
+        this.outlineLayer,
+        this.selectedDataOutlineLayer,
+        this.layer,
+        this.selectedDataLayer,
+      ],
+    });
   }
 
   private onDataSelected(data): void {
@@ -85,13 +100,31 @@ export class RouteLayer {
       id: 'selected-routes',
       data,
       widthMinPixels: 2,
-      widthMaxPixels: 50,
+      widthMaxPixels: 60,
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 25,
+      getWidth: 20,
       getColor: (d) => d.color.rgb,
     });
-    this.gLayer.setProps({ layers: [this.outlineLayer, this.layer, this.selectedDataLayer] });
+    this.selectedDataOutlineLayer = new PathLayer({
+      id: 'selected-routes-outline',
+      data,
+      widthMinPixels: 6,
+      widthMaxPixels: 80,
+      capRounded: true,
+      jointRounded: true,
+      getPath: (d) => d.path,
+      getWidth: 30,
+      getColor: (d) => d.color.strokeRgb,
+    });
+    this.gLayer.setProps({
+      layers: [
+        this.outlineLayer,
+        this.layer,
+        this.selectedDataOutlineLayer,
+        this.selectedDataLayer,
+      ],
+    });
   }
 }

@@ -1,8 +1,8 @@
 {
-  "name": "@google-cloud/optimization",
+  "name": "@google-cloud/routeoptimization",
   "version": "0.1.0",
-  "description": "Optimization client for Node.js",
-  "repository": "googleapis/nodejs-optimization",
+  "description": "Routeoptimization client for Node.js",
+  "repository": "googleapis/nodejs-routeoptimization",
   "license": "Apache-2.0",
   "author": "Google LLC",
   "main": "build/src/index.js",
@@ -19,15 +19,14 @@
     "google cloud platform",
     "google cloud",
     "cloud",
-    "google optimization",
-    "optimization",
-    "fleet routing",
-    "stateful fleet routing"
+    "google routeoptimization",
+    "routeoptimization",
+    "route optimization"
   ],
   "dependencies": {
-    "google-gax": "^3.5.2"
+    "google-gax": "^4.3.1"
   },
   "engines": {
-    "node": ">=v12"
+    "node": ">=v14"
   }
 }

@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { createSelector } from '@ngrx/store';
 import { durationSeconds } from 'src/app/util';
@@ -18,7 +25,6 @@ import ShipmentSelectors from './shipment.selectors';
 import ShipmentModelSelectors from './shipment-model.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import VisitRequestSelectors from 'src/app/core/selectors/visit-request.selectors';
-import PreSolveVehicleOperatorSelectors from './pre-solve-vehicle-operator.selectors';
 
 export const selectModel = createSelector(
   fromDispatcher.selectScenario,
@@ -113,13 +119,5 @@ export const selectShipmentTypes = createSelector(
     });
 
     return Array.from(types).sort();
-  }
-);
-
-export const selectVehicleOperatorTypes = createSelector(
-  fromVehicle.selectOperatorTypes,
-  PreSolveVehicleOperatorSelectors.selectVehicleOperatorTypes,
-  (vehicleOperatorTypes, shipmentModelVehicleOperatorTypes) => {
-    return new Set([...vehicleOperatorTypes, ...shipmentModelVehicleOperatorTypes]);
   }
 );

@@ -1,13 +1,14 @@
 @import '../../../../styles/variables.scss';
 
+.display-columns-menu-trigger {
+  margin-left: auto;
+}
+
 app-table-control-bar {
   display: flex;
   align-items: center;
   border-bottom: 1px solid $blue-lighter;
-
-  app-filter-list {
-    margin-right: 16px;
-  }
+  padding: 0.25rem;
 
   .grow {
     flex-grow: 1;

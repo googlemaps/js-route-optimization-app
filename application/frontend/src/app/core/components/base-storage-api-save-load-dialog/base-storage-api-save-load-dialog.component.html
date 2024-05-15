@@ -7,10 +7,10 @@
     [(selectedIndex)]="selectedTab"
     (selectedTabChange)="changeTab($event.index)"
     #tabGroup>
-    <mat-tab label="Scenario" #scenarioTab>
+    <mat-tab label="Request" #scenarioTab>
       <ng-container [ngTemplateOutlet]="resultsTable"></ng-container>
     </mat-tab>
-    <mat-tab label="Solution">
+    <mat-tab label="Response">
       <ng-container [ngTemplateOutlet]="resultsTable"></ng-container>
     </mat-tab>
   </mat-tab-group>
@@ -22,8 +22,8 @@
   <ng-container *ngIf="saving; else openButton" [ngTemplateOutlet]="saveButton"></ng-container>
 </mat-dialog-actions>
 
-<ng-template #loadTitle>Open new scenario or new solution</ng-template>
-<ng-template #saveTitle>Save current scenario or solution to Google Cloud Storage</ng-template>
+<ng-template #loadTitle>Open new request or new response</ng-template>
+<ng-template #saveTitle>Save current request or response to Google Cloud Storage</ng-template>
 
 <ng-template #loadingSpinner>
   <mat-spinner diameter="25"></mat-spinner>

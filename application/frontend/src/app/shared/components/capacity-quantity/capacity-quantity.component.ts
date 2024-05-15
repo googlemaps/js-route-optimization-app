@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -22,9 +29,9 @@ import {
 } from '@angular/core';
 import {
   ControlValueAccessor,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   NgControl,
   ValidatorFn,
   NgForm,
@@ -42,7 +49,9 @@ import { CapacityQuantityFormValue } from '../../models/capacity-quantity';
 /**
  * @returns map of validation errors (nonNegativeInteger) if present, otherwise null.
  */
-export const nonNegativeIntegerCapacityQuantityValidator: ValidatorFn = (control: FormControl) => {
+export const nonNegativeIntegerCapacityQuantityValidator: ValidatorFn = (
+  control: UntypedFormControl
+) => {
   const { value } = (control.value || {}) as CapacityQuantityFormValue;
   if (value != null && !/^\s*\d*\s*$/.test(value.toString())) {
     return { nonNegativeInteger: true };
@@ -52,6 +61,8 @@ export const nonNegativeIntegerCapacityQuantityValidator: ValidatorFn = (control
 
 /** Mimic the Angular material error state implementation to play nice with the material stepper */
 class CapacityQuantityComponentBase {
+  stateChanges: Subject<void>;
+
   constructor(
     public _defaultErrorStateMatcher: ErrorStateMatcher,
     public _parentForm: NgForm,
@@ -150,9 +161,9 @@ export class CapacityQuantityComponent
 
   controlType = 'app-capacity-quantity';
   focused = false;
-  readonly quantityValue: FormControl;
-  readonly quantityTypeRoot: FormControl;
-  readonly quantityTypeUnit: FormControl;
+  readonly quantityValue: UntypedFormControl;
+  readonly quantityTypeRoot: UntypedFormControl;
+  readonly quantityTypeUnit: UntypedFormControl;
   stateChanges = new Subject<void>();
   get typeRoot(): string {
     return this.quantityTypeRoot.value;
@@ -161,7 +172,7 @@ export class CapacityQuantityComponent
     return this.quantityTypeUnit.value;
   }
   unitOptions: string[];
-  private readonly form: FormGroup;
+  private readonly form: UntypedFormGroup;
   private readonly subscriptions: Subscription[] = [];
   // eslint-disable-next-line  @typescript-eslint/no-empty-function
   private onChange = (_value: any): void => {};
@@ -174,7 +185,7 @@ export class CapacityQuantityComponent
     @Optional() _parentForm: NgForm,
     @Optional() _parentFormGroup: FormGroupDirective,
     _defaultErrorStateMatcher: ErrorStateMatcher,
-    fb: FormBuilder,
+    fb: UntypedFormBuilder,
     private fm: FocusMonitor
   ) {
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);

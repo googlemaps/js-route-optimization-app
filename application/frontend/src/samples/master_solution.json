@@ -186,32 +186,6 @@
           "value": "200"
         }
       ],
-      "travelSteps": [
-        {
-          "duration": "1620s",
-          "distanceMeters": 6508,
-          "trafficInfoUnavailable": false,
-          "routePolyline": {
-            "points": "sojiHyumMDCDEHKBEDGFKJUJWBEDGHOBEBCDEBALGTnA@H@D@LDV@B@DLj@@F@BHZDLRlAVxADVVtAh@bDDRV|AFZTpAZjBMXKPKT]v@Yp@Uh@Yp@GLQ`@]t@w@fBUf@e@pAILGHCDGJm@rAi@rAKRKVs@dBc@hAYt@YGg@B?f@?Z@X?@@RDhB?X@V?P@LDvABz@DjBBd@DbADxA?Z@`@B~@J`D@P?LLvDAJ@HDhB@D?D@HBdA@LF|A@`@?BBn@@X?J@FDtA?NF`BBp@@^@F@DDp@@VB\\@TF~@@VNhCFv@B^?BBNHfAB^Jz@Jv@Ht@Lr@BRZfCFd@@NHh@Hr@Fr@Hz@Fl@Hp@Jv@Fb@BZBHBZDZDZVrBBv@Hn@Hd@Jr@Jv@@N?J?F?RGXCR_@tEMxAEV?DQhBG`@GZOz@ELOp@CPm@zCUbAOv@Mt@Or@CPg@|Bm@tCWrAYlB]fCMt@M`ACLKn@SvAG\\QTDLZj@tBzDPXNXBDBD@D@B?D@H@L@L@L?D@D?F?B?@AB?@?B?B?@?B?B@@?D@B?B@@?B@@@B?@@@DR@LJd@D`@NpANjA@PTbB@JJr@BX^pC`@pDn@hF`@fDJt@Fh@Hp@@VFVBXRfBPvAJv@F`@RzARhBP`BXrBNbA?LVlCDl@Dj@HVBLJbBHtAPnCFdA@RDt@LfBf@jJDt@B`@D`ADj@@XJn@@NH^Px@?DnBnOJz@LfAnAnJ`@pCX~BPjANpAD\\Hh@L|@NlARxARbB@V?D?B?D?F?B?@AFADAHAFCHCBCDCDAFE\\@H?J@HBJBFBHDF@@@@@BB@@@@@@@B@B?Z?@?Z?RBD?B?D?B@PHRJNHHBD@@AJCb@Zp@d@P\\ZRr@d@f@Xj@^p@b@LFDDh@\\l@^Il@CPC\\AD?BAJAT?PAR?N@XAV@D@@?TBRBTBXBLBLBJFXDNJXBHDHDJFJFLHNJLFH@BFFJLRJTPFSFWTiANs@FURw@"
-          }
-        },
-        {
-          "duration": "788s",
-          "distanceMeters": 3259,
-          "trafficInfoUnavailable": false,
-          "routePolyline": {
-            "points": "iuhiHya_MFWB@B@B?B@B?D?B?B?DAD?DADCDABCDCDCDEBGDEDGBGBIBG@IBG@I@G?I@G?I?I@GAI?KAIAIAICIAGCICGCECGCECECEECECACGEGEA?EAEAE?G?E?E@G?EBE@GBEBEBEDU}@Ma@Qm@Qi@I[Sm@]gA}A_Fo@sBo@oBwAsEe@uAGYe@}A{@kCi@cBWy@eDkK@E@??A?A?A?A?A?A?A?AAA?A?A?AA??A?AA??AA?LQl@_B\\_ATo@N_@HQK}FCk@OwHC}@Ec@G]?G?E@E?E@C@GBGBIEqAIuDEkB?M?OAo@CcACaBGyE?SE_CEmCIoEAaACu@?E?OCUIc@YkBOuAKs@Is@G_@E]Ks@Is@k@oEMeAIa@ScBIm@Im@@?@??A@?@A?A@??A@A?A@??A@C@E?C?A?A@A?A?A?AAA?A?A?A?CAA?A?AA??AAA?AAA?AA??ACAAAA?A??AA?A?A?A?A@C?Gm@AEIo@Is@Gi@Ee@Y_DM}AQgBEKAEACCQG_@?]?_AAcC?kA?u@?w@Ay@e@PEc@C[AKO_CCWASCc@AQKaBAI?I?M@UNCB@D@J?`A?t@AX?D?D?B?BADAJCj@Q^KJC"
-          }
-        },
-        {
-          "duration": "788s",
-          "distanceMeters": 3100,
-          "trafficInfoUnavailable": false,
-          "routePolyline": {
-            "points": "_riiHykfMLEXIRIl@QLEBAJEIISUMMk@m@EEaA_AOQU[_@e@IMwAmBQUMQMOW_@OUKQGKEKGIi@{@U_@IMU_@s@kAu@gAQU_@m@S[sAqBIKGG?A?M?GAGAIAGAGCEACEIEGKKECEEXoCDa@@MBIReCF{@?Y?Q?MCM?MMw@EQQkAEYAWCQSeBCYC[G_@y@wHIm@CSEa@K}@CWe@eECYEYKs@Gi@Ku@Gc@E]C]AMCMGaAGiAWaEAWCk@?CCa@ASCi@Ck@Ak@Cu@?E?AA??AIkCAIAi@A]A]CaAAQGkBEoAASM_ECw@EaACs@CkAA]AOAa@CgAA_@IoBEsACi@EwBA[IcBA]Ao@AQ@YBgCB}B?uA?mA?iB?iB?cA?uAAc@?cB?]@_A@]HwBLeFBoADwB@OBoA@i@@UBO@IBK`@m@TWHIHEXOJITQ"
-          }
-        }
-      ],
       "vehicleDetour": "15780s",
       "routeCosts": {
         "model.vehicles.route_duration_limit.cost_per_square_hour_after_quadratic_soft_max": 0.9692718364197532,
@@ -593,48 +567,6 @@
         {
           "type": "weight_kilograms",
           "value": "300"
-        }
-      ],
-      "travelSteps": [
-        {
-          "duration": "1149s",
-          "distanceMeters": 3943,
-          "trafficInfoUnavailable": false,
-          "routePolyline": {
-            "points": "sojiHyumMDCDEHKBEDGFKJUJWBEDGHOBEBCDEBALGTnA@H@D@LDV@B@DLj@@F@BHZDLRlAVxADVVtAh@bDDRV|AFZl@v@b@f@LLjAxAt@~@JLPT`ApAfCdDFHRXZ`@BBBDFJBJBJDPn@d@PLLHdAh@v@`@n@Z`@Rr@^VLJF^PTJFDJFl@ZFFh@THDNHXb@AB?B?B?D?@@@?@?@@B?@@??@@@?@@??@@?@??@@?@?@?@?@??A@?@A@?@A@?JX@@BFPZ?@R`@@?FN@BFRH^FJLTr@^R?hAn@HFNHXPl@XTPXBp@XZNr@\\RHdAf@rAn@vAr@z@f@t@\\RH@@d@Rd@XpCtApAn@x@\\JQ@CBCBA@?B@DBTJRl@p@Vf@XJDp@\\j@VHD\\PvAt@r@`@t@b@jAn@LLNLl@Z@MNDrA`@F@BB@@BB|@ZPDH@PBv@|FVfBJx@Fd@F`@NdAVtAPvAJv@H`@HZIf@Il@O~@]pCk@zDw@`FKh@Mp@EHWjBIh@UtAE\\]~BrAf@zAp@`Br@H?ZNZL@?TJv@ZNHPLH?XLx@\\^NjCfArAl@XLj@RTHHBVJXJTJd@P"
-          }
-        },
-        {
-          "duration": "862s",
-          "distanceMeters": 4379,
-          "trafficInfoUnavailable": false,
-          "routePolyline": {
-            "points": "k_fiHachMr@Xr@Xd@Rl@Vt@\\BW\\}CHy@Da@LmANwALmATF@?HC`Av@FDVTVTp@h@XRDDHJLHJLj@h@NNFBLHNFJJFFTTXVt@h@S\\u@jAuCdGw@dBCBAFCH?BCNGb@E`@MfAQhA?BM~@ER?HAL@\\Bb@@d@?P?D?@@D@R?@AHARAXCXCVETc@pC_@~BADa@xBGf@G\\On@CHa@nBQr@Uz@YpAGVQp@ADe@lB@F?B?BABUx@AL_@dBOt@Mj@GVI`@IXOn@]fB}@bEWnAUhAUdAc@|BCLCHAHIj@UhAWjA?@Mn@[~AYzAA@A??@A@AB[|A}AxHGTId@CLCDI`@Op@AJ?@?@]~AADEPERAJCFAFAHAFAJ@LA^AR@xC?n@@pD@pB@v@?@?J@NFj@@~@?XB~B?dC?Z?D?R?LBlB?F?JBXDd@DV@HRfB@T@V@ZBx@@p@@|@@`A?x@DhE?z@@bBBpC?h@@xBB\\?f@BxC@nA@`C@h@?p@?jA?\\CVAF?H?v@BbAFrAFfBJtB?RT~BFd@Fb@f@zCd@tBXbARt@FRL`@DHL^Td@N^DHFLR`@BF@?@BBDJRZf@j@|@L\\BHBFHLHL@BT\\HLRX@@BFT\\?@z@tA"
-          }
-        },
-        {
-          "duration": "793s",
-          "distanceMeters": 4806,
-          "trafficInfoUnavailable": false,
-          "routePolyline": {
-            "points": "}zeiHa__M@BZf@r@hA?@Xd@Xd@V^Zh@JNLRHLLTBDLRDFd@r@FJBDHJFHFFFBJBLRDHXf@HRV\\@BLLFJJJPPTTTPJHPJHDHDTJPDPF`@Jb@NLHDBn@R@@TJJDLFHFNFNFTL\\b@Z`@Vb@YXORMJ_@^]^[Vg@f@QPCBMLON]\\}@z@ST]\\C@EDKHA@A@A@A?E@E?G?CACACCCESYGMaAwAMSIIIMIIY_@OSUUIKGKCEGO_@c@_BuBMEAACCKM[_@AAQU[c@Y][a@AAqAcBUWEI]a@?AMOAAW_@CC?AII?AUYAAGKW[EEEGAA?AKMGIsAgB[c@oAcBaAyAg@{@EKEKIWEMGSK_@GWEOGYKg@G]Mk@Qu@Q_AQw@?AI[Mk@G[ACIk@EYKy@UiBKu@Ky@Io@Kw@AGCOIy@Ge@MyA?AGs@Eu@Gs@C]YyDC[YeDO{AAQAQASAK?EASA[CwBG{JCo@E]?q@CiDA}@?A?u@Aw@?u@CmB?u@Au@?]?Y?AAs@?u@Aw@Au@?u@CmB?u@AmBAu@Au@AoBAkBAmBAu@CeD?[Aq@?{@As@?m@BU@QAyA?KF{@@SBU@K@OBKBOJo@B_@Py@f@_Cy@g@BO@O?K?OCOAMEKEIAEAAIIe@]OIu@g@u@c@SMs@[EAK?I@IBEBGDEDEFEHADAB}@u@eCaBu@g@kBoAo@e@b@iBp@}C~@aEP{@TaAHg@ZcB@KH]V_A?AFUPk@|@cD{AwA[["
-          }
-        },
-        {
-          "duration": "698s",
-          "distanceMeters": 2763,
-          "trafficInfoUnavailable": false,
-          "routePolyline": {
-            "points": "ckgiHi|eMMKEe@AGAEACACUSAAAAC?A?C?YFg@k@YYa@a@_@a@OZ_@l@CFc@r@[h@cBjC]f@U\\]h@UZGNEPITaAlEg@zBMp@?@CH?BAD?TCPIh@Mt@WnACPAF@F?D@D@BDHFJDFr@f@v@j@d@\\JXRx@h@_@FCNORMZUJKTSn@`@tBpAn@d@jBnAt@f@dC`B|@t@?PB`@@XBLDJBDBFDBBDHFj@^@Bh@\\If@EP]zARL\\R~AfAFBDBF@D@T?@z@@h@?PARCf@EXCXIPABABAB?D?BAJ@h@BxG@p@@|A@|CBbC?^@z@|@FZB\\?N@RB`@Bt@D@?N@fAH^@L@P@VBF?lAHbBHrDTb@BvDTF@lDRn@B?T@N@JBHBHDFBDB@D@F@F@D?HAHA@i@"
-          }
-        },
-        {
-          "duration": "1403s",
-          "distanceMeters": 5807,
-          "trafficInfoUnavailable": false,
-          "routePolyline": {
-            "points": "eteiHwubM@a@BwAECECEAK?G?IDIHEFEHEJALALAJo@CmDSGAwDUc@CsDUcBImAIG?WCQAMA_@AgAIOAA?u@Ea@CSCOA]?[C?u@CcDAu@AmB?AAs@Aw@?u@Au@AuCAS?C@CAgA?S?M?I@I@Q@IFIBE@EFQJOBGDMF]fA_FFY{@i@y@g@BO@O?K?OCOAMEKEIAEAAIIe@]OIu@g@u@c@SMs@[EAK?I@IBEBGDEDEFEHADAB}@u@eCaBu@g@kBoAo@e@uBqAo@a@?y@Qq@IgAKsAIy@O{AOa@KeAKcAUmCOgBAMYwCEo@[mDGe@g@{E_@gDM{AKB_AZI@G?}Bu@OGYIc@Ok@SAAE?CCYIa@MGCCCECCCCCIIQQCECEIWAICECQCMAIa@}Bo@yDs@gEG_@SiA[sBi@mC]sB]{BWuAc@gCWwAES]{B?CI]YaBAISgAMs@c@kCCSe@wCE]o@yDAEY}ACMUmAAKG]YgBSkAk@gD[eB]kBYcBCGe@oCAGSiAUwASqAIe@Ig@Ig@_@_CKm@G[OaAEU[eB{@aFWwAIk@Ki@CKQoA_@wB_@{BUkAg@yCMu@SiAG_@Ig@AAGe@Q}@Ge@Kg@QeAG_@COAKUqAUmAIg@G_@e@qCm@kD[kBUqAG[WYY]cCcDsAcBaAqA[e@Ya@U[GMGMO]TWHIHEXOJITQ"
-          }
         }
       ],
       "vehicleDetour": "20445s",

@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -17,7 +24,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { setControlDisabled } from 'src/app/util';
 import {
   ActiveFilter,
@@ -45,14 +52,14 @@ export class FilterStringFormComponent implements FilterForm, OnInit {
     return StringFilterOperation;
   }
 
-  readonly form: FormGroup;
-  readonly operationCtrl: FormControl;
-  readonly valueCtrl: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly operationCtrl: UntypedFormControl;
+  readonly valueCtrl: UntypedFormControl;
   readonly operations = Object.entries(StringFilterOperation)
     .map(([_, value]) => value)
     .sort();
 
-  constructor(@Inject(LOCALE_ID) private locale: string, fb: FormBuilder) {
+  constructor(@Inject(LOCALE_ID) private locale: string, fb: UntypedFormBuilder) {
     this.form = fb.group({
       operation: (this.operationCtrl = fb.control(StringFilterOperation.Contains)),
       value: (this.valueCtrl = fb.control('', this.valueValidator)),
@@ -82,7 +89,7 @@ export class FilterStringFormComponent implements FilterForm, OnInit {
     return this.form.value;
   }
 
-  private valueValidator(control: FormControl): { [error: string]: boolean } {
+  private valueValidator(control: UntypedFormControl): { [error: string]: boolean } {
     const value = control.value as string;
     if (!value?.toString().trim().length) {
       return { required: true };

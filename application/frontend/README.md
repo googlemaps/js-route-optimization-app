@@ -1,7 +1,7 @@
 # Google Fleet Routing App - Frontend
 
 Angular app providing a user interface to define
-Cloud Fleet Routing scenarios and visualize solutions.
+Cloud Fleet Routing requests and visualize responses.
 
 ## Dependencies
 See [architecture documentation](../../docs/architecture.md)

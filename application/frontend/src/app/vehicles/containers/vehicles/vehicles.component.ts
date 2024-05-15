@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
@@ -43,6 +50,8 @@ export class VehiclesComponent implements OnInit {
   readonly pageIndex$: Observable<number>;
   readonly pageSize$: Observable<number>;
   readonly changeDisabled$: Observable<boolean>;
+  readonly showBulkEdit$: Observable<boolean>;
+  readonly showBulkDelete$: Observable<boolean>;
   shipmentCount$: Observable<number>;
 
   constructor(private store: Store<fromRoot.State>) {
@@ -66,6 +75,8 @@ export class VehiclesComponent implements OnInit {
     this.pageIndex$ = store.pipe(select(PreSolveVehicleSelectors.selectPageIndex));
     this.pageSize$ = store.pipe(select(PreSolveVehicleSelectors.selectPageSize));
     this.changeDisabled$ = store.pipe(select(fromScenario.selectChangeDisabled));
+    this.showBulkEdit$ = store.pipe(select(PreSolveVehicleSelectors.selectShowBulkEdit));
+    this.showBulkDelete$ = store.pipe(select(PreSolveVehicleSelectors.selectShowBulkDelete));
   }
 
   ngOnInit(): void {
@@ -135,7 +146,19 @@ export class VehiclesComponent implements OnInit {
     this.store.dispatch(VehicleActions.confirmDeleteVehicle({ id: vehicle.id }));
   }
 
-  onAdd(): void {
-    this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
+  onBulkEdit(): void {
+    this.store
+      .pipe(select(PreSolveVehicleSelectors.selectFilteredVehiclesSelectedIds), take(1))
+      .subscribe((vehicleIds) => {
+        this.store.dispatch(PreSolveVehicleActions.editVehicles({ vehicleIds }));
+      });
+  }
+
+  onBulkDelete(): void {
+    this.store
+      .pipe(select(PreSolveVehicleSelectors.selectFilteredVehiclesSelectedIds), take(1))
+      .subscribe((ids) => {
+        this.store.dispatch(VehicleActions.confirmDeleteVehicles({ ids }));
+      });
   }
 }

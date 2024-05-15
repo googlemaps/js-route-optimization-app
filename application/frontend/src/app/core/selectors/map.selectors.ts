@@ -1,13 +1,20 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
 
-import { createSelector } from '@ngrx/store';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import buffer from '@turf/buffer';
 import lineIntersect from '@turf/line-intersect';
 import {
@@ -21,7 +28,7 @@ import {
   toTurfLineString,
   toTurfPoint,
 } from 'src/app/util';
-import { ILatLng, Page, VisitRequest } from '../models';
+import { ILatLng, Page, TravelMode, VisitRequest } from '../models';
 import * as fromDepot from './depot.selectors';
 import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
@@ -31,8 +38,12 @@ import { selectPage } from './ui.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import VisitSelectors from './visit.selectors';
 import VisitRequestSelectors from './visit-request.selectors';
+import * as fromMap from '../reducers/map.reducer';
+import { MapLayer, MapLayerId } from '../models/map';
 
 type MapLatLng = google.maps.LatLng;
+
+export const selectMapState = createFeatureSelector<fromMap.State>(fromMap.mapFeatureKey);
 
 const findAlternativeStartLocation = (path: MapLatLng[]): MapLatLng => {
   const distanceAlongPath = google.maps.geometry.spherical.computeLength(path) / 10;
@@ -246,5 +257,31 @@ export const selectSelectionFilterActive = createSelector(
     } else if (page === Page.RoutesChart) {
       return routesActive;
     }
+  }
+);
+
+export const selectAllMapLayers = createSelector(selectMapState, fromMap.selectPostSolveMapLayers);
+
+export const selectPostSolveMapLayers = createSelector(
+  selectAllMapLayers,
+  fromVehicle.selectAll,
+  (layers, vehicles) => {
+    const mapLayers: { [id in MapLayerId]?: MapLayer } = {};
+
+    const usedTravelModes = new Set();
+    vehicles.forEach((vehicle) => usedTravelModes.add(vehicle.travelMode ?? TravelMode.DRIVING));
+
+    Object.keys(layers).forEach((layerId) => {
+      const layer = layers[layerId];
+      if (!layer.travelMode) {
+        mapLayers[layerId] = layer;
+        return;
+      }
+      if (usedTravelModes.has(layer.travelMode)) {
+        mapLayers[layerId] = layer;
+      }
+    });
+
+    return mapLayers;
   }
 );

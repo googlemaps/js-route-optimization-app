@@ -1,0 +1,209 @@
+<form [formGroup]="form" autocomplete="off">
+  <section class="shipment-type">
+    <header>
+      <div>
+        <mat-error class="mb-4" *ngIf="shipmentTypeReqsControl.getError('duplicate')">
+          Cannot have duplicate requirement rules
+        </mat-error>
+      </div>
+    </header>
+
+    <div formArrayName="shipmentTypeRequirements" class="w-100">
+      <div
+        *ngFor="
+          let shipmentTypeReq of shipmentTypeReqsControl.controls;
+          let shipmentTypeReqsIndex = index
+        "
+        [formGroupName]="shipmentTypeReqsIndex"
+        class="d-flex flex-row align-items-center w-100 mb-2">
+        <div class="d-flex flex-column flex-grow-1">
+          <div class="d-flex flex-row">
+            <!-- dependent shipment types -->
+            <div class="settings-item item-xl pad-right">
+              <mat-form-field class="flex-grow-1">
+                <mat-label>Dependent shipment type(s)*</mat-label>
+                <mat-hint>One or more types requiring an additional visit</mat-hint>
+                <mat-chip-list #dependentShipmentTypesChipList>
+                  <mat-chip
+                    *ngFor="
+                      let dependentShipmentType of shipmentTypeReq.value?.dependentShipmentTypes
+                    "
+                    [selectable]="false"
+                    (removed)="
+                      removeTypeFromDependentShipmentType(
+                        dependentShipmentType,
+                        shipmentTypeReqsIndex
+                      )
+                    ">
+                    {{ dependentShipmentType }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                  <input
+                    #dependentShipmentTypeInput
+                    [matAutocomplete]="autoReqTypes2"
+                    [matChipInputFor]="dependentShipmentTypesChipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="
+                      addTypeToDependentShipmentType(
+                        $event.value,
+                        shipmentTypeReqsIndex,
+                        $event.input
+                      )
+                    "
+                    (input)="updateFilteredAvailableDependentShipmentTypes($event.data)"
+                    (keydown)="onDependentShipmentTypeKeyDown($event, shipmentTypeReqsIndex)"
+                    (focus)="updateFilteredAvailableDependentShipmentTypes('')" />
+                </mat-chip-list>
+
+                <mat-autocomplete
+                  class="cost-vehicles-panel"
+                  #autoReqTypes2="matAutocomplete"
+                  (optionSelected)="
+                    addTypeToDependentShipmentType(
+                      $event.option.value,
+                      shipmentTypeReqsIndex,
+                      dependentShipmentTypeInput
+                    )
+                  ">
+                  <cdk-virtual-scroll-viewport
+                    style="height: 200px"
+                    [itemSize]="48"
+                    minBufferPx="200"
+                    maxBufferPx="400">
+                    <mat-option
+                      [style.height.px]="48"
+                      *cdkVirtualFor="
+                        let shipmentType of (filteredAvailableDependentShipmentType$ | async)[
+                          shipmentTypeReqsIndex
+                        ]
+                      "
+                      [value]="shipmentType">
+                      {{ shipmentType }}
+                    </mat-option>
+                  </cdk-virtual-scroll-viewport>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-error *ngIf="shipmentTypeReq.getError('required', 'dependentShipmentTypes')">
+                Required
+              </mat-error>
+            </div>
+
+            <!-- required shipment type alternatives -->
+            <div class="settings-item item-xl pad-right">
+              <mat-form-field class="flex-grow-1">
+                <mat-label>Shipment type(s) required by dependent(s)*</mat-label>
+                <mat-hint>At least one of these types must also be visited</mat-hint>
+                <mat-chip-list #requiredShipmentTypeAlternativesChipList>
+                  <mat-chip
+                    *ngFor="
+                      let requiredShipmentType of shipmentTypeReq.value
+                        ?.requiredShipmentTypeAlternatives
+                    "
+                    [selectable]="false"
+                    (removed)="
+                      removeAlternativeFromRequiredShipmentType(
+                        requiredShipmentType,
+                        shipmentTypeReqsIndex
+                      )
+                    ">
+                    {{ requiredShipmentType }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                  <input
+                    #requiredShipmentTypeInput
+                    [matAutocomplete]="autoReqTypes1"
+                    [matChipInputFor]="requiredShipmentTypeAlternativesChipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="
+                      addTypeToShipmentTypeRequirements(
+                        $event.value,
+                        shipmentTypeReqsIndex,
+                        $event.input
+                      )
+                    "
+                    (input)="updateFilteredAvailableRequiredShipmentTypes($event.data)"
+                    (keydown)="onRequiredShipmentTypeTypeKeyDown($event, shipmentTypeReqsIndex)"
+                    (focus)="updateFilteredAvailableRequiredShipmentTypes('')" />
+                </mat-chip-list>
+
+                <mat-autocomplete
+                  class="cost-vehicles-panel"
+                  #autoReqTypes1="matAutocomplete"
+                  (optionSelected)="
+                    addTypeToShipmentTypeRequirements(
+                      $event.option.value,
+                      shipmentTypeReqsIndex,
+                      requiredShipmentTypeInput
+                    )
+                  ">
+                  <cdk-virtual-scroll-viewport
+                    style="height: 200px"
+                    [itemSize]="48"
+                    minBufferPx="200"
+                    maxBufferPx="400">
+                    <mat-option
+                      [style.height.px]="48"
+                      *cdkVirtualFor="
+                        let shipmentType of (filteredAvailableRequiredShipmentType$ | async)[
+                          shipmentTypeReqsIndex
+                        ]
+                      "
+                      [value]="shipmentType">
+                      {{ shipmentType }}
+                    </mat-option>
+                  </cdk-virtual-scroll-viewport>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-error
+                *ngIf="shipmentTypeReq.getError('required', 'requiredShipmentTypeAlternatives')">
+                Required
+              </mat-error>
+            </div>
+          </div>
+
+          <div
+            class="unused-shipment-type-warning"
+            *ngIf="unusedShipmentReqTypes[shipmentTypeReqsIndex]">
+            Shipment type(s) not used on any shipments:
+            {{ unusedShipmentReqTypes[shipmentTypeReqsIndex] }}
+          </div>
+        </div>
+
+        <!-- requirement mode -->
+        <div class="settings-item pad-right">
+          <div class="mat-body-strong">Requirement mode*</div>
+          <mat-form-field appearance="outline" class="pb-0">
+            <mat-select formControlName="requirementMode" #requirementMode>
+              <mat-option
+                *ngFor="let mode of keys(shipmentTypeRequirementModeLabels)"
+                [value]="parseInt(mode)">
+                {{ shipmentTypeRequirementModeLabels[mode] }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngIf="shipmentTypeReq.getError('required', 'requirementMode')">
+            Required
+          </mat-error>
+        </div>
+
+        <!-- remove -->
+        <button
+          type="button"
+          class="clear-place"
+          (click)="removeShipmentTypeRequirements(shipmentTypeReqsIndex)"
+          mat-icon-button
+          title="Remove Shipment Type Requirement">
+          <mat-icon class="icon--smaller m-0" svgIcon="delete"></mat-icon>
+        </button>
+      </div>
+    </div>
+    <button
+      type="button"
+      mat-stroked-button
+      class="light-stroked-button"
+      color="primary"
+      (click)="addShipmentTypeRequirements()">
+      Add shipment type requirement
+    </button>
+  </section>
+</form>

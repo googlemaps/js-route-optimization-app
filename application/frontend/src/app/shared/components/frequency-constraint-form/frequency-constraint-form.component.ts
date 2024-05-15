@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   Component,
@@ -19,10 +26,10 @@ import {
 import {
   AbstractControl,
   ControlContainer,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
@@ -33,7 +40,10 @@ import { Subscription } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class FrequencyConstraintErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors || control?.invalid;
     const show =
       ngForm &&
@@ -52,10 +62,10 @@ class FrequencyConstraintErrorStateMatcher implements ErrorStateMatcher {
 })
 export class FrequencyConstraintFormComponent implements OnInit, OnDestroy {
   @Output() remove = new EventEmitter<void>();
-  get form(): FormGroup {
+  get form(): UntypedFormGroup {
     return this._form;
   }
-  private _form: FormGroup;
+  private _form: UntypedFormGroup;
   changeSub: Subscription;
   get minBreakDuration(): AbstractControl {
     return this.form.get('minBreakDuration');
@@ -71,13 +81,13 @@ export class FrequencyConstraintFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this._form = this.controlContainer.control as FormGroup;
+    this._form = this.controlContainer.control as UntypedFormGroup;
     this.changeSub = this._form?.valueChanges.subscribe(() => {
       this.changeDetector.detectChanges();
     });
   }
 
-  static createFormGroup(fb: FormBuilder): FormGroup {
+  static createFormGroup(fb: UntypedFormBuilder): UntypedFormGroup {
     return fb.group({
       minBreakDuration: fb.group(
         {
@@ -132,13 +142,13 @@ export class FrequencyConstraintFormComponent implements OnInit, OnDestroy {
     };
   }
 
-  static readFormValues(formArray: FormArray): IFrequencyConstraint[] {
-    return formArray.controls.map((form: FormGroup) =>
+  static readFormValues(formArray: UntypedFormArray): IFrequencyConstraint[] {
+    return formArray.controls.map((form: UntypedFormGroup) =>
       FrequencyConstraintFormComponent.readFormValue(form)
     );
   }
 
-  static readFormValue(form: FormGroup): IFrequencyConstraint {
+  static readFormValue(form: UntypedFormGroup): IFrequencyConstraint {
     const minBreakDuration =
       form.get('minBreakDuration').value.min * 60 + form.get('minBreakDuration').value.sec;
     const maxInterBreakDuration =

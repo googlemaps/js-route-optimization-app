@@ -100,6 +100,10 @@ body {
   justify-content: space-between;
 }
 
+.justify-content-center {
+  justify-content: center;
+}
+
 .content__title {
   font-size: 17px;
   font-weight: 500;
@@ -121,12 +125,13 @@ body {
 .text__title {
   font-size: 15px;
   font-weight: 500;
+  line-height: 24px;
 }
 
 .text__caption {
-  color: $gray;
+  color: #000000;
   font-size: 13px;
-  line-height: 1;
+  line-height: 24px;
 
   a {
     line-height: inherit !important;
@@ -632,13 +637,6 @@ mat-button-toggle-group.main-toggle-group {
   color: $darker !important;
 }
 
-.vehicle-operator-chip,
-.vehicle-operator-chips > span,
-.vehicle-operator-chip > mat-icon {
-  background-color: $vehicle-operator-label !important;
-  color: $darker !important;
-}
-
 .visit-request-chip,
 .visit-request-chips > span {
   background-color: $visit-request-label !important;
@@ -647,7 +645,6 @@ mat-button-toggle-group.main-toggle-group {
 
 .shipment-chips,
 .vehicle-chips,
-.vehicle-operator-chips,
 .visit-request-chips {
   > span {
     display: inline-block;
@@ -763,10 +760,18 @@ mat-form-field {
 
 .gutter.gutter-horizontal {
   cursor: col-resize;
-  background-color: '#ffffff';
+  background-color: #ffffff;
   background-repeat: no-repeat;
   background-position: 50%;
   background-image: url('../assets/images/vertical-grips.png');
+}
+
+.gutter.gutter-vertical {
+  cursor: row-resize;
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-image: url('../assets/images/horizontal-grips.png');
 }
 
 app-base-routes-metadata-table,
@@ -881,4 +886,102 @@ app-csv-upload-dialog
 
 app-bulk-edit-unset {
   color: #f44336;
+}
+
+.strong {
+  font-weight: 500 !important;
+}
+
+.blue-svg-icon mat-icon svg path,
+.blue-svg-icon svg g path {
+  fill: $blue;
+}
+
+.small-close-button {
+  margin-left: auto !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+
+  margin-right: -0.5rem !important;
+  margin-top: -0.5rem !important;
+
+  .mat-button-wrapper .mat-icon {
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 20px !important;
+  }
+}
+
+.light-stroked-button {
+  border: 1px solid #4285f480 !important;
+  background: #fff !important;
+}
+
+.filters.mat-menu-panel {
+  min-height: fit-content;
+  padding: 0 0.5rem;
+  max-width: 50vw;
+}
+
+.mat-stroked-button-blue-outline {
+  border-color: $blue !important;
+}
+
+.icon-green svg path {
+  fill: #34a853;
+}
+
+.icon-red svg path {
+  fill: #ea4335;
+}
+
+app-post-solve-map-legend .legend-panel mat-checkbox label .mat-checkbox-label {
+  display: flex !important;
+  align-items: center !important;
+
+  .mat-icon {
+    width: 1em !important;
+    margin: 0 0.25em;
+  }
+}
+
+.metrics-box-container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.metric-box {
+  background-color: #f3f8ff;
+  border-radius: 5px;
+  padding: 5px 20px;
+  text-align: center;
+  flex-grow: 1;
+  border: 1px solid #d5dee5;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+
+  &.metric-box-warning {
+    // background-color: #fffbf3;
+    background-color: #e98000 !important;
+    cursor: pointer;
+
+    .metric-box-title,
+    .metric-box-value {
+      color: white;
+    }
+  }
+}
+
+.metric-box-title {
+  color: #5f6368;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.metric-box-value {
+  color: $blue;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
 }

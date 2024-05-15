@@ -1,19 +1,26 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BreakRequestFormComponent } from './break-request-form.component';
 import {
   ControlContainer,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -23,11 +30,11 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const formDirective = new FormGroupDirective([], []);
-formDirective.form = new FormGroup({
-  earliestStartDate: new FormControl(new Date()),
-  earliestStartTime: new FormControl(''),
-  latestStartDate: new FormControl(new Date()),
-  latestStartTime: new FormControl(''),
+formDirective.form = new UntypedFormGroup({
+  earliestStartDate: new UntypedFormControl(new Date()),
+  earliestStartTime: new UntypedFormControl(''),
+  latestStartDate: new UntypedFormControl(new Date()),
+  latestStartTime: new UntypedFormControl(''),
 });
 
 @Component({
@@ -36,7 +43,7 @@ formDirective.form = new FormGroup({
 })
 class MockAppDurationMinSecFormComponent {
   @Input() appearance = 'legacy';
-  @Input() parentFormGroup: FormGroup;
+  @Input() parentFormGroup: UntypedFormGroup;
   @Input() errorStateMatcher: ErrorStateMatcher;
   @Input() labelName: string;
   @Input() showUnset: boolean;

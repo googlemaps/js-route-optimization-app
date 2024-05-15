@@ -1,27 +1,28 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
 
-import { DOCUMENT } from '@angular/common';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
-  HostBinding,
-  HostListener,
   Inject,
   Input,
   LOCALE_ID,
-  NgZone,
   OnChanges,
-  OnDestroy,
-  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -31,11 +32,8 @@ import {
   PointOfInterest,
   PointOfInterestCategory,
   PointOfInterestClick,
-  PointOfInterestStartDrag,
-  PointOfInterestTimelineOverlapBegin,
   ChangedVisits,
 } from 'src/app/core/models';
-import { RoutesChartService } from 'src/app/core/services/routes-chart.service';
 import { defaultTimeFormat, formatSecondsDate, timeToPixel } from 'src/app/util';
 import { Cluster, PointsOfInterestImageAttribute, pointsOfInterestImages } from '../../models';
 
@@ -53,18 +51,13 @@ type PoiPoint = [number, number, number, string];
   styleUrls: ['./points-of-interest.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PointsOfInterestComponent implements OnChanges, OnInit, OnDestroy {
+export class PointsOfInterestComponent implements OnChanges {
   private static readonly imageAttributeLookup: {
     [key: number]: PointsOfInterestImageAttribute;
   } = pointsOfInterestImages;
   static readonly maxOffset = PointsOfInterestComponent.getMaxOffset();
 
   @ViewChild('poiSvg', { static: true }) poiSvg: ElementRef<SVGElement>;
-  @Input() currentDragVisitIds: number[];
-  @Input() currentOverlapId: number;
-  @HostBinding('class.dragging')
-  @Input()
-  isDragging: boolean;
   @Input() usableWidth = 0;
   @Input() maxOffset = 0;
   @Input() duration: [Long, Long];
@@ -74,12 +67,7 @@ export class PointsOfInterestComponent implements OnChanges, OnInit, OnDestroy {
   @Input() timezoneOffset: number;
   @Input() routeId: number;
   @Input() changedVisits: ChangedVisits;
-  @Output() dragStart = new EventEmitter<PointOfInterestStartDrag>();
-  @Output() timelineEnter = new EventEmitter<PointOfInterestTimelineOverlapBegin>();
-  @Output() timelineLeave = new EventEmitter<number>();
   @Output() pointOfInterestClick = new EventEmitter<PointOfInterestClick>();
-  @Output() mouseEnterVisit = new EventEmitter<number>();
-  @Output() mouseExitVisit = new EventEmitter();
 
   get imageAttributeLookup(): { [key: string]: PointsOfInterestImageAttribute } {
     return PointsOfInterestComponent.imageAttributeLookup;
@@ -92,28 +80,12 @@ export class PointsOfInterestComponent implements OnChanges, OnInit, OnDestroy {
   private normalPendingNewPois: NormalPoi[] = [];
   private readonly overlapThreshold = 4; // Pixel threshold before considered overlapping
 
-  private readonly dragThreshold = 4;
-  private lastMousePosition: [number, number] = [0, 0];
-  private mouseDown = false;
-  private mouseDownIsDrag = false;
-  private mouseDownPosition: [number, number];
-  private mouseDownTarget: Element;
-  private mouseDownPoi: PoiPoint;
-  private mouseIsOverlapping = false;
-  private onMouseMoveFn = this.onMouseMove.bind(this) as (event: MouseEvent) => void;
-
   private static getMaxOffset(): number {
     const lookup = PointsOfInterestComponent.imageAttributeLookup;
     return Math.max(0, ...Object.values(lookup).map((value) => value.width / 2));
   }
 
-  constructor(
-    @Inject(LOCALE_ID) private locale: string,
-    @Inject(DOCUMENT) private document: Document,
-    private ref: ElementRef,
-    private routeChartService: RoutesChartService,
-    private zone: NgZone
-  ) {}
+  constructor(@Inject(LOCALE_ID) private locale: string) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const timeChange = (changes.duration || changes.timezoneOffset) != null;
@@ -140,148 +112,24 @@ export class PointsOfInterestComponent implements OnChanges, OnInit, OnDestroy {
       }
       this.updateClusterCounts();
     }
-
-    // Ensure that timeline overlap is up to date when a new drag begins
-    if (changes.isDragging?.currentValue && this.mouseIsOverlapping) {
-      // mouseleave listener does not fire when an overlapping element is placed
-      // ie when you drag a point and drop it, the dropping action blocks the mouseleave event
-      // So have to double check the bounding rect to make sure mouseIsOverlapping resets correctly
-      this.mouseIsOverlapping = this.mouseWithinBoundingBox();
-      if (this.mouseIsOverlapping) {
-        this.onTimelineEnter();
-      }
-    }
-  }
-
-  mouseWithinBoundingBox(): boolean {
-    const bounds = this.poiSvg.nativeElement.getBoundingClientRect();
-    return (
-      this.lastMousePosition[0] >= bounds.left &&
-      this.lastMousePosition[0] <= bounds.right &&
-      this.lastMousePosition[1] >= bounds.top &&
-      this.lastMousePosition[1] <= bounds.bottom
-    );
-  }
-
-  ngOnInit(): void {
-    this.zone.runOutsideAngular(() => {
-      this.poiSvg.nativeElement.addEventListener('mouseenter', this.onTimelineEnter.bind(this));
-      this.poiSvg.nativeElement.addEventListener('mouseleave', this.onTimelineLeave.bind(this));
-      this.document.addEventListener('mousemove', this.onMouseMoveFn);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.document.removeEventListener('mousemove', this.onMouseMoveFn);
   }
 
   onMouseDown(event: MouseEvent, point: PoiPoint): void {
-    if (event.buttons !== 1 || this.mouseDown) {
-      // Not the primary button or already down
+    if (event.button !== 0) {
+      // Not the primary button
       return;
     }
-
-    this.mouseDown = true;
-    this.mouseDownIsDrag = false;
-    this.mouseDownPosition = [event.x, event.y];
-    this.mouseDownTarget = event.target as Element;
-    this.mouseDownPoi = point;
+    this.pointOfInterestClick.emit({
+      category: point[1],
+      visitId: point[0],
+      relativeTo: event.target as Element,
+    });
     event.preventDefault();
     event.stopPropagation();
   }
 
-  @HostListener('document:mouseup', ['$event'])
-  onMouseUp(event: MouseEvent): void {
-    if (event.button !== 0 || !this.mouseDown) {
-      // Not the primary button or not down
-      return;
-    }
-    if (!this.mouseDownIsDrag) {
-      // Trigger regular click event here
-      this.pointOfInterestClick.emit({
-        category: this.mouseDownPoi[1],
-        visitId: this.mouseDownPoi[0],
-        relativeTo: this.mouseDownTarget,
-      });
-      event.preventDefault();
-    }
-    this.mouseDown = false;
-    this.mouseDownIsDrag = false;
-  }
-
-  onMouseMove(event: MouseEvent): void {
-    if (this.mouseDown && !this.mouseDownIsDrag) {
-      const deltaX = event.x - this.mouseDownPosition[0];
-      const deltaY = event.y - this.mouseDownPosition[1];
-      const deltaTotal = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-
-      if (deltaTotal >= this.dragThreshold) {
-        this.zone.run(() => {
-          this.activateDrag();
-        });
-      }
-    }
-
-    this.lastMousePosition = [event.x, event.y];
-  }
-
-  onTimelineEnter(): void {
-    this.mouseIsOverlapping = true;
-    if (this.isDragging) {
-      this.zone.run(() => {
-        this.timelineEnter.emit({
-          id: this.routeId,
-          scrollOffsetY: this.routeChartService.measureScrollOffset('top'),
-          y: this.ref.nativeElement.getBoundingClientRect().top,
-        });
-      });
-    }
-  }
-
-  onTimelineLeave(): void {
-    this.mouseIsOverlapping = false;
-    if (this.isDragging) {
-      this.zone.run(() => {
-        this.timelineLeave.emit(this.routeId);
-      });
-    }
-  }
-
-  onMouseEnter(point: PointOfInterest): void {
-    this.mouseEnterVisit.emit(point[0]);
-  }
-
-  onMouseLeave(): void {
-    this.mouseExitVisit.emit();
-  }
-
-  activateDrag(): void {
-    if (this.mouseDownPoi[1] === PointOfInterestCategory.Depot) {
-      return;
-    }
-
-    this.dragStart.emit({
-      mousePosition: [
-        this.mouseDownPosition[0] + this.routeChartService.measureScrollOffset('left'),
-        this.mouseDownPosition[1] + this.routeChartService.measureScrollOffset('top'),
-      ],
-      scrollOffset: [
-        this.routeChartService.measureScrollOffset('left'),
-        this.routeChartService.measureScrollOffset('top'),
-      ],
-      secondsPerPixel: this.duration[1].subtract(this.duration[0]).toNumber() / this.usableWidth,
-      visitId: this.mouseDownPoi[0],
-    });
-    this.mouseDown = false;
-    this.mouseDownIsDrag = true;
-  }
-
   isPendingOldPoi(point: PoiPoint): boolean {
     return !!this.pendingOldVisitIds?.has(point[0]);
-  }
-
-  isDraggingPoint(point: PoiPoint): boolean {
-    return this.isDragging && this.currentDragVisitIds.indexOf(point[0]) >= 0;
   }
 
   /** Project normal points of interest to pixel space */

@@ -1,0 +1,20 @@
+.global-row {
+  gap: 1rem;
+}
+
+.timezone-settings {
+  min-width: 20rem;
+}
+
+.settings-traffic {
+  display: flex;
+  flex-direction: column;
+
+  mat-checkbox {
+    flex-grow: 2;
+  }
+}
+
+.settings-interpret {
+  padding-left: 1rem;
+}

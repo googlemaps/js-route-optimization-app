@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -18,7 +25,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import * as Long from 'long';
 import { Subscription } from 'rxjs';
@@ -63,19 +70,23 @@ export class FilterDateFormComponent implements FilterForm, OnInit, OnDestroy {
     return this.operationCtrl.value !== DateFilterOperation.Between ? 'Date' : 'Min Date';
   }
 
-  readonly form: FormGroup;
-  readonly operationCtrl: FormControl;
-  readonly dateCtrl: FormControl;
-  readonly timeCtrl: FormControl;
-  readonly date2Ctrl: FormControl;
-  readonly time2Ctrl: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly operationCtrl: UntypedFormControl;
+  readonly dateCtrl: UntypedFormControl;
+  readonly timeCtrl: UntypedFormControl;
+  readonly date2Ctrl: UntypedFormControl;
+  readonly time2Ctrl: UntypedFormControl;
   readonly operations = Object.entries(DateFilterOperation)
     .map(([_, value]) => value)
     .sort();
   private timezoneOffset = 0;
   private subscription: Subscription;
 
-  constructor(@Inject(LOCALE_ID) private locale: string, private store: Store, fb: FormBuilder) {
+  constructor(
+    @Inject(LOCALE_ID) private locale: string,
+    private store: Store,
+    fb: UntypedFormBuilder
+  ) {
     this.form = fb.group({
       operation: (this.operationCtrl = fb.control(DateFilterOperation.Equal)),
       date: (this.dateCtrl = fb.control(null, this.valueValidator)),
@@ -228,7 +239,7 @@ export class FilterDateFormComponent implements FilterForm, OnInit, OnDestroy {
     });
   }
 
-  private valueValidator(control: FormControl): { [error: string]: boolean } {
+  private valueValidator(control: UntypedFormControl): { [error: string]: boolean } {
     const value = control.value as number;
     if (!value?.toString().trim().length) {
       return { required: true };

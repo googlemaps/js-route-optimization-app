@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   ChangeDetectionStrategy,
@@ -15,7 +22,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActiveFilter, FilterForm, FilterOption, SelectFilterParams } from '../../models';
 
 type Option<TValue> = { label: string; value: TValue };
@@ -36,10 +43,10 @@ export class FilterSelectFormComponent<TValue = any> implements FilterForm, OnIn
     return this.form.invalid;
   }
 
-  readonly form: FormGroup;
-  readonly optionCtrl: FormControl;
+  readonly form: UntypedFormGroup;
+  readonly optionCtrl: UntypedFormControl;
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: UntypedFormBuilder) {
     this.form = fb.group({
       option: (this.optionCtrl = fb.control(null, this.valueValidator)),
     });
@@ -69,7 +76,7 @@ export class FilterSelectFormComponent<TValue = any> implements FilterForm, OnIn
     this.optionCtrl.setValue(option);
   }
 
-  private valueValidator(control: FormControl): { [error: string]: boolean } {
+  private valueValidator(control: UntypedFormControl): { [error: string]: boolean } {
     if (control.value == null) {
       return { required: true };
     }

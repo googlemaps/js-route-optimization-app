@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
@@ -17,7 +24,6 @@ import {
   IShipment,
   IShipmentRoute,
   IVehicle,
-  IVehicleOperator,
   Scenario,
   ShipmentRoute,
   Solution,
@@ -30,7 +36,6 @@ import { State as RequestSettingsState } from '../reducers/request-settings.redu
 import * as fromDispatcher from './dispatcher.selectors';
 import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
-import PreSolveVehicleOperatorSelectors from './pre-solve-vehicle-operator.selectors';
 import * as fromPreSolve from './pre-solve.selectors';
 import RequestSettingsSelectors, * as fromRequestSettings from './request-settings.selectors';
 import * as fromShipment from './shipment.selectors';
@@ -276,13 +281,13 @@ const selectInjectedRoutes = createSelector(
       if (incompatibleVehicleIds.has(shipmentRoute.id)) {
         return;
       }
-      // If a shipment is incompatible, remove its visits and all travel steps from the route
+      // If a shipment is incompatible, remove its visits and all transitions from the route
       const incompatibleVisitIds = incompatibleVisitIdsByShipmentRouteId.get(shipmentRoute.id);
       if (incompatibleVisitIds) {
         injectedRoutes.push({
           ...shipmentRoute,
           visits: shipmentRoute.visits.filter((id) => !incompatibleVisitIds.has(id)),
-          travelSteps: null,
+          transitions: null,
         });
         return;
       }
@@ -419,7 +424,6 @@ const getRequestScenario = (
   scenario: Scenario,
   shipments: IShipment[],
   vehicles: IVehicle[],
-  vehicleOperators: IVehicleOperator[],
   requestSettings: RequestSettingsState,
   shipmentModel?: ShipmentModelState,
   injectedSolution?: IOptimizeToursResponse,
@@ -433,7 +437,6 @@ const getRequestScenario = (
 
       shipments,
       vehicles,
-      vehicleOperators,
       globalDurationCostPerHour: shipmentModel?.globalDurationCostPerHour,
       globalStartTime: { seconds: Long.fromValue(shipmentModel?.globalStartTime).toNumber() },
       globalEndTime: { seconds: Long.fromValue(shipmentModel?.globalEndTime).toNumber() },
@@ -466,28 +469,19 @@ const selectScenario = createSelector(
   fromDispatcher.selectScenario,
   selectDenormalizedShipments,
   selectDenormalizedVehicles,
-  PreSolveVehicleOperatorSelectors.selectSelectedVehicleOperators,
   fromRequestSettings.selectRequestSettingsState,
-  (scenario, shipments, vehicles, vehicleOperators, requestSettings) =>
-    getRequestScenario(scenario, shipments, vehicles, vehicleOperators, requestSettings)
+  (scenario, shipments, vehicles, requestSettings) =>
+    getRequestScenario(scenario, shipments, vehicles, requestSettings)
 );
 
 const selectRequestScenario = createSelector(
   fromDispatcher.selectScenario,
   selectDenormalizedRequestShipments,
   selectDenormalizedRequestVehicles,
-  PreSolveVehicleOperatorSelectors.selectSelectedVehicleOperators,
   fromRequestSettings.selectRequestSettingsState,
   fromShipmentModel.selectShipmentModelState,
-  (scenario, shipments, vehicles, vehicleOperators, requestSettings, shipmentModel) =>
-    getRequestScenario(
-      scenario,
-      shipments,
-      vehicles,
-      vehicleOperators,
-      requestSettings,
-      shipmentModel
-    )
+  (scenario, shipments, vehicles, requestSettings, shipmentModel) =>
+    getRequestScenario(scenario, shipments, vehicles, requestSettings, shipmentModel)
 );
 
 const selectRequestIncrementalScenario = (
@@ -498,7 +492,6 @@ const selectRequestIncrementalScenario = (
     fromDispatcher.selectScenario,
     selectDenormalizedRequestShipments,
     selectDenormalizedRequestVehicles,
-    PreSolveVehicleOperatorSelectors.selectSelectedVehicleOperators,
     fromRequestSettings.selectRequestSettingsState,
     fromShipmentModel.selectShipmentModelState,
     selectDenormalizedInjectedSolution(shipmentRouteChanges, visitChanges),
@@ -507,7 +500,6 @@ const selectRequestIncrementalScenario = (
       scenario,
       shipments,
       vehicles,
-      vehicleOperators,
       requestSettings,
       shipmentModel,
       solution,
@@ -517,7 +509,6 @@ const selectRequestIncrementalScenario = (
         scenario,
         shipments,
         vehicles,
-        vehicleOperators,
         requestSettings,
         shipmentModel,
         solution,
@@ -529,18 +520,10 @@ const selectRequestedScenario = createSelector(
   fromDispatcher.selectScenario,
   selectDenormalizedRequestedShipments,
   selectDenormalizedRequestedVehicles,
-  PreSolveVehicleOperatorSelectors.selectSelectedVehicleOperators,
   fromRequestSettings.selectRequestSettingsState,
   fromShipmentModel.selectShipmentModelState,
-  (scenario, shipments, vehicles, vehicleOperators, requestSettings, shipmentModel) =>
-    getRequestScenario(
-      scenario,
-      shipments,
-      vehicles,
-      vehicleOperators,
-      requestSettings,
-      shipmentModel
-    )
+  (scenario, shipments, vehicles, requestSettings, shipmentModel) =>
+    getRequestScenario(scenario, shipments, vehicles, requestSettings, shipmentModel)
 );
 
 const selectShipmentRouteChangeIndices = (shipmentRouteChanges?: ShipmentRoute[]) =>
@@ -592,7 +575,7 @@ const selectRequestRecalculatePolylines = (
               arrivalLoads: null,
             })),
             endLoads: null,
-            travelSteps: null,
+            transitions: null,
             routePolyline: null,
             vehicleStartTime: globalStartTime,
             vehicleEndTime: globalEndTime,

@@ -1,22 +1,30 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import * as fromRoot from 'src/app/reducers';
 import { UIActions } from '../../actions';
 import { Page } from '../../models';
 import DispatcherApiSelectors from '../../selectors/dispatcher-api.selectors';
 import * as fromUI from '../../selectors/ui.selectors';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -45,24 +53,35 @@ export class AppComponent {
       'arrow_downward',
       'arrow_drop_down',
       'arrow_upward',
+      'bookmark',
       'calendar',
+      'check',
       'clear',
       'clock',
       'cloud_download',
       'cloud_upload',
+      'cloud_upload_filled',
       'csv',
+      'csv2',
+      'dataset',
       'delete',
       'depot_outline',
+      'dropdown',
       'dropoff',
       'edit',
       'help',
+      'help-filled',
+      'input',
+      'json',
       'map',
       'maps',
       'more_vert',
       'navigate_before',
       'navigate_next',
+      'open_in_new',
       'pdf',
       'pickup',
+      'route',
       'satellite',
       'save_alt',
       'settings',
@@ -70,15 +89,19 @@ export class AppComponent {
       'trending_up',
       'update',
       'upload',
+      'upload_alt',
       'visibility',
       'visibility_off',
       'visit',
+      'vehicle_icon',
       'vehicles_nav',
       'shipments_nav',
       'select_bbox',
       'select_bbox_active',
       'select_polygon',
       'select_polygon_active',
+      'walking',
+      'zip',
     ];
     icons.forEach((icon) =>
       matIconRegistry.addSvgIcon(
@@ -87,7 +110,14 @@ export class AppComponent {
       )
     );
     this.started$ = store.pipe(select(fromUI.selectStarted));
-    this.hasMap$ = store.pipe(select(fromUI.selectHasMap));
+    this.hasMap$ = combineLatest([
+      store.select(fromUI.selectHasMap),
+      store.select(fromUI.selectStarted),
+    ]).pipe(
+      map(([hasMap, hasStarted]) => {
+        return hasMap && hasStarted;
+      })
+    );
     this.loading$ = store.pipe(select(DispatcherApiSelectors.selectOptimizeToursLoading));
     this.splitSizes$ = store.pipe(select(fromUI.selectSplitSizes));
     this.page$ = store.pipe(select(fromUI.selectPage));

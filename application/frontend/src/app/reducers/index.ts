@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { InjectionToken } from '@angular/core';
 import * as fromRouter from '@ngrx/router-store';
@@ -23,11 +30,11 @@ import * as fromConfig from '../core/reducers/config.reducer';
 import * as fromDispatcherApi from '../core/reducers/dispatcher-api.reducer';
 import * as fromDispatcher from '../core/reducers/dispatcher.reducer';
 import * as fromEditVisit from '../core/reducers/edit-visit.reducer';
+import * as fromMap from '../core/reducers/map.reducer';
 import * as fromMapApi from '../core/reducers/map-api.reducer';
 import * as fromPointsOfInterest from '../core/reducers/points-of-interest.reducer';
 import * as fromPreSolveShipment from '../core/reducers/pre-solve-shipment.reducer';
 import * as fromPreSolveVehicle from '../core/reducers/pre-solve-vehicle.reducer';
-import * as fromPreSolveVehicleOperator from '../core/reducers/pre-solve-vehicle-operator.reducer';
 import * as fromRequestSettings from '../core/reducers/request-settings.reducer';
 import * as fromRoutesChart from '../core/reducers/routes-chart.reducer';
 import * as fromRoutesMetadata from '../core/reducers/routes-metadata.reducer';
@@ -38,7 +45,6 @@ import * as fromShipmentsMetadata from '../core/reducers/shipments-metadata.redu
 import * as fromUI from '../core/reducers/ui.reducer';
 import * as fromUndoRedo from '../core/reducers/undo-redo.reducer';
 import * as fromVehicle from '../core/reducers/vehicle.reducer';
-import * as fromVehicleOperator from '../core/reducers/vehicle-operator.reducer';
 import * as fromVisitRequest from '../core/reducers/visit-request.reducer';
 import * as fromVisit from '../core/reducers/visit.reducer';
 import * as fromUiSelectors from '../core/selectors/ui.selectors';
@@ -54,18 +60,17 @@ export interface State {
   [fromShipmentRoute.shipmentRoutesFeatureKey]: fromShipmentRoute.State;
   [fromShipmentsMetadata.shipmentsMetadataFeatureKey]: fromShipmentsMetadata.State;
   [fromVehicle.vehiclesFeatureKey]: fromVehicle.State;
-  [fromVehicleOperator.vehicleOperatorsFeatureKey]: fromVehicleOperator.State;
   [fromVisit.visitsFeatureKey]: fromVisit.State;
   [fromVisitRequest.visitRequestsFeatureKey]: fromVisitRequest.State;
   [fromPointsOfInterest.poiFeatureKey]: fromPointsOfInterest.State;
   [fromPreSolveShipment.preSolveShipmentFeatureKey]: fromPreSolveShipment.State;
   [fromPreSolveVehicle.preSolveVehicleFeatureKey]: fromPreSolveVehicle.State;
-  [fromPreSolveVehicleOperator.preSolveVehicleOperatorFeatureKey]: fromPreSolveVehicleOperator.State;
   [fromRoutesChart.routesChartFeatureKey]: fromRoutesChart.State;
   [fromRoutesMetadata.routesMetadataFeatureKey]: fromRoutesMetadata.State;
   [fromRequestSettings.requestSettingsFeatureKey]: fromRequestSettings.State;
   [fromShipmentModel.shipmentModelFeatureKey]: fromShipmentModel.State;
   [fromUndoRedo.undoRedoFeatureKey]: fromUndoRedo.State;
+  [fromMap.mapFeatureKey]: fromMap.State;
   router: fromRouter.RouterReducerState<any>;
 }
 
@@ -80,8 +85,6 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
       [fromMapApi.mapApiFeatureKey]: fromMapApi.reducer,
       [fromPreSolveShipment.preSolveShipmentFeatureKey]: fromPreSolveShipment.reducer,
       [fromPreSolveVehicle.preSolveVehicleFeatureKey]: fromPreSolveVehicle.reducer,
-      [fromPreSolveVehicleOperator.preSolveVehicleOperatorFeatureKey]:
-        fromPreSolveVehicleOperator.reducer,
       [fromPointsOfInterest.poiFeatureKey]: fromPointsOfInterest.reducer,
       [fromRequestSettings.requestSettingsFeatureKey]: fromRequestSettings.reducer,
       [fromRoutesChart.routesChartFeatureKey]: fromRoutesChart.reducer,
@@ -93,9 +96,9 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<State, Action>>
       [fromUI.uiFeatureKey]: fromUI.reducer,
       [fromUndoRedo.undoRedoFeatureKey]: fromUndoRedo.reducer,
       [fromVehicle.vehiclesFeatureKey]: fromVehicle.reducer,
-      [fromVehicleOperator.vehicleOperatorsFeatureKey]: fromVehicleOperator.reducer,
       [fromVisit.visitsFeatureKey]: fromVisit.reducer,
       [fromVisitRequest.visitRequestsFeatureKey]: fromVisitRequest.reducer,
+      [fromMap.mapFeatureKey]: fromMap.reducer,
       router: fromRouter.routerReducer,
     }),
   }
@@ -126,6 +129,6 @@ export const selectMapSelectionToolsVisible = createSelector(
   (page) =>
     page === Page.Shipments ||
     page === Page.Vehicles ||
-    page === Page.VehicleOperators ||
-    page === Page.RoutesChart
+    page === Page.RoutesChart ||
+    page === Page.ScenarioPlanning
 );

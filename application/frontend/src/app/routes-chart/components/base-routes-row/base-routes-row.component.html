@@ -14,11 +14,6 @@
         }}
       </a>
     </div>
-    <div
-      class="text__caption mb-0 text--gray"
-      *ngIf="vehicleOperator?.length > 0 && allowExperimentalFeatures">
-      Operators: {{ vehicleOperator }}
-    </div>
     <div class="text__caption mb-0 text--gray">Shipments: {{ shipmentCount || 0 }}</div>
   </div>
   <button
@@ -57,9 +52,6 @@
     [timezoneOffset]="timezoneOffset">
   </app-timeline>
   <app-points-of-interest
-    [isDragging]="isDragging"
-    [currentOverlapId]="currentOverlapId"
-    [currentDragVisitIds]="currentDragVisitIds"
     [routeId]="route?.id"
     [usableWidth]="t.usableWidth"
     [maxOffset]="7"
@@ -69,11 +61,6 @@
     [timezoneOffset]="timezoneOffset"
     [pendingNewPois]="pendingNewPois"
     [pendingOldVisitIds]="pendingOldVisitIds"
-    (mouseEnterVisit)="mouseEnterVisit.emit($event)"
-    (mouseExitVisit)="mouseExitVisit.emit($event)"
-    (dragStart)="dragStart.emit($event)"
-    (timelineEnter)="timelineEnter.emit($event)"
-    (timelineLeave)="timelineLeave.emit($event)"
     (pointOfInterestClick)="pointOfInterestClick.emit($event)">
   </app-points-of-interest>
 </div>

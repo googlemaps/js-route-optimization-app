@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import {
   Component,
@@ -19,6 +26,7 @@ import {
   EventEmitter,
   OnChanges,
   OnDestroy,
+  SimpleChanges,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -45,10 +53,15 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
   @Input() saving = false;
   @Input() scenario: OptimizeToursRequest;
   @Input() solution: OptimizeToursResponse;
-  @Output() loadScenario = new EventEmitter<Scenario>();
+  @Input() scenarioName: string;
+  @Output() loadScenario = new EventEmitter<{
+    scenario: Scenario;
+    scenarioName: string;
+  }>();
   @Output() loadSolution = new EventEmitter<{
     scenario: Scenario;
     solution: Solution;
+    scenarioName: string;
   }>();
 
   closed = new Subject<void>();
@@ -84,10 +97,14 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
     this.search();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.onSolutionPage) {
       this.selectedTab = 1;
       this.changeTab(1);
+    }
+
+    if (changes.scenarioName) {
+      this.filename = this.scenarioName;
     }
   }
 
@@ -264,6 +281,7 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
     this.loadSolution.emit({
       scenario: result.scenario,
       solution: result.solution,
+      scenarioName: result.name.replace(/\.[^/.]+$/, ''),
     });
   }
 
@@ -272,7 +290,10 @@ export class BaseStorageApiSaveLoadDialogComponent implements OnChanges, OnDestr
       this.validationError();
       return;
     }
-    this.loadScenario.emit(result.fileContent);
+    this.loadScenario.emit({
+      scenario: result.fileContent,
+      scenarioName: result.name.replace(/\.[^/.]+$/, ''),
+    });
   }
 
   confirmDelete(selection: SearchResult): void {

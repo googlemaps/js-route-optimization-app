@@ -1,0 +1,22 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.settings-contents {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 1rem 0.5rem 0 0.5rem;
+}
+
+.save-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 1rem;
+  padding: 0.5rem;
+}

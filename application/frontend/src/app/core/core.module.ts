@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -30,7 +37,6 @@ import {
   BaseVehicleInfoWindowComponent,
   BodyComponent,
   BaseVehiclesKpisComponent,
-  BaseVehicleOperatorsKpisComponent,
   BaseVisitRequestInfoWindowComponent,
   HideMapButtonComponent,
   LogoComponent,
@@ -59,16 +65,12 @@ import {
   MapComponent,
   MapWrapperComponent,
   MetadataControlBarComponent,
-  PostSolveControlBarComponent,
   PostSolveMessageComponent,
   PostSolveMetricsComponent,
   PreSolveControlBarComponent,
   PreSolveEditShipmentDialogComponent,
   PreSolveEditVehicleDialogComponent,
-  PreSolveSettingsDialogComponent,
-  PreSolveGlobalSettingsComponent,
   PreSolveMessageComponent,
-  PreSolveShipmentModelSettingsComponent,
   RegenerateConfirmationDialogComponent,
   RoutesChartControlBarComponent,
   ShipmentsControlBarComponent,
@@ -80,15 +82,22 @@ import {
   VehicleInfoWindowComponent,
   VehiclesControlBarComponent,
   VehiclesKpisComponent,
-  VehicleOperatorsKpisComponent,
   VisitRequestInfoWindowComponent,
 } from './containers';
 import { DownloadPdfDialogComponent } from './containers/download-pdf-dialog/download-pdf-dialog.component';
 import { PdfMapComponent } from './containers/pdf-map/pdf-map.component';
 import { ConfirmBulkEditDialogComponent } from './components/confirm-bulk-edit-dialog/confirm-bulk-edit-dialog.component';
-import { VehicleOperatorsControlBarComponent } from './containers/vehicle-operators-control-bar/vehicle-operators-control-bar.component';
-import { BaseEditVehicleOperatorDialogComponent } from './components/base-edit-vehicle-operator-dialog/base-edit-vehicle-operator-dialog.component';
-import { PreSolveEditVehicleOperatorDialogComponent } from './containers/pre-solve-edit-vehicle-operator-dialog/pre-solve-edit-vehicle-operator-dialog.component';
+import { CsvHelpDialogComponent } from './containers/csv-help-dialog/csv-help-dialog.component';
+import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { DatasetComponent } from './components/dataset/dataset.component';
+import { ScenarioKpisComponent } from './containers/scenario-kpis/scenario-kpis.component';
+import { MapAddButtonsComponent } from './components/map-add-buttons/map-add-buttons.component';
+import { ShipmentTypeIncompatibilityDialogComponent } from './components/shipment-type-incompatibility-dialog/shipment-type-incompatibility-dialog.component';
+import { ShipmentTypeRequirementDialogComponent } from './components/shipment-type-requirement-dialog/shipment-type-requirement-dialog.component';
+import { TransitionAttributesDialogComponent } from './components/transition-attributes-dialog/transition-attributes-dialog.component';
+import { PrecedenceRulesDialogComponent } from './components/precedence-rules-dialog/precedence-rules-dialog.component';
+import { ShipmentModelSettingsComponent } from './containers/shipment-model-settings/shipment-model-settings.component';
+import { PostSolveMapLegendComponent } from './components/post-solve-map-legend/post-solve-map-legend.component';
 
 export const COMPONENTS = [
   BaseDocumentationDialogComponent,
@@ -106,7 +115,6 @@ export const COMPONENTS = [
   BaseValidationResultDialogComponent,
   BaseVehicleInfoWindowComponent,
   BaseVehiclesKpisComponent,
-  BaseVehicleOperatorsKpisComponent,
   BaseVisitRequestInfoWindowComponent,
   BodyComponent,
   HideMapButtonComponent,
@@ -136,16 +144,12 @@ export const CONTAINERS = [
   MapComponent,
   MapWrapperComponent,
   MetadataControlBarComponent,
-  PostSolveControlBarComponent,
   PostSolveMessageComponent,
   PostSolveMetricsComponent,
   PreSolveControlBarComponent,
   PreSolveEditShipmentDialogComponent,
   PreSolveEditVehicleDialogComponent,
-  PreSolveGlobalSettingsComponent,
   PreSolveMessageComponent,
-  PreSolveSettingsDialogComponent,
-  PreSolveShipmentModelSettingsComponent,
   RegenerateConfirmationDialogComponent,
   RoutesChartControlBarComponent,
   ShipmentsControlBarComponent,
@@ -156,7 +160,6 @@ export const CONTAINERS = [
   VehicleInfoWindowComponent,
   VehiclesControlBarComponent,
   VehiclesKpisComponent,
-  VehicleOperatorsKpisComponent,
   VisitRequestInfoWindowComponent,
 ];
 
@@ -177,9 +180,17 @@ export const CONTAINERS = [
     DownloadPdfDialogComponent,
     PdfMapComponent,
     ConfirmBulkEditDialogComponent,
-    VehicleOperatorsControlBarComponent,
-    PreSolveEditVehicleOperatorDialogComponent,
-    BaseEditVehicleOperatorDialogComponent,
+    CsvHelpDialogComponent,
+    TopBarComponent,
+    DatasetComponent,
+    ScenarioKpisComponent,
+    MapAddButtonsComponent,
+    ShipmentTypeIncompatibilityDialogComponent,
+    ShipmentTypeRequirementDialogComponent,
+    TransitionAttributesDialogComponent,
+    PrecedenceRulesDialogComponent,
+    ShipmentModelSettingsComponent,
+    PostSolveMapLegendComponent,
   ],
   exports: [COMPONENTS, CONTAINERS, CsvUploadDialogComponent],
 })

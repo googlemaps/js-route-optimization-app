@@ -1,20 +1,27 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
 
-import { v1 } from "@google-cloud/optimization";
-import { google } from "@google-cloud/optimization/build/protos/protos";
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import { v1 } from "@google-cloud/routeoptimization";
+import { google } from "@google-cloud/routeoptimization/build/protos/protos";
 import { CallOptions } from "google-gax";
 
 import { log } from "../logging";
 
 class FleetRoutingService {
-  private readonly _client: v1.FleetRoutingClient;
+  private readonly _client: v1.RouteOptimizationClient;
   private readonly _parent: string;
 
   constructor() {
@@ -23,7 +30,7 @@ class FleetRoutingService {
     }
     this._parent = `projects/${process.env.PROJECT_ID}`;
 
-    this._client = new v1.FleetRoutingClient({
+    this._client = new v1.RouteOptimizationClient({
       "grpc.keepalive_time_ms": 120000, // 2m
       "grpc.keepalive_timeout_ms": 10000, // 10s
       "grpc.http2.max_pings_without_data": 0,
@@ -31,8 +38,8 @@ class FleetRoutingService {
   }
 
   public async optimizeTours(
-    request: google.cloud.optimization.v1.IOptimizeToursRequest
-  ): Promise<google.cloud.optimization.v1.IOptimizeToursResponse> {
+    request: google.maps.routeoptimization.v1.IOptimizeToursRequest
+  ): Promise<google.maps.routeoptimization.v1.IOptimizeToursResponse> {
     request.parent = this._parent;
 
     // `IOptimizeToursRequest` defines timeout as an `IDuraion` object

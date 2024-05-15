@@ -1,38 +1,15 @@
+<button
+  mat-button
+  (click)="onLoad()"
+  *ngIf="(hasStorageApi$ | async) && (allowUserStorage$ | async)">
+  <mat-icon svgIcon="cloud_upload"></mat-icon>
+  From cloud
+</button>
+<button mat-button (click)="onUpload()">
+  <mat-icon svgIcon="input"></mat-icon>
+  From JSON
+</button>
 <cdk-accordion>
-  <cdk-accordion-item
-    #accordionItem1="cdkAccordionItem"
-    role="button"
-    tabindex="0"
-    id="'main-actions-accordion-header-1'"
-    [attr.aria-expanded]="accordionItem1.expanded"
-    aria-controls="'main-actions-accordion-body-1'">
-    <button mat-button (click)="accordionItem1.toggle()" class="main-actions-accordion-header">
-      <mat-icon svgIcon="upload"></mat-icon> Open
-    </button>
-    <div
-      role="region"
-      id="main-actions-accordion-body-1"
-      class="main-actions-accordion-body"
-      aria-labelledby="'main-actions-accordion-header-1'"
-      [ngClass]="{ expanded: accordionItem1.expanded }">
-      <button
-        mat-button
-        (click)="onLoad()"
-        *ngIf="(hasStorageApi$ | async) && (allowUserStorage$ | async)"
-        class="main-actions-accordion-button">
-        <mat-icon svgIcon="cloud_download"></mat-icon>
-        From cloud
-      </button>
-      <button mat-button (click)="onUpload()" class="main-actions-accordion-button">
-        <mat-icon svgIcon="upload"></mat-icon>
-        From JSON
-      </button>
-      <button mat-button (click)="onCsvUpload()" class="main-actions-accordion-button">
-        <mat-icon svgIcon="csv"></mat-icon>
-        From CSV
-      </button>
-    </div>
-  </cdk-accordion-item>
   <cdk-accordion-item
     #accordionItem2="cdkAccordionItem"
     role="button"
@@ -54,7 +31,7 @@
         (click)="onSave()"
         *ngIf="(hasStorageApi$ | async) && (allowUserStorage$ | async)"
         class="main-actions-accordion-button">
-        <mat-icon svgIcon="cloud_upload"></mat-icon>
+        <mat-icon svgIcon="cloud_download"></mat-icon>
         To cloud
       </button>
       <button

@@ -1,9 +1,6 @@
 <app-base-routes-row
-  [isDragging]="isDragging$ | async"
-  [currentDragVisitIds]="dragVisitIds$ | async"
   [route]="route"
   [vehicle]="vehicle$ | async"
-  [vehicleOperator]="vehicleOperator$ | async"
   [selected]="selected$ | async"
   (selectedChange)="onSelectedChange($event)"
   [shipmentCount]="shipmentCount$ | async"
@@ -14,16 +11,10 @@
   [pendingNewPois]="pendingNewPois$ | async"
   [pendingOldVisitIds]="pendingOldVisitIds$ | async"
   [timezoneOffset]="timezoneOffset$ | async"
-  [currentOverlapId]="currentOverlapId$ | async"
   [changedVisits]="changedVisits$ | async"
   [relaxationTimes]="relaxationTimes$ | async"
   [range]="range$ | async"
-  (dragStart)="onDragStart($event)"
-  (timelineEnter)="onTimelineEnter($event)"
-  (timelineLeave)="onTimelineLeave()"
   (pointOfInterestClick)="onPointOfInterestClick($event)"
   (editVehicle)="onEditVehicle($event)"
-  (viewMetadata)="onViewMetadata($event)"
-  (mouseEnterVisit)="onMouseEnterVisit($event)"
-  (mouseExitVisit)="onMouseExitVisit()">
+  (viewMetadata)="onViewMetadata($event)">
 </app-base-routes-row>

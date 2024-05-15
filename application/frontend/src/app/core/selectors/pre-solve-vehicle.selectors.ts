@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as Long from 'long';
@@ -128,8 +135,8 @@ const selectVehicleFilterOptions = createSelector(
         label: 'Demand (' + label + (unit ? ', ' + unit : '') + ')',
         form: () => FilterNumberFormComponent,
         predicate: ({ vehicle }, params) => {
-          const capacity = vehicle.capacities?.find((c) => c.type === capacityType);
-          return applyLongValueFilter(capacity.value, params);
+          const capacity = vehicle.loadLimits[capacityType];
+          return applyLongValueFilter(capacity.maxLoad, params);
         },
       } as VehicleFilterOption<NumberFilterParams>);
     }
@@ -293,10 +300,7 @@ const selectColumnsToDisplay = createSelector(
     const displayColumns = displayColumnOptions
       .filter((column) => column.active)
       .map((column) => column.id);
-    return displayColumns
-      .slice(0, displayColumns.length - 1)
-      .concat('_filler')
-      .concat(displayColumns[displayColumns.length - 1]);
+    return displayColumns.slice(0, 3).concat('_filler').concat(displayColumns.slice(3));
   }
 );
 
@@ -321,17 +325,15 @@ const selectVehiclesKpis = createSelector(
     };
 
     vehicles.forEach((vehicle) => {
-      if (!vehicle.capacities) {
+      if (!vehicle.loadLimits) {
         return;
       }
 
-      vehicle.capacities.forEach((capacity) => {
-        if (!capacity) {
-          return;
-        }
-        const capacityValue = capacity.value ? Long.fromValue(capacity.value).toNumber() : 0;
+      Object.keys(vehicle.loadLimits).forEach((loadLimitKey) => {
+        const loadLimit = vehicle.loadLimits[loadLimitKey];
+        const capacityValue = loadLimit.maxLoad ? Long.fromValue(loadLimit.maxLoad).toNumber() : 0;
         const filteredCapacities = kpis.capacities.filter(
-          (kpiCapacity) => kpiCapacity.type === capacity.type
+          (kpiCapacity) => kpiCapacity.type === loadLimitKey
         );
         if (filteredCapacities.length) {
           const matchingCapacity = filteredCapacities[0];
@@ -343,7 +345,7 @@ const selectVehiclesKpis = createSelector(
           kpis.capacities.push({
             selected: capacityValue,
             total: capacityValue,
-            type: capacity.type,
+            type: loadLimitKey,
           });
         }
       });

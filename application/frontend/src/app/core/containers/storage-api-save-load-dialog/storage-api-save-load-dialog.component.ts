@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -17,6 +24,7 @@ import { DispatcherService } from '../../services';
 import { Page, Scenario, Solution } from '../../models';
 import { Observable } from 'rxjs';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
+import { selectScenarioName } from '../../selectors/dispatcher.selectors';
 
 @Component({
   selector: 'app-storage-api-save-load-dialog',
@@ -30,6 +38,7 @@ export class StorageApiSaveLoadDialogComponent implements OnInit {
   onSolutionPage$: Observable<boolean>;
   scenario: OptimizeToursRequest;
   solution: OptimizeToursResponse;
+  scenarioName: string;
 
   constructor(
     private dialogRef: MatDialogRef<StorageApiSaveLoadDialogComponent>,
@@ -58,16 +67,25 @@ export class StorageApiSaveLoadDialogComponent implements OnInit {
           this.solution = OptimizeToursResponse.fromObject(res.solution);
         }
       });
+
+    this.store
+      .select(selectScenarioName)
+      .pipe(take(1))
+      .subscribe((res) => (this.scenarioName = res));
   }
 
-  loadScenario(scenario: Scenario): void {
-    this.dialogRef.close({ scenario: this.dispatcherService.objectToScenario(scenario) });
+  loadScenario(content: { scenario: Scenario; scenarioName: string }): void {
+    this.dialogRef.close({
+      scenario: this.dispatcherService.objectToScenario(content.scenario),
+      scenarioName: content.scenarioName,
+    });
   }
 
-  loadSolution(content: { scenario: Scenario; solution: Solution }): void {
+  loadSolution(content: { scenario: Scenario; solution: Solution; scenarioName: string }): void {
     this.dialogRef.close({
       scenario: this.dispatcherService.objectToScenario(content.scenario),
       solution: this.dispatcherService.objectToSolution(content.solution, { json: true }),
+      scenarioName: content.scenarioName,
     });
   }
 }

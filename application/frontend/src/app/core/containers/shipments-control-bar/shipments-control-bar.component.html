@@ -1,16 +1,13 @@
 <app-table-control-bar
-  [showBulkEdit]="showBulkEdit$ | async"
-  [showBulkDelete]="showBulkDelete$ | async"
-  [filters]="filters$ | async"
-  (editFilter)="onEditFilter($event)"
-  (removeFilter)="onRemoveFilter($event)"
   [displayColumns]="displayColumns$ | async"
   (displayColumnChange)="onDisplayColumnChange($event)"
-  (bulkEdit)="onBulkEdit()"
-  (bulkDelete)="onBulkDelete()">
+  [page]="page$ | async"
+  (openShipmentModelSettings)="onOpenShipmentModelSettings()">
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"
-    (addFilter)="onAddFilter($event)">
+    (addFilter)="onAddFilter($event)"
+    (editFilter)="onEditFilter($event)"
+    (removeFilter)="onRemoveFilter($event)">
   </app-filter-menu>
 </app-table-control-bar>

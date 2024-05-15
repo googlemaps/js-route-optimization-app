@@ -1,20 +1,27 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { google } from '@google-cloud/optimization/build/protos/protos';
 import { isCanonicalDuration, isCanonicalTimestamp } from './canonical-protobuf';
 
 export function patchConstraintRelaxation(): void {
   const fromObject =
-    google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.fromObject;
-  google.cloud.optimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.fromObject = (
-    object: google.cloud.optimization.v1.InjectedSolutionConstraint.IConstraintRelaxation
+    google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.fromObject;
+  google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.fromObject = (
+    object: google.maps.routeoptimization.v1.InjectedSolutionConstraint.IConstraintRelaxation
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -36,9 +43,9 @@ export function patchConstraintRelaxation(): void {
 }
 
 export function patchOptimizeToursRequest(): void {
-  const fromObject = google.cloud.optimization.v1.OptimizeToursRequest.fromObject;
-  google.cloud.optimization.v1.OptimizeToursRequest.fromObject = (
-    object: google.cloud.optimization.v1.IOptimizeToursRequest
+  const fromObject = google.maps.routeoptimization.v1.OptimizeToursRequest.fromObject;
+  google.maps.routeoptimization.v1.OptimizeToursRequest.fromObject = (
+    object: google.maps.routeoptimization.v1.IOptimizeToursRequest
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -55,9 +62,9 @@ export function patchOptimizeToursRequest(): void {
 
 export function patchRow(): void {
   const fromObject =
-    google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject;
-  google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.IRow
+    google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject;
+  google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject = (
+    object: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.IRow
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -76,9 +83,9 @@ export function patchRow(): void {
 }
 
 export function patchShipment(): void {
-  const fromObject = google.cloud.optimization.v1.Shipment.fromObject;
-  google.cloud.optimization.v1.Shipment.fromObject = (
-    object: google.cloud.optimization.v1.IShipment
+  const fromObject = google.maps.routeoptimization.v1.Shipment.fromObject;
+  google.maps.routeoptimization.v1.Shipment.fromObject = (
+    object: google.maps.routeoptimization.v1.IShipment
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -99,9 +106,9 @@ export function patchShipment(): void {
 }
 
 export function patchShipmentModel(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentModel.fromObject;
-  google.cloud.optimization.v1.ShipmentModel.fromObject = (
-    object: google.cloud.optimization.v1.IShipmentModel
+  const fromObject = google.maps.routeoptimization.v1.ShipmentModel.fromObject;
+  google.maps.routeoptimization.v1.ShipmentModel.fromObject = (
+    object: google.maps.routeoptimization.v1.IShipmentModel
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -118,9 +125,9 @@ export function patchShipmentModel(): void {
 }
 
 export function patchShipmentModelBreakRuleBreakRequest(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest.fromObject;
-  google.cloud.optimization.v1.ShipmentModel.BreakRule.BreakRequest.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentModel.BreakRule.IBreakRequest
+  const fromObject = google.maps.routeoptimization.v1.BreakRule.BreakRequest.fromObject;
+  google.maps.routeoptimization.v1.BreakRule.BreakRequest.fromObject = (
+    object: google.maps.routeoptimization.v1.BreakRule.IBreakRequest
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -140,10 +147,9 @@ export function patchShipmentModelBreakRuleBreakRequest(): void {
 }
 
 export function patchShipmentModelBreakRuleFrequencyConstraint(): void {
-  const fromObject =
-    google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint.fromObject;
-  google.cloud.optimization.v1.ShipmentModel.BreakRule.FrequencyConstraint.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentModel.BreakRule.IFrequencyConstraint
+  const fromObject = google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject;
+  google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject = (
+    object: google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -162,9 +168,9 @@ export function patchShipmentModelBreakRuleFrequencyConstraint(): void {
 }
 
 export function patchShipmentModelPrecedenceRule(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentModel.PrecedenceRule.fromObject;
-  google.cloud.optimization.v1.ShipmentModel.PrecedenceRule.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentModel.IPrecedenceRule
+  const fromObject = google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule.fromObject;
+  google.maps.routeoptimization.v1.ShipmentModel.PrecedenceRule.fromObject = (
+    object: google.maps.routeoptimization.v1.ShipmentModel.IPrecedenceRule
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -178,9 +184,9 @@ export function patchShipmentModelPrecedenceRule(): void {
 }
 
 export function patchShipmentRoute(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentRoute.fromObject;
-  google.cloud.optimization.v1.ShipmentRoute.fromObject = (
-    object: google.cloud.optimization.v1.IShipmentRoute
+  const fromObject = google.maps.routeoptimization.v1.ShipmentRoute.fromObject;
+  google.maps.routeoptimization.v1.ShipmentRoute.fromObject = (
+    object: google.maps.routeoptimization.v1.IShipmentRoute
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -192,36 +198,14 @@ export function patchShipmentRoute(): void {
     if (isCanonicalTimestamp(object.vehicleEndTime)) {
       object.vehicleEndTime = google.protobuf.Timestamp.fromObject(object.vehicleEndTime);
     }
-    if (isCanonicalDuration(object.vehicleDetour)) {
-      object.vehicleDetour = google.protobuf.Duration.fromObject(object.vehicleDetour);
-    }
     return fromObject(object);
   };
 }
 
 export function patchShipmentRouteBreak(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentRoute.Break.fromObject;
-  google.cloud.optimization.v1.ShipmentRoute.Break.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentRoute.IBreak
-  ) => {
-    if (object == null) {
-      return fromObject(object);
-    }
-    object = { ...object };
-    if (isCanonicalTimestamp(object.startTime)) {
-      object.startTime = google.protobuf.Timestamp.fromObject(object.startTime);
-    }
-    if (isCanonicalDuration(object.duration)) {
-      object.duration = google.protobuf.Duration.fromObject(object.duration);
-    }
-    return fromObject(object);
-  };
-}
-
-export function patchShipmentRouteDelay(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentRoute.Delay.fromObject;
-  google.cloud.optimization.v1.ShipmentRoute.Delay.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentRoute.IDelay
+  const fromObject = google.maps.routeoptimization.v1.ShipmentRoute.Break.fromObject;
+  google.maps.routeoptimization.v1.ShipmentRoute.Break.fromObject = (
+    object: google.maps.routeoptimization.v1.ShipmentRoute.IBreak
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -238,9 +222,9 @@ export function patchShipmentRouteDelay(): void {
 }
 
 export function patchShipmentRouteTransition(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentRoute.Transition.fromObject;
-  google.cloud.optimization.v1.ShipmentRoute.Transition.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentRoute.ITransition
+  const fromObject = google.maps.routeoptimization.v1.ShipmentRoute.Transition.fromObject;
+  google.maps.routeoptimization.v1.ShipmentRoute.Transition.fromObject = (
+    object: google.maps.routeoptimization.v1.ShipmentRoute.ITransition
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -268,26 +252,10 @@ export function patchShipmentRouteTransition(): void {
   };
 }
 
-export function patchShipmentRouteTravelStep(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentRoute.TravelStep.fromObject;
-  google.cloud.optimization.v1.ShipmentRoute.TravelStep.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentRoute.ITravelStep
-  ) => {
-    if (object == null) {
-      return fromObject(object);
-    }
-    object = { ...object };
-    if (isCanonicalDuration(object.duration)) {
-      object.duration = google.protobuf.Duration.fromObject(object.duration);
-    }
-    return fromObject(object);
-  };
-}
-
 export function patchShipmentRouteVisit(): void {
-  const fromObject = google.cloud.optimization.v1.ShipmentRoute.Visit.fromObject;
-  google.cloud.optimization.v1.ShipmentRoute.Visit.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentRoute.IVisit
+  const fromObject = google.maps.routeoptimization.v1.ShipmentRoute.Visit.fromObject;
+  google.maps.routeoptimization.v1.ShipmentRoute.Visit.fromObject = (
+    object: google.maps.routeoptimization.v1.ShipmentRoute.IVisit
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -304,9 +272,9 @@ export function patchShipmentRouteVisit(): void {
 }
 
 export function patchTimeWindow(): void {
-  const fromObject = google.cloud.optimization.v1.TimeWindow.fromObject;
-  google.cloud.optimization.v1.TimeWindow.fromObject = (
-    object: google.cloud.optimization.v1.ITimeWindow
+  const fromObject = google.maps.routeoptimization.v1.TimeWindow.fromObject;
+  google.maps.routeoptimization.v1.TimeWindow.fromObject = (
+    object: google.maps.routeoptimization.v1.ITimeWindow
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -329,9 +297,9 @@ export function patchTimeWindow(): void {
 }
 
 export function patchTransitionAttributes(): void {
-  const fromObject = google.cloud.optimization.v1.TransitionAttributes.fromObject;
-  google.cloud.optimization.v1.TransitionAttributes.fromObject = (
-    object: google.cloud.optimization.v1.ITransitionAttributes
+  const fromObject = google.maps.routeoptimization.v1.TransitionAttributes.fromObject;
+  google.maps.routeoptimization.v1.TransitionAttributes.fromObject = (
+    object: google.maps.routeoptimization.v1.ITransitionAttributes
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -344,9 +312,9 @@ export function patchTransitionAttributes(): void {
 }
 
 export function patchVehicle(): void {
-  const fromObject = google.cloud.optimization.v1.Vehicle.fromObject;
-  google.cloud.optimization.v1.Vehicle.fromObject = (
-    object: google.cloud.optimization.v1.IVehicle
+  const fromObject = google.maps.routeoptimization.v1.Vehicle.fromObject;
+  google.maps.routeoptimization.v1.Vehicle.fromObject = (
+    object: google.maps.routeoptimization.v1.IVehicle
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -367,9 +335,9 @@ export function patchVehicle(): void {
 }
 
 export function patchBreakRequest(): void {
-  const fromObject = google.cloud.optimization.v1.BreakRule.BreakRequest.fromObject;
-  google.cloud.optimization.v1.BreakRule.BreakRequest.fromObject = (
-    object: google.cloud.optimization.v1.BreakRule.IBreakRequest
+  const fromObject = google.maps.routeoptimization.v1.BreakRule.BreakRequest.fromObject;
+  google.maps.routeoptimization.v1.BreakRule.BreakRequest.fromObject = (
+    object: google.maps.routeoptimization.v1.BreakRule.IBreakRequest
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -389,9 +357,9 @@ export function patchBreakRequest(): void {
 }
 
 export function patchBreakRuleFrequencyConstraint(): void {
-  const fromObject = google.cloud.optimization.v1.BreakRule.FrequencyConstraint.fromObject;
-  google.cloud.optimization.v1.BreakRule.FrequencyConstraint.fromObject = (
-    object: google.cloud.optimization.v1.BreakRule.IFrequencyConstraint
+  const fromObject = google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject;
+  google.maps.routeoptimization.v1.BreakRule.FrequencyConstraint.fromObject = (
+    object: google.maps.routeoptimization.v1.BreakRule.IFrequencyConstraint
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -410,9 +378,9 @@ export function patchBreakRuleFrequencyConstraint(): void {
 }
 
 export function patchVehicleDurationLimit(): void {
-  const fromObject = google.cloud.optimization.v1.Vehicle.DurationLimit.fromObject;
-  google.cloud.optimization.v1.Vehicle.DurationLimit.fromObject = (
-    object: google.cloud.optimization.v1.Vehicle.IDurationLimit
+  const fromObject = google.maps.routeoptimization.v1.Vehicle.DurationLimit.fromObject;
+  google.maps.routeoptimization.v1.Vehicle.DurationLimit.fromObject = (
+    object: google.maps.routeoptimization.v1.Vehicle.IDurationLimit
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -434,9 +402,9 @@ export function patchVehicleDurationLimit(): void {
 }
 
 export function patchVisitRequest(): void {
-  const fromObject = google.cloud.optimization.v1.Shipment.VisitRequest.fromObject;
-  google.cloud.optimization.v1.Shipment.VisitRequest.fromObject = (
-    object: google.cloud.optimization.v1.Shipment.IVisitRequest
+  const fromObject = google.maps.routeoptimization.v1.Shipment.VisitRequest.fromObject;
+  google.maps.routeoptimization.v1.Shipment.VisitRequest.fromObject = (
+    object: google.maps.routeoptimization.v1.Shipment.IVisitRequest
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -450,9 +418,9 @@ export function patchVisitRequest(): void {
 }
 
 export function patchAggregatedMetrics(): void {
-  const fromObject = google.cloud.optimization.v1.AggregatedMetrics.fromObject;
-  google.cloud.optimization.v1.AggregatedMetrics.fromObject = (
-    object: google.cloud.optimization.v1.IAggregatedMetrics
+  const fromObject = google.maps.routeoptimization.v1.AggregatedMetrics.fromObject;
+  google.maps.routeoptimization.v1.AggregatedMetrics.fromObject = (
+    object: google.maps.routeoptimization.v1.IAggregatedMetrics
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -481,9 +449,9 @@ export function patchAggregatedMetrics(): void {
 }
 
 export function patchMetrics(): void {
-  const fromObject = google.cloud.optimization.v1.OptimizeToursResponse.Metrics.fromObject;
-  google.cloud.optimization.v1.OptimizeToursResponse.Metrics.fromObject = (
-    object: google.cloud.optimization.v1.OptimizeToursResponse.IMetrics
+  const fromObject = google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics.fromObject;
+  google.maps.routeoptimization.v1.OptimizeToursResponse.Metrics.fromObject = (
+    object: google.maps.routeoptimization.v1.OptimizeToursResponse.IMetrics
   ) => {
     if (object == null) {
       return fromObject(object);
@@ -506,9 +474,9 @@ export function patchMetrics(): void {
 
 export function patchDurationDistanceMatrixIRow(): void {
   const fromObject =
-    google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject;
-  google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject = (
-    object: google.cloud.optimization.v1.ShipmentModel.DurationDistanceMatrix.IRow
+    google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject;
+  google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.Row.fromObject = (
+    object: google.maps.routeoptimization.v1.ShipmentModel.DurationDistanceMatrix.IRow
   ) => {
     if (object == null) {
       return fromObject(object);

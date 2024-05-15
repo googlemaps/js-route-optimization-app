@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { TestBed } from '@angular/core/testing';
 import { Dictionary } from '@ngrx/entity';
@@ -1251,14 +1258,14 @@ describe('ValidationService', () => {
           shipments: [
             // No shipment 1 demands
             { id: 1, pickups: [1] },
-            { id: 2, demands: [{ type: 'foo', value: 200 }], pickups: [3], deliveries: [4] },
+            { id: 2, loadDemands: { foo: { amount: 200 } }, pickups: [3], deliveries: [4] },
           ] as Shipment[],
-          vehicles: [{ id: 1, capacities: [{ type: 'foo', value: 250 }] }] as Vehicle[],
+          vehicles: [{ id: 1, loadLimits: { foo: { maxLoad: 250 } } }] as Vehicle[],
           visitRequests: [
             // No shipment 1 visit request demands
             { id: 1, shipmentId: 1, pickup: true },
-            { id: 3, shipmentId: 2, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 4, shipmentId: 2, demands: [{ type: 'foo', value: 50 }] },
+            { id: 3, shipmentId: 2, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 4, shipmentId: 2, loadDemands: { foo: { amount: 50 } } },
           ] as VisitRequest[],
           visits,
           routes: [{ id: 1, visits: getVisitIds(visits) }],
@@ -1284,18 +1291,18 @@ describe('ValidationService', () => {
         setValidationContext({
           shipments: [
             // Shipment 1 has demands, but without those for 'foo'
-            { id: 1, demands: [{ type: 'bar', value: 200 }], pickups: [1] },
-            { id: 2, demands: [{ type: 'foo', value: 200 }], pickups: [3], deliveries: [4] },
+            { id: 1, loadDemands: { bar: { amount: 200 } }, pickups: [1] },
+            { id: 2, loadDemands: { foo: { amount: 200 } }, pickups: [3], deliveries: [4] },
           ] as Shipment[],
           vehicles: [
             // Vehicle 1 only defines capacities for 'foo'
-            { id: 1, capacities: [{ type: 'foo', value: 250 }] },
+            { id: 1, loadLimits: { foo: { maxLoad: 250 } } },
           ] as Vehicle[],
           visitRequests: [
             // Shipment 1 has demands, but without those for 'foo'
-            { id: 1, shipmentId: 1, demands: [{ type: 'bar', value: 50 }], pickup: true },
-            { id: 3, shipmentId: 2, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 4, shipmentId: 2, demands: [{ type: 'foo', value: 50 }] },
+            { id: 1, shipmentId: 1, loadDemands: { bar: { amount: 50 } }, pickup: true },
+            { id: 3, shipmentId: 2, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 4, shipmentId: 2, loadDemands: { foo: { amount: 50 } } },
           ] as VisitRequest[],
           visits,
           routes: [{ id: 1, visits: getVisitIds(visits) }],
@@ -1320,14 +1327,14 @@ describe('ValidationService', () => {
         ];
         setValidationContext({
           shipments: [
-            { id: 1, demands: [{ type: 'foo', value: 1 }], pickups: [1] },
-            { id: 2, demands: [{ type: 'foo', value: 198 }], pickups: [3], deliveries: [4] },
+            { id: 1, loadDemands: { foo: { amount: 1 } }, pickups: [1] },
+            { id: 2, loadDemands: { foo: { amount: 198 } }, pickups: [3], deliveries: [4] },
           ] as Shipment[],
-          vehicles: [{ id: 1, capacities: [{ type: 'foo', value: 250 }] }] as Vehicle[],
+          vehicles: [{ id: 1, loadLimits: { foo: { maxLoad: 250 } } }] as Vehicle[],
           visitRequests: [
-            { id: 1, shipmentId: 1, demands: [{ type: 'foo', value: 1 }], pickup: true },
-            { id: 3, shipmentId: 2, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 4, shipmentId: 2, demands: [{ type: 'foo', value: 50 }] },
+            { id: 1, shipmentId: 1, loadDemands: { foo: { amount: 1 } }, pickup: true },
+            { id: 3, shipmentId: 2, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 4, shipmentId: 2, loadDemands: { foo: { amount: 50 } } },
           ] as VisitRequest[],
           visits,
           routes: [{ id: 1, visits: getVisitIds(visits) }],
@@ -1354,14 +1361,14 @@ describe('ValidationService', () => {
         setValidationContext({
           // Only one shipment can be on the vehicle at a time due to the shipment + pickup demand
           shipments: [
-            { id: 1, demands: [{ type: 'foo', value: 200 }], pickups: [1] },
-            { id: 2, demands: [{ type: 'foo', value: 200 }], pickups: [3], deliveries: [4] },
+            { id: 1, loadDemands: { foo: { amount: 200 } }, pickups: [1] },
+            { id: 2, loadDemands: { foo: { amount: 200 } }, pickups: [3], deliveries: [4] },
           ] as Shipment[],
-          vehicles: [{ id: 1, capacities: [{ type: 'foo', value: 250 }] }] as Vehicle[],
+          vehicles: [{ id: 1, loadLimits: { foo: { maxLoad: 250 } } }] as Vehicle[],
           visitRequests: [
-            { id: 1, shipmentId: 1, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 3, shipmentId: 2, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 4, shipmentId: 2, demands: [{ type: 'foo', value: 50 }] },
+            { id: 1, shipmentId: 1, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 3, shipmentId: 2, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 4, shipmentId: 2, loadDemands: { foo: { amount: 50 } } },
           ] as VisitRequest[],
           visits,
           routes: [{ id: 1, visits: getVisitIds(visits) }],
@@ -1388,14 +1395,14 @@ describe('ValidationService', () => {
         setValidationContext({
           // Only one shipment can be on the vehicle at a time due to the shipment + pickup demand
           shipments: [
-            { id: 1, demands: [{ type: 'foo', value: 200 }], pickups: [1] },
-            { id: 2, demands: [{ type: 'foo', value: 200 }], pickups: [3], deliveries: [4] },
+            { id: 1, loadDemands: { foo: { amount: 200 } }, pickups: [1] },
+            { id: 2, loadDemands: { foo: { amount: 200 } }, pickups: [3], deliveries: [4] },
           ] as Shipment[],
-          vehicles: [{ id: 1, capacities: [{ type: 'foo', value: 250 }] }] as Vehicle[],
+          vehicles: [{ id: 1, loadLimits: { foo: { maxLoad: 250 } } }] as Vehicle[],
           visitRequests: [
-            { id: 1, shipmentId: 1, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 3, shipmentId: 2, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 4, shipmentId: 2, demands: [{ type: 'foo', value: 50 }] },
+            { id: 1, shipmentId: 1, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 3, shipmentId: 2, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 4, shipmentId: 2, loadDemands: { foo: { amount: 50 } } },
           ] as VisitRequest[],
           visits,
           routes: [{ id: 1, visits: getVisitIds(visits) }],
@@ -1422,14 +1429,14 @@ describe('ValidationService', () => {
         ];
         setValidationContext({
           shipments: [
-            { id: 1, demands: [{ type: 'foo', value: 1 }], pickups: [1] },
-            { id: 2, demands: [{ type: 'foo', value: 200 }], pickups: [3], deliveries: [4] },
+            { id: 1, loadDemands: { foo: { amount: 1 } }, pickups: [1] },
+            { id: 2, loadDemands: { foo: { amount: 200 } }, pickups: [3], deliveries: [4] },
           ] as Shipment[],
-          vehicles: [{ id: 1, capacities: [{ type: 'foo', value: 250 }] }] as Vehicle[],
+          vehicles: [{ id: 1, loadLimits: { foo: { maxLoad: 250 } } }] as Vehicle[],
           visitRequests: [
             { id: 1, shipmentId: 1, pickup: true },
-            { id: 3, shipmentId: 2, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 4, shipmentId: 2, demands: [{ type: 'foo', value: 50 }] },
+            { id: 3, shipmentId: 2, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 4, shipmentId: 2, loadDemands: { foo: { amount: 50 } } },
           ] as VisitRequest[],
           visits,
           routes: [{ id: 1, visits: getVisitIds(visits) }],
@@ -1458,13 +1465,13 @@ describe('ValidationService', () => {
         setValidationContext({
           shipments: [
             { id: 1, pickups: [1] },
-            { id: 2, demands: [{ type: 'foo', value: 200 }], pickups: [3], deliveries: [4] },
+            { id: 2, loadDemands: { foo: { amount: 200 } }, pickups: [3], deliveries: [4] },
           ] as Shipment[],
-          vehicles: [{ id: 1, capacities: [{ type: 'foo', value: 250 }] }] as Vehicle[],
+          vehicles: [{ id: 1, loadLimits: { foo: { maxLoad: 250 } } }] as Vehicle[],
           visitRequests: [
-            { id: 1, shipmentId: 1, demands: [{ type: 'foo', value: 1 }], pickup: true },
-            { id: 3, shipmentId: 2, demands: [{ type: 'foo', value: 50 }], pickup: true },
-            { id: 4, shipmentId: 2, demands: [{ type: 'foo', value: 50 }] },
+            { id: 1, shipmentId: 1, loadDemands: { foo: { amount: 1 } }, pickup: true },
+            { id: 3, shipmentId: 2, loadDemands: { foo: { amount: 50 } }, pickup: true },
+            { id: 4, shipmentId: 2, loadDemands: { foo: { amount: 50 } } },
           ] as VisitRequest[],
           visits,
           routes: [{ id: 1, visits: getVisitIds(visits) }],
@@ -1492,14 +1499,14 @@ describe('ValidationService', () => {
         ];
         setValidationContext({
           shipments: [
-            { id: 1, demands: [{ type: 'foo', value: 150 }], pickups: [1] },
-            { id: 2, demands: [{ type: 'foo', value: 100 }], pickups: [3], deliveries: [4] },
+            { id: 1, loadDemands: { foo: { amount: 150 } }, pickups: [1] },
+            { id: 2, loadDemands: { foo: { amount: 100 } }, pickups: [3], deliveries: [4] },
           ] as Shipment[],
-          vehicles: [{ id: 1, capacities: [{ type: 'foo', value: 250 }] }] as Vehicle[],
+          vehicles: [{ id: 1, loadLimits: { foo: { maxLoad: 250 } } }] as Vehicle[],
           visitRequests: [
-            { id: 1, shipmentId: 1, demands: [{ type: 'foo', value: 10 }], pickup: true },
-            { id: 3, shipmentId: 2, demands: [{ type: 'foo', value: 25 }], pickup: true },
-            { id: 4, shipmentId: 2, demands: [{ type: 'foo', value: 25 }] },
+            { id: 1, shipmentId: 1, loadDemands: { foo: { amount: 10 } }, pickup: true },
+            { id: 3, shipmentId: 2, loadDemands: { foo: { amount: 25 } }, pickup: true },
+            { id: 4, shipmentId: 2, loadDemands: { foo: { amount: 25 } } },
           ] as VisitRequest[],
           visits,
           routes: [{ id: 1, visits: getVisitIds(visits) }],

@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
@@ -44,6 +51,8 @@ export class ShipmentsComponent {
   readonly pageSize$: Observable<number>;
   readonly changeDisabled$: Observable<boolean>;
   readonly mapOpen$: Observable<boolean>;
+  readonly showBulkEdit$: Observable<boolean>;
+  readonly showBulkDelete$: Observable<boolean>;
 
   constructor(private store: Store<fromRoot.State>) {
     store.dispatch(ShipmentsActions.initialize());
@@ -65,6 +74,8 @@ export class ShipmentsComponent {
     this.pageSize$ = store.pipe(select(PreSolveShipmentSelectors.selectPageSize));
     this.changeDisabled$ = store.pipe(select(fromScenario.selectChangeDisabled));
     this.mapOpen$ = store.pipe(select(selectHasMap));
+    this.showBulkEdit$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkEdit));
+    this.showBulkDelete$ = store.pipe(select(PreSolveShipmentSelectors.selectShowBulkDelete));
   }
 
   onPage(event: PageEvent): void {
@@ -106,10 +117,6 @@ export class ShipmentsComponent {
     );
   }
 
-  onAdd(): void {
-    this.store.dispatch(PreSolveShipmentActions.addShipment({}));
-  }
-
   onEdit(shipmentId: number): void {
     this.store.dispatch(PreSolveShipmentActions.editShipment({ shipmentId }));
   }
@@ -124,5 +131,21 @@ export class ShipmentsComponent {
 
   onMouseExitVisitRequest(): void {
     this.store.dispatch(PreSolveShipmentActions.mouseExitVisitRequest());
+  }
+
+  onBulkEdit(): void {
+    this.store
+      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
+      .subscribe((shipmentIds) => {
+        this.store.dispatch(PreSolveShipmentActions.editShipments({ shipmentIds }));
+      });
+  }
+
+  onBulkDelete(): void {
+    this.store
+      .pipe(select(PreSolveShipmentSelectors.selectFilteredShipmentsSelectedIds), take(1))
+      .subscribe((ids) => {
+        this.store.dispatch(ShipmentActions.confirmDeleteShipments({ ids }));
+      });
   }
 }

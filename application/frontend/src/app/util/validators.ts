@@ -1,13 +1,25 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
 
-import { FormArray, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import {
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  ValidatorFn,
+} from '@angular/forms';
 import Long from 'long';
 import { localDateTimeToUtcSeconds } from './time-translation';
 import { RelaxationLevel } from '../core/models/dispatcher.model';
@@ -19,7 +31,7 @@ export function durationWithinGlobalStartEndTime(
   endTime: string | number | Long,
   timezoneOffset: number
 ): ValidatorFn {
-  return (fg: FormGroup) => {
+  return (fg: UntypedFormGroup) => {
     const date = fg.get('date').value;
     const time = fg.get('time').value;
     if (!date || !time || !startTime || !endTime) {
@@ -46,7 +58,7 @@ export function durationALessThanB(
   aOptional = false,
   bOptional = false
 ): ValidatorFn {
-  return (fg: FormGroup) => {
+  return (fg: UntypedFormGroup) => {
     const aValueMinutes = fg.get(a).value.min;
     const aValueSeconds = fg.get(a).value.sec;
     const bValueMinutes = fg.get(b).value.min;
@@ -72,7 +84,7 @@ export function aRequiredIfDurationB(
   b: string,
   id = 'aRequiredIfDurationB'
 ): ValidatorFn {
-  return (fg: FormGroup) => {
+  return (fg: UntypedFormGroup) => {
     const aValue = fg.get(a).value;
     const bValueMinutes = fg.get(b).value.min;
     const bValueSeconds = fg.get(b).value.sec;
@@ -94,7 +106,7 @@ export function aLessThanB(
   aOptional = false,
   bOptional = false
 ): ValidatorFn {
-  return (fg: FormGroup) => {
+  return (fg: UntypedFormGroup) => {
     const aValue = fg.get(a).value;
     const bValue = fg.get(b).value;
     return (aOptional && aValue == null) || (bOptional && bValue == null) || aValue < bValue
@@ -106,7 +118,7 @@ export function aLessThanB(
 }
 
 export function aRequiredIfB(a: string, b: string, id = 'aRequiredIfB'): ValidatorFn {
-  return (fg: FormGroup) => {
+  return (fg: UntypedFormGroup) => {
     const aValue = fg.get(a).value;
     const bValue = fg.get(b).value;
     if (bValue == null) {
@@ -120,7 +132,7 @@ export function aRequiredIfB(a: string, b: string, id = 'aRequiredIfB'): Validat
   };
 }
 
-export const noDuplicateCapacitiesValidator: ValidatorFn = (control: FormControl) => {
+export const noDuplicateCapacitiesValidator: ValidatorFn = (control: UntypedFormControl) => {
   if (
     new Set(control.value.map((capacity) => `${capacity.type}_${capacity.unit || ''}`)).size !==
     control.value.length
@@ -132,7 +144,7 @@ export const noDuplicateCapacitiesValidator: ValidatorFn = (control: FormControl
   return null;
 };
 
-export const noDuplicateExtraDurationValidator: ValidatorFn = (control: FormControl) => {
+export const noDuplicateExtraDurationValidator: ValidatorFn = (control: UntypedFormControl) => {
   if (
     new Set(control.value.map((extraDuration) => `${extraDuration.visitType}`)).size !==
     control.value.length
@@ -145,7 +157,7 @@ export const noDuplicateExtraDurationValidator: ValidatorFn = (control: FormCont
 };
 
 export function noDuplicateValuesValidator(propertyName: string): ValidatorFn {
-  return (control: FormArray) => {
+  return (control: UntypedFormArray) => {
     if (new Set(control.value.map((v) => v[propertyName] || '')).size !== control.value.length) {
       const duplicateValues = {};
       duplicateValues[propertyName] = true;
@@ -162,7 +174,7 @@ export function noDuplicateValuesValidator(propertyName: string): ValidatorFn {
  * Check that a FormArray does not contain duplicate values (as determined by lodash.isMatch())
  * @returns `{duplicate: true}` if duplicate values are present, otherwise `null`
  */
-export const noDuplicateFormArrayValuesValidator: ValidatorFn = (formArray: FormArray) => {
+export const noDuplicateFormArrayValuesValidator: ValidatorFn = (formArray: UntypedFormArray) => {
   if (!Array.isArray(formArray.value)) {
     return null;
   }
@@ -191,21 +203,21 @@ export const noDuplicateFormArrayValuesValidator: ValidatorFn = (formArray: Form
   return null;
 };
 
-export const nonNegativeIntegerValidator: ValidatorFn = (control: FormControl) => {
+export const nonNegativeIntegerValidator: ValidatorFn = (control: UntypedFormControl) => {
   if (control.value != null && !/^\s*\d*\s*$/.test(control.value.toString())) {
     return { nonNegativeInteger: true };
   }
   return null;
 };
 
-export const noUnspecifiedRelaxationLevelValidator: ValidatorFn = (control: FormControl) => {
+export const noUnspecifiedRelaxationLevelValidator: ValidatorFn = (control: UntypedFormControl) => {
   if (control.value === RelaxationLevel.LEVEL_UNSPECIFIED) {
     return { noUnspecifiedRelaxationLevel: true };
   }
   return null;
 };
 
-export const timeStringValidator: ValidatorFn = (control: FormControl) => {
+export const timeStringValidator: ValidatorFn = (control: UntypedFormControl) => {
   if (control.value && !isValidTimeString(control.value)) {
     return { timeString: true };
   }
@@ -213,7 +225,7 @@ export const timeStringValidator: ValidatorFn = (control: FormControl) => {
 };
 
 export function requireAny(a: string[], id = 'requireAny'): ValidatorFn {
-  return (fg: FormGroup) => {
+  return (fg: UntypedFormGroup) => {
     const returnVal = !a.some((element) => fg.get(element).value) && {
       [id]: { ...a },
     };
@@ -222,7 +234,7 @@ export function requireAny(a: string[], id = 'requireAny'): ValidatorFn {
 }
 
 export function requireAandB(a: string, b: string, id = 'requireAandB'): ValidatorFn {
-  return (fg: FormGroup) => {
+  return (fg: UntypedFormGroup) => {
     const aValue = fg.get(a).value;
     const bValue = fg.get(b).value;
     if (!aValue && !bValue) {
@@ -241,7 +253,7 @@ export function requireAandB(a: string, b: string, id = 'requireAandB'): Validat
  * @returns `{requireAxorB: true}` if both fields are empty or both have values
  */
 export function requireAxorB(a: string, b: string, id = 'requireAxorB'): ValidatorFn {
-  return (fg: FormGroup) => {
+  return (fg: UntypedFormGroup) => {
     const aValue = fg.get(a).value;
     const bValue = fg.get(b).value;
     return (!aValue && !bValue) || (aValue && bValue) ? { [id]: true } : null;

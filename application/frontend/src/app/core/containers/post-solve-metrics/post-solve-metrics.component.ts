@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -13,7 +20,6 @@ import { select, Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
-import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 import * as fromPostSolveShipment from 'src/app/core/selectors/post-solve-shipment.selectors';
 import PreSolveShipmentSelectors from 'src/app/core/selectors/pre-solve-shipment.selectors';
 import ShipmentRouteSelectors, * as fromShipmentRoute from 'src/app/core/selectors/shipment-route.selectors';
@@ -21,6 +27,7 @@ import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import * as fromTimeline from 'src/app/core/selectors/timeline.selectors';
 import { PostSolveMetricsActions } from '../../actions';
 import { Page, Timeline, TimelineCategory, TimeSet } from '../../models';
+import PreSolveVehicleSelectors from 'src/app/core/selectors/pre-solve-vehicle.selectors';
 
 @Component({
   selector: 'app-post-solve-metrics',
@@ -34,11 +41,11 @@ export class PostSolveMetricsComponent implements OnInit {
   totalDistance$: Observable<number>;
   skippedShipmentsCount$: Observable<number>;
   shipmentsCount$: Observable<number>;
-  solutionTime$: Observable<number>;
   totalCost$: Observable<number>;
   timezoneOffset$: Observable<number>;
   timeline$: Observable<Timeline>;
   vehicleTimeAverages$: Observable<TimeSet>;
+  numberOfVehicles$: Observable<number>;
 
   constructor(private router: Router, private store: Store) {}
 
@@ -46,7 +53,6 @@ export class PostSolveMetricsComponent implements OnInit {
     this.duration$ = this.store.pipe(select(ShipmentRouteSelectors.selectRoutesDuration));
     this.numberOfRoutes$ = this.store.pipe(select(fromSolution.selectUsedRoutesCount));
     this.totalDistance$ = this.store.pipe(select(fromSolution.selectTotalRoutesDistanceMeters));
-    this.solutionTime$ = this.store.pipe(select(fromDispatcher.selectSolutionTime));
     this.skippedShipmentsCount$ = this.store.pipe(
       select(fromPostSolveShipment.selectTotalSkippedShipments)
     );
@@ -64,6 +70,11 @@ export class PostSolveMetricsComponent implements OnInit {
       map((res) => {
         return this.calculateVehicleTimeAverages(res);
       })
+    );
+
+    this.numberOfVehicles$ = this.store.pipe(
+      select(PreSolveVehicleSelectors.selectSelected),
+      map((selected) => selected.length)
     );
   }
 

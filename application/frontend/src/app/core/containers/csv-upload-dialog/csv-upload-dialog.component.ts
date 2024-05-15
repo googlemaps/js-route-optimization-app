@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { DomPortal } from '@angular/cdk/portal';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
@@ -19,12 +26,11 @@ import {
   OnDestroy,
 } from '@angular/core';
 import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl,
+  UntypedFormBuilder,
   FormGroupDirective,
   NgForm,
-  Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -45,7 +51,6 @@ import {
   GeocodeErrorResponse,
   ShipmentFields,
   VehicleFields,
-  VehicleOperatorFields,
 } from '../../models';
 import { selectAllowExperimentalFeatures, selectTimezone } from '../../selectors/config.selectors';
 import { CsvVehicleLayer, FormMapService, MessageService } from '../../services';
@@ -53,7 +58,10 @@ import { CsvVisitRequestLayer } from '../../services/csv-visit-request-layer.ser
 import { CsvService } from '../../services/csv.service';
 
 class ShipmentPickupLocationErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.missingPickupLocation ||
       ngForm?.errors?.pickupOrDeliveryRequired ||
@@ -64,7 +72,10 @@ class ShipmentPickupLocationErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentDeliveryLocationErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.missingDeliveryLocation ||
       ngForm?.errors?.pickupOrDeliveryRequired ||
@@ -75,7 +86,10 @@ class ShipmentDeliveryLocationErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentPickupSoftStartTimeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.pickupSoftStartTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -83,7 +97,10 @@ class ShipmentPickupSoftStartTimeErrorStateMatcher implements ErrorStateMatcher 
 }
 
 class ShipmentPickupSoftEndTimeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.pickupSoftEndTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -91,7 +108,10 @@ class ShipmentPickupSoftEndTimeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentDeliverySoftStartTimeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.deliverySoftStartTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -99,7 +119,10 @@ class ShipmentDeliverySoftStartTimeErrorStateMatcher implements ErrorStateMatche
 }
 
 class ShipmentDeliverySoftEndTimeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.deliverySoftEndTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -107,7 +130,10 @@ class ShipmentDeliverySoftEndTimeErrorStateMatcher implements ErrorStateMatcher 
 }
 
 class ShipmentLoadDemand1TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand1Type || control?.invalid || ngForm?.errors?.loadDemand1Value;
     const show = ngForm;
@@ -116,7 +142,10 @@ class ShipmentLoadDemand1TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand2TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand2Type || control?.invalid || ngForm?.errors?.loadDemand2Value;
     const show = ngForm;
@@ -125,7 +154,10 @@ class ShipmentLoadDemand2TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand3TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand3Type || control?.invalid || ngForm?.errors?.loadDemand3Value;
     const show = ngForm;
@@ -134,7 +166,10 @@ class ShipmentLoadDemand3TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand4TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand4Type || control?.invalid || ngForm?.errors?.loadDemand4Value;
     const show = ngForm;
@@ -143,7 +178,10 @@ class ShipmentLoadDemand4TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand1ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand1Value || control?.invalid || ngForm?.errors?.loadDemand1Type;
     const show = ngForm;
@@ -152,7 +190,10 @@ class ShipmentLoadDemand1ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand2ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand2Value || control?.invalid || ngForm?.errors?.loadDemand2Type;
     const show = ngForm;
@@ -161,7 +202,10 @@ class ShipmentLoadDemand2ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand3ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand3Value || control?.invalid || ngForm?.errors?.loadDemand3Type;
     const show = ngForm;
@@ -170,7 +214,10 @@ class ShipmentLoadDemand3ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class ShipmentLoadDemand4ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadDemand4Value || control?.invalid || ngForm?.errors?.loadDemand4Type;
     const show = ngForm;
@@ -179,7 +226,10 @@ class ShipmentLoadDemand4ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit1TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit1Type || control?.invalid || ngForm?.errors?.loadLimit1Value;
     const show = ngForm;
@@ -188,7 +238,10 @@ class VehicleLoadLimit1TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit2TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit2Type || control?.invalid || ngForm?.errors?.loadLimit2Value;
     const show = ngForm;
@@ -197,7 +250,10 @@ class VehicleLoadLimit2TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit3TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit3Type || control?.invalid || ngForm?.errors?.loadLimit3Value;
     const show = ngForm;
@@ -206,7 +262,10 @@ class VehicleLoadLimit3TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit4TypeErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit4Type || control?.invalid || ngForm?.errors?.loadLimit4Value;
     const show = ngForm;
@@ -215,7 +274,10 @@ class VehicleLoadLimit4TypeErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit1ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit1Value || control?.invalid || ngForm?.errors?.loadLimit1Type;
     const show = ngForm;
@@ -224,7 +286,10 @@ class VehicleLoadLimit1ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit2ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit2Value || control?.invalid || ngForm?.errors?.loadLimit2Type;
     const show = ngForm;
@@ -233,7 +298,10 @@ class VehicleLoadLimit2ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit3ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit3Value || control?.invalid || ngForm?.errors?.loadLimit3Type;
     const show = ngForm;
@@ -242,7 +310,10 @@ class VehicleLoadLimit3ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleLoadLimit4ValueErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid =
       ngForm?.errors?.loadLimit4Value || control?.invalid || ngForm?.errors?.loadLimit4Type;
     const show = ngForm;
@@ -251,7 +322,10 @@ class VehicleLoadLimit4ValueErrorStateMatcher implements ErrorStateMatcher {
 }
 
 class VehicleStartTimeWindowSoftStartErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.startWindowSoftStartTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -259,7 +333,10 @@ class VehicleStartTimeWindowSoftStartErrorStateMatcher implements ErrorStateMatc
 }
 
 class VehicleStartTimeWindowSoftEndErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.startWindowSoftEndTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -267,7 +344,10 @@ class VehicleStartTimeWindowSoftEndErrorStateMatcher implements ErrorStateMatche
 }
 
 class VehicleEndTimeWindowSoftStartErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.endWindowSoftStartTimeIfCost || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
@@ -275,40 +355,11 @@ class VehicleEndTimeWindowSoftStartErrorStateMatcher implements ErrorStateMatche
 }
 
 class VehicleEndTimeWindowSoftEndErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: UntypedFormControl | null,
+    ngForm: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalid = ngForm?.errors?.endWindowSoftEndTimeIfCost || control?.invalid;
-    const show = ngForm;
-    return !!(invalid && show);
-  }
-}
-
-class VehicleRequiredOperatorType1ErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
-    const invalid = ngForm?.errors?.requiredOperatorType1 || control?.invalid;
-    const show = ngForm;
-    return !!(invalid && show);
-  }
-}
-
-class VehicleRequiredOperatorType2ErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
-    const invalid = ngForm?.errors?.requiredOperatorType2 || control?.invalid;
-    const show = ngForm;
-    return !!(invalid && show);
-  }
-}
-
-class VehicleRequiredOperatorType3ErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
-    const invalid = ngForm?.errors?.requiredOperatorType3 || control?.invalid;
-    const show = ngForm;
-    return !!(invalid && show);
-  }
-}
-
-class VehicleOperatorTypeRequiredErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, ngForm: FormGroupDirective | NgForm | null): boolean {
-    const invalid = ngForm?.errors?.Type || control?.invalid;
     const show = ngForm;
     return !!(invalid && show);
   }
@@ -324,22 +375,17 @@ class VehicleOperatorTypeRequiredErrorStateMatcher implements ErrorStateMatcher 
 export class CsvUploadDialogComponent implements OnDestroy, OnInit {
   @ViewChild('shipmentFileInput', { static: true }) shipmentFileInput: ElementRef<HTMLInputElement>;
   @ViewChild('vehicleFileInput', { static: true }) vehicleFileInput: ElementRef<HTMLInputElement>;
-  @ViewChild('vehicleOperatorFileInput', { static: true })
-  vehicleOperatorFileInput: ElementRef<HTMLInputElement>;
   @ViewChild('stepper') stepper: MatStepper;
 
-  get shipmentFilename(): FormControl {
-    return this.uploadForm.get('shipmentFilename') as FormControl;
+  get shipmentFilename(): UntypedFormControl {
+    return this.uploadForm.get('shipmentFilename') as UntypedFormControl;
   }
-  get vehicleFilename(): FormControl {
-    return this.uploadForm.get('vehicleFilename') as FormControl;
-  }
-  get vehicleOperatorFilename(): FormControl {
-    return this.uploadForm.get('vehicleOperatorFilename') as FormControl;
+  get vehicleFilename(): UntypedFormControl {
+    return this.uploadForm.get('vehicleFilename') as UntypedFormControl;
   }
 
   readonly previewRows = 5;
-  readonly uploadForm: FormGroup;
+  readonly uploadForm: UntypedFormGroup;
 
   readonly shipmentPickupLocationErrorStateMatcher = new ShipmentPickupLocationErrorStateMatcher();
   readonly shipmentDeliveryLocationErrorStateMatcher =
@@ -385,18 +431,9 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
   readonly vehicleLoadLimit2ValueErrorStateMatcher = new VehicleLoadLimit2ValueErrorStateMatcher();
   readonly vehicleLoadLimit3ValueErrorStateMatcher = new VehicleLoadLimit3ValueErrorStateMatcher();
   readonly vehicleLoadLimit4ValueErrorStateMatcher = new VehicleLoadLimit4ValueErrorStateMatcher();
-  readonly vehicleRequiredOperatorType1ErrorStateMatcher =
-    new VehicleRequiredOperatorType1ErrorStateMatcher();
-  readonly vehicleRequiredOperatorType2ErrorStateMatcher =
-    new VehicleRequiredOperatorType2ErrorStateMatcher();
-  readonly vehicleRequiredOperatorType3ErrorStateMatcher =
-    new VehicleRequiredOperatorType3ErrorStateMatcher();
-  readonly vehicleOperatorTypeRequiredErrorStateMatcher =
-    new VehicleOperatorTypeRequiredErrorStateMatcher();
 
   shipmentFieldKeys: string[] = [];
   vehicleFieldKeys: string[] = [];
-  vehicleOperatorFieldKeys: string[] = [];
 
   allowExperimentalFeatures: boolean;
   autoMappingUsed: boolean;
@@ -404,30 +441,23 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
   shipmentChipList = [];
   vehicleColumnMappings = {};
   vehicleChipList = [];
-  vehicleOperatorColumnMappings = {};
-  vehicleOperatorChipList = [];
   errorLoadingShipmentCsv: boolean;
   errorLoadingVehicleCsv: boolean;
-  errorLoadingVehicleOperatorCsv: boolean;
   errorValidating: boolean;
   geocodingErrorsShipments: GeocodeErrorResponse[] = [];
   geocodingErrorsVehicles: GeocodeErrorResponse[] = [];
   shipmentFile: File;
   vehicleFile: File;
-  vehicleOperatorFile: File;
   geocodingResults: any[] = [];
   isGeocoding: boolean;
   isLoadingCsv: boolean;
   isValidatingWithApi: boolean;
-  mappingFormShipments: FormGroup;
-  mappingFormVehicles: FormGroup;
-  mappingFormVehicleOperators: FormGroup;
+  mappingFormShipments: UntypedFormGroup;
+  mappingFormVehicles: UntypedFormGroup;
   shipmentPreviewCsvColumns: string[] = [];
   vehiclePreviewCsvColumns: string[] = [];
-  vehicleOperatorPreviewCsvColumns: string[] = [];
   shipmentPreviewData: any = [];
   vehiclePreviewData: any = [];
-  vehicleOperatorPreviewData: any = [];
   scenario: any = {};
   timezone: Timezone;
   validationErrors: string[] = [];
@@ -440,7 +470,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
     private changeRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<CsvUploadDialogComponent>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private formMapService: FormMapService,
     private messageService: MessageService,
     private store: Store,
@@ -452,12 +482,9 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
       {
         shipmentFilename: fb.control(''),
         vehicleFilename: fb.control(''),
-        vehicleOperatorFilename: fb.control(''),
       },
       {
-        validators: [
-          requireAny(['shipmentFilename', 'vehicleFilename', 'vehicleOperatorFilename']),
-        ],
+        validators: [requireAny(['shipmentFilename', 'vehicleFilename'])],
       }
     );
     this.initMappingForms();
@@ -488,9 +515,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
       (value) =>
         typeof value === 'string' &&
         (this.allowExperimentalFeatures || experimentalFieldsLower.indexOf(value.toLowerCase()) < 0)
-    ) as string[];
-    this.vehicleOperatorFieldKeys = Object.values(VehicleOperatorFields).filter(
-      (value) => typeof value === 'string'
     ) as string[];
   }
 
@@ -527,9 +551,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         LoadLimit3Value: this.fb.control(''),
         LoadLimit4Type: this.fb.control(''),
         LoadLimit4Value: this.fb.control(''),
-        RequiredOperatorType1: this.fb.control(''),
-        RequiredOperatorType2: this.fb.control(''),
-        RequiredOperatorType3: this.fb.control(''),
       },
       {
         validators: [
@@ -670,15 +691,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         ],
       }
     );
-
-    this.mappingFormVehicleOperators = this.fb.group({
-      Label: this.fb.control(''),
-      Type: this.fb.control('', [Validators.required]),
-      StartTimeWindowStartTime: this.fb.control(''),
-      StartTimeWindowEndTime: this.fb.control(''),
-      EndTimeWindowStartTime: this.fb.control(''),
-      EndTimeWindowEndTime: this.fb.control(''),
-    });
   }
 
   //
@@ -737,14 +749,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         return this.vehicleEndTimeWindowSoftStartErrorStateMatcher;
       case 'EndTimeWindowCostPerHourAfterSoftEndTime':
         return this.vehicleEndTimeWindowSoftEndErrorStateMatcher;
-      case 'RequiredOperatorType1':
-        return this.vehicleRequiredOperatorType1ErrorStateMatcher;
-      case 'RequiredOperatorType2':
-        return this.vehicleRequiredOperatorType2ErrorStateMatcher;
-      case 'RequiredOperatorType3':
-        return this.vehicleRequiredOperatorType3ErrorStateMatcher;
-      case 'Type':
-        return this.vehicleOperatorTypeRequiredErrorStateMatcher;
     }
   }
 
@@ -808,14 +812,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         return this.mappingFormVehicles.errors?.endWindowSoftStartTimeIfCost;
       case 'EndTimeWindowCostPerHourAfterSoftEndTime':
         return this.mappingFormVehicles.errors?.endWindowSoftEndTimeIfCost;
-      case 'RequiredOperatorType1':
-        return this.mappingFormVehicles.errors?.requiredOperatorType1;
-      case 'RequiredOperatorType2':
-        return this.mappingFormVehicles.errors?.requiredOperatorType2;
-      case 'RequiredOperatorType3':
-        return this.mappingFormVehicles.errors?.requiredOperatorType3;
-      case 'Type':
-        return this.mappingFormVehicleOperators.invalid;
     }
   }
 
@@ -861,8 +857,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
       case 'LoadLimit3Value':
       case 'LoadLimit4Value':
         return 'Required if capacity type defined';
-      case 'Type':
-        return 'Vehicle Operator Type is a required Field';
     }
   }
 
@@ -948,20 +942,12 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         return (
           (this.shipmentFile &&
             (this.errorLoadingShipmentCsv || !this.shipmentPreviewData.length)) ||
-          (this.vehicleFile && this.errorLoadingVehicleCsv && !this.vehiclePreviewData.length) ||
-          (this.vehicleOperatorFile &&
-            this.errorLoadingVehicleOperatorCsv &&
-            !this.vehicleOperatorPreviewData.length) ||
-          this.isLoadingCsv
+          (this.vehicleFile && this.errorLoadingVehicleCsv && !this.vehiclePreviewData.length)
         );
       case 2:
         return (
           (this.shipmentFile && this.mappingFormShipments.invalid) ||
-          (this.vehicleFile && this.mappingFormVehicles.invalid) ||
-          (this.vehicleOperatorFile && this.mappingFormVehicleOperators.invalid) ||
-          this.vehicleOperatorPreviewData.some(
-            (vehicleOperator) => vehicleOperator.type?.length <= 0
-          )
+          (this.vehicleFile && this.mappingFormVehicles.invalid)
         );
       case 3:
         return (
@@ -995,19 +981,15 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
     this.isLoadingCsv = true;
     this.errorLoadingShipmentCsv = false;
     this.errorLoadingVehicleCsv = false;
-    this.errorLoadingVehicleOperatorCsv = false;
     this.shipmentPreviewData = [];
     this.vehiclePreviewData = [];
-    this.vehicleOperatorPreviewData = [];
     this.shipmentPreviewCsvColumns = [];
     this.vehiclePreviewCsvColumns = [];
-    this.vehicleOperatorPreviewCsvColumns = [];
 
     const csvObservables = [];
 
     let shipmentIndex = -1;
     let vehicleIndex = -1;
-    let vehicleOperatorIndex = -1;
 
     if (this.shipmentFile) {
       shipmentIndex = 0;
@@ -1031,23 +1013,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         )
       );
     }
-    if (this.vehicleOperatorFile) {
-      if (this.shipmentFile && this.vehicleFile) {
-        vehicleOperatorIndex = 2;
-      } else if (this.shipmentFile || this.vehicleFile) {
-        vehicleOperatorIndex = 1;
-      } else if (!this.shipmentFile && !this.vehicleFile) {
-        vehicleOperatorIndex = 0;
-      }
-      csvObservables.push(
-        this.service.getCsvPreview(this.vehicleOperatorFile, this.previewRows).pipe(
-          catchError((error) => {
-            this.errorLoadingVehicleOperatorCsv = true;
-            return of(error);
-          })
-        )
-      );
-    }
 
     forkJoin(csvObservables).subscribe((res: any[]) => {
       this.isLoadingCsv = false;
@@ -1065,13 +1030,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
           return;
         }
         this.vehiclePreviewCsvColumns = Object.keys(this.vehiclePreviewData[0]);
-      }
-      if (vehicleOperatorIndex >= 0) {
-        this.vehicleOperatorPreviewData = res[vehicleOperatorIndex].data;
-        if (this.errorLoadingVehicleOperatorCsv || !this.vehicleOperatorPreviewData.length) {
-          return;
-        }
-        this.vehicleOperatorPreviewCsvColumns = Object.keys(this.vehicleOperatorPreviewData[0]);
       }
       this.autoMapColumns();
     });
@@ -1152,35 +1110,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
           vehicle.endTimeWindows[0].softStartTime?.seconds || -Infinity,
           vehicle.endTimeWindows[0].endTime?.seconds || -Infinity,
           vehicle.endTimeWindows[0].softEndTime?.seconds || -Infinity
-        );
-      }
-    });
-
-    this.scenario.model.vehicleOperators.forEach((vehicleOperator) => {
-      if (vehicleOperator.startTimeWindows) {
-        minTimeWindow = Math.min(
-          minTimeWindow,
-          vehicleOperator.startTimeWindows[0].startTime?.seconds || Infinity,
-          vehicleOperator.startTimeWindows[0].endTime?.seconds || Infinity
-        );
-
-        maxTimeWindow = Math.max(
-          maxTimeWindow,
-          vehicleOperator.startTimeWindows[0].startTime?.seconds || -Infinity,
-          vehicleOperator.startTimeWindows[0].endTime?.seconds || -Infinity
-        );
-      }
-      if (vehicleOperator.endTimeWindows) {
-        minTimeWindow = Math.min(
-          minTimeWindow,
-          vehicleOperator.endTimeWindows[0].startTime?.seconds || Infinity,
-          vehicleOperator.endTimeWindows[0].endTime?.seconds || Infinity
-        );
-
-        maxTimeWindow = Math.max(
-          maxTimeWindow,
-          vehicleOperator.endTimeWindows[0].startTime?.seconds || -Infinity,
-          vehicleOperator.endTimeWindows[0].endTime?.seconds || -Infinity
         );
       }
     });
@@ -1270,19 +1199,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         }
       });
     }
-
-    if (this.vehicleOperatorFile) {
-      const vehicleOperatorAutoMappingFieldsLower = this.vehicleOperatorFieldKeys.map((key) =>
-        key.toLowerCase()
-      );
-      this.vehicleOperatorPreviewCsvColumns.forEach((column) => {
-        const autoIndex = vehicleOperatorAutoMappingFieldsLower.indexOf(column.toLowerCase());
-        if (autoIndex >= 0) {
-          this.autoMappingUsed = true;
-          this.setMapping(this.vehicleOperatorFieldKeys[autoIndex], column, false, false);
-        }
-      });
-    }
   }
 
   validateMapping(): void {
@@ -1295,12 +1211,10 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
     this.isValidatingWithApi = true;
     let shipments = [];
     let vehicles = [];
-    let vehicleOperators = [];
 
     const csvObservables = [
       this.shipmentFile ? this.service.loadCsv(this.shipmentFile) : of(null),
       this.vehicleFile ? this.service.loadCsv(this.vehicleFile) : of(null),
-      this.vehicleOperatorFile ? this.service.loadCsv(this.vehicleOperatorFile) : of(null),
     ];
 
     forkJoin(csvObservables)
@@ -1327,12 +1241,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
           }
           if (this.vehicleFile) {
             vehicles = this.service.csvToVehicles(res[1].data, this.mappingFormVehicles.value);
-          }
-          if (this.vehicleOperatorFile) {
-            vehicleOperators = this.service.csvToVehicleOperators(
-              res[2].data,
-              this.mappingFormVehicleOperators.value
-            );
           }
 
           // geocode all shipments, then all vehicles
@@ -1364,8 +1272,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         })
       )
       .subscribe(
-        (geocodingResults) =>
-          this.createScenario(shipments, vehicles, vehicleOperators, geocodingResults),
+        (geocodingResults) => this.createScenario(shipments, vehicles, geocodingResults),
         (err) => {
           this.isValidatingWithApi = false;
           this.errorValidating = true;
@@ -1380,18 +1287,12 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
       );
   }
 
-  createScenario(
-    shipments: any[],
-    vehicles: any[],
-    vehicleOperators: any[],
-    geocodingResults: any[]
-  ): void {
+  createScenario(shipments: any[], vehicles: any[], geocodingResults: any[]): void {
     this.isValidatingWithApi = false;
     this.scenario = {
       model: {
         shipments,
         vehicles,
-        vehicleOperators,
       },
     };
 
@@ -1416,43 +1317,30 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
   ): void {
     if (isShipmentMapping) {
       this.shipmentColumnMappings[key] = value;
-      this.shipmentChipList = this.getMappedFields(true, false);
+      this.shipmentChipList = this.getMappedFields(true);
       this.mappingFormShipments.get(key).setValue(value);
     } else if (isVehicleMapping) {
       this.vehicleColumnMappings[key] = value;
-      this.vehicleChipList = this.getMappedFields(false, true);
+      this.vehicleChipList = this.getMappedFields(false);
       this.mappingFormVehicles.get(key).setValue(value);
-    } else {
-      this.vehicleOperatorColumnMappings[key] = value;
-      this.vehicleOperatorChipList = this.getMappedFields(false, false);
-      this.mappingFormVehicleOperators.get(key).setValue(value);
     }
     this.changeRef.detectChanges();
   }
 
-  isColumnMapped(key: string, forShipments: boolean, forVehicles: boolean): boolean {
+  isColumnMapped(key: string, forShipments: boolean): boolean {
     return forShipments
       ? !!Object.values(this.shipmentColumnMappings).includes(key)
-      : forVehicles
-      ? !!Object.values(this.vehicleColumnMappings).includes(key)
-      : !!Object.values(this.vehicleOperatorColumnMappings).includes(key);
+      : !!Object.values(this.vehicleColumnMappings).includes(key);
   }
 
-  getMappedFields(
-    forShipments: boolean,
-    forVehicles: boolean
-  ): { apiField: string; column: string }[] {
+  getMappedFields(forShipments: boolean): { apiField: string; column: string }[] {
     return forShipments
       ? Object.keys(this.shipmentColumnMappings)
           .filter((key) => this.shipmentColumnMappings[key] != null)
           .map((key) => ({ apiField: key, column: this.shipmentColumnMappings[key] }))
-      : forVehicles
-      ? Object.keys(this.vehicleColumnMappings)
+      : Object.keys(this.vehicleColumnMappings)
           .filter((key) => this.vehicleColumnMappings[key] != null)
-          .map((key) => ({ apiField: key, column: this.vehicleColumnMappings[key] }))
-      : Object.keys(this.vehicleOperatorColumnMappings)
-          .filter((key) => this.vehicleOperatorColumnMappings[key] != null)
-          .map((key) => ({ apiField: key, column: this.vehicleOperatorColumnMappings[key] }));
+          .map((key) => ({ apiField: key, column: this.vehicleColumnMappings[key] }));
   }
 
   removeChip(
@@ -1473,23 +1361,18 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
     // Cache first page results since they will be erased by stepper.reset()
     const shipmentFileUpload = this.shipmentFilename.value;
     const vehicleFileUpload = this.vehicleFilename.value;
-    const vehicleOperatorFileUpload = this.vehicleOperatorFilename.value;
     this.mappingFormShipments.reset();
     this.mappingFormVehicles.reset();
-    this.mappingFormVehicleOperators.reset();
     this.shipmentChipList = [];
     this.vehicleChipList = [];
-    this.vehicleOperatorChipList = [];
     this.shipmentColumnMappings = {};
     this.vehicleColumnMappings = {};
-    this.vehicleOperatorColumnMappings = {};
     this.vehicleLayer.reset();
     this.visitRequestLayer.reset();
     this.stepper.reset();
 
     this.shipmentFilename.setValue(shipmentFileUpload);
     this.vehicleFilename.setValue(vehicleFileUpload);
-    this.vehicleOperatorFilename.setValue(vehicleOperatorFileUpload);
   }
 
   uploadFilesChanged(): void {
@@ -1514,15 +1397,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
     this.vehicleFilename.markAsTouched();
   }
 
-  selectVehicleOperatorFile(): void {
-    if (!this.vehicleOperatorFileInput) {
-      return;
-    }
-
-    this.vehicleOperatorFileInput.nativeElement.click();
-    this.vehicleOperatorFilename.markAsTouched();
-  }
-
   fileSelected(e: Event, asShipment: boolean, asVehicle: boolean): void {
     const target = e.target as HTMLInputElement;
     const selectedFile = target && target.files && target.files[0];
@@ -1532,9 +1406,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
     } else if (asVehicle && selectedFile) {
       this.vehicleFile = selectedFile;
       this.vehicleFilename.setValue(selectedFile.name);
-    } else if (selectedFile) {
-      this.vehicleOperatorFile = selectedFile;
-      this.vehicleOperatorFilename.setValue(selectedFile.name);
     }
   }
 
@@ -1544,10 +1415,6 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
 
   downloadVehiclesSample(): void {
     this.service.downloadVehiclesSample();
-  }
-
-  downloadVehicleOperatorsSample(): void {
-    this.service.downloadVehicleOperatorsSample();
   }
 
   retryGeocode(result: GeocodeErrorResponse, newLocation: string): void {

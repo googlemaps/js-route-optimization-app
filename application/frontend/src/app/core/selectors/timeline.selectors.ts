@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { Dictionary } from '@ngrx/entity';
 import { createSelector, MemoizedSelector } from '@ngrx/store';
@@ -14,7 +21,6 @@ import * as fromRoot from 'src/app/reducers';
 import { durationSeconds, maxLong, minLong } from 'src/app/util';
 import {
   IBreak,
-  ITravelStep,
   ShipmentRoute,
   Timeline,
   TimelineCategory,
@@ -24,6 +30,7 @@ import {
   Visit,
   VisitRequest,
   VisitVisitRequest,
+  ITransition,
 } from '../models';
 import ShipmentRouteSelectors, * as fromShipmentRoute from './shipment-route.selectors';
 
@@ -90,7 +97,7 @@ const identifyTravelTimeSegment = (
 
 /**
  * @remarks
- * Assumes a route's travel steps, visits, and breaks are in time ascending order.
+ * Assumes a route's transitions, visits, and breaks are in time ascending order.
  */
 const getTimeline = (
   route: ShipmentRoute,
@@ -105,11 +112,11 @@ const getTimeline = (
     createVisitSegment(visit, visitRequest)
   );
 
-  // Visits must be traveled to and from, so travel steps should be +1 in length
+  // Visits must be traveled to and from, so transitions should be +1 in length
   // eslint-disable-next-line no-console
   console.assert(
-    visits.length === route.travelSteps.length - 1,
-    'Visits and travel steps not aligned.'
+    visits.length === route.transitions.length - 1,
+    'Visits and transitions not aligned.'
   );
 
   const routeStartTime = route.vehicleStartTime ? durationSeconds(route.vehicleStartTime) : null;
@@ -140,10 +147,10 @@ const getTimeline = (
 
   // Add travel + visits and interspersed breaks to the timeline
   let lastTravelSegment: TimelineCatagorySegment;
-  route.travelSteps.forEach((travelStep: ITravelStep, index: number) => {
+  route.transitions.forEach((transition: ITransition, index: number) => {
     const nextVisit = visits[index];
     try {
-      const travelDuration = durationSeconds(travelStep.duration);
+      const travelDuration = durationSeconds(transition.travelDuration);
       if (travelDuration.isZero()) {
         return;
       }
@@ -219,7 +226,7 @@ const getTimeline = (
         );
       }
     } finally {
-      // Place the next visit that follows the travel step
+      // Place the next visit that follows the transition
       if (nextVisit) {
         timeline.push({
           category: TimelineCategory.Service,

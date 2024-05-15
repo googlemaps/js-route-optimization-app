@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { NgZone } from '@angular/core';
 import { GoogleMapsOverlay } from '@deck.gl/google-maps';
@@ -117,9 +124,9 @@ export abstract class BaseVisitRequestLayer {
       iconMapping: this.iconMapping,
       getIcon: (d) => this.getDefaultIconFn(d),
       sizeUnits: 'meters',
-      sizeMinPixels: 13.5,
+      sizeMinPixels: 15,
       sizeMaxPixels: 43.5,
-      getSize: 13.5,
+      getSize: 15,
       sizeScale: 10,
       getPosition: (d) => d.arrivalPosition,
       pickable: true,
@@ -151,9 +158,9 @@ export abstract class BaseVisitRequestLayer {
           : `dropoff-${this.defaultSelectedColor}`;
       },
       sizeUnits: 'meters',
-      sizeMinPixels: 13.5,
+      sizeMinPixels: 15,
       sizeMaxPixels: 43.5,
-      getSize: 13.5,
+      getSize: 15,
       sizeScale: 10,
       getPosition: (d) => d.arrivalPosition,
       pickable: false,
@@ -182,7 +189,7 @@ export abstract class BaseVisitRequestLayer {
       sizeUnits: 'meters',
       sizeMinPixels: 21,
       sizeMaxPixels: 61,
-      getSize: 21,
+      getSize: 25,
       sizeScale: 10,
       getPosition: (d) => d.arrivalPosition,
       pickable: false,

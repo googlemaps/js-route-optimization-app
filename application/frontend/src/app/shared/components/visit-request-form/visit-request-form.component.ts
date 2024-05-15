@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
@@ -27,10 +34,10 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -41,7 +48,6 @@ import { ILatLng, VisitCategory, VisitRequest } from 'src/app/core/models';
 import { FormVisitRequestLayer } from 'src/app/core/services';
 import {
   durationMinutesSeconds,
-  getCapacityQuantityRoot,
   joinLabel,
   localDateTimeToUtcSeconds,
   noDuplicateCapacitiesValidator,
@@ -116,8 +122,8 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
   get visitTypes(): AbstractControl {
     return this.form.get('visitTypes');
   }
-  get timeWindows(): FormArray {
-    return this.form.get('timeWindows') as FormArray;
+  get timeWindows(): UntypedFormArray {
+    return this.form.get('timeWindows') as UntypedFormArray;
   }
   get invalid(): boolean {
     return this.form.invalid;
@@ -131,26 +137,26 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
   get setMapActive(): boolean {
     return this.setArrivalLocationSubscription != null;
   }
-  get loadDemands(): FormArray {
-    return this.form.get('loadDemands') as FormArray;
+  get loadDemands(): UntypedFormArray {
+    return this.form.get('loadDemands') as UntypedFormArray;
   }
 
   @ViewChild('timeWindowsPanel', { static: true }) timeWindowsExpansionPanel: MatExpansionPanel;
   @ViewChildren(TimeWindowComponent) timeWindowForms: QueryList<TimeWindowComponent>;
 
-  readonly form: FormGroup;
+  readonly form: UntypedFormGroup;
 
   labels: string[] = [];
-  labelCtrl = new FormControl();
+  labelCtrl = new UntypedFormControl();
   labelSeparatorKeysCodes: number[] = [ENTER, COMMA];
 
   private availableVisitTags: string[] = [];
-  visitTagsCtrl = new FormControl();
+  visitTagsCtrl = new UntypedFormControl();
   visitTagsSeparatorKeysCodes: number[] = [ENTER, COMMA];
   filteredAvailableVisitTags: Observable<string[]>;
 
   private availableVisitTypes: string[] = [];
-  visitTypesCtrl = new FormControl();
+  visitTypesCtrl = new UntypedFormControl();
   visitTypesSeparatorKeysCodes: number[] = [ENTER, COMMA];
   filteredAvailableVisitTypes: Observable<string[]>;
 
@@ -167,7 +173,7 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private changeDetector: ChangeDetectorRef,
     @Optional() private formVisitRequestLayer: FormVisitRequestLayer,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
     this.form = fb.group({
       arrivalLocation: [null, [Validators.required]],
@@ -181,8 +187,8 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
       durationSeconds: [null],
       visitTags: [null],
       visitTypes: [null],
-      timeWindows: fb.array([], (formArray: FormArray) => overlapValidator(formArray)),
-      loadDemands: fb.array([], (formArray: FormArray) =>
+      timeWindows: fb.array([], (formArray: UntypedFormArray) => overlapValidator(formArray)),
+      loadDemands: fb.array([], (formArray: UntypedFormArray) =>
         noDuplicateCapacitiesValidator(formArray)
       ),
     });
@@ -295,13 +301,6 @@ export class VisitRequestFormComponent implements OnChanges, OnInit, OnDestroy {
         return loadDemands.push({
           type: key,
           value: this.visitRequest.loadDemands[key],
-        });
-      });
-    } else if (this.visitRequest.demands) {
-      this.visitRequest.demands.forEach((aDemand) => {
-        loadDemands.push({
-          type: getCapacityQuantityRoot(aDemand.type),
-          value: { amount: aDemand.value },
         });
       });
     }

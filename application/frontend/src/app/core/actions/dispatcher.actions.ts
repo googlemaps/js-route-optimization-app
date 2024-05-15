@@ -1,11 +1,18 @@
-/**
- * @license
- * Copyright 2022 Google LLC
- *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+/*
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 import { createAction, props } from '@ngrx/store';
 import {
@@ -15,14 +22,13 @@ import {
   Shipment,
   ShipmentRoute,
   Vehicle,
-  VehicleOperator,
   Visit,
   VisitRequest,
 } from '../models';
 
 export const uploadScenarioSuccess = createAction(
   '[Dispatcher] Upload Scenario Success',
-  props<{ scenario: Scenario }>()
+  props<{ scenario: Scenario; scenarioName?: string }>()
 );
 
 export const loadScenario = createAction(
@@ -30,11 +36,9 @@ export const loadScenario = createAction(
   props<{
     shipments: Shipment[];
     vehicles: Vehicle[];
-    vehicleOperators: VehicleOperator[];
     visitRequests: VisitRequest[];
     selectedShipments: number[];
     selectedVehicles: number[];
-    selectedVehicleOperators: number[];
     changeTime: number;
   }>()
 );
@@ -58,3 +62,8 @@ export const initializeRangeOffset = createAction(
 );
 
 export const clearSolution = createAction('[Dispatcher] Clear Solution');
+
+export const saveScenarioName = createAction(
+  '[Dispatcher] Save Scenario Name',
+  props<{ scenarioName: string }>()
+);
