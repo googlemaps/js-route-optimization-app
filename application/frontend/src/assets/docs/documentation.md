@@ -128,7 +128,7 @@ Having a plan is great, but what if you have new information and want to get a f
 
       ![shipment model settings](shipment-model-settings.png "Viewing shipment model settings.")
 
-   2. Reopen the _Shipment Detail_ view for that shipment, adjust the date to July 14th, 20219 on the Pickup screen.
+   2. Reopen the _Shipment Detail_ view for that shipment, adjust the date to July 14th, 2019 on the Pickup screen.
 
    3. Click the _Save_ button.
 
