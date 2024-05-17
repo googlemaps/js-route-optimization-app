@@ -125,7 +125,11 @@ const selectRouteMetadata = createSelector(
         .subtract(durationSeconds(route.vehicleStartTime))
         .toNumber();
       return {
-        capacityUtilization: calculateCapacityUtilizations(vehicles[route.id], routeShipments),
+        capacityUtilization: calculateCapacityUtilizations(
+          route,
+          vehicles[route.id],
+          routeShipments
+        ),
         cost: calculateTotalCost(vehicles[route.id], totalKm, traveledTime / 3600),
         endLocation: vehicles[route.id].startWaypoint?.location?.latLng,
         route,
@@ -149,7 +153,11 @@ const getShipmentsForRoute = (shipments: Shipment[], visits: Visit[]): Shipment[
   return toArray(routeShipments);
 };
 
-const calculateCapacityUtilizations = (vehicle: Vehicle, shipments: Shipment[]): any => {
+const calculateCapacityUtilizations = (
+  route: ShipmentRoute,
+  vehicle: Vehicle,
+  shipments: Shipment[]
+): any => {
   const utilizations = {};
 
   // add shipment load demands
@@ -157,11 +165,12 @@ const calculateCapacityUtilizations = (vehicle: Vehicle, shipments: Shipment[]):
     for (const [loadType, load] of Object.entries(shipment.loadDemands || {})) {
       if (!utilizations[loadType]) {
         utilizations[loadType] = {
-          used: 0,
+          totalUsed: 0,
           capacity: 0,
+          maxUsed: 0,
         };
       }
-      utilizations[loadType].used += Long.fromValue(load.amount).toNumber();
+      utilizations[loadType].totalUsed += Long.fromValue(load.amount).toNumber();
     }
   });
 
@@ -172,11 +181,19 @@ const calculateCapacityUtilizations = (vehicle: Vehicle, shipments: Shipment[]):
     }
   });
 
+  // add max used from route metrics
+  Object.keys(utilizations).forEach((key) => {
+    if (route.metrics?.maxLoads?.[key]) {
+      utilizations[key].maxUsed = route.metrics.maxLoads[key].amount;
+    }
+  });
+
   // add zero used for any load types not missing from utilization
   Object.keys(vehicle.loadLimits || {}).forEach((loadType) => {
     if (!utilizations[loadType]) {
       utilizations[loadType] = {
-        used: 0,
+        maxUsed: 0,
+        totalUsed: 0,
         capacity: Long.fromValue(vehicle.loadLimits[loadType].maxLoad).toNumber(),
       };
     }

@@ -20,8 +20,9 @@ import { google } from '@google-cloud/optimization/build/protos/protos';
 export interface RouteMetadata {
   capacityUtilization: {
     name: string;
-    used: number;
-    total: number;
+    maxUsed: number;
+    totalUsed: number;
+    capacity: number;
   }[];
   cost: number;
   endLocation: google.type.ILatLng;

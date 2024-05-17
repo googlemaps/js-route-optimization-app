@@ -28,11 +28,20 @@
       </ng-container>
     </td>
   </ng-container>
-  <ng-container matColumnDef="capacityUtilization">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Used / Max Load Limit</th>
+  <ng-container matColumnDef="capacityUtilizationMax">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Max used / Load limit</th>
     <td mat-cell *matCellDef="let item">
       <p *ngFor="let key of objectKeys(item.capacityUtilization)">
-        {{ item.capacityUtilization[key].used }} / {{ item.capacityUtilization[key].capacity }}
+        {{ item.capacityUtilization[key].maxUsed }} / {{ item.capacityUtilization[key].capacity }}
+        {{ key }}
+      </p>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="capacityUtilizationTotal">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total used / Load limit</th>
+    <td mat-cell *matCellDef="let item">
+      <p *ngFor="let key of objectKeys(item.capacityUtilization)">
+        {{ item.capacityUtilization[key].totalUsed }} / {{ item.capacityUtilization[key].capacity }}
         {{ key }}
       </p>
     </td>

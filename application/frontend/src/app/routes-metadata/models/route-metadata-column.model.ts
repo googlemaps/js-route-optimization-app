@@ -49,8 +49,15 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
     valueComparer: (a: string, b: string): number => a.localeCompare(b),
   },
   {
-    id: 'capacityUtilization',
-    label: 'Used / Unused Capacity',
+    id: 'capacityUtilizationMax',
+    label: 'Max used / Load limit',
+    active: true,
+    toggleable: true,
+    selector: ({ capacityUtilization }) => capacityUtilization,
+  },
+  {
+    id: 'capacityUtilizationTotal',
+    label: 'Total used / Load limit',
     active: true,
     toggleable: true,
     selector: ({ capacityUtilization }) => capacityUtilization,
