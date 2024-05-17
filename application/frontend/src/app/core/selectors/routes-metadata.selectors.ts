@@ -135,6 +135,7 @@ const selectRouteMetadata = createSelector(
         totalPickups,
         totalShipments: new Set(routeVisits.map((visit) => visit.shipmentIndex)).size,
         traveledTime,
+        traveledDistance: route.metrics?.travelDistanceMeters / 1000,
       };
     })
 );

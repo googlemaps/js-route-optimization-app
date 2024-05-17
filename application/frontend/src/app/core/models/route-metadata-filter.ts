@@ -68,6 +68,14 @@ export const routeMetadataFilterOptions: RouteMetadataFilterOption[] = [
     },
   } as RouteMetadataFilterOption<NumberFilterParams>,
   {
+    id: 'traveledDistance',
+    label: 'Traveled distance (km)',
+    form: () => FilterNumberFormComponent,
+    predicate: ({ traveledDistance }, params) => {
+      return applyNumberFilter(traveledDistance, params);
+    },
+  } as RouteMetadataFilterOption<NumberFilterParams>,
+  {
     id: 'totalShipments',
     label: 'Number of shipments',
     form: () => FilterNumberFormComponent,

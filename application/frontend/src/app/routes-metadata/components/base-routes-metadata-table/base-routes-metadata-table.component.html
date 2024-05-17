@@ -61,6 +61,12 @@
       {{ formattedTravelTime(item.traveledTime) }}
     </td>
   </ng-container>
+  <ng-container matColumnDef="traveledDistance">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Traveled distance (km)</th>
+    <td mat-cell *matCellDef="let item">
+      {{ item.traveledDistance | number: '1.1-1' }}
+    </td>
+  </ng-container>
   <ng-container matColumnDef="cost">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Cost per route</th>
     <td mat-cell *matCellDef="let item">

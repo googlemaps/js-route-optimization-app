@@ -32,4 +32,5 @@ export interface RouteMetadata {
   totalPickups: number;
   totalShipments: number;
   traveledTime: number;
+  traveledDistance: number;
 }
