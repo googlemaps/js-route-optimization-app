@@ -104,18 +104,4 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
     toggleable: true,
     selector: ({ cost }) => cost,
   },
-  {
-    id: 'startLocation',
-    label: 'Start location',
-    active: true,
-    toggleable: true,
-    selector: ({ startLocation }) => startLocation,
-  },
-  {
-    id: 'endLocation',
-    label: 'End Location',
-    active: true,
-    toggleable: true,
-    selector: ({ endLocation }) => endLocation,
-  },
 ];
