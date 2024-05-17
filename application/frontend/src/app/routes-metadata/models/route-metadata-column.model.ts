@@ -85,7 +85,7 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
   },
   {
     id: 'traveledTime',
-    label: 'Traveled time',
+    label: 'Route duration',
     active: true,
     toggleable: true,
     selector: ({ traveledTime }) => traveledTime,

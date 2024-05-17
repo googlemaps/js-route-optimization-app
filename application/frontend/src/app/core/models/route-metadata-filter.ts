@@ -61,7 +61,7 @@ export const routeMetadataFilterOptions: RouteMetadataFilterOption[] = [
   } as RouteMetadataFilterOption<StringFilterParams>,
   {
     id: 'traveledTime',
-    label: 'Traveled time (min)',
+    label: 'Route duration (min)',
     form: () => FilterNumberFormComponent,
     predicate: ({ traveledTime }, params) => {
       return applyNumberFilter(traveledTime / 60, params);
