@@ -73,7 +73,7 @@ export const selectFilteredVisitRequestsTurfPoints = createSelector(
 );
 
 export const selectMouseOverVisitRequest = createSelector(
-  PreSolveShipmentSelectors.selectFilteredVisitRequests,
+  PreSolveShipmentSelectors.selectFilteredVisitRequestsSelected,
   PreSolveShipmentSelectors.selectSelectedLookup,
   PreSolveShipmentSelectors.selectSelectedColors,
   selectMouseOverId,

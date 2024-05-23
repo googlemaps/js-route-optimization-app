@@ -20,7 +20,6 @@ import { select, Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import { BaseVisitRequestLayer as BaseVisitRequestLayer } from './base-visit-request-layer.service';
 import {
-  selectFilteredVisitRequests,
   selectFilteredVisitRequestsSelected,
   selectMouseOverVisitRequest,
 } from '../selectors/pre-solve-visit-request-layer.selectors';
@@ -31,9 +30,6 @@ import {
 export class PreSolveVisitRequestLayer extends BaseVisitRequestLayer {
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone);
-    this.store.pipe(select(selectFilteredVisitRequests)).subscribe((visitRequests) => {
-      this.onDataFiltered(visitRequests);
-    });
 
     this.store.pipe(select(selectFilteredVisitRequestsSelected)).subscribe((visitRequests) => {
       this.onDataSelected(visitRequests);
