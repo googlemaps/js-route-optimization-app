@@ -18,10 +18,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { State } from 'src/app/reducers';
 import { select, Store } from '@ngrx/store';
 import { MapService } from './map.service';
-import {
-  selectFilteredVehicles,
-  selectFilteredVehiclesSelected,
-} from '../selectors/pre-solve-vehicle-layer.selectors';
+import { selectFilteredVehiclesSelected } from '../selectors/pre-solve-vehicle-layer.selectors';
 import { BaseVehicleLayer } from './base-vehicle-layer.service';
 
 @Injectable({
@@ -30,9 +27,6 @@ import { BaseVehicleLayer } from './base-vehicle-layer.service';
 export class PreSolveVehicleLayer extends BaseVehicleLayer {
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone);
-    this.store.pipe(select(selectFilteredVehicles)).subscribe((vehicles) => {
-      this.onDataFiltered(vehicles);
-    });
 
     this.store.pipe(select(selectFilteredVehiclesSelected)).subscribe((vehicles) => {
       this.onDataSelected(vehicles);
