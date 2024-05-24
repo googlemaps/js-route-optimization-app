@@ -50,12 +50,12 @@ export class TimezoneEditComponent implements OnChanges {
   }
 
   initializeCurrentTimezone(): void {
-    this.formControl.setValue(utcTimezones[this.getMatchingTimezoneIndex(this.currentTimezone)]);
+    this.formControl.setValue(
+      utcTimezones[this.getMatchingTimezoneIndex(this.currentTimezone)].description
+    );
 
     this.filteredOptions = this.formControl.valueChanges.pipe(
-      startWith(
-        utcTimezones[this.getMatchingTimezoneIndex(this.currentTimezone)].description ?? ''
-      ),
+      startWith(utcTimezones[this.getMatchingTimezoneIndex(this.currentTimezone)].description),
       map((value) =>
         this.filterTimezones(value).sort((a, b) => (a.description < b.description ? -1 : 1))
       )
@@ -76,17 +76,12 @@ export class TimezoneEditComponent implements OnChanges {
     return utcTimezones[index];
   }
 
-  onTimezoneSelected(value: Timezone): void {
-    this.timezoneSelected.emit(value);
-  }
-
-  displayTimezone(timezone: Timezone): string {
-    return timezone ? `${timezone.description}` : '';
+  onTimezoneSelected(value: string): void {
+    this.timezoneSelected.emit(this.getTimezoneByLabel(value));
   }
 
   private filterTimezones(value = ''): Timezone[] {
     const filterValue = value.toLowerCase();
-
     return utcTimezones.filter((tz) => tz.description.toLowerCase().includes(filterValue));
   }
 }
