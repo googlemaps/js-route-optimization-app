@@ -82,6 +82,10 @@ export class TimezoneEditComponent implements OnChanges {
 
   private filterTimezones(value = ''): Timezone[] {
     const filterValue = value.toLowerCase();
-    return utcTimezones.filter((tz) => tz.description.toLowerCase().includes(filterValue));
+    return utcTimezones.filter(
+      (tz) =>
+        tz.description.toLowerCase().includes(filterValue) ||
+        tz.label.toLowerCase().includes(filterValue)
+    );
   }
 }
