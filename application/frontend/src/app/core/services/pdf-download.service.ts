@@ -205,29 +205,29 @@ export class PdfDownloadService {
     );
   }
 
-  private visitToDeliveries(visits: VisitRequest[], icon: string): string {
+  private visitToDeliveries(visits: VisitRequest[], icon: string, precision = 6): string {
     return (
       `icon:${icon}|anchor:center|` +
       visits
         .map(
           (visit) =>
-            visit.arrivalWaypoint?.location?.latLng?.latitude +
+            visit.arrivalWaypoint?.location?.latLng?.latitude.toFixed(precision) +
             ',' +
-            visit.arrivalWaypoint?.location?.latLng?.longitude
+            visit.arrivalWaypoint?.location?.latLng?.longitude.toFixed(precision)
         )
         .join('|')
     );
   }
 
-  private visitsToPickups(visits: VisitRequest[], icon: string): string {
+  private visitsToPickups(visits: VisitRequest[], icon: string, precision = 6): string {
     return (
       `icon:${icon}|anchor:center|` +
       visits
         .map(
           (visit) =>
-            visit.arrivalWaypoint?.location?.latLng?.latitude +
+            visit.arrivalWaypoint?.location?.latLng?.latitude.toFixed(precision) +
             ',' +
-            visit.arrivalWaypoint?.location?.latLng?.longitude
+            visit.arrivalWaypoint?.location?.latLng?.longitude.toFixed(precision)
         )
         .join('|')
     );
