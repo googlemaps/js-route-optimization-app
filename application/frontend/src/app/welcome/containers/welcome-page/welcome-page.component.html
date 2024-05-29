@@ -5,12 +5,22 @@
     <p class="entry-cta mb-0">Upload your request data to get started</p>
     <div class="entry-points-container">
       <div class="d-flex main-entry-points">
-        <button type="button" mat-flat-button color="primary" (click)="upload()">
+        <button
+          type="button"
+          mat-flat-button
+          color="primary"
+          class="entry-button"
+          (click)="upload()">
           <mat-icon svgIcon="input"></mat-icon>
           <span class="ml-3">Load...</span>
         </button>
         <div class="col">
-          <button type="button" mat-flat-button color="primary" (click)="newScenario()">
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            class="entry-button"
+            (click)="newScenario()">
             <mat-icon svgIcon="add"></mat-icon>
             <span class="ml-2">Create new</span>
           </button>
@@ -23,7 +33,7 @@
           type="button"
           mat-stroked-button
           color="primary"
-          class="w-100 mat-stroked-button-blue-outline"
+          class="w-100 mat-stroked-button-blue-outline entry-button"
           (click)="loadFromStorage()">
           <mat-icon svgIcon="cloud_upload_filled"></mat-icon>
           <span class="ml-2">Open from Cloud Project</span>
