@@ -50,14 +50,14 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
   },
   {
     id: 'capacityUtilizationMax',
-    label: 'Max used / Load limit',
+    label: 'Max concurrent load / Load limit',
     active: true,
     toggleable: true,
     selector: ({ capacityUtilization }) => capacityUtilization,
   },
   {
     id: 'capacityUtilizationTotal',
-    label: 'Total used / Load limit',
+    label: 'Total load / Load limit',
     active: true,
     toggleable: true,
     selector: ({ capacityUtilization }) => capacityUtilization,
