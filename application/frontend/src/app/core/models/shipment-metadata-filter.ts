@@ -58,7 +58,7 @@ export const statusShipmentMetadataFilterOption = {
   id: 'status',
   label: 'Status',
   options: [
-    { label: 'Shipped', value: false },
+    { label: 'Assigned', value: false },
     { label: 'Skipped', value: true },
   ],
   form: () => FilterSelectFormComponent,
