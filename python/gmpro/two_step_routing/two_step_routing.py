@@ -1052,6 +1052,8 @@ class _RefinedRouteIntegration:
                   add_to_visits=None,
                   visit_start_time=None,
                   visit_detour=None,
+                  is_pickup=None,
+                  visit_request_index=None,
               )
           )
         case "p":
@@ -1203,6 +1205,8 @@ class _RefinedRouteIntegration:
           # carry over the shipment or local delivery round from the base model.
           visit_start_time = global_visit["startTime"]
           visit_detour = global_visit["detour"]
+          is_pickup = global_visit.get("isPickup", False)
+          visit_request_index = global_visit.get("visitRequestIndex", 0)
           match visit_type:
             case "s":
               self._add_integrated_global_shipment(
@@ -1210,6 +1214,8 @@ class _RefinedRouteIntegration:
                   add_to_visits=integrated_global_visits,
                   visit_start_time=visit_start_time,
                   visit_detour=visit_detour,
+                  is_pickup=is_pickup,
+                  visit_request_index=visit_request_index,
               )
             case "p":
               self._integrate_unmodified_local_route(
@@ -1430,6 +1436,11 @@ class _RefinedRouteIntegration:
           # exactly the start/end times of the local delivery rounds.
           visit_start_time=integrated_local_route["vehicleStartTime"],
           visit_detour=cfr_json.as_duration_string(integrated_detour),
+          # NOTE(ondrasej): As of 2024-05-28, virtual shipments for parking
+          # location visits are always delivery-only, and they have exactly one
+          # delivery visit request.
+          is_pickup=False,
+          visit_request_index=0,
       )
 
   def _integrate_unmodified_local_route(
@@ -1493,6 +1504,8 @@ class _RefinedRouteIntegration:
         add_to_visits,
         visit_start_time=visit_start_time,
         visit_detour=visit_detour,
+        is_pickup=None if add_to_visits is None else False,
+        visit_request_index=None if add_to_visits is None else 0,
     )
 
   def _add_integrated_global_shipment(
@@ -1501,6 +1514,11 @@ class _RefinedRouteIntegration:
       add_to_visits: list[cfr_json.Visit] | None,
       visit_start_time: cfr_json.TimeString | None,
       visit_detour: cfr_json.DurationString | None,
+      # NOTE(ondrasej): As of 2024-05-28, virtual shipments for parking location
+      # visits are always delivery-only, and they have exactly one delivery
+      # visit request.
+      visit_request_index: int | None,
+      is_pickup: bool | None,
   ) -> int:
     """Adds `shipment` to the integrated request and returns its index.
 
@@ -1520,25 +1538,31 @@ class _RefinedRouteIntegration:
     Raises:
       ValueError: When the shipment has more than one visit request.
     """
-    # NOTE(ondrasej): This method works only for shipments with a single
-    # delivery option and no pickups.
-    _, is_pickup = _parking.get_visit_request(shipment)
     # Visit start time must be provided when creating a visit for the integrated
     # global shipment, even if it is not included in the initial solution.
     assert (
         (visit_start_time is None)
         == (add_to_visits is None)
         == (visit_detour is None)
+        == (visit_request_index is None)
+        == (is_pickup is None)
     )
 
     shipment_index = len(self._integrated_global_shipments)
     self._integrated_global_shipments.append(shipment)
     if add_to_visits is not None:
+      assert visit_detour is not None
+      assert visit_request_index is not None
+      assert is_pickup is not None
       visit: cfr_json.Visit = {
           "shipmentIndex": shipment_index,
           "shipmentLabel": shipment.get("label", ""),
           "isPickup": is_pickup,
       }
+      if visit_request_index:
+        visit["visitRequestIndex"] = visit_request_index
+      if is_pickup:
+        visit["isPickup"] = is_pickup
       if self._integration_mode != IntegrationMode.VISITS_ONLY:
         visit["startTime"] = visit_start_time
         visit["detour"] = visit_detour

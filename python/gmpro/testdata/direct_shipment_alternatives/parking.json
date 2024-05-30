@@ -1,0 +1,66 @@
+{
+  "parking_locations": [
+    {
+      "tag": "P0001",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.87702835982292,
+            "longitude": 2.3397719178670706
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "avoid_indoor": null,
+      "delivery_load_limits": {
+        "shipment_count": 20
+      },
+      "cost_per_load_unit_per_kilometer": null,
+      "cost_per_load_unit_per_traveled_hour": null,
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "unload_duration_per_item": null,
+      "load_duration_per_item": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    },
+    {
+      "tag": "P0002",
+      "waypoint": {
+        "location": {
+          "latLng": {
+            "latitude": 48.88048439973105,
+            "longitude": 2.387869839592377
+          }
+        }
+      },
+      "travel_mode": 1,
+      "travel_duration_multiple": 1.0,
+      "avoid_indoor": null,
+      "delivery_load_limits": {
+        "shipment_count": 20
+      },
+      "cost_per_load_unit_per_kilometer": null,
+      "cost_per_load_unit_per_traveled_hour": null,
+      "max_round_duration": null,
+      "arrival_duration": null,
+      "departure_duration": null,
+      "reload_duration": null,
+      "unload_duration_per_item": null,
+      "load_duration_per_item": null,
+      "arrival_cost": 0.0,
+      "departure_cost": 0.0,
+      "reload_cost": 0.0
+    }
+  ],
+  "parking_for_shipment": {
+    "2": "P0001",
+    "3": "P0001",
+    "4": "P0002",
+    "5": "P0002"
+  }
+}
