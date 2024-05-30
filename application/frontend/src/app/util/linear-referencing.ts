@@ -30,7 +30,7 @@ import {
 } from 'src/app/util/geo-translation';
 import buffer from '@turf/buffer';
 
-const SIMPLIFY_ROUTE_TOLERANCE = 0.0001;
+const SIMPLIFY_ROUTE_TOLERANCE = 0.0002;
 const RULER = cheapRuler(0, 'meters');
 
 export const getPointAlongPathByDistance = (
