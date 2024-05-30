@@ -11,6 +11,11 @@ svg {
   line-height: 0;
 }
 
+mat-icon {
+  width: 13px;
+  height: 13px;
+}
+
 :host.dragging .poi {
   pointer-events: none;
 }
