@@ -9,50 +9,34 @@
 </div>
 <ng-container *ngFor="let p of points">
   <ng-container [ngSwitch]="p[1]" *ngIf="imageAttributeLookup[p[1]] as attr">
-    <svg
+    <mat-icon
       *ngSwitchCase="2"
       class="poi select-poi"
-      width="12.316"
-      height="10.526"
-      viewBox="0 0 12.316 10.526"
       [style.left.px]="p[2] - attr.width / 2"
       [style.top.px]="13 - attr.height + attr.yOffset"
       [attr.width]="attr.width"
       [attr.height]="attr.height"
+      (mousedown)="onMouseDown($event, p)"
+      title="{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
       }"
-      (mousedown)="onMouseDown($event, p)">
-      <title>{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}</title>
-      <path
-        d="m 5.3143151,1.4380714 c 0.393,-0.61699998 1.2939998,-0.61699998 1.6869998,0 l 4.1740001,6.5509999 c 0.424,0.665 -0.054,1.537 -0.843,1.537 H 1.9833151 c -0.789,0 -1.26699998,-0.872 -0.843,-1.537 z"
-        fill="#ffffff"
-        stroke="#555555"
-        stroke-width="2" />
-    </svg>
-    <svg
+      svgIcon="pickup"></mat-icon>
+    <mat-icon
       *ngSwitchCase="3"
       class="poi select-poi"
-      width="12.315"
-      height="10.527"
-      viewBox="0 0 12.315 10.527"
       [style.left.px]="p[2] - attr.width / 2"
       [style.top.px]="13 - attr.height + attr.yOffset"
       [attr.width]="attr.width"
       [attr.height]="attr.height"
+      (mousedown)="onMouseDown($event, p)"
+      title="{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
       }"
-      (mousedown)="onMouseDown($event, p)">
-      <title>{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}</title>
-      <path
-        d="m 7.0012052,9.0889997 c -0.393,0.6159995 -1.294,0.6159995 -1.687,0 l -4.174,-6.551 C 0.71620522,1.872 1.1942052,1 1.9832052,1 h 8.3490008 c 0.789,0 1.267,0.872 0.843,1.5379997 z"
-        fill="#ffffff"
-        stroke="#555555"
-        stroke-width="2" />
-    </svg>
+      svgIcon="dropoff"></mat-icon>
     <svg
       *ngSwitchCase="1"
       class="poi"
@@ -71,39 +55,33 @@
 </ng-container>
 <ng-container *ngFor="let p of pendingNewPoints">
   <ng-container [ngSwitch]="p[1]" *ngIf="imageAttributeLookup[p[1]] as attr">
-    <svg
+    <mat-icon
       *ngSwitchCase="2"
       class="poi pending-poi-new"
-      width="12.316"
-      height="10.526"
-      viewBox="0 0 12.316 10.526"
       [style.left.px]="p[2] - attr.width / 2"
       [style.top.px]="13 - attr.height + attr.yOffset"
       [attr.width]="attr.width"
-      [attr.height]="attr.height">
-      <title>{{ attr.title + ' ' + p[3] + ' (pending)' }}</title>
-      <path
-        d="m 5.3143151,1.4380714 c 0.393,-0.61699998 1.2939998,-0.61699998 1.6869998,0 l 4.1740001,6.5509999 c 0.424,0.665 -0.054,1.537 -0.843,1.537 H 1.9833151 c -0.789,0 -1.26699998,-0.872 -0.843,-1.537 z"
-        fill="#ffffff"
-        stroke="#555555"
-        stroke-width="2" />
-    </svg>
-    <svg
+      [attr.height]="attr.height"
+      title="{{ attr.title + ' ' + p[3] + ' (pending)' }}"
+      (mousedown)="onMouseDown($event, p)"
+      [ngClass]="{
+        'poi-validation-error': changedVisits[p[0]],
+        'pending-poi-old': isPendingOldPoi(p)
+      }"
+      svgIcon="pickup"></mat-icon>
+    <mat-icon
       *ngSwitchCase="3"
       class="poi pending-poi-new"
-      width="12.315"
-      height="10.527"
-      viewBox="0 0 12.315 10.527"
       [style.left.px]="p[2] - attr.width / 2"
       [style.top.px]="13 - attr.height + attr.yOffset"
       [attr.width]="attr.width"
-      [attr.height]="attr.height">
-      <title>{{ attr.title + ' ' + p[3] + ' (pending)' }}</title>
-      <path
-        d="m 7.0012052,9.0889997 c -0.393,0.6159995 -1.294,0.6159995 -1.687,0 l -4.174,-6.551 C 0.71620522,1.872 1.1942052,1 1.9832052,1 h 8.3490008 c 0.789,0 1.267,0.872 0.843,1.5379997 z"
-        fill="#ffffff"
-        stroke="#555555"
-        stroke-width="2" />
-    </svg>
+      [attr.height]="attr.height"
+      title="{{ attr.title + ' ' + p[3] + ' (pending)' }}"
+      (mousedown)="onMouseDown($event, p)"
+      [ngClass]="{
+        'poi-validation-error': changedVisits[p[0]],
+        'pending-poi-old': isPendingOldPoi(p)
+      }"
+      svgIcon="dropoff"></mat-icon>
   </ng-container>
 </ng-container>
