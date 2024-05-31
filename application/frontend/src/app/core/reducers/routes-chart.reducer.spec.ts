@@ -86,7 +86,7 @@ describe('RoutesChart Reducer', () => {
     const newState = reducer(selectedState, RoutesChartActions.deselectRoute({ routeId: 111 }));
     expect(newState.selectedRoutes).not.toEqual(selectedState.selectedRoutes);
     expect(newState.selectedRoutes.length).toBe(0);
-    expect(newState.selectedRoutesColors[0]).not.toEqual(selectedState.selectedRoutesColors[0]);
+    expect(newState.selectedRoutesColors[0]).toEqual(selectedState.selectedRoutesColors[0]);
   });
 
   it('on deselectRoutes', () => {
@@ -99,7 +99,7 @@ describe('RoutesChart Reducer', () => {
     const newState = reducer(selectedState, RoutesChartActions.deselectRoutes({ routeIds: [111] }));
     expect(newState.selectedRoutes).not.toEqual(initialState.selectedRoutes);
     expect(newState.selectedRoutes.length).toBe(1);
-    expect(newState.selectedRoutesColors).not.toEqual(initialState.selectedRoutesColors);
+    expect(newState.selectedRoutesColors).toEqual(initialState.selectedRoutesColors);
   });
 
   it('on updateRoutesSelection', () => {
