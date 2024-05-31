@@ -24,20 +24,34 @@ import { vehicleToDeckGL } from './pre-solve-vehicle-layer.selectors';
 import RoutesChartSelectors from './routes-chart.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import { MapLayerId } from '../models/map';
-import { TravelMode } from '../models';
+import { Page, TravelMode } from '../models';
+import RoutesMetadataSelectors from './routes-metadata.selectors';
+import * as fromUi from './ui.selectors';
 
 export const selectFilteredVehicles = createSelector(
   fromVehicle.selectEntities,
   selectVehicleStartLocationsOnRoute,
   selectVehicleHeadings,
+  fromUi.selectPage,
   RoutesChartSelectors.selectFilteredRoutesWithTransitionsLookup,
+  RoutesMetadataSelectors.selectFilteredRouteLookup,
   selectPostSolveMapLayers,
-  (vehicles, startLocations, headings, filteredRoutesLookup, mapLayers) => {
+  (
+    vehicles,
+    startLocations,
+    headings,
+    currentPage,
+    chartFilteredRoutesLookup,
+    metadataSelectedRoutesLookup,
+    mapLayers
+  ) => {
     const vehiclesArray = Object.values(vehicles);
-    const filteredVehicles = filteredRoutesLookup.size
+    const lookup =
+      currentPage === Page.RoutesChart ? chartFilteredRoutesLookup : metadataSelectedRoutesLookup;
+    const filteredVehicles = lookup.size
       ? vehiclesArray.filter(
           (v) =>
-            filteredRoutesLookup.has(v.id) &&
+            lookup.has(v.id) &&
             ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
               ? mapLayers[MapLayerId.PostSolveFourWheel].visible
               : mapLayers[MapLayerId.PostSolveWalking].visible)
@@ -53,13 +67,26 @@ export const selectFilteredVehiclesSelected = createSelector(
   fromVehicle.selectEntities,
   selectVehicleStartLocationsOnRoute,
   selectVehicleHeadings,
+  fromUi.selectPage,
   RoutesChartSelectors.selectFilteredRoutesSelectedWithTransitionsLookup,
+  RoutesMetadataSelectors.selectFilteredRoutesSelectedLookup,
   RoutesChartSelectors.selectSelectedRoutesColors,
   selectPostSolveMapLayers,
-  (vehicles, startLocations, headings, selectedRoutesLookup, colors, mapLayers) => {
+  (
+    vehicles,
+    startLocations,
+    headings,
+    currentPage,
+    chartSelectedRoutesLookup,
+    metadataSelectedRoutesLookup,
+    colors,
+    mapLayers
+  ) => {
+    const metadataSet = new Set(Object.keys(metadataSelectedRoutesLookup).map(Number));
+    const lookup = currentPage === Page.RoutesChart ? chartSelectedRoutesLookup : metadataSet;
     const selectedVehicles = Object.values(vehicles).filter(
       (v) =>
-        selectedRoutesLookup.has(v.id) &&
+        lookup.has(v.id) &&
         ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
           ? mapLayers[MapLayerId.PostSolveFourWheel].visible
           : mapLayers[MapLayerId.PostSolveWalking].visible)
