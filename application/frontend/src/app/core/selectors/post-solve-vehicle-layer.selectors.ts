@@ -30,7 +30,7 @@ export const selectFilteredVehicles = createSelector(
   fromVehicle.selectEntities,
   selectVehicleStartLocationsOnRoute,
   selectVehicleHeadings,
-  RoutesChartSelectors.selectFilteredRoutesWithVisitsLookup,
+  RoutesChartSelectors.selectFilteredRoutesWithTransitionsLookup,
   selectPostSolveMapLayers,
   (vehicles, startLocations, headings, filteredRoutesLookup, mapLayers) => {
     const vehiclesArray = Object.values(vehicles);
@@ -53,7 +53,7 @@ export const selectFilteredVehiclesSelected = createSelector(
   fromVehicle.selectEntities,
   selectVehicleStartLocationsOnRoute,
   selectVehicleHeadings,
-  RoutesChartSelectors.selectFilteredRoutesSelectedWithVisitsLookup,
+  RoutesChartSelectors.selectFilteredRoutesSelectedWithTransitionsLookup,
   RoutesChartSelectors.selectSelectedRoutesColors,
   selectPostSolveMapLayers,
   (vehicles, startLocations, headings, selectedRoutesLookup, colors, mapLayers) => {

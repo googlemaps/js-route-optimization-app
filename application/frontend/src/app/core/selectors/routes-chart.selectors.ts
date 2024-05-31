@@ -143,13 +143,13 @@ const selectFilteredRouteIds = createSelector(
   (routes, filtersActive) => (filtersActive ? new Set<number>(routes.map((r) => r.id)) : null)
 );
 
-const selectFilteredRoutesWithVisitsLookup = createSelector(
+const selectFilteredRoutesWithTransitionsLookup = createSelector(
   selectFilteredRoutes,
-  (routes) => new Set(routes.filter((r) => r.visits.length > 0).map((r) => r.id))
+  (routes) => new Set(routes.filter((r) => r.transitions?.length > 0).map((r) => r.id))
 );
 
-const selectFilteredRoutesSelectedWithVisitsLookup = createSelector(
-  selectFilteredRoutesWithVisitsLookup,
+const selectFilteredRoutesSelectedWithTransitionsLookup = createSelector(
+  selectFilteredRoutesWithTransitionsLookup,
   selectSelectedRoutesLookup,
   (lookup, selected) => new Set(Array.from(lookup.values()).filter((id) => selected[id]))
 );
@@ -348,8 +348,8 @@ export const RoutesChartSelectors = {
   selectFilteredRoutes,
   selectHasActiveFilters,
   selectFilteredRouteIds,
-  selectFilteredRoutesWithVisitsLookup,
-  selectFilteredRoutesSelectedWithVisitsLookup,
+  selectFilteredRoutesWithTransitionsLookup,
+  selectFilteredRoutesSelectedWithTransitionsLookup,
   selectFilteredRoutesVisitRequestIds,
   selectPagedRoutes,
   selectFilteredRoutesSelected,
