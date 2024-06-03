@@ -52,9 +52,8 @@ export const selectFilteredRoutes = createSelector(
   fromVehicle.selectAll,
   selectPostSolveMapLayers,
   (paths, chartFilteredRouteIds, tableFilteredRouteIds, page, vehicles, mapLayers) => {
-    const filteredRouteIds = new Set(
-      page === Page.RoutesChart ? chartFilteredRouteIds : tableFilteredRouteIds
-    );
+    const filteredRouteIds =
+      page === Page.RoutesChart ? chartFilteredRouteIds : new Set(tableFilteredRouteIds);
     return (filteredRouteIds ? paths.filter((p) => filteredRouteIds.has(p.id)) : paths).filter(
       (route) => {
         return (vehicles[route.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) ===
