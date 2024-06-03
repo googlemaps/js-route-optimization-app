@@ -47,9 +47,14 @@ export const selectRoutes = createSelector(
 export const selectFilteredRoutes = createSelector(
   selectRoutes,
   RoutesChartSelectors.selectFilteredRouteIds,
+  RoutesMetadataSelectors.selectFilteredRouteIds,
+  fromUi.selectPage,
   fromVehicle.selectAll,
   selectPostSolveMapLayers,
-  (paths, filteredRouteIds, vehicles, mapLayers) => {
+  (paths, chartFilteredRouteIds, tableFilteredRouteIds, page, vehicles, mapLayers) => {
+    const filteredRouteIds = new Set(
+      page === Page.RoutesChart ? chartFilteredRouteIds : tableFilteredRouteIds
+    );
     return (filteredRouteIds ? paths.filter((p) => filteredRouteIds.has(p.id)) : paths).filter(
       (route) => {
         return (vehicles[route.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) ===
