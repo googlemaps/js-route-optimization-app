@@ -185,6 +185,15 @@ const selectFilteredRoutesSelected = createSelector(
   (routes, selected) => routes.filter((route) => selected[route.id])
 );
 
+const selectFilteredRoutesSelectedLookup = createSelector(
+  selectFilteredRoutesSelected,
+  (selected) => {
+    const filteredSelected = {} as { [id: number]: boolean };
+    selected.forEach((route) => (filteredSelected[route.id] = true));
+    return filteredSelected;
+  }
+);
+
 const selectTotalFilteredRoutes = createSelector(selectFilteredRoutes, (routes) => routes.length);
 
 const selectTotalFilteredRoutesSelected = createSelector(
@@ -353,6 +362,7 @@ export const RoutesChartSelectors = {
   selectFilteredRoutesVisitRequestIds,
   selectPagedRoutes,
   selectFilteredRoutesSelected,
+  selectFilteredRoutesSelectedLookup,
   selectTotalFilteredRoutes,
   selectTotalFilteredRoutesSelected,
   selectRanges,

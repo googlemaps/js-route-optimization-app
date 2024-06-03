@@ -17,12 +17,14 @@ limitations under the License.
 import { createSelector } from '@ngrx/store';
 import ShipmentRouteSelectors, * as fromShipmentRoute from './shipment-route.selectors';
 import RoutesChartSelectors from './routes-chart.selectors';
-import { ShipmentRoute, TravelMode } from '../models';
+import { Page, ShipmentRoute, TravelMode } from '../models';
 import { Feature, LineString } from '@turf/helpers';
 import { toTurfLineString } from 'src/app/util';
 import { selectPostSolveMapLayers } from './map.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import { MapLayerId } from '../models/map';
+import RoutesMetadataSelectors from './routes-metadata.selectors';
+import * as fromUi from './ui.selectors';
 
 const routeToDeckGL = (route: ShipmentRoute, path: google.maps.LatLng[]) => {
   return {
@@ -61,16 +63,27 @@ export const selectFilteredRoutes = createSelector(
 
 export const selectFilteredRoutesSelected = createSelector(
   selectRoutes,
-  RoutesChartSelectors.selectFilteredRouteIds,
-  RoutesChartSelectors.selectSelectedRoutesLookup,
+  RoutesChartSelectors.selectFilteredRoutesSelectedLookup,
+  RoutesMetadataSelectors.selectFilteredRoutesSelectedLookup,
+  fromUi.selectPage,
   RoutesChartSelectors.selectSelectedRoutesColors,
   fromVehicle.selectAll,
   selectPostSolveMapLayers,
-  (paths, filteredRouteIds, selectedRoutesLookup, colors, vehicles, mapLayers) => {
+  (
+    paths,
+    chartSelectedRoutesLookup,
+    tableSelectedRouteLookup,
+    page,
+    colors,
+    vehicles,
+    mapLayers
+  ) => {
+    const lookup =
+      page === Page.RoutesMetadata ? tableSelectedRouteLookup : chartSelectedRoutesLookup;
+    const lookupSet = new Set(Object.keys(lookup).map(Number));
     const selectedRoutes = paths.filter(
       (p) =>
-        (filteredRouteIds == null || filteredRouteIds.has(p.id)) &&
-        selectedRoutesLookup[p.id] &&
+        lookupSet.has(p.id) &&
         ((vehicles[p.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
           ? mapLayers[MapLayerId.PostSolveFourWheel].visible
           : mapLayers[MapLayerId.PostSolveWalking].visible)
