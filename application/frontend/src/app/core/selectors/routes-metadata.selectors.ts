@@ -66,6 +66,10 @@ const selectSelectedRoutes = createSelector(
   (routes, selected) => routes.filter((route) => selected[route.id])
 );
 
+const selectedSelectedRoutesIds = createSelector(selectSelectedRoutes, (routes) =>
+  routes.map((route) => route.id)
+);
+
 const selectColumns = createSelector(selectRoutesMetadataState, (_state) => routeMetadataColumns);
 
 const selectActiveSortColumn = createSelector(selectSort, selectColumns, (sort, columns) =>
@@ -358,6 +362,7 @@ export const RoutesMetadataSelectors = {
   selectActiveSortColumn,
   selectColumns,
   selectSelectedRoutes,
+  selectedSelectedRoutesIds,
   selectSelectedLookup,
   selectSelected,
   selectSort,
