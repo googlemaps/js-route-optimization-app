@@ -12,8 +12,8 @@
       autoActiveFirstOption
       #auto="matAutocomplete"
       (optionSelected)="onTimezoneSelected($event.option.value)">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{ option }}
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option.description">
+        {{ option.description }} <span class="mat-small offset-label">(GMT{{ option.label }})</span>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
