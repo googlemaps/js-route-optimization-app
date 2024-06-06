@@ -53,6 +53,8 @@ export class BaseVehicleInfoWindowComponent {
 
   formatDate(timestamp: ITimestamp): string {
     const time = (durationSeconds(timestamp).toNumber() + this.timezoneOffset) * 1000;
-    return formatDate(time, 'yyyy/MM/dd h:mm aa', this.locale, 'UTC').toLocaleLowerCase(this.locale);
+    return formatDate(time, 'yyyy/MM/dd h:mm aa', this.locale, 'UTC').toLocaleLowerCase(
+      this.locale
+    );
   }
 }

@@ -23,7 +23,11 @@ import { formatSecondsDate } from 'src/app/util';
 export class FormatSecondsDatePipe implements PipeTransform {
   constructor(@Inject(LOCALE_ID) private locale: string) {}
 
-  transform(seconds: number | Long, timezoneOffset?: number, format = 'yyyy/MM/dd h:mm aa'): string {
+  transform(
+    seconds: number | Long,
+    timezoneOffset?: number,
+    format = 'yyyy/MM/dd h:mm aa'
+  ): string {
     if (seconds != null) {
       return formatSecondsDate(
         Long.fromValue(seconds).toNumber(),
