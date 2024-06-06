@@ -289,14 +289,14 @@ describe('time windows util', () => {
     it('should format time window duration', () => {
       expect(formatTimeWindowDuration([Long.fromNumber(0), Long.fromNumber(3600)])).toEqual({
         startDate: formatDate(0, 'yyyy/MM/dd', 'en-us', 'UTC'),
-        startTime: '12:00am',
-        endTime: '1:00am',
+        startTime: '12:00 am',
+        endTime: '1:00 am',
       });
       expect(formatTimeWindowDuration([Long.fromNumber(0), Long.fromNumber(90000)])).toEqual({
         startDate: formatDate(0, 'yyyy/MM/dd', 'en-us', 'UTC'),
-        startTime: '12:00am',
+        startTime: '12:00 am',
         endDate: formatDate(new Date(90000 * 1000), 'yyyy/MM/dd', 'en-us', 'UTC'),
-        endTime: '1:00am',
+        endTime: '1:00 am',
       });
     });
   });

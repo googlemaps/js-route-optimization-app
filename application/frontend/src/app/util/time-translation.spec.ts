@@ -299,8 +299,8 @@ describe('util', () => {
 
   describe('formatSecondsDate', () => {
     it('should return formatted date from seconds', () => {
-      expect(formatSecondsDate(1658351700)).toBe('2022/07/20 9:15PM');
-      expect(formatSecondsDate(1658351700, 3600)).toBe('2022/07/20 10:15PM');
+      expect(formatSecondsDate(1658351700)).toBe('2022/07/20 9:15 PM');
+      expect(formatSecondsDate(1658351700, 3600)).toBe('2022/07/20 10:15 PM');
       expect(formatSecondsDate(1658351700, 3600, 'dd/MM/yyyy')).toBe('20/07/2022');
     });
   });

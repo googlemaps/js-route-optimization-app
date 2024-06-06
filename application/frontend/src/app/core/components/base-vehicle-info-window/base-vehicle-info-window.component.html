@@ -7,6 +7,10 @@
 <div *ngIf="route" class="text__caption">
   Route End: <span class="strong">{{ formatDate(route.vehicleEndTime) }}</span>
 </div>
+<div *ngIf="route" class="text__caption">
+  Route Distance:
+  <span class="strong">{{ route.metrics.travelDistanceMeters / 1000 | number: '1.1-1' }} km</span>
+</div>
 <div *ngIf="shipmentCount != null" class="text__caption">
   Shipments: <span class="strong">{{ shipmentCount }}</span>
 </div>

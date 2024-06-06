@@ -49,8 +49,15 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
     valueComparer: (a: string, b: string): number => a.localeCompare(b),
   },
   {
-    id: 'capacityUtilization',
-    label: 'Used / Unused Capacity',
+    id: 'capacityUtilizationMax',
+    label: 'Max concurrent load / Load limit',
+    active: true,
+    toggleable: true,
+    selector: ({ capacityUtilization }) => capacityUtilization,
+  },
+  {
+    id: 'capacityUtilizationTotal',
+    label: 'Total load / Load limit',
     active: true,
     toggleable: true,
     selector: ({ capacityUtilization }) => capacityUtilization,
@@ -78,10 +85,17 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
   },
   {
     id: 'traveledTime',
-    label: 'Traveled time',
+    label: 'Route duration',
     active: true,
     toggleable: true,
     selector: ({ traveledTime }) => traveledTime,
+  },
+  {
+    id: 'traveledDistance',
+    label: 'Traveled distance',
+    active: true,
+    toggleable: true,
+    selector: ({ traveledDistance }) => traveledDistance,
   },
   {
     id: 'cost',
@@ -89,19 +103,5 @@ export const routeMetadataColumns: RouteMetadataColumn[] = [
     active: true,
     toggleable: true,
     selector: ({ cost }) => cost,
-  },
-  {
-    id: 'startLocation',
-    label: 'Start location',
-    active: true,
-    toggleable: true,
-    selector: ({ startLocation }) => startLocation,
-  },
-  {
-    id: 'endLocation',
-    label: 'End Location',
-    active: true,
-    toggleable: true,
-    selector: ({ endLocation }) => endLocation,
   },
 ];

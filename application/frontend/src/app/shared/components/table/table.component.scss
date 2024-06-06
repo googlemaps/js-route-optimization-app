@@ -15,9 +15,12 @@ app-table {
     &:last-of-type {
       padding-right: 8px !important;
     }
+
+    text-align: center;
   }
 
   .mat-sort-header-content {
     flex-wrap: wrap;
+    justify-content: center;
   }
 }
