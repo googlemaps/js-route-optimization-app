@@ -23,7 +23,7 @@ import { durationSeconds, formatSecondsDate } from 'src/app/util';
 export class FormatTimestampPipe implements PipeTransform {
   constructor(@Inject(LOCALE_ID) private locale: string) {}
 
-  transform(timestamp: ITimestamp, timezoneOffset?: number, format = 'yyyy/MM/dd h:mmaa'): string {
+  transform(timestamp: ITimestamp, timezoneOffset?: number, format = 'yyyy/MM/dd h:mm aa'): string {
     if (timestamp) {
       return formatSecondsDate(
         durationSeconds(timestamp).toNumber(),

@@ -28,8 +28,8 @@ const localeStringOptions: any = {
 };
 
 export const defaultDateFormat = 'yyyy/MM/dd';
-export const defaultTimeFormat = 'h:mmaa';
-export const defaultDateTimeFormat = 'yyyy/MM/dd h:mmaa';
+export const defaultTimeFormat = 'h:mm aa';
+export const defaultDateTimeFormat = 'yyyy/MM/dd h:mm aa';
 
 export function timeToPixel(
   time: Long,

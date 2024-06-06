@@ -115,13 +115,13 @@ export function formatTimeWindowDuration(
   const startDateTime = new Date((startSeconds + timezoneOffset) * 1000);
   const formattedStartTime = formatDate(
     startDateTime,
-    'h:mmaaa',
+    'h:mm aaa',
     locale,
     timezone
   ).toLocaleLowerCase(locale);
   const formattedStartDate = formatDate(startDateTime, 'yyyy/MM/dd', locale, timezone);
   const endDateTime = new Date((endSeconds + timezoneOffset) * 1000);
-  const formattedEndTime = formatDate(endDateTime, 'h:mmaaa', locale, timezone).toLocaleLowerCase(
+  const formattedEndTime = formatDate(endDateTime, 'h:mm aaa', locale, timezone).toLocaleLowerCase(
     locale
   );
 

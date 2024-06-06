@@ -168,7 +168,7 @@ export class BaseVisitRequestInfoWindowComponent {
   }
 
   private formatDate(value: number): string {
-    return formatDate(value, 'yyyy/MM/dd h:mmaa', this.locale, 'UTC').toLocaleLowerCase(
+    return formatDate(value, 'yyyy/MM/dd h:mm aa', this.locale, 'UTC').toLocaleLowerCase(
       this.locale
     );
   }
