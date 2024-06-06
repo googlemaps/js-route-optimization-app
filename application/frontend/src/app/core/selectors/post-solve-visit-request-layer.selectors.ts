@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { createSelector } from '@ngrx/store';
-import { VisitRequest } from '../models';
+import { Page, VisitRequest } from '../models';
 import RoutesChartSelectors from './routes-chart.selectors';
 import * as fromVisitRequest from './visit-request.selectors';
 import * as fromVisit from './visit.selectors';
@@ -23,6 +23,9 @@ import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import { fromDispatcherToTurfPoint } from 'src/app/util';
 import { Feature, Point } from '@turf/helpers';
 import { selectMouseOverId } from './ui.selectors';
+import RoutesMetadataSelectors from './routes-metadata.selectors';
+import * as fromUI from './ui.selectors';
+import ShipmentRouteSelectors from './shipment-route.selectors';
 
 export const selectVisitRequests = createSelector(
   fromVisitRequest.selectAll,
@@ -32,18 +35,48 @@ export const selectVisitRequests = createSelector(
 );
 
 export const selectFilteredRouteVisitRequests = createSelector(
-  RoutesChartSelectors.selectFilteredRoutesVisitRequestIds,
+  RoutesChartSelectors.selectRoutes,
+  RoutesChartSelectors.selectFilteredRouteIds,
+  RoutesChartSelectors.selectHasActiveFilters,
+  RoutesMetadataSelectors.selectFilteredRouteIds,
+  RoutesMetadataSelectors.selectHasActiveFilters,
+  fromUI.selectPage,
   selectVisitRequests,
-  (filteredVisitRequestIds, visitRequests) => {
-    if (!filteredVisitRequestIds) {
+  (
+    allRoutes,
+    chartRouteIds,
+    chartHasFilters,
+    tableRouteIds,
+    tableHasFilters,
+    page,
+    visitRequests
+  ) => {
+    const hasFilter = page === Page.RoutesChart ? chartHasFilters : tableHasFilters;
+    const routeIds = page === Page.RoutesChart ? chartRouteIds : new Set(tableRouteIds);
+    if (!hasFilter) {
       return visitRequests;
     }
+    const filteredVisitRequestIds = new Set<number>();
+    allRoutes
+      .filter((route) => routeIds.has(route.id))
+      .forEach((route) => route.visits.forEach((id) => filteredVisitRequestIds.add(id)));
     return visitRequests.filter((v) => filteredVisitRequestIds.has(v.id));
   }
 );
 
+const selectSelectedRoutesVisitsIds = createSelector(
+  RoutesChartSelectors.selectSelectedRoutes,
+  RoutesMetadataSelectors.selectedSelectedRoutesIds,
+  fromUI.selectPage,
+  ShipmentRouteSelectors.selectRoutesVisitIdsFn,
+  (chartSelectedRouteIds, tableSelectedRouteIds, page, routesVisitIdsFn) => {
+    const routeIds = page === Page.RoutesChart ? chartSelectedRouteIds : tableSelectedRouteIds;
+    return routesVisitIdsFn(routeIds);
+  }
+);
+
 export const selectFilteredRouteVisitRequestsSelected = createSelector(
-  RoutesChartSelectors.selectSelectedRoutesVisitIds,
+  selectSelectedRoutesVisitsIds,
   selectFilteredRouteVisitRequests,
   (selectedRouteVisitIds, visitRequests) => {
     return visitRequests.filter((v) => selectedRouteVisitIds.includes(v.id));

@@ -65,10 +65,6 @@ export const reducer = createReducer(
     return {
       ...state,
       selectedRoutes,
-      selectedRoutesColors: fromMapTheme.getSelectedColors(
-        selectedRoutes,
-        state.selectedRoutesColors
-      ),
     };
   }),
   on(RoutesChartActions.selectRoutes, (state, { routeIds }) => {
@@ -77,10 +73,6 @@ export const reducer = createReducer(
     return {
       ...state,
       selectedRoutes,
-      selectedRoutesColors: fromMapTheme.getSelectedColors(
-        selectedRoutes,
-        state.selectedRoutesColors
-      ),
     };
   }),
   on(RoutesChartActions.deselectRoute, (state, { routeId }) => {
@@ -88,10 +80,6 @@ export const reducer = createReducer(
     return {
       ...state,
       selectedRoutes,
-      selectedRoutesColors: fromMapTheme.getSelectedColors(
-        selectedRoutes,
-        state.selectedRoutesColors
-      ),
     };
   }),
   on(RoutesChartActions.deselectRoutes, (state, { routeIds }) => {
@@ -99,10 +87,6 @@ export const reducer = createReducer(
     return {
       ...state,
       selectedRoutes,
-      selectedRoutesColors: fromMapTheme.getSelectedColors(
-        selectedRoutes,
-        state.selectedRoutesColors
-      ),
     };
   }),
   on(RoutesChartActions.updateRoutesSelection, (state, { addedRouteIds, removedRouteIds }) => {
@@ -110,14 +94,7 @@ export const reducer = createReducer(
     const retainedRoutes = state.selectedRoutes.filter((id) => !removedRouteIds.includes(id));
     const selectedRoutes = retainedRoutes.concat(addedRoutes);
 
-    const selectedRoutesColorMap = new Map(state.selectedRoutesColors);
-    removedRouteIds.forEach((key) => selectedRoutesColorMap.delete(key));
-    const selectedRoutesColors = fromMapTheme.getSelectedColors(
-      selectedRoutes,
-      Array.from(selectedRoutesColorMap.entries())
-    );
-
-    return { ...state, selectedRoutes, selectedRoutesColors };
+    return { ...state, selectedRoutes };
   }),
   on(RoutesChartActions.addFilter, (state, { filter }) => ({
     ...state,
@@ -151,8 +128,16 @@ export const reducer = createReducer(
   on(MainNavActions.solve, ValidationResultActions.solve, (state) => ({
     ...state,
     selectedRoutes: initialState.selectedRoutes,
-    selectedRoutesColors: initialState.selectedRoutesColors,
-  }))
+  })),
+  on(DispatcherActions.loadSolution, (state, solution) => {
+    return {
+      ...state,
+      selectedRoutesColors: fromMapTheme.getSelectedColors(
+        solution.shipmentRoutes.map((route) => route.id),
+        []
+      ),
+    };
+  })
 );
 
 export const selectSelectedRoutes = (state: State): number[] => state.selectedRoutes;
