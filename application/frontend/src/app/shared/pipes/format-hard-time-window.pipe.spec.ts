@@ -37,9 +37,9 @@ describe('FormatHardTimeWindowPipe', () => {
       )
     ).toEqual({
       startDate: '2000/01/02',
-      startTime: '3:44am',
+      startTime: '3:44 am',
       endDate: '2000/02/03',
-      endTime: '4:55am',
+      endTime: '4:55 am',
     });
   });
 
@@ -59,9 +59,9 @@ describe('FormatHardTimeWindowPipe', () => {
       )
     ).toEqual({
       startDate: '2000/01/02',
-      startTime: '3:44am',
+      startTime: '3:44 am',
       // endDate: n/a,
-      endTime: '4:55am',
+      endTime: '4:55 am',
     });
   });
 
@@ -78,9 +78,9 @@ describe('FormatHardTimeWindowPipe', () => {
       )
     ).toEqual({
       startDate: '2000/01/02',
-      startTime: '3:44am',
+      startTime: '3:44 am',
       endDate: '2000/02/03',
-      endTime: '4:55am',
+      endTime: '4:55 am',
     });
   });
 
@@ -97,25 +97,25 @@ describe('FormatHardTimeWindowPipe', () => {
       )
     ).toEqual({
       startDate: '2000/01/02',
-      startTime: '3:44am',
+      startTime: '3:44 am',
       endDate: '2000/02/03',
-      endTime: '4:55am',
+      endTime: '4:55 am',
     });
   });
 
   it('returns default when time window is null or undefined', () => {
     expect(pipe.transform(null, [new Long(946784640), new Long(949553700)], 0)).toEqual({
       startDate: '2000/01/02',
-      startTime: '3:44am',
+      startTime: '3:44 am',
       endDate: '2000/02/03',
-      endTime: '4:55am',
+      endTime: '4:55 am',
     });
 
     expect(pipe.transform(undefined, [new Long(946784640), new Long(949553700)], 0)).toEqual({
       startDate: '2000/01/02',
-      startTime: '3:44am',
+      startTime: '3:44 am',
       endDate: '2000/02/03',
-      endTime: '4:55am',
+      endTime: '4:55 am',
     });
   });
 
