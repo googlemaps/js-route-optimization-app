@@ -21,6 +21,8 @@ app-base-routes-chart {
   .column-header-container,
   .marker-handle-container,
   .marker-line-container,
+  .simulator-handle-container,
+  .simulator-line-container,
   .rule-column-header-container,
   .rule-container {
     /** padding consistent with the timeline/POI offset */
@@ -92,10 +94,12 @@ app-base-routes-chart {
     border-radius: 50%;
   }
 
+  .simulator-line,
   .marker-line {
     width: 2px;
   }
 
+  .simulator-line,
   .marker-line,
   .marker-handle {
     background-color: $red-light;

@@ -48,10 +48,14 @@ export class BaseRoutesChartComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nextRangeOffset: number;
   @Input() previousRangeOffset: number;
   @Input() timezoneOffset: number;
+  @Input() travelSimulatorActive: boolean;
+  @Input() travelSimulatorValue: number;
   @Output() selectPreviousRangeOffset = new EventEmitter<number>();
   @Output() selectNextRangeOffset = new EventEmitter<number>();
+  @Output() setTravelSimulatorValue = new EventEmitter<number>();
 
   marker: number;
+  travelSimulatorRelativeValue: number;
 
   private readonly range$ = new BehaviorSubject<number>(this.range);
   private readonly duration$ = new BehaviorSubject<[Long, Long]>(this.duration);
@@ -66,6 +70,9 @@ export class BaseRoutesChartComponent implements OnChanges, OnInit, OnDestroy {
     if (changes.range) {
       this.range$.next(changes.range.currentValue);
     }
+    if (changes.travelSimulatorActive || changes.travelSimulatorValue) {
+      this.updateTravelSimulatorHandle();
+    }
   }
 
   ngOnInit(): void {
@@ -77,6 +84,7 @@ export class BaseRoutesChartComponent implements OnChanges, OnInit, OnDestroy {
         .pipe(auditTime(25))
         .subscribe(() => {
           this.updateMarker();
+          this.updateTravelSimulatorHandle();
           this.changeDetector.markForCheck();
         })
     );
@@ -90,6 +98,10 @@ export class BaseRoutesChartComponent implements OnChanges, OnInit, OnDestroy {
     return route.id;
   }
 
+  onDragSimulatorHandle(value: number): void {
+    this.setTravelSimulatorValue.emit(this.duration[0].toNumber() + value);
+  }
+
   private updateMarker(): void {
     if (!this.duration || !this.range) {
       this.marker = null;
@@ -101,5 +113,19 @@ export class BaseRoutesChartComponent implements OnChanges, OnInit, OnDestroy {
       return;
     }
     this.marker = now - this.duration[0].toNumber();
+  }
+
+  private updateTravelSimulatorHandle(): void {
+    if (
+      !this.duration ||
+      !this.range ||
+      !this.travelSimulatorActive ||
+      this.duration[0].greaterThan(this.travelSimulatorValue) ||
+      this.duration[1].lessThan(this.travelSimulatorValue)
+    ) {
+      this.travelSimulatorRelativeValue = null;
+      return;
+    }
+    this.travelSimulatorRelativeValue = this.travelSimulatorValue - this.duration[0].toNumber();
   }
 }

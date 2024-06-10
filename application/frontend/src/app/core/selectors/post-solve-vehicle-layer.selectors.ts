@@ -17,8 +17,7 @@ limitations under the License.
 import { createSelector } from '@ngrx/store';
 import {
   selectPostSolveMapLayers,
-  selectVehicleHeadings,
-  selectVehicleStartLocationsOnRoute,
+  selectVehicleLocationsOnRouteWithHeadings,
 } from './map.selectors';
 import { vehicleToDeckGL } from './pre-solve-vehicle-layer.selectors';
 import RoutesChartSelectors from './routes-chart.selectors';
@@ -30,17 +29,15 @@ import * as fromUi from './ui.selectors';
 
 export const selectFilteredVehicles = createSelector(
   fromVehicle.selectEntities,
-  selectVehicleStartLocationsOnRoute,
-  selectVehicleHeadings,
   fromUi.selectPage,
+  selectVehicleLocationsOnRouteWithHeadings,
   RoutesChartSelectors.selectFilteredRoutesWithTransitionsLookup,
   RoutesMetadataSelectors.selectFilteredRouteLookup,
   selectPostSolveMapLayers,
   (
     vehicles,
-    startLocations,
-    headings,
     currentPage,
+    locations,
     chartFilteredRoutesLookup,
     metadataSelectedRoutesLookup,
     mapLayers
@@ -58,25 +55,23 @@ export const selectFilteredVehicles = createSelector(
         )
       : [];
     return filteredVehicles.map((vehicle) =>
-      vehicleToDeckGL(vehicle, startLocations[vehicle.id], headings[vehicle.id])
+      vehicleToDeckGL(vehicle, locations[vehicle.id].location, locations[vehicle.id].heading)
     );
   }
 );
 
 export const selectFilteredVehiclesSelected = createSelector(
   fromVehicle.selectEntities,
-  selectVehicleStartLocationsOnRoute,
-  selectVehicleHeadings,
   fromUi.selectPage,
+  selectVehicleLocationsOnRouteWithHeadings,
   RoutesChartSelectors.selectFilteredRoutesSelectedWithTransitionsLookup,
   RoutesMetadataSelectors.selectFilteredRoutesSelectedLookup,
   RoutesChartSelectors.selectSelectedRoutesColors,
   selectPostSolveMapLayers,
   (
     vehicles,
-    startLocations,
-    headings,
     currentPage,
+    locations,
     chartSelectedRoutesLookup,
     metadataSelectedRoutesLookup,
     colors,
@@ -92,7 +87,7 @@ export const selectFilteredVehiclesSelected = createSelector(
           : mapLayers[MapLayerId.PostSolveWalking].visible)
     );
     return selectedVehicles.map((vehicle) => ({
-      ...vehicleToDeckGL(vehicle, startLocations[vehicle.id], headings[vehicle.id]),
+      ...vehicleToDeckGL(vehicle, locations[vehicle.id].location, locations[vehicle.id].heading),
       color: colors[vehicle.id],
     }));
   }

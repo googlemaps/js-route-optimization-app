@@ -26,11 +26,13 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
+import { TravelSimulatorActions } from 'src/app/core/actions';
 import * as RoutesChartActions from 'src/app/core/actions/routes-chart.actions';
 import { ShipmentRoute } from 'src/app/core/models';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import { selectIsDragging } from 'src/app/core/selectors/point-of-interest.selectors';
 import RoutesChartSelectors from 'src/app/core/selectors/routes-chart.selectors';
+import TravelSimulatorSelectors from 'src/app/core/selectors/travel-simulator.selectors';
 import { RoutesChartService } from 'src/app/core/services/routes-chart.service';
 import { ChartColumnLabelFormatter, UnitStep } from 'src/app/shared/models';
 
@@ -52,6 +54,8 @@ export class RoutesChartComponent implements OnInit, OnDestroy {
   readonly range$: Observable<number>;
   readonly duration$: Observable<[Long, Long]>;
   readonly timezoneOffset$: Observable<number>;
+  readonly travelSimulatorActive$: Observable<boolean>;
+  readonly travelSimulatorValue$: Observable<number>;
 
   isDragging: boolean;
   // How many pixels towards the edge of the chart should the mouse be to activate scrolling while dragging
@@ -81,6 +85,8 @@ export class RoutesChartComponent implements OnInit, OnDestroy {
     this.range$ = store.pipe(select(RoutesChartSelectors.selectRange));
     this.duration$ = store.pipe(select(RoutesChartSelectors.selectDuration));
     this.timezoneOffset$ = store.pipe(select(fromConfig.selectTimezoneOffset));
+    this.travelSimulatorActive$ = store.pipe(select(TravelSimulatorSelectors.selectActive));
+    this.travelSimulatorValue$ = store.pipe(select(TravelSimulatorSelectors.selectTime));
 
     this.subscriptions.push(
       store.select(selectIsDragging).subscribe((dragging) => (this.isDragging = dragging))
@@ -138,5 +144,9 @@ export class RoutesChartComponent implements OnInit, OnDestroy {
 
   onSelectPreviousRangeOffset(rangeOffset: number): void {
     this.store.dispatch(RoutesChartActions.previousRangeOffset({ rangeOffset }));
+  }
+
+  onSetTravelSimulatorValue(time: number): void {
+    this.store.dispatch(TravelSimulatorActions.setTime({ time }));
   }
 }

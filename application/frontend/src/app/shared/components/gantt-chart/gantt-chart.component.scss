@@ -1,3 +1,5 @@
+@import '../../../../styles/variables.scss';
+
 app-gantt-chart {
   display: block;
   height: 100%;
@@ -38,6 +40,7 @@ app-gantt-chart {
   }
 
   .marker-line-container,
+  .simulator-line-container,
   .rule-container {
     grid-column: 2;
     grid-row: 2 / -1;
@@ -49,6 +52,13 @@ app-gantt-chart {
     z-index: 1000;
   }
 
+  .simulator-line-container {
+    position: relative;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .simulator-line,
   .marker-line {
     position: absolute;
     top: 0;
@@ -105,6 +115,7 @@ app-gantt-chart {
     grid-column: 1;
   }
 
+  .simulator-handle-container,
   .column-header-container,
   .marker-handle-container {
     position: -webkit-sticky;
@@ -117,6 +128,35 @@ app-gantt-chart {
   .column-header-container {
     background-color: white;
     z-index: 1001;
+  }
+
+  .simulator-handle-container {
+    z-index: 1002;
+    pointer-events: none;
+  }
+
+  .simulator-handle-line {
+    height: 100%;
+    width: 2px;
+  }
+
+  .simulator-handle,
+  .simulator-handle-line {
+    position: absolute;
+    background-color: $red-light;
+  }
+
+  .simulator-handle {
+    border-radius: 40%;
+    top: -12px;
+    height: 24px;
+    width: 22px;
+    pointer-events: all;
+    cursor: grab;
+
+    &.simulator-handle-drag {
+      cursor: grabbing;
+    }
   }
 
   .marker-handle-container {

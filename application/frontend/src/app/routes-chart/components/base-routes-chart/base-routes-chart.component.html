@@ -5,7 +5,10 @@
   [unitStep]="unitStep"
   [columnLabelFormatter]="columnLabelFormatter"
   [trackBy]="trackRouteBy"
-  [timezoneOffset]="timezoneOffset">
+  [timezoneOffset]="timezoneOffset"
+  [travelSimulatorActive]="travelSimulatorActive"
+  [travelSimulatorValue]="travelSimulatorRelativeValue"
+  (dragSimulatorHandle)="onDragSimulatorHandle($event)">
   <ng-template appGanttRowColumnHeader>
     <app-routes-row-column-header></app-routes-row-column-header>
   </ng-template>
