@@ -1,19 +1,12 @@
 .legend-container {
+  display: flex;
+  flex-direction: row;
   white-space: nowrap;
-
-  p {
-    margin: 0;
-
-    &.legend-timeline-container {
-      display: flex;
-    }
-  }
-
-  .margin-right {
-    margin-right: 1rem;
-  }
+  gap: 0.5rem;
 
   .percent-label {
-    display: inline;
+    display: flex;
+    flex-direction: column;
+    min-width: 70px;
   }
 }
