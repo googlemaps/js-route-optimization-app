@@ -221,6 +221,23 @@ class Scenario:
     return self.vehicles[vehicle_index].get("label", "")
 
 
+@dataclasses.dataclass(frozen=True)
+class ParkingwiseShipmentDetails:
+  """Contains details about a parkingwise shipment.
+
+  Attributes:
+    parking_tag: Tag of the parking location.
+    shipments: The list of shipments to be delivered from the parking location.
+    arrival_index: Index of the first visit to the parking location.
+    departure_index: Index of the last visit from the parking location.
+  """
+
+  parking_tag: two_step_routing.ParkingTag
+  shipments: Sequence[cfr_json.Shipment]
+  arrival_index: int
+  departure_index: int
+
+
 def get_parking_location_aggregate_data(
     scenario: Scenario,
 ) -> ParkingLocationData:
@@ -507,7 +524,7 @@ def group_global_visits(
         num_rounds,
         group_shipments,
         first_arrival_visit_index,
-        last_departure_visit_index
+        last_departure_visit_index,
     )
 
     global_visit_index += 1
@@ -664,6 +681,290 @@ def get_time_windows_start(
   if has_time_windows:
     return start
   return None
+
+
+def get_parking_arrival_time(
+    route: cfr_json.ShipmentRoute,
+    arrival_visit_index: int,
+) -> datetime.datetime:
+  """Get the arrival time at a parking lot."""
+  visits = cfr_json.get_visits(route)
+  arrival_visit = visits[arrival_visit_index]
+  arrival_time = cfr_json.parse_time_string(arrival_visit["startTime"])
+  return arrival_time
+
+
+def get_parking_departure_time(
+    route: cfr_json.ShipmentRoute,
+    departure_visit_index: int,
+) -> datetime.datetime:
+  """Get the departure time from the parking lot."""
+  transitions = cfr_json.get_transitions(route)
+  transition = transitions[departure_visit_index + 1]
+  return cfr_json.parse_time_string(transition.get("startTime"))
+
+
+def detect_violations(
+    scenario: Scenario,
+    visits: Sequence[cfr_json.Visit],
+    arrival_visit_index: int,
+    departure_visit_index: int,
+    time_delta: datetime.timedelta,
+) -> bool:
+  """Detects violations of time window constraints.
+
+  For every visit, we obtain shipment and visit requests depending on whether
+  it is a pickup or a delivery.  We obtain time window constraints for a visit
+  request and make sure that none of those constraints are violated with the
+  shuffling of slots.
+
+  Args:
+    scenario: The scenario in which the number of sandwiches is computed.
+    visits: List of global visits.
+    arrival_visit_index: Index of the first visit to the parking location.
+    departure_visit_index: Index of the last visit from the parking location.
+    time_delta: The amount of shift to be applied on the start and the end.
+
+  Returns:
+    A boolean value indicating if there is any violation of requested time
+    windows for pick up or deliveries.
+  """
+  # Check all the visits between arrival and departure visits.
+  for visit_index in range(arrival_visit_index, departure_visit_index + 1):
+    visit = visits[visit_index]
+    visit_request = cfr_json.get_visit_request(scenario.model, visit)
+    time_windows = visit_request.get("timeWindows")
+
+    # No violation since no time window is specified.
+    if time_windows is None or not time_windows:
+      continue
+
+    # Check if any of the specified time windows is violated.
+    new_start_time = cfr_json.parse_time_string(visit["startTime"]) + time_delta
+    for time_window in time_windows:
+      if (window_start_time := time_window.get("startTime")) is not None:
+        if new_start_time < cfr_json.parse_time_string(window_start_time):
+          continue
+
+      if (window_end_time := time_window.get("endTime")) is not None:
+        if new_start_time > cfr_json.parse_time_string(window_end_time):
+          continue
+
+      # New start time is inside the time window.
+      break
+    else:
+      return True  # Didn't hit the break in any iteration.
+
+  return False
+
+
+def shuffle_and_check_violations(
+    scenario: Scenario,
+    vehicle_index: int,
+    parking_lot_shipment_list: Sequence[ParkingwiseShipmentDetails],
+    start: int,
+    end: int,
+) -> bool:
+  """Shuffle and detect violations of time window constaints.
+
+  In this function, we perform actual shuffling of slots and check if it results
+  in violation of any requested time windows for pickups and deliveries.
+
+  Args:
+    scenario: The scenario in which the number of sandwiches is computed.
+    vehicle_index: The index of the vehicle for which the number of sandwiches
+      is computed.
+    parking_lot_shipment_list: Contains a tuple having parking tag, shipment
+      list, arrival and departure visit index.
+    start: The index of the start slot in the parking lot shipment list which
+      needs to be shuffled for bringing different slots out of the same parking
+      lot next to each other.
+    end: The index of the end slot in the parking lot shipment list which needs
+      to be shuffled for bringing different slots out of the same parking lot
+      next to each other.
+
+  Returns:
+    A boolean value indicating if there is any violation of requested time
+    windows for pick up or deliveries.
+  """
+  route = scenario.routes[vehicle_index]
+  visits = cfr_json.get_visits(route)
+
+  shift_up_violation = False
+  shift_down_violation = False
+
+  # Reshuffle-1: Shift up the second visit after the first visit.
+  # This one checks violation where we are shifting the repeat slot after the
+  # first slot. e.g. 1a 2 3 1b --> 1a 1b 2 3
+
+  # Calculate the time spent at end parking lot.
+  duration_end_parking_lot = get_parking_departure_time(
+      route, parking_lot_shipment_list[end].departure_index
+  ) - get_parking_arrival_time(
+      route, parking_lot_shipment_list[end].arrival_index
+  )
+
+  # Check if the reshuffling causes time window violations in any of the slot.
+  for i in range(start, end):
+    arrival_visit_index = parking_lot_shipment_list[i].arrival_index
+    departure_visit_index = parking_lot_shipment_list[i].departure_index
+
+    if detect_violations(
+        scenario=scenario,
+        visits=visits,
+        arrival_visit_index=arrival_visit_index,
+        departure_visit_index=departure_visit_index,
+        time_delta=duration_end_parking_lot,
+    ):
+      shift_up_violation = True
+
+  # Check if the reshuffling causes time window violation for the end/repeat
+  # slot.
+  time_delta = get_parking_departure_time(
+      route=route,
+      departure_visit_index=parking_lot_shipment_list[
+          start - 1
+      ].departure_index,
+  ) - get_parking_arrival_time(
+      route=route,
+      arrival_visit_index=parking_lot_shipment_list[end].arrival_index,
+  )
+
+  if detect_violations(
+      scenario=scenario,
+      visits=visits,
+      arrival_visit_index=parking_lot_shipment_list[end].arrival_index,
+      departure_visit_index=parking_lot_shipment_list[end].departure_index,
+      time_delta=time_delta,
+  ):
+    shift_up_violation = True
+
+  # Reshuffle-2: Shift down the first block (start - 1) to end - 1 position
+  # and all blocks inbetween up by the duration of the first block.
+  # e.g. 1a, 2, 3, 1b --> 2, 3, 1a, 1b
+  duration_start_parking_lot = get_parking_arrival_time(
+      route, parking_lot_shipment_list[start - 1].arrival_index
+  ) - get_parking_departure_time(
+      route, parking_lot_shipment_list[start - 1].departure_index
+  )
+
+  # Check if the reshuffling causes time window violations in any of the slot.
+  for i in range(start, end):
+    if detect_violations(
+        scenario=scenario,
+        visits=visits,
+        arrival_visit_index=parking_lot_shipment_list[i].arrival_index,
+        departure_visit_index=parking_lot_shipment_list[i].departure_index,
+        time_delta=duration_start_parking_lot,
+    ):
+      shift_down_violation = True
+
+  # Check if the reshuffling causes time window violation for the first slot.
+  # 1(e) 2 3 1 --> 2 3 1(e) 1
+  time_delta = get_parking_arrival_time(
+      route=route,
+      arrival_visit_index=parking_lot_shipment_list[end].arrival_index,
+  ) - get_parking_departure_time(
+      route=route,
+      departure_visit_index=parking_lot_shipment_list[
+          start - 1
+      ].departure_index,
+  )
+
+  if detect_violations(
+      scenario=scenario,
+      visits=visits,
+      arrival_visit_index=parking_lot_shipment_list[start - 1].arrival_index,
+      departure_visit_index=parking_lot_shipment_list[
+          start - 1
+      ].departure_index,
+      time_delta=time_delta,
+  ):
+    shift_down_violation = True
+
+  return shift_up_violation and shift_down_violation
+
+
+def analyse_bad_sandwiches(
+    scenario: Scenario, vehicle_index: int
+) -> tuple[int, Sequence[str]]:
+  """Analyse parking sandwiches to detect good and bad sandwiches.
+
+  The basic ideas here is to shiffle slots such that the slots to the same
+  parking lot can be combined and then check if there is any violation of
+  the shipment time windows specified in the visit requests in all the affected
+  slots.
+
+  For example, if the vehicle is visiting the following parking lots in the
+  order: 1 (e), 2, 3, 1 (l).  Here we marked 1(e) to denote the fist visit to
+  the parking lot 1 and 1(l) is the later visit to the same parking lot. In
+  this case, we consider two shufflings: 1(e), 1(l), 2, 3 and 2, 3, 1(e), 1(l).
+  We discard two more shufflings: 1(l), 1(e), 2, 3 and 2, 3, 1(l), 1(e) as
+  there are more chances of the time window constraints specified in 1(e) and
+  1(l) respectively in these shufflings.
+
+  For shuffling: 1(e), 1(l), 2, 3, we check for constraint violations in 1(l),
+  2 and 3. And for shuffling: 2, 3, 1(e), 1(l), we check for constraint
+  violations in 2, 3 and 1(e).
+
+  Args:
+    scenario: The scenario in which the number of sandwiches is computed.
+    vehicle_index: The index of the vehicle for which the number of sandwiches
+      is computed.
+
+  Returns:
+    A list of parking tag with bad sandwich.
+  """
+  num_sandwiches = 0
+  bad_sandwich_tags = []
+  parking_wise_shipment_list = []
+  visited_parking_dict = {}
+
+  for (
+      parking_tag,
+      _,
+      group_shipments,
+      arrival_visit_index,
+      departure_visit_index,
+  ) in group_global_visits(scenario, vehicle_index):
+    shipment_pos = len(parking_wise_shipment_list)
+    parking_wise_shipment_list.append(
+        ParkingwiseShipmentDetails(
+            parking_tag,
+            group_shipments,
+            arrival_visit_index,
+            departure_visit_index,
+        )
+    )
+
+    if parking_tag is None:
+      # This is a shipment delivered directly. These never make a sandwich.
+      continue
+
+    previous_visits = visited_parking_dict.get(parking_tag)
+    if previous_visits is None:
+      # The first visit (of this vehicle) to this parking.
+      visited_parking_dict[parking_tag] = [shipment_pos]
+    else:
+      # This vehicle already visited this parking, this is a sandwich. We check
+      # whether the current visit makes a bad sandwich in conjunction with any
+      # of the previous visits.
+      num_sandwiches += 1
+      for previous_visit in previous_visits:
+        if not shuffle_and_check_violations(
+            scenario,
+            vehicle_index,
+            parking_wise_shipment_list,
+            previous_visit + 1,
+            shipment_pos,
+        ):
+          bad_sandwich_tags.append(parking_tag)
+          # Once we discover that this visit is part of one bad sandwich, we do
+          # not need to look at the others.
+          break
+      previous_visits.append(shipment_pos)
+
+  return num_sandwiches, bad_sandwich_tags
 
 
 def get_num_sandwiches(

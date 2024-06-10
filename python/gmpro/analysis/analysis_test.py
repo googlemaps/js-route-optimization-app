@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import datetime
 import unittest
 
@@ -68,15 +69,22 @@ class GroupGlobalVisits(unittest.TestCase):
         )
     )
     for group, expected_group in zip(groups, expected_groups, strict=True):
-      (tag, num_rounds, shipments, arrival_visit_index,
-       departure_visit_index) = group
+      (
+          tag,
+          num_rounds,
+          shipments,
+          arrival_visit_index,
+          departure_visit_index,
+      ) = group
 
       visits = cfr_json.get_visits(self._scenario.routes[0])
       if tag is not None:
         self.assertEqual(
-            visits[arrival_visit_index]["shipmentLabel"], f"{tag} arrival")
+            visits[arrival_visit_index]["shipmentLabel"], f"{tag} arrival"
+        )
         self.assertEqual(
-            visits[departure_visit_index]["shipmentLabel"], f"{tag} departure")
+            visits[departure_visit_index]["shipmentLabel"], f"{tag} departure"
+        )
 
       expected_tag, expected_num_rounds, expected_num_shipments = expected_group
       with self.subTest(f"group {expected_group!r}"):
@@ -201,6 +209,69 @@ class GetNumSandwichesTest(unittest.TestCase):
     )
     self.assertEqual(num_sandwiches, 2)
     self.assertSequenceEqual(bad_sandwich_tags, ("P0005",))
+
+
+class AnalyseBadSandwichesTest(unittest.TestCase):
+  """Tests for get_num_sandwiches."""
+
+  def setUp(self):
+    super().setUp()
+    self._scenario = analysis.Scenario(
+        name="moderate",
+        scenario=_SCENARIO,
+        solution=_SOLUTION,
+        parking_json=_PARKING_JSON,
+    )
+
+  def test_bad_sandwiches_v0001(self):
+    num_sandwiches, bad_sandwich_tags = analysis.analyse_bad_sandwiches(
+        self._scenario, 0
+    )
+    self.assertEqual(num_sandwiches, 2)
+    self.assertSequenceEqual(bad_sandwich_tags, ())
+
+  def test_bad_sandwiches_v0001_after_removing_time_windows(self):
+    updated_scenario = copy.deepcopy(self._scenario)
+    shipments = updated_scenario.model["shipments"]
+    for shipment in shipments:
+      pickups = shipment.get("pickups", ())
+      for pickup in pickups:
+        pickup["timeWindows"] = []
+
+      deliveries = shipment.get("deliveries", ())
+      for delivery in deliveries:
+        delivery["timeWindows"] = []
+
+    num_sandwiches, bad_sandwich_tags = analysis.analyse_bad_sandwiches(
+        updated_scenario, 0
+    )
+    self.assertEqual(num_sandwiches, 2)
+    self.assertSequenceEqual(bad_sandwich_tags, ["P0001", "P0012"])
+
+  def test_bad_sandwiches_v0008(self):
+    num_sandwiches, bad_sandwich_tags = analysis.analyse_bad_sandwiches(
+        self._scenario, 7
+    )
+    self.assertEqual(num_sandwiches, 2)
+    self.assertSequenceEqual(bad_sandwich_tags, [])
+
+  def test_bad_sandwiches_v0008_after_removing_time_windows(self):
+    updated_scenario = copy.deepcopy(self._scenario)
+    shipments = updated_scenario.model["shipments"]
+    for shipment in shipments:
+      pickups = shipment.get("pickups", ())
+      for pickup in pickups:
+        pickup["timeWindows"] = []
+
+      deliveries = shipment.get("deliveries", ())
+      for delivery in deliveries:
+        delivery["timeWindows"] = []
+
+    num_sandwiches, bad_sandwich_tags = analysis.analyse_bad_sandwiches(
+        updated_scenario, 7
+    )
+    self.assertEqual(num_sandwiches, 2)
+    self.assertSequenceEqual(bad_sandwich_tags, ["P0005", "P0002"])
 
 
 class GetParkingPartyStats(unittest.TestCase):
