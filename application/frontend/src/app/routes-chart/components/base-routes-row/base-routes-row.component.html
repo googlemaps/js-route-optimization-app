@@ -6,7 +6,10 @@
   </mat-checkbox>
   <div>
     <div class="text__title mb-0">
-      <a href="javascript:void(0)" title="View metadata" (click)="viewMetadata.emit(vehicle.id)">
+      <a
+        href="javascript:void(0)"
+        [title]="'View metadata for ' + (vehicle | entityName: 'Vehicle')"
+        (click)="viewMetadata.emit(vehicle.id)">
         {{
           (vehicle | entityName: 'Vehicle').length <= maxNameLength
             ? (vehicle | entityName: 'Vehicle')
