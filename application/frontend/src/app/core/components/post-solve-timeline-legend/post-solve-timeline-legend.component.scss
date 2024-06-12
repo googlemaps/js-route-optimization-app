@@ -1,3 +1,5 @@
+@import '../../../../styles/variables.scss';
+
 .legend-container {
   display: flex;
   flex-direction: row;
@@ -9,4 +11,8 @@
     flex-direction: column;
     min-width: 70px;
   }
+}
+
+line.driving, line.idle-time, line.service {
+  stroke: $blue-dark;
 }
