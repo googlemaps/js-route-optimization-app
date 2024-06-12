@@ -77,6 +77,7 @@ export class TimelineComponent implements OnChanges, OnInit, OnDestroy {
   @Input() pointsOfInterest: PointOfInterest[];
   @Input() offset?: number;
   @Input() timezoneOffset = 0;
+  @Input() color = '#1a73e8';
 
   get lineAttributeLookup(): { [key: number]: TimelineLineAttribute } {
     return TimelineComponent.lineAttributeLookup;

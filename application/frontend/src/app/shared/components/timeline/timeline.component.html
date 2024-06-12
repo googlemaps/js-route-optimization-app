@@ -46,7 +46,7 @@
         [attr.x2]="s[2]"
         y2="50%"
         [ngClass]="attr.class"
-        [attr.stroke]="attr.stroke" />
+        [attr.stroke]="attr.stroke ?? color" />
     </g>
   </g>
   <g *ngIf="scrubTimePoint">
