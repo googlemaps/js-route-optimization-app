@@ -1,5 +1,8 @@
 <svg>
   <defs>
+    <mask id="BreakMask">
+      <rect x="0" y="0" width="100%" height="100%" fill="url(#BreakPattern)"></rect>
+    </mask>
     <pattern
       id="BreakPattern"
       viewBox="0,0,7,8"
@@ -8,7 +11,7 @@
       width="7"
       height="8"
       patternUnits="userSpaceOnUse">
-      <rect fill="white" width="7" height="8" />
+      <!-- <rect fill="white" width="7" height="8" /> -->
       <path class="break-time" d="M0 4L3 0" />
     </pattern>
     <linearGradient id="ScrubMaskPattern" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="pad">
