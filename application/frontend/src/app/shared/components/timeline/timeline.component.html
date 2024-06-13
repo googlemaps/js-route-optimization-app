@@ -40,13 +40,24 @@
   <g *ngFor="let s of segments">
     <g *ngIf="lineAttributeLookup[s[0]] as attr">
       <title>{{ attr.title + ' ' + s[3] }}</title>
-      <line
-        [attr.x1]="s[1]"
-        y1="50%"
-        [attr.x2]="s[2]"
-        y2="50%"
-        [ngClass]="attr.class"
-        [attr.stroke]="attr.stroke ?? color" />
+      <ng-container *ngIf="attr.class !== 'break-time'; else breakRect">
+        <line
+          [attr.x1]="s[1]"
+          y1="50%"
+          [attr.x2]="s[2]"
+          y2="50%"
+          [ngClass]="attr.class"
+          [attr.stroke]="attr.stroke ?? color" />
+      </ng-container>
+      <ng-template #breakRect>
+        <rect
+          [attr.x]="s[1]"
+          [attr.width]="s[2] - s[1]"
+          y="3.5px"
+          height="7px"
+          [attr.fill]="color"
+          mask="url(#BreakMask)"/>
+      </ng-template>
     </g>
   </g>
   <g *ngIf="scrubTimePoint">

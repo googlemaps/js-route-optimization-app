@@ -59,7 +59,6 @@ export class TimelineComponent implements OnChanges, OnInit, OnDestroy {
       class: 'break-time',
       offset: 0,
       zIndex: 2,
-      stroke: 'url(#BreakPattern)',
       title: 'Break time',
     },
   };
