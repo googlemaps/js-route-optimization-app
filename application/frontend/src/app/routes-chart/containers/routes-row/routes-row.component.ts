@@ -192,8 +192,10 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
     this.range$ = this.store.pipe(select(RoutesChartSelectors.selectRange));
 
     this.color$ = this.route$.pipe(
-      switchMap((route) => this.store.pipe(select(RoutesChartSelectors.selectRouteColor(route.id)))),
-      map(color => color?.hex)
+      switchMap((route) =>
+        this.store.pipe(select(RoutesChartSelectors.selectRouteColor(route.id)))
+      ),
+      map((color) => color?.hex)
     );
   }
 

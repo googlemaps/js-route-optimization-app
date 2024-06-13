@@ -29,7 +29,13 @@
     </div>
     <div class="percent-label">
       <svg width="100%" height="14">
-        <rect x="10%" y="3.5px" width="80%" height="7px" class="break-time" mask="url(#BreakMask)"></rect>
+        <rect
+          x="10%"
+          y="3.5px"
+          width="80%"
+          height="7px"
+          class="break-time"
+          mask="url(#BreakMask)"></rect>
       </svg>
       <div class="mat-body-strong">
         {{ formattedVehicleTimeAverages?.breakTime || 0 | number: '1.0-0' }}%

@@ -13,7 +13,9 @@
   }
 }
 
-line.driving, line.idle-time, line.service {
+line.driving,
+line.idle-time,
+line.service {
   stroke: $blue-dark;
 }
 

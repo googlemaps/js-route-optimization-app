@@ -102,10 +102,8 @@ const selectSelectedRoutesColors = createSelector(
   }
 );
 
-const selectRouteColor = (id: number) => createSelector(
-  selectSelectedRoutesColors,
-  (colors) => colors[id]
-)
+const selectRouteColor = (id: number) =>
+  createSelector(selectSelectedRoutesColors, (colors) => colors[id]);
 
 const selectSelectedRoutesVisitIds = createSelector(
   selectSelectedRoutes,
