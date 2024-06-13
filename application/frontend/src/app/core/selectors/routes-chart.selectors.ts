@@ -102,6 +102,11 @@ const selectSelectedRoutesColors = createSelector(
   }
 );
 
+const selectRouteColor = (id: number) => createSelector(
+  selectSelectedRoutesColors,
+  (colors) => colors[id]
+)
+
 const selectSelectedRoutesVisitIds = createSelector(
   selectSelectedRoutes,
   ShipmentRouteSelectors.selectRoutesVisitIdsFn,
@@ -352,6 +357,7 @@ export const RoutesChartSelectors = {
   selectSelectedRoutesLookup,
   selectSelectedRoutesColorIndexes,
   selectSelectedRoutesColors,
+  selectRouteColor,
   selectSelectedRoutesVisitIds,
   selectSelectedRoute,
   selectFilteredRoutes,
