@@ -20,7 +20,12 @@
   </span>
   <!-- title -->
   <ng-container *ngIf="postSolve && visit; else visitRequestTitleTemplate">
-    <span>{{ visit | entityName: 'Visit' }}</span>
+    <span>
+      Shipment:
+      <span [ngClass]="{ link: navigation }" (click)="onShipmentClick()">
+        <span class="strong">{{ shipment | entityName }}</span>
+      </span>
+    </span>
   </ng-container>
   <ng-template #visitRequestTitleTemplate>
     <span>{{ visitRequest | entityName: 'Visit Request' }}</span>
@@ -28,10 +33,7 @@
 </div>
 <div class="text__caption mt-1">
   <div>
-    Shipment:
-    <span [ngClass]="{ link: navigation }" (click)="onShipmentClick()">
-      <span class="strong">{{ shipment | entityName }}</span>
-    </span>
+    <span>{{ visit | entityName: 'Visit:' }}</span>
   </div>
   <div *ngIf="visit">
     Visit Type: <span class="strong">{{ visit.isPickup ? 'Pickup' : 'Delivery' }}</span>
