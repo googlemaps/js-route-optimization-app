@@ -40,6 +40,8 @@ export class TableControlBarComponent {
 
   @Input() page: Page;
 
+  @Output() resetView = new EventEmitter();
+
   Page = Page;
 
   onDisplayColumnChange(column: Column, active: boolean): void {

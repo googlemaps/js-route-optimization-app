@@ -1,7 +1,8 @@
 <app-table-control-bar
   [showModelSettings]="false"
   [displayColumns]="displayColumns$ | async"
-  (displayColumnChange)="onDisplayColumnChange($event)">
+  (displayColumnChange)="onDisplayColumnChange($event)"
+  [page]="page$ | async">
   <mat-divider preUndoRedo vertical></mat-divider>
   <mat-button-toggle-group
     preUndoRedo

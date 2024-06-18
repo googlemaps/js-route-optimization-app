@@ -148,4 +148,8 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
   onRangeOffsetChange(rangeOffset: number): void {
     this.store.dispatch(PostSolveControlBarActions.changeRangeOffset({ rangeOffset }));
   }
+
+  onResetView(): void {
+    this.store.dispatch(RoutesChartActions.resetView());
+  }
 }

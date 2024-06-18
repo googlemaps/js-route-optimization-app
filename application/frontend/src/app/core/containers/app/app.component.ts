@@ -83,6 +83,7 @@ export class AppComponent {
       'pdf',
       'play',
       'pickup',
+      'reset_settings',
       'route',
       'satellite',
       'save_alt',

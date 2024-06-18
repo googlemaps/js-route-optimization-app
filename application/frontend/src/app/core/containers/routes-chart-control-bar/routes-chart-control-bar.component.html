@@ -1,4 +1,7 @@
-<app-table-control-bar [showModelSettings]="false">
+<app-table-control-bar
+  [showModelSettings]="false"
+  [page]="page$ | async"
+  (resetView)="onResetView()">
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"

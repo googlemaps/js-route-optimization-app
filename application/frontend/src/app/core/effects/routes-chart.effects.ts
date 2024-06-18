@@ -76,5 +76,24 @@ export class RoutesChartEffects {
     )
   );
 
+  resetViewEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RoutesChartActions.resetView),
+      mergeMap(() =>
+        this.store.pipe(
+          select(RoutesChartSelectors.selectRoutes),
+          take(1),
+          withLatestFrom(this.store.pipe(select(RoutesChartSelectors.selectDefaultRangeOffset))),
+          map(([routes, defaultRangeOffset]) => {
+            return RoutesChartActions.setView({
+              selectedRouteIds: routes.map((r) => r.id),
+              rangeOffset: defaultRangeOffset,
+            });
+          })
+        )
+      )
+    )
+  );
+
   constructor(private actions$: Actions, private store: Store<fromRoot.State>) {}
 }
