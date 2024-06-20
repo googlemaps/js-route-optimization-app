@@ -173,6 +173,7 @@ export class GanttChartComponent<T = any>
     this.resizeObserver = new ResizeObserver((entries) => {
       if (entries.length) {
         this.zone.run(() => {
+          this.viewPort.checkViewportSize();
           this.viewPortWidth = entries[0].target.clientWidth;
           this.changeDetector.markForCheck();
         });
