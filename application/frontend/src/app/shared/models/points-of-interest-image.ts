@@ -34,16 +34,16 @@ export const pointsOfInterestImages = {
   },
   [PointOfInterestCategory.Pickup]: {
     href: `/assets/images/pickup.svg`,
-    width: 12.316,
-    height: 10.526,
+    width: 13,
+    height: 13,
     yOffset: 0,
     title: 'Pickup',
   },
   [PointOfInterestCategory.Delivery]: {
     href: '/assets/images/dropoff.svg',
-    width: 12.315,
-    height: 10.527,
-    yOffset: -1,
+    width: 13,
+    height: 13,
+    yOffset: 0,
     title: 'Delivery',
   },
   [PointOfInterestCategory.ServiceCall]: {

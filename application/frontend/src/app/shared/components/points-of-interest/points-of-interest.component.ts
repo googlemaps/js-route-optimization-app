@@ -67,6 +67,7 @@ export class PointsOfInterestComponent implements OnChanges {
   @Input() timezoneOffset: number;
   @Input() routeId: number;
   @Input() changedVisits: ChangedVisits;
+  @Input() color: string;
   @Output() pointOfInterestClick = new EventEmitter<PointOfInterestClick>();
 
   get imageAttributeLookup(): { [key: string]: PointsOfInterestImageAttribute } {

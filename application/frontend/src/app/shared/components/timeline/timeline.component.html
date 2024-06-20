@@ -17,7 +17,14 @@
     y2="50%" />
   <g *ngIf="availabilityRange">
     <title>Vehicle availability {{ getSegmentTitle(availability[0], availability[1]) }}</title>
-    <rect [attr.x]="availabilityRange[0]" y="0" [attr.width]="availabilityRange[1] - availabilityRange[0]" height="100%" fill="none" [attr.stroke]="color" stroke-width="2px"/>
+    <rect
+      [attr.x]="availabilityRange[0]"
+      y="0"
+      [attr.width]="availabilityRange[1] - availabilityRange[0]"
+      height="100%"
+      fill="none"
+      [attr.stroke]="color"
+      stroke-width="2px" />
   </g>
   <line
     [attr.x1]="segmentsBound[0]"
