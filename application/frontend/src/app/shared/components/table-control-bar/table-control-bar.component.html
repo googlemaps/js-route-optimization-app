@@ -1,17 +1,6 @@
 <ng-content></ng-content>
 <ng-content select="[preUndoRedo]"></ng-content>
 <app-undo-redo></app-undo-redo>
-<button
-  *ngIf="page === Page.RoutesChart"
-  mat-button
-  class="mat-elevation-z0"
-  color=""
-  aria-label="Reset view"
-  (click)="resetView.emit()"
-  title="Reset view">
-  <mat-icon svgIcon="reset_settings"></mat-icon>
-  <span class="reset-text">Reset view</span>
-</button>
 <button *ngIf="showModelSettings" mat-button (click)="openShipmentModelSettings.emit()">
   <mat-icon svgIcon="settings" class="mr-2"></mat-icon>Shipment model settings
 </button>

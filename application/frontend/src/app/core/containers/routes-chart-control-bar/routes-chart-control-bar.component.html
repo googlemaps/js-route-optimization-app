@@ -1,7 +1,4 @@
-<app-table-control-bar
-  [showModelSettings]="false"
-  [page]="page$ | async"
-  (resetView)="onResetView()">
+<app-table-control-bar [showModelSettings]="false">
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"
@@ -9,6 +6,18 @@
     (editFilter)="onEditFilter($event)"
     (removeFilter)="onRemoveFilter($event)">
   </app-filter-menu>
+  <mat-divider vertical></mat-divider>
+  <button
+    mat-button
+    class="mat-elevation-z0"
+    color=""
+    aria-label="Reset view"
+    [disabled]="!(viewHasChanged$ | async)"
+    (click)="onResetView()"
+    title="Reset view">
+    <mat-icon svgIcon="reset_settings"></mat-icon>
+    <span class="reset-text">Reset view</span>
+  </button>
   <mat-divider preUndoRedo vertical></mat-divider>
   <mat-button-toggle-group
     preUndoRedo

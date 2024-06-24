@@ -39,7 +39,7 @@ describe('RoutesChartEffects', () => {
             { selector: ShipmentModelSelectors.selectGlobalDuration, value: null },
             { selector: RoutesChartSelectors.selectFilteredRoutes, value: [] },
             { selector: RoutesChartSelectors.selectDefaultRangeOffset, value: 0 },
-            { selector: RoutesChartSelectors.selectRoutes, value: [] }
+            { selector: RoutesChartSelectors.selectRoutes, value: [] },
           ],
         }),
       ],
