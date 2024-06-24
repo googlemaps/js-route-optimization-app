@@ -30,9 +30,8 @@ import { ActiveFilter } from 'src/app/shared/models';
 import { FilterService } from 'src/app/shared/services';
 import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
 import { PreSolveShipmentActions } from '../../actions';
-import { Column, Modal, Page, ShipmentFilterOption } from '../../models';
+import { Column, Modal, ShipmentFilterOption } from '../../models';
 import PreSolveShipmentSelectors from '../../selectors/pre-solve-shipment.selectors';
-import { selectPage } from '../../selectors/ui.selectors';
 import { MatDialog } from '@angular/material/dialog';
 import { ShipmentModelSettingsComponent } from '../shipment-model-settings/shipment-model-settings.component';
 
@@ -49,7 +48,6 @@ export class ShipmentsControlBarComponent implements OnDestroy {
   readonly filterOptions$: Observable<ShipmentFilterOption[]>;
   readonly filters$: Observable<ActiveFilter[]>;
   readonly displayColumns$: Observable<Column[]>;
-  readonly page$: Observable<Page>;
 
   private addSubscription: Subscription;
   private editSubscription: Subscription;
@@ -66,7 +64,6 @@ export class ShipmentsControlBarComponent implements OnDestroy {
     this.displayColumns$ = store.pipe(
       select(PreSolveShipmentSelectors.selectAvailableDisplayColumnsOptions)
     );
-    this.page$ = store.pipe(select(selectPage));
   }
 
   ngOnDestroy(): void {

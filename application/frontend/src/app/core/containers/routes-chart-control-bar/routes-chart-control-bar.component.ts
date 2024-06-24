@@ -23,7 +23,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { exhaustMap, map, take } from 'rxjs/operators';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import RoutesChartSelectors from 'src/app/core/selectors/routes-chart.selectors';
@@ -61,6 +61,7 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
   globalDuration$: Observable<[Long, Long]>;
   private addSubscription: Subscription;
   private editSubscription: Subscription;
+  viewHasChanged$: Observable<boolean>;
 
   get Page(): typeof Page {
     return Page;
@@ -85,6 +86,7 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
       select(fromUI.selectPage),
       map((page) => (page === Page.ShipmentsMetadata ? Page.RoutesMetadata : page))
     );
+    this.viewHasChanged$ = this.store.pipe(select(RoutesChartSelectors.selectViewHasChanged));
   }
 
   ngOnDestroy(): void {
@@ -147,5 +149,9 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
 
   onRangeOffsetChange(rangeOffset: number): void {
     this.store.dispatch(PostSolveControlBarActions.changeRangeOffset({ rangeOffset }));
+  }
+
+  onResetView(): void {
+    this.store.dispatch(RoutesChartActions.resetView());
   }
 }

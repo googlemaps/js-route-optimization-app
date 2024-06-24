@@ -137,7 +137,17 @@ export const reducer = createReducer(
         []
       ),
     };
-  })
+  }),
+  on(RoutesChartActions.setView, (state, props) => ({
+    ...state,
+    selectedRoutes: props.selectedRouteIds,
+    filters: [],
+    pageIndex: 0,
+    pageSize: 50,
+    addedRange: 0,
+    rangeIndex: chartConfig.day.defaultRangeIndex,
+    rangeOffset: props.rangeOffset,
+  }))
 );
 
 export const selectSelectedRoutes = (state: State): number[] => state.selectedRoutes;

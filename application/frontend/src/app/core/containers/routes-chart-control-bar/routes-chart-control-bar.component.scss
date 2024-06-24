@@ -28,3 +28,13 @@ mat-divider {
 app-time-navigation {
   margin-right: 16px;
 }
+
+.reset-text {
+  margin-top: 2px;
+}
+
+@media only screen and (max-width: 1600px) {
+  .reset-text {
+    display: none;
+  }
+}

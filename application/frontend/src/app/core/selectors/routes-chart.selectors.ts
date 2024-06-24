@@ -335,6 +335,36 @@ const selectDuration = createSelector(selectRange, selectRangeOffset, (range, of
   return [start, start.add(range)] as [Long, Long];
 });
 
+const selectViewHasChanged = createSelector(
+  selectFilters,
+  selectPageIndex,
+  selectPageSize,
+  selectAddedRange,
+  selectRangeIndex,
+  selectRangeOffset,
+  selectDefaultRangeOffset,
+  selectRoutes,
+  selectSelectedRoutes,
+  (
+    filters,
+    pageIndex,
+    pageSize,
+    addedRange,
+    rangeIndex,
+    rangeOffset,
+    defaultRangeOffset,
+    routes,
+    selectedRoutes
+  ) =>
+    filters.length > 0 ||
+    pageIndex !== 0 ||
+    pageSize !== 50 ||
+    addedRange !== 0 ||
+    rangeIndex !== chartConfig.day.defaultRangeIndex ||
+    rangeOffset !== defaultRangeOffset ||
+    routes.length !== selectedRoutes.length
+);
+
 export const RoutesChartSelectors = {
   selectView,
   selectRangeIndex,
@@ -378,6 +408,7 @@ export const RoutesChartSelectors = {
   selectNextColumnOffset,
   selectNextRangeOffset,
   selectDuration,
+  selectViewHasChanged,
 };
 
 export default RoutesChartSelectors;

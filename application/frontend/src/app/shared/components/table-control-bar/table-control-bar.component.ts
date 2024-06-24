@@ -22,7 +22,7 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { Column, Page } from 'src/app/core/models';
+import { Column } from 'src/app/core/models';
 
 @Component({
   selector: 'app-table-control-bar',
@@ -37,10 +37,6 @@ export class TableControlBarComponent {
 
   @Input() displayColumns: Column[];
   @Output() displayColumnChange = new EventEmitter<{ columnId: string; active: boolean }>();
-
-  @Input() page: Page;
-
-  Page = Page;
 
   onDisplayColumnChange(column: Column, active: boolean): void {
     this.displayColumnChange.emit({ columnId: column.id, active });

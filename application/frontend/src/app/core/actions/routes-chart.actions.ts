@@ -89,3 +89,10 @@ export const mouseEnterVisitRequest = createAction(
 );
 
 export const mouseExitVisitRequest = createAction('[RoutesChart] Mouse Exit Visit Request');
+
+export const resetView = createAction('[RoutesChart] Reset View');
+
+export const setView = createAction(
+  '[RoutesChart] Set View',
+  props<{ selectedRouteIds: number[]; rangeOffset: number }>()
+);
