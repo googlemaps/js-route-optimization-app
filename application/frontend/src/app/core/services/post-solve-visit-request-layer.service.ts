@@ -24,13 +24,14 @@ import {
 } from '../selectors/post-solve-visit-request-layer.selectors';
 import { BaseVisitRequestLayer } from './base-visit-request-layer.service';
 import { MapService } from './map.service';
+import { TextLayer } from '@deck.gl/layers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
-    super(mapService, store, zone);
+    super(mapService, store, zone, [302, 96]);
     this.store.pipe(select(selectFilteredVisitRequests)).subscribe((visitRequests) => {
       this.onDataFiltered(visitRequests);
     });
@@ -53,5 +54,24 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
       : data.pickup
       ? `pickup-${this.defaultColor}-skipped`
       : `dropoff-${this.defaultColor}-skipped`;
+  }
+
+  protected getIconAtlas(): string {
+    return './assets/images/dropoff_pickup_label_sprite.png';
+  }
+
+  protected onDataFiltered(data): void {
+    this.labelLayer = new TextLayer({
+      id: `${this.layerId}-label`,
+      data,
+      fontFamily: 'Google Sans, Roboto, "Helvetica Neue", sans-serif',
+      getPosition: (d) => d.arrivalPosition,
+      getTextAnchor: 'middle',
+      getSize: 16,
+      getColor: [255, 255, 255],
+      getText: (d) => `${d.shipmentId}`,
+      getPixelOffset: [6, 1],
+    });
+    super.onDataFiltered(data);
   }
 }

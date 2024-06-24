@@ -16,7 +16,7 @@ limitations under the License.
 
 import { NgZone } from '@angular/core';
 import { GoogleMapsOverlay } from '@deck.gl/google-maps';
-import { IconLayer } from '@deck.gl/layers';
+import { IconLayer, TextLayer } from '@deck.gl/layers';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import { UIActions } from '../actions';
@@ -26,8 +26,10 @@ export abstract class BaseVisitRequestLayer {
   constructor(
     protected mapService: MapService,
     protected store: Store<State>,
-    protected zone: NgZone
+    protected zone: NgZone,
+    protected defaultIconSize: [number, number] = [64, 44]
   ) {
+    this.iconSize = defaultIconSize;
     this.getIconMapping();
   }
   protected abstract layerId: string;
@@ -42,14 +44,15 @@ export abstract class BaseVisitRequestLayer {
     this.gLayer.setMap(this._visible ? this.mapService.map : null);
   }
 
-  private gLayer: GoogleMapsOverlay = new GoogleMapsOverlay({});
-  private layer: IconLayer = new IconLayer({});
-  private selectedDataLayer: IconLayer = new IconLayer({});
-  private mouseOverLayer: IconLayer = new IconLayer({});
+  protected gLayer: GoogleMapsOverlay = new GoogleMapsOverlay({});
+  protected layer: IconLayer = new IconLayer({});
+  protected selectedDataLayer: IconLayer = new IconLayer({});
+  protected mouseOverLayer: IconLayer = new IconLayer({});
+  protected labelLayer: TextLayer = new TextLayer({});
 
   private _visible: boolean;
 
-  readonly iconSize = [64, 44];
+  readonly iconSize: [number, number];
   private iconMapping = {};
   readonly defaultColor = 'blue-grey';
   readonly defaultSelectedColor = 'red';
@@ -100,7 +103,7 @@ export abstract class BaseVisitRequestLayer {
     'pickup',
   ];
 
-  private getIconMapping(): void {
+  protected getIconMapping(): void {
     // dynamically create icon mapping based on sprite
     for (let i = 0; i < this.iconMappingOrder.length; i++) {
       const icon = this.iconMappingOrder[i];
@@ -115,19 +118,20 @@ export abstract class BaseVisitRequestLayer {
     }
   }
 
+  protected getIconAtlas(): string {
+    return './assets/images/dropoff_pickup_sprite.png';
+  }
+
   abstract getDefaultIconFn(data): string;
   protected onDataFiltered(data): void {
     this.layer = new IconLayer({
       id: this.layerId,
       data,
-      iconAtlas: './assets/images/dropoff_pickup_sprite.png',
+      iconAtlas: this.getIconAtlas(),
       iconMapping: this.iconMapping,
       getIcon: (d) => this.getDefaultIconFn(d),
-      sizeUnits: 'meters',
-      sizeMinPixels: 15,
-      sizeMaxPixels: 43.5,
-      getSize: 15,
-      sizeScale: 10,
+      getSize: 10,
+      sizeScale: 2,
       getPosition: (d) => d.arrivalPosition,
       pickable: true,
       onHover: ({ object }) => {
@@ -139,14 +143,16 @@ export abstract class BaseVisitRequestLayer {
         });
       },
     });
-    this.gLayer.setProps({ layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer] });
+    this.gLayer.setProps({
+      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer, this.labelLayer],
+    });
   }
 
   protected onDataSelected(data): void {
     this.selectedDataLayer = new IconLayer({
       id: this.layerId + '-selected',
       data,
-      iconAtlas: './assets/images/dropoff_pickup_sprite.png',
+      iconAtlas: this.getIconAtlas(),
       iconMapping: this.iconMapping,
       getIcon: (d) => {
         const color = (d.color && d.color.name) || this.defaultSelectedColor;
@@ -157,22 +163,21 @@ export abstract class BaseVisitRequestLayer {
           ? `pickup-${this.defaultSelectedColor}`
           : `dropoff-${this.defaultSelectedColor}`;
       },
-      sizeUnits: 'meters',
-      sizeMinPixels: 15,
-      sizeMaxPixels: 43.5,
-      getSize: 15,
-      sizeScale: 10,
+      getSize: 10,
+      sizeScale: 2,
       getPosition: (d) => d.arrivalPosition,
       pickable: false,
     });
-    this.gLayer.setProps({ layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer] });
+    this.gLayer.setProps({
+      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer, this.labelLayer],
+    });
   }
 
   protected onDataMouseOver(data): void {
     this.mouseOverLayer = new IconLayer({
       id: this.layerId + '-mouseOver',
       data,
-      iconAtlas: './assets/images/dropoff_pickup_sprite.png',
+      iconAtlas: this.getIconAtlas(),
       iconMapping: this.iconMapping,
       getIcon: (d) => {
         if (!d.selected) {
@@ -186,14 +191,13 @@ export abstract class BaseVisitRequestLayer {
           ? `pickup-${this.defaultSelectedColor}`
           : `dropoff-${this.defaultSelectedColor}`;
       },
-      sizeUnits: 'meters',
-      sizeMinPixels: 21,
-      sizeMaxPixels: 61,
-      getSize: 25,
-      sizeScale: 10,
+      getSize: 15,
+      sizeScale: 2,
       getPosition: (d) => d.arrivalPosition,
       pickable: false,
     });
-    this.gLayer.setProps({ layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer] });
+    this.gLayer.setProps({
+      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer, this.labelLayer],
+    });
   }
 }
