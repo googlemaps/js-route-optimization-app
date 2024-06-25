@@ -334,7 +334,7 @@ export const selectVisitRequestStopOrder = createSelector(
   (routes) => {
     const stopOrders = {}
     Object.keys(routes).forEach(key => routes[key].visits.forEach((id, index) => {
-      stopOrders[id] = index
+      stopOrders[id] = index + 1
     }));
     return stopOrders;
   }
