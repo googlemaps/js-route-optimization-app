@@ -27,10 +27,8 @@ export abstract class BaseVisitRequestLayer {
     protected mapService: MapService,
     protected store: Store<State>,
     protected zone: NgZone,
-    protected defaultIconSize: [number, number] = [64, 44]
   ) {
-    this.iconSize = defaultIconSize;
-    this.getIconMapping();
+    this.iconMapping = this.createIconMapping(this.iconSize);
   }
   protected abstract layerId: string;
   get visible(): boolean {
@@ -52,8 +50,8 @@ export abstract class BaseVisitRequestLayer {
 
   private _visible: boolean;
 
-  readonly iconSize: [number, number];
-  private iconMapping = {};
+  readonly iconSize: [number, number] = [64, 44];
+  protected iconMapping = {};
   readonly defaultColor = 'blue-grey';
   readonly defaultSelectedColor = 'red';
 
@@ -103,19 +101,25 @@ export abstract class BaseVisitRequestLayer {
     'pickup',
   ];
 
-  protected getIconMapping(): void {
+  protected createIconMapping(iconSize: [number, number]): any {
+    const mapping = {};
     // dynamically create icon mapping based on sprite
     for (let i = 0; i < this.iconMappingOrder.length; i++) {
       const icon = this.iconMappingOrder[i];
-      this.iconMapping[icon] = {
+      mapping[icon] = {
         x: 0,
-        y: this.iconSize[1] * i,
-        width: this.iconSize[0],
+        y: iconSize[1] * i,
+        width: iconSize[0],
         // clip height by 1 pixel to reduce a noticeable artifact that's more
         // prominent on deliveries when zoomed out
-        height: this.iconSize[1] - 1,
+        height: iconSize[1] - 1,
       };
     }
+    return mapping;
+  }
+
+  protected getIconMapping(): any {
+    return this.iconMapping;
   }
 
   protected getIconAtlas(): string {
@@ -128,7 +132,7 @@ export abstract class BaseVisitRequestLayer {
       id: this.layerId,
       data,
       iconAtlas: this.getIconAtlas(),
-      iconMapping: this.iconMapping,
+      iconMapping: this.getIconMapping(),
       getIcon: (d) => this.getDefaultIconFn(d),
       getSize: 10,
       sizeScale: 2,
@@ -153,7 +157,7 @@ export abstract class BaseVisitRequestLayer {
       id: this.layerId + '-selected',
       data,
       iconAtlas: this.getIconAtlas(),
-      iconMapping: this.iconMapping,
+      iconMapping: this.getIconMapping(),
       getIcon: (d) => {
         const color = (d.color && d.color.name) || this.defaultSelectedColor;
         const key = d.pickup ? `pickup-${color}` : `dropoff-${color}`;
@@ -178,7 +182,7 @@ export abstract class BaseVisitRequestLayer {
       id: this.layerId + '-mouseOver',
       data,
       iconAtlas: this.getIconAtlas(),
-      iconMapping: this.iconMapping,
+      iconMapping: this.getIconMapping(),
       getIcon: (d) => {
         if (!d.selected) {
           return this.getDefaultIconFn(d);

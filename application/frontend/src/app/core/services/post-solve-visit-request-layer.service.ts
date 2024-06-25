@@ -32,26 +32,38 @@ import { combineLatest } from 'rxjs';
 })
 export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   readonly minZoom = 11;
-  currentZoom = 0;
+
+  canShowTextLayer = false;
+
+  readonly capsuleIconSize: [number, number] = [302, 96];
+  private capsuleIconMapping = {};
 
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
-    super(mapService, store, zone, [302, 96]);
-    
-    this.mapService.zoomChanged$.subscribe((zoom) => this.currentZoom = zoom);
+    super(mapService, store, zone);
+
+    this.capsuleIconMapping = this.createIconMapping(this.capsuleIconSize);
     
     combineLatest([
       this.store.pipe(select(selectFilteredVisitRequestsWithStopOrder)),
       this.mapService.zoomChanged$
     ]).subscribe(([visitRequests, zoom]) => {
-      this.currentZoom = zoom;
+      this.canShowTextLayer = zoom >= this.minZoom;
       this.onDataFiltered(visitRequests);
     });
 
-    this.store.pipe(select(selectFilteredVisitRequestsSelected)).subscribe((visitRequests) => {
+    combineLatest([
+      this.store.pipe(select(selectFilteredVisitRequestsSelected)),
+      this.mapService.zoomChanged$
+    ]).subscribe(([visitRequests, zoom]) => {
+      this.canShowTextLayer = zoom >= this.minZoom;
       this.onDataSelected(visitRequests);
     });
 
-    this.store.pipe(select(selectMouseOverVisitRequests)).subscribe((visitRequests) => {
+    combineLatest([
+      this.store.pipe(select(selectMouseOverVisitRequests)),
+      this.mapService.zoomChanged$
+    ]).subscribe(([visitRequests, zoom]) => {
+      this.canShowTextLayer = zoom >= this.minZoom;
       this.onDataMouseOver(visitRequests);
     });
   }
@@ -68,7 +80,11 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   }
 
   protected getIconAtlas(): string {
-    return './assets/images/dropoff_pickup_label_sprite.png';
+    return this.canShowTextLayer ? './assets/images/dropoff_pickup_label_sprite.png' : super.getIconAtlas();
+  }
+
+  protected getIconMapping(): any {
+    return this.canShowTextLayer ? this.capsuleIconMapping : this.iconMapping;
   }
 
   protected onDataFiltered(data): void {
@@ -82,7 +98,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
       getColor: [255, 255, 255],
       getText: (d) => `${d.stopOrder}`,
       getPixelOffset: [6, 1],
-      visible: this.currentZoom >= this.minZoom,
+      visible: this.canShowTextLayer,
     });
     super.onDataFiltered(data);
   }
