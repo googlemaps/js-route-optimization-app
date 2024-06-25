@@ -123,8 +123,8 @@ export const selectFilteredVisitRequestsWithStopOrder = createSelector(
   selectFilteredVisitRequests,
   selectVisitRequestStopOrder,
   (visitRequests, stopOrder) => {
-    const visitRequestsWithOrder = {};
-    visitRequests.forEach(vr => visitRequestsWithOrder[vr.id] = {...vr, stopOrder: stopOrder[vr.id]});
+    const visitRequestsWithOrder = [];
+    visitRequests.forEach(vr => visitRequestsWithOrder.push({...vr, stopOrder: stopOrder[vr.id]}));
     return visitRequestsWithOrder;
   }
 )
