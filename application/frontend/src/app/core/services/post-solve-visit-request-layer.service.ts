@@ -42,10 +42,10 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
     super(mapService, store, zone);
 
     this.capsuleIconMapping = this.createIconMapping(this.capsuleIconSize);
-    
+
     combineLatest([
       this.store.pipe(select(selectFilteredVisitRequestsWithStopOrder)),
-      this.mapService.zoomChanged$
+      this.mapService.zoomChanged$,
     ]).subscribe(([visitRequests, zoom]) => {
       this.canShowTextLayer = zoom >= this.minZoom;
       this.onDataFiltered(visitRequests);
@@ -53,7 +53,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
 
     combineLatest([
       this.store.pipe(select(selectFilteredVisitRequestsSelected)),
-      this.mapService.zoomChanged$
+      this.mapService.zoomChanged$,
     ]).subscribe(([visitRequests, zoom]) => {
       this.canShowTextLayer = zoom >= this.minZoom;
       this.onDataSelected(visitRequests);
@@ -80,7 +80,9 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   }
 
   protected getIconAtlas(): string {
-    return this.canShowTextLayer ? './assets/images/dropoff_pickup_label_sprite.png' : super.getIconAtlas();
+    return this.canShowTextLayer
+      ? './assets/images/dropoff_pickup_label_sprite.png'
+      : super.getIconAtlas();
   }
 
   protected getIconMapping(): any {

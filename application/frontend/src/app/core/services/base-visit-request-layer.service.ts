@@ -26,7 +26,7 @@ export abstract class BaseVisitRequestLayer {
   constructor(
     protected mapService: MapService,
     protected store: Store<State>,
-    protected zone: NgZone,
+    protected zone: NgZone
   ) {
     this.iconMapping = this.createIconMapping(this.iconSize);
   }

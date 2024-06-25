@@ -329,16 +329,15 @@ const selectRoutesDuration = createSelector(
   }
 );
 
-export const selectVisitRequestStopOrder = createSelector(
-  selectEntities,
-  (routes) => {
-    const stopOrders = {}
-    Object.keys(routes).forEach(key => routes[key].visits.forEach((id, index) => {
-      stopOrders[id] = index + 1
-    }));
-    return stopOrders;
-  }
-)
+export const selectVisitRequestStopOrder = createSelector(selectEntities, (routes) => {
+  const stopOrders = {};
+  Object.keys(routes).forEach((key) =>
+    routes[key].visits.forEach((id, index) => {
+      stopOrders[id] = index + 1;
+    })
+  );
+  return stopOrders;
+});
 
 export const ShipmentRouteSelectors = {
   selectRouteByIdFn,
