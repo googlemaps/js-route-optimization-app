@@ -64,6 +64,7 @@ export class MapService {
   private readonly completeEdits$ = new Subject<void>();
   private center: google.maps.LatLngLiteral;
   private zoom = 0;
+  readonly zoomChanged$ = new Subject<number>();
 
   get map(): google.maps.Map {
     return this.map$.getValue();
@@ -84,6 +85,9 @@ export class MapService {
           myMap?.setZoom(this.zoom);
         }
         myMap?.setTilt(0); // disable 45° imagery
+        myMap?.addListener('zoom_changed', () => {
+          this.zone.run(() => this.zoomChanged$.next(this.map.getZoom()));
+        });
         this.map$.next(myMap);
       })
     );

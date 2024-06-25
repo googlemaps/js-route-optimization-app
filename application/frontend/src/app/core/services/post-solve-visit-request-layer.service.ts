@@ -25,14 +25,25 @@ import {
 import { BaseVisitRequestLayer } from './base-visit-request-layer.service';
 import { MapService } from './map.service';
 import { TextLayer } from '@deck.gl/layers';
+import { combineLatest } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
+  readonly minZoom = 11;
+  currentZoom = 0;
+
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone, [302, 96]);
-    this.store.pipe(select(selectFilteredVisitRequestsWithStopOrder)).subscribe((visitRequests) => {
+    
+    this.mapService.zoomChanged$.subscribe((zoom) => this.currentZoom = zoom);
+    
+    combineLatest([
+      this.store.pipe(select(selectFilteredVisitRequestsWithStopOrder)),
+      this.mapService.zoomChanged$
+    ]).subscribe(([visitRequests, zoom]) => {
+      this.currentZoom = zoom;
       this.onDataFiltered(visitRequests);
     });
 
@@ -71,6 +82,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
       getColor: [255, 255, 255],
       getText: (d) => `${d.stopOrder}`,
       getPixelOffset: [6, 1],
+      visible: this.currentZoom >= this.minZoom,
     });
     super.onDataFiltered(data);
   }
