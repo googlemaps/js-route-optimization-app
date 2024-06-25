@@ -18,9 +18,9 @@ import { Injectable, NgZone } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import {
-  selectFilteredVisitRequests,
   selectFilteredVisitRequestsSelected,
   selectMouseOverVisitRequests,
+  selectFilteredVisitRequestsWithStopOrder,
 } from '../selectors/post-solve-visit-request-layer.selectors';
 import { BaseVisitRequestLayer } from './base-visit-request-layer.service';
 import { MapService } from './map.service';
@@ -32,7 +32,7 @@ import { TextLayer } from '@deck.gl/layers';
 export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone, [302, 96]);
-    this.store.pipe(select(selectFilteredVisitRequests)).subscribe((visitRequests) => {
+    this.store.pipe(select(selectFilteredVisitRequestsWithStopOrder)).subscribe((visitRequests) => {
       this.onDataFiltered(visitRequests);
     });
 
@@ -69,7 +69,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
       getTextAnchor: 'middle',
       getSize: 16,
       getColor: [255, 255, 255],
-      getText: (d) => `${d.shipmentId}`,
+      getText: (d) => `${d.stopOrder}`,
       getPixelOffset: [6, 1],
     });
     super.onDataFiltered(data);
