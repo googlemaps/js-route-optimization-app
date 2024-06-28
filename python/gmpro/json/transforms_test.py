@@ -143,6 +143,101 @@ class RemoveShipmentsTest(unittest.TestCase):
     self.assertEqual(new_shipment_for_old_shipment, {})
 
 
+class RemoveShipmentsFromInjectedFirstSolutionRoutes(unittest.TestCase):
+  """Tests for remove_shipments_from_injected_first_solution_routes."""
+
+  maxDiff = None
+
+  _REQUEST: cfr_json.OptimizeToursRequest = {
+      "injectedFirstSolutionRoutes": [
+          {
+              "visits": [
+                  {
+                      "shipmentIndex": 0,
+                      "visitRequestIndex": 1,
+                      "isPickup": True,
+                  },
+                  {
+                      "shipmentIndex": 0,
+                      "visitRequestIndex": 1,
+                      "isPickup": True,
+                  },
+              ],
+              "transitions": [{}, {}, {}],
+          },
+          {
+              "visits": [{"shipmentIndex": 3}, {"shipmentIndex": 4}],
+              "transitions": [{}, {}, {}],
+              "travelSteps": [{}, {}, {}],
+          },
+      ],
+  }
+
+  def test_remove_some_shipments(self):
+    new_shipment_for_old_shipment = {0: 0, 3: 1, 4: 2}
+    request = copy.deepcopy(self._REQUEST)
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "injectedFirstSolutionRoutes": [
+            {
+                "visits": [
+                    {
+                        "shipmentIndex": 0,
+                        "visitRequestIndex": 1,
+                        "isPickup": True,
+                    },
+                    {
+                        "shipmentIndex": 0,
+                        "visitRequestIndex": 1,
+                        "isPickup": True,
+                    },
+                ]
+            },
+            {"visits": [{"shipmentIndex": 1}, {"shipmentIndex": 2}]},
+        ],
+    }
+    transforms.remove_shipments_from_injected_first_solution_routes(
+        request, new_shipment_for_old_shipment
+    )
+    self.assertEqual(request, expected_request)
+
+  def test_remove_used_shipment(self):
+    new_shipment_for_old_shipment = {0: 0, 3: 1}
+    request = copy.deepcopy(self._REQUEST)
+    with self.assertRaises(ValueError):
+      transforms.remove_shipments_from_injected_first_solution_routes(
+          request, new_shipment_for_old_shipment
+      )
+
+  def test_remove_used_shipment_drop_visit(self):
+    new_shipment_for_old_shipment = {0: 0, 3: 1}
+    request = copy.deepcopy(self._REQUEST)
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "injectedFirstSolutionRoutes": [
+            {
+                "visits": [
+                    {
+                        "isPickup": True,
+                        "shipmentIndex": 0,
+                        "visitRequestIndex": 1,
+                    },
+                    {
+                        "isPickup": True,
+                        "shipmentIndex": 0,
+                        "visitRequestIndex": 1,
+                    },
+                ]
+            },
+            {"visits": [{"shipmentIndex": 1}]},
+        ]
+    }
+    transforms.remove_shipments_from_injected_first_solution_routes(
+        request,
+        new_shipment_for_old_shipment,
+        shipment_used_in_visit=transforms.OnRemovedShipmentUsedInVisit.REMOVE_VISIT,
+    )
+    self.assertEqual(request, expected_request)
+
+
 class TestUpdateShipmentIndicesInShipmentRoutes(unittest.TestCase):
   """Tests for update_shipment_indices_in_shipment_routes."""
 

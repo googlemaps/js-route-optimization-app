@@ -314,6 +314,72 @@ def remove_vehicles(
   return new_vehicle_for_old_vehicle, new_shipment_for_old_shipment
 
 
+class OnRemovedShipmentUsedInVisit(utils.EnumForArgparse):
+  """Specifies the behavior when a removed shipment is used in a visit.
+
+  Values:
+    FAIL: Raise an exception.
+    REMOVE_VISIT: Remove the concerned visit from the route.
+  """
+
+  FAIL = 0
+  REMOVE_VISIT = 1
+
+
+def remove_shipments_from_injected_first_solution_routes(
+    request: cfr_json.OptimizeToursRequest,
+    new_shipment_for_old_shipment: Mapping[int, int],
+    shipment_used_in_visit: OnRemovedShipmentUsedInVisit = OnRemovedShipmentUsedInVisit.FAIL,
+) -> None:
+  """Removes given shipments from the first solution hint in `request`.
+
+  Args:
+    request: The request in which the shipments are removed.
+    new_shipment_for_old_shipment: A mapping from old shipment indices to new
+      shipment indices. Shipments that were removed are not present in the
+      mapping.
+    allow_dropping_visits: When True, visits that pick up or deliver one of the
+      removed shipments are removed from the injected solution. Otherwise, the
+      function raises an exception when a removed shipment appears in an
+      injected route.
+
+  Raises:
+    ValueError: When one of the removed shipments is used in the injected first
+      solution routes and `allow_dropping_visits` is False.
+  """
+  injected_first_solution_routes = request.get("injectedFirstSolutionRoutes")
+  if injected_first_solution_routes is None:
+    return
+
+  for route in injected_first_solution_routes:
+    old_visits = cfr_json.get_visits(route)
+    if not old_visits:
+      # This is an unused vehicle, nothing to do here.
+      continue
+    # Remove transitions and travel steps from the route. The code below may
+    # remove some visits, which would break basic invariants for visits and
+    # transitions. To avoid this case, we remove them.
+    # TODO(ondrasej): We could also merge transitions/travel steps around the
+    # removed visits. The merged transitions would be taking a potentially
+    # unnecessary detour, but at least all invariants would hold there.
+    route.pop("transitions", None)
+    route.pop("travelSteps", None)
+    new_visits = []
+    for visit in old_visits:
+      old_shipment_index = visit.get("shipmentIndex", 0)
+      new_shipment_index = new_shipment_for_old_shipment.get(old_shipment_index)
+      if new_shipment_index is not None:
+        visit["shipmentIndex"] = new_shipment_index
+        new_visits.append(visit)
+      else:
+        if shipment_used_in_visit == OnRemovedShipmentUsedInVisit.FAIL:
+          raise ValueError(
+              f"Shipment index {old_shipment_index} is used in an injected"
+              " first solution route, but it has been marked as removed."
+          )
+    route["visits"] = new_visits
+
+
 def remove_vehicles_from_injected_first_solution_routes(
     request: cfr_json.OptimizeToursRequest,
     new_vehicle_for_old_vehicle: Mapping[int, int],

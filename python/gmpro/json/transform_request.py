@@ -26,7 +26,7 @@ Typical usage:
 """
 
 import argparse
-from collections.abc import Callable, Iterable, Sequence, Set
+from collections.abc import Callable, Collection, Iterable, Sequence, Set
 import dataclasses
 import enum
 import logging
@@ -134,9 +134,13 @@ class Flags:
 
   duplicate_vehicles_by_label: Sequence[str] | None
   remove_vehicles_by_label: Sequence[str] | None
+  reduce_to_shipments_by_index: Sequence[int] | None
   reduce_to_vehicles_by_label: Sequence[str] | None
   reduce_to_vehicles_by_index: Sequence[int] | None
   infeasible_shipment_after_removing_vehicle: transforms.OnInfeasibleShipment
+  removed_shipment_used_in_injected_route_visit: (
+      transforms.OnRemovedShipmentUsedInVisit
+  )
 
   transform_breaks: str | None
 
@@ -255,6 +259,14 @@ class Flags:
         ),
     )
     parser.add_argument(
+        "--reduce_to_shipments_by_index",
+        type=_parse_comma_separated_index_list,
+        help=(
+            "A comma separated list of shipment indices. Removes all shipments"
+            " whose indices do not appear in this list."
+        ),
+    )
+    parser.add_argument(
         "--reduce_to_vehicles_by_index",
         type=_parse_comma_separated_index_list,
         help=(
@@ -306,6 +318,15 @@ class Flags:
             " infeasible after removing a vehicle."
         ),
         default=transforms.OnInfeasibleShipment.FAIL,
+    )
+    transforms.OnRemovedShipmentUsedInVisit.add_as_argument(
+        parser,
+        "--removed_shipment_used_in_injected_route_visit",
+        help=(
+            "Specifies how to deal with visits that pick up or deliver any of"
+            " the shipment removed via --reduce_to_shipments_by_index."
+        ),
+        default=transforms.OnRemovedShipmentUsedInVisit.FAIL,
     )
 
     parsed_args = parser.parse_args(args)
@@ -373,6 +394,28 @@ def _remove_vehicles_by_label(
   )
   transforms.remove_vehicles_from_injected_first_solution_routes(
       request, new_vehicle_for_old_vehicle, new_shipment_for_old_shipment
+  )
+
+
+def _reduce_to_shipments(
+    request: cfr_json.OptimizeToursRequest,
+    shipment_indices: Collection[int],
+    shipment_used_in_visit: transforms.OnRemovedShipmentUsedInVisit,
+) -> None:
+  """Removes all shipments whose index is not in `shipment_indices`."""
+  model = request["model"]
+  num_shipments = len(cfr_json.get_shipments(model))
+  indices_to_remove = set(range(num_shipments))
+  indices_to_remove.difference_update(shipment_indices)
+
+  new_shipment_for_old_shipment = transforms.remove_shipments(
+      model, indices_to_remove
+  )
+  # Update shipment indices in the injected first solution routes.
+  transforms.remove_shipments_from_injected_first_solution_routes(
+      request,
+      new_shipment_for_old_shipment,
+      shipment_used_in_visit=shipment_used_in_visit,
   )
 
 
@@ -480,6 +523,15 @@ def main(args: Sequence[str] | None = None) -> None:
   if flags.visit_duration_scaling_factor is not None:
     transforms.scale_visit_request_durations(
         model, factor=flags.visit_duration_scaling_factor
+    )
+  # NOTE(ondrasej): Removing shipments must be done before removing vehicles,
+  # because removing vehicles may remove some shipments (and thus invalidate
+  # shipment indices).
+  if flags.reduce_to_shipments_by_index is not None:
+    _reduce_to_shipments(
+        request,
+        flags.reduce_to_shipments_by_index,
+        shipment_used_in_visit=flags.removed_shipment_used_in_injected_route_visit,
     )
   if removed_labels := flags.remove_vehicles_by_label:
     _remove_vehicles_by_label(
