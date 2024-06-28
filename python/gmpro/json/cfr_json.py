@@ -542,6 +542,44 @@ def get_transitions(route: ShipmentRoute) -> Sequence[Transition]:
   return route.get("transitions", ())
 
 
+def get_arrival_waypoint(visit_request: VisitRequest) -> Waypoint | None:
+  """Returns the explicit arrival location or waypoint of a visit request.
+
+  The information is taken from `arrivalLocation` or `arrivalWaypoint`,
+  depending on which one is available. In the former case, returns a new
+  `Waypoint` object that represents the same information.
+
+  Args:
+    visit_request: The visit request.
+
+  Returns:
+    The arrival waypoint. None, if there is neither arrival location nor arrival
+    waypoint is specified explicitly.
+  """
+  if (latlng := visit_request.get("arrivalLocation")) is not None:
+    return {"location": {"latLng": latlng}}
+  return visit_request.get("arrivalWaypoint")
+
+
+def get_departure_waypoint(visit_request: VisitRequest) -> Waypoint | None:
+  """Returns the explicit departure location or waypoint of a visit request.
+
+  The information is taken from `departureLocation` or `departureWaypoint`,
+  depending on which one is available. In the former case, returns a new
+  `Waypoint` object that represents the same information.
+
+  Args:
+    visit_request: The visit request.
+
+  Returns:
+    The departure waypoint. None, if there is departure arrival location nor
+    departure waypoint is specified explicitly.
+  """
+  if (latlng := visit_request.get("departureLocation")) is not None:
+    return {"location": {"latLng": latlng}}
+  return visit_request.get("departureWaypoint")
+
+
 def get_break_earliest_start_time(
     break_request: BreakRequest,
 ) -> datetime.datetime:

@@ -638,6 +638,62 @@ class GetTransitionsTest(unittest.TestCase):
     )
 
 
+class GetArrivalWaypointTest(unittest.TestCase):
+  """Tests for get_arrival_waypoint."""
+
+  def test_with_waypoint(self):
+    visit_request: cfr_json.VisitRequest = {
+        "arrivalWaypoint": {"placeId": "ThisIsAPlace", "sideOfRoad": True}
+    }
+    self.assertEqual(
+        cfr_json.get_arrival_waypoint(visit_request),
+        {"placeId": "ThisIsAPlace", "sideOfRoad": True},
+    )
+
+  def test_with_location(self):
+    visit_request: cfr_json.VisitRequest = {
+        "arrivalLocation": {"latitude": 38.5, "longitude": -120.2}
+    }
+    self.assertEqual(
+        cfr_json.get_arrival_waypoint(visit_request),
+        {"location": {"latLng": {"latitude": 38.5, "longitude": -120.2}}},
+    )
+
+  def test_with_neither(self):
+    visit_request: cfr_json.VisitRequest = {
+        "departureLocation": {"latitude": 38.5, "longitude": -120.2}
+    }
+    self.assertIsNone(cfr_json.get_arrival_waypoint(visit_request))
+
+
+class GetDepartureWaypointTest(unittest.TestCase):
+  """Tests for get_arrival_waypoint."""
+
+  def test_with_waypoint(self):
+    visit_request: cfr_json.VisitRequest = {
+        "departureWaypoint": {"placeId": "ThisIsAPlace", "sideOfRoad": True}
+    }
+    self.assertEqual(
+        cfr_json.get_departure_waypoint(visit_request),
+        {"placeId": "ThisIsAPlace", "sideOfRoad": True},
+    )
+
+  def test_with_location(self):
+    visit_request: cfr_json.VisitRequest = {
+        "departureLocation": {"latitude": 38.5, "longitude": -120.2}
+    }
+    self.assertEqual(
+        cfr_json.get_departure_waypoint(visit_request),
+        {"location": {"latLng": {"latitude": 38.5, "longitude": -120.2}}},
+    )
+
+  def test_with_neither(self):
+    visit_request: cfr_json.VisitRequest = {
+        "arrivalLocation": {"latitude": 38.5, "longitude": -120.2}
+    }
+    self.assertIsNone(cfr_json.get_departure_waypoint(visit_request))
+
+
 class GetBreakPropertiesTest(unittest.TestCase):
   """Tests for accessor functions for BreakRequest."""
 
