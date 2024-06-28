@@ -423,5 +423,43 @@ class VehicleShipmentGroupsTest(unittest.TestCase):
     )
 
 
+class GetVehicleNegativeWaitHours(unittest.TestCase):
+  """Tests for get_vehicle_negative_wait_hours."""
+
+  def test_empty_route(self):
+    route: cfr_json.ShipmentRoute = {}
+    self.assertEqual(
+        analysis.get_vehicle_negative_wait_hours(route), datetime.timedelta()
+    )
+
+  def test_no_negative_wait_duration(self):
+    route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {"waitDuration": "0s"},
+            {"waitDuration": "10s"},
+            {},
+            {"waitDuration": "30s"},
+        ]
+    }
+    self.assertEqual(
+        analysis.get_vehicle_negative_wait_hours(route), datetime.timedelta()
+    )
+
+  def test_some_negative_wait_duration(self):
+    route: cfr_json.ShipmentRoute = {
+        "transitions": [
+            {"waitDuration": "0s"},
+            {"waitDuration": "-10s"},
+            {},
+            {"waitDuration": "30s"},
+            {"waitDuration": "-110s"},
+        ]
+    }
+    self.assertEqual(
+        analysis.get_vehicle_negative_wait_hours(route),
+        datetime.timedelta(seconds=120),
+    )
+
+
 if __name__ == "__main__":
   unittest.main()

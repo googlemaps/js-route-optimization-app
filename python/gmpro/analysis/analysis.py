@@ -1314,6 +1314,27 @@ def consume_suffix(text: str, suffix: str) -> str | None:
   return text[: -len(suffix)]
 
 
+def get_vehicle_negative_wait_hours(
+    route: cfr_json.ShipmentRoute,
+) -> datetime.timedelta:
+  """Returns the amount of negative wait durations along the route.
+
+  Args:
+    route: The route in which this is computed.
+
+  Returns:
+    The total amount of negative wait duration. The returned value is
+    non-negative, i.e. it is the absolute value of the sum of negative wait
+    durations.
+  """
+  negative_wait_duration = datetime.timedelta()
+  for transition in cfr_json.get_transitions(route):
+    wait_duration = transition.get("waitDuration", "0s")
+    if wait_duration.startswith("-"):
+      negative_wait_duration -= cfr_json.parse_duration_string(wait_duration)
+  return negative_wait_duration
+
+
 def get_vehicle_wait_hours(route: cfr_json.ShipmentRoute) -> datetime.timedelta:
   """Returns the amount of time the vehicle spends waiting along the route."""
   # NOTE(ondrasej): The two-step routing library did not always fill in metrics.
