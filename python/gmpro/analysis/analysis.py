@@ -220,6 +220,12 @@ class Scenario:
     """Returns the label of a vehicle."""
     return self.vehicles[vehicle_index].get("label", "")
 
+  def vehicle_labels(self, vehicle_indices: Sequence[int]) -> Sequence[str]:
+    """Returns a sequence of vehicle labels for vehicle indices."""
+    return [
+        self.vehicle_label(vehicle_index) for vehicle_index in vehicle_indices
+    ]
+
 
 @dataclasses.dataclass(frozen=True)
 class ParkingwiseShipmentDetails:
