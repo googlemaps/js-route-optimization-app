@@ -17,6 +17,7 @@
 from collections.abc import Sequence
 import copy
 import datetime
+import logging
 import re
 import unittest
 
@@ -1322,5 +1323,342 @@ class SetBreakStartTimeWindowComponentTimeTest(unittest.TestCase):
       self.assertSequenceEqual(transformed, (expected_break_request,))
 
 
+class RecreateBreaksAtLocationTest(unittest.TestCase):
+  """Tests for recreate_breaks_at_location."""
+
+  maxDiff = None
+
+  def test_no_breaks_at_location(self):
+    model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-02-09T08:00:00Z",
+        "globalEndTime": "2024-02-09T18:00:00Z",
+        "vehicles": [{
+            "breakRule": {
+                "breakRequests": [
+                    {
+                        "earliestStartTime": "2024-02-09T11:30:00Z",
+                        "latestStartTime": "2024-02-09T12:30:00Z",
+                        "minDuration": "3600s",
+                    },
+                    {
+                        "earliestStartTime": "2024-02-09T14:00:00Z",
+                        "latestStartTime": "2024-02-09T16:00:00Z",
+                        "minDuration": "3600s",
+                    },
+                ]
+            }
+        }],
+    }
+    response: cfr_json.OptimizeToursResponse = {
+        "routes": [{
+            "breaks": [
+                {"startTime": "2024-02-09T11:30:00Z", "duration": "3600s"},
+                {"startTime": "2024-02-09T16:00:00Z", "duration": "3600s"},
+            ],
+            "metrics": {
+                "visitDuration": "0s",
+                "breakDuration": "7200s",
+            },
+        }],
+        "metrics": {
+            "aggregatedRouteMetrics": {
+                "visitDuration": "0s",
+                "breakDuration": "7200s",
+            },
+        },
+    }
+    expected_model = copy.deepcopy(model)
+    expected_response = copy.deepcopy(response)
+    transforms_breaks.recreate_breaks_at_location(model, response, ())
+    self.assertEqual(model, expected_model)
+    self.assertEqual(response, expected_response)
+
+  def test_some_breaks_at_location(self):
+    model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-03-12T08:00:00Z",
+        "globalEndTime": "2024-03-12T21:00:00Z",
+        "shipments": [
+            {
+                "deliveries": [{
+                    "arrivalWaypoint": {"placeId": "SomePlaceId"},
+                    "duration": "150s",
+                }],
+                "label": "S001",
+            },
+            {
+                "allowedVehicleIndices": [0],
+                "deliveries": [{
+                    "arrivalWaypoint": {"placeId": "ThisIsAPlaceId"},
+                    "timeWindows": [{
+                        "startTime": "2024-03-12T18:30:00Z",
+                        "endTime": "2024-03-12T18:30:00Z",
+                    }],
+                    "duration": "450s",
+                }],
+                "label": "break, vehicle_index=0",
+            },
+            {
+                "allowedVehicleIndices": [1],
+                "deliveries": [{
+                    "arrivalWaypoint": {"placeId": "ThisIsAPlaceId"},
+                    "timeWindows": [{
+                        "startTime": "2024-03-12T18:30:00Z",
+                        "endTime": "2024-03-12T18:30:00Z",
+                    }],
+                    "duration": "450s",
+                }],
+                "label": "break, vehicle_index=0",
+            },
+        ],
+        "vehicles": [
+            {
+                "breakRule": {
+                    "breakRequests": [{
+                        "earliestStartTime": "2024-03-12T18:00:00Z",
+                        "latestStartTime": "2024-03-12T19:52:30Z",
+                        "minDuration": "3600s",
+                    }]
+                },
+            },
+            {},
+        ],
+    }
+    response: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "visits": [
+                    {
+                        "shipmentIndex": 0,
+                        "visitRequestIndex": 0,
+                        "startTime": "2024-03-12T12:00:00Z",
+                    },
+                    {
+                        "shipmentIndex": 1,
+                        "visitRequestIndex": 0,
+                        "startTime": "2024-03-12T18:30:00Z",
+                    },
+                ],
+                "breaks": [
+                    {"startTime": "2024-03-12T19:00:00Z", "duration": "3600s"}
+                ],
+                "transitions": [
+                    {
+                        "startTime": "2024-03-12T11:00:00Z",
+                        "travelDuration": "3600s",
+                        "waitDuration": "0s",
+                        "breakDuration": "0s",
+                        "totalDuration": "3600s",
+                    },
+                    {
+                        "startTime": "2024-03-12T12:02:30Z",
+                        "travelDuration": "3450s",
+                        "breakDuration": "0s",
+                        "waitDuration": "18450s",
+                        "totalDuration": "23700s",
+                    },
+                    {
+                        "startTime": "2024-03-12T18:37:30Z",
+                        "breakDuration": "3600s",
+                        "travelDuration": "7200s",
+                        "waitDuration": "0s",
+                        "totalDuration": "10800s",
+                    },
+                ],
+                "metrics": {
+                    "visitDuration": "600s",
+                    "breakDuration": "3600s",
+                },
+            },
+            {
+                "visits": [
+                    {
+                        "shipmentIndex": 2,
+                        "visitRequestIndex": 0,
+                        "startTime": "2024-03-12T18:30:00Z",
+                    },
+                ],
+                "transitions": [
+                    {
+                        "startTime": "2024-03-12T18:00:00Z",
+                        "travelDuration": "1800s",
+                        "totalDuration": "1800s",
+                    },
+                    {
+                        "startTime": "2024-03-12T18:37:30Z",
+                        "travelDuration": "600s",
+                        "waitDuration": "0s",
+                        "totalDuration": "600s",
+                    },
+                ],
+                "metrics": {
+                    "visitDuration": "450s",
+                },
+            },
+        ],
+        "metrics": {
+            "aggregatedRouteMetrics": {
+                "visitDuration": "1050s",
+                "breakDuration": "3600s",
+            },
+        },
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "globalEndTime": "2024-03-12T21:00:00Z",
+        "globalStartTime": "2024-03-12T08:00:00Z",
+        "shipments": [
+            {
+                "deliveries": [{
+                    "arrivalWaypoint": {"placeId": "SomePlaceId"},
+                    "duration": "150s",
+                }],
+                "label": "S001",
+            },
+            {
+                "allowedVehicleIndices": [0],
+                "deliveries": [{
+                    "arrivalWaypoint": {"placeId": "ThisIsAPlaceId"},
+                    "duration": "0s",
+                    "timeWindows": [{
+                        "endTime": "2024-03-12T18:30:00Z",
+                        "startTime": "2024-03-12T18:30:00Z",
+                    }],
+                }],
+                "label": "break, vehicle_index=0",
+            },
+            {
+                "allowedVehicleIndices": [1],
+                "deliveries": [{
+                    "arrivalWaypoint": {"placeId": "ThisIsAPlaceId"},
+                    "timeWindows": [{
+                        "startTime": "2024-03-12T18:30:00Z",
+                        "endTime": "2024-03-12T18:30:00Z",
+                    }],
+                    "duration": "0s",
+                }],
+                "label": "break, vehicle_index=0",
+            },
+        ],
+        "vehicles": [
+            {
+                "breakRule": {
+                    "breakRequests": [
+                        {
+                            "earliestStartTime": "2024-03-12T18:30:00Z",
+                            "latestStartTime": "2024-03-12T18:30:00Z",
+                            "minDuration": "450s",
+                        },
+                        {
+                            "earliestStartTime": "2024-03-12T18:00:00Z",
+                            "latestStartTime": "2024-03-12T19:52:30Z",
+                            "minDuration": "3600s",
+                        },
+                    ]
+                }
+            },
+            {
+                "breakRule": {
+                    "breakRequests": [
+                        {
+                            "earliestStartTime": "2024-03-12T18:30:00Z",
+                            "latestStartTime": "2024-03-12T18:30:00Z",
+                            "minDuration": "450s",
+                        },
+                    ]
+                }
+            },
+        ],
+    }
+    expected_response: cfr_json.OptimizeToursResponse = {
+        "metrics": {
+            "aggregatedRouteMetrics": {
+                "breakDuration": "4500s",
+                "visitDuration": "150s",
+            }
+        },
+        "routes": [
+            {
+                "breaks": [
+                    {"duration": "450s", "startTime": "2024-03-12T18:30:00Z"},
+                    {"duration": "3600s", "startTime": "2024-03-12T19:00:00Z"},
+                ],
+                "transitions": [
+                    {
+                        "breakDuration": "0s",
+                        "startTime": "2024-03-12T11:00:00Z",
+                        "totalDuration": "3600s",
+                        "travelDuration": "3600s",
+                        "waitDuration": "0s",
+                    },
+                    {
+                        "breakDuration": "0s",
+                        "startTime": "2024-03-12T12:02:30Z",
+                        "totalDuration": "23700s",
+                        "travelDuration": "3450s",
+                        "waitDuration": "18450s",
+                    },
+                    {
+                        "breakDuration": "4050s",
+                        "startTime": "2024-03-12T18:37:30Z",
+                        "totalDuration": "14850s",
+                        "travelDuration": "7200s",
+                        "waitDuration": "0s",
+                    },
+                ],
+                "visits": [
+                    {
+                        "shipmentIndex": 0,
+                        "startTime": "2024-03-12T12:00:00Z",
+                        "visitRequestIndex": 0,
+                    },
+                    {
+                        "shipmentIndex": 1,
+                        "startTime": "2024-03-12T18:30:00Z",
+                        "visitRequestIndex": 0,
+                    },
+                ],
+                "metrics": {
+                    "visitDuration": "150s",
+                    "breakDuration": "4050s",
+                },
+            },
+            {
+                "breaks": [
+                    {"duration": "450s", "startTime": "2024-03-12T18:30:00Z"}
+                ],
+                "visits": [
+                    {
+                        "shipmentIndex": 2,
+                        "visitRequestIndex": 0,
+                        "startTime": "2024-03-12T18:30:00Z",
+                    },
+                ],
+                "transitions": [
+                    {
+                        "startTime": "2024-03-12T18:00:00Z",
+                        "travelDuration": "1800s",
+                        "totalDuration": "1800s",
+                    },
+                    {
+                        "startTime": "2024-03-12T18:37:30Z",
+                        "breakDuration": "450s",
+                        "travelDuration": "600s",
+                        "waitDuration": "0s",
+                        "totalDuration": "1050s",
+                    },
+                ],
+                "metrics": {"visitDuration": "0s", "breakDuration": "450s"},
+            },
+        ],
+    }
+    transforms_breaks.recreate_breaks_at_location(model, response, {1, 2})
+    self.assertEqual(model, expected_model)
+    self.assertEqual(response, expected_response)
+
+
 if __name__ == "__main__":
+  logging.basicConfig(
+      format="%(asctime)s %(levelname)-8s %(message)s",
+      level=logging.INFO,
+      datefmt="%Y-%m-%d %H:%M:%S",
+  )
   unittest.main()
