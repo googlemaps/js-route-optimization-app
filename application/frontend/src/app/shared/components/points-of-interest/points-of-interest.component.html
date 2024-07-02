@@ -18,11 +18,11 @@
       [attr.width]="attr.width"
       [attr.height]="attr.height"
       (mousedown)="onMouseDown($event, p)"
-      title="{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
       }">
+      <title>{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}</title>
       <g transform="matrix(1,0,0,-1,-75,43)">
         <g transform="matrix(0.973684,0,0,0.973684,3.5,-12.0789)">
           <circle
@@ -49,11 +49,11 @@
       [attr.width]="attr.width"
       [attr.height]="attr.height"
       (mousedown)="onMouseDown($event, p)"
-      title="{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
       }">
+      <title>{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}</title>
       <g transform="matrix(1,0,0,1,-75,-1.00004)">
         <g transform="matrix(0.973684,0,0,0.973684,3.5,-12.0789)">
           <circle
