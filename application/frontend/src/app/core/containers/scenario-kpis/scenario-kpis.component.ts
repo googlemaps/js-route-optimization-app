@@ -19,6 +19,7 @@ import { ScenarioKpis } from '../../models';
 import { Observable } from 'rxjs';
 import { selectScenarioKpis } from '../../selectors/pre-solve.selectors';
 import { formattedDurationSeconds } from 'src/app/util';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scenario-kpis',
@@ -34,7 +35,14 @@ export class ScenarioKpisComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.kpis$ = this.store.pipe(select(selectScenarioKpis));
+    this.kpis$ = this.store.pipe(
+      select(selectScenarioKpis),
+      map(kpis => {
+        kpis.shipmentKpis.demands.sort(this.sortLoadDemandsByType);
+        kpis.vehicleKpis.capacities.sort(this.sortLoadDemandsByType);
+        return kpis;
+      })
+    );
   }
 
   sortLoadDemandsByType(

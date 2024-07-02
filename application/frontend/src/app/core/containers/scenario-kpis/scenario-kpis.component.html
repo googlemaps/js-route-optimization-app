@@ -11,7 +11,7 @@
     <div class="mb-0 metric-box-value" *ngIf="!(kpis$ | async).shipmentKpis.demands?.length">-</div>
     <div
       class="mb-0 metric-box-value"
-      *ngFor="let demand of (kpis$ | async).shipmentKpis.demands.sort(sortLoadDemandsByType)">
+      *ngFor="let demand of (kpis$ | async).shipmentKpis.demands">
       {{ demand.selected | number }} {{ demand.type }}
     </div>
   </div>
@@ -22,7 +22,7 @@
     </div>
     <div
       class="mb-0 metric-box-value"
-      *ngFor="let capacity of (kpis$ | async).vehicleKpis.capacities.sort(sortLoadDemandsByType)">
+      *ngFor="let capacity of (kpis$ | async).vehicleKpis.capacities">
       {{ capacity.selected | number }} {{ capacity.type }}
     </div>
   </div>
