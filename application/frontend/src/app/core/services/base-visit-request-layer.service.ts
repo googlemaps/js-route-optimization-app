@@ -195,7 +195,7 @@ export abstract class BaseVisitRequestLayer {
           ? `pickup-${this.defaultSelectedColor}`
           : `dropoff-${this.defaultSelectedColor}`;
       },
-      getSize: 15,
+      getSize: 12,
       sizeScale: 2,
       getPosition: (d) => d.arrivalPosition,
       pickable: false,
