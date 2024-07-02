@@ -79,6 +79,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BulkEditUnsetComponent } from './components/bulk-edit-unset/bulk-edit-unset.component';
 import { UndoRedoComponent } from './components/undo-redo/undo-redo.component';
+import { LoadDemandsMetricsComponent } from './components/load-demands-metrics/load-demands-metrics.component';
 
 export const INTERNAL_COMPONENTS = [TimeLabelComponent];
 
@@ -146,7 +147,7 @@ export const PIPES = [
 ];
 
 @NgModule({
-  declarations: [COMPONENTS, DIRECTIVES, INTERNAL_COMPONENTS, PIPES],
+  declarations: [COMPONENTS, DIRECTIVES, INTERNAL_COMPONENTS, PIPES, LoadDemandsMetricsComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule, MatTooltipModule],
   exports: [COMPONENTS, DIRECTIVES, PIPES],
 })

@@ -18,6 +18,8 @@ import { Store, select } from '@ngrx/store';
 import { LoadDemandKPI, ScenarioKpis } from '../../models';
 import { selectScenarioKpis } from '../../selectors/pre-solve.selectors';
 import { formattedDurationSeconds } from 'src/app/util';
+import { MatDialog } from '@angular/material/dialog';
+import { LoadDemandsMetricsComponent } from 'src/app/shared/components/load-demands-metrics/load-demands-metrics.component';
 
 @Component({
   selector: 'app-scenario-kpis',
@@ -30,7 +32,11 @@ export class ScenarioKpisComponent implements OnInit {
 
   formattedDurationSeconds = formattedDurationSeconds;
 
-  constructor(private store: Store, private detectorRef: ChangeDetectorRef) {}
+  constructor(
+    private store: Store,
+    private detectorRef: ChangeDetectorRef,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.store.pipe(select(selectScenarioKpis)).subscribe((kpis) => {
@@ -41,8 +47,14 @@ export class ScenarioKpisComponent implements OnInit {
     });
   }
 
-  showAllKpis(kpis: LoadDemandKPI[]): void {
-    console.log(kpis);
+  showAllKpis(kpis: LoadDemandKPI[], isShipmentDemands: boolean): void {
+    this.dialog.open(LoadDemandsMetricsComponent, {
+      panelClass: 'metric-box-dialog',
+      data: {
+        kpis,
+        isShipmentDemands,
+      },
+    });
   }
 
   sortLoadDemandsByType(a: LoadDemandKPI, b: LoadDemandKPI): number {

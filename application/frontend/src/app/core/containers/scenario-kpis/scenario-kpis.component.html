@@ -12,7 +12,7 @@
       {{ kpis.shipmentKpis.demands[0].selected | number }} {{ kpis.shipmentKpis.demands[0].type }}
     </div>
     <div class="metric-box-value" *ngIf="kpis.shipmentKpis.demands?.length > 2">
-      <a (click)="showAllKpis(kpis.shipmentKpis.demands)">View more</a>
+      <a (click)="showAllKpis(kpis.shipmentKpis.demands, true)">View more</a>
     </div>
   </div>
   <div class="metric-box">
@@ -22,7 +22,7 @@
       {{ kpis.vehicleKpis.capacities[0].type }}
     </div>
     <div class="metric-box-value" *ngIf="kpis.vehicleKpis.capacities?.length > 2">
-      <a (click)="showAllKpis(kpis.vehicleKpis.capacities)">View more</a>
+      <a (click)="showAllKpis(kpis.vehicleKpis.capacities, false)">View more</a>
     </div>
   </div>
   <div class="metric-box">
