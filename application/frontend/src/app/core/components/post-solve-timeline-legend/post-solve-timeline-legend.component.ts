@@ -21,7 +21,6 @@ import {
   OnChanges,
   ElementRef,
   ViewChild,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { TimeSet } from '../../models';
 
@@ -44,8 +43,6 @@ export class PostSolveTimelineLegendComponent implements OnChanges {
     service: [0, 0],
     travel: [0, 0],
   };
-
-  constructor(private changeRef: ChangeDetectorRef) {}
 
   ngOnChanges(): void {
     if (this.vehicleTimeAverages) {

@@ -17,18 +17,14 @@
     y2="50%" />
   <g *ngIf="availabilityRange">
     <title>Vehicle availability {{ getSegmentTitle(availability[0], availability[1]) }}</title>
-    <line
-      class="availability-padding"
-      [attr.x1]="availabilityRange[0]"
-      y1="50%"
-      [attr.x2]="availabilityRange[1]"
-      y2="50%" />
-    <line
-      class="availability"
-      [attr.x1]="availabilityRange[0]"
-      y1="50%"
-      [attr.x2]="availabilityRange[1]"
-      y2="50%" />
+    <rect
+      [attr.x]="availabilityRange[0]"
+      y="0"
+      [attr.width]="availabilityRange[1] - availabilityRange[0]"
+      height="100%"
+      fill="none"
+      [attr.stroke]="color"
+      stroke-width="2px" />
   </g>
   <line
     [attr.x1]="segmentsBound[0]"
@@ -40,13 +36,24 @@
   <g *ngFor="let s of segments">
     <g *ngIf="lineAttributeLookup[s[0]] as attr">
       <title>{{ attr.title + ' ' + s[3] }}</title>
-      <line
-        [attr.x1]="s[1]"
-        y1="50%"
-        [attr.x2]="s[2]"
-        y2="50%"
-        [ngClass]="attr.class"
-        [attr.stroke]="attr.stroke" />
+      <ng-container *ngIf="attr.class !== 'break-time'; else breakRect">
+        <line
+          [attr.x1]="s[1]"
+          y1="50%"
+          [attr.x2]="s[2]"
+          y2="50%"
+          [ngClass]="attr.class"
+          [attr.stroke]="attr.stroke ?? color" />
+      </ng-container>
+      <ng-template #breakRect>
+        <rect
+          [attr.x]="s[1]"
+          [attr.width]="s[2] - s[1]"
+          y="3.5px"
+          height="7px"
+          [attr.fill]="color"
+          mask="url(#BreakMask)" />
+      </ng-template>
     </g>
   </g>
   <g *ngIf="scrubTimePoint">

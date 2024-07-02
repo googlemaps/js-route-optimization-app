@@ -284,19 +284,16 @@ line.availability-padding {
 }
 
 line.service {
-  stroke: $blue-dark;
   stroke-width: 7px;
   stroke-linecap: round;
 }
 
 line.driving {
-  stroke: $blue-light;
   stroke-width: 4px;
   stroke-linecap: round;
 }
 
 line.idle-time {
-  stroke: $blue-dark;
   stroke-width: 4px;
   stroke-linecap: round;
   stroke-dasharray: 0 7px;
@@ -307,7 +304,7 @@ line.break-time {
 }
 
 path.break-time {
-  stroke: $blue-light;
+  stroke: white;
   stroke-width: 3px;
   stroke-linecap: round;
   transform: translate(1.5px, 1.5px);

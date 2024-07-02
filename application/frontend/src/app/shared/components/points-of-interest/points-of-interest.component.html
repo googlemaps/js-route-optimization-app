@@ -9,34 +9,68 @@
 </div>
 <ng-container *ngFor="let p of points">
   <ng-container [ngSwitch]="p[1]" *ngIf="imageAttributeLookup[p[1]] as attr">
-    <mat-icon
+    <svg
       *ngSwitchCase="2"
+      viewBox="0 0 42 42"
       class="poi select-poi"
       [style.left.px]="p[2] - attr.width / 2"
-      [style.top.px]="13 - attr.height + attr.yOffset"
+      [style.top.px]="15 - attr.height + attr.yOffset"
       [attr.width]="attr.width"
       [attr.height]="attr.height"
       (mousedown)="onMouseDown($event, p)"
-      title="{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
-      }"
-      svgIcon="pickup"></mat-icon>
-    <mat-icon
+      }">
+      <title>{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}</title>
+      <g transform="matrix(1,0,0,-1,-75,43)">
+        <g transform="matrix(0.973684,0,0,0.973684,3.5,-12.0789)">
+          <circle
+            cx="95"
+            cy="35"
+            r="19"
+            style="fill: white; stroke-width: 4.11px"
+            [style.stroke]="color" />
+        </g>
+        <g transform="matrix(0.431818,0,0,-0.330214,53.25,39.9873)">
+          <path
+            d="M77,66L99,42.943L121,66"
+            style="fill: white; stroke-width: 15.61px"
+            [style.stroke]="color" />
+        </g>
+      </g>
+    </svg>
+    <svg
       *ngSwitchCase="3"
+      viewBox="0 0 42 42"
       class="poi select-poi"
       [style.left.px]="p[2] - attr.width / 2"
-      [style.top.px]="13 - attr.height + attr.yOffset"
+      [style.top.px]="15 - attr.height + attr.yOffset"
       [attr.width]="attr.width"
       [attr.height]="attr.height"
       (mousedown)="onMouseDown($event, p)"
-      title="{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
-      }"
-      svgIcon="dropoff"></mat-icon>
+      }">
+      <title>{{ attr.title + ' ' + p[3] + (isPendingOldPoi(p) ? ' (pending)' : '') }}</title>
+      <g transform="matrix(1,0,0,1,-75,-1.00004)">
+        <g transform="matrix(0.973684,0,0,0.973684,3.5,-12.0789)">
+          <circle
+            cx="95"
+            cy="35"
+            r="19"
+            style="fill: white; stroke-width: 4.11px"
+            [style.stroke]="color" />
+        </g>
+        <g transform="matrix(0.431818,0,0,-0.330214,53.25,39.9873)">
+          <path
+            d="M77,66L99,42.943L121,66"
+            style="fill: white; stroke-width: 15.61px"
+            [style.stroke]="color" />
+        </g>
+      </g>
+    </svg>
     <svg
       *ngSwitchCase="1"
       class="poi"
