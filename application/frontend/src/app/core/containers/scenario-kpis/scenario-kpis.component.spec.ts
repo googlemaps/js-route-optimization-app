@@ -60,4 +60,22 @@ describe('ScenarioKpisComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should sort load demands by type', () => {
+    const capacities = [
+      {
+        selected: 0,
+        total: 0,
+        type: 'weight',
+      },
+      {
+        selected: 0,
+        total: 0,
+        type: 'volume',
+      },
+    ];
+    capacities.sort(component.sortLoadDemandsByType);
+    expect(capacities[0].type).toBe('volume');
+    expect(capacities[1].type).toBe('weight');
+  });
 });

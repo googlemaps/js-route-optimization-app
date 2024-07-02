@@ -36,4 +36,24 @@ export class ScenarioKpisComponent implements OnInit {
   ngOnInit(): void {
     this.kpis$ = this.store.pipe(select(selectScenarioKpis));
   }
+
+  sortLoadDemandsByType(
+    a: {
+      selected: number;
+      total: number;
+      type: string;
+    },
+    b: {
+      selected: number;
+      total: number;
+      type: string;
+    }
+  ): number {
+    if (a.type < b.type) {
+      return -1;
+    } else if (a.type > b.type) {
+      return 1;
+    }
+    return 0;
+  }
 }
