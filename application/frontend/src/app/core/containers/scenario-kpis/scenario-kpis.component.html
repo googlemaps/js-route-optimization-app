@@ -3,47 +3,50 @@
   <div class="metric-box">
     <div class="mb-1 metric-box-title">Shipments in total</div>
     <div class="mb-0 metric-box-value">
-      {{ (kpis$ | async).shipmentKpis.selected }} / {{ (kpis$ | async).shipmentKpis.total }}
+      {{ kpis.shipmentKpis.selected }} / {{ kpis.shipmentKpis.total }}
     </div>
   </div>
   <div class="metric-box">
     <div class="mb-1 metric-box-title">Total load demands</div>
-    <div class="mb-0 metric-box-value" *ngIf="!(kpis$ | async).shipmentKpis.demands?.length">-</div>
-    <div
-      class="mb-0 metric-box-value"
-      *ngFor="let demand of (kpis$ | async).shipmentKpis.demands">
-      {{ demand.selected | number }} {{ demand.type }}
+    <div class="mb-0 metric-box-value" *ngIf="kpis.shipmentKpis.demands?.length; else noValue">
+      {{ kpis.shipmentKpis.demands[0].selected | number }} {{ kpis.shipmentKpis.demands[0].type }}
+    </div>
+    <div class="metric-box-value" *ngIf="kpis.shipmentKpis.demands?.length > 2">
+      <a (click)="showAllKpis(kpis.shipmentKpis.demands)">View more</a>
     </div>
   </div>
   <div class="metric-box">
     <div class="mb-1 metric-box-title">Total vehicle capacity</div>
-    <div class="mb-0 metric-box-value" *ngIf="!(kpis$ | async).vehicleKpis.capacities?.length">
-      -
+    <div class="mb-0 metric-box-value" *ngIf="kpis.vehicleKpis.capacities?.length; else noValue">
+      {{ kpis.vehicleKpis.capacities[0].selected | number }}
+      {{ kpis.vehicleKpis.capacities[0].type }}
     </div>
-    <div
-      class="mb-0 metric-box-value"
-      *ngFor="let capacity of (kpis$ | async).vehicleKpis.capacities">
-      {{ capacity.selected | number }} {{ capacity.type }}
+    <div class="metric-box-value" *ngIf="kpis.vehicleKpis.capacities?.length > 2">
+      <a (click)="showAllKpis(kpis.vehicleKpis.capacities)">View more</a>
     </div>
   </div>
   <div class="metric-box">
     <div class="mb-1 metric-box-title">Number of vehicles</div>
     <div class="mb-0 metric-box-value">
-      {{ (kpis$ | async).vehicleKpis.selected }} / {{ (kpis$ | async).vehicleKpis.total }}
+      {{ kpis.vehicleKpis.selected }} / {{ kpis.vehicleKpis.total }}
     </div>
   </div>
   <div class="metric-box">
     <div class="mb-1 metric-box-title">Dwell time</div>
     <div class="mb-0 metric-box-value">
-      {{ formattedDurationSeconds((kpis$ | async).shipmentKpis.dwellTime) }}
+      {{ formattedDurationSeconds(kpis.shipmentKpis.dwellTime) }}
     </div>
   </div>
   <div class="metric-box">
     <div class="mb-1 metric-box-title">Number of pickups</div>
-    <div class="mb-0 metric-box-value">{{ (kpis$ | async).shipmentKpis.pickups }}</div>
+    <div class="mb-0 metric-box-value">{{ kpis.shipmentKpis.pickups }}</div>
   </div>
   <div class="metric-box">
     <div class="mb-1 metric-box-title">Number of dropoffs</div>
-    <div class="mb-0 metric-box-value">{{ (kpis$ | async).shipmentKpis.deliveries }}</div>
+    <div class="mb-0 metric-box-value">{{ kpis.shipmentKpis.deliveries }}</div>
   </div>
 </div>
+
+<ng-template #noValue>
+  <span>-</span>
+</ng-template>

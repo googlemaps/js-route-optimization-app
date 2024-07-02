@@ -13,13 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { ScenarioKpis } from '../../models';
-import { Observable } from 'rxjs';
+import { LoadDemandKPI, ScenarioKpis } from '../../models';
 import { selectScenarioKpis } from '../../selectors/pre-solve.selectors';
 import { formattedDurationSeconds } from 'src/app/util';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scenario-kpis',
@@ -28,35 +26,26 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScenarioKpisComponent implements OnInit {
-  kpis$: Observable<ScenarioKpis>;
+  kpis: ScenarioKpis;
 
   formattedDurationSeconds = formattedDurationSeconds;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private detectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.kpis$ = this.store.pipe(
-      select(selectScenarioKpis),
-      map(kpis => {
-        kpis.shipmentKpis.demands.sort(this.sortLoadDemandsByType);
-        kpis.vehicleKpis.capacities.sort(this.sortLoadDemandsByType);
-        return kpis;
-      })
-    );
+    this.store.pipe(select(selectScenarioKpis)).subscribe((kpis) => {
+      kpis.shipmentKpis.demands.sort(this.sortLoadDemandsByType);
+      kpis.vehicleKpis.capacities.sort(this.sortLoadDemandsByType);
+      this.kpis = kpis;
+      this.detectorRef.markForCheck();
+    });
   }
 
-  sortLoadDemandsByType(
-    a: {
-      selected: number;
-      total: number;
-      type: string;
-    },
-    b: {
-      selected: number;
-      total: number;
-      type: string;
-    }
-  ): number {
+  showAllKpis(kpis: LoadDemandKPI[]): void {
+    console.log(kpis);
+  }
+
+  sortLoadDemandsByType(a: LoadDemandKPI, b: LoadDemandKPI): number {
     if (a.type < b.type) {
       return -1;
     } else if (a.type > b.type) {
