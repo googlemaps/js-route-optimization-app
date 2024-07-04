@@ -21,6 +21,30 @@ from . import cfr_json
 from ..testdata import testdata
 
 
+class TestDistanceMeters(unittest.TestCase):
+  """Tests for distance_meters."""
+
+  def test_same_latlng(self):
+    latlng = {"latitude": 48.87761081683395, "longitude": 2.329784699711765}
+    self.assertAlmostEqual(cfr_json.distance_meters(latlng, latlng), 0)
+
+  def test_short_distance(self):
+    # Distance between the different sides of road in front of Google Paris.
+    point_a = {"latitude": 48.87707058663172, "longitude": 2.329558723609291}
+    point_b = {"latitude": 48.87699076436832, "longitude": 2.329454117460964}
+    distance_meters = cfr_json.distance_meters(point_a, point_b)
+    self.assertLess(distance_meters, 12)
+    self.assertGreater(distance_meters, 10)
+
+  def test_long_distance(self):
+    # Distance between Google Paris and Google Mountain View.
+    point_a = {"latitude": 37.423711217709354, "longitude": -122.09213923498993}
+    point_b = {"latitude": 48.8769006356297, "longitude": 2.3298813307386492}
+    distance_meters = cfr_json.distance_meters(point_a, point_b)
+    self.assertLess(distance_meters, 8980000)
+    self.assertGreater(distance_meters, 8950000)
+
+
 class MakeShipmentTest(unittest.TestCase):
   """Tests for make_shipment."""
 

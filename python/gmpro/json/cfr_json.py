@@ -19,7 +19,9 @@ from collections.abc import Collection, Iterable, Mapping, Sequence, Set
 import datetime
 import itertools
 import logging
+import math
 from typing import TypeAlias, TypedDict
+
 
 # A duration in a string format following the protocol buffers specification in
 # https://protobuf.dev/reference/protobuf/google.protobuf/#duration
@@ -359,6 +361,46 @@ class OptimizeToursResponse(TypedDict, total=False):
 
 
 # pylint: enable=invalid-name
+
+# Conversion between meters and radians for an approximate Earth (a sphere whose
+# radius is the mean radius of the actual planet).
+EARTH_METERS_PER_RADIAN = 6371000
+EARTH_RADIANS_PER_METER = 1 / EARTH_METERS_PER_RADIAN
+
+
+def distance_meters(latlng_a: LatLng, latlng_b: LatLng) -> float:
+  """The distance between two coordinates, in meters."""
+  return EARTH_METERS_PER_RADIAN * distance_radians(latlng_a, latlng_b)
+
+
+def distance_radians(latlng_a: LatLng, latlng_b: LatLng) -> float:
+  """The angular distance between two coordinates, in radians.
+
+  Uses the simplified Haversine formula to compute the distance out of the two
+  coordinates. See https://en.wikipedia.org/wiki/Haversine_formula for more
+  details on the computation.
+
+  Args:
+    latlng_a: The first pair of coordinates.
+    latlng_b: The second pair of coordinates.
+
+  Returns:
+    The inner angle between the two pairs of coordinates.
+  """
+  lat_a = math.pi * latlng_a["latitude"] / 180
+  lng_a = math.pi * latlng_a["longitude"] / 180
+  lat_b = math.pi * latlng_b["latitude"] / 180
+  lng_b = math.pi * latlng_b["longitude"] / 180
+
+  inner = math.sqrt(
+      0.5
+      * (
+          1
+          - math.cos(lat_b - lat_a)
+          + math.cos(lat_a) * math.cos(lat_b) * (1 - math.cos(lng_b - lng_a))
+      )
+  )
+  return 2 * math.asin(max(-1, min(inner, 1)))
 
 
 def combined_penalty_cost(
