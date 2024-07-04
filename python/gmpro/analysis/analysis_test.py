@@ -461,5 +461,58 @@ class GetVehicleNegativeWaitHours(unittest.TestCase):
     )
 
 
+class GetVisitTurnAnglesTest(unittest.TestCase):
+  """Tests for get_visit_turn_angles."""
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {"deliveries": [{"arrivalWaypoint": {"placeId": "A"}}]},
+          {"deliveries": [{"arrivalWaypoint": {"placeId": "B"}}]},
+          {"deliveries": [{"arrivalWaypoint": {"placeId": "B"}}]},
+          {"deliveries": [{"arrivalWaypoint": {"placeId": "C"}}]},
+      ]
+  }
+
+  def test_empty_route(self):
+    route = {}
+    self.assertSequenceEqual(
+        tuple(analysis.get_visit_turn_angles(self._MODEL, route)), ()
+    )
+
+  def test_no_polylines(self):
+    route = {"visits": [{}, {}], "transitions": [{}, {}, {}]}
+    self.assertSequenceEqual(
+        tuple(analysis.get_visit_turn_angles(self._MODEL, route)), ()
+    )
+
+  def test_some_polylines(self):
+    route: cfr_json.ShipmentRoute = {
+        "visits": [
+            {"shipmentIndex": 0},
+            {"shipmentIndex": 1},
+            {"shipmentIndex": 2},
+            {"shipmentIndex": 3},
+        ],
+        "transitions": [
+            {"routePolyline": {"points": "uuiiHqneMiBE"}},
+            {},
+            {},
+            {"routePolyline": {"points": "_yiiHwneMAqL??hCoA"}},
+            {"routePolyline": {"points": "wtiiHy~eMgCpABbLhBJ"}},
+        ],
+    }
+    self.assertSequenceEqual(
+        tuple(analysis.get_visit_turn_angles(self._MODEL, route)),
+        (
+            analysis.VisitTurnAngle(
+                route_index=0, visit_index=0, angle_degrees=86.49626572275521
+            ),
+            analysis.VisitTurnAngle(
+                route_index=0, visit_index=3, angle_degrees=179.01379924226057
+            ),
+        ),
+    )
+
+
 if __name__ == "__main__":
   unittest.main()

@@ -622,6 +622,19 @@ def get_departure_waypoint(visit_request: VisitRequest) -> Waypoint | None:
   return visit_request.get("departureWaypoint")
 
 
+def has_different_arrival_and_departure_waypoints(
+    visit_request: VisitRequest,
+) -> bool:
+  """Returns True when arrival and departure location of a visit are different."""
+  arrival_waypoint = get_arrival_waypoint(visit_request)
+  departure_waypoint = get_departure_waypoint(visit_request)
+  return (
+      arrival_waypoint is not None
+      and departure_waypoint is not None
+      and arrival_waypoint != departure_waypoint
+  )
+
+
 def get_break_earliest_start_time(
     break_request: BreakRequest,
 ) -> datetime.datetime:
@@ -1596,6 +1609,82 @@ def merge_polylines_from_transitions(
   if not merged_points:
     return None
   return {"points": encode_polyline(merged_points)}
+
+
+def _polyline_has_different_points(encoded_polyline: str) -> bool:
+  """Returns True when encoded_polyline has at least two different points."""
+  polyline = decode_polyline(encoded_polyline)
+  if len(polyline) < 2:
+    return False
+  start = polyline[0]
+  for i in range(1, len(polyline)):
+    if polyline[i] != start:
+      return True
+  return False
+
+
+def get_adjacent_encoded_polyline(
+    model: ShipmentModel,
+    route: ShipmentRoute,
+    visit_index: int,
+    inbound: bool,
+    allow_single_point: bool = True,
+) -> tuple[int, str | None]:
+  """Returns the inbound (resp. outbound) polyline for the given visit.
+
+  When there are multiple visits at the same coordinates or when two visits do
+  not have a polyline in the transition between them, continues the search for
+  the polyline at the previous (resp. following) visits, until the start (resp.
+  the end) of the route.
+
+  Makes no attempt to detect the case when the route is just missing the
+  polylines at all. In such case, always returns None.
+
+  Args:
+    model: The source model for the route.
+    route: The route in which the inbound transition is looked up.
+    visit_index: The index of the visit for which we're looking up the inbound
+      (resp. outbound) transition.
+    inbound: When True, returns an inbound polyline. Otherwise, returns an
+      outbound polyline.
+    allow_single_point: When True, returns a polyline that has at least one
+      point; otherwise, polylines with exactly one point are treated as no
+      polyline and the search continues until it finds a polyline with at least
+      two points.
+
+  Returns:
+    A tuple (visit_index, encoded_polyline) where visit_index is the index of
+    the visit at which this polyline was obtained, and encoded_polyline is
+    either the encoded polyline starting at this visit index or None when there
+    is no polyline to return (either visit_index is at the start/end of the
+    route or it has different arrival and departure waypoints).
+
+  Raises:
+    ValueError: When a transition is missing a polyline.
+  """
+  visits = get_visits(route)
+  transitions = get_transitions(route)
+  num_visits = len(visits)
+  loop_increment = -1 if inbound else 1
+  transition_offset = 0 if inbound else 1
+  while True:
+    transition = transitions[visit_index + transition_offset]
+    route_polyline = transition.get("routePolyline")
+    points = None if route_polyline is None else route_polyline.get("points")
+    if points:  # Accept non-empty strings only.
+      if allow_single_point or _polyline_has_different_points(points):
+        return visit_index, points
+
+    visit_index += loop_increment
+    if visit_index < 0 or visit_index >= num_visits:
+      return visit_index - loop_increment, None
+
+    # If the visit request has distinct arrival and departure waypoints, stop
+    # the search since this creates an intentional warping.
+    if has_different_arrival_and_departure_waypoints(
+        get_visit_request(model, visits[visit_index])
+    ):
+      return visit_index, None
 
 
 def make_optional_time_window(

@@ -1383,6 +1383,143 @@ def get_vehicle_travel_hours(
   return travel_time
 
 
+@dataclasses.dataclass(frozen=True)
+class VisitTurnAngle:
+  """Contains information about the turn angle at a given visit on a route.
+
+  The angle is computed as the interior angle between the last segment of the
+  inbound polyline and the first segment of the outbound polyline. Turns that
+  are between two segments of the same polyline are not considered.
+
+  When the two segmetns do not share an end vertex, the angle is computed as
+  the angle between the two straight lines created by extending the two segments
+  to infinity.
+
+  Attributes:
+    route_index: The route where the angle is reported.
+    visit_index: The visit at which the angle happens.
+    angle_degrees: The interior angle between the two segments, in degrees.
+  """
+
+  route_index: int
+  visit_index: int
+  angle_degrees: float
+
+
+def _turn_angle(vec1: tuple[float, float], vec2: tuple[float, float]) -> float:
+  """Computes the (oriented) angle between vec1 and vec2, in radians."""
+  return math.atan2(
+      vec2[1] * vec1[0] - vec2[0] * vec1[1],
+      vec2[0] * vec1[0] + vec2[1] * vec1[1],
+  )
+
+
+def _get_first_segment(
+    polyline: Sequence[cfr_json.LatLng],
+) -> tuple[float, float]:
+  """Returns the first non-empty segment of `polyline`.
+
+  Takes polyline[0] and the first point that is different from polyline[0] and
+  returns the 2D vector between them. Treats the latitude and longitude as
+  cartesian coordinates, and returns the vector between the first point and the
+  second point of the polyline.
+
+  Args:
+    polyline: The polyline to extract the vector from.
+
+  Returns:
+    The first non-empty segment of the polyline in the form of a tuple
+    (lat_delta, lng_delta).
+
+  Raises:
+    ValueError: When the polyline does not contain two different points.
+  """
+  start = polyline[0]
+  for i in range(1, len(polyline)):
+    if polyline[i] != start:
+      return (
+          polyline[i]["latitude"] - start["latitude"],
+          polyline[i]["longitude"] - start["longitude"],
+      )
+  raise ValueError(f"The polyline has zero length: {polyline}")
+
+
+def get_visit_turn_angles(
+    model: cfr_json.ShipmentModel,
+    route: cfr_json.ShipmentRoute,
+    threshold_angle_degrees: float = 0.0,
+) -> Iterable[VisitTurnAngle]:
+  """Computes the turn angle at each visit location of the route.
+
+  The turn angles are computed as the angle between the last non-empty segment
+  of the inbound polyline and the first non-empty segment of the outbound
+  polyline:
+  (1) Each angle is reported at most once (if it passes the threshold), along
+      with the visit right after the ibound polyline.
+  (2) When the start/end of the two polylines are not at the same coordinates,
+      the angle is computed between the two straight lines defined by their
+      non-empty segments.
+  (3) The angle is not reported for visits where the arrival location and the
+      departure location are different, assuming any turn angle there is
+      intentional and expected.
+  (3) Visits where either the inbound or the outbound polyline can't be detected
+      are not reported.
+
+  In the computation, we treat latlngs as cartesian coordinates, which may lead
+  to some imprecision. However, this imprecision is not significant for the
+  intended purpose of this function (u-turn detection).
+
+  Args:
+    model: The model in which the turn angles are computed.
+    route: The route in which the turn angles are computed.
+    threshold_angle_degrees: A threshold, in degrees. Only turn angles greater
+      or equal to this threshold are returned.
+
+  Yields:
+    Turn angle information for the visits of `route`. Only visits where the
+    angle is greater or equal to the threshold are yielded.
+  """
+  threshold_angle_radians = math.pi * threshold_angle_degrees / 180
+  route_index = route.get("vehicleIndex", 0)
+  visits = cfr_json.get_visits(route)
+  visit_index = 0
+  num_visits = len(visits)
+  while visit_index < num_visits:
+    visit = visits[visit_index]
+    if cfr_json.has_different_arrival_and_departure_waypoints(
+        cfr_json.get_visit_request(model, visit)
+    ):
+      # Skip visits where the arrival and departure coordinates are different.
+      visit_index += 1
+      continue
+
+    _, polyline_in = cfr_json.get_adjacent_encoded_polyline(
+        model, route, visit_index, inbound=True, allow_single_point=False
+    )
+    if polyline_in is None:
+      visit_index += 1
+      continue
+    out_visit_index, polyline_out = cfr_json.get_adjacent_encoded_polyline(
+        model, route, visit_index, inbound=False, allow_single_point=False
+    )
+    if polyline_out is None:
+      visit_index = out_visit_index + 1
+      continue
+
+    segment_out = _get_first_segment(cfr_json.decode_polyline(polyline_out))
+    reverse_segment_in = _get_first_segment(
+        tuple(reversed(cfr_json.decode_polyline(polyline_in)))
+    )
+    angle = math.pi - math.fabs(_turn_angle(segment_out, reverse_segment_in))
+    if angle > threshold_angle_radians:
+      yield VisitTurnAngle(
+          route_index=route_index,
+          visit_index=visit_index,
+          angle_degrees=180 * angle / math.pi,
+      )
+    visit_index = out_visit_index + 1
+
+
 def get_percentile_visit_time(
     model: cfr_json.ShipmentModel,
     route: cfr_json.ShipmentRoute,
