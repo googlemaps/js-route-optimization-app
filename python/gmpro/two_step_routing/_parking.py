@@ -23,7 +23,7 @@ from collections.abc import Callable, Mapping, Sequence
 import copy
 import dataclasses
 import functools
-from typing import Any, Self, TypeAlias
+from typing import Any, TypeAlias
 
 from ..json import cfr_json
 
@@ -106,7 +106,7 @@ class InitialLocalModelGrouping:
   )
 
   @classmethod
-  def from_string(cls, options: str) -> Self:
+  def from_string(cls, options: str) -> "InitialLocalModelGrouping":
     """Creates the grouping specification from command-line flags.
 
     Args:
