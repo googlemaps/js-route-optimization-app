@@ -10,7 +10,7 @@ import { ScenarioKpis } from 'src/app/core/models';
 })
 export class LoadDemandsMetricsComponent {
   displayedColumns = ['type', 'demand', 'capacity'];
-  kpiData: { type: string, demand: number, capacity: number }[] = []
+  kpiData: { type: string; demand: number; capacity: number }[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<LoadDemandsMetricsComponent>,
@@ -19,25 +19,29 @@ export class LoadDemandsMetricsComponent {
       kpis: ScenarioKpis;
     }
   ) {
-    const allTypes: { [type: string]: { demand: number, capacity: number } } = {};
-    data.kpis.shipmentKpis.demands.forEach(demand => {
+    const allTypes: { [type: string]: { demand: number; capacity: number } } = {};
+    data.kpis.shipmentKpis.demands.forEach((demand) => {
       allTypes[demand.type] = {
         demand: demand.selected,
-        capacity: 0
-      }
+        capacity: 0,
+      };
     });
-    
-    data.kpis.vehicleKpis.capacities.forEach(capacity => {
+
+    data.kpis.vehicleKpis.capacities.forEach((capacity) => {
       if (!allTypes[capacity.type]) {
         allTypes[capacity.type] = {
           demand: 0,
-          capacity: capacity.selected
-        }
+          capacity: capacity.selected,
+        };
         return;
       }
       allTypes[capacity.type].capacity = capacity.selected;
     });
 
-    this.kpiData = Object.keys(allTypes).map(type => ({ type, demand: allTypes[type].demand, capacity: allTypes[type].capacity }));
+    this.kpiData = Object.keys(allTypes).map((type) => ({
+      type,
+      demand: allTypes[type].demand,
+      capacity: allTypes[type].capacity,
+    }));
   }
 }

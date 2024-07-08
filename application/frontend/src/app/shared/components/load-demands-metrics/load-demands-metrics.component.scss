@@ -1,3 +1,9 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  text-align: left;
+}
+
 .title {
   display: flex;
   justify-content: space-between;
@@ -6,4 +12,17 @@
   line-height: 24px;
   font-weight: 400;
   letter-spacing: 0.15px;
+  margin-bottom: 26px;
+}
+
+.kpi-title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+
+  padding-right: 35px;
+
+  &:last-child {
+    padding-right: 0;
+  }
 }

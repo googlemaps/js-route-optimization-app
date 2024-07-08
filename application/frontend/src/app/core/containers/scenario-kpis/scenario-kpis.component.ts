@@ -51,7 +51,7 @@ export class ScenarioKpisComponent implements OnInit {
     this.dialog.open(LoadDemandsMetricsComponent, {
       panelClass: 'metric-box-dialog',
       data: {
-        kpis: this.kpis
+        kpis: this.kpis,
       },
     });
   }
