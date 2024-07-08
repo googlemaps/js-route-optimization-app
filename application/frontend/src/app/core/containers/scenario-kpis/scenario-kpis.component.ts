@@ -47,12 +47,11 @@ export class ScenarioKpisComponent implements OnInit {
     });
   }
 
-  showAllKpis(kpis: LoadDemandKPI[], isShipmentDemands: boolean): void {
+  showAllKpis(): void {
     this.dialog.open(LoadDemandsMetricsComponent, {
       panelClass: 'metric-box-dialog',
       data: {
-        kpis,
-        isShipmentDemands,
+        kpis: this.kpis
       },
     });
   }

@@ -1,13 +1,27 @@
-<div class="title metric-box-title" mat-dialog-title>
+<div class="title" mat-dialog-title>
   <div class="m-0 mr-6">
-    {{ data.isShipmentDemands ? 'Total shipment demands' : 'Total vehicle capacity' }}
+    Total Scenario Load Demands
   </div>
   <button mat-icon-button type="button" title="Cancel" matDialogClose="">
     <mat-icon svgIcon="clear"></mat-icon>
   </button>
 </div>
 <div mat-dialog-container>
-  <div *ngFor="let kpi of data.kpis" class="metric-box-value">
-    {{ kpi.selected | number }} {{ kpi.type }}
-  </div>
+  <table cdk-table [dataSource]="kpiData">
+    <ng-container cdkColumnDef="type">
+      <th cdk-header-cell *cdkHeaderCellDef>Load Type</th>
+      <td cdk-cell *cdkCellDef="let kpi">{{ kpi.type }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="demand">
+      <th cdk-header-cell *cdkHeaderCellDef>Total Shipment Demand</th>
+      <td cdk-cell *cdkCellDef="let kpi">{{ kpi.demand | number }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="capacity">
+      <th cdk-header-cell *cdkHeaderCellDef>Total Vehicle Capacity</th>
+      <td cdk-cell *cdkCellDef="let kpi">{{ kpi.capacity | number }}</td>
+    </ng-container>
+
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </div>
