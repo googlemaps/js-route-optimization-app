@@ -134,8 +134,8 @@ packages for **Fleet Routing App**.
 Clone the repository and navigate to the checked-out directory.
 
 ```shell
-git clone https://github.com/google/cfr.git
-cd cfr
+git clone https://github.com/googlemaps/js-route-optimization-app.git
+cd js-route-optimization-app
 ```
 
 ### Install Dependencies
