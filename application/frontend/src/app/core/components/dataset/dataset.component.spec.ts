@@ -18,6 +18,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatasetComponent } from './dataset.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { selectScenarioName } from '../../selectors/dispatcher.selectors';
+import { MaterialModule } from 'src/app/material';
+import { FormsModule } from '@angular/forms';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('DatasetComponent', () => {
   let component: DatasetComponent;
@@ -25,13 +29,16 @@ describe('DatasetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule, FormsModule],
       declarations: [DatasetComponent],
       providers: [
         provideMockStore({
           selectors: [{ selector: selectScenarioName, value: '' }],
         }),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(DatasetComponent);
     component = fixture.componentInstance;

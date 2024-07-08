@@ -28,6 +28,8 @@ import { MaterialModule } from 'src/app/material';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
+import { MatIconRegistry } from '@angular/material/icon';
 
 const formDirective = new FormGroupDirective([], []);
 formDirective.form = new UntypedFormGroup({
@@ -61,7 +63,9 @@ describe('BreakRuleFormComponent', () => {
       imports: [MaterialModule, ReactiveFormsModule, NoopAnimationsModule],
       declarations: [BreakRequestFormComponent, MockAppDurationMinSecFormComponent],
       providers: [{ provide: ControlContainer, useValue: formDirective }],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
   });
 
   beforeEach(() => {

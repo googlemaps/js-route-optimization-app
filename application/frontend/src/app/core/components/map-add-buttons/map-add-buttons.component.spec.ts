@@ -17,6 +17,9 @@ limitations under the License.
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapAddButtonsComponent } from './map-add-buttons.component';
+import { MaterialModule } from 'src/app/material';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('MapAddButtonsComponent', () => {
   let component: MapAddButtonsComponent;
@@ -24,8 +27,11 @@ describe('MapAddButtonsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [MapAddButtonsComponent],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(MapAddButtonsComponent);
     component = fixture.componentInstance;

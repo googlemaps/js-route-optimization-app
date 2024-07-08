@@ -30,6 +30,19 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import Long from 'long';
 import { Page } from '../../models';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+@Component({
+  selector: 'app-time-navigation',
+})
+class MockTimeNavigationComponent {
+  @Input() range: Range;
+  @Input() rangeOffset: number;
+  @Input() nowRangeOffset: number;
+  @Input() timezoneOffset = 0;
+  @Input() globalDuration: [Long, Long];
+  @Output() rangeOffsetChange = new EventEmitter<number>();
+}
 
 describe('RoutesChartControlBarComponent', () => {
   let component: RoutesChartControlBarComponent;
@@ -68,7 +81,7 @@ describe('RoutesChartControlBarComponent', () => {
           ],
         }),
       ],
-      declarations: [RoutesChartControlBarComponent],
+      declarations: [RoutesChartControlBarComponent, MockTimeNavigationComponent],
     })
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
       .compileComponents();

@@ -25,6 +25,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import ShipmentSelectors from '../../selectors/shipment.selectors';
 import { selectShipmentTypes as selectScenarioShipmentTypes } from '../../../core/selectors/scenario.selectors';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('ShipmentTypeIncompatibilityDialogComponent', () => {
   let component: ShipmentTypeIncompatibilityDialogComponent;
@@ -43,7 +45,9 @@ describe('ShipmentTypeIncompatibilityDialogComponent', () => {
           ],
         }),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ShipmentTypeIncompatibilityDialogComponent);
     component = fixture.componentInstance;

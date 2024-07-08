@@ -24,6 +24,8 @@ import { MaterialModule } from 'src/app/material';
 import * as fromConfig from '../../selectors/config.selectors';
 import { DispatcherService, FileService } from '../../services';
 import { UploadDialogComponent } from './upload-dialog.component';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('UploadDialogComponent', () => {
   let component: UploadDialogComponent;
@@ -46,7 +48,9 @@ describe('UploadDialogComponent', () => {
           selectors: [{ selector: fromConfig.selectMessagesConfig, value: null }],
         }),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(UploadDialogComponent);
     component = fixture.componentInstance;

@@ -48,6 +48,7 @@ export class BaseVehiclesTableComponent {
   @Input() changeDisabled = false;
   @Input() showBulkEdit: boolean;
   @Input() showBulkDelete: boolean;
+  @Input() shipmentCount: number;
   @Output() bulkEdit = new EventEmitter();
   @Output() bulkDelete = new EventEmitter();
   @Output() selectAll = new EventEmitter<void>();
@@ -56,7 +57,6 @@ export class BaseVehiclesTableComponent {
   @Output() sortChange = new EventEmitter<{ active: string; direction: string }>();
   @Output() editVehicle = new EventEmitter<number>();
   @Output() deleteVehicle = new EventEmitter<Vehicle>();
-  @Input() shipmentCount: number;
 
   constructor(private zone: NgZone) {}
 

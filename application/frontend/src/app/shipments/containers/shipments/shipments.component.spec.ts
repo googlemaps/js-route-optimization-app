@@ -34,7 +34,6 @@ import ShipmentModelSelectors from '../../../core/selectors/shipment-model.selec
   template: '',
 })
 class MockBaseShipmentsTableComponent {
-  @Input() hasMap: boolean;
   @Input() dataSource: DataSource<ShipmentItem>;
   @Input() sort?: { active: string; direction: string };
   @Input() itemsSelected: { [shipmentId: number]: boolean } = {};
@@ -44,13 +43,21 @@ class MockBaseShipmentsTableComponent {
   @Input() duration: [Long, Long];
   @Input() relativeTo: Long;
   @Input() unitAbbreviations: { [unit: string]: string };
-  @Input() timezoneOffset: number;
+  @Input() timezoneOffset = 0;
   @Input() changeDisabled = false;
+  @Input() hasMap = false;
+  @Input() showBulkEdit: boolean;
+  @Input() showBulkDelete: boolean;
+  @Output() bulkEdit = new EventEmitter();
+  @Output() bulkDelete = new EventEmitter();
   @Output() selectAll = new EventEmitter<void>();
   @Output() deselectAll = new EventEmitter<void>();
-  @Output() selectedChange = new EventEmitter<{ shipmentId: number; selected: boolean }>();
+  @Output() selectedChange = new EventEmitter<{ id: number; selected: boolean }>();
   @Output() sortChange = new EventEmitter<{ active: string; direction: string }>();
-  @Output() showOnMap = new EventEmitter<number>();
+  @Output() edit = new EventEmitter<number>();
+  @Output() delete = new EventEmitter<ShipmentItem>();
+  @Output() mouseEnterVisitRequest = new EventEmitter<number>();
+  @Output() mouseExitVisitRequest = new EventEmitter<number>();
 }
 
 describe('ShipmentsComponent', () => {

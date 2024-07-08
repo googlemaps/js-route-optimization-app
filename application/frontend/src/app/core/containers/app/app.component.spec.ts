@@ -49,6 +49,14 @@ class MockBodyComponent {
 })
 class MockSharedDefsComponent {}
 
+@Component({
+  selector: 'app-top-bar',
+  template: '',
+})
+export class MockTopBarComponent {
+  @Input() started: boolean;
+}
+
 describe('AppComponent', () => {
   let actions$: Observable<any>;
 
@@ -58,6 +66,7 @@ describe('AppComponent', () => {
         MockBodyComponent,
         MockSharedDefsComponent,
         MockSideBarComponent,
+        MockTopBarComponent,
         AppComponent,
       ],
       providers: [

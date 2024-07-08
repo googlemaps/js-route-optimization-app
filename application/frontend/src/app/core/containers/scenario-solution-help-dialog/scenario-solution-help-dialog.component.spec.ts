@@ -18,6 +18,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScenarioSolutionHelpDialogComponent } from './scenario-solution-help-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MaterialModule } from 'src/app/material';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('ScenarioSolutionHelpDialogComponent', () => {
   let component: ScenarioSolutionHelpDialogComponent;
@@ -25,9 +28,12 @@ describe('ScenarioSolutionHelpDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [ScenarioSolutionHelpDialogComponent],
       providers: [{ provide: MatDialogRef, useValue: {} }],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ScenarioSolutionHelpDialogComponent);
     component = fixture.componentInstance;
