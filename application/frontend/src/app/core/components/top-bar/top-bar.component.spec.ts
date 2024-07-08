@@ -17,6 +17,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TopBarComponent } from './top-bar.component';
 import { provideMockStore } from '@ngrx/store/testing';
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-logo',
+  template: '',
+})
+export class MockLogoComponent {}
 
 describe('TopBarComponent', () => {
   let component: TopBarComponent;
@@ -24,7 +31,8 @@ describe('TopBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TopBarComponent],
+      imports: [],
+      declarations: [TopBarComponent, MockLogoComponent],
       providers: [provideMockStore()],
     }).compileComponents();
 

@@ -23,6 +23,8 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import ShipmentSelectors from '../../selectors/shipment.selectors';
 import { selectShipmentTypes as selectScenarioShipmentTypes } from '../../../core/selectors/scenario.selectors';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
+import { MatIconRegistry } from '@angular/material/icon';
 
 describe('ShipmentTypeRequirementDialogComponent', () => {
   let component: ShipmentTypeRequirementDialogComponent;
@@ -41,7 +43,9 @@ describe('ShipmentTypeRequirementDialogComponent', () => {
           ],
         }),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ShipmentTypeRequirementDialogComponent);
     component = fixture.componentInstance;

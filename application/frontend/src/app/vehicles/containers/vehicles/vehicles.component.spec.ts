@@ -44,14 +44,17 @@ class MockBaseVehiclesTableComponent {
   @Input() relativeTo: Long;
   @Input() unitAbbreviations: { [unit: string]: string };
   @Input() changeDisabled = false;
-  @Output() add = new EventEmitter();
+  @Input() showBulkEdit: boolean;
+  @Input() showBulkDelete: boolean;
+  @Input() shipmentCount: number;
+  @Output() bulkEdit = new EventEmitter();
+  @Output() bulkDelete = new EventEmitter();
   @Output() selectAll = new EventEmitter<void>();
   @Output() deselectAll = new EventEmitter<void>();
   @Output() selectedChange = new EventEmitter<{ id: number; selected: boolean }>();
   @Output() sortChange = new EventEmitter<{ active: string; direction: string }>();
   @Output() editVehicle = new EventEmitter<number>();
   @Output() deleteVehicle = new EventEmitter<Vehicle>();
-  @Input() shipmentCount: number;
 }
 
 describe('VehiclesComponent', () => {

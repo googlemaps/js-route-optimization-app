@@ -33,6 +33,12 @@ export class MockPreSolveShipmentModelSettingsComponent {}
 })
 export class MockPreSolveGlobalSettingsComponent {}
 
+@Component({
+  selector: 'app-pre-solve-settings',
+  template: '',
+})
+export class MockPreSolveSettingsComponent {}
+
 describe('ScenarioPlanningComponent', () => {
   let component: ScenarioPlanningComponent;
   let fixture: ComponentFixture<ScenarioPlanningComponent>;
@@ -44,6 +50,7 @@ describe('ScenarioPlanningComponent', () => {
         ScenarioPlanningComponent,
         MockPreSolveShipmentModelSettingsComponent,
         MockPreSolveGlobalSettingsComponent,
+        MockPreSolveSettingsComponent,
       ],
       providers: [provideMockStore()],
     }).compileComponents();

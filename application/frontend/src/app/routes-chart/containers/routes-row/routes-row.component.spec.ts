@@ -49,9 +49,6 @@ import ShipmentModelSelectors from '../../../core/selectors/shipment-model.selec
   template: '',
 })
 class MockBaseRoutesRowComponent {
-  @Input() currentDragVisitIds: number[];
-  @Input() currentOverlapId: number;
-  @Input() isDragging: boolean;
   @Input() route: ShipmentRoute;
   @Input() vehicle: Vehicle;
   @Input() shipmentCount: number;
@@ -66,15 +63,11 @@ class MockBaseRoutesRowComponent {
   @Input() relaxationTimes: Long[];
   @Input() timezoneOffset: number;
   @Input() changedVisits: ChangedVisits;
+  @Input() color = '#1a73e8';
   @Output() selectedChange = new EventEmitter<boolean>();
-  @Output() dragStart = new EventEmitter<PointOfInterestStartDrag>();
-  @Output() timelineEnter = new EventEmitter<PointOfInterestTimelineOverlapBegin>();
-  @Output() timelineLeave = new EventEmitter<number>();
   @Output() pointOfInterestClick = new EventEmitter<PointOfInterestClick>();
   @Output() editVehicle = new EventEmitter<number>();
   @Output() viewMetadata = new EventEmitter<number>();
-  @Output() mouseEnterVisit = new EventEmitter<number>();
-  @Output() mouseExitVisit = new EventEmitter();
 }
 
 describe('RoutesRowComponent', () => {

@@ -18,6 +18,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CsvHelpDialogComponent } from './csv-help-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MaterialModule } from 'src/app/material';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('CsvHelpDialogComponent', () => {
   let component: CsvHelpDialogComponent;
@@ -25,9 +28,12 @@ describe('CsvHelpDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [CsvHelpDialogComponent],
       providers: [{ provide: MatDialogRef, useValue: {} }],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(CsvHelpDialogComponent);
     component = fixture.componentInstance;

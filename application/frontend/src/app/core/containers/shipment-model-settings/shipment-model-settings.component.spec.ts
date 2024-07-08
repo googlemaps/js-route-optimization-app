@@ -18,6 +18,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShipmentModelSettingsComponent } from './shipment-model-settings.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { Component } from '@angular/core';
+import { MaterialModule } from 'src/app/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-shipment-type-incompatibility-dialog',
@@ -67,6 +69,7 @@ describe('ShipmentModelSettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule, NoopAnimationsModule],
       declarations: [
         ShipmentModelSettingsComponent,
         MockShipmentTypeIncompatibilityDialogComponent,

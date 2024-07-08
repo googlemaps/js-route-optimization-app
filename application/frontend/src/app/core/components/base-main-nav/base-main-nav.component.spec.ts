@@ -18,6 +18,8 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MaterialModule } from 'src/app/material';
 import { BaseMainNavComponent } from './base-main-nav.component';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 @Component({
   selector: 'app-generate-button',
@@ -55,7 +57,9 @@ describe('MainNavComponent', () => {
         MockPreSolveMessageComponent,
         BaseMainNavComponent,
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(BaseMainNavComponent);
     component = fixture.componentInstance;
