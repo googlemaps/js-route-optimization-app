@@ -11,6 +11,9 @@
     <div class="mb-0 metric-box-value" *ngIf="kpis.shipmentKpis.demands?.length; else noValue">
       {{ kpis.shipmentKpis.demands[0].selected | number }} {{ kpis.shipmentKpis.demands[0].type }}
     </div>
+    <div class="mb-0 metric-box-value" *ngIf="kpis.shipmentKpis.demands?.length > 1">
+      {{ kpis.shipmentKpis.demands[1].selected | number }} {{ kpis.shipmentKpis.demands[1].type }}
+    </div>
     <div class="metric-box-value" *ngIf="kpis.shipmentKpis.demands?.length > 2">
       <a (click)="showAllKpis(kpis.shipmentKpis.demands, true)">View more</a>
     </div>
@@ -20,6 +23,10 @@
     <div class="mb-0 metric-box-value" *ngIf="kpis.vehicleKpis.capacities?.length; else noValue">
       {{ kpis.vehicleKpis.capacities[0].selected | number }}
       {{ kpis.vehicleKpis.capacities[0].type }}
+    </div>
+    <div class="mb-0 metric-box-value" *ngIf="kpis.vehicleKpis.capacities?.length > 1">
+      {{ kpis.vehicleKpis.capacities[1].selected | number }}
+      {{ kpis.vehicleKpis.capacities[1].type }}
     </div>
     <div class="metric-box-value" *ngIf="kpis.vehicleKpis.capacities?.length > 2">
       <a (click)="showAllKpis(kpis.vehicleKpis.capacities, false)">View more</a>
