@@ -46,16 +46,14 @@ Take note of your new `PROJECT_ID`, you will use this value
 throughout the remaining steps.
 
 ### Enable Billing
-**Cloud Fleet Routing** and **Google Maps Platform**, dependencies of
-**Fleet Routing App**, are paid services that require a project
-to be linked to a billing account before they can be enabled.
+The application has a dependency on paid offerings from **Google Maps Platform** and therefore requires a project be linked to a billing account before the appropriate APIs can be enabled.
 
 Follow the instructions in Google's documentation to
 [enable billing for your new project](https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project).
 
 ### Enable APIs
 The frontend application depends on the following APIs:
-- **Cloud Optimization API**
+- **Route Optimization API**
 - **Google Maps Distance Matrix**
 - **Google Maps for Fleet Routing**
 - **Google Maps Geocoding**
@@ -67,13 +65,11 @@ Find and enable each of these APIs in the [**APIs & Services > Library**](https:
 section of Cloud Console or run the following `gcloud` commands:
 ```sh
 # optimization
-gcloud services enable cloudoptimization.googleapis.com --project {PROJECT_ID}
+gcloud services enable routeoptimization.googleapis.com --project {PROJECT_ID}
 # distance matrix
 gcloud services enable distance-matrix-backend.googleapis.com --project {PROJECT_ID}
 # geocoding
 gcloud services enable geocoding-backend.googleapis.com --project {PROJECT_ID}
-# maps for fleet routing
-gcloud services enable mapsfleetrouting.googleapis.com --project {PROJECT_ID}
 # maps javascript
 gcloud services enable maps-backend.googleapis.com --project {PROJECT_ID}
 # places
@@ -111,9 +107,9 @@ gcloud iam service-accounts create fleetrouting-app \
 ```
 
 ### IAM
-Grant your new service account the **Cloud Optimization AI Editor**
-(`roles/cloudoptimization.editor`) role,
-which is required for **Cloud Fleet Routing** requests.
+Grant your new service account the **Route Optimization Editor**
+(`roles/routeoptimization.editor`) role,
+which is required for **Route Optimization** requests.
 
 Add the role to the service account's permissions
 in the [**IAM & Admin > IAM**](https://console.cloud.google.com/iam-admin/iam)
@@ -122,7 +118,7 @@ section of Cloud Console, or run the following `gcloud` command:
 ```sh
 gcloud projects add-iam-policy-binding {PROJECT_ID} \
   --member=serviceAccount:fleetrouting-app@{PROJECT_ID}.iam.gserviceaccount.com \
-  --role=roles/cloudoptimization.editor
+  --role=roles/routeoptimization.editor
 ```
 
 ---
@@ -138,8 +134,8 @@ packages for **Fleet Routing App**.
 Clone the repository and navigate to the checked-out directory.
 
 ```shell
-git clone https://github.com/google/cfr.git
-cd cfr
+git clone https://github.com/googlemaps/js-route-optimization-app.git
+cd js-route-optimization-app
 ```
 
 ### Install Dependencies
@@ -196,11 +192,11 @@ LOG_FORMAT=pretty
 
 ### Authentication
 #### Service Account Credentials
-To authenticate requests to **Cloud Fleet Routing**,
+To authenticate requests to **Route Optimization**,
 the backend needs credentials for a Google Cloud service account
-with the **Cloud Optimization AI Editor** role.
+with the **Route OptimizationEditor** role.
 
-> ℹ **Cloud Fleet Routing** requests cannot be authenticated with end-user credentials.
+> ℹ **Route Optimization** requests cannot be authenticated with end-user credentials.
 
 [Create a JSON service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys)
 for the *Fleet Routing App Service Account (`fleetrouting-app@`)*
