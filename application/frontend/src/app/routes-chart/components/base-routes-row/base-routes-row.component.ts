@@ -61,6 +61,7 @@ export class BaseRoutesRowComponent implements OnInit {
   @Output() selectedChange = new EventEmitter<boolean>();
   @Output() editVehicle = new EventEmitter<number>();
   @Output() viewMetadata = new EventEmitter<number>();
+  @Output() clickVisitIds = new EventEmitter<number[]>();
   @HostBinding('class') className = 'item item-container';
   allowExperimentalFeatures: boolean;
 

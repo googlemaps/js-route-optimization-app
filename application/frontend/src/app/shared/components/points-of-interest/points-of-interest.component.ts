@@ -28,11 +28,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as Long from 'long';
-import {
-  PointOfInterest,
-  PointOfInterestCategory,
-  ChangedVisits,
-} from 'src/app/core/models';
+import { PointOfInterest, PointOfInterestCategory, ChangedVisits } from 'src/app/core/models';
 import { defaultTimeFormat, formatSecondsDate, timeToPixel } from 'src/app/util';
 import { Cluster, PointsOfInterestImageAttribute, pointsOfInterestImages } from '../../models';
 
@@ -67,6 +63,7 @@ export class PointsOfInterestComponent implements OnChanges {
   @Input() routeId: number;
   @Input() changedVisits: ChangedVisits;
   @Input() color: string;
+  @Output() clickVisitIds = new EventEmitter<number[]>();
 
   get imageAttributeLookup(): { [key: string]: PointsOfInterestImageAttribute } {
     return PointsOfInterestComponent.imageAttributeLookup;
@@ -118,12 +115,20 @@ export class PointsOfInterestComponent implements OnChanges {
       // Not the primary button
       return;
     }
-    console.log(event, point)
-    // this.pointOfInterestClick.emit({
-    //   category: point[1],
-    //   visitId: point[0],
-    //   relativeTo: event.target as Element,
-    // });
+
+    const visitIds = [point[0]];
+    const cluster = this.clusters.find(
+      (cluster) => cluster.start <= point[2] && cluster.end >= point[2]
+    );
+    if (cluster) {
+      this.points.forEach((p) => {
+        if (cluster.start <= p[2] && cluster.end >= p[2]) {
+          visitIds.push(p[0]);
+        }
+      });
+    }
+
+    this.clickVisitIds.emit(visitIds);
     event.preventDefault();
     event.stopPropagation();
   }

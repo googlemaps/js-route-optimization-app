@@ -65,6 +65,7 @@
     [timezoneOffset]="timezoneOffset"
     [pendingNewPois]="pendingNewPois"
     [pendingOldVisitIds]="pendingOldVisitIds"
-    [color]="color">
+    [color]="color"
+    (clickVisitIds)="clickVisitIds.emit($event)">
   </app-points-of-interest>
 </div>

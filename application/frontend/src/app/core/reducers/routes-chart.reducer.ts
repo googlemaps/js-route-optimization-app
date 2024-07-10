@@ -113,6 +113,11 @@ export const reducer = createReducer(
     filters: state.filters.filter((f) => !(f.id === filter.id && f.params === filter.params)),
     pageIndex: 0,
   })),
+  on(RoutesChartActions.setFilters, (state, { filters }) => ({
+    ...state,
+    filters,
+    pageIndex: 0,
+  })),
   on(
     RoutesChartActions.anchorRangeOffset,
     RoutesChartActions.nextRangeOffset,

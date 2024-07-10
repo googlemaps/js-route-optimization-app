@@ -39,6 +39,11 @@ const selectVisitRequests = createSelector(
   (ids: number[] | string[], visitRequests) => ids.map((id) => visitRequests[id])
 );
 
+const selectVisitRequestsByIds = (ids: number[]) =>
+  createSelector(fromVisitRequest.selectEntities, (visitRequests) =>
+    ids.map((id) => visitRequests[id])
+  );
+
 const selectVisitForEdit = (id: number, shipmentRouteId: number) =>
   createSelector(
     selectById(id),
@@ -85,6 +90,7 @@ export const VisitSelectors = {
   selectDeliveryByShipmentId,
   selectPickupByShipmentId,
   selectChangedVisitsFromIds,
+  selectVisitRequestsByIds,
 };
 
 export default VisitSelectors;
