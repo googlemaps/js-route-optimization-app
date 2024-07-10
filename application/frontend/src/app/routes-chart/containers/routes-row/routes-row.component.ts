@@ -33,7 +33,6 @@ import {
   ShipmentRoute,
   Timeline,
   Vehicle,
-  PointOfInterestClick,
   IConstraintRelaxation,
   ChangedVisits,
 } from 'src/app/core/models';
@@ -206,13 +205,6 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
   onSelectedChange(selected: boolean): void {
     const action = selected ? RoutesChartActions.selectRoute : RoutesChartActions.deselectRoute;
     this.store.dispatch(action({ routeId: this.route.id }));
-  }
-
-  onPointOfInterestClick(pointOfInterestClick: PointOfInterestClick): void {
-    if (pointOfInterestClick.visitId < 1) {
-      return;
-    }
-    this.store.dispatch(RoutesChartActions.editVisit({ visitId: pointOfInterestClick.visitId }));
   }
 
   onEditVehicle(vehicleId: number): void {

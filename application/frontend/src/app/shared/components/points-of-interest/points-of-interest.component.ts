@@ -31,7 +31,6 @@ import * as Long from 'long';
 import {
   PointOfInterest,
   PointOfInterestCategory,
-  PointOfInterestClick,
   ChangedVisits,
 } from 'src/app/core/models';
 import { defaultTimeFormat, formatSecondsDate, timeToPixel } from 'src/app/util';
@@ -68,7 +67,6 @@ export class PointsOfInterestComponent implements OnChanges {
   @Input() routeId: number;
   @Input() changedVisits: ChangedVisits;
   @Input() color: string;
-  @Output() pointOfInterestClick = new EventEmitter<PointOfInterestClick>();
 
   get imageAttributeLookup(): { [key: string]: PointsOfInterestImageAttribute } {
     return PointsOfInterestComponent.imageAttributeLookup;
@@ -120,11 +118,12 @@ export class PointsOfInterestComponent implements OnChanges {
       // Not the primary button
       return;
     }
-    this.pointOfInterestClick.emit({
-      category: point[1],
-      visitId: point[0],
-      relativeTo: event.target as Element,
-    });
+    console.log(event, point)
+    // this.pointOfInterestClick.emit({
+    //   category: point[1],
+    //   visitId: point[0],
+    //   relativeTo: event.target as Element,
+    // });
     event.preventDefault();
     event.stopPropagation();
   }
