@@ -131,6 +131,23 @@ export const selectFilteredVisitRequestsWithStopOrder = createSelector(
   }
 );
 
+export const selectFilteredVisitRequestsSelectedWithStopOrder = createSelector(
+  selectFilteredRouteVisitRequestsSelected,
+  selectVisitRequestStopOrder,
+  fromVisit.selectEntities,
+  RoutesChartSelectors.selectSelectedRoutesColors,
+  (visitRequests, stopOrder, visits, colors) => {
+    return visitRequests.map((visitRequest) => {
+      const made = !!visits[visitRequest.id];
+      return {
+        ...visitRequestToDeckGL(visitRequest, made),
+        color: made ? colors[visits[visitRequest.id].shipmentRouteId] : null,
+        stopOrder: stopOrder[visitRequest.id]
+      };
+    });
+  }
+);
+
 export const selectFilteredVisitRequestsSelected = createSelector(
   selectFilteredRouteVisitRequestsSelected,
   fromVisit.selectEntities,

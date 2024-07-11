@@ -16,7 +16,7 @@ limitations under the License.
 
 import { NgZone } from '@angular/core';
 import { GoogleMapsOverlay } from '@deck.gl/google-maps';
-import { IconLayer, TextLayer } from '@deck.gl/layers';
+import { IconLayer } from '@deck.gl/layers';
 import { Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import { UIActions } from '../actions';
@@ -46,7 +46,6 @@ export abstract class BaseVisitRequestLayer {
   protected layer: IconLayer = new IconLayer({});
   protected selectedDataLayer: IconLayer = new IconLayer({});
   protected mouseOverLayer: IconLayer = new IconLayer({});
-  protected labelLayer: TextLayer = new TextLayer({});
 
   private _visible: boolean;
 
@@ -126,6 +125,11 @@ export abstract class BaseVisitRequestLayer {
     return './assets/images/dropoff_pickup_sprite.png';
   }
 
+  protected getSizeScale(): number {
+    return 1.75;
+  }
+
+
   abstract getDefaultIconFn(data): string;
   protected onDataFiltered(data): void {
     this.layer = new IconLayer({
@@ -135,7 +139,7 @@ export abstract class BaseVisitRequestLayer {
       iconMapping: this.getIconMapping(),
       getIcon: (d) => this.getDefaultIconFn(d),
       getSize: 10,
-      sizeScale: 2,
+      sizeScale: this.getSizeScale(),
       getPosition: (d) => d.arrivalPosition,
       pickable: true,
       onHover: ({ object }) => {
@@ -148,7 +152,7 @@ export abstract class BaseVisitRequestLayer {
       },
     });
     this.gLayer.setProps({
-      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer, this.labelLayer],
+      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer],
     });
   }
 
@@ -159,21 +163,24 @@ export abstract class BaseVisitRequestLayer {
       iconAtlas: this.getIconAtlas(),
       iconMapping: this.getIconMapping(),
       getIcon: (d) => {
+        // Clamp to 100, whereafter all labels are "99+"
+        const stopOrder = Math.min(d.stopOrder, 100);
         const color = (d.color && d.color.name) || this.defaultSelectedColor;
-        const key = d.pickup ? `pickup-${color}` : `dropoff-${color}`;
-        return key in this.iconMapping
-          ? key
-          : d.pickup
-          ? `pickup-${this.defaultSelectedColor}`
-          : `dropoff-${this.defaultSelectedColor}`;
+        const key = d.pickup ? `pickup-${color}-${stopOrder}` : `dropoff-${color}-${stopOrder}`;
+        return key;
+        // return key in this.iconMapping
+        //   ? key
+        //   : d.pickup
+        //   ? `pickup-${this.defaultSelectedColor}`
+        //   : `dropoff-${this.defaultSelectedColor}`;
       },
       getSize: 10,
-      sizeScale: 2,
+      sizeScale: this.getSizeScale(),
       getPosition: (d) => d.arrivalPosition,
       pickable: false,
     });
     this.gLayer.setProps({
-      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer, this.labelLayer],
+      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer],
     });
   }
 
@@ -196,12 +203,12 @@ export abstract class BaseVisitRequestLayer {
           : `dropoff-${this.defaultSelectedColor}`;
       },
       getSize: 12,
-      sizeScale: 2,
+      sizeScale: this.getSizeScale(),
       getPosition: (d) => d.arrivalPosition,
       pickable: false,
     });
     this.gLayer.setProps({
-      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer, this.labelLayer],
+      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer],
     });
   }
 }

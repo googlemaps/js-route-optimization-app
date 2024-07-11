@@ -18,13 +18,12 @@ import { Injectable, NgZone } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import {
-  selectFilteredVisitRequestsSelected,
   selectMouseOverVisitRequests,
+  selectFilteredVisitRequestsSelectedWithStopOrder,
   selectFilteredVisitRequestsWithStopOrder,
 } from '../selectors/post-solve-visit-request-layer.selectors';
 import { BaseVisitRequestLayer } from './base-visit-request-layer.service';
 import { MapService } from './map.service';
-import { TextLayer } from '@deck.gl/layers';
 import { combineLatest } from 'rxjs';
 
 @Injectable({
@@ -33,15 +32,17 @@ import { combineLatest } from 'rxjs';
 export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   readonly minZoom = 11;
 
+  layerId = 'post-solve-visit-requests';
+
   canShowTextLayer = false;
 
-  readonly capsuleIconSize: [number, number] = [302, 96];
+  readonly capsuleIconSize: [number, number] = [78, 31];
   private capsuleIconMapping = {};
 
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone);
 
-    this.capsuleIconMapping = this.createIconMapping(this.capsuleIconSize);
+     this.createLabeledIconMapping();
 
     combineLatest([
       this.store.pipe(select(selectFilteredVisitRequestsWithStopOrder)),
@@ -52,7 +53,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
     });
 
     combineLatest([
-      this.store.pipe(select(selectFilteredVisitRequestsSelected)),
+      this.store.pipe(select(selectFilteredVisitRequestsSelectedWithStopOrder)),
       this.mapService.zoomChanged$,
     ]).subscribe(([visitRequests, zoom]) => {
       this.canShowTextLayer = zoom >= this.minZoom;
@@ -68,7 +69,26 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
     });
   }
 
-  layerId = 'post-solve-visit-requests';
+  createLabeledIconMapping(): any {
+    this.capsuleIconMapping = {}
+    // dynamically create icon mapping based on sprite
+    for (let i = 0; i < this.iconMappingOrder.length; i++) {
+      for (let stopOrder = 1; stopOrder < 101; stopOrder++) {
+        const icon = `${this.iconMappingOrder[i]}-${stopOrder}`;
+        this.capsuleIconMapping[icon] = {
+          x: this.capsuleIconSize[0] * (stopOrder - 1),
+          y: this.capsuleIconSize[1] * i,
+          width: this.capsuleIconSize[0],
+          // clip height by 1 pixel to reduce a noticeable artifact that's more
+          // prominent on deliveries when zoomed out
+          height: this.capsuleIconSize[1] - 1,
+        };
+      }
+    }
+    console.log(this.capsuleIconMapping)
+  }
+
+  
   getDefaultIconFn(data: any): string {
     return data.made
       ? data.pickup
@@ -81,27 +101,15 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
 
   protected getIconAtlas(): string {
     return this.canShowTextLayer
-      ? './assets/images/dropoff_pickup_label_sprite.png'
+      ? './assets/images/labeled_dropoffs_pickups.png'
       : super.getIconAtlas();
+  }
+
+  protected getSizeScale(): number {
+    return this.canShowTextLayer ? 2.5 : super.getSizeScale();
   }
 
   protected getIconMapping(): any {
     return this.canShowTextLayer ? this.capsuleIconMapping : this.iconMapping;
-  }
-
-  protected onDataFiltered(data): void {
-    this.labelLayer = new TextLayer({
-      id: `${this.layerId}-label`,
-      data,
-      fontFamily: 'Google Sans, Roboto, "Helvetica Neue", sans-serif',
-      getPosition: (d) => d.arrivalPosition,
-      getTextAnchor: 'middle',
-      getSize: 16,
-      getColor: [255, 255, 255],
-      getText: (d) => `${d.stopOrder}`,
-      getPixelOffset: [6, 1],
-      visible: this.canShowTextLayer,
-    });
-    super.onDataFiltered(data);
   }
 }
