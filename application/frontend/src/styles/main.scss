@@ -960,7 +960,7 @@ app-post-solve-map-legend .legend-panel mat-checkbox label .mat-checkbox-label {
   background-color: #f3f8ff;
   border-radius: 5px;
   padding: 5px 20px;
-  text-align: center;
+  text-align: left;
   flex: 1;
   border: 1px solid #d5dee5;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
@@ -980,13 +980,13 @@ app-post-solve-map-legend .legend-panel mat-checkbox label .mat-checkbox-label {
 .metric-box-title {
   color: #5f6368;
   font-weight: 300;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .metric-box-value {
   color: $blue;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
 }
 
