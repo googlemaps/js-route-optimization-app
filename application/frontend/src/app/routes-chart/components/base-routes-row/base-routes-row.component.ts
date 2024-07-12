@@ -59,9 +59,9 @@ export class BaseRoutesRowComponent implements OnInit {
   @Input() changedVisits: ChangedVisits;
   @Input() color = '#1a73e8';
   @Output() selectedChange = new EventEmitter<boolean>();
-  @Output() pointOfInterestClick = new EventEmitter<PointOfInterestClick>();
   @Output() editVehicle = new EventEmitter<number>();
   @Output() viewMetadata = new EventEmitter<number>();
+  @Output() clickVisitIds = new EventEmitter<number[]>();
   @HostBinding('class') className = 'item item-container';
   allowExperimentalFeatures: boolean;
 

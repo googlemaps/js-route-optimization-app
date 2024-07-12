@@ -105,11 +105,13 @@ export class MapService {
     );
   }
 
-  setBounds(bounds: google.maps.LatLngBounds): void {
+  setBounds(bounds: google.maps.LatLngBounds, save = true): void {
     if (bounds) {
       this.map?.fitBounds(bounds);
     }
-    this.bounds = bounds;
+    if (save) {
+      this.bounds = bounds;
+    }
   }
 
   zoomToHome(): void {

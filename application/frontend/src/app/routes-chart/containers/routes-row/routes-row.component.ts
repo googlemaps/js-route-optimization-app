@@ -33,7 +33,6 @@ import {
   ShipmentRoute,
   Timeline,
   Vehicle,
-  PointOfInterestClick,
   IConstraintRelaxation,
   ChangedVisits,
 } from 'src/app/core/models';
@@ -46,12 +45,13 @@ import * as fromVehicle from 'src/app/core/selectors/vehicle.selectors';
 import * as fromRoot from 'src/app/reducers';
 import RequestSettingsSelectors from 'src/app/core/selectors/request-settings.selectors';
 import VisitSelectors from 'src/app/core/selectors/visit.selectors';
-import { ValidationService } from 'src/app/core/services';
+import { MapService, ValidationService } from 'src/app/core/services';
 import { PostSolveMetricsActions } from 'src/app/core/actions';
 import { Router } from '@angular/router';
 import { Page } from 'src/app/core/models';
 import { durationSeconds } from 'src/app/util';
 import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
+import { NumberFilterParams } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-routes-row',
@@ -81,7 +81,8 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private router: Router,
     private store: Store<fromRoot.State>,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private mapService: MapService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -208,13 +209,6 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
     this.store.dispatch(action({ routeId: this.route.id }));
   }
 
-  onPointOfInterestClick(pointOfInterestClick: PointOfInterestClick): void {
-    if (pointOfInterestClick.visitId < 1) {
-      return;
-    }
-    this.store.dispatch(RoutesChartActions.editVisit({ visitId: pointOfInterestClick.visitId }));
-  }
-
   onEditVehicle(vehicleId: number): void {
     this.store.dispatch(PreSolveVehicleActions.editVehicle({ vehicleId }));
   }
@@ -222,5 +216,38 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
   onViewMetadata(id: number): void {
     this.store.dispatch(PostSolveMetricsActions.showMetadataForRoute({ id }));
     this.router.navigateByUrl('/' + Page.RoutesMetadata, { skipLocationChange: true });
+  }
+
+  onClickVisitIds(ids: number[]): void {
+    this.store.dispatch(
+      RoutesChartActions.setFilters({
+        filters: [
+          {
+            id: 'routeId',
+            label: `Route ID = ${this.route.id}`,
+            params: {
+              operation: '=',
+              value: this.route.id,
+            } as NumberFilterParams,
+          },
+        ],
+      })
+    );
+
+    this.store
+      .pipe(select(VisitSelectors.selectVisitRequestsByIds(ids)))
+      .subscribe((visitRequests) => {
+        const bounds = new google.maps.LatLngBounds();
+        visitRequests.forEach((vr) =>
+          bounds.extend({
+            lat: vr.arrivalWaypoint.location.latLng.latitude,
+            lng: vr.arrivalWaypoint.location.latLng.longitude,
+          })
+        );
+        this.mapService.setBounds(bounds, false);
+        if (this.mapService.map.getZoom() > 16) {
+          this.mapService.map.setZoom(16);
+        }
+      });
   }
 }
