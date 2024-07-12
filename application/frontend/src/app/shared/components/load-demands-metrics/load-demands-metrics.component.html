@@ -1,0 +1,25 @@
+<div class="title" mat-dialog-title>
+  <div class="m-0 mr-6">Total Scenario Load Demands</div>
+  <button mat-icon-button type="button" title="Cancel" class="close-button" matDialogClose="">
+    <mat-icon svgIcon="clear"></mat-icon>
+  </button>
+</div>
+<div mat-dialog-container>
+  <table cdk-table [dataSource]="kpiData">
+    <ng-container cdkColumnDef="type">
+      <th cdk-header-cell *cdkHeaderCellDef class="kpi-title">Load Type</th>
+      <td cdk-cell *cdkCellDef="let kpi" class="metric-box-value">{{ kpi.type }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="demand">
+      <th cdk-header-cell *cdkHeaderCellDef class="kpi-title">Total Shipment Demand</th>
+      <td cdk-cell *cdkCellDef="let kpi" class="metric-box-value">{{ kpi.demand | number }}</td>
+    </ng-container>
+    <ng-container cdkColumnDef="capacity">
+      <th cdk-header-cell *cdkHeaderCellDef class="kpi-title">Total Vehicle Capacity</th>
+      <td cdk-cell *cdkCellDef="let kpi" class="metric-box-value">{{ kpi.capacity | number }}</td>
+    </ng-container>
+
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

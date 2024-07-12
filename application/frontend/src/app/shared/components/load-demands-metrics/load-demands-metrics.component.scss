@@ -1,0 +1,40 @@
+@import '../../../../styles/variables.scss';
+
+:host {
+  text-align: left;
+}
+
+table {
+  border-spacing: 20px 0;
+  margin-left: -20px;
+  margin-right: -20px;
+}
+
+.close-button {
+  margin-top: -1rem;
+  margin-right: -1rem;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0.15px;
+  margin-bottom: 26px;
+}
+
+.kpi-title {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 24px;
+
+  padding-right: 35px;
+  margin-right: 20px;
+
+  &:last-child {
+    padding-right: 0;
+  }
+}

@@ -14,25 +14,27 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 export interface ScenarioKpis {
-  shipmentKpis: {
-    total: number;
-    selected: number;
-    demands: {
-      selected: number;
-      total: number;
-      type: string;
-    }[];
-    pickups: number;
-    deliveries: number;
-    dwellTime: number;
-  };
-  vehicleKpis: {
-    total: number;
-    selected: number;
-    capacities: {
-      selected: number;
-      total: number;
-      type: string;
-    }[];
-  };
+  shipmentKpis: ShipmentKPIs;
+  vehicleKpis: VehicleKPIs;
+}
+
+export interface ShipmentKPIs {
+  total: number;
+  selected: number;
+  demands: LoadDemandKPI[];
+  pickups: number;
+  deliveries: number;
+  dwellTime: number;
+}
+
+export interface VehicleKPIs {
+  total: number;
+  selected: number;
+  capacities: LoadDemandKPI[];
+}
+
+export interface LoadDemandKPI {
+  selected: number;
+  total: number;
+  type: string;
 }

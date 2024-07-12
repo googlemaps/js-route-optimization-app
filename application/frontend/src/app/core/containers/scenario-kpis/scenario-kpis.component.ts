@@ -13,12 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { ScenarioKpis } from '../../models';
-import { Observable } from 'rxjs';
+import { LoadDemandKPI, ScenarioKpis } from '../../models';
 import { selectScenarioKpis } from '../../selectors/pre-solve.selectors';
 import { formattedDurationSeconds } from 'src/app/util';
+import { MatDialog } from '@angular/material/dialog';
+import { LoadDemandsMetricsComponent } from 'src/app/shared/components/load-demands-metrics/load-demands-metrics.component';
 
 @Component({
   selector: 'app-scenario-kpis',
@@ -27,13 +28,40 @@ import { formattedDurationSeconds } from 'src/app/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScenarioKpisComponent implements OnInit {
-  kpis$: Observable<ScenarioKpis>;
+  kpis: ScenarioKpis;
 
   formattedDurationSeconds = formattedDurationSeconds;
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private detectorRef: ChangeDetectorRef,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.kpis$ = this.store.pipe(select(selectScenarioKpis));
+    this.store.pipe(select(selectScenarioKpis)).subscribe((kpis) => {
+      kpis.shipmentKpis.demands.sort(this.sortLoadDemandsByType);
+      kpis.vehicleKpis.capacities.sort(this.sortLoadDemandsByType);
+      this.kpis = kpis;
+      this.detectorRef.markForCheck();
+    });
+  }
+
+  showAllKpis(): void {
+    this.dialog.open(LoadDemandsMetricsComponent, {
+      panelClass: 'metric-box-dialog',
+      data: {
+        kpis: this.kpis,
+      },
+    });
+  }
+
+  sortLoadDemandsByType(a: LoadDemandKPI, b: LoadDemandKPI): number {
+    if (a.type < b.type) {
+      return -1;
+    } else if (a.type > b.type) {
+      return 1;
+    }
+    return 0;
   }
 }

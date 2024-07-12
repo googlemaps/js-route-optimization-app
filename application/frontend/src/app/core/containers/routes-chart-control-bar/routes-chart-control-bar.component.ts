@@ -23,7 +23,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { exhaustMap, map, take } from 'rxjs/operators';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import RoutesChartSelectors from 'src/app/core/selectors/routes-chart.selectors';

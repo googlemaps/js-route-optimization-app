@@ -949,11 +949,18 @@ app-post-solve-map-legend .legend-panel mat-checkbox label .mat-checkbox-label {
   gap: 15px;
 }
 
+.metric-box-dialog .mat-dialog-container {
+  padding: 20px;
+  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14),
+    0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+}
+
+.metric-box-dialog mat-dialog-container,
 .metric-box {
   background-color: #f3f8ff;
   border-radius: 5px;
   padding: 5px 20px;
-  text-align: center;
+  text-align: left;
   flex: 1;
   border: 1px solid #d5dee5;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
@@ -973,13 +980,13 @@ app-post-solve-map-legend .legend-panel mat-checkbox label .mat-checkbox-label {
 .metric-box-title {
   color: #5f6368;
   font-weight: 300;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .metric-box-value {
   color: $blue;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
 }
 

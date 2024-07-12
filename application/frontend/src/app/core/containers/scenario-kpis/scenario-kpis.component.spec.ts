@@ -18,15 +18,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScenarioKpisComponent } from './scenario-kpis.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { selectScenarioKpis } from '../../selectors/pre-solve.selectors';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('ScenarioKpisComponent', () => {
   let component: ScenarioKpisComponent;
   let fixture: ComponentFixture<ScenarioKpisComponent>;
+  let _matDialog: jasmine.SpyObj<MatDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ScenarioKpisComponent],
       providers: [
+        { provide: MatDialog, useValue: jasmine.createSpyObj('matDialog', ['open']) },
         provideMockStore({
           selectors: [
             {
@@ -52,6 +55,8 @@ describe('ScenarioKpisComponent', () => {
       ],
     }).compileComponents();
 
+    _matDialog = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+
     fixture = TestBed.createComponent(ScenarioKpisComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -59,5 +64,23 @@ describe('ScenarioKpisComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should sort load demands by type', () => {
+    const capacities = [
+      {
+        selected: 0,
+        total: 0,
+        type: 'weight',
+      },
+      {
+        selected: 0,
+        total: 0,
+        type: 'volume',
+      },
+    ];
+    capacities.sort(component.sortLoadDemandsByType);
+    expect(capacities[0].type).toBe('volume');
+    expect(capacities[1].type).toBe('weight');
   });
 });
