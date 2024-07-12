@@ -245,6 +245,9 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
           })
         );
         this.mapService.setBounds(bounds, false);
+        if (this.mapService.map.getZoom() > 16) {
+          this.mapService.map.setZoom(16);
+        }
       });
   }
 }
