@@ -497,5 +497,8 @@ class MergeLocalAndGlobalModel:
     _shared.copy_shared_options(
         from_request=self._request, to_request=merged_request
     )
+    internal_parameters = self._request.get("internalParameters")
+    if internal_parameters is not None:
+      merged_request["internalParameters"] = internal_parameters
 
     return merged_request, merged_result

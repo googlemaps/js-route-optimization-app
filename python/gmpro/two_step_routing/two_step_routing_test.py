@@ -340,6 +340,31 @@ class PlannerTestMergedModel(PlannerTest):
     self.assertEqual(merged_request, self._EXPECTED_MERGED_REQUEST_JSON)
     self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
 
+  def test_make_merged_request_and_response_internal_parameters(self):
+    request = copy.deepcopy(self._REQUEST_JSON)
+    expected_merged_request = copy.deepcopy(self._EXPECTED_MERGED_REQUEST_JSON)
+    # This is a made-up internal parameters string. Do not use in real requests.
+    request["internalParameters"] = "foo"
+    expected_merged_request["internalParameters"] = "foo"
+    planner = two_step_routing.Planner(
+        request_json=request,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+    merged_request, merged_response = planner.merge_local_and_global_result(
+        self._LOCAL_RESPONSE_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+        # TODO(ondrasej): Earlier during development, we removed some of the
+        # durations from the local and global responses for brevity, and now the
+        # timing in the responses is not self-consistent. Regenerate the test
+        # data with all timing information and enable the consistency checks in
+        # the tests.
+        check_consistency=False,
+    )
+    self.assertEqual(merged_request, expected_merged_request)
+    self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
+
   def test_make_merged_request_and_response_with_skipped_shipments(self):
     planner = two_step_routing.Planner(
         request_json=self._REQUEST_JSON,
