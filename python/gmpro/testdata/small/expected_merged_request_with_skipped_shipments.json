@@ -367,5 +367,7 @@
     ],
     "transitionAttributes": [{ "cost": 1, "dstTag": "S002", "srcTag": "S001" }]
   },
-  "parent": "my_awesome_project"
+  "parent": "my_awesome_project",
+  "searchMode": 1,
+  "allowLargeDeadlineDespiteInterruptionRisk": true
 }

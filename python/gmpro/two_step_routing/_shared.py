@@ -17,6 +17,7 @@
 import dataclasses
 import enum
 
+from ..json import cfr_json
 from . import _parking
 
 
@@ -83,3 +84,38 @@ class Options:
 
   use_deprecated_fields: bool = True
   travel_mode_in_merged_transitions: bool = False
+
+
+def copy_shared_options(
+    from_request: cfr_json.OptimizeToursRequest,
+    to_request: cfr_json.OptimizeToursRequest,
+) -> None:
+  """Copies shared request parameters from one request to another."""
+  # Copy solve mode.
+  # TODO(ondrasej): Consider always setting searchMode to
+  # CONSUME_ALL_AVAILABLE_TIME for the local model. The timeout for the local
+  # model is usually very short, and the difference between the two might not
+  # be that large.
+  if (search_mode := from_request.get("searchMode")) is not None:
+    to_request["searchMode"] = search_mode
+
+  allow_large_deadlines = from_request.get(
+      "allowLargeDeadlineDespiteInterruptionRisk"
+  )
+  if allow_large_deadlines is not None:
+    to_request["allowLargeDeadlineDespiteInterruptionRisk"] = (
+        allow_large_deadlines
+    )
+
+  # Copy polyline settings.
+  if (populate_polylines := from_request.get("populatePolylines")) is not None:
+    to_request["populatePolylines"] = populate_polylines
+  populate_transition_polylines = (
+      from_request.get("populateTransitionPolylines") or populate_polylines
+  )
+  if populate_transition_polylines is not None:
+    to_request["populateTransitionPolylines"] = populate_transition_polylines
+
+  # Copy additional metadata.
+  if (parent := from_request.get("parent")) is not None:
+    to_request["parent"] = parent

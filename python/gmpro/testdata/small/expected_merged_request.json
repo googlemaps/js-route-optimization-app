@@ -16,22 +16,12 @@
               }
             },
             "duration": "120s",
-            "tags": [
-              "S001"
-            ]
+            "tags": ["S001"]
           }
         ],
-        "allowedVehicleIndices": [
-          0
-        ],
-        "costsPerVehicle": [
-          100,
-          200
-        ],
-        "costsPerVehicleIndices": [
-          0,
-          1
-        ]
+        "allowedVehicleIndices": [0],
+        "costsPerVehicle": [100, 200],
+        "costsPerVehicleIndices": [0, 1]
       },
       {
         "label": "S002",
@@ -46,14 +36,10 @@
               }
             },
             "duration": "150s",
-            "tags": [
-              "S002"
-            ]
+            "tags": ["S002"]
           }
         ],
-        "allowedVehicleIndices": [
-          0
-        ]
+        "allowedVehicleIndices": [0]
       },
       {
         "label": "S003",
@@ -75,9 +61,7 @@
             ]
           }
         ],
-        "allowedVehicleIndices": [
-          0
-        ]
+        "allowedVehicleIndices": [0]
       },
       {
         "label": "S004",
@@ -100,9 +84,7 @@
             ]
           }
         ],
-        "allowedVehicleIndices": [
-          0
-        ]
+        "allowedVehicleIndices": [0]
       },
       {
         "label": "S005",
@@ -119,10 +101,7 @@
             "duration": "150s"
           }
         ],
-        "allowedVehicleIndices": [
-          0,
-          1
-        ]
+        "allowedVehicleIndices": [0, 1]
       },
       {
         "label": "S006",
@@ -139,10 +118,7 @@
             "duration": "150s"
           }
         ],
-        "allowedVehicleIndices": [
-          0,
-          1
-        ],
+        "allowedVehicleIndices": [0, 1],
         "loadDemands": {
           "wheat": {
             "amount": "3"
@@ -167,9 +143,7 @@
             "duration": "150s"
           }
         ],
-        "allowedVehicleIndices": [
-          0
-        ],
+        "allowedVehicleIndices": [0],
         "loadDemands": {
           "ore": {
             "amount": "1"
@@ -194,9 +168,7 @@
             "duration": "150s"
           }
         ],
-        "allowedVehicleIndices": [
-          1
-        ]
+        "allowedVehicleIndices": [1]
       },
       {
         "label": "S009",
@@ -213,10 +185,7 @@
             "duration": "150s"
           }
         ],
-        "allowedVehicleIndices": [
-          0,
-          1
-        ]
+        "allowedVehicleIndices": [0, 1]
       },
       {
         "label": "P001 arrival",
@@ -492,5 +461,7 @@
     ]
   },
   "label": "my_little_model/merged",
-  "parent": "my_awesome_project"
+  "parent": "my_awesome_project",
+  "searchMode": 1,
+  "allowLargeDeadlineDespiteInterruptionRisk": true
 }

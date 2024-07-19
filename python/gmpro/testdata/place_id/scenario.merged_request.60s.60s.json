@@ -209,5 +209,8 @@
       }
     ]
   },
-  "label": "/merged"
+  "label": "/merged",
+  "populatePolylines": true,
+  "populateTransitionPolylines": true,
+  "searchMode": 2
 }
