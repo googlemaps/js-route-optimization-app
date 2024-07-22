@@ -73,10 +73,10 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
     this.capsuleIconMapping = {};
     // dynamically create icon mapping based on sprite
     for (let i = 0; i < this.iconMappingOrder.length; i++) {
-      for (let stopOrder = 1; stopOrder < 101; stopOrder++) {
+      for (let stopOrder = 0; stopOrder < 101; stopOrder++) {
         const icon = `${this.iconMappingOrder[i]}-${stopOrder}`;
         this.capsuleIconMapping[icon] = {
-          x: this.capsuleIconSize[0] * (stopOrder - 1),
+          x: this.capsuleIconSize[0] * stopOrder,
           y: this.capsuleIconSize[1] * i,
           width: this.capsuleIconSize[0],
           // clip height by 1 pixel to reduce a noticeable artifact that's more
@@ -91,14 +91,15 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
     if (!this.canShowTextLayer) {
       return data.pickup ? `pickup-${this.defaultColor}` : `dropoff-${this.defaultColor}`;
     }
+    if (!data.made) {
+      return data.pickup
+        ? `pickup-${this.defaultColor}-skipped-0`
+        : `dropoff-${this.defaultColor}-skipped-0`;
+    }
     const stopOrder = Math.min(data.stopOrder, 100);
-    return data.made
-      ? data.pickup
-        ? `pickup-${this.defaultColor}-${stopOrder}`
-        : `dropoff-${this.defaultColor}-${stopOrder}`
-      : data.pickup
-      ? `pickup-${this.defaultColor}-skipped-${stopOrder}`
-      : `dropoff-${this.defaultColor}-skipped-${stopOrder}`;
+    return data.pickup
+      ? `pickup-${this.defaultColor}-${stopOrder}`
+      : `dropoff-${this.defaultColor}-${stopOrder}`;
   }
 
   protected getIconAtlas(): string {
@@ -118,6 +119,12 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   protected getIcon(data: any): string {
     if (!this.canShowTextLayer) {
       return super.getIcon(data);
+    }
+
+    if (!data.made) {
+      return data.pickup
+        ? `pickup-${this.defaultColor}-skipped-0`
+        : `dropoff-${this.defaultColor}-skipped-0`;
     }
 
     // Clamp to 100, whereafter all labels are "99+"
