@@ -129,6 +129,15 @@ export abstract class BaseVisitRequestLayer {
     return 1.75;
   }
 
+  protected getIcon(data): string {
+    const color = (data.color && data.color.name) || this.defaultSelectedColor;
+    const key = data.pickup ? `pickup-${color}` : `dropoff-${color}`;
+    return key in this.iconMapping
+      ? key
+      : data.pickup
+      ? `pickup-${this.defaultSelectedColor}`
+      : `dropoff-${this.defaultSelectedColor}`;
+  }
 
   abstract getDefaultIconFn(data): string;
   protected onDataFiltered(data): void {
@@ -162,18 +171,7 @@ export abstract class BaseVisitRequestLayer {
       data,
       iconAtlas: this.getIconAtlas(),
       iconMapping: this.getIconMapping(),
-      getIcon: (d) => {
-        // Clamp to 100, whereafter all labels are "99+"
-        const stopOrder = Math.min(d.stopOrder, 100);
-        const color = (d.color && d.color.name) || this.defaultSelectedColor;
-        const key = d.pickup ? `pickup-${color}-${stopOrder}` : `dropoff-${color}-${stopOrder}`;
-        return key;
-        // return key in this.iconMapping
-        //   ? key
-        //   : d.pickup
-        //   ? `pickup-${this.defaultSelectedColor}`
-        //   : `dropoff-${this.defaultSelectedColor}`;
-      },
+      getIcon: (d) => this.getIcon(d),
       getSize: 10,
       sizeScale: this.getSizeScale(),
       getPosition: (d) => d.arrivalPosition,
@@ -190,18 +188,7 @@ export abstract class BaseVisitRequestLayer {
       data,
       iconAtlas: this.getIconAtlas(),
       iconMapping: this.getIconMapping(),
-      getIcon: (d) => {
-        if (!d.selected) {
-          return this.getDefaultIconFn(d);
-        }
-        const color = (d.color && d.color.name) || this.defaultSelectedColor;
-        const key = d.pickup ? `pickup-${color}` : `dropoff-${color}`;
-        return key in this.iconMapping
-          ? key
-          : d.pickup
-          ? `pickup-${this.defaultSelectedColor}`
-          : `dropoff-${this.defaultSelectedColor}`;
-      },
+      getIcon: (d) => (d.selected ? this.getDefaultIconFn(data) : this.getIcon(data)),
       getSize: 12,
       sizeScale: this.getSizeScale(),
       getPosition: (d) => d.arrivalPosition,

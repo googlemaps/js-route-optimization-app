@@ -36,13 +36,13 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
 
   canShowTextLayer = false;
 
-  readonly capsuleIconSize: [number, number] = [78, 31];
+  readonly capsuleIconSize: [number, number] = [78, 24.85714285714285];
   private capsuleIconMapping = {};
 
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone);
 
-     this.createLabeledIconMapping();
+    this.createLabeledIconMapping();
 
     combineLatest([
       this.store.pipe(select(selectFilteredVisitRequestsWithStopOrder)),
@@ -70,7 +70,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   }
 
   createLabeledIconMapping(): any {
-    this.capsuleIconMapping = {}
+    this.capsuleIconMapping = {};
     // dynamically create icon mapping based on sprite
     for (let i = 0; i < this.iconMappingOrder.length; i++) {
       for (let stopOrder = 1; stopOrder < 101; stopOrder++) {
@@ -81,22 +81,24 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
           width: this.capsuleIconSize[0],
           // clip height by 1 pixel to reduce a noticeable artifact that's more
           // prominent on deliveries when zoomed out
-          height: this.capsuleIconSize[1] - 1,
+          height: this.capsuleIconSize[1],
         };
       }
     }
-    console.log(this.capsuleIconMapping)
   }
 
-  
   getDefaultIconFn(data: any): string {
+    if (!this.canShowTextLayer) {
+      return data.pickup ? `pickup-${this.defaultColor}` : `dropoff-${this.defaultColor}`;
+    }
+    const stopOrder = Math.min(data.stopOrder, 100);
     return data.made
       ? data.pickup
-        ? `pickup-${this.defaultColor}`
-        : `dropoff-${this.defaultColor}`
+        ? `pickup-${this.defaultColor}-${stopOrder}`
+        : `dropoff-${this.defaultColor}-${stopOrder}`
       : data.pickup
-      ? `pickup-${this.defaultColor}-skipped`
-      : `dropoff-${this.defaultColor}-skipped`;
+      ? `pickup-${this.defaultColor}-skipped-${stopOrder}`
+      : `dropoff-${this.defaultColor}-skipped-${stopOrder}`;
   }
 
   protected getIconAtlas(): string {
@@ -106,10 +108,22 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   }
 
   protected getSizeScale(): number {
-    return this.canShowTextLayer ? 2.5 : super.getSizeScale();
+    return this.canShowTextLayer ? 2.0 : super.getSizeScale();
   }
 
   protected getIconMapping(): any {
     return this.canShowTextLayer ? this.capsuleIconMapping : this.iconMapping;
+  }
+
+  protected getIcon(data: any): string {
+    if (!this.canShowTextLayer) {
+      return super.getIcon(data);
+    }
+
+    // Clamp to 100, whereafter all labels are "99+"
+    const stopOrder = Math.min(data.stopOrder, 100);
+    const color = (data.color && data.color.name) || this.defaultSelectedColor;
+    const key = data.pickup ? `pickup-${color}-${stopOrder}` : `dropoff-${color}-${stopOrder}`;
+    return key;
   }
 }
