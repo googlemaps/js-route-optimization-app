@@ -142,7 +142,7 @@ export const selectFilteredVisitRequestsSelectedWithStopOrder = createSelector(
       return {
         ...visitRequestToDeckGL(visitRequest, made),
         color: made ? colors[visits[visitRequest.id].shipmentRouteId] : null,
-        stopOrder: stopOrder[visitRequest.id]
+        stopOrder: stopOrder[visitRequest.id],
       };
     });
   }
