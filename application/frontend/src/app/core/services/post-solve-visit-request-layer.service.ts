@@ -30,7 +30,7 @@ import { combineLatest } from 'rxjs';
   providedIn: 'root',
 })
 export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
-  readonly minZoom = 11;
+  readonly minZoom = 12;
 
   layerId = 'post-solve-visit-requests';
 
