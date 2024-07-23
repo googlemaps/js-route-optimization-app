@@ -19,12 +19,13 @@ import { select, Store } from '@ngrx/store';
 import { State } from 'src/app/reducers';
 import {
   selectMouseOverVisitRequests,
-  selectFilteredVisitRequestsSelectedWithStopOrder,
-  selectFilteredVisitRequestsWithStopOrder,
+  selectFilteredVisitRequestsWithStopOrderAndSelectionStatus,
 } from '../selectors/post-solve-visit-request-layer.selectors';
 import { BaseVisitRequestLayer } from './base-visit-request-layer.service';
 import { MapService } from './map.service';
 import { combineLatest } from 'rxjs';
+import { IconLayer } from '@deck.gl/layers';
+import { UIActions } from '../actions';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
 
   readonly capsuleIconSize: [number, number] = [78, 24.85714285714285];
   private capsuleIconMapping = {};
+  private unselectedLayer: IconLayer = new IconLayer({});
 
   constructor(mapService: MapService, store: Store<State>, zone: NgZone) {
     super(mapService, store, zone);
@@ -45,19 +47,12 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
     this.createLabeledIconMapping();
 
     combineLatest([
-      this.store.pipe(select(selectFilteredVisitRequestsWithStopOrder)),
+      this.store.pipe(select(selectFilteredVisitRequestsWithStopOrderAndSelectionStatus)),
       this.mapService.zoomChanged$,
     ]).subscribe(([visitRequests, zoom]) => {
       this.canShowTextLayer = zoom >= this.minZoom;
       this.onDataFiltered(visitRequests);
-    });
-
-    combineLatest([
-      this.store.pipe(select(selectFilteredVisitRequestsSelectedWithStopOrder)),
-      this.mapService.zoomChanged$,
-    ]).subscribe(([visitRequests, zoom]) => {
-      this.canShowTextLayer = zoom >= this.minZoom;
-      this.onDataSelected(visitRequests);
+      this.onDataSelected(visitRequests.filter((vr) => vr.selected));
     });
 
     combineLatest([
@@ -102,6 +97,36 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
       : `dropoff-${this.defaultColor}-${stopOrder}`;
   }
 
+  protected onDataFiltered(data): void {
+    this.unselectedLayer = new IconLayer({
+      id: this.layerId + '-unselected',
+      data: data.filter((d) => !d.selected),
+      iconAtlas: super.getIconAtlas(),
+      iconMapping: this.iconMapping,
+      getIcon: (d) => (d.pickup ? `pickup-${this.defaultColor}` : `dropoff-${this.defaultColor}`),
+      getSize: 10,
+      sizeScale: super.getSizeScale(),
+      getPosition: (d) => d.arrivalPosition,
+      pickable: true,
+      onHover: ({ object }) => {
+        this.mapService.map.setOptions({ draggableCursor: object ? 'pointer' : 'grab' });
+      },
+      onClick: ({ object }) => {
+        this.zone.run(() => {
+          this.store.dispatch(UIActions.mapVisitRequestClicked({ id: object.id }));
+        });
+      },
+    });
+
+    super.onDataFiltered(data.filter((d) => d.selected));
+  }
+
+  protected updateLayers(): void {
+    this.gLayer.setProps({
+      layers: [this.layer, this.unselectedLayer, this.selectedDataLayer, this.mouseOverLayer],
+    });
+  }
+
   protected getIconAtlas(): string {
     return this.canShowTextLayer
       ? './assets/images/labeled_dropoffs_pickups.png'
@@ -109,7 +134,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
   }
 
   protected getSizeScale(): number {
-    return this.canShowTextLayer ? 2.0 : super.getSizeScale();
+    return this.canShowTextLayer ? 1.8 : super.getSizeScale();
   }
 
   protected getIconMapping(): any {

@@ -119,6 +119,27 @@ export const selectFilteredVisitRequests = createSelector(
   }
 );
 
+export const selectFilteredVisitRequestsWithStopOrderAndSelectionStatus = createSelector(
+  selectFilteredVisitRequests,
+  selectFilteredRouteVisitRequestsSelected,
+  selectVisitRequestStopOrder,
+  fromVisit.selectEntities,
+  RoutesChartSelectors.selectSelectedRoutesColors,
+  (visitRequests, selectedVisitRequests, stopOrder, visits, colors) => {
+    const visitRequestsWithOrder = [];
+    visitRequests.forEach((vr) => {
+      const made = !!visits[vr.id];
+      visitRequestsWithOrder.push({
+        ...vr,
+        color: made ? colors[visits[vr.id].shipmentRouteId] : null,
+        stopOrder: stopOrder[vr.id],
+        selected: selectedVisitRequests.some((svr) => svr.id === vr.id),
+      });
+    });
+    return visitRequestsWithOrder;
+  }
+);
+
 export const selectFilteredVisitRequestsWithStopOrder = createSelector(
   selectFilteredVisitRequests,
   selectVisitRequestStopOrder,

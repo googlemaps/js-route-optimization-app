@@ -139,6 +139,12 @@ export abstract class BaseVisitRequestLayer {
       : `dropoff-${this.defaultSelectedColor}`;
   }
 
+  protected updateLayers(): void {
+    this.gLayer.setProps({
+      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer],
+    });
+  }
+
   abstract getDefaultIconFn(data): string;
   protected onDataFiltered(data): void {
     this.layer = new IconLayer({
@@ -160,9 +166,7 @@ export abstract class BaseVisitRequestLayer {
         });
       },
     });
-    this.gLayer.setProps({
-      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer],
-    });
+    this.updateLayers();
   }
 
   protected onDataSelected(data): void {
@@ -177,9 +181,7 @@ export abstract class BaseVisitRequestLayer {
       getPosition: (d) => d.arrivalPosition,
       pickable: false,
     });
-    this.gLayer.setProps({
-      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer],
-    });
+    this.updateLayers();
   }
 
   protected onDataMouseOver(data): void {
@@ -194,8 +196,6 @@ export abstract class BaseVisitRequestLayer {
       getPosition: (d) => d.arrivalPosition,
       pickable: false,
     });
-    this.gLayer.setProps({
-      layers: [this.layer, this.selectedDataLayer, this.mouseOverLayer],
-    });
+    this.updateLayers();
   }
 }
