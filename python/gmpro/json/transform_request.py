@@ -137,6 +137,7 @@ class Flags:
   reduce_to_shipments_by_index: Sequence[int] | None
   reduce_to_vehicles_by_label: Sequence[str] | None
   reduce_to_vehicles_by_index: Sequence[int] | None
+  allow_unseen_vehicle_labels: bool
   infeasible_shipment_after_removing_vehicle: transforms.OnInfeasibleShipment
   removed_shipment_used_in_injected_route_visit: (
       transforms.OnRemovedShipmentUsedInVisit
@@ -293,6 +294,16 @@ class Flags:
         ),
     )
     parser.add_argument(
+        "--allow_unseen_vehicle_labels",
+        default=False,
+        action=argparse.BooleanOptionalAction,
+        help=(
+            "Allow --reduce_to_vehicles_by_label --remove_vehicles_by_label to"
+            " contain strings that do not appear as a vehicle label in the"
+            " input request."
+        ),
+    )
+    parser.add_argument(
         "--transform_breaks",
         required=False,
         help=(
@@ -367,6 +378,7 @@ def _remove_vehicles_by_label(
     request: cfr_json.OptimizeToursRequest,
     vehicle_labels: Iterable[str],
     on_infeasible_shipment: transforms.OnInfeasibleShipment,
+    allow_unseen_vehicle_labels: bool = False,
 ) -> None:
   """Removes all vehicles in the request whose label is in `vehicle_labels`.
 
@@ -375,6 +387,9 @@ def _remove_vehicles_by_label(
     vehicle_labels: The labels of vehicles to be removed from the model.
     on_infeasible_shipment: The behavior of the tool when a shipment becomes
       trivially infeasible after removing a vehicle.
+    allow_unseen_labels: When False, the function fails with an exception if
+      `vehicle_labels` contains a string that doesn't correspond to a vehicle
+      label. When True, unseen vehicle labels are not checked.
   """
   model = request["model"]
   indices_to_remove, unseen_labels = _get_indices_of_vehicles_with_labels(
@@ -382,10 +397,19 @@ def _remove_vehicles_by_label(
   )
 
   if unseen_labels:
-    raise ValueError(
-        "Vehicle labels from --remove_vehicles_by_label do not appear in the"
-        f" model: {', '.join(repr(label) for label in sorted(unseen_labels))}"
+    unseen_labels_str = ", ".join(
+        repr(label) for label in sorted(unseen_labels)
     )
+    if allow_unseen_vehicle_labels:
+      logging.warning(
+          "Unseen vehicle labels in  --remove_vehicles_by_label: %s",
+          unseen_labels_str,
+      )
+    else:
+      raise ValueError(
+          "Vehicle labels from --remove_vehicles_by_label do not appear in the"
+          f" model: {unseen_labels_str}"
+      )
 
   new_vehicle_for_old_vehicle, new_shipment_for_old_shipment = (
       transforms.remove_vehicles(
@@ -423,6 +447,7 @@ def _reduce_to_vehicles(
     request: cfr_json.OptimizeToursRequest,
     vehicle_indices: Iterable[int] | None,
     vehicle_labels: Iterable[str] | None,
+    allow_unseen_labels: bool = False,
 ) -> None:
   """Removes all vehicles in the request whose label is not in `vehicle_labels`.
 
@@ -433,6 +458,13 @@ def _reduce_to_vehicles(
     request: The request in which the vehicles are removed.
     vehicle_indices: The indices of vehicles to be kept in the model.
     vehicle_labels: The labels of vehicles to be kept in the model.
+    allow_unseen_labels: When False, the function fails with an exception if
+      `vehicle_labels` contains a string that doesn't correspond to a vehicle
+      label. When True, unseen vehicle labels are not checked.
+
+  Raises:
+    ValueError: When `vehicle_labels` contains a string that is not a vehicle
+      label, and `allow_unseen_labels` is False.
   """
   model = request["model"]
   num_vehicles = len(cfr_json.get_vehicles(model))
@@ -446,11 +478,20 @@ def _reduce_to_vehicles(
     )
 
     if unseen_labels:
-      raise ValueError(
-          "Vehicle labels from --reduce_to_vehicles_by_label do not appear in"
-          " the model:"
-          f" {', '.join(repr(label) for label in sorted(unseen_labels))}"
+      unseen_labels_str = ", ".join(
+          repr(label) for label in sorted(unseen_labels)
       )
+      if allow_unseen_labels:
+        logging.warning(
+            "Unseen vehicle labels in --reduce_to_vehicles_by_label: %s",
+            unseen_labels_str,
+        )
+      else:
+        raise ValueError(
+            "Vehicle labels from --reduce_to_vehicles_by_label do not appear in"
+            " the model:"
+            f" {unseen_labels_str}"
+        )
 
     indices_to_remove.difference_update(indices_to_keep)
 
@@ -538,6 +579,7 @@ def main(args: Sequence[str] | None = None) -> None:
         request,
         removed_labels,
         flags.infeasible_shipment_after_removing_vehicle,
+        allow_unseen_vehicle_labels=flags.allow_unseen_vehicle_labels,
     )
   preserved_vehicle_labels = flags.reduce_to_vehicles_by_label
   preserved_vehicle_indices = flags.reduce_to_vehicles_by_index
@@ -546,7 +588,10 @@ def main(args: Sequence[str] | None = None) -> None:
       or preserved_vehicle_indices is not None
   ):
     _reduce_to_vehicles(
-        request, preserved_vehicle_indices, preserved_vehicle_labels
+        request,
+        preserved_vehicle_indices,
+        preserved_vehicle_labels,
+        allow_unseen_labels=flags.allow_unseen_vehicle_labels,
     )
   if duplicated_labels := flags.duplicate_vehicles_by_label:
     _duplicate_vehicles_by_label(model, duplicated_labels)
