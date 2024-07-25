@@ -45,6 +45,27 @@ class IntegrationMode(enum.Enum):
 class Options:
   """Options for the two-step planner.
 
+  When determining the `internalParameters` attribute of the request in each
+  phase, the library uses the last value of the chain that is provided and not
+  None. When no value is provided/all are None, `internalParameters` is not used
+  in this phase:
+  - initial local request:
+    1. Options.local_internal_parameters.
+  - initial global request:
+    1. `internalParameters` from the input request,
+    2. Options.global_internal_parameters.
+  - local_refinement_request:
+    1. Options.local_internal_parameters,
+    2. Options.local_refinement_internal_parameters.
+  - global_refinement_requet:
+    1. `internalParameters` from the input request,
+    2. Options.global_internal_parameters,
+    3. Options.global_refinement_internal_parameters.
+  Also note that `two_step_routing_main.py` adds one additional override for the
+  last global (refinement) request that is sent to the server. This override
+  can't be done from the library because it doesn't know the final number of
+  refinement phases.
+
   Attributes:
     local_model_grouping: The grouping strategy used in the local model.
     initial_local_model_grouping: The grouping strategy used in the initial
@@ -70,6 +91,16 @@ class Options:
       used while computing route for the transition. These fields are extensions
       to the CFR API, and converting a JSON response with these fields to the
       CFR proto may fail.
+    local_internal_parameters: An override of the `internalParameters` attribute
+      for local requests. When None, this override is not used.
+    global_internal_parameters: An override of the `internalParameters`
+      attribute for global requests. When None, this override is not used.
+    local_refinement_internal_parameters: An override of the
+      `internalParameters` attribute for local refinement requests. When None,
+      the override is not used.
+    global_refinement_internal_parameters: An override of the
+      `internalParameters` attribute for global refinement requests. When None,
+      the override is not used.
   """
 
   initial_local_model_grouping: _parking.InitialLocalModelGrouping
@@ -84,6 +115,32 @@ class Options:
 
   use_deprecated_fields: bool = True
   travel_mode_in_merged_transitions: bool = False
+
+  local_internal_parameters: str | None = None
+  global_internal_parameters: str | None = None
+  local_refinement_internal_parameters: str | None = None
+  global_refinement_internal_parameters: str | None = None
+
+
+def override_internal_parameters(
+    request: cfr_json.OptimizeToursRequest, *overrides: str | None
+) -> None:
+  """Overrides `internalParameters` in `request` with values.
+
+  Sets `internalParameters` to the last non-None value from `values`. When
+  `values` is empty or contains only None, the `internalParameters` attribute of
+  the request is left intact.
+
+  Args:
+    request: The request, in which the internal parameters are overridden.
+    *overrides: The override values, considered from first to last.
+  """
+  internal_parameters = request.get("internalParameters")
+  for value in overrides:
+    if value is not None:
+      internal_parameters = value
+  if internal_parameters is not None:
+    request["internalParameters"] = internal_parameters
 
 
 def copy_shared_options(

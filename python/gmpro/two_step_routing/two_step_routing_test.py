@@ -148,6 +148,16 @@ class PlannerTest(ValidateResponseMixin, unittest.TestCase):
       ),
       local_model_vehicle_fixed_cost=0,
   )
+  _OPTIONS_INTERNAL_PARAMETERS = dataclasses.replace(
+      _OPTIONS_NO_FIXED_COST,
+      local_internal_parameters="local",
+      global_internal_parameters="global",
+  )
+  _OPTIONS_INTERNAL_PARAMETERS_REFINEMENT = dataclasses.replace(
+      _OPTIONS_INTERNAL_PARAMETERS,
+      local_refinement_internal_parameters="local_refinement",
+      global_refinement_internal_parameters="global_refinement",
+  )
 
   _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
       "small/request.json"
@@ -260,6 +270,23 @@ class PlannerTestLocalModel(PlannerTest):
         self._EXPECTED_LOCAL_PICKUP_AND_DELIVERY_REQUEST_JSON,
     )
 
+  def test_make_local_model_with_internal_parameters(self):
+    for options in (
+        self._OPTIONS_INTERNAL_PARAMETERS,
+        self._OPTIONS_INTERNAL_PARAMETERS_REFINEMENT,
+    ):
+      planner = two_step_routing.Planner(
+          request_json=self._REQUEST_JSON,
+          parking_locations=self._PARKING_LOCATIONS,
+          parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+          options=options,
+      )
+      expected_local_request = copy.deepcopy(
+          self._EXPECTED_LOCAL_PICKUP_AND_DELIVERY_REQUEST_JSON
+      )
+      expected_local_request["internalParameters"] = "local"
+      self.assertEqual(planner.make_local_request(), expected_local_request)
+
 
 class PlannerTestGlobalModel(PlannerTest):
   """Tests for Planner.make_global_request()."""
@@ -302,6 +329,56 @@ class PlannerTestGlobalModel(PlannerTest):
     expected_request = copy.deepcopy(self._EXPECTED_GLOBAL_REQUEST_JSON)
     expected_request["considerRoadTraffic"] = False
     self.assertEqual(global_request, expected_request)
+
+  def test_make_global_model_with_internal_parameters_from_options(self):
+    for options in (
+        self._OPTIONS_INTERNAL_PARAMETERS,
+        self._OPTIONS_INTERNAL_PARAMETERS_REFINEMENT,
+    ):
+      planner = two_step_routing.Planner(
+          request_json=self._REQUEST_JSON,
+          parking_locations=self._PARKING_LOCATIONS,
+          parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+          options=options,
+      )
+      global_request = planner.make_global_request(self._LOCAL_RESPONSE_JSON)
+      expected_request = copy.deepcopy(self._EXPECTED_GLOBAL_REQUEST_JSON)
+      expected_request["internalParameters"] = "global"
+      self.assertEqual(global_request, expected_request)
+
+  def test_make_global_model_with_internal_parameters_from_request(self):
+    request = copy.deepcopy(self._REQUEST_JSON)
+    request["internalParameters"] = "request"
+    planner = two_step_routing.Planner(
+        request_json=request,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS_NO_FIXED_COST,
+    )
+    global_request = planner.make_global_request(self._LOCAL_RESPONSE_JSON)
+    expected_request = copy.deepcopy(self._EXPECTED_GLOBAL_REQUEST_JSON)
+    expected_request["internalParameters"] = "request"
+    self.assertEqual(global_request, expected_request)
+
+  def test_make_global_model_with_internal_parameters_from_request_and_options(
+      self,
+  ):
+    for options in (
+        self._OPTIONS_INTERNAL_PARAMETERS,
+        self._OPTIONS_INTERNAL_PARAMETERS_REFINEMENT,
+    ):
+      request = copy.deepcopy(self._REQUEST_JSON)
+      request["internalParameters"] = "request"
+      planner = two_step_routing.Planner(
+          request_json=request,
+          parking_locations=self._PARKING_LOCATIONS,
+          parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+          options=options,
+      )
+      global_request = planner.make_global_request(self._LOCAL_RESPONSE_JSON)
+      expected_request = copy.deepcopy(self._EXPECTED_GLOBAL_REQUEST_JSON)
+      expected_request["internalParameters"] = "global"
+      self.assertEqual(global_request, expected_request)
 
 
 class PlannerTestMergedModel(PlannerTest):
@@ -436,6 +513,36 @@ class PlannerTestRefinedLocalModel(PlannerTest):
         self._EXPECTED_LOCAL_REFINEMENT_REQUEST_WITH_RELOAD_COST,
     )
 
+  def test_local_refinement_with_internal_parameters_local(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS_INTERNAL_PARAMETERS,
+    )
+    local_refinement_request = planner.make_local_refinement_request(
+        self._LOCAL_PICKUP_AND_DELIVERY_RESPONSE_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+    )
+    expected_request = copy.deepcopy(self._EXPECTED_LOCAL_REFINEMENT_REQUEST)
+    expected_request["internalParameters"] = "local"
+    self.assertEqual(local_refinement_request, expected_request)
+
+  def test_local_refinement_with_internal_parameters_local_refinement(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS_INTERNAL_PARAMETERS_REFINEMENT,
+    )
+    local_refinement_request = planner.make_local_refinement_request(
+        self._LOCAL_PICKUP_AND_DELIVERY_RESPONSE_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+    )
+    expected_request = copy.deepcopy(self._EXPECTED_LOCAL_REFINEMENT_REQUEST)
+    expected_request["internalParameters"] = "local_refinement"
+    self.assertEqual(local_refinement_request, expected_request)
+
 
 class PlannerTestIntegratedModels(PlannerTest):
   _LOCAL_REFINEMENT_RESPONSE: cfr_json.OptimizeToursResponse = testdata.json(
@@ -492,6 +599,94 @@ class PlannerTestIntegratedModels(PlannerTest):
         integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
     )
     self.assertIsNone(integrated_global_response)
+
+  def test_internal_parameters_request(self):
+    request = copy.deepcopy(self._REQUEST_JSON)
+    request["internalParameters"] = "request"
+    planner = two_step_routing.Planner(
+        request_json=request,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+    _, _, integrated_global_request, _ = planner.integrate_local_refinement(
+        local_request=self._EXPECTED_LOCAL_REQUEST_JSON,
+        local_response=self._LOCAL_RESPONSE_JSON,
+        global_request=self._EXPECTED_GLOBAL_REQUEST_JSON,
+        global_response=self._GLOBAL_RESPONSE_JSON,
+        refinement_response=self._LOCAL_REFINEMENT_RESPONSE,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_AND_START_TIMES,
+    )
+    expected_global_request = copy.deepcopy(
+        self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    expected_global_request["internalParameters"] = "request"
+    self.assertEqual(integrated_global_request, expected_global_request)
+
+  def test_internal_parameters_options(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS_INTERNAL_PARAMETERS,
+    )
+    _, _, integrated_global_request, _ = planner.integrate_local_refinement(
+        local_request=self._EXPECTED_LOCAL_REQUEST_JSON,
+        local_response=self._LOCAL_RESPONSE_JSON,
+        global_request=self._EXPECTED_GLOBAL_REQUEST_JSON,
+        global_response=self._GLOBAL_RESPONSE_JSON,
+        refinement_response=self._LOCAL_REFINEMENT_RESPONSE,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_AND_START_TIMES,
+    )
+    expected_global_request = copy.deepcopy(
+        self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    expected_global_request["internalParameters"] = "global"
+    self.assertEqual(integrated_global_request, expected_global_request)
+
+  def test_internal_parameters_options_refinement(self):
+    planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS_INTERNAL_PARAMETERS_REFINEMENT,
+    )
+    _, _, integrated_global_request, _ = planner.integrate_local_refinement(
+        local_request=self._EXPECTED_LOCAL_REQUEST_JSON,
+        local_response=self._LOCAL_RESPONSE_JSON,
+        global_request=self._EXPECTED_GLOBAL_REQUEST_JSON,
+        global_response=self._GLOBAL_RESPONSE_JSON,
+        refinement_response=self._LOCAL_REFINEMENT_RESPONSE,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_AND_START_TIMES,
+    )
+    expected_global_request = copy.deepcopy(
+        self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    expected_global_request["internalParameters"] = "global_refinement"
+    self.assertEqual(integrated_global_request, expected_global_request)
+
+  def test_internal_parameters_request_options_refinement(self):
+    request = copy.deepcopy(self._REQUEST_JSON)
+    request["internalParameters"] = "request"
+    planner = two_step_routing.Planner(
+        request_json=request,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS_INTERNAL_PARAMETERS_REFINEMENT,
+    )
+    _, _, integrated_global_request, _ = planner.integrate_local_refinement(
+        local_request=self._EXPECTED_LOCAL_REQUEST_JSON,
+        local_response=self._LOCAL_RESPONSE_JSON,
+        global_request=self._EXPECTED_GLOBAL_REQUEST_JSON,
+        global_response=self._GLOBAL_RESPONSE_JSON,
+        refinement_response=self._LOCAL_REFINEMENT_RESPONSE,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_AND_START_TIMES,
+    )
+    expected_global_request = copy.deepcopy(
+        self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    expected_global_request["internalParameters"] = "global_refinement"
+    self.assertEqual(integrated_global_request, expected_global_request)
 
   def test_integrate_full_route(self):
     planner = two_step_routing.Planner(

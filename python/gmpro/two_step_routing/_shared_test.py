@@ -7,7 +7,52 @@ from ..json import cfr_json
 from . import _shared
 
 
+class OverrideInternalParametersTest(unittest.TestCase):
+  """Tests for override_internal_parameters."""
+
+  def test_no_initial_and_no_overrides(self):
+    request: cfr_json.OptimizeToursRequest = {}
+    _shared.override_internal_parameters(request)
+    self.assertEqual(request, {})
+    _shared.override_internal_parameters(request, None)
+    self.assertEqual(request, {})
+    _shared.override_internal_parameters(request, None, None, None)
+    self.assertEqual(request, {})
+
+  def test_no_initial_and_some_overrides(self):
+    test_cases = (
+        (("foo",), "foo"),
+        (("foo", None, "bar"), "bar"),
+        (("foo", None, "bar", None), "bar"),
+    )
+    for overrides, expected_value in test_cases:
+      with self.subTest(overrides=overrides):
+        request: cfr_json.OptimizeToursRequest = {}
+        _shared.override_internal_parameters(request, *overrides)
+        self.assertEqual(request, {"internalParameters": expected_value})
+
+  def test_some_initial_and_no_overrides(self):
+    request: cfr_json.OptimizeToursRequest = {"internalParameters": "foo"}
+    _shared.override_internal_parameters(request)
+    self.assertEqual(request, {"internalParameters": "foo"})
+    _shared.override_internal_parameters(request, None, None, None)
+    self.assertEqual(request, {"internalParameters": "foo"})
+
+  def test_some_initial_and_some_overrides(self):
+    test_cases = (
+        (("bar",), "bar"),
+        (("bar", None, "baz"), "baz"),
+        (("bar", None, "baz", None), "baz"),
+    )
+    for overrides, expected_value in test_cases:
+      with self.subTest(overrides=overrides):
+        request: cfr_json.OptimizeToursRequest = {"internalParameters": "foo"}
+        _shared.override_internal_parameters(request, *overrides)
+        self.assertEqual(request, {"internalParameters": expected_value})
+
+
 class CopySharedOptionsTest(unittest.TestCase):
+  """Tests for copy_shared_options."""
 
   def _run_copy_shared_options_test(
       self, from_request, to_request, expected_to_request

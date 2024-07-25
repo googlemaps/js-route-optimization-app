@@ -255,6 +255,9 @@ class Planner:
         "model": local_model,
     }
     _shared.copy_shared_options(from_request=self._request, to_request=request)
+    internal_parameters = self._options.local_internal_parameters
+    if internal_parameters is not None:
+      request["internalParameters"] = internal_parameters
     return request
 
   def make_global_request(
@@ -347,12 +350,11 @@ class Planner:
       consider_road_traffic = self._request.get("considerRoadTraffic")
       if consider_road_traffic is not None:
         request["considerRoadTraffic"] = consider_road_traffic
-    # TODO(ondrasej): Consider applying internal parameters also to the local
-    # request; potentially, add separate internal parameters for the local and
-    # the global models to the configuration of the planner.
-    internal_parameters = self._request.get("internalParameters")
-    if internal_parameters is not None:
-      request["internalParameters"] = internal_parameters
+    _shared.override_internal_parameters(
+        request,
+        self._request.get("internalParameters"),
+        self._options.global_internal_parameters,
+    )
     return request
 
   def make_local_refinement_request(
@@ -550,6 +552,11 @@ class Planner:
         "injectedFirstSolutionRoutes": refinement_injected_routes,
     }
     _shared.copy_shared_options(from_request=self._request, to_request=request)
+    _shared.override_internal_parameters(
+        request,
+        self._options.local_internal_parameters,
+        self._options.local_refinement_internal_parameters,
+    )
     return request
 
   def integrate_local_refinement(
@@ -961,6 +968,12 @@ class _RefinedRouteIntegration:
         self._integrated_global_request["considerRoadTraffic"] = (
             consider_road_traffic
         )
+      _shared.override_internal_parameters(
+          self._integrated_global_request,
+          self._request.get("internalParameters"),
+          self._options.global_internal_parameters,
+          self._options.global_refinement_internal_parameters,
+      )
 
       _global_model.assert_routes_handle_same_shipments(
           self._global_response, {"routes": self._integrated_global_routes}

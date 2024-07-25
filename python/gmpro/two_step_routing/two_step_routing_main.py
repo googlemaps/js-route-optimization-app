@@ -43,6 +43,7 @@ import os
 from ..json import cfr_api
 from ..json import cfr_json
 from ..json import io_utils
+from . import _shared
 from . import two_step_routing
 
 
@@ -73,6 +74,11 @@ class Flags(cfr_api.Flags):
   global_timeout: cfr_json.DurationString
   local_refinement_timeout: cfr_json.DurationString
   global_refinement_timeout: cfr_json.DurationString
+  local_internal_parameters: str | None
+  global_internal_parameters: str | None
+  local_refinement_internal_parameters: str | None
+  global_refinement_internal_parameters: str | None
+  last_global_internal_parameters: str | None
 
   @classmethod
   def add_arguments(cls, parser: argparse.ArgumentParser) -> None:
@@ -200,6 +206,61 @@ class Flags(cfr_api.Flags):
         default=False,
         action=argparse.BooleanOptionalAction,
     )
+    parser.add_argument(
+        "--local_internal_parameters",
+        help=(
+            "An override for the `internalParameters` attribute used in local"
+            " requests made by the two-step library. See the docstring of"
+            " _shared.Options for a description of the internal parameters"
+            " override logic."
+        ),
+        default=None,
+        action="store",
+    )
+    parser.add_argument(
+        "--global_internal_parameters",
+        help=(
+            "An override for the `internalParameters` attribute used in global"
+            " requests made by the two-step library. See the docstring of"
+            " _shared.Options for a description of the internal parameters"
+            " override logic."
+        ),
+        default=None,
+        action="store",
+    )
+    parser.add_argument(
+        "--local_refinement_internal_parameters",
+        help=(
+            "An override for the `internalParameters` attribute used in local"
+            " refinement requests made by the two-step library. See the"
+            " docstring of _shared.Options for a description of the internal"
+            " parameters override logic."
+        ),
+        default=None,
+        action="store",
+    )
+    parser.add_argument(
+        "--global_refinement_internal_parameters",
+        help=(
+            "An override for the `internalParameters` attribute used in global"
+            " refinement requests made by the two-step library. See the"
+            " docstring of _shared.Options for a description of the internal"
+            " parameters override logic."
+        ),
+        default=None,
+        action="store",
+    )
+    parser.add_argument(
+        "--last_global_internal_parameters",
+        help=(
+            "An override for the `internalParameters` attribute used in the"
+            " last global request sent to the server. See the docstring of"
+            " _shared.Options for a description of the internal parameters"
+            " override logic."
+        ),
+        default=None,
+        action="store",
+    )
 
 
 def _optimize_tours_and_write_response(
@@ -269,6 +330,10 @@ def _run_two_step_planner() -> None:
       local_model_vehicle_fixed_cost=flags.local_model_vehicle_fixed_cost,
       travel_mode_in_merged_transitions=flags.travel_mode_in_merged_transitions,
       use_deprecated_fields=not flags.no_deprecated_fields,
+      local_internal_parameters=flags.local_internal_parameters,
+      global_internal_parameters=flags.global_internal_parameters,
+      local_refinement_internal_parameters=flags.local_refinement_internal_parameters,
+      global_refinement_internal_parameters=flags.global_refinement_internal_parameters,
   )
   planner = two_step_routing.Planner(
       request_json, parking_locations, parking_for_shipment, options
@@ -307,11 +372,16 @@ def _run_two_step_planner() -> None:
   # global model. We will be injecting the solution from the base global model
   # into a refined global model, and for this to work correctly, we need to use
   # the same duration/distance matrices in both solves.
-  global_request_traffic_override = False if flags.num_refinements > 0 else None
+  is_last_global_cfr_request = False if flags.num_refinements > 0 else None
   global_request = planner.make_global_request(
       local_response,
-      consider_road_traffic_override=global_request_traffic_override,
+      consider_road_traffic_override=is_last_global_cfr_request,
   )
+  if is_last_global_cfr_request:
+    _shared.override_internal_parameters(
+        global_request,
+        flags.last_global_internal_parameters,
+    )
   global_request["searchMode"] = 2
   io_utils.write_json_to_file(
       make_filename("global_request", flags.local_timeout),
@@ -396,6 +466,10 @@ def _run_two_step_planner() -> None:
     if not is_last_global_cfr_request:
       # Override the live traffic option for all but the last global request.
       integrated_global_request["considerRoadTraffic"] = False
+    else:
+      _shared.override_internal_parameters(
+          integrated_global_request, flags.last_global_internal_parameters
+      )
 
     io_utils.write_json_to_file(
         make_filename("integrated_local_request"),
