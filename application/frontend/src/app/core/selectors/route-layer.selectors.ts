@@ -82,8 +82,7 @@ export const selectFilteredRoutesSelected = createSelector(
     vehicles,
     mapLayers
   ) => {
-    const lookup =
-      page === Page.RoutesChart ? chartSelectedRoutesLookup : tableSelectedRouteLookup;
+    const lookup = page === Page.RoutesChart ? chartSelectedRoutesLookup : tableSelectedRouteLookup;
     const lookupSet = new Set(Object.keys(lookup).map(Number));
     const selectedRoutes = paths.filter(
       (p) =>

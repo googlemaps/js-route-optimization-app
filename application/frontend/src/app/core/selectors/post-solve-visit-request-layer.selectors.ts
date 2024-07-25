@@ -22,7 +22,6 @@ import * as fromVisit from './visit.selectors';
 import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import { fromDispatcherToTurfPoint } from 'src/app/util';
 import { Feature, Point } from '@turf/helpers';
-import { selectMouseOverId } from './ui.selectors';
 import RoutesMetadataSelectors from './routes-metadata.selectors';
 import * as fromUI from './ui.selectors';
 import ShipmentRouteSelectors from './shipment-route.selectors';
@@ -166,15 +165,15 @@ export const selectFilteredVisitRequestsTurfPoints = createSelector(
   }
 );
 
-export const selectMouseOverVisitRequest = createSelector(
+export const selectMouseOverVisitRequests = createSelector(
   selectFilteredRouteVisitRequests,
   RoutesChartSelectors.selectSelectedRoutesVisitIds,
   fromVisit.selectEntities,
   RoutesChartSelectors.selectSelectedRoutesColors,
-  selectMouseOverId,
-  (filtered, selected, visits, colors, mouseOverId) => {
+  RoutesChartSelectors.selectHoveredVisitIds,
+  (filtered, selected, visits, colors, visitIds) => {
     return filtered
-      .filter((visitRequest) => visitRequest.id === mouseOverId)
+      .filter((visitRequest) => visitIds.includes(visitRequest.id))
       .map((visitRequest) => {
         const made = !!visits[visitRequest.id];
         return {

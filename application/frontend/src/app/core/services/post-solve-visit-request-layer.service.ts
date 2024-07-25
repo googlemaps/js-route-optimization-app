@@ -20,7 +20,7 @@ import { State } from 'src/app/reducers';
 import {
   selectFilteredVisitRequests,
   selectFilteredVisitRequestsSelected,
-  selectMouseOverVisitRequest,
+  selectMouseOverVisitRequests,
 } from '../selectors/post-solve-visit-request-layer.selectors';
 import { BaseVisitRequestLayer } from './base-visit-request-layer.service';
 import { MapService } from './map.service';
@@ -39,7 +39,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
       this.onDataSelected(visitRequests);
     });
 
-    this.store.pipe(select(selectMouseOverVisitRequest)).subscribe((visitRequests) => {
+    this.store.pipe(select(selectMouseOverVisitRequests)).subscribe((visitRequests) => {
       this.onDataMouseOver(visitRequests);
     });
   }

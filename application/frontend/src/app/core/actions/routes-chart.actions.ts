@@ -95,6 +95,13 @@ export const mouseEnterVisitRequest = createAction(
 
 export const mouseExitVisitRequest = createAction('[RoutesChart] Mouse Exit Visit Request');
 
+export const mouseEnterVisits = createAction(
+  '[RoutesChart] Mouse Enter Visits',
+  props<{ ids: number[] }>()
+);
+
+export const mouseExitVisits = createAction('[RoutesChart] Mouse Exit Visits');
+
 export const resetView = createAction('[RoutesChart] Reset View');
 
 export const setView = createAction(

@@ -38,6 +38,7 @@ export interface State {
   filters: ActiveFilter[];
   selectedRoutes: number[];
   selectedRoutesColors: [id: number, colorIdx: number][];
+  hoveredVisits: number[];
 }
 
 export const initialState: State = {
@@ -50,6 +51,7 @@ export const initialState: State = {
   filters: [],
   selectedRoutes: [],
   selectedRoutesColors: [],
+  hoveredVisits: [],
 };
 
 export const reducer = createReducer(
@@ -152,6 +154,14 @@ export const reducer = createReducer(
     addedRange: 0,
     rangeIndex: chartConfig.day.defaultRangeIndex,
     rangeOffset: props.rangeOffset,
+  })),
+  on(RoutesChartActions.mouseEnterVisits, (state, props) => ({
+    ...state,
+    hoveredVisits: props.ids,
+  })),
+  on(RoutesChartActions.mouseExitVisits, (state) => ({
+    ...state,
+    hoveredVisits: [],
   }))
 );
 
@@ -173,3 +183,5 @@ export const selectRangeOffset = (state: State): number => state.rangeOffset;
 export const selectFilters = (state: State): ActiveFilter[] => state.filters;
 
 export const selectAddedRange = (state: State): number => state.addedRange;
+
+export const selectHoveredVisitIds = (state: State): number[] => state.hoveredVisits;

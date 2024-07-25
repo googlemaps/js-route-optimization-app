@@ -66,6 +66,8 @@
     [pendingNewPois]="pendingNewPois"
     [pendingOldVisitIds]="pendingOldVisitIds"
     [color]="color"
-    (clickVisitIds)="clickVisitIds.emit($event)">
+    (clickVisitIds)="clickVisitIds.emit($event)"
+    (mouseEnterVisits)="mouseEnterVisits.emit($event)"
+    (mouseExitVisits)="mouseExitVisits.emit()">
   </app-points-of-interest>
 </div>

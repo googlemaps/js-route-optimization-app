@@ -51,7 +51,6 @@ class MockBaseRoutesRowComponent {
   @Input() route: ShipmentRoute;
   @Input() vehicle: Vehicle;
   @Input() shipmentCount: number;
-  @Input() selected = false;
   @Input() timeline: Timeline;
   @Input() duration: [Long, Long];
   @Input() availability: [Long, Long];
@@ -64,9 +63,11 @@ class MockBaseRoutesRowComponent {
   @Input() changedVisits: ChangedVisits;
   @Input() color = '#1a73e8';
   @Output() selectedChange = new EventEmitter<boolean>();
-  @Output() pointOfInterestClick = new EventEmitter<PointOfInterestClick>();
   @Output() editVehicle = new EventEmitter<number>();
   @Output() viewMetadata = new EventEmitter<number>();
+  @Output() clickVisitIds = new EventEmitter<number[]>();
+  @Output() mouseEnterVisits = new EventEmitter<number[]>();
+  @Output() mouseExitVisits = new EventEmitter();
 }
 
 describe('RoutesRowComponent', () => {

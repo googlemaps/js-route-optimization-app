@@ -33,6 +33,7 @@ describe('RoutesChart Selectors', () => {
         addedRange: 1000,
         selectedRoutes: [6],
         selectedRoutesColors,
+        hoveredVisits: [],
       },
     });
 
@@ -46,6 +47,7 @@ describe('RoutesChart Selectors', () => {
       addedRange: 1000,
       selectedRoutes: [6],
       selectedRoutesColors,
+      hoveredVisits: [],
     });
   });
 });

@@ -17,5 +17,7 @@
   [color]="color$ | async"
   (editVehicle)="onEditVehicle($event)"
   (viewMetadata)="onViewMetadata($event)"
-  (clickVisitIds)="onClickVisitIds($event)">
+  (clickVisitIds)="onClickVisitIds($event)"
+  (mouseEnterVisits)="onMouseEnterVisitIds($event)"
+  (mouseExitVisits)="onMouseExitVisits()">
 </app-base-routes-row>

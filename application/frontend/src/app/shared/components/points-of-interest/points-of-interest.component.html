@@ -18,6 +18,8 @@
       [attr.width]="attr.width"
       [attr.height]="attr.height"
       (mousedown)="onMouseDown($event, p)"
+      (mouseover)="onMouseOver(p)"
+      (mouseleave)="mouseExitVisits.emit()"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
@@ -49,6 +51,8 @@
       [attr.width]="attr.width"
       [attr.height]="attr.height"
       (mousedown)="onMouseDown($event, p)"
+      (mouseover)="onMouseOver(p)"
+      (mouseleave)="mouseExitVisits.emit()"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
@@ -98,6 +102,8 @@
       [attr.height]="attr.height"
       title="{{ attr.title + ' ' + p[3] + ' (pending)' }}"
       (mousedown)="onMouseDown($event, p)"
+      (mouseover)="onMouseOver(p)"
+      (mouseleave)="mouseExitVisits.emit()"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)
@@ -112,6 +118,8 @@
       [attr.height]="attr.height"
       title="{{ attr.title + ' ' + p[3] + ' (pending)' }}"
       (mousedown)="onMouseDown($event, p)"
+      (mouseover)="onMouseOver(p)"
+      (mouseleave)="mouseExitVisits.emit()"
       [ngClass]="{
         'poi-validation-error': changedVisits[p[0]],
         'pending-poi-old': isPendingOldPoi(p)

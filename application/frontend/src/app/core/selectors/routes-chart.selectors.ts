@@ -368,6 +368,11 @@ const selectViewHasChanged = createSelector(
     routes.length !== selectedRoutes.length
 );
 
+const selectHoveredVisitIds = createSelector(
+  selectRoutesChartState,
+  fromRoutesChart.selectHoveredVisitIds
+);
+
 export const RoutesChartSelectors = {
   selectView,
   selectRangeIndex,
@@ -413,6 +418,7 @@ export const RoutesChartSelectors = {
   selectNextRangeOffset,
   selectDuration,
   selectViewHasChanged,
+  selectHoveredVisitIds,
 };
 
 export default RoutesChartSelectors;

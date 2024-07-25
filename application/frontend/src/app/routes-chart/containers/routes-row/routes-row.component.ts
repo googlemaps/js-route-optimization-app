@@ -218,6 +218,14 @@ export class RoutesRowComponent implements OnChanges, OnInit, OnDestroy {
     this.router.navigateByUrl('/' + Page.RoutesMetadata, { skipLocationChange: true });
   }
 
+  onMouseEnterVisitIds(ids: number[]): void {
+    this.store.dispatch(RoutesChartActions.mouseEnterVisits({ ids }));
+  }
+
+  onMouseExitVisits(): void {
+    this.store.dispatch(RoutesChartActions.mouseExitVisits());
+  }
+
   onClickVisitIds(ids: number[]): void {
     this.store.dispatch(
       RoutesChartActions.setFilters({

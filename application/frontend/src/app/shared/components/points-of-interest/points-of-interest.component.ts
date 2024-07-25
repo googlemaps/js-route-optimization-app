@@ -64,6 +64,8 @@ export class PointsOfInterestComponent implements OnChanges {
   @Input() changedVisits: ChangedVisits;
   @Input() color: string;
   @Output() clickVisitIds = new EventEmitter<number[]>();
+  @Output() mouseEnterVisits = new EventEmitter<number[]>();
+  @Output() mouseExitVisits = new EventEmitter();
 
   get imageAttributeLookup(): { [key: string]: PointsOfInterestImageAttribute } {
     return PointsOfInterestComponent.imageAttributeLookup;
@@ -108,6 +110,22 @@ export class PointsOfInterestComponent implements OnChanges {
       }
       this.updateClusterCounts();
     }
+  }
+
+  onMouseOver(point: PoiPoint): void {
+    const visitIds = [point[0]];
+    const cluster = this.clusters.find(
+      (cluster) => cluster.start <= point[2] && cluster.end >= point[2]
+    );
+    if (cluster) {
+      this.points.forEach((p) => {
+        if (cluster.start <= p[2] && cluster.end >= p[2]) {
+          visitIds.push(p[0]);
+        }
+      });
+    }
+
+    this.mouseEnterVisits.emit(visitIds);
   }
 
   onMouseDown(event: MouseEvent, point: PoiPoint): void {
