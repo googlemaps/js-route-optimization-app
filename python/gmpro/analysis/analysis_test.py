@@ -514,5 +514,123 @@ class GetVisitTurnAnglesTest(unittest.TestCase):
     )
 
 
+class GetVisitWarpDistancesTest(unittest.TestCase):
+  """Tests for get_visit_warp_distances."""
+
+  maxDiff = None
+
+  _MODEL: cfr_json.ShipmentModel = {
+      "shipments": [
+          {"deliveries": [{"arrivalWaypoint": {"placeId": "A"}}]},
+          {"deliveries": [{"arrivalWaypoint": {"placeId": "B"}}]},
+          {"deliveries": [{"arrivalWaypoint": {"placeId": "B"}}]},
+          {"deliveries": [{"arrivalWaypoint": {"placeId": "C"}}]},
+          {
+              "deliveries": [{
+                  "arrivalWaypoint": {"placeId": "D"},
+                  "departureWaypoint": {"placeId": "E"},
+              }]
+          },
+      ]
+  }
+
+  def test_empty_route(self):
+    route = {}
+    self.assertSequenceEqual(
+        tuple(analysis.get_visit_warp_distances(self._MODEL, route)), ()
+    )
+
+  def test_no_polylines(self):
+    route = {"visits": [{}, {}], "transitions": [{}, {}, {}]}
+    self.assertSequenceEqual(
+        tuple(analysis.get_visit_warp_distances(self._MODEL, route)), ()
+    )
+
+  def test_some_polylines(self):
+    route: cfr_json.ShipmentRoute = {
+        "visits": [
+            {"shipmentIndex": 0},
+            {"shipmentIndex": 1},
+            {"shipmentIndex": 2},
+            {"shipmentIndex": 3},
+        ],
+        "transitions": [
+            {"routePolyline": {"points": "suiiHuneMiAC"}},
+            {},
+            {},
+            {"routePolyline": {"points": "}xiiHkpeMA}J"}},
+            {"routePolyline": {"points": "yxiiHs|eMdCiAp@lOkAE"}},
+        ],
+    }
+    self.assertSequenceEqual(
+        tuple(analysis.get_visit_warp_distances(self._MODEL, route)),
+        (
+            analysis.VisitWarpDistance(
+                route_index=0,
+                visit_index=0,
+                warp_distance_meters=25.509699244251824,
+                arrival_latlng={"latitude": 48.87951, "longitude": 2.32701},
+                departure_latlng={"latitude": 48.87967, "longitude": 2.32726},
+            ),
+            analysis.VisitWarpDistance(
+                route_index=0,
+                visit_index=3,
+                warp_distance_meters=4.949812034551638,
+                arrival_latlng={"latitude": 48.87968, "longitude": 2.32917},
+                departure_latlng={"latitude": 48.87965, "longitude": 2.32922},
+            ),
+        ),
+    )
+    self.assertSequenceEqual(
+        tuple(
+            analysis.get_visit_warp_distances(
+                self._MODEL, route, threshold_meters=5
+            )
+        ),
+        (
+            analysis.VisitWarpDistance(
+                route_index=0,
+                visit_index=0,
+                warp_distance_meters=25.509699244251824,
+                arrival_latlng={"latitude": 48.87951, "longitude": 2.32701},
+                departure_latlng={"latitude": 48.87967, "longitude": 2.32726},
+            ),
+        ),
+    )
+
+  def test_separate_departure_and_arrival(self):
+    route: cfr_json.ShipmentRoute = {
+        "visits": [
+            {"shipmentIndex": 0},
+            {"shipmentIndex": 4},
+            {"shipmentIndex": 3},
+        ],
+        "transitions": [
+            {},
+            # Last coordinate of the polyline: 48.87880, 2.32760.
+            {"routePolyline": {"points": "qtiiHi~eMP~ENxC"}},
+            # First coordinate of the polyline: 48.87918, 2.32699. Distance from
+            # the previous polyline: 61,44m.
+            {"routePolyline": {"points": "{uiiHuneMaBMCsH"}},
+            {"routePolyline": {"points": "ayiiHkyeM?qBjCy@JdC"}},
+        ],
+    }
+    self.assertEqual(
+        tuple(analysis.get_visit_warp_distances(self._MODEL, route)),
+        (
+            # Visit #1 has a significant distance between the arrival and
+            # departure coordinates, but it is not reported because there are
+            # explicitly different arrival and departure waypoints.
+            analysis.VisitWarpDistance(
+                route_index=0,
+                visit_index=2,
+                warp_distance_meters=7.312715908574908,
+                arrival_latlng={"latitude": 48.87969, "longitude": 2.3286},
+                departure_latlng={"latitude": 48.87969, "longitude": 2.3287},
+            ),
+        ),
+    )
+
+
 if __name__ == "__main__":
   unittest.main()

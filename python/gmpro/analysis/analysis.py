@@ -1520,6 +1520,104 @@ def get_visit_turn_angles(
     visit_index = out_visit_index + 1
 
 
+@dataclasses.dataclass(frozen=True)
+class VisitWarpDistance:
+  """Contains information about one warp point in a scenario.
+
+  Attributes:
+    route_index: The index of the route where the warp point happened.
+    visit_index: The index of the visit where the warp point happened.
+    warp_distance_meters: The warped distance.
+    arrival_latlng: The coordinates of the arrival location according to the
+      polylines.
+    departure_latlng: The coordinates of the departure location according to the
+      polylines.
+  """
+
+  route_index: int
+  visit_index: int
+  warp_distance_meters: float
+  arrival_latlng: cfr_json.LatLng
+  departure_latlng: cfr_json.LatLng
+
+
+def get_visit_warp_distances(
+    model: cfr_json.ShipmentModel,
+    route: cfr_json.ShipmentRoute,
+    threshold_meters: float = 0.0,
+) -> Iterable[VisitWarpDistance]:
+  """Computes "warp distance" at each visit location of the route.
+
+  The warp distance is the distance between the last point of the inbound
+  polyline and the first point of the outbound polyline:
+  (1) Each warp distance is reported at most once (if it passes the threshold),
+      along the visit right after the inbound polyline. Additional visits at the
+      same coordinates do not count.
+  (2) The distance is not computed when the arrival location and the departure
+      location for the visit request are both explicitly provided, and they are
+      different, assuming the warping is intentional and expected.
+  (3) Visits where either the inbound or the outbound polyline can't be detected
+      are not reported.
+
+  The distance is computed assuming that the Earth is a sphere with a radius
+  corresponding to the average radius of the actual Earth. This may lead to some
+  imprecision, but the imprecision is negligible for the intended purpose of
+  this code.
+
+  Args:
+    model: The model in which the detection is done.
+    route: The route for which warp points are detected.
+    threshold_meters: The threshold for the detection. A warp point is reported
+      only when the distance of the two points is greater than this threshold.
+
+  Yields:
+    A (possibly empty) sequence of visit indices on the route that create a warp
+    point.
+  """
+  route_index = route.get("vehicleIndex", 0)
+  visits = cfr_json.get_visits(route)
+  num_visits = len(visits)
+  visit_index = 0
+  while visit_index < num_visits:
+    visit = visits[visit_index]
+    if cfr_json.has_different_arrival_and_departure_waypoints(
+        cfr_json.get_visit_request(model, visit)
+    ):
+      # Visits where the arrival and departure are intentionally at different
+      # locations can't create a warp point.
+      visit_index += 1
+      continue
+
+    # Find the inbound and outbound polylines of the current visit. These may
+    # come from other transitions if there are multiple visits at the same
+    # location.
+    _, polyline_in = cfr_json.get_adjacent_encoded_polyline(
+        model, route, visit_index, inbound=True
+    )
+    if polyline_in is None:
+      visit_index += 1
+      continue
+    out_visit_index, polyline_out = cfr_json.get_adjacent_encoded_polyline(
+        model, route, visit_index, inbound=False
+    )
+    if polyline_out is None:
+      visit_index = out_visit_index + 1
+      continue
+
+    in_latlng = cfr_json.decode_polyline(polyline_in)[-1]
+    out_latlng = cfr_json.decode_polyline(polyline_out)[0]
+    distance_meters = cfr_json.distance_meters(in_latlng, out_latlng)
+    if distance_meters > threshold_meters:
+      yield VisitWarpDistance(
+          route_index=route_index,
+          visit_index=visit_index,
+          warp_distance_meters=distance_meters,
+          arrival_latlng=in_latlng,
+          departure_latlng=out_latlng,
+      )
+    visit_index = out_visit_index + 1
+
+
 def get_percentile_visit_time(
     model: cfr_json.ShipmentModel,
     route: cfr_json.ShipmentRoute,
