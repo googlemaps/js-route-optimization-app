@@ -217,7 +217,7 @@ export const selectFilteredVisitRequestsTurfPoints = createSelector(
 );
 
 export const selectMouseOverVisitRequests = createSelector(
-  selectFilteredRouteVisitRequests,
+  selectFilteredVisitRequestsWithStopOrder,
   RoutesChartSelectors.selectSelectedRoutesVisitIds,
   fromVisit.selectEntities,
   RoutesChartSelectors.selectSelectedRoutesColors,
