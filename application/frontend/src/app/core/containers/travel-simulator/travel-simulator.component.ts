@@ -31,6 +31,7 @@ import { setActive, setTime } from '../../actions/travel-simulator.actions';
 import TravelSimulatorSelectors from '../../selectors/travel-simulator.selectors';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { formatSecondsDate } from 'src/app/util/time-translation';
+import { MapService } from '../../services';
 
 @Component({
   selector: 'app-travel-simulator',
@@ -58,7 +59,11 @@ export class TravelSimulatorComponent implements OnInit, OnDestroy {
 
   formatSecondsDate = formatSecondsDate;
 
-  constructor(private store: Store, private detectorRef: ChangeDetectorRef) {}
+  constructor(
+    private store: Store,
+    private detectorRef: ChangeDetectorRef,
+    private map: MapService
+  ) {}
 
   ngOnInit(): void {
     this.end$ = this.store
@@ -102,7 +107,9 @@ export class TravelSimulatorComponent implements OnInit, OnDestroy {
   onToggleActive(event: MatSlideToggleChange): void {
     this.store.dispatch(setActive({ active: event.checked }));
 
-    if (!event.checked) {
+    if (event.checked) {
+      this.map.zoomToHome();
+    } else {
       this.onEndAnimate();
     }
   }
