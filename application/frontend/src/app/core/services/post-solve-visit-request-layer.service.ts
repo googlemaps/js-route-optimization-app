@@ -57,7 +57,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
 
     combineLatest([
       this.store.pipe(select(selectMouseOverVisitRequests)),
-      this.mapService.zoomChanged$
+      this.mapService.zoomChanged$,
     ]).subscribe(([visitRequests, zoom]) => {
       this.canShowTextLayer = zoom >= this.minZoom;
       this.onDataMouseOver(visitRequests);
