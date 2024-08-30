@@ -27,6 +27,7 @@ import {
   ILatLng,
   IShipment,
   IVehicle,
+  TravelMode,
   ValidationErrorResponse,
 } from '../models';
 import { FileService } from './file.service';
@@ -261,7 +262,13 @@ export class CsvService {
       // Conditionally add each field to the vehicle object, converting from csv strings as needed
       const parsedVehicle = {
         ...this.mapKeyToModelValue('label', 'Label', vehicle, mapping),
-        ...this.mapKeyToModelValue('travelMode', 'TravelMode', vehicle, mapping),
+        ...this.mapKeyToModelValue(
+          'travelMode',
+          'TravelMode',
+          vehicle,
+          mapping,
+          this.parseTravelMode
+        ),
         ...this.mapKeyToModelValue('unloadingPolicy', 'UnloadingPolicy', vehicle, mapping),
         ...this.mapKeyToModelValue('startWaypoint', 'StartWaypoint', vehicle, mapping),
         ...this.mapKeyToModelValue('endWaypoint', 'EndWaypoint', vehicle, mapping),
@@ -534,6 +541,10 @@ export class CsvService {
     } catch {
       return null;
     }
+  }
+
+  private parseTravelMode(value: string): number {
+    return TravelMode[value];
   }
 
   // Check map has the provided mapKey and if the model object has a value for the converted key
