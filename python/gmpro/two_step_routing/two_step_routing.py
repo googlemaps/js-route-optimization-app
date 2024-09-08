@@ -1032,6 +1032,7 @@ class _RefinedRouteIntegration:
                   visit_detour=None,
                   is_pickup=None,
                   visit_request_index=None,
+                  injected_solution_location_token=None,
               )
           )
         case "p":
@@ -1185,6 +1186,9 @@ class _RefinedRouteIntegration:
           visit_detour = global_visit["detour"]
           is_pickup = global_visit.get("isPickup", False)
           visit_request_index = global_visit.get("visitRequestIndex", 0)
+          injected_solution_location_token = global_visit.get(
+              "injectedSolutionLocationToken"
+          )
           match visit_type:
             case "s":
               self._add_integrated_global_shipment(
@@ -1194,6 +1198,7 @@ class _RefinedRouteIntegration:
                   visit_detour=visit_detour,
                   is_pickup=is_pickup,
                   visit_request_index=visit_request_index,
+                  injected_solution_location_token=injected_solution_location_token,
               )
             case "p":
               self._integrate_unmodified_local_route(
@@ -1419,6 +1424,7 @@ class _RefinedRouteIntegration:
           # delivery visit request.
           is_pickup=False,
           visit_request_index=0,
+          injected_solution_location_token=None,
       )
 
   def _integrate_unmodified_local_route(
@@ -1484,6 +1490,7 @@ class _RefinedRouteIntegration:
         visit_detour=visit_detour,
         is_pickup=None if add_to_visits is None else False,
         visit_request_index=None if add_to_visits is None else 0,
+        injected_solution_location_token=None,
     )
 
   def _add_integrated_global_shipment(
@@ -1496,6 +1503,7 @@ class _RefinedRouteIntegration:
       # visits are always delivery-only, and they have exactly one delivery
       # visit request.
       visit_request_index: int | None,
+      injected_solution_location_token: int | None,
       is_pickup: bool | None,
   ) -> int:
     """Adds `shipment` to the integrated request and returns its index.
@@ -1509,6 +1517,8 @@ class _RefinedRouteIntegration:
       visit_detour: The detour of the visit for the new shipment in the
         integrated global model. Must be None exactly when `add_to_visits` is
         None.
+      injected_solution_location_token: The location token associated with this
+        visit or None, if no token is needed.
 
     Returns:
       The index of the newly added integrated shipment.
@@ -1537,6 +1547,10 @@ class _RefinedRouteIntegration:
           "shipmentLabel": shipment.get("label", ""),
           "isPickup": is_pickup,
       }
+      if injected_solution_location_token is not None:
+        visit["injectedSolutionLocationToken"] = (
+            injected_solution_location_token
+        )
       if visit_request_index:
         visit["visitRequestIndex"] = visit_request_index
       if is_pickup:

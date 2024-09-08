@@ -121,6 +121,7 @@ class VisitRequest(TypedDict, total=False):
   timeWindows: list[TimeWindow]
   duration: DurationString
   cost: float
+  avoidUTurns: bool
 
   tags: list[str]
 
@@ -235,6 +236,7 @@ class Visit(TypedDict, total=False):
   detour: str
   isPickup: bool
   visitRequestIndex: int
+  injectedSolutionLocationToken: int
 
 
 class EncodedPolyline(TypedDict, total=False):
