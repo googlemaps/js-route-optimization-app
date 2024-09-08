@@ -5,13 +5,9 @@
         "label": "S001",
         "deliveries": [
           {
-            "arrivalWaypoint": {
-              "location": {
-                "latLng": {
-                  "latitude": 48.86471,
-                  "longitude": 2.34901
-                }
-              }
+            "arrivalLocation": {
+              "latitude": 48.86471,
+              "longitude": 2.34901
             },
             "duration": "120s",
             "tags": ["S001"]
