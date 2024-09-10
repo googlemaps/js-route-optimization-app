@@ -246,7 +246,7 @@ python3 -m cfr.json.evaluate_solution \
   --project "${YOUR_GCLOUD_PROJECT}" \
   --token "${YOUR_GCLOUD_TOKEN}" \
   --input_request /tmp/scenario.json \
-  --input_response /tmp/response-alt.json \
+  --input_response /tmp/solution-alt.json \
   --output_response /tmp/response-alt-full.json
 ```
 where `${YOUR_GCLOUD_PROJECT}` is the name of the Google cloud project, and
