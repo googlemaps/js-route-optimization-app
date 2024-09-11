@@ -197,6 +197,70 @@ class TransformBreaksTest(unittest.TestCase):
         expected_model,
     )
 
+  def test_avoid_u_turns_at_location(self):
+    model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-02-09T08:00:00Z",
+        "globalEndTime": "2024-02-09T18:00:00Z",
+        "vehicles": [{
+            "startWaypoint": {"placeId": "foobar"},
+            "breakRule": {
+                "breakRequests": [
+                    {
+                        "earliestStartTime": "2024-02-09T11:30:00Z",
+                        "latestStartTime": "2024-02-09T12:30:00Z",
+                        "minDuration": "3600s",
+                    },
+                    {
+                        "earliestStartTime": "2024-02-09T14:00:00Z",
+                        "latestStartTime": "2024-02-09T16:00:00Z",
+                        "minDuration": "3600s",
+                    },
+                ]
+            },
+        }],
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "globalStartTime": "2024-02-09T08:00:00Z",
+        "globalEndTime": "2024-02-09T18:00:00Z",
+        "vehicles": [{
+            "startWaypoint": {"placeId": "foobar"},
+            "breakRule": {
+                "breakRequests": [
+                    {
+                        "earliestStartTime": "2024-02-09T11:30:00Z",
+                        "latestStartTime": "2024-02-09T12:30:00Z",
+                        "minDuration": "3600s",
+                    },
+                ]
+            },
+        }],
+        "shipments": [{
+            "allowedVehicleIndices": [0],
+            "label": "This is a break, vehicle_index=0",
+            "deliveries": [{
+                "arrivalWaypoint": {"placeId": "barbaz", "sideOfRoad": True},
+                "timeWindows": [{
+                    "startTime": "2024-02-09T14:00:00Z",
+                    "endTime": "2024-02-09T16:00:00Z",
+                }],
+                "duration": "3600s",
+                "avoidUTurns": True,
+            }],
+        }],
+    }
+    self.assertEqual(
+        self.run_transform_breaks(
+            model,
+            """
+            @time=14:00:00
+              location={"placeId": "barbaz", "sideOfRoad": true}
+              virtualShipmentLabel="This is a break"
+              avoidUTurns
+            """,
+        ),
+        expected_model,
+    )
+
   def test_all_return_to_depot(self):
     model: cfr_json.ShipmentModel = {
         "globalStartTime": "2024-02-09T08:00:00Z",
@@ -1092,6 +1156,12 @@ class CompileRulesTest(unittest.TestCase):
   def test_invalid_name(self):
     with self.assertRaisesRegex(ValueError, "Unexpected name .foo."):
       transforms_breaks.compile_rules("""foo=bar""")
+
+  def test_avoid_u_turns_without_location(self):
+    with self.assertRaisesRegex(
+        ValueError, "`avoidUTurns` can be used only together with `location`"
+    ):
+      transforms_breaks.compile_rules("""avoidUTurns""")
 
 
 class ParseTimeTest(unittest.TestCase):
