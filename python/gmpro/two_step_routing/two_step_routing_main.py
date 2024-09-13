@@ -121,7 +121,7 @@ class Flags(cfr_api.Flags):
             "Do not use fields in CFR requests and responses that are marked as"
             " deprecated. This concerns in particular `travelSteps`."
         ),
-        default=False,
+        default=True,
         action=argparse.BooleanOptionalAction,
     )
     parser.add_argument(
