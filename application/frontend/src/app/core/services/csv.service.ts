@@ -578,7 +578,7 @@ export class CsvService {
   }
 
   private parseTravelMode(value: string): number {
-    return TravelMode[value];
+    return TravelMode[value.toUpperCase()];
   }
 
   // Check map has the provided mapKey and if the model object has a value for the converted key
