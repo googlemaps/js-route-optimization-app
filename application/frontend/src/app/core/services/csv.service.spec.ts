@@ -102,4 +102,110 @@ describe('CsvService', () => {
       expect(parsedCsv).not.toContain(key);
     });
   });
+
+  describe('Validate vehicles', () => {
+    it('should throw no errors on a valid vehicle', async () => {
+      const vehicles = [{ label: 'test vehicle' }];
+      const testVehicleMapping = { Label: 'label' };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+    });
+
+    it('should throw no errors on a vehicle with a valid load limit', async () => {
+      const vehicles = [
+        {
+          label: 'test vehicle',
+          LoadLimit1Type: 'weight',
+          LoadLimit1Value: 10,
+        },
+      ];
+      const testVehicleMapping = {
+        Label: 'label',
+        LoadLimit1Type: 'LoadLimit1Type',
+        LoadLimit1Value: 'LoadLimit1Value',
+      };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+    });
+
+    it('should throw an error on a vehicle with a negative load limit', async () => {
+      const vehicles = [
+        {
+          label: 'test vehicle',
+          LoadLimit1Type: 'weight',
+          LoadLimit1Value: -10,
+        },
+      ];
+      const testVehicleMapping = {
+        Label: 'label',
+        LoadLimit1Type: 'LoadLimit1Type',
+        LoadLimit1Value: 'LoadLimit1Value',
+      };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(1);
+    });
+
+    it('should throw an error on a vehicle with a zero load limit', async () => {
+      const vehicles = [
+        {
+          label: 'test vehicle',
+          LoadLimit1Type: 'weight',
+          LoadLimit1Value: 0,
+        },
+      ];
+      const testVehicleMapping = {
+        Label: 'label',
+        LoadLimit1Type: 'LoadLimit1Type',
+        LoadLimit1Value: 'LoadLimit1Value',
+      };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(1);
+    });
+
+    it('should throw no errors on a vehicle with a valid travel mode', async () => {
+      const vehicles = [
+        {
+          label: 'test vehicle',
+          TravelMode: 'DRIVING',
+        },
+        {
+          label: 'test vehicle',
+          TravelMode: 'walking',
+        },
+      ];
+      const testVehicleMapping = {
+        Label: 'label',
+        TravelMode: 'TravelMode',
+      };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(2);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[1].errors.length).toBe(0);
+    });
+
+    it('should throw an error on vehicles with an invalid travel mode', async () => {
+      const vehicles = [
+        {
+          label: 'test vehicle',
+          TravelMode: 'DRIVING',
+        },
+        {
+          label: 'test vehicle',
+          TravelMode: 'invalid',
+        },
+      ];
+      const testVehicleMapping = {
+        Label: 'label',
+        TravelMode: 'TravelMode',
+      };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(2);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[1].errors.length).toBe(1);
+    });
+  });
 });
