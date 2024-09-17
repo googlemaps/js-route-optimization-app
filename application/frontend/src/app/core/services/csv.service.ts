@@ -257,7 +257,10 @@ export class CsvService {
     return errors;
   }
 
-  csvToVehicles(csvVehicles: any[], mapping: { [key: string]: string }): IVehicle[] {
+  csvToVehicles(
+    csvVehicles: any[],
+    mapping: { [key: string]: string }
+  ): { vehicle: IVehicle; errors: ValidationErrorResponse[] }[] {
     return csvVehicles.map((vehicle) => {
       // Conditionally add each field to the vehicle object, converting from csv strings as needed
       const parsedVehicle = {
@@ -305,8 +308,17 @@ export class CsvService {
         ...this.mapToLoadLimits(vehicle, mapping),
         ...this.mapToVehicleTimeWindows(vehicle, mapping),
       };
-      return parsedVehicle;
+      return {
+        vehicle: parsedVehicle,
+        errors: this.validateVehicle(parsedVehicle),
+      };
     });
+  }
+
+  private validateVehicle(vehicle: IVehicle): ValidationErrorResponse[] {
+    const errors = [];
+
+    return errors;
   }
 
   private mapToPickup(shipment: any, mapping: { [key: string]: string }, timeWindow: any): any {

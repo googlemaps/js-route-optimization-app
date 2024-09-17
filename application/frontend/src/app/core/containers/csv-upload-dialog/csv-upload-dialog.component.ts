@@ -1240,7 +1240,24 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
             shipments = shipmentsResults.map((result) => result.shipment);
           }
           if (this.vehicleFile) {
-            vehicles = this.service.csvToVehicles(res[1].data, this.mappingFormVehicles.value);
+            const vehiclesResults = this.service.csvToVehicles(
+              res[1].data,
+              this.mappingFormVehicles.value
+            );
+
+            if (vehiclesResults.some((result) => result.errors.length)) {
+              vehiclesResults.forEach((result, index) => {
+                this.validationErrors.push(
+                  ...result.errors.map(
+                    (error) =>
+                      `Vehicle ${result.vehicle.label || ''} at index ${index}: ${error.message}`
+                  )
+                );
+              });
+              throw Error('Vehicle validation error');
+            }
+
+            vehicles = vehiclesResults.map((result) => result.vehicle);
           }
 
           // geocode all shipments, then all vehicles
