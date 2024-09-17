@@ -320,23 +320,23 @@ export class CsvService {
 
     const loadLimitsError = Object.keys(vehicle.loadLimits).some((limitKey) => {
       const limit = vehicle.loadLimits[limitKey];
-      const value = Number.parseFloat(limit.maxLoad as string)
+      const value = Number.parseFloat(limit.maxLoad as string);
       return !Number.isInteger(value) || value < 1;
-    })
+    });
 
     if (loadLimitsError) {
       errors.push({
         error: true,
         message: 'Vehicle contains invalid load limits',
-        vehicle
+        vehicle,
       });
     }
 
-    if (!vehicle.travelMode) {
+    if ('travelMode' in vehicle && !vehicle.travelMode) {
       errors.push({
         error: true,
         message: 'Vehicle has an invalid travel mode',
-        vehicle
+        vehicle,
       });
     }
 
