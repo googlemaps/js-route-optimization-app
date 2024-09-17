@@ -104,7 +104,7 @@ describe('CsvService', () => {
   });
 
   describe('Validate vehicles', () => {
-    it('should throw no errors on a valid vehicle', async () => {
+    it('should throw no errors on a valid vehicle', () => {
       const vehicles = [{ label: 'test vehicle' }];
       const testVehicleMapping = { Label: 'label' };
       const result = service.csvToVehicles(vehicles, testVehicleMapping);
@@ -112,7 +112,7 @@ describe('CsvService', () => {
       expect(result[0].errors.length).toBe(0);
     });
 
-    it('should throw no errors on a vehicle with a valid load limit', async () => {
+    it('should throw no errors on a vehicle with a valid load limit', () => {
       const vehicles = [
         {
           label: 'test vehicle',
@@ -130,7 +130,7 @@ describe('CsvService', () => {
       expect(result[0].errors.length).toBe(0);
     });
 
-    it('should throw an error on a vehicle with a negative load limit', async () => {
+    it('should throw an error on a vehicle with a negative load limit', () => {
       const vehicles = [
         {
           label: 'test vehicle',
@@ -148,7 +148,7 @@ describe('CsvService', () => {
       expect(result[0].errors.length).toBe(1);
     });
 
-    it('should throw an error on a vehicle with a zero load limit', async () => {
+    it('should throw an error on a vehicle with a zero load limit', () => {
       const vehicles = [
         {
           label: 'test vehicle',
@@ -166,7 +166,7 @@ describe('CsvService', () => {
       expect(result[0].errors.length).toBe(1);
     });
 
-    it('should throw no errors on a vehicle with a valid travel mode', async () => {
+    it('should throw no errors on a vehicle with a valid travel mode', () => {
       const vehicles = [
         {
           label: 'test vehicle',
@@ -187,7 +187,7 @@ describe('CsvService', () => {
       expect(result[1].errors.length).toBe(0);
     });
 
-    it('should throw an error on vehicles with an invalid travel mode', async () => {
+    it('should throw an error on vehicles with an invalid travel mode', () => {
       const vehicles = [
         {
           label: 'test vehicle',
