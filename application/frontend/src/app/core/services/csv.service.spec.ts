@@ -103,6 +103,53 @@ describe('CsvService', () => {
     });
   });
 
+  describe('Validate shipments', () => {
+    it('should not throw error on a valid shipment', () => {
+      const shipments = [{ label: 'test shipment' }];
+      const testMapping = { Label: 'label' };
+      const result = service.csvToShipments(shipments, testMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+    });
+
+    it('should not throw error on shipment with a valid load demand', () => {
+      const shipments = [
+        {
+          LoadDemand1Type: 'weight',
+          LoadDemand1Value: 10,
+        },
+      ];
+      const testMapping = {
+        LoadDemand1Type: 'LoadDemand1Type',
+        LoadDemand1Value: 'LoadDemand1Value',
+      };
+      const result = service.csvToShipments(shipments, testMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+    });
+
+    it('should throw an error on shipment with an invalid load demand', () => {
+      const shipments = [
+        {
+          LoadDemand1Type: 'weight',
+          LoadDemand1Value: 'invalid',
+        },
+        {
+          LoadDemand1Type: 'weight',
+          LoadDemand1Value: 10.5,
+        },
+      ];
+      const testMapping = {
+        LoadDemand1Type: 'LoadDemand1Type',
+        LoadDemand1Value: 'LoadDemand1Value',
+      };
+      const result = service.csvToShipments(shipments, testMapping);
+      expect(result.length).toBe(2);
+      expect(result[0].errors.length).toBe(1);
+      expect(result[1].errors.length).toBe(1);
+    });
+  });
+
   describe('Validate vehicles', () => {
     it('should throw no errors on a valid vehicle', () => {
       const vehicles = [{ label: 'test vehicle' }];
