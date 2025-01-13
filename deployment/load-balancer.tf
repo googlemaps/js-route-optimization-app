@@ -15,6 +15,8 @@ resource "google_compute_backend_service" "fleetrouting_app_backend" {
   ]
   name        = "${var.deployment_name}-backend"
   description = null
+
+  protocol = "HTTP2"
   enable_cdn  = false
 
   backend {
@@ -27,6 +29,7 @@ resource "google_compute_backend_service" "fleetrouting_app_backend" {
   }
 
   iap {
+    enabled              = true
     oauth2_client_id     = var.iap_client_id
     oauth2_client_secret = var.iap_client_secret
   }
@@ -36,6 +39,8 @@ resource "google_compute_backend_service" "fleetrouting_app_backend" {
 resource "google_compute_backend_service" "fleetrouting_app_icons_backend" {
   name        = "${var.deployment_name}-icons-backend"
   description = null
+
+  protocol = "HTTP2"
   enable_cdn  = false
 
   backend {
