@@ -17,6 +17,7 @@ limitations under the License.
 import { promises as fs } from "fs";
 
 import bodyParser from "body-parser";
+import compression from "compression";
 import cors from "cors";
 import express, { Response, Request } from "express";
 import expressPinoLogger from "express-pino-logger";
@@ -38,6 +39,11 @@ app.use(
 
 // headers
 app.disable("x-powered-by");
+
+// compression
+app.use(
+  compression()
+);
 
 // cors
 app.use(
