@@ -21,7 +21,6 @@ import compression from "compression";
 import cors from "cors";
 import express, { Response, Request } from "express";
 import expressPinoLogger from "express-pino-logger";
-import multer from "multer";
 
 import { router as apiRoutes } from "./routes/api";
 import { router as optimizationRoutes } from "./routes/optimization";
@@ -42,7 +41,9 @@ app.disable("x-powered-by");
 
 // compression
 app.use(
-  compression()
+  compression({
+    filter: (req: Request, res: Response) => true
+  })
 );
 
 // cors
@@ -54,16 +55,9 @@ app.use(
   })
 );
 
-// multi-part form data
-app.use(
-  multer({
-    storage: multer.memoryStorage(),
-  }).single("file")
-);
-
 // body parser
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.json({ limit: "1gb" }));
+app.use(bodyParser.urlencoded({ limit: "1gb", extended: true }));
 
 /**
  * Readiness/liveness probe

@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import request from "supertest";
 import { describe, expect, test } from "@jest/globals";
+import * as pako from "pako";
+import request from "supertest";
 
 import { mockGoogleCloudOptimization } from "./mocks/optimization-api.mock";
 mockGoogleCloudOptimization();
@@ -80,11 +81,45 @@ describe("optimization", () => {
         expect(response.statusCode).toBe(400);
       });
 
+      test("responds bad request when file is not compressed", async () => {
+        const response = await request(app)
+          .post("/api/optimization/fleet-routing/optimize-tours")
+          .set("content-encoding", "gzip")
+          .set('enctype', 'multipart/form-data')
+          .attach("file", Buffer.from(JSON.stringify(SCENARIOS_AND_SOLUTIONS["optimize-tours-basic"].scenario)), "scenario.json.gz");
+
+        expect(response.statusCode).toBe(400);
+      });
+
+      test("responds bad request when compressed file is not json", async () => {
+        const response = await request(app)
+          .post("/api/optimization/fleet-routing/optimize-tours")
+          .set("content-encoding", "gzip")
+          .set('enctype', 'multipart/form-data')
+          .attach("file", Buffer.from(pako.gzip("Not JSON")), "scenario.json.gz");
+
+        expect(response.statusCode).toBe(400);
+      });
+
       test("basic model", async () => {
         const response = await request(app)
           .post("/api/optimization/fleet-routing/optimize-tours")
           .set("content-type", "application/json")
           .send(SCENARIOS_AND_SOLUTIONS["optimize-tours-basic"].scenario);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body.routes).toBeDefined();
+      });
+
+      test("basic model, compressed", async () => {
+        const json = JSON.stringify(SCENARIOS_AND_SOLUTIONS["optimize-tours-basic"].scenario);
+
+        const response = await request(app)
+          .post("/api/optimization/fleet-routing/optimize-tours")
+          .set("content-encoding", "gzip")
+          .set('enctype', 'multipart/form-data')
+          .attach("file", Buffer.from(pako.gzip(json)), "scenario.json.gz");
 
         expect(response.statusCode).toBe(200);
         expect(response.headers["content-type"]).toMatch(/json/);

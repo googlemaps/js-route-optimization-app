@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import express, { Response, Request } from "express";
+import * as pako from "pako";
 export const router = express.Router();
 
 import { google } from "@google-cloud/routeoptimization/build/protos/protos";
@@ -22,6 +23,7 @@ import { google } from "@google-cloud/routeoptimization/build/protos/protos";
 import { log } from "../logging";
 import { fleetRouting } from "../services/optimization";
 import { GRPC_TO_HTTP_STATUS_CODES, OPTIMIZATION_VALIDATION_CODES } from "../services/optimization-status-codes";
+import { upload } from "../upload";
 
 router.get("/healthz", async (req: Request, res: Response) => {
   log.debug("Health check (Optimization)");
@@ -30,8 +32,20 @@ router.get("/healthz", async (req: Request, res: Response) => {
 
 router.post(
   "/fleet-routing/optimize-tours",
+  upload.single('file'),
   async (req: Request, res: Response) => {
-    const body = req.body as google.maps.routeoptimization.v1.IOptimizeToursRequest;
+    let body: google.maps.routeoptimization.v1.IOptimizeToursRequest;
+    if(req.headers['content-encoding'] == 'gzip') {
+      try {
+        const jsonString = pako.inflate(req.file!!.buffer!!, { to: 'string' });
+        body = JSON.parse(jsonString) as google.maps.routeoptimization.v1.IOptimizeToursRequest;
+      } catch (err: unknown) {
+        log.warn('Unable to parse request body as gzip-compressed JSON string', err);
+        return res.status(400).send("Invalid request body, expected a gzip-compressed JSON string");
+      }
+    } else {
+      body = req.body as google.maps.routeoptimization.v1.IOptimizeToursRequest;
+    }
 
     if (!body?.model) {
       return res
