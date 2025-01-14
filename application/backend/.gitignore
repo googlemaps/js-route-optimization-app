@@ -1,4 +1,2 @@
 **/*.js
 **/*.map
-
-!eslint.config.js
