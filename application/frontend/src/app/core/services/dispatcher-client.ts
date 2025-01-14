@@ -61,7 +61,7 @@ export class DispatcherClient {
         const startTime = Date.now();
         let headers = new HttpHeaders({
           'content-encoding': 'gzip',
-          'enctype': 'multipart/form-data',
+          enctype: 'multipart/form-data',
         });
         if (request.timeout) {
           headers = headers.append('x-server-timeout', durationSeconds(request.timeout).toString());
