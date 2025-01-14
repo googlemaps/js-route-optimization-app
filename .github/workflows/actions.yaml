@@ -32,10 +32,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Use Node.js v16 LTS
+    - name: Use Node.js v22 LTS
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '22'
         cache: 'npm'
         cache-dependency-path: application/backend/package-lock.json
 
@@ -56,10 +56,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Use Node.js v16 LTS
+    - name: Use Node.js v22 LTS
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '22'
         cache: 'npm'
         cache-dependency-path: application/frontend/package-lock.json
 
