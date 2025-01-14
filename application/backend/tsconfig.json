@@ -1,16 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "esModuleInterop": true,
     "lib": ["ESNext"],
-    "target": "ESNext",
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
-    "removeComments": true
+    "target": "ESNext",
+
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "removeComments": true,
   },
   "include": [
     "**/*.ts"

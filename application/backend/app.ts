@@ -36,9 +36,7 @@ app.disable("x-powered-by");
 
 // compression
 app.use(
-  compression({
-    filter: (req: Request, res: Response) => true
-  })
+  compression()
 );
 
 // cors
@@ -71,7 +69,7 @@ app.get("/config.json", async (req: Request, res: Response) => {
   // get config.json from angular app when proxied
   if (process.env.FRONTEND_PROXY) {
     try {
-      const axios = (await import("axios")) as any;
+      const axios = (await import("axios") as any);
       const response = await axios.get(
         process.env.FRONTEND_PROXY + "config.json"
       );

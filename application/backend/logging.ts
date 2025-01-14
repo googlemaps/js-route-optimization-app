@@ -55,9 +55,9 @@ if (!process.env.LOG_FORMAT || process.env.LOG_FORMAT === "google") {
 
         return object;
       },
-      log: (o: any) => {
+      log: (o: Record<string, unknown>) => {
         const { err, ...reshaped } = o;
-        if (err) {
+        if (err instanceof Error) {
           reshaped.stack_trace = err.stack;
         }
         return { serviceContext, ...reshaped };

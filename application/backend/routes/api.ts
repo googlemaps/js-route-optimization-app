@@ -21,6 +21,7 @@ export const router = express.Router();
 
 import { generateFileName, shortName, storage } from "../services/storage";
 import { log } from "../logging";
+import { GetFilesOptions } from "@google-cloud/storage";
 
 router.get("/healthz", async (req: Request, res: Response) => {
   log.logger.debug("Health check (API)");
@@ -61,14 +62,14 @@ router.get("/status/:date?/:name", async (req: Request, res: Response) => {
 router.get("/scenarios", async (req: Request, res: Response) => {
   const queryObject = url.parse(req.url, true).query;
 
-  const options: { [k: string]: any } = {};
+  const options: GetFilesOptions = {};
 
   if ("limit" in queryObject) {
     options.maxResults = parseInt(queryObject.limit as string);
     options.autoPaginate = false;
   }
   if ("pageToken" in queryObject) {
-    options.pageToken = queryObject.pageToken;
+    options.pageToken = queryObject.pageToken as string;
   }
 
   if ("startsWith" in queryObject) {
@@ -87,14 +88,14 @@ router.get("/scenarios", async (req: Request, res: Response) => {
 router.get("/solutions", async (req: Request, res: Response) => {
   const queryObject = url.parse(req.url, true).query;
 
-  const options: { [k: string]: any } = {};
+  const options: GetFilesOptions = {};
 
   if ("limit" in queryObject || "pageToken" in queryObject) {
     options.maxResults = parseInt(queryObject.limit as string);
     options.autoPaginate = true;
 
     if ("pageToken" in queryObject) {
-      options.pageToken = queryObject.pageToken;
+      options.pageToken = queryObject.pageToken as string;
     }
   }
 
