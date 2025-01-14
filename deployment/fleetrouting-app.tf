@@ -37,7 +37,7 @@ resource "google_secret_manager_secret" "maps_api_key" {
   labels    = {}
 
   replication {
-    automatic = true
+    auto {}
   }
 }
 
@@ -56,7 +56,7 @@ resource "google_secret_manager_secret_version" "maps_api_key" {
 # cloud run services
 module "cloud_run_fleetrouting_app" {
   source  = "GoogleCloudPlatform/cloud-run/google"
-  version = "~> 0.2.0"
+  version = "~> 0.16.0"
 
   project_id   = data.google_project.project.project_id
   location     = var.region
