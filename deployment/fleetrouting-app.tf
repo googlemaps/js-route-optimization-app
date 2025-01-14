@@ -37,7 +37,7 @@ resource "google_secret_manager_secret" "maps_api_key" {
   labels    = {}
 
   replication {
-    auto {}
+    automatic = true
   }
 }
 
@@ -56,7 +56,7 @@ resource "google_secret_manager_secret_version" "maps_api_key" {
 # cloud run services
 module "cloud_run_fleetrouting_app" {
   source  = "GoogleCloudPlatform/cloud-run/google"
-  version = "~> 0.16.0"
+  version = "~> 0.2.0"
 
   project_id   = data.google_project.project.project_id
   location     = var.region
@@ -100,17 +100,13 @@ module "cloud_run_fleetrouting_app" {
     }
   ]
 
+
   limits = {
     cpu : "1000m"
     memory : "512Mi"
   }
   container_concurrency = 80
   timeout_seconds       = 3600
-
-  ports = {
-    name: "h2c"
-    port: 8080
-  }
 
   # access enforced at the load balancer
   members = [
