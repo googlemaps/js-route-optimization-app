@@ -1,5 +1,5 @@
 # build frontend
-FROM node:16-alpine as build
+FROM node:22-alpine as build
 
 WORKDIR /usr/src/app
 
@@ -17,7 +17,7 @@ ARG configuration=production
 RUN npm run build -- --output-path=./dist/out --configuration $configuration
 
 # build backend
-FROM node:16-alpine
+FROM node:22-alpine
 
 WORKDIR /usr/src/app
 
