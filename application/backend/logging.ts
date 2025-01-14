@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { pino, Logger } from "pino";
+import { pinoHttp, HttpLogger } from "pino-http";
 
 // map pino level to google cloud logging severity
 const levelToGoogleSeverity: { [level: string]: string } = {
@@ -82,6 +82,6 @@ else if (process.env.LOG_FORMAT === "pretty") {
   );
 }
 
-const p = pino(options);
+const p = pinoHttp(options);
 
-export const log: Logger = p;
+export const log: HttpLogger = p;

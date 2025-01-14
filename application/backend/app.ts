@@ -20,7 +20,6 @@ import bodyParser from "body-parser";
 import compression from "compression";
 import cors from "cors";
 import express, { Response, Request } from "express";
-import expressPinoLogger from "express-pino-logger";
 
 import { router as apiRoutes } from "./routes/api";
 import { router as optimizationRoutes } from "./routes/optimization";
@@ -30,11 +29,7 @@ import { log } from "./logging";
 export const app = express();
 
 // logging
-app.use(
-  expressPinoLogger({
-    logger: log,
-  })
-);
+app.use(log);
 
 // headers
 app.disable("x-powered-by");
@@ -63,7 +58,7 @@ app.use(bodyParser.urlencoded({ limit: "1gb", extended: true }));
  * Readiness/liveness probe
  */
 app.get("/healthz", async (req: Request, res: Response) => {
-  log.debug("Health check");
+  log.logger.debug("Health check");
   res.status(200).send("OK");
 });
 
@@ -82,7 +77,7 @@ app.get("/config.json", async (req: Request, res: Response) => {
       );
       config = response.data;
     } catch (err) {
-      log.error(err);
+      log.logger.error(err);
     }
   }
 
@@ -92,7 +87,7 @@ app.get("/config.json", async (req: Request, res: Response) => {
       const data = await fs.readFile("public/config.json");
       config = JSON.parse(data.toString());
     } catch (err) {
-      log.error(err);
+      log.logger.error(err);
       return res.sendStatus(404);
     }
   }
@@ -122,7 +117,7 @@ app.get("/config.json", async (req: Request, res: Response) => {
 
     res.status(200).send(config);
   } catch (err) {
-    log.error(err);
+    log.logger.error(err);
     return res.sendStatus(500);
   }
 });

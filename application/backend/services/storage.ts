@@ -46,14 +46,14 @@ class StorageSerivce {
 
   constructor() {
     if (!process.env.STORAGE_BUCKET_NAME) {
-      log.warn(
+      log.logger.warn(
         "Missing environment variable `STORAGE_BUCKET_NAME`, storage operations will not work"
       );
       return;
     }
 
     const projectId = process.env.STORAGE_PROJECT_ID || process.env.PROJECT_ID;
-    log.debug(`Storage project:  ${projectId}`);
+    log.logger.debug(`Storage project:  ${projectId}`);
 
     const storageOptions: StorageOptions = {
       projectId,
@@ -66,13 +66,13 @@ class StorageSerivce {
     ) {
       const keyFilename =
         process.env.STORAGE_CREDENTIALS || path.join(__dirname, "keys.json");
-      log.debug(`Storage keyFilename:  ${keyFilename}`);
+      log.logger.debug(`Storage keyFilename:  ${keyFilename}`);
 
       try {
         fs.accessSync(keyFilename, constants.R_OK);
         storageOptions.keyFilename = keyFilename;
       } catch {
-        log.warn(
+        log.logger.warn(
           "STORAGE_PROJECT_ID set, but no credentials file found. Will use default application credentials."
         );
       }
@@ -83,7 +83,7 @@ class StorageSerivce {
       const client = new Storage(storageOptions);
       this._bucket = client.bucket(process.env.STORAGE_BUCKET_NAME);
     } catch (err) {
-      log.error(err, "Failed to initialize storage client");
+      log.logger.error(err, "Failed to initialize storage client");
     }
   }
 
@@ -135,12 +135,12 @@ class StorageSerivce {
     const results: FileListEntry[] = [];
     files.forEach((file) => {
       if (file.name.match(ext)) {
-        log.debug("File name is: " + file.name);
+        log.logger.debug("File name is: " + file.name);
 
         const result: FileListEntry = {
           name: shortName(file.name),
-          dateModified: file.metadata.updated,
-          dateCreated: file.metadata.timeCreated,
+          dateModified: new Date(file.metadata.updated!),
+          dateCreated: new Date(file.metadata.timeCreated!),
         };
 
         if (nextPageQuery) {

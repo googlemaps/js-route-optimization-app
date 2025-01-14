@@ -23,7 +23,7 @@ import { generateFileName, shortName, storage } from "../services/storage";
 import { log } from "../logging";
 
 router.get("/healthz", async (req: Request, res: Response) => {
-  log.debug("Health check (API)");
+  log.logger.debug("Health check (API)");
   res.status(200).send("OK");
 });
 
@@ -44,7 +44,7 @@ router.get("/status/:date?/:name", async (req: Request, res: Response) => {
     req.params.name,
     req.params.date
   );
-  log.debug(fileName);
+  log.logger.debug(fileName);
 
   const status = (await storage.bucket.file(fileName).exists())[0];
   const result = {
@@ -173,7 +173,7 @@ router.post("/scenarios/:date?/:name", async (req: Request, res: Response) => {
       data: fileUrl,
     });
   } catch (error) {
-    log.error(error);
+    log.logger.error(error);
     return res.sendStatus(500);
   }
 });
@@ -198,7 +198,7 @@ router.post("/solutions/:date?/:name", async (req: Request, res: Response) => {
       data: fileUrl,
     });
   } catch (error) {
-    log.error(error);
+    log.logger.error(error);
     return res.sendStatus(500);
   }
 });
@@ -221,7 +221,7 @@ router.put("/scenarios/:date?/:name", async (req: Request, res: Response) => {
       data: fileUrl,
     });
   } catch (error) {
-    log.error(error);
+    log.logger.error(error);
     return res.sendStatus(500);
   }
 });
@@ -247,7 +247,7 @@ router.put("/solutions/:date?/:name", async (req: Request, res: Response) => {
       data: fileUrl,
     });
   } catch (error) {
-    log.error(error);
+    log.logger.error(error);
     return res.sendStatus(500);
   }
 });

@@ -26,7 +26,7 @@ import { GRPC_TO_HTTP_STATUS_CODES, OPTIMIZATION_VALIDATION_CODES } from "../ser
 import { upload } from "../upload";
 
 router.get("/healthz", async (req: Request, res: Response) => {
-  log.debug("Health check (Optimization)");
+  log.logger.debug("Health check (Optimization)");
   res.status(200).send("OK");
 });
 
@@ -37,10 +37,11 @@ router.post(
     let body: google.maps.routeoptimization.v1.IOptimizeToursRequest;
     if(req.headers['content-encoding'] == 'gzip') {
       try {
-        const jsonString = pako.inflate(req.file!.buffer!, { to: 'string' });
+        const buffer = new Uint8Array(req.file!.buffer!);
+        const jsonString = pako.inflate(buffer, { to: 'string' });
         body = JSON.parse(jsonString) as google.maps.routeoptimization.v1.IOptimizeToursRequest;
       } catch (err: unknown) {
-        log.warn('Unable to parse request body as gzip-compressed JSON string', err);
+        log.logger.warn('Unable to parse request body as gzip-compressed JSON string', err);
         return res.status(400).send("Invalid request body, expected a gzip-compressed JSON string");
       }
     } else {
@@ -67,7 +68,7 @@ router.post(
       const response = await fleetRouting.optimizeTours(body);
       return res.status(200).send(response);
     } catch (err: any) {
-      log.error(err);
+      log.logger.error(err);
 
       const message = (err as Error).message || "UNKNOWN_ERROR";
 
