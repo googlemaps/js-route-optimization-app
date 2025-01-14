@@ -103,7 +103,7 @@ module "cloud_run_fleetrouting_app" {
 
   limits = {
     cpu : "1000m"
-    memory : "512Mi"
+    memory : "2Gi"
   }
   container_concurrency = 80
   timeout_seconds       = 3600
