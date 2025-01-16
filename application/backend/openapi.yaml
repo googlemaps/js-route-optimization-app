@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.1
 info:
   title: Fleet Routing App - Backend
   version: 4.0.0
@@ -9,6 +9,10 @@ paths:
         Static web content.
         Paths not matched by other API routes are directed to static file serving middleware
         to deliver the frontend application.
+      responses:
+        200:
+          description:
+            OK
 
   /healthz:
     get:
@@ -29,11 +33,19 @@ paths:
         description:
           A [`google.cloud.optimization.v1.IOptimizeToursRequest`](https://cloud.google.com/optimization/docs/reference/rpc/google.cloud.optimization.v1#optimizetoursrequest),
           with the `parent` property omitted (to be added by the backend).
+
         required: true
         content:
           application/json:
             schema:
-              type: array
+              type: object
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  format: binary
+                  description: A gzip-compressed JSON file containing the IOptimizeToursRequest data
       responses:
         200:
           description:
@@ -90,22 +102,21 @@ paths:
               schema:
                 type: array
                 items:
-                  schema:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      pageToken:
-                        type: object
-                        properties:
-                          prefix:
-                            type: string
-                          maxResults:
-                            type: integer
-                          autoPaginate:
-                            type: boolean
-                          pageToken:
-                            type: string
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    pageToken:
+                      type: object
+                      properties:
+                        prefix:
+                          type: string
+                        maxResults:
+                          type: integer
+                        autoPaginate:
+                          type: boolean
+                        pageToken:
+                          type: string
                       required: ['name']
               example:
                 - name: "2020-10-23/0-vehicles-10-shipments-dayton.request.json"
@@ -259,22 +270,21 @@ paths:
               schema:
                 type: array
                 items:
-                  schema:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      pageToken:
-                        type: object
-                        properties:
-                          prefix:
-                            type: string
-                          maxResults:
-                            type: integer
-                          autoPaginate:
-                            type: boolean
-                          pageToken:
-                            type: string
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    pageToken:
+                      type: object
+                      properties:
+                        prefix:
+                          type: string
+                        maxResults:
+                          type: integer
+                        autoPaginate:
+                          type: boolean
+                        pageToken:
+                          type: string
               example:
                 - name: "2020-10-23/0-vehicles-10-shipments-dayton.request.json"
                   pageToken:

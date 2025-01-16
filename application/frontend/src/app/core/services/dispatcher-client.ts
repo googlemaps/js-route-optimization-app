@@ -15,15 +15,17 @@ limitations under the License.
 */
 
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, throwError } from 'rxjs';
 import { map, mergeMap, first, catchError } from 'rxjs/operators';
+import * as pako from 'pako';
+
 import * as fromRoot from 'src/app/reducers';
 import * as fromConfig from '../selectors/config.selectors';
 import { Scenario } from '../models';
 import { OptimizeToursRequest, OptimizeToursResponse } from 'src/app/core/models';
 import { ElapsedSolution } from '../models/elapsed-solution';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { durationSeconds } from 'src/app/util';
 
 /**
@@ -57,16 +59,26 @@ export class DispatcherClient {
       first(),
       mergeMap(([apiRoot, request]) => {
         const startTime = Date.now();
-        let headers = new HttpHeaders();
+        let headers = new HttpHeaders({
+          'content-encoding': 'gzip',
+          enctype: 'multipart/form-data',
+        });
         if (request.timeout) {
-          headers = headers.set('x-server-timeout', durationSeconds(request.timeout).toString());
+          headers = headers.append('x-server-timeout', durationSeconds(request.timeout).toString());
         }
+
+        // compress the scenario JSON before sending
+        // large scenarios can be on the order of 100 MB (uncompressed)
+        // exceeding the maximum request payload size for some servers
+        const blob = new Blob([pako.gzip(JSON.stringify(request))], { type: 'application/gzip' });
+        const formData: FormData = new FormData();
+        formData.append('file', blob, 'scenario.json.gz');
 
         // send CFR request to backend
         return this.http
           .post<OptimizeToursResponse>(
             `${apiRoot}/optimization/fleet-routing/optimize-tours`,
-            request,
+            formData,
             { headers }
           )
           .pipe(

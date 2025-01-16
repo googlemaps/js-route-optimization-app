@@ -18,4 +18,4 @@ import { app } from "./app"
 import { log } from "./logging";
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8080;
-app.listen(port, () => log.info(`App listening at ${port}`));
+app.listen(port, () => log.logger.info(`App listening at ${port}`));
