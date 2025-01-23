@@ -324,31 +324,7 @@ export const selectSelectionFilterActive = createSelector(
   }
 );
 
-export const selectAllMapLayers = createSelector(selectMapState, fromMap.selectPostSolveMapLayers);
-
-export const selectPostSolveMapLayers = createSelector(
-  selectAllMapLayers,
-  fromVehicle.selectAll,
-  (layers, vehicles) => {
-    const mapLayers: { [id in MapLayerId]?: MapLayer } = {};
-
-    const usedTravelModes = new Set();
-    vehicles.forEach((vehicle) => usedTravelModes.add(vehicle.travelMode ?? TravelMode.DRIVING));
-
-    Object.keys(layers).forEach((layerId) => {
-      const layer = layers[layerId];
-      if (!layer.travelMode) {
-        mapLayers[layerId] = layer;
-        return;
-      }
-      if (usedTravelModes.has(layer.travelMode)) {
-        mapLayers[layerId] = layer;
-      }
-    });
-
-    return mapLayers;
-  }
-);
+export const selectAllMapLayers = createSelector(selectMapState, fromMap.selectVisibleMapLayers);
 
 export const selectUsedMapLayers = createSelector(
   selectAllMapLayers,
