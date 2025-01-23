@@ -27,18 +27,18 @@ export interface State {
 
 export const initialState: State = {
   visibleMapLayers: {
-    [MapLayerId.PostSolveVisitRequests]: {
+    [MapLayerId.VisitRequests]: {
       name: 'Shipments',
       icon: 'pickup',
       visible: true,
     },
-    [MapLayerId.PostSolveFourWheel]: {
+    [MapLayerId.FourWheel]: {
       name: 'Driving',
       icon: 'vehicle_icon',
       visible: true,
       travelMode: TravelMode.DRIVING,
     },
-    [MapLayerId.PostSolveWalking]: {
+    [MapLayerId.Walking]: {
       name: 'Walking',
       icon: 'walking',
       visible: true,

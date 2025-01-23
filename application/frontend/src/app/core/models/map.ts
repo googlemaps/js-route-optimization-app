@@ -17,9 +17,9 @@ limitations under the License.
 import { TravelMode } from './dispatcher.model';
 
 export enum MapLayerId {
-  PostSolveVisitRequests,
-  PostSolveFourWheel,
-  PostSolveWalking,
+  VisitRequests,
+  FourWheel,
+  Walking,
 }
 
 export interface MapLayer {
