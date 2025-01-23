@@ -18,10 +18,11 @@ import { createSelector } from '@ngrx/store';
 import { Feature, Point } from '@turf/helpers';
 import { fromDispatcherLatLng, fromDispatcherToTurfPoint } from 'src/app/util';
 import * as fromLinearReferencing from '../../util/linear-referencing';
-import { MapVehicle, Vehicle } from '../models';
+import { MapVehicle, TravelMode, Vehicle } from '../models';
 import * as fromDepot from './depot.selectors';
-import { selectVehicleInitialHeadings } from './map.selectors';
+import { selectUsedMapLayers, selectVehicleInitialHeadings } from './map.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
+import { MapLayerId } from '../models/map';
 
 export const vehicleToDeckGL = (
   vehicle: Vehicle,
@@ -66,17 +67,24 @@ export const selectFilteredVehiclesSelected = createSelector(
   PreSolveVehicleSelectors.selectFilteredVehiclesSelected,
   selectVehicleInitialHeadings,
   fromDepot.selectDepot,
-  (vehicles, headings, depot) => {
+  selectUsedMapLayers,
+  (vehicles, headings, depot, visibleMapLayers) => {
     const selectedVehicles: MapVehicle[] = [];
-    vehicles.forEach((vehicle) => {
-      if (vehicle.startWaypoint?.location?.latLng) {
-        const position = fromDispatcherLatLng(vehicle.startWaypoint.location.latLng);
-        const atDepot = depot
-          ? fromLinearReferencing.pointsAreCoincident(position, fromDispatcherLatLng(depot))
-          : false;
-        selectedVehicles.push(vehicleToDeckGL(vehicle, position, headings[vehicle.id], atDepot));
-      }
-    });
+    vehicles
+      .filter((vehicle) =>
+        vehicle.travelMode ?? TravelMode.DRIVING
+          ? visibleMapLayers[MapLayerId.FourWheel].visible
+          : visibleMapLayers[MapLayerId.Walking].visible
+      )
+      .forEach((vehicle) => {
+        if (vehicle.startWaypoint?.location?.latLng) {
+          const position = fromDispatcherLatLng(vehicle.startWaypoint.location.latLng);
+          const atDepot = depot
+            ? fromLinearReferencing.pointsAreCoincident(position, fromDispatcherLatLng(depot))
+            : false;
+          selectedVehicles.push(vehicleToDeckGL(vehicle, position, headings[vehicle.id], atDepot));
+        }
+      });
     return selectedVehicles;
   }
 );
