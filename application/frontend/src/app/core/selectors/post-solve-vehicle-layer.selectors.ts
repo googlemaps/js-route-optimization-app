@@ -15,10 +15,7 @@ limitations under the License.
 */
 
 import { createSelector } from '@ngrx/store';
-import {
-  selectPostSolveMapLayers,
-  selectVehicleLocationsOnRouteWithHeadings,
-} from './map.selectors';
+import { selectUsedMapLayers, selectVehicleLocationsOnRouteWithHeadings } from './map.selectors';
 import { vehicleToDeckGL } from './pre-solve-vehicle-layer.selectors';
 import RoutesChartSelectors from './routes-chart.selectors';
 import * as fromVehicle from './vehicle.selectors';
@@ -33,7 +30,7 @@ export const selectFilteredVehicles = createSelector(
   selectVehicleLocationsOnRouteWithHeadings,
   RoutesChartSelectors.selectFilteredRoutesWithTransitionsLookup,
   RoutesMetadataSelectors.selectFilteredRouteLookup,
-  selectPostSolveMapLayers,
+  selectUsedMapLayers,
   (
     vehicles,
     currentPage,
@@ -50,8 +47,8 @@ export const selectFilteredVehicles = createSelector(
           (v) =>
             lookup.has(v.id) &&
             ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
-              ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-              : mapLayers[MapLayerId.PostSolveWalking].visible)
+              ? mapLayers[MapLayerId.FourWheel].visible
+              : mapLayers[MapLayerId.Walking].visible)
         )
       : [];
     return filteredVehicles.map((vehicle) =>
@@ -67,7 +64,7 @@ export const selectFilteredVehiclesSelected = createSelector(
   RoutesChartSelectors.selectFilteredRoutesSelectedWithTransitionsLookup,
   RoutesMetadataSelectors.selectFilteredRoutesSelectedLookup,
   RoutesChartSelectors.selectSelectedRoutesColors,
-  selectPostSolveMapLayers,
+  selectUsedMapLayers,
   (
     vehicles,
     currentPage,
@@ -83,8 +80,8 @@ export const selectFilteredVehiclesSelected = createSelector(
       (v) =>
         lookup.has(v.id) &&
         ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
-          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-          : mapLayers[MapLayerId.PostSolveWalking].visible)
+          ? mapLayers[MapLayerId.FourWheel].visible
+          : mapLayers[MapLayerId.Walking].visible)
     );
     return selectedVehicles.map((vehicle) => ({
       ...vehicleToDeckGL(vehicle, locations[vehicle.id].location, locations[vehicle.id].heading),

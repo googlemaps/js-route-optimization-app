@@ -101,7 +101,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.options$ = this.store.pipe(select(fromConfig.selectMapOptions), take(1));
     this.mapSelectionToolsVisible$ = this.store.pipe(select(selectMapSelectionToolsVisible));
     this.selectionFilterActive$ = this.store.pipe(select(selectSelectionFilterActive));
-    this.layers$ = this.store.pipe(select(fromMap.selectPostSolveMapLayers));
+    this.layers$ = this.store.pipe(select(fromMap.selectUsedMapLayers));
     this.travelSimulatorVisible$ = this.store.pipe(
       select(TravelSimulatorSelectors.selectTravelSimulatorVisible)
     );
@@ -131,14 +131,15 @@ export class MapComponent implements OnInit, OnDestroy {
         this.store.pipe(select(fromPreSolve.selectActive)),
         this.store.pipe(select(fromPostSolve.selectActive)),
         this.store.pipe(select(fromUI.selectHasMap)),
-        this.store.pipe(select(fromMap.selectPostSolveMapLayers)),
-      ]).subscribe(([preSolve, postSolve, hasMap, postSolveMapLayers]) => {
+        this.store.pipe(select(fromMap.selectUsedMapLayers)),
+      ]).subscribe(([preSolve, postSolve, hasMap, visibleMapLayers]) => {
         this.routeLayer.visible = hasMap && postSolve;
         this.preSolveVehicleLayer.visible = hasMap && preSolve;
-        this.preSolveVisitRequestLayer.visible = hasMap && preSolve;
+        this.preSolveVisitRequestLayer.visible =
+          hasMap && preSolve && visibleMapLayers[MapLayerId.VisitRequests].visible;
         this.postSolveVehicleLayer.visible = hasMap && postSolve;
         this.postSolveVisitRequestLayer.visible =
-          hasMap && postSolve && postSolveMapLayers[MapLayerId.PostSolveVisitRequests].visible;
+          hasMap && postSolve && visibleMapLayers[MapLayerId.VisitRequests].visible;
         this.depotLayer.visible = hasMap;
       }),
 
@@ -262,7 +263,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   onSetLayerVisibility(event: { layerId: MapLayerId; visible: boolean }): void {
     this.store.dispatch(
-      MapActions.setPostSolveLayerVisible({ layerId: event.layerId, visible: event.visible })
+      MapActions.setLayerVisible({ layerId: event.layerId, visible: event.visible })
     );
   }
 }

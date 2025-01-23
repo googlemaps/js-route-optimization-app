@@ -20,7 +20,7 @@ import RoutesChartSelectors from './routes-chart.selectors';
 import { Page, ShipmentRoute, TravelMode } from '../models';
 import { Feature, LineString } from '@turf/helpers';
 import { toTurfLineString } from 'src/app/util';
-import { selectPostSolveMapLayers } from './map.selectors';
+import { selectUsedMapLayers } from './map.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import { MapLayerId } from '../models/map';
 import RoutesMetadataSelectors from './routes-metadata.selectors';
@@ -50,7 +50,7 @@ export const selectFilteredRoutes = createSelector(
   RoutesMetadataSelectors.selectFilteredRouteIds,
   fromUi.selectPage,
   fromVehicle.selectAll,
-  selectPostSolveMapLayers,
+  selectUsedMapLayers,
   (paths, chartFilteredRouteIds, tableFilteredRouteIds, page, vehicles, mapLayers) => {
     const filteredRouteIds =
       page === Page.RoutesChart ? chartFilteredRouteIds : new Set(tableFilteredRouteIds);
@@ -58,8 +58,8 @@ export const selectFilteredRoutes = createSelector(
       (route) => {
         return (vehicles[route.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) ===
           TravelMode.DRIVING
-          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-          : mapLayers[MapLayerId.PostSolveWalking].visible;
+          ? mapLayers[MapLayerId.FourWheel].visible
+          : mapLayers[MapLayerId.Walking].visible;
       }
     );
   }
@@ -72,7 +72,7 @@ export const selectFilteredRoutesSelected = createSelector(
   fromUi.selectPage,
   RoutesChartSelectors.selectSelectedRoutesColors,
   fromVehicle.selectAll,
-  selectPostSolveMapLayers,
+  selectUsedMapLayers,
   (
     paths,
     chartSelectedRoutesLookup,
@@ -88,8 +88,8 @@ export const selectFilteredRoutesSelected = createSelector(
       (p) =>
         lookupSet.has(p.id) &&
         ((vehicles[p.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
-          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-          : mapLayers[MapLayerId.PostSolveWalking].visible)
+          ? mapLayers[MapLayerId.FourWheel].visible
+          : mapLayers[MapLayerId.Walking].visible)
     );
     return selectedRoutes.map((route) => ({
       ...route,

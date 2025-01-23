@@ -324,9 +324,9 @@ export const selectSelectionFilterActive = createSelector(
   }
 );
 
-export const selectAllMapLayers = createSelector(selectMapState, fromMap.selectPostSolveMapLayers);
+export const selectAllMapLayers = createSelector(selectMapState, fromMap.selectVisibleMapLayers);
 
-export const selectPostSolveMapLayers = createSelector(
+export const selectUsedMapLayers = createSelector(
   selectAllMapLayers,
   fromVehicle.selectAll,
   (layers, vehicles) => {
