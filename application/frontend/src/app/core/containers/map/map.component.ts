@@ -101,7 +101,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.options$ = this.store.pipe(select(fromConfig.selectMapOptions), take(1));
     this.mapSelectionToolsVisible$ = this.store.pipe(select(selectMapSelectionToolsVisible));
     this.selectionFilterActive$ = this.store.pipe(select(selectSelectionFilterActive));
-    this.layers$ = this.store.pipe(select(fromMap.selectPostSolveMapLayers));
+    this.layers$ = this.store.pipe(select(fromMap.selectUsedMapLayers));
     this.travelSimulatorVisible$ = this.store.pipe(
       select(TravelSimulatorSelectors.selectTravelSimulatorVisible)
     );
