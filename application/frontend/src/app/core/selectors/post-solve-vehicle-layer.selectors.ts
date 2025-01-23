@@ -47,8 +47,8 @@ export const selectFilteredVehicles = createSelector(
           (v) =>
             lookup.has(v.id) &&
             ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
-              ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-              : mapLayers[MapLayerId.PostSolveWalking].visible)
+              ? mapLayers[MapLayerId.FourWheel].visible
+              : mapLayers[MapLayerId.Walking].visible)
         )
       : [];
     return filteredVehicles.map((vehicle) =>
@@ -80,8 +80,8 @@ export const selectFilteredVehiclesSelected = createSelector(
       (v) =>
         lookup.has(v.id) &&
         ((v.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
-          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-          : mapLayers[MapLayerId.PostSolveWalking].visible)
+          ? mapLayers[MapLayerId.FourWheel].visible
+          : mapLayers[MapLayerId.Walking].visible)
     );
     return selectedVehicles.map((vehicle) => ({
       ...vehicleToDeckGL(vehicle, locations[vehicle.id].location, locations[vehicle.id].heading),

@@ -58,8 +58,8 @@ export const selectFilteredRoutes = createSelector(
       (route) => {
         return (vehicles[route.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) ===
           TravelMode.DRIVING
-          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-          : mapLayers[MapLayerId.PostSolveWalking].visible;
+          ? mapLayers[MapLayerId.FourWheel].visible
+          : mapLayers[MapLayerId.Walking].visible;
       }
     );
   }
@@ -88,8 +88,8 @@ export const selectFilteredRoutesSelected = createSelector(
       (p) =>
         lookupSet.has(p.id) &&
         ((vehicles[p.vehicleIndex]?.travelMode ?? TravelMode.DRIVING) === TravelMode.DRIVING
-          ? mapLayers[MapLayerId.PostSolveFourWheel].visible
-          : mapLayers[MapLayerId.PostSolveWalking].visible)
+          ? mapLayers[MapLayerId.FourWheel].visible
+          : mapLayers[MapLayerId.Walking].visible)
     );
     return selectedRoutes.map((route) => ({
       ...route,
