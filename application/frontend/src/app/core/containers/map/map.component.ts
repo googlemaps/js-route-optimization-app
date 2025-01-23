@@ -135,7 +135,8 @@ export class MapComponent implements OnInit, OnDestroy {
       ]).subscribe(([preSolve, postSolve, hasMap, visibleMapLayers]) => {
         this.routeLayer.visible = hasMap && postSolve;
         this.preSolveVehicleLayer.visible = hasMap && preSolve;
-        this.preSolveVisitRequestLayer.visible = hasMap && preSolve;
+        this.preSolveVisitRequestLayer.visible =
+          hasMap && preSolve && visibleMapLayers[MapLayerId.VisitRequests].visible;
         this.postSolveVehicleLayer.visible = hasMap && postSolve;
         this.postSolveVisitRequestLayer.visible =
           hasMap && postSolve && visibleMapLayers[MapLayerId.VisitRequests].visible;
