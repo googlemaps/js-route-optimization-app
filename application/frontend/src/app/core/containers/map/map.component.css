@@ -2,11 +2,13 @@
   position: relative;
 }
 
-app-post-solve-map-legend {
+.map-controls {
   position: absolute;
   z-index: 1;
   top: 10px;
   left: 50px;
+  display: flex;
+  gap: 1rem;
 }
 
 app-map-type-button {

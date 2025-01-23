@@ -1,14 +1,15 @@
 <app-map-wrapper [options]="options$ | async" (mapInitialize)="onMapInitialize($event)">
 </app-map-wrapper>
-<app-post-solve-map-legend
-  *ngIf="!isPreSolve()"
-  [mapLayers]="layers$ | async"
-  (setLayerVisibility)="onSetLayerVisibility($event)">
-</app-post-solve-map-legend>
-<app-map-add-buttons
-  *ngIf="isPreSolve()"
-  (addShipment)="addShipment()"
-  (addVehicle)="addVehicle()"></app-map-add-buttons>
+<div class="map-controls">
+  <app-post-solve-map-legend
+    [mapLayers]="layers$ | async"
+    (setLayerVisibility)="onSetLayerVisibility($event)">
+  </app-post-solve-map-legend>
+  <app-map-add-buttons
+    *ngIf="isPreSolve()"
+    (addShipment)="addShipment()"
+    (addVehicle)="addVehicle()"></app-map-add-buttons>
+</div>
 <app-map-type-button (typeChange)="onTypeChange($event)"> </app-map-type-button>
 <app-toggle-selection-filter-button
   *ngIf="mapSelectionToolsVisible$ | async"
