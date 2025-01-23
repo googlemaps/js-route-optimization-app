@@ -228,10 +228,10 @@ export class UploadDialogComponent {
   private get scenarioWaypoints(): IWaypoint[] {
     return [
       this.scenario?.model?.shipments?.flatMap((shipment) =>
-        shipment.pickups
-          ?.flatMap((pickup) => [pickup.arrivalWaypoint, pickup.departureWaypoint])
+        (shipment.pickups || [])
+          .flatMap((pickup) => [pickup.arrivalWaypoint, pickup.departureWaypoint])
           .concat(
-            shipment.deliveries?.flatMap((delivery) => [
+            (shipment.deliveries || []).flatMap((delivery) => [
               delivery.arrivalWaypoint,
               delivery.departureWaypoint,
             ])
