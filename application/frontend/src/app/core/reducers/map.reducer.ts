@@ -49,7 +49,7 @@ export const initialState: State = {
 
 export const reducer = createReducer(
   initialState,
-  on(MapActions.setPostSolveLayerVisible, (state, { layerId, visible }) => ({
+  on(MapActions.setLayerVisible, (state, { layerId, visible }) => ({
     ...state,
     postSolveMapLayers: {
       ...state.postSolveMapLayers,

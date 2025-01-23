@@ -54,7 +54,7 @@ export const editPreSolveVehicle = createAction(
 
 export const editVisit = createAction('[Map] Edit Visit', props<{ visitId: number }>());
 
-export const setPostSolveLayerVisible = createAction(
-  '[Map] Set Post Solve Layer Visible',
+export const setLayerVisible = createAction(
+  '[Map] Set Layer Visible',
   props<{ layerId: MapLayerId; visible: boolean }>()
 );

@@ -262,7 +262,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   onSetLayerVisibility(event: { layerId: MapLayerId; visible: boolean }): void {
     this.store.dispatch(
-      MapActions.setPostSolveLayerVisible({ layerId: event.layerId, visible: event.visible })
+      MapActions.setLayerVisible({ layerId: event.layerId, visible: event.visible })
     );
   }
 }
