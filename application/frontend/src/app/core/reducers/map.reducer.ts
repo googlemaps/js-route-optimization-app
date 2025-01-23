@@ -22,11 +22,11 @@ import { TravelMode } from '../models';
 export const mapFeatureKey = 'map';
 
 export interface State {
-  postSolveMapLayers: { [id in MapLayerId]: MapLayer };
+  visibleMapLayers: { [id in MapLayerId]: MapLayer };
 }
 
 export const initialState: State = {
-  postSolveMapLayers: {
+  visibleMapLayers: {
     [MapLayerId.PostSolveVisitRequests]: {
       name: 'Shipments',
       icon: 'pickup',
@@ -51,15 +51,15 @@ export const reducer = createReducer(
   initialState,
   on(MapActions.setLayerVisible, (state, { layerId, visible }) => ({
     ...state,
-    postSolveMapLayers: {
-      ...state.postSolveMapLayers,
+    visibleMapLayers: {
+      ...state.visibleMapLayers,
       [layerId]: {
-        ...state.postSolveMapLayers[layerId],
+        ...state.visibleMapLayers[layerId],
         visible,
       },
     },
   }))
 );
 
-export const selectPostSolveMapLayers = (state: State): { [id in MapLayerId]: MapLayer } =>
-  state.postSolveMapLayers;
+export const selectVisibleMapLayers = (state: State): { [id in MapLayerId]: MapLayer } =>
+  state.visibleMapLayers;
