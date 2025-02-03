@@ -36,9 +36,12 @@ carefully:
   and vehicles used below capacity.
 """
 
-from collections.abc import Collection, Iterable, Sequence
+import collections
+from collections.abc import Collection, Iterable, Mapping, MutableSequence, Sequence
 import dataclasses
 import datetime
+import math
+import operator
 from typing import Self
 
 from . import cfr_json
@@ -156,7 +159,13 @@ class _ShipmentToken:
       if costs_per_vehicle_indices is None:
         costs_per_vehicle_indices = range(len(costs_per_vehicle))
       costs_per_vehicle_set = tuple(
-          sorted(zip(costs_per_vehicle_indices, costs_per_vehicle, strict=True))
+          sorted(
+              (index, cost)
+              for index, cost in zip(
+                  costs_per_vehicle_indices, costs_per_vehicle, strict=True
+              )
+              if cost > 0
+          )
       )
     return cls(
         pickup_tokens=tuple(
@@ -307,3 +316,268 @@ def _merge_visit_request_lists(
         )
     )
   return merged_visit_requests
+
+
+def _add_durations_elementwise_in_place(
+    accumulators: MutableSequence[datetime.timedelta],
+    durations_to_add: Iterable[datetime.timedelta],
+) -> None:
+  """Adds durations from `durations_to_add` to durations in `accumulators`.
+
+  The addition is done in place. When `accumulators` contains an empty list, it
+  is extended with the values from `durations_to_add`. This is equivalent to
+  extending it with the right number of zeros and then doing the addition in
+  place.
+
+  Args:
+    accumulators: The list of datetime accumulators to add to. When empty, it is
+      extended to the right length with zeros.
+    durations_to_add: A collection of durations to add to the accumulator. Must
+      have the same length as `accumulators` when `accumulators` is not empty.
+
+  Raises:
+    ValueError: When `accumulators` is not empty and `accumulators` and
+      `durations_to_add` have different lengths.
+  """
+  if not accumulators:
+    accumulators.extend(durations_to_add)
+  else:
+    # Iterate and at the same time check that the two sequences have the same
+    # length.
+    for i, duration_to_add in zip(
+        range(len(accumulators)), durations_to_add, strict=True
+    ):
+      accumulators[i] += duration_to_add
+
+
+def _get_visit_request_durations(
+    visit_requests: Sequence[cfr_json.VisitRequest],
+) -> Iterable[datetime.timedelta]:
+  """Returns the list of durations from `visit_requests`."""
+  return (
+      cfr_json.get_visit_request_duration(request) for request in visit_requests
+  )
+
+
+def _load_exceeds_limits(
+    loads: Mapping[str, cfr_json.Load], load_limits: Mapping[str, int]
+) -> bool:
+  """Checks that `loads` does not exceed `load_limits` for any load type."""
+  for unit, load in loads.items():
+    amount = int(load.get("amount", 0))
+    limit = load_limits.get(unit, math.inf)
+    if amount > limit:
+      return True
+  return False
+
+
+def _max_or_zero(values: Collection[datetime.timedelta]) -> datetime.timedelta:
+  """Returns the maximum from `values` or zero duration when values is empty."""
+  return max(values) if values else datetime.timedelta(0)
+
+
+def _merge_compatible_shipments(
+    shipments: Sequence[cfr_json.Shipment],
+    original_shipment_indices: Sequence[int],
+    max_visit_duration: datetime.timedelta,
+    load_limits: Mapping[str, int],
+) -> Iterable[tuple[cfr_json.Shipment, Sequence[int]]]:
+  """A greedy merging algorithm for compatible shipments.
+
+  Merges shipments from `shipments` at indices given by
+  `original_shipment_indices`. The merge proceeds in a greedy fashion, starting
+  with the first index, and adding shipments to the merge until the limits given
+  by the arguments are reached. Once this happens, yields a merged shipment and
+  continues the merge as long as there are any original shipments left.
+
+  When a shipment exceeds any of the limits given in the arguments by itself, it
+    1. completes the current merged group,
+    2. it is emitted as a singleton even though it exceeds the limits, so that
+       the shipment is not lost.
+
+  Args:
+    shipments: The list of all shipments in the model.
+    original_shipment_indices: The list of shipment indices that should be
+      merged by this function.
+    max_visit_duration: The maximal duration of a merged visit request.
+    load_limits: The load limits applied to the merged shipments.
+
+  Yields:
+    Tuples (merged_shipment, original_indices) where `merged_shipment` is the
+    result of merging original shipments with indices `original_indices`. Each
+    original index from `original_shipment_indices` appears in exactly one of
+    the returned tuples.
+  """
+  original_index_iterator = iter(original_shipment_indices)
+  original_index = next(original_index_iterator, None)
+  while original_index is not None:
+    merged_shipment: cfr_json.Shipment = {}
+    original_shipments = []
+    merged_load_demands = {}
+    merged_pickup_durations = []
+    merged_delivery_durations = []
+    original_pickups = []
+    original_deliveries = []
+    merged_penalty_cost = 0
+    merged_label_parts = []
+    merged_original_indices = []
+    while original_index is not None:
+      original_shipment = shipments[original_index]
+      _add_durations_elementwise_in_place(
+          merged_pickup_durations,
+          _get_visit_request_durations(original_shipment.get("pickups", ())),
+      )
+      _add_durations_elementwise_in_place(
+          merged_delivery_durations,
+          _get_visit_request_durations(original_shipment.get("deliveries", ())),
+      )
+      if (
+          (
+              _max_or_zero(merged_pickup_durations) > max_visit_duration
+              or _max_or_zero(merged_delivery_durations) > max_visit_duration
+          )
+          # If there's just one shipment that exceeds the limit, we add it as
+          # a singleton. Otherwise, we wouldn't be able to finish the merge.
+          and original_shipments
+      ):
+        break
+
+      # TODO(ondrasej): Also add the load demands of the visit requests into the
+      # mix. At the moment, we merge them but we do not check them against the
+      # bounds.
+      if (load_demands := original_shipment.get("loadDemands")) is not None:
+        cfr_json.update_load_demands_in_place(merged_load_demands, load_demands)
+        if (
+            _load_exceeds_limits(merged_load_demands, load_limits)
+            # If there's just one shipment that exceeds the limit, we add it
+            # as a singleton. Otherwise, we wouldn't be able to finish the
+            # merge.
+            and original_shipments
+        ):
+          # We need to subtract the added loads again, to restore the previous
+          # state for the next shipment group.
+          cfr_json.update_load_demands_in_place(
+              merged_load_demands, load_demands, op=operator.sub
+          )
+          break
+
+      original_shipments.append(original_shipment)
+
+      original_pickups.append(original_shipment.get("pickups", ()))
+      original_deliveries.append(original_shipment.get("deliveries", ()))
+
+      merged_penalty_cost += original_shipment.get("penaltyCost", 0)
+      if (label := original_shipment.get("label")) is not None:
+        merged_label_parts.append(label)
+
+      merged_original_indices.append(original_index)
+      original_index = next(original_index_iterator, None)
+
+    # This must always hold. Even when shipments do not fit into the duration
+    # and load constraints, we add them without merging so that no shipment is
+    # lost in the process.
+    assert (
+        original_shipments
+    ), "The group building algorithm did not add any shipments"
+
+    merged_pickups = _merge_visit_request_lists(original_pickups)
+    if merged_pickups:
+      merged_shipment["pickups"] = merged_pickups
+    merged_deliveries = _merge_visit_request_lists(original_deliveries)
+    if merged_deliveries:
+      merged_shipment["deliveries"] = merged_deliveries
+    if original_shipments[0].get("penaltyCost") is not None:
+      merged_shipment["penaltyCost"] = merged_penalty_cost
+    if original_shipments[0].get("shipmentType") is not None:
+      merged_shipment["shipmentType"] = original_shipments[0].get(
+          "shipmentType"
+      )
+    if merged_load_demands:
+      merged_shipment["loadDemands"] = merged_load_demands
+    if (
+        allowed_vehicles := original_shipments[0].get("allowedVehicleIndices")
+    ) is not None:
+      merged_shipment["allowedVehicleIndices"] = allowed_vehicles
+    if merged_label_parts:
+      merged_shipment["label"] = ", ".join(merged_label_parts)
+
+    merged_costs_per_vehicle = cfr_json.combined_costs_per_vehicle(
+        original_shipments
+    )
+    if merged_costs_per_vehicle is not None:
+      merged_shipment["costsPerVehicle"] = merged_costs_per_vehicle[1]
+      merged_shipment["costsPerVehicleIndices"] = merged_costs_per_vehicle[0]
+    yield merged_shipment, merged_original_indices
+
+
+def merge_shipments(
+    model: cfr_json.ShipmentModel,
+    max_visit_duration: datetime.timedelta = datetime.timedelta.max,
+    load_limits: Mapping[str, int] | None = None,
+) -> tuple[list[cfr_json.Shipment], Sequence[int]]:
+  """Merges compatible shipments in the model according to the given parameters.
+
+  For each group of compatible shipments, reduces the group to one or more
+  "merged" shipments such that:
+  - each original shipment in the group is represented by exactly one merged
+    shipment.
+  - when two or more original shipments are merged together into one shipment,
+    the following holds:
+    - the duration of any visit request of this merged shipment is less or equal
+      to `max_visit_duration`.
+    - the load demand of the merged shipment is less or equal to `load_limits`
+      for all load types specified in `load_limits`. Load types that are not
+      covered by `load_limits` can have any value.
+  - when one shipment alone does not fit into the limits specified by
+    `max_visit_duration` and `load_limits`, it is kept unmerged (but it is not
+    removed from the model).
+
+  Args:
+    model: The model, from which the shipments are taken. Not modified by the
+      function.
+    max_visit_duration: The maximal duration of a merged visit request. The max
+      visit duration applies only when two or more shipments are merged,
+      individual shipments are not removed when they are over the limit.
+    load_limits: The maximal load demands of a merged shipment. The load limits
+      apply only when two or more shipments are merged, individual shipments are
+      not revmoed when they are over the limit.
+
+  Returns:
+    A pair `(merged_shipments, original_to_merged)` where `merged_shipments` is
+    the list of merged shipments created by this function, and
+    `original_to_merged` is a sequence such that when `old` is an index of an
+    unmerged shipment, `original_to_merged[old]` is the index of the merged
+    shipment that represents it.
+
+  Raises:
+    ValueError: When the model contains transition attributes.
+  """
+  if model.get("transitionAttributes", ()):
+    raise ValueError(
+        "Merging shipments in models with transition attributes is not"
+        " supported yet."
+    )
+
+  shipments = model.get("shipments")
+  if not shipments:  # Covers an empty list and None.
+    return [], ()
+
+  shipments_by_token = collections.defaultdict(list)
+  if load_limits is None:
+    load_limits = {}
+  for shipment_index, shipment in enumerate(shipments):
+    token = _ShipmentToken.from_shipment(shipment)
+    shipments_by_token[token].append(shipment_index)
+
+  merged_shipments: list[cfr_json.Shipment] = []
+  original_to_merged_index: list[int] = [-1] * len(shipments)
+  for group_indices in shipments_by_token.values():
+    for merged_shipment, original_indices in _merge_compatible_shipments(
+        shipments, group_indices, max_visit_duration, load_limits
+    ):
+      merged_index = len(merged_shipments)
+      merged_shipments.append(merged_shipment)
+      for original_index in original_indices:
+        original_to_merged_index[original_index] = merged_index
+
+  return merged_shipments, original_to_merged_index

@@ -15,6 +15,8 @@
 """Tests for the shipment merging transformations."""
 
 from collections.abc import Sequence
+import copy
+import datetime
 from typing import TypeAlias
 import unittest
 
@@ -300,6 +302,503 @@ class MergeVisitRequestListsTest(unittest.TestCase):
     self.assertEqual(
         transforms_merge._merge_visit_request_lists(sources), expected_merged
     )
+
+
+class AddDurationsElementwiseInPlaceTest(unittest.TestCase):
+  """Tests for _add_visit_request_durations_in_place."""
+
+  maxDiff = None
+
+  def test_empty_list(self):
+    accs = []
+    transforms_merge._add_durations_elementwise_in_place(accs, [])
+    self.assertEqual(accs, [])
+
+  def test_size_mismatch(self):
+    accs = [datetime.timedelta(0), datetime.timedelta(0)]
+    with self.assertRaises(ValueError):
+      transforms_merge._add_durations_elementwise_in_place(
+          accs, (datetime.timedelta(seconds=1),)
+      )
+
+  def test_add_to_empty_accumulators(self):
+    accs = []
+    added_values = (
+        datetime.timedelta(seconds=10),
+        datetime.timedelta(seconds=4),
+    )
+    transforms_merge._add_durations_elementwise_in_place(accs, added_values)
+    self.assertSequenceEqual(accs, added_values)
+
+  def test_add_elementwise(self):
+    accs = [datetime.timedelta(seconds=1), datetime.timedelta(seconds=10)]
+    transforms_merge._add_durations_elementwise_in_place(
+        accs, (datetime.timedelta(seconds=8), datetime.timedelta(seconds=5))
+    )
+    self.assertEqual(
+        accs, [datetime.timedelta(seconds=9), datetime.timedelta(seconds=15)]
+    )
+
+  def test_add_from_generator(self):
+    accs = [datetime.timedelta(seconds=1), datetime.timedelta(seconds=5)]
+    added_values = (datetime.timedelta(seconds=i) for i in range(2))
+    transforms_merge._add_durations_elementwise_in_place(accs, added_values)
+    self.assertEqual(
+        accs, [datetime.timedelta(seconds=1), datetime.timedelta(seconds=6)]
+    )
+
+
+class MergeShipmentsTest(unittest.TestCase):
+  """Tests for merge_shipments."""
+
+  maxDiff = None
+
+  def test_no_shipments(self):
+    model: cfr_json.ShipmentModel = {"shipments": []}
+    new_shipments, old_to_new = transforms_merge.merge_shipments(model)
+    self.assertSequenceEqual(new_shipments, ())
+    self.assertSequenceEqual(old_to_new, ())
+
+  def test_with_transition_attributes(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [],
+        "transitionAttributes": [{"srcTag": "foo", "dstTag": "bar"}],
+    }
+    with self.assertRaises(ValueError):
+      transforms_merge.merge_shipments(model)
+
+  def test_incompatible_shipments(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            # The shipments are incompatible: even though they have visits at
+            # the same location, one is a pickup and the other is a delivery.
+            {"pickups": [{"arrivalWaypoint": {"placeId": "foo"}}]},
+            {"deliveries": [{"arrivalWaypoint": {"placeId": "foo"}}]},
+        ],
+        "transitionAttributes": [
+            # Transition attributes list is present, but it is empty. This case
+            # should be fine.
+        ],
+    }
+    original_model = copy.deepcopy(model)
+    new_shipments, old_to_new = transforms_merge.merge_shipments(model)
+    self.assertSequenceEqual(new_shipments, original_model["shipments"])
+    self.assertSequenceEqual(old_to_new, (0, 1))
+
+  def test_mandatory_shipments(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "pickups": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "300s"}
+                ],
+                "label": "S001",
+            },
+            {
+                "pickups": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "150s"}
+                ],
+                "label": "S002",
+            },
+        ]
+    }
+    expected_shipments = [{
+        "pickups": [
+            {"arrivalWaypoint": {"placeId": "foo"}, "duration": "450s"}
+        ],
+        "label": "S001, S002",
+    }]
+    new_shipments, old_to_new = transforms_merge.merge_shipments(model)
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 0))
+
+  def test_optional_shipments(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "pickups": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "300s"}
+                ],
+                "label": "S001",
+                "penaltyCost": 100,
+            },
+            {
+                "pickups": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "150s"}
+                ],
+                "label": "S002",
+                "penaltyCost": 200,
+            },
+        ]
+    }
+    expected_shipments = [{
+        "pickups": [
+            {"arrivalWaypoint": {"placeId": "foo"}, "duration": "450s"}
+        ],
+        "label": "S001, S002",
+        "penaltyCost": 300,
+    }]
+    new_shipments, old_to_new = transforms_merge.merge_shipments(model)
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 0))
+
+  def test_mandatory_and_optional_shipments(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "pickups": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "300s"}
+                ],
+                "label": "S001",
+                "penaltyCost": 100,
+            },
+            {
+                "pickups": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "150s"}
+                ],
+                "label": "S002",
+            },
+        ]
+    }
+    expected_shipments = copy.deepcopy(model["shipments"])
+    new_shipments, old_to_new = transforms_merge.merge_shipments(model)
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 1))
+
+  def test_shipment_types(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S001",
+                "shipmentType": "ship",
+            },
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S002",
+            },
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S003",
+                "shipmentType": "ship",
+            },
+        ]
+    }
+    expected_shipments = [
+        {
+            "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+            "label": "S001, S003",
+            "shipmentType": "ship",
+        },
+        {
+            "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+            "label": "S002",
+        },
+    ]
+    new_shipments, old_to_new = transforms_merge.merge_shipments(model)
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 1, 0))
+
+  def test_allowed_vehicles(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S001",
+                "allowedVehicleIndices": [0, 1],
+            },
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S002",
+                "allowedVehicleIndices": [0],
+            },
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S003",
+                "allowedVehicleIndices": [1, 0],
+            },
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S004",
+            },
+        ]
+    }
+    expected_shipments = [
+        {
+            "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+            "label": "S001, S003",
+            "allowedVehicleIndices": [0, 1],
+        },
+        {
+            "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+            "label": "S002",
+            "allowedVehicleIndices": [0],
+        },
+        {
+            "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+            "label": "S004",
+        },
+    ]
+    new_shipments, old_to_new = transforms_merge.merge_shipments(model)
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 1, 0, 2))
+
+  def test_costs_per_vehicle(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S001",
+                "costsPerVehicle": [10, 10],
+                "costsPerVehicleIndices": [3, 0],
+            },
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S002",
+                "costsPerVehicle": [10, 10],
+                "costsPerVehicleIndices": [0, 3],
+            },
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S003",
+                "costsPerVehicle": [10, 10],
+                "costsPerVehicleIndices": [1, 2],
+            },
+            {
+                "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+                "label": "S004",
+            },
+        ]
+    }
+    expected_shipments = [
+        {
+            "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+            "label": "S001, S002",
+            "costsPerVehicle": [10, 10],
+            "costsPerVehicleIndices": [0, 3],
+        },
+        {
+            "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+            "label": "S003",
+            "costsPerVehicle": [10, 10],
+            "costsPerVehicleIndices": [1, 2],
+        },
+        {
+            "pickups": [{"arrivalWaypoint": {"placeId": "foo"}}],
+            "label": "S004",
+        },
+    ]
+    new_shipments, old_to_new = transforms_merge.merge_shipments(model)
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 0, 1, 2))
+
+  def test_with_duration_limit(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "label": "S001",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "label": "S002",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "label": "S003",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "label": "S004",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "label": "S005",
+            },
+        ]
+    }
+    expected_shipments = [
+        {
+            "deliveries": [
+                {"arrivalWaypoint": {"placeId": "foo"}, "duration": "20s"}
+            ],
+            "label": "S001, S002",
+        },
+        {
+            "deliveries": [
+                {"arrivalWaypoint": {"placeId": "foo"}, "duration": "20s"}
+            ],
+            "label": "S003, S004",
+        },
+        {
+            "deliveries": [
+                {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+            ],
+            "label": "S005",
+        },
+    ]
+    new_shipments, old_to_new = transforms_merge.merge_shipments(
+        model, max_visit_duration=datetime.timedelta(seconds=20)
+    )
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 0, 1, 1, 2))
+
+  def test_with_duration_over_limit(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "label": "S001",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "30s"}
+                ],
+                "label": "S002",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "label": "S003",
+            },
+        ]
+    }
+    expected_shipments = [
+        {
+            "deliveries": [
+                {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+            ],
+            "label": "S001",
+        },
+        {
+            "deliveries": [
+                {"arrivalWaypoint": {"placeId": "foo"}, "duration": "30s"}
+            ],
+            "label": "S002",
+        },
+        {
+            "deliveries": [
+                {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+            ],
+            "label": "S003",
+        },
+    ]
+    new_shipments, old_to_new = transforms_merge.merge_shipments(
+        model, max_visit_duration=datetime.timedelta(seconds=20)
+    )
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 1, 2))
+
+  def test_with_load_limits(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "loadDemands": {
+                    "ore": {"amount": "2"},
+                    "wood": {"amount": "3"},
+                },
+                "label": "S001",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "20s"}
+                ],
+                "loadDemands": {
+                    "wood": {"amount": "4"},
+                    "ore": {"amount": "1000"},
+                },
+                "label": "S002",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "50s"}
+                ],
+                "loadDemands": {"wood": {"amount": "5"}},
+                "label": "S003",
+            },
+        ]
+    }
+    expected_shipments = [
+        {
+            "deliveries": [
+                {"arrivalWaypoint": {"placeId": "foo"}, "duration": "30s"}
+            ],
+            "loadDemands": {
+                "ore": {"amount": "1002"},
+                "wood": {"amount": "7"},
+            },
+            "label": "S001, S002",
+        },
+        {
+            "deliveries": [
+                {"arrivalWaypoint": {"placeId": "foo"}, "duration": "50s"}
+            ],
+            "loadDemands": {
+                "wood": {"amount": "5"},
+            },
+            "label": "S003",
+        },
+    ]
+    new_shipments, old_to_new = transforms_merge.merge_shipments(
+        model, load_limits={"wood": 10}
+    )
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 0, 1))
+
+  def test_with_load_over_limit(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "10s"}
+                ],
+                "loadDemands": {
+                    "ore": {"amount": "2"},
+                    "wood": {"amount": "3"},
+                },
+                "label": "S001",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "20s"}
+                ],
+                "loadDemands": {
+                    "wood": {"amount": "4"},
+                    "ore": {"amount": "1000"},
+                },
+                "label": "S002",
+            },
+            {
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "foo"}, "duration": "50s"}
+                ],
+                "loadDemands": {"wood": {"amount": "5"}},
+                "label": "S003",
+            },
+        ]
+    }
+    expected_shipments = copy.deepcopy(model["shipments"])
+    new_shipments, old_to_new = transforms_merge.merge_shipments(
+        model, load_limits={"ore": 100}
+    )
+    self.assertSequenceEqual(new_shipments, expected_shipments)
+    self.assertSequenceEqual(old_to_new, (0, 1, 2))
 
 
 if __name__ == "__main__":
