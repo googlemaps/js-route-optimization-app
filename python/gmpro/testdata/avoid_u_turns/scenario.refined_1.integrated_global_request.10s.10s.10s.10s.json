@@ -1,0 +1,104 @@
+{
+  "label": "/refined_global",
+  "model": {
+    "globalStartTime": "2023-12-18T09:00:00Z",
+    "globalEndTime": "2023-12-18T20:00:00Z",
+    "shipments": [
+      {
+        "label": "p:0 Musee d'Orsay,Musee Rodin,Hotel des Invalids",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJS4dXiddv5kcRyb3AwM1sFf0"
+            },
+            "duration": "4672s",
+            "tags": ["P003"],
+            "avoidUTurns": true
+          }
+        ],
+        "penaltyCost": 30000
+      },
+      {
+        "label": "p:1 Jardin du Palais Royal,Musee de l'Orangerie,Pyramide de Louvre,Musee du Louvre",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJt9sxMiRv5kcRaCD6SfTzDkY"
+            },
+            "duration": "4706s",
+            "tags": ["P002"],
+            "avoidUTurns": true
+          }
+        ],
+        "penaltyCost": 40000
+      },
+      {
+        "label": "p:2 Basilique du Sacre-Coeur,Musee de Montmartre,Carrousel de Saint-Pierre",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "duration": "4692s",
+            "tags": ["P001"],
+            "timeWindows": [
+              {
+                "startTime": "2023-12-18T10:41:32Z",
+                "endTime": "2023-12-18T12:41:32Z"
+              }
+            ],
+            "avoidUTurns": true
+          }
+        ],
+        "penaltyCost": 30000
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "V001",
+        "startWaypoint": {
+          "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8"
+        },
+        "endWaypoint": {
+          "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8"
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-12-18T09:00:00Z",
+            "endTime": "2023-12-18T09:00:00Z"
+          }
+        ],
+        "costPerHour": 60
+      }
+    ]
+  },
+  "searchMode": 2,
+  "populatePolylines": true,
+  "populateTransitionPolylines": true,
+  "injectedFirstSolutionRoutes": [
+    {
+      "vehicleIndex": 0,
+      "vehicleLabel": "V001",
+      "visits": [
+        {
+          "shipmentIndex": 0,
+          "shipmentLabel": "p:0 Musee d'Orsay,Musee Rodin,Hotel des Invalids",
+          "isPickup": false,
+          "injectedSolutionLocationToken": 3
+        },
+        {
+          "shipmentIndex": 1,
+          "shipmentLabel": "p:1 Jardin du Palais Royal,Musee de l'Orangerie,Pyramide de Louvre,Musee du Louvre",
+          "isPickup": false,
+          "injectedSolutionLocationToken": 2
+        },
+        {
+          "shipmentIndex": 2,
+          "shipmentLabel": "p:2 Basilique du Sacre-Coeur,Musee de Montmartre,Carrousel de Saint-Pierre",
+          "isPickup": false,
+          "injectedSolutionLocationToken": 3
+        }
+      ]
+    }
+  ]
+}

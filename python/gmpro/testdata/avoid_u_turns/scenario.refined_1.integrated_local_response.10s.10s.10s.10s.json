@@ -1,0 +1,424 @@
+{
+  "routes": [
+    {
+      "vehicleIndex": 0,
+      "vehicleLabel": "P003 []/0",
+      "vehicleStartTime": "2023-12-18T09:00:00Z",
+      "vehicleEndTime": "2023-12-18T10:17:52Z",
+      "visits": [
+        {
+          "shipmentIndex": 9,
+          "isPickup": true,
+          "startTime": "2023-12-18T09:00:00Z",
+          "detour": "0s",
+          "shipmentLabel": "9: Musee Rodin"
+        },
+        {
+          "shipmentIndex": 8,
+          "isPickup": true,
+          "startTime": "2023-12-18T09:00:00Z",
+          "detour": "0s",
+          "shipmentLabel": "8: Musee d'Orsay"
+        },
+        {
+          "shipmentIndex": 7,
+          "isPickup": true,
+          "startTime": "2023-12-18T09:00:00Z",
+          "detour": "0s",
+          "shipmentLabel": "7: Hotel des Invalids"
+        },
+        {
+          "shipmentIndex": 8,
+          "startTime": "2023-12-18T09:13:57Z",
+          "detour": "0s",
+          "shipmentLabel": "8: Musee d'Orsay"
+        },
+        {
+          "shipmentIndex": 9,
+          "startTime": "2023-12-18T09:33:40Z",
+          "detour": "1613s",
+          "shipmentLabel": "9: Musee Rodin"
+        },
+        {
+          "shipmentIndex": 7,
+          "startTime": "2023-12-18T09:54:06Z",
+          "detour": "2087s",
+          "shipmentLabel": "7: Hotel des Invalids"
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "837s",
+          "travelDistanceMeters": 999,
+          "waitDuration": "0s",
+          "totalDuration": "837s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {
+            "points": "qyeiHyacMu@EOAy@G?HMA?I?U?}@@gA?gBDeD?W?MTkEC??A@SD@D[F[F_@Jk@F[DOBMBIDSTw@l@aCH[Lc@|@mDXcALg@Ts@Ne@ZeAy@y@A@QMBCEEwAqAUSGE?@KKc@a@i@k@iAeAADGGCCDOWOc@a@BO"
+          },
+          "routeToken": "Ct0BCoEBMn8aZQocAhYIMnM3giatAlbqCcfgCP3QAoOeAvTOA5oBABIc8U4Itz8-1aZgpO2LjMb7-uK18yfjA9cG8auO4hoHAA0BARMABCoHAhkFAV0BGDIBAD0AAAAARQAAgD9IisSomfCkhqF1IhZUdW9NWjZMZEJMR29rNzRQOS1fR2VBEAUaPgo8ChgKDQoCCAERAAAAAACAZkARAAAAAAAIjEASBAgCEAciGAoWVHVvTVo3TzhCTEdvazc0UDktX0dlQSgBIhUA29kTaxJ-82FeYY-3lP4JzXK9Id4"
+        },
+        {
+          "travelDuration": "883s",
+          "travelDistanceMeters": 1017,
+          "waitDuration": "0s",
+          "totalDuration": "883s",
+          "startTime": "2023-12-18T09:18:57Z",
+          "routePolyline": {
+            "points": "e`fiH}aeMCNb@`@VNENBBFF@EhAdAh@j@b@`@JJ?AFDTRvApADDCBPL@Ax@x@?@JJ?A|@z@?@JN?El@n@hBfBbB`BADLH?ExCvBp@d@~@n@XRa@jCw@fFy@~EAAETB?YfBMz@LD"
+          },
+          "routeToken": "CvwBCp8BMpwBGoABCiACFgtE0cUqJq0ChdcBHZZihgG1HYaEAbAEowHzFK9DABIo8KuO4i7QBB7cpqPf4srjuq3-e_fdB9nlR3jyhG4QMqu1_sD3tP7A9xoOAAUB_v___w8BFgAAAAEqCl8AAAB3GAAAADsyAQk9AAAAAEUAAAAASLP484r9gNLw5QEiF1R1b01aOFB2Qk11NWs3NFAwSU9IaVFzEAUaPwo9ChgKDQoCCAERAAAAAACAZkARAAAAAADwjEASBAgCEAciGQoXVHVvTVpfZThCTXU1azc0UDBJT0hpUXMoASIVANvZE2vX6wl8umQRG9534_ni91_5"
+        },
+        {
+          "travelDuration": "926s",
+          "travelDistanceMeters": 1119,
+          "waitDuration": "0s",
+          "totalDuration": "926s",
+          "startTime": "2023-12-18T09:38:40Z",
+          "routePolyline": {
+            "points": "kdeiHuicMETGb@O~@ALOCEh@KAIAC~@P@zCRjAHD?\\BFIT@N@~@Dp@DTA@?@ABCHSB@RF?VA`@IhEEfCAv@UCQABmA@_@WAElB{AIOAI?{AKOA_Co@Kk@GOgASGUAKH??FIACBqAXILEn@?D?Pi@C"
+          },
+          "routeToken": "CqcCCsoBMscBGqsBCisCFhBiB1PXI60C1FKfZMcD6TWsgwHqErNCkBWAAq7CAamQAZUI5AcDiQEAEkCWofX6GpcTrfO9o0C7dnc7EV_YHweMVGUiqZjZ2jSP7lmicuyEr84ftI6pC-pQvictBQPsp6auZ1dbiEzYy2kTGhQACAYAPQAsBgYNHwj_____DxULDSoQYXF1ARgAL19wDHQbHwljDj3NbU09RQAAgD9IrLiY97mA4rlHIhdUdW9NWl9IMUJOcWtrNzRQemFyVDBBYxAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEfYoXI_Cb5BAEgQIAhAHIhkKF1R1b01aN1c5Qk5xa2s3NFB6YXJUMEFjKAEiFQDb2RNr9snzq-pv6-Xs1fSicdRtHg"
+        },
+        {
+          "travelDuration": "1126s",
+          "travelDistanceMeters": 1389,
+          "waitDuration": "0s",
+          "totalDuration": "1126s",
+          "startTime": "2023-12-18T09:59:06Z",
+          "routePolyline": {
+            "points": "ileiH}ubMh@B?Q?EDo@HMpAYBCH@?GI?@JFTfARFNJj@~Bn@N@zAJH?N@zAHDmBV@A^ClAP@TB@w@DgCHiE@a@?WSGCAIRCBA@A?U@q@E_AEOAUAGH]CE?kAI{CSM?mAI[CIAg@CsBOQAE@I?I@EGO?ANAJE\\KECDABCFABKHa@YERuAGKAiAG"
+          },
+          "routeToken": "CsICCuUBMuIBGsYBCjMCFhN0fYiCJq0CmwKDEIEQxgKoAbUIiRCWEf8k0iiIQf-UApRGsJMBxSHEgwHdjAGCDQASTNnLaRMKhbhApqauZzChuv8sKW_j61C-J7WOqQsogVfqMHcgEliicuzbNI_upslVdhFf2B-kBIv-u3Z3O_O9o0DRnEwvDCAUbLtQ_g8aFwACEgUAEAgX_v___w8UBgsTABkAChAAKhM9XRFdIAB1bQBdF2B0dwABXQcBPQAAAABFAACAP0iez7mawPW4mvEBIhdUdW9NWjhuekJNZXNrNzRQdWRxRW9RYxAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEQAAAAAAdJNAEgQIAhAHIhkKF1R1b01aNEs5Qk1lc2s3NFB1ZHFFb1FjKAEiFQDb2RNrnbYz22Q0LMHmYMbN3eAFSw"
+        }
+      ],
+      "routePolyline": {
+        "points": "qyeiHyacMu@EOAy@G?HMA?I?U?}@@gA?gBDeD?W?MTkEC??A@SD@D[F[F_@Jk@F[DOBMBIDSTw@l@aCH[Lc@|@mDXcALg@Ts@Ne@ZeAy@y@A@QMBCEEwAqAUSGE?@KKc@a@i@k@iAeAADGGCCDOWOc@a@BOCNb@`@VNENBBFF@EhAdAh@j@b@`@JJ?AFDTRvApADDCBPL@Ax@x@?@JJ?A|@z@?@JN?El@n@hBfBbB`BADLH?ExCvBp@d@~@n@XRa@jCw@fFy@~EAAETB?YfBMz@LDAHETGb@O~@ALOCEh@KAIAC~@P@zCRjAHD?\\BFIT@N@~@Dp@DTA@?@ABCHSB@RF?VA`@IhEEfCAv@UCQABmA@_@WAElB{AIOAI?{AKOA_Co@Kk@GOgASGUAKH??FIACBqAXILEn@?D?Pi@Ch@B?Q?EDo@HMpAYBCH@?GI?@JFTfARFNJj@~Bn@N@zAJH?N@zAHDmBV@A^ClAP@TB@w@DgCHiE@a@?WSGCAIRCBA@A?U@q@E_AEOAUAGH]CE?kAI{CSM?mAI[CIAg@CsBOQAE@I?I@EGO?ANAJE\\KECDABCFABKHa@YERuAGKAiAG"
+      },
+      "metrics": {
+        "performedShipmentCount": 3,
+        "travelDuration": "3772s",
+        "waitDuration": "0s",
+        "delayDuration": "0s",
+        "breakDuration": "0s",
+        "visitDuration": "900s",
+        "totalDuration": "4672s",
+        "travelDistanceMeters": 4524
+      },
+      "routeCosts": {
+        "model.vehicles.cost_per_hour": 389.3333333333333,
+        "model.vehicles.cost_per_kilometer": 271.44
+      },
+      "routeTotalCost": 660.7733333333333
+    },
+    {
+      "vehicleIndex": 1,
+      "vehicleLabel": "P002 []/0",
+      "vehicleStartTime": "2023-12-18T09:00:00Z",
+      "vehicleEndTime": "2023-12-18T10:18:26Z",
+      "visits": [
+        {
+          "shipmentIndex": 6,
+          "isPickup": true,
+          "startTime": "2023-12-18T09:00:00Z",
+          "detour": "0s",
+          "shipmentLabel": "6: Musee du Louvre"
+        },
+        {
+          "shipmentIndex": 3,
+          "isPickup": true,
+          "startTime": "2023-12-18T09:00:00Z",
+          "detour": "0s",
+          "shipmentLabel": "3: Pyramide de Louvre"
+        },
+        {
+          "shipmentIndex": 5,
+          "isPickup": true,
+          "startTime": "2023-12-18T09:00:00Z",
+          "detour": "0s",
+          "shipmentLabel": "5: Musee de l'Orangerie"
+        },
+        {
+          "shipmentIndex": 4,
+          "isPickup": true,
+          "startTime": "2023-12-18T09:00:00Z",
+          "detour": "0s",
+          "shipmentLabel": "4: Jardin du Palais Royal"
+        },
+        {
+          "shipmentIndex": 4,
+          "startTime": "2023-12-18T09:12:40Z",
+          "detour": "0s",
+          "shipmentLabel": "4: Jardin du Palais Royal"
+        },
+        {
+          "shipmentIndex": 5,
+          "startTime": "2023-12-18T09:39:21Z",
+          "detour": "1052s",
+          "shipmentLabel": "5: Musee de l'Orangerie"
+        },
+        {
+          "shipmentIndex": 3,
+          "startTime": "2023-12-18T10:00:07Z",
+          "detour": "3115s",
+          "shipmentLabel": "3: Pyramide de Louvre"
+        },
+        {
+          "shipmentIndex": 6,
+          "startTime": "2023-12-18T10:11:21Z",
+          "detour": "4155s",
+          "shipmentLabel": "6: Musee du Louvre"
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "760s",
+          "travelDistanceMeters": 913,
+          "waitDuration": "0s",
+          "totalDuration": "760s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {
+            "points": "a{eiH_dhMa@MKAOGICKQIGOKMIECCCAAAE?[MD@HKb@Ih@GVCROGYKWKICQGMj@MGLi@OGQGYMmAg@ARSdAG^BBETCCQnAQhAI\\JDERKEERI`@Ib@g@zCANAHc@tBCLMG@C{BaAcAe@[MCNCPAFQIIf@Gd@Mx@oBy@WMICGGEBC@A?A?A?A?A?A?C?AAA?AAAAAAAAAA?AAAACAAAEAIAA?C?A?C?C?A?C@A"
+          },
+          "routeToken": "CowCCq8BMqwBGpABCiQCFg1QL84gJq0C1iXlSvJK4Q5k4USQswKvhgjhNIsB-A32QQASMB_v2rDiR-VR9n1p-NomGm-tYKmO4QOqzta266juxyi5m932BBL3kKxH6hVYeGVGpRoQAAgG_____w8HACIBBQMbCSoMBV4ZAFsAGVwZbA4aMgEDPSy74D5F-pXVPkjr_7nR45bKmcQBIhdVT29NWjRYb0lfaXBrNzRQMWZHWW1RYxAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEfYoXI_C84pAEgQIAhAHIhkKF1VPb01aOEMxSV9pcGs3NFAxZkdZbVFjKAEiFQDb2RNr1R0Uz41fVWD-Yfscpz0_tw"
+        },
+        {
+          "travelDuration": "1301s",
+          "travelDistanceMeters": 1557,
+          "waitDuration": "0s",
+          "totalDuration": "1301s",
+          "startTime": "2023-12-18T09:17:40Z",
+          "routePolyline": {
+            "points": "e~fiH{rgMA@?B?@?B?B?@?B@D@F@B@@@B@@?@@@@@@@@@@@@?@@B?@?@?@?@?@?@?BADCFFHBVLnBx@Kl@E^PJCTCT?@CR^L\\NFBEZEXCA?@CN?B@??DABJHCNEXC`@?FOD?L?DE@BTDCFLDJFJBFTZLNBB[x@LDELjBnABMJHEVW`Ao@vC]zARLKl@UKUfATNDBDDRLDDFFBL@L?HMn@fAp@AD?@?@?@?@?@?@?@?@?@?@?@?@@@?@?@@@?@?@@??@@@@@BBo@pCt@d@CJAH?H?H?H@H@F@HBFBFBFDDDBi@jCaAdESv@_@`BOp@GZ_@`Bw@xD^TBLLhAh@^ZRMf@FDBCBKBBAFAFDBBBUhAEPBF?HADo@vC"
+          },
+          "routeToken": "CukCCowCMokCGu0BCjoCFhmYAfVlIyatAplohi2iBMVXllJHD-Bxm1xLxRzyE5wGEUvABMjpCJPvCKcBtgODAaAF9EPvjAIAEmB5ZUalOh_Q_ZTTiRaKdIExbs9zLMWoLTRLsgkFennFqap-YbQ9XGxK75bB_PmjER1xoijgU05EkObPkgs_IgYSml0vgV502XkniZ9JxSBL6cXMmkDsKVp9o4NY_ellqVAaHAATCQcfDRIM_____w8ABxEFBw0HCRUDBwECEgIqGF8cCGRsEm8YAABkbwcGYwEJa20ZYWoKAjIBFz0DNRU_Rb2aVz9I7fjzqrC_-LQ3IhdVT29NWjdMZ0k5cWxrNzRQeTZucnNRNBAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEXNoke18S5ZAEgQIAhAHIhkKF1VPb01aXzYxSTlxbGs3NFB5Nm5yc1E0KAEiFQDb2RNrdvMusK8ToiEx7xd9JBbl4Q"
+        },
+        {
+          "travelDuration": "946s",
+          "travelDistanceMeters": 1167,
+          "waitDuration": "0s",
+          "totalDuration": "946s",
+          "startTime": "2023-12-18T09:44:21Z",
+          "routePolyline": {
+            "points": "owfiHypdMn@wC@E?ICGDQTiACCEC@G@GCCENCAECLg@[SlAsFf@_C~@kE`AeE`AwE{@k@@I@I?I@IAIAIAIAGCGCGEEIIb@iBReA@ALq@BMDMPw@f@_CZyANq@H_@CC?AAAAA?AAAAA?A?CAA?A?CAA?C?A?A?C?A?C@C@G@E@A@A?A@A@A@A@A@?@A@?@?@?@?@?@?@?@@@@Ls@MIMKKOIQGSEUCU?WF]DSDYDSRmAlAj@"
+          },
+          "routeToken": "Co8CCrIBMq8BGpMBCiYCFg5WSheBJq0C_xGjBZxDLgP_Eb_tCJDVCWOj8gKw2wKgCudgABI06GWpUE-x7KQ8OOIFxCBL6VzpqYJtbWjEXREacs6yBDVYdRf9EhkenvQ7X6vx6jy1IXiSHRoNAAQBEQQGEwcJBggHMioNJ1wZFGkDWwIManEAGTIBAD0NlSE-RU84Yz9Izu3o6Z6Pt5UZIhdVT29NWjZYbkk5UzJrNzRQOE9McGlBcxAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEXE9CtejdY1AEgQIAhAHIhkKF1VPb01aNi0xSTlTMms3NFA4T0xwaUFzKAEiFQDb2RNrfl44fvRGNpL0EMrxe2Kung"
+        },
+        {
+          "travelDuration": "374s",
+          "travelDistanceMeters": 458,
+          "waitDuration": "0s",
+          "totalDuration": "374s",
+          "startTime": "2023-12-18T10:05:07Z",
+          "routePolyline": {
+            "points": "iffiHe_gMHD\\}BJs@ZPn@_@i@eCLw@\\{BBKDYFe@He@XqBB@@?@?@?@?@A@??A@?@A@A?A@??A@A?A@A@C?E?A?A?A?A?A?A?A?A?AAA?A?AAA?A?AA??AAA?AA??ACAXsBFc@Fc@D_@"
+          },
+          "routeToken": "CuoBCo0BMooBGm8KHAIWCTjj9SImrQLPBZ8EiBG6B0rrigLwjQLrRAASJCF4kh0N_sVnwO9ZuwExHkwp2vA8-APxnY5nNktWBjnhOKNQZxoJAAUJAAsDBgEFKglDdBpzbgsOaAI9TzhjP0X4rGI-SKPivc6ArPGFwQEiF1VPb01aNTNZSTdHcms3NFBncHl2aUFzEAUaPwo9ChgKDQoCCAERAAAAAACAZkAR5_up8dJTd0ASBAgCEAciGQoXVU9vTVo1eTJJN0dyazc0UGdweXZpQXMoASIVANvZE2vZHae_Qw5b1VUEWgWgmLYS"
+        },
+        {
+          "travelDuration": "125s",
+          "travelDistanceMeters": 149,
+          "waitDuration": "0s",
+          "totalDuration": "125s",
+          "startTime": "2023-12-18T10:16:21Z",
+          "routePolyline": {
+            "points": "q~eiH{~gMPgADYD@BSl@V^NBMFg@DYQG"
+          },
+          "routeToken": "Cr4BCmIyYBpFChECFgQaV-0gJq0Cqxi8Ba4MABIQOKNQZ_jRyMAIIf8qH-_asBoEABQKDCoEJBNlYz34rGI-RSy74D5Im7D1686hvN92IhdVT29NWjhITEk2YW9rNzRQbU8zbHNBYxAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEXA9CtejWGJAEgQIAhAHIhkKF1VPb01aNEM0STZhb2s3NFBtTzNsc0FjKAEiFQDb2RNr9tcJxCAoiuzIVhIGlwab-g"
+        }
+      ],
+      "routePolyline": {
+        "points": "a{eiH_dhMa@MKAOGICKQIGOKMIECCCAAAE?[MD@HKb@Ih@GVCROGYKWKICQGMj@MGLi@OGQGYMmAg@ARSdAG^BBETCCQnAQhAI\\JDERKEERI`@Ib@g@zCANAHc@tBCLMG@C{BaAcAe@[MCNCPAFQIIf@Gd@Mx@oBy@WMICGGEBC@A?A?A?A?A?A?C?AAA?AAAAAAAAAA?AAAACAAAEAIAA?C?A?C?C?A?C@AA@?B?@?B?B?@?B@D@F@B@@@B@@?@@@@@@@@@@@@?@@B?@?@?@?@?@?@?BADCFFHBVLnBx@Kl@E^PJCTCT?@CR^L\\NFBEZEXCA?@CN?B@??DABJHCNEXC`@?FOD?L?DE@BTDCFLDJFJBFTZLNBB[x@LDELjBnABMJHEVW`Ao@vC]zARLKl@UKUfATNDBDDRLDDFFBL@L?HMn@fAp@AD?@?@?@?@?@?@?@?@?@?@?@?@@@?@?@@@?@?@@??@@@@@BBo@pCt@d@CJAH?H?H?H@H@F@HBFBFBFDDDBi@jCaAdESv@_@`BOp@GZ_@`Bw@xD^TBLLhAh@^ZRMf@FDBCBKBBAFAFDBBBUhAEPBF?HADo@vCn@wC@E?ICGDQTiACCEC@G@GCCENCAECLg@[SlAsFf@_C~@kE`AeE`AwE{@k@@I@I?I@IAIAIAIAGCGCGEEIIb@iBReA@ALq@BMDMPw@f@_CZyANq@H_@CC?AAAAA?AAAAA?A?CAA?A?CAA?C?A?A?C?A?C@C@G@E@A@A?A@A@A@A@A@?@A@?@?@?@?@?@?@?@@@@Ls@MIMKKOIQGSEUCU?WF]DSDYDSRmAlAj@HD\\}BJs@ZPn@_@i@eCLw@\\{BBKDYFe@He@XqBB@@?@?@?@?@A@??A@?@A@A?A@??A@A?A@A@C?E?A?A?A?A?A?A?A?A?AAA?A?AAA?A?AA??AAA?AA??ACAXsBFc@Fc@D_@PgADYD@BSl@V^NBMFg@DYQG"
+      },
+      "metrics": {
+        "performedShipmentCount": 4,
+        "travelDuration": "3506s",
+        "waitDuration": "0s",
+        "delayDuration": "0s",
+        "breakDuration": "0s",
+        "visitDuration": "1200s",
+        "totalDuration": "4706s",
+        "travelDistanceMeters": 4244
+      },
+      "routeCosts": {
+        "model.vehicles.cost_per_hour": 392.1666666666667,
+        "model.vehicles.cost_per_kilometer": 254.64
+      },
+      "routeTotalCost": 646.8066666666666
+    },
+    {
+      "vehicleIndex": 2,
+      "vehicleLabel": "P001 [refinement]/0",
+      "visits": [
+        {
+          "isPickup": true,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "0s",
+          "shipmentLabel": "0: Basilique du Sacre-Coeur",
+          "shipmentIndex": 0
+        },
+        {
+          "shipmentIndex": 1,
+          "isPickup": true,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "0s",
+          "shipmentLabel": "1: Musee de Montmartre"
+        },
+        {
+          "shipmentIndex": 2,
+          "isPickup": true,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "0s",
+          "shipmentLabel": "2: Carrousel de Saint-Pierre"
+        },
+        {
+          "startTime": "2023-12-18T12:51:31Z",
+          "detour": "0s",
+          "shipmentLabel": "0: Basilique du Sacre-Coeur",
+          "shipmentIndex": 0
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2023-12-18T13:06:02Z",
+          "detour": "620s",
+          "shipmentLabel": "1: Musee de Montmartre"
+        },
+        {
+          "shipmentIndex": 2,
+          "startTime": "2023-12-18T13:34:38Z",
+          "detour": "2891s",
+          "shipmentLabel": "2: Carrousel de Saint-Pierre"
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "1108s",
+          "travelDistanceMeters": 1114,
+          "waitDuration": "0s",
+          "totalDuration": "1108s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {
+            "points": "sgjiH{kjMADCd@Et@Cd@APAJIRJNBIHXEDGFe@`@SPURg@b@SP]XUR[XEBEDe@`@OLHd@@D?@GBEB?@@ZQBBl@BTLpBFnAHhAF`A@L?F[H?EAIQB@J?BA?@TE?IAOACFA?KAAFW`AW`AI^Kb@I`@Mn@Kh@Ox@AJ?FI??TH?@T@d@@t@G??@@RF??TG@QTKECAEAG@MDKCAFABCHABCL@H@DLP?ZG?K??VGBM@a@FE@K@a@FG?AN@b@AB?@?@A@A@A@C?MDI?AAAKAM?C?AAA?AACAAAEA]K@E@M@c@DC?M@"
+          },
+          "routeToken": "CrwCCt8BMtwBGsABCi8CFhJuGwQbJq0CjEWPQeTRAdd4wwOJwgLSyQJBxEDjBbRVtoYC7Q3OEBOQI_cIABJIBFxvLNJVqLrGFgtQrcC8OAeusGVI2pktNIBPI5IRF30KlhUOgNiPCH5_uFqNviU4J0x_N7-cHEDRsuaQx5HWX5GrSMnhitopGhoAAwT-____DwMADAAEAP____8PCAQIAwEuACoSXm0WAGEBGwVnAHcXYx9mEHZbPShpDT9FAAAAAEjBmr6o3eGhk8UBIhdTLW9NWjRlekJLQzlrNzRQM3RtaHNBNBAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEUw3iUFgfJJAEgQIAhAHIhkKF1Mtb01aNDM2QTZDOWs3NFAzdG1oc0E0KAEiFQDb2RNrk0tjbCufnSNyWlrKVPQsJQ"
+        },
+        {
+          "travelDuration": "271s",
+          "travelDistanceMeters": 333,
+          "waitDuration": "0s",
+          "totalDuration": "271s",
+          "startTime": "2023-12-18T13:01:31Z",
+          "routePolyline": {
+            "points": "kakiHqshM@bA?VMAW@[Bk@Du@BK@C?@T?D?DCLAFALCVCRGr@It@KG_@MMCCAKCGBEBCHAF?F?F?F?N?x@?FANALAL?@CR"
+          },
+          "routeToken": "Cs8BCnMycRpWChUCFgYmo90xJq0CuBHGIf0YhkDRQgASGOCK2inWMTzMuKP6Fhe4Fz1UeYc7Vg5KOhoGAAcREAcAKgZZGWQZWgQ9AAAAAEVeL9c-SIvC6Kuvk8iKtgEiF1hlb01aOTZlRUxDU2s3NFBwT2IwLVFZEAUaPwo9ChgKDQoCCAERAAAAAACAZkARFK5H4XqmdEASBAgCEAciGQoXWGVvTVo2bjlEN0NTazc0UHBPYjAtUVkoASIVANvZE2sFviyQdj0IltmAY4ik-q7X"
+        },
+        {
+          "travelDuration": "516s",
+          "travelDistanceMeters": 562,
+          "waitDuration": "0s",
+          "totalDuration": "516s",
+          "startTime": "2023-12-18T13:26:02Z",
+          "routePolyline": {
+            "points": "ekkiHcdhMBS?A@M@M@O?G?y@?O?G?G?G@GBIFEH?F@B@LB^LJFLFFBb@HXDTB?GBOJC|@BH@?RD@f@DD?@?@?BCBABCDIBG@E@MHu@D_@@U?K?S?Q?Gb@Cb@ARAd@C`@C@?L?NALAD?`@C\\AEWCWAQAUAM?K?O?U"
+          },
+          "routeToken": "CusBCo4BMosBGnAKHQIWCThODTYmrQLjROlYhg7VAasnzjaVlAHuhwEAEiBWDko6rfXt6_9MZc4DWIHHlUdELOr-hG4rpJS6z9WjWRoMAAUB_____w8NAgYBKggjHXd3YhlWAjIBAj1RaBQ_RTkhWz9Iqs2ax9iHpulHIhdYZW9NWjRxZ0VNT2prNzRQZzVEdG9BURAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEQIrhxbZbYJAEgQIAhAHIhkKF1hlb01aOUw3RDhPams3NFBnNUR0b0FRKAEiFQDb2RNrIgQfUxbGSeaTog77HY7_gA"
+        },
+        {
+          "travelDuration": "697s",
+          "travelDistanceMeters": 867,
+          "waitDuration": "0s",
+          "totalDuration": "697s",
+          "startTime": "2023-12-18T13:39:38Z",
+          "routePolyline": {
+            "points": "ovjiHkthMAMAe@EaB?SG?AS?AF??QLJ@FB?@ABADELMV[@?@AHKFEBE?CLIPQRW`@a@LOh@k@Go@G@?ECMDCCSESMu@M_A?_@K}@C?AU@??CASCUEu@OaCCAC[B@?@?AG}@AWC_@?KG{@?GA?CAC?G?Aq@L??INE@JNALA?MPE?JFCNKd@a@DEDCZYTS\\YRQf@c@TSRQd@a@FGDEIYCHKOHS@K@QBe@Du@Be@@E"
+          },
+          "routeToken": "CoUCCqgBMqUBGokBCiMCFgxKEckxJq0CrgGbQoM05tUBlZ0CnUOOAsUCn2GkCc4OABIsz9WjWY1LM08IPhZcC_pvZuclBxns37tMucUCdaN7AQDQZT-F0lWougRcbywaDwD_____Dw8SAQECAQAJAyoLHQELYwAADHUAXQMyAQU9OSFbP0WxLeU-SN7EkJG8uK3GmQEiF1hlb01aNG13RUt1b2s3NFB1TV9Hc1FjEAUaPwo9ChgKDQoCCAERAAAAAACAZkARQmDl0CKph0ASBAgCEAciGQoXWGVvTVo5U0FFS3Vvazc0UHVNX0dzUWMoASIVANvZE2uImyMkYRtUIloonG05xHXv"
+        }
+      ],
+      "vehicleStartTime": "2023-12-18T12:33:03Z",
+      "vehicleEndTime": "2023-12-18T13:51:15Z",
+      "metrics": {
+        "performedShipmentCount": 3,
+        "performedMandatoryShipmentCount": 3,
+        "travelDuration": "2592s",
+        "travelDistanceMeters": 2876,
+        "waitDuration": "0s",
+        "delayDuration": "0s",
+        "breakDuration": "0s",
+        "visitDuration": "2100s",
+        "totalDuration": "4692s"
+      }
+    }
+  ]
+}

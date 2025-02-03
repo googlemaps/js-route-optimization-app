@@ -1,0 +1,155 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "label": "Basilique du Sacre-Coeur",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJ442GNENu5kcRGYUrvgqHw88"
+            },
+            "duration": "600s",
+            "timeWindows": [
+              {
+                "startTime": "2023-12-18T11:00:00Z",
+                "endTime": "2023-12-18T13:00:00Z"
+              }
+            ]
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Musee de Montmartre",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJWcXsQltu5kcRbqfaH0NhNxE"
+            },
+            "duration": "1200s"
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Carrousel de Saint-Pierre",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJ55llEENu5kcREU0LBvX0Jq4"
+            },
+            "duration": "300s"
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Pyramide de Louvre",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJQdQyeiZu5kcRUfQHfB-OCLA"
+            },
+            "duration": "300s"
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Jardin du Palais Royal",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJ5bx0qiVu5kcRs_dMpI5ttiY"
+            },
+            "duration": "300s"
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Musee de l'Orangerie",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJo6qq6i5u5kcRCpYBp4rQP9w"
+            },
+            "duration": "300s"
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Musee du Louvre",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJD3uTd9hx5kcR1IQvGfr8dbk"
+            },
+            "duration": "300s"
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Hotel des Invalids",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJUzCPuddv5kcRasGAnEUUWkU"
+            },
+            "duration": "300s"
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Musee d'Orsay",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJG5Qwtitu5kcR2CNEsYy9cdA"
+            },
+            "duration": "300s"
+          }
+        ],
+        "penaltyCost": 10000
+      },
+      {
+        "label": "Musee Rodin",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJQ9vMHipw5kcRWHC2ESjYaGQ"
+            },
+            "duration": "300s"
+          }
+        ],
+        "penaltyCost": 10000
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "V001",
+        "startWaypoint": {
+          "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8"
+        },
+        "endWaypoint": {
+          "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8"
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2023-12-18T09:00:00Z",
+            "endTime": "2023-12-18T09:00:00Z"
+          }
+        ],
+        "costPerHour": 60
+      }
+    ],
+    "globalStartTime": "2023-12-18T09:00:00Z",
+    "globalEndTime": "2023-12-18T20:00:00Z"
+  },
+  "populatePolylines": true,
+  "populateTransitionPolylines": true,
+  "searchMode": 2
+}

@@ -1,0 +1,187 @@
+{
+  "routes": [
+    {
+      "vehicleLabel": "global_route:0 start:2 size:2 parking:P001",
+      "vehicleStartTime": "2023-12-18T12:33:03Z",
+      "vehicleEndTime": "2023-12-18T13:51:15Z",
+      "visits": [
+        {
+          "shipmentIndex": 1,
+          "isPickup": true,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "0s",
+          "shipmentLabel": "barrier P001"
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "0s",
+          "shipmentLabel": "barrier P001"
+        },
+        {
+          "isPickup": true,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "0s",
+          "shipmentLabel": "0: Basilique du Sacre-Coeur"
+        },
+        {
+          "shipmentIndex": 3,
+          "isPickup": true,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "0s",
+          "shipmentLabel": "1: Musee de Montmartre"
+        },
+        {
+          "shipmentIndex": 2,
+          "isPickup": true,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "0s",
+          "shipmentLabel": "2: Carrousel de Saint-Pierre"
+        },
+        {
+          "startTime": "2023-12-18T12:51:31Z",
+          "detour": "0s",
+          "shipmentLabel": "0: Basilique du Sacre-Coeur"
+        },
+        {
+          "shipmentIndex": 3,
+          "startTime": "2023-12-18T13:06:02Z",
+          "detour": "620s",
+          "shipmentLabel": "1: Musee de Montmartre"
+        },
+        {
+          "shipmentIndex": 2,
+          "startTime": "2023-12-18T13:34:38Z",
+          "detour": "2891s",
+          "shipmentLabel": "2: Carrousel de Saint-Pierre"
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "0s",
+          "waitDuration": "0s",
+          "totalDuration": "0s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {}
+        },
+        {
+          "travelDuration": "1108s",
+          "travelDistanceMeters": 1114,
+          "waitDuration": "0s",
+          "totalDuration": "1108s",
+          "startTime": "2023-12-18T12:33:03Z",
+          "routePolyline": {
+            "points": "sgjiH{kjMADCd@Et@Cd@APAJIRJNBIHXEDGFe@`@SPURg@b@SP]XUR[XEBEDe@`@OLHd@@D?@GBEB?@@ZQBBl@BTLpBFnAHhAF`A@L?F[H?EAIQB@J?BA?@TE?IAOACFA?KAAFW`AW`AI^Kb@I`@Mn@Kh@Ox@AJ?FI??TH?@T@d@@t@G??@@RF??TG@QTKECAEAG@MDKCAFABCHABCL@H@DLP?ZG?K??VGBM@a@FE@K@a@FG?AN@b@AB?@?@A@A@A@C?MDI?AAAKAM?C?AAA?AACAAAEA]K@E@M@c@DC?M@"
+          },
+          "routeToken": "CrwCCt8BMtwBGsABCi8CFhJuGwQbJq0CjEWPQeTRAdd4wwOJwgLSyQJBxEDjBbRVtoYC7Q3OEBOQI_cIABJIBFxvLNJVqLrGFgtQrcC8OAeusGVI2pktNIBPI5IRF30KlhUOgNiPCH5_uFqNviU4J0x_N7-cHEDRsuaQx5HWX5GrSMnhitopGhoAAwT-____DwMADAAEAP____8PCAQIAwEuACoSXm0WAGEBGwVnAHcXYx9mEHZbPShpDT9FAAAAAEjBmr6o3eGhk8UBIhdTLW9NWjRlekJLQzlrNzRQM3RtaHNBNBAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEUw3iUFgfJJAEgQIAhAHIhkKF1Mtb01aNDM2QTZDOWs3NFAzdG1oc0E0KAEiFQDb2RNrk0tjbCufnSNyWlrKVPQsJQ"
+        },
+        {
+          "travelDuration": "271s",
+          "travelDistanceMeters": 333,
+          "waitDuration": "0s",
+          "totalDuration": "271s",
+          "startTime": "2023-12-18T13:01:31Z",
+          "routePolyline": {
+            "points": "kakiHqshM@bA?VMAW@[Bk@Du@BK@C?@T?D?DCLAFALCVCRGr@It@KG_@MMCCAKCGBEBCHAF?F?F?F?N?x@?FANALAL?@CR"
+          },
+          "routeToken": "Cs8BCnMycRpWChUCFgYmo90xJq0CuBHGIf0YhkDRQgASGOCK2inWMTzMuKP6Fhe4Fz1UeYc7Vg5KOhoGAAcREAcAKgZZGWQZWgQ9AAAAAEVeL9c-SIvC6Kuvk8iKtgEiF1hlb01aOTZlRUxDU2s3NFBwT2IwLVFZEAUaPwo9ChgKDQoCCAERAAAAAACAZkARFK5H4XqmdEASBAgCEAciGQoXWGVvTVo2bjlEN0NTazc0UHBPYjAtUVkoASIVANvZE2sFviyQdj0IltmAY4ik-q7X"
+        },
+        {
+          "travelDuration": "516s",
+          "travelDistanceMeters": 562,
+          "waitDuration": "0s",
+          "totalDuration": "516s",
+          "startTime": "2023-12-18T13:26:02Z",
+          "routePolyline": {
+            "points": "ekkiHcdhMBS?A@M@M@O?G?y@?O?G?G?G@GBIFEH?F@B@LB^LJFLFFBb@HXDTB?GBOJC|@BH@?RD@f@DD?@?@?BCBABCDIBG@E@MHu@D_@@U?K?S?Q?Gb@Cb@ARAd@C`@C@?L?NALAD?`@C\\AEWCWAQAUAM?K?O?U"
+          },
+          "routeToken": "CusBCo4BMosBGnAKHQIWCThODTYmrQLjROlYhg7VAasnzjaVlAHuhwEAEiBWDko6rfXt6_9MZc4DWIHHlUdELOr-hG4rpJS6z9WjWRoMAAUB_____w8NAgYBKggjHXd3YhlWAjIBAj1RaBQ_RTkhWz9Iqs2ax9iHpulHIhdYZW9NWjRxZ0VNT2prNzRQZzVEdG9BURAFGj8KPQoYCg0KAggBEQAAAAAAgGZAEQIrhxbZbYJAEgQIAhAHIhkKF1hlb01aOUw3RDhPams3NFBnNUR0b0FRKAEiFQDb2RNrIgQfUxbGSeaTog77HY7_gA"
+        },
+        {
+          "travelDuration": "697s",
+          "travelDistanceMeters": 867,
+          "waitDuration": "0s",
+          "totalDuration": "697s",
+          "startTime": "2023-12-18T13:39:38Z",
+          "routePolyline": {
+            "points": "ovjiHkthMAMAe@EaB?SG?AS?AF??QLJ@FB?@ABADELMV[@?@AHKFEBE?CLIPQRW`@a@LOh@k@Go@G@?ECMDCCSESMu@M_A?_@K}@C?AU@??CASCUEu@OaCCAC[B@?@?AG}@AWC_@?KG{@?GA?CAC?G?Aq@L??INE@JNALA?MPE?JFCNKd@a@DEDCZYTS\\YRQf@c@TSRQd@a@FGDEIYCHKOHS@K@QBe@Du@Be@@E"
+          },
+          "routeToken": "CoUCCqgBMqUBGokBCiMCFgxKEckxJq0CrgGbQoM05tUBlZ0CnUOOAsUCn2GkCc4OABIsz9WjWY1LM08IPhZcC_pvZuclBxns37tMucUCdaN7AQDQZT-F0lWougRcbywaDwD_____Dw8SAQECAQAJAyoLHQELYwAADHUAXQMyAQU9OSFbP0WxLeU-SN7EkJG8uK3GmQEiF1hlb01aNG13RUt1b2s3NFB1TV9Hc1FjEAUaPwo9ChgKDQoCCAERAAAAAACAZkARQmDl0CKph0ASBAgCEAciGQoXWGVvTVo5U0FFS3Vvazc0UHVNX0dzUWMoASIVANvZE2uImyMkYRtUIloonG05xHXv"
+        }
+      ],
+      "routePolyline": {
+        "points": "sgjiH{kjMADCd@Et@Cd@APAJIRJNBIHXEDGFe@`@SPURg@b@SP]XUR[XEBEDe@`@OLHd@@D?@GBEB?@@ZQBBl@BTLpBFnAHhAF`A@L?F[H?EAIQB@J?BA?@TE?IAOACFA?KAAFW`AW`AI^Kb@I`@Mn@Kh@Ox@AJ?FI??TH?@T@d@@t@G??@@RF??TG@QTKECAEAG@MDKCAFABCHABCL@H@DLP?ZG?K??VGBM@a@FE@K@a@FG?AN@b@AB?@?@A@A@A@C?MDI?AAAKAM?C?AAA?AACAAAEA]K@E@M@c@DC?M@LA@bA?VMAW@[Bk@Du@BK@C?@T?D?DCLAFALCVCRGr@It@KG_@MMCCAKCGBEBCHAF?F?F?F?N?x@?FANALAL?@CRBS?A@M@M@O?G?y@?O?G?G?G@GBIFEH?F@B@LB^LJFLFFBb@HXDTB?GBOJC|@BH@?RD@f@DD?@?@?BCBABCDIBG@E@MHu@D_@@U?K?S?Q?Gb@Cb@ARAd@C`@C@?L?NALAD?`@C\\AEWCWAQAUAM?K?O?UAMAe@EaB?SG?AS?AF??QLJ@FB?@ABADELMV[@?@AHKFEBE?CLIPQRW`@a@LOh@k@Go@G@?ECMDCCSESMu@M_A?_@K}@C?AU@??CASCUEu@OaCCAC[B@?@?AG}@AWC_@?KG{@?GA?CAC?G?Aq@L??INE@JNALA?MPE?JFCNKd@a@DEDCZYTS\\YRQf@c@TSRQd@a@FGDEIYCHKOHS@K@QBe@Du@Be@@E"
+      },
+      "metrics": {
+        "performedShipmentCount": 4,
+        "travelDuration": "2592s",
+        "waitDuration": "0s",
+        "delayDuration": "0s",
+        "breakDuration": "0s",
+        "visitDuration": "2100s",
+        "totalDuration": "4692s",
+        "travelDistanceMeters": 2876
+      },
+      "routeCosts": {
+        "model.vehicles.cost_per_hour": 391,
+        "model.vehicles.cost_per_kilometer": 172.56
+      },
+      "routeTotalCost": 563.56
+    }
+  ],
+  "requestLabel": "/local_refinement",
+  "skippedShipments": [
+    {
+      "index": 4,
+      "label": "barrier P001"
+    }
+  ],
+  "metrics": {
+    "aggregatedRouteMetrics": {
+      "performedShipmentCount": 4,
+      "travelDuration": "2592s",
+      "waitDuration": "0s",
+      "delayDuration": "0s",
+      "breakDuration": "0s",
+      "visitDuration": "2100s",
+      "totalDuration": "4692s",
+      "travelDistanceMeters": 2876
+    },
+    "usedVehicleCount": 1,
+    "earliestVehicleStartTime": "2023-12-18T12:33:03Z",
+    "latestVehicleEndTime": "2023-12-18T13:51:15Z",
+    "totalCost": 563.56,
+    "costs": {
+      "model.vehicles.cost_per_kilometer": 172.56,
+      "model.vehicles.cost_per_hour": 391
+    }
+  }
+}

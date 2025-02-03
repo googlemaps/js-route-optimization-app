@@ -167,6 +167,8 @@ class ParkingLocation:
       using the two-step delivery, the driver first parks at this waypoint, and
       then uses a different mode of transport to the final delivery locations.
       Exactly one of `coordinates` and `waypoint` must be provided.
+    avoid_u_turns: Specifies whether u-turn avoidance should be applied to the
+      parking location waypoint.
     tag: A unique name used for the parking location. Used to match parking
       locations in `ShipmentParkingMap`, and it is also used in the labels of
       the virtual shipments generated for parking locations by the planner.
@@ -239,6 +241,7 @@ class ParkingLocation:
   travel_duration_multiple: float = 1.0
 
   avoid_indoor: bool | None = None
+  avoid_u_turns: bool | None = None
 
   delivery_load_limits: Mapping[str, int] | None = None
   cost_per_load_unit_per_kilometer: Mapping[str, cfr_json.LoadCost] | None = (

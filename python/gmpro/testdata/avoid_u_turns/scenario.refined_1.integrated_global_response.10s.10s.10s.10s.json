@@ -1,0 +1,114 @@
+{
+  "routes": [
+    {
+      "vehicleLabel": "V001",
+      "vehicleStartTime": "2023-12-18T09:00:00Z",
+      "vehicleEndTime": "2023-12-18T14:03:56Z",
+      "visits": [
+        {
+          "startTime": "2023-12-18T09:28:16Z",
+          "detour": "0s",
+          "shipmentLabel": "p:0 Musee d'Orsay,Musee Rodin,Hotel des Invalids",
+          "injectedSolutionLocationToken": 3
+        },
+        {
+          "shipmentIndex": 1,
+          "startTime": "2023-12-18T10:58:39Z",
+          "detour": "6121s",
+          "shipmentLabel": "p:1 Jardin du Palais Royal,Musee de l'Orangerie,Pyramide de Louvre,Musee du Louvre",
+          "injectedSolutionLocationToken": 2
+        },
+        {
+          "shipmentIndex": 2,
+          "startTime": "2023-12-18T12:33:03Z",
+          "detour": "11883s",
+          "shipmentLabel": "p:2 Basilique du Sacre-Coeur,Musee de Montmartre,Carrousel de Saint-Pierre",
+          "injectedSolutionLocationToken": 3
+        }
+      ],
+      "transitions": [
+        {
+          "travelDuration": "1696s",
+          "travelDistanceMeters": 3784,
+          "waitDuration": "0s",
+          "totalDuration": "1696s",
+          "startTime": "2023-12-18T09:00:00Z",
+          "routePolyline": {
+            "points": "ogiiHiafMAJMf@GXENOt@[vAk@hCWhA[rA[fAEPCPKb@Md@GZGXGX_@jB[nAYrAOl@Ol@Mh@?@Mf@?@EPAHAHAAA?A??AA?A?A?A?A@C?A@?@A?ABA??@A@?@A@A@?BAD?B?@?B?@?@?@?@?@@@?@?@@@?@?@@@?@BDDB@?@@@?@?@?@?@?@A@?@??A@?@A?A@??A@A?A@??A@CPLRNNJPLtAbAHF|@]x@c@DAZMJGDA^Qd@QJG`@QRKLEj@WNGLGd@SJEJEPIFEFDB?B@P?P@J@J?@?JH`@CZAtAK@CRELA@?B?@@HBPDbB\\j@L|@TbB\\jB^RDr@PXFJ@bARD@D@B@@@@@?BBDBP@HBRZQTMNMJGLDB?B?@A@?BABA@An@c@d@[XSNKFCFGFGHEHGLILKJKNMDEj@^B@tBrAn@b@jBnAt@f@vA~@l@`@VPj@\\ATAb@?JBLBLDJBFBDDBBDHFj@^@Bh@\\TPh@\\\\TJFLFLBH?H?PELG~@f@|@d@b@DL?z@h@f@XXPp@b@p@b@PJAJ?@?@]~AADEPERAJCFAFAHAFAJ@LA^?R?xC?n@@pD@pBBt@?@?J@NHh@@bA?\\BzBhAHbBHrDTb@BfAFnBLF@lDRn@B?T@N@JBHBHDFBDDBDBJDLBL@?OBkAB_B?IDcAH_ABU@I@K?E@CBE@C@C@ADCg@]wAGKAmAI"
+          },
+          "routeToken": "CvwBCqMBMqABGoQBCigCFgtERqg4Jq0CmIMj-_chk78QmpcQuagl9OsQw5YP5t4HkOACgSAAEig_7JODxwCylbo9TxdLn46R7Y000XETkmulhaNg_ILFHw0gFGzwTgi3GgoAYwcpCDEaFh8AKgpjXW9wEB5cWFwBMgEJPewWcj9FAAAAAEjkxdKavre4ufwBIhdWdW9NWjlHeU9mdUprNzRQOTg3YzBBdxAFGjsKOQoYCg0KAggBEQAAAAAAgGZAEWiR7Xw_tZFAEgAiGQoXVnVvTVo2MkNPZnVKazc0UDk4N2MwQXcoASIVANvZE2tZD4qMJMM-FuIEgA_W_0b8"
+        },
+        {
+          "travelDuration": "751s",
+          "travelDistanceMeters": 2989,
+          "waitDuration": "0s",
+          "totalDuration": "751s",
+          "startTime": "2023-12-18T10:46:08Z",
+          "routePolyline": {
+            "points": "_weiHkbcMD}A?I?A?C@A?A?A@?@A@?F?LB|@FpAJNAN?b@@hBNL@b@FH@hAHf@BPBHs@@MPaAFc@DU?C?CL{@VcBBOz@gFv@gFd@sC_@W_Aq@q@e@_D{BiBgBiBgBs@u@iAgAeAcAnAiAbA_AbBcBv@{@t@aAjAcBp@gAL_@U[EGEIKUA?KGMSGQSa@MWKUIQKSGOSa@CEAECECECEAAACIE}@o@YQOIIAK?EC]Si@]UOCAEEc@WEEMIAAs@c@{@k@sAy@EEAEKi@AA?AECAAOKMK_@WUOIGMIIG}@m@COG[ESGUf@sDDWv@eGF_@D]DQDk@@IBKNgAl@iEJq@PkAD[XkBBSBO@K@IB_@?I@SDkADy@Bu@Bg@HwAHqA?EFo@Bo@J}@w@[k@YDWJq@D[[I"
+          },
+          "routeToken": "CusBCpIBMo8BGnQKIQIWCThINoImrQLTxwSq4wmshwe_ghCazBHLoDCAxil3ABIkxZkVQZah9foT2qaAYW4J4ykZTJYSpNG1yY_YWgkh_yoe79qwGgkAPhkmGw8fCgwqCQJkXiZaDFwWYz12rzQ9RS674D5IrLui_eWb3d7qASIXVnVvTVo1TFNPY0Npazc0UGpzbnBpUWcQBRo7CjkKGAoNCgIIAREAAAAAAIBmQBHdJAaB5Yb5QBIAIhkKF1Z1b01aNjZFT2NDaWs3NFBqc25waVFnKAEiFQDb2RNr5EDNRSQiFvAobpHRlMT8_g"
+        },
+        {
+          "travelDuration": "958s",
+          "travelDistanceMeters": 3210,
+          "waitDuration": "0s",
+          "totalDuration": "958s",
+          "startTime": "2023-12-18T12:17:05Z",
+          "routePolyline": {
+            "points": "kzeiHcchMKp@EVe@Ss@YyAk@UKYKWKICUIYKQGYMsAk@OG_CcA[M{@_@WKKEOGOIw@[UK]M_@QSIy@]WK}Ao@KEUIq@Wc@Uo@Yi@SYMo@YoAm@MEyAQYEi@PIDe@NmAd@UHw@VA?i@PA@cAZ?BA@?@sBt@C@_@Lm@PMFE?GAG?GASEoA]{Bg@]GUCm@IC?C?A?SCE?C?G?E@G?M@y@FI?WBI@M@A@C?MBG@IQUo@m@yAAAwAkDKWMO?uAQAk@CqAISAe@Ci@C_AG_@CC?a@CQCUAE?YCQ_ACKGa@WqAAKGc@UqAKq@Ki@i@gDYcBa@}BUuAAGe@oCAGSiAYuAO_AEYG]Ic@?CIe@AC]eCQcAQaAGWSPURON_Az@MJMLc@^]XcA~@g@`@a@^_@Z]X@]_@I_Cc@cB[?XC\\ATATCV"
+          },
+          "routeToken": "CuIBCokBMoYBGmsKHgIWCDJU4SAmrQKIDZKfRsu4Qaq-JO2RLpe1A9g7ABIgCCH_KvjRyMBaYKI0pusRVJMbopp3WMPdi6WtrgRcbywaCAAPNAhwCAUnKghDDw9mXSpsYT0AAAAARVfPDT9Ixd_4p7i0ts-VASIXVnVvTVotQzBPZkxEazc0UDJQeXhpQXMQBRo7CjkKGAoNCgIIAREAAAAAAIBmQBGwcmiRHfb5QBIAIhkKF1Z1b01aOHFBT2ZMRGs3NFAyUHl4aUFzKAEiFQDb2RNryPMGhjjB_yUt7xXqup_nGA"
+        },
+        {
+          "travelDuration": "761s",
+          "travelDistanceMeters": 2759,
+          "waitDuration": "0s",
+          "totalDuration": "761s",
+          "startTime": "2023-12-18T13:51:15Z",
+          "routePolyline": {
+            "points": "mgjiHykjM?DCd@Et@Ef@AN?HAFIRCBA@C?A?C?kCI}AGE?CAA??AUCS?QAo@A?B@RDhADtA?NF`B@V@XBX?H@FD|@@J@^BTF~@@VPdCDr@@VBP@PJfA@^Jz@Lv@DRF\\Hv@@JZnC@BD\\@RHh@Hr@NjAD^Fl@Hp@Hr@Fh@DV@PDVB\\DZVpBFt@Hn@Ff@BTF^Fv@@N?J?F?RGXCR_@tEMxAEV?DQhBG`@GZOz@ELOp@CPm@zCUbAOv@Mt@Or@CPg@|Bm@tCWrAl@ZFCBABCBCBEFORHD@dA\\ZJb@LNDj@Pp@RRFRHPDJDF?D@\\D`@FVBZDF?pBVb@DF@H?n@?NCB@D@J?`A?t@AX?D?D?B?BADAJC`@MHC^KJCRGXIRIl@QLEBAJENEjA]XIb@Of@OFCB?BAD@F@HBT\\BF@BBD?B@B@DDJ@H@F@F@D?D@H@H@^?FAL?F?F?BAF?BAD?DCDAFADCDCDCHCPGRCLUfAWfAA@"
+          },
+          "routeToken": "CsgBCnAybhpTChcCFgUgGwQbJq0CyIepAceNqQE-2ZYTABIUBFxvLAmKG7aK444SNEu8HD_sk4MaBwCXAgMD0AEqBSBeagwjPVfPDT9F7BZyP0igy4CB3L-wmwwiF1Z1b01aNm1oT2R5LWs3NFBoLTNkc0FnEAUaOwo5ChgKDQoCCAERAAAAAACAZkARtvP91HhApEASACIZChdWdW9NWjdtQ09keS1rNzRQaC0zZHNBZygBIhUA29kTazA2fkTrRzhUIbubhRwxQUU"
+        }
+      ],
+      "routePolyline": {
+        "points": "ogiiHiafMAJMf@GXENOt@[vAk@hCWhA[rA[fAEPCPKb@Md@GZGXGX_@jB[nAYrAOl@Ol@Mh@?@Mf@?@EPAHAHAAA?A??AA?A?A?A?A@C?A@?@A?ABA??@A@?@A@A@?BAD?B?@?B?@?@?@?@?@@@?@?@@@?@?@@@?@BDDB@?@@@?@?@?@?@?@A@?@??A@?@A?A@??A@A?A@??A@CPLRNNJPLtAbAHF|@]x@c@DAZMJGDA^Qd@QJG`@QRKLEj@WNGLGd@SJEJEPIFEFDB?B@P?P@J@J?@?JH`@CZAtAK@CRELA@?B?@@HBPDbB\\j@L|@TbB\\jB^RDr@PXFJ@bARD@D@B@@@@@?BBDBP@HBRZQTMNMJGLDB?B?@A@?BABA@An@c@d@[XSNKFCFGFGHEHGLILKJKNMDEj@^B@tBrAn@b@jBnAt@f@vA~@l@`@VPj@\\ATAb@?JBLBLDJBFBDDBBDHFj@^@Bh@\\TPh@\\\\TJFLFLBH?H?PELG~@f@|@d@b@DL?z@h@f@XXPp@b@p@b@PJAJ?@?@]~AADEPERAJCFAFAHAFAJ@LA^?R?xC?n@@pD@pBBt@?@?J@NHh@@bA?\\BzBhAHbBHrDTb@BfAFnBLF@lDRn@B?T@N@JBHBHDFBDDBDBJDLBL@?OBkAB_B?IDcAH_ABU@I@K?E@CBE@C@C@ADCg@]wAGKAmAInAGD}A?I?A?C@A?A?A@?@A@?F?LB|@FpAJNAN?b@@hBNL@b@FH@hAHf@BPBHs@@MPaAFc@DU?C?CL{@VcBBOz@gFv@gFd@sC_@W_Aq@q@e@_D{BiBgBiBgBs@u@iAgAeAcAnAiAbA_AbBcBv@{@t@aAjAcBp@gAL_@U[EGEIKUA?KGMSGQSa@MWKUIQKSGOSa@CEAECECECEAAACIE}@o@YQOIIAK?EC]Si@]UOCAEEc@WEEMIAAs@c@{@k@sAy@EEAEKi@AA?AECAAOKMK_@WUOIGMIIG}@m@COG[ESGUf@sDDWv@eGF_@D]DQDk@@IBKNgAl@iEJq@PkAD[XkBBSBO@K@IB_@?I@SDkADy@Bu@Bg@HwAHqA?EFo@Bo@J}@w@[k@YDWJq@D[[ITd@Kp@EVe@Ss@YyAk@UKYKWKICUIYKQGYMsAk@OG_CcA[M{@_@WKKEOGOIw@[UK]M_@QSIy@]WK}Ao@KEUIq@Wc@Uo@Yi@SYMo@YoAm@MEyAQYEi@PIDe@NmAd@UHw@VA?i@PA@cAZ?BA@?@sBt@C@_@Lm@PMFE?GAG?GASEoA]{Bg@]GUCm@IC?C?A?SCE?C?G?E@G?M@y@FI?WBI@M@A@C?MBG@IQUo@m@yAAAwAkDKWMO?uAQAk@CqAISAe@Ci@C_AG_@CC?a@CQCUAE?YCQ_ACKGa@WqAAKGc@UqAKq@Ki@i@gDYcBa@}BUuAAGe@oCAGSiAYuAO_AEYG]Ic@?CIe@AC]eCQcAQaAGWSPURON_Az@MJMLc@^]XcA~@g@`@a@^_@Z]X@]_@I_Cc@cB[?XC\\ATATCV?DCd@Et@Ef@AN?HAFIRCBA@C?A?C?kCI}AGE?CAA??AUCS?QAo@A?B@RDhADtA?NF`B@V@XBX?H@FD|@@J@^BTF~@@VPdCDr@@VBP@PJfA@^Jz@Lv@DRF\\Hv@@JZnC@BD\\@RHh@Hr@NjAD^Fl@Hp@Hr@Fh@DV@PDVB\\DZVpBFt@Hn@Ff@BTF^Fv@@N?J?F?RGXCR_@tEMxAEV?DQhBG`@GZOz@ELOp@CPm@zCUbAOv@Mt@Or@CPg@|Bm@tCWrAl@ZFCBABCBCBEFORHD@dA\\ZJb@LNDj@Pp@RRFRHPDJDF?D@\\D`@FVBZDF?pBVb@DF@H?n@?NCB@D@J?`A?t@AX?D?D?B?BADAJC`@MHC^KJCRGXIRIl@QLEBAJENEjA]XIb@Of@OFCB?BAD@F@HBT\\BF@BBD?B@B@DDJ@H@F@F@D?D@H@H@^?FAL?F?F?BAF?BAD?DCDAFADCDCDCHCPGRCLUfAWfAA@"
+      },
+      "metrics": {
+        "performedShipmentCount": 3,
+        "travelDuration": "4166s",
+        "waitDuration": "0s",
+        "delayDuration": "0s",
+        "breakDuration": "0s",
+        "visitDuration": "14070s",
+        "totalDuration": "18236s",
+        "travelDistanceMeters": 12742
+      },
+      "routeCosts": {
+        "model.vehicles.cost_per_hour": 303.93333333333334
+      },
+      "routeTotalCost": 303.93333333333334
+    }
+  ],
+  "requestLabel": "/refined_global",
+  "metrics": {
+    "aggregatedRouteMetrics": {
+      "performedShipmentCount": 3,
+      "travelDuration": "4166s",
+      "waitDuration": "0s",
+      "delayDuration": "0s",
+      "breakDuration": "0s",
+      "visitDuration": "14070s",
+      "totalDuration": "18236s",
+      "travelDistanceMeters": 12742
+    },
+    "usedVehicleCount": 1,
+    "earliestVehicleStartTime": "2023-12-18T09:00:00Z",
+    "latestVehicleEndTime": "2023-12-18T14:03:56Z",
+    "totalCost": 303.93333333333334,
+    "costs": {
+      "model.vehicles.cost_per_hour": 303.93333333333334
+    }
+  }
+}

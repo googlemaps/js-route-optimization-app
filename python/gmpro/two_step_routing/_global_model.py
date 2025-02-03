@@ -164,6 +164,8 @@ def make_shipment_for_local_route(
   )
   if global_time_windows is not None:
     global_delivery["timeWindows"] = global_time_windows
+  if parking.avoid_u_turns is not None:
+    global_delivery["avoidUTurns"] = parking.avoid_u_turns
 
   # Add arrival/departure/reload costs and delays if needed.
   parking_tags = transition_attributes.get_or_create(parking)

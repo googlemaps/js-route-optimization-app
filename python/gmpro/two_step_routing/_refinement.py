@@ -543,6 +543,7 @@ class RefinedRouteIntegration:
                   add_to_visits=None,
                   visit_start_time=None,
                   visit_detour=None,
+                  injected_solution_location_token=None,
               )
           )
         case _:
@@ -625,12 +626,27 @@ class RefinedRouteIntegration:
       num_visits_to_skip = 0
       for global_visit_index, global_visit in enumerate(global_visits):
         logging.debug(
-            "Integrating visit global_visit_index=%d:\global_visit=%r",
+            "Integrating visit global_visit_index=%d:\nglobal_visit=%r",
             global_visit_index,
             global_visit,
         )
         if num_visits_to_skip > 0:
           num_visits_to_skip -= 1
+          # The tokens on subsequent visits to the same parking must either all
+          # be the same or they must be all unspecified (meaning that either
+          # u-turn avoidance was not used, or all the visits to the parking are
+          # on the same side of the road). This is an invariant of the GMPRO
+          # solver, not this library.
+          if global_visits[global_visit_index].get(
+              "injectedSolutionLocationToken"
+          ) != global_visit.get("injectedSolutionLocationToken"):
+            logging.warning(
+                "Inconsistent injected solution location tokens for subsequent"
+                " parking visits in the global model. Vehicle index=%d, visit"
+                " index=%d",
+                global_route_index,
+                global_visit_index,
+            )
           continue
         if integrated_global_transitions is not None:
           global_transition = global_transitions[global_visit_index]
@@ -672,6 +688,9 @@ class RefinedRouteIntegration:
               add_to_visits=integrated_global_visits,
               add_to_transitions=integrated_global_transitions,
               visit_detour=global_visit["detour"],
+              injected_solution_location_token=global_visit.get(
+                  "injectedSolutionLocationToken"
+              ),
           )
           # Skip all following visits that were part of the refined route that
           # we just integrated.
@@ -704,6 +723,7 @@ class RefinedRouteIntegration:
                   add_to_visits=integrated_global_visits,
                   visit_start_time=visit_start_time,
                   visit_detour=visit_detour,
+                  injected_solution_location_token=injected_solution_location_token,
               )
             case _:
               raise ValueError(f"Unexpected global visit type: {visit_type!r}")
@@ -764,6 +784,7 @@ class RefinedRouteIntegration:
       add_to_visits: list[cfr_json.Visit],
       add_to_transitions: list[cfr_json.Transition] | None,
       visit_detour: cfr_json.DurationString,
+      injected_solution_location_token: int | None,
   ) -> None:
     """Integrates a refined local route to the refined models and solutions.
 
@@ -782,6 +803,9 @@ class RefinedRouteIntegration:
         local delivery rounds.
       visit_detour: The detour of the delivery visit for the first delivery
         round of the refined local model.
+      injected_solution_location_token: The injected solution token used for the
+        integrated global visit to the parking location. This is copied from the
+        original global visit.
     """
     refined_route_splits = _split_refined_local_route(refined_local_route)
     num_refined_route_splits = len(refined_route_splits)
@@ -921,7 +945,7 @@ class RefinedRouteIntegration:
           # delivery visit request.
           is_pickup=False,
           visit_request_index=0,
-          injected_solution_location_token=None,
+          injected_solution_location_token=injected_solution_location_token,
       )
 
   def _integrate_unmodified_local_route(
@@ -931,6 +955,7 @@ class RefinedRouteIntegration:
       add_to_visits: list[cfr_json.Visit] | None,
       visit_start_time: cfr_json.TimeString | None,
       visit_detour: cfr_json.DurationString | None,
+      injected_solution_location_token: int | None,
   ) -> int:
     """Integrates a local route into the refined models and solutions.
 
@@ -951,6 +976,9 @@ class RefinedRouteIntegration:
       visit_detour: The detour of the delivery visit for the new shipment in the
         integrated global model. Must be None exactly when `add_to_visits` is
         None.
+      injected_solution_location_token: The injected solution token from the
+        visit in the original global request or None if the token is not
+        available. Must be None when `add_to_visits` is None.
 
     Returns:
       The index of the global shipment that represents the integrated local
@@ -987,7 +1015,7 @@ class RefinedRouteIntegration:
         visit_detour=visit_detour,
         is_pickup=None if add_to_visits is None else False,
         visit_request_index=None if add_to_visits is None else 0,
-        injected_solution_location_token=None,
+        injected_solution_location_token=injected_solution_location_token,
     )
 
   def _add_integrated_global_shipment(

@@ -1428,6 +1428,147 @@ class PlannerEnergyCostsTests(ValidateResponseMixin, unittest.TestCase):
     self.assertIsNone(integrated_global_response)
 
 
+class PlannerTestAvoidUTurns(ValidateResponseMixin, unittest.TestCase):
+  maxDiff = None
+
+  _OPTIONS = two_step_routing.Options(
+      local_model_vehicle_fixed_cost=0,
+      min_average_shipments_per_round=1,
+      initial_local_model_grouping=two_step_routing.InitialLocalModelGrouping(
+          time_windows=True
+      ),
+      use_deprecated_fields=False,
+  )
+
+  _REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "avoid_u_turns/scenario.json"
+  )
+  _PARKING_LOCATIONS, _PARKING_FOR_SHIPMENT = (
+      two_step_routing.load_parking_from_json(
+          testdata.json("avoid_u_turns/parking.json")
+      )
+  )
+  _EXPECTED_LOCAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "avoid_u_turns/scenario.local_request.json"
+  )
+  _LOCAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
+      "avoid_u_turns/scenario.local_response.10s.json"
+  )
+  _EXPECTED_GLOBAL_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "avoid_u_turns/scenario.global_request.10s.json"
+  )
+  _GLOBAL_RESPONSE_JSON: cfr_json.OptimizeToursResponse = testdata.json(
+      "avoid_u_turns/scenario.global_response.10s.10s.json"
+  )
+  _EXPECTED_MERGED_REQUEST_JSON: cfr_json.OptimizeToursRequest = testdata.json(
+      "avoid_u_turns/scenario.merged_request.10s.10s.json"
+  )
+  _EXPECTED_MERGED_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json("avoid_u_turns/scenario.merged_response.10s.10s.json")
+  )
+  _EXPECTED_LOCAL_REFINEMENT_REQUEST_JSON: cfr_json.OptimizeToursRequest = (
+      testdata.json(
+          "avoid_u_turns/scenario.refined_1.local_request.10s.10s.10s.10s.json"
+      )
+  )
+  _LOCAL_REFINEMENT_RESPONSE_JSON: cfr_json.OptimizeToursResponse = (
+      testdata.json(
+          "avoid_u_turns/scenario.refined_1.local_response.10s.10s.10s.10s.json"
+      )
+  )
+  _EXPECTED_INTEGRATED_LOCAL_REQUEST: cfr_json.OptimizeToursRequest = (
+      testdata.json(
+          "avoid_u_turns/scenario.refined_1.integrated_local_request.10s.10s.10s.10s.json"
+      )
+  )
+  _EXPECTED_INTEGRATED_LOCAL_RESPONSE: cfr_json.OptimizeToursResponse = (
+      testdata.json(
+          "avoid_u_turns/scenario.refined_1.integrated_local_response.10s.10s.10s.10s.json"
+      )
+  )
+  _EXPECTED_INTEGRATED_GLOBAL_REQUEST = cfr_json.OptimizeToursRequest = (
+      testdata.json(
+          "avoid_u_turns/scenario.refined_1.integrated_global_request.10s.10s.10s.10s.json"
+      )
+  )
+
+  def setUp(self):
+    super().setUp()
+    self._planner = two_step_routing.Planner(
+        request_json=self._REQUEST_JSON,
+        parking_locations=self._PARKING_LOCATIONS,
+        parking_for_shipment=self._PARKING_FOR_SHIPMENT,
+        options=self._OPTIONS,
+    )
+
+  def test_validate_local_request(self):
+    self.validate_response(
+        self._EXPECTED_LOCAL_REQUEST_JSON, self._LOCAL_RESPONSE_JSON
+    )
+
+  def test_validate_global_request(self):
+    self.validate_response(
+        self._EXPECTED_GLOBAL_REQUEST_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+
+  def test_validate_merged_request(self):
+    self.validate_response(
+        self._EXPECTED_MERGED_REQUEST_JSON, self._EXPECTED_MERGED_RESPONSE_JSON
+    )
+
+  def test_local_request(self):
+    local_request = self._planner.make_local_request()
+    self.assertEqual(local_request, self._EXPECTED_LOCAL_REQUEST_JSON)
+
+  def test_global_request(self):
+    global_request = self._planner.make_global_request(
+        self._LOCAL_RESPONSE_JSON
+    )
+    self.assertEqual(global_request, self._EXPECTED_GLOBAL_REQUEST_JSON)
+
+  def test_merged_request(self):
+    merged_request, merged_response = (
+        self._planner.merge_local_and_global_result(
+            self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+        )
+    )
+    self.assertEqual(merged_request, self._EXPECTED_MERGED_REQUEST_JSON)
+    self.assertEqual(merged_response, self._EXPECTED_MERGED_RESPONSE_JSON)
+
+  def test_local_refinement_request(self):
+    local_refinement_request = self._planner.make_local_refinement_request(
+        self._LOCAL_RESPONSE_JSON, self._GLOBAL_RESPONSE_JSON
+    )
+    self.assertEqual(
+        local_refinement_request, self._EXPECTED_LOCAL_REFINEMENT_REQUEST_JSON
+    )
+
+  def test_global_refinement_request(self):
+    (
+        integrated_local_request,
+        integrated_local_response,
+        integrated_global_request,
+        integrated_global_response,
+    ) = self._planner.integrate_local_refinement(
+        self._EXPECTED_LOCAL_REQUEST_JSON,
+        self._LOCAL_RESPONSE_JSON,
+        self._EXPECTED_GLOBAL_REQUEST_JSON,
+        self._GLOBAL_RESPONSE_JSON,
+        self._LOCAL_REFINEMENT_RESPONSE_JSON,
+        integration_mode=two_step_routing.IntegrationMode.VISITS_ONLY,
+    )
+    self.assertEqual(
+        integrated_local_request, self._EXPECTED_INTEGRATED_LOCAL_REQUEST
+    )
+    self.assertEqual(
+        integrated_local_response, self._EXPECTED_INTEGRATED_LOCAL_RESPONSE
+    )
+    self.assertEqual(
+        integrated_global_request, self._EXPECTED_INTEGRATED_GLOBAL_REQUEST
+    )
+    self.assertIsNone(integrated_global_response)
+
+
 class PlannerDirectVisitAlternativesTest(
     ValidateResponseMixin, unittest.TestCase
 ):

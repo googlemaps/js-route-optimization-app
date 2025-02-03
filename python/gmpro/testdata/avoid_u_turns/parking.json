@@ -1,0 +1,40 @@
+{
+  "parking_locations": [
+    {
+      "tag": "P001",
+      "waypoint": {
+        "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+      },
+      "avoid_u_turns": true,
+      "travel_mode": 2
+    },
+    {
+      "tag": "P002",
+      "waypoint": {
+        "placeId": "ChIJt9sxMiRv5kcRaCD6SfTzDkY"
+      },
+      "avoid_u_turns": true,
+      "travel_mode": 2
+    },
+    {
+      "tag": "P003",
+      "waypoint": {
+        "placeId": "ChIJS4dXiddv5kcRyb3AwM1sFf0"
+      },
+      "avoid_u_turns": true,
+      "travel_mode": 2
+    }
+  ],
+  "parking_for_shipment": {
+    "0": "P001",
+    "1": "P001",
+    "2": "P001",
+    "3": "P002",
+    "4": "P002",
+    "5": "P002",
+    "6": "P002",
+    "7": "P003",
+    "8": "P003",
+    "9": "P003"
+  }
+}

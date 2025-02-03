@@ -1,0 +1,229 @@
+{
+  "label": "/local_refinement",
+  "model": {
+    "shipments": [
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "tags": ["P001", "P001 unload from vehicle"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJ442GNENu5kcRGYUrvgqHw88"
+            },
+            "duration": "600s",
+            "tags": ["P001 visit"],
+            "timeWindows": [
+              {
+                "startTime": "2023-12-18T11:00:00Z",
+                "endTime": "2023-12-18T13:00:00Z"
+              }
+            ]
+          }
+        ],
+        "label": "0: Basilique du Sacre-Coeur",
+        "allowedVehicleIndices": [0]
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "duration": "0s",
+            "tags": ["P001 barrier pickup"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "duration": "0s",
+            "tags": ["P001 barrier delivery"]
+          }
+        ],
+        "penaltyCost": 0,
+        "allowedVehicleIndices": [0],
+        "label": "barrier P001"
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "tags": ["P001", "P001 unload from vehicle"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJ55llEENu5kcREU0LBvX0Jq4"
+            },
+            "duration": "300s",
+            "tags": ["P001 visit"]
+          }
+        ],
+        "label": "2: Carrousel de Saint-Pierre",
+        "allowedVehicleIndices": [0]
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "tags": ["P001", "P001 unload from vehicle"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJWcXsQltu5kcRbqfaH0NhNxE"
+            },
+            "duration": "1200s",
+            "tags": ["P001 visit"]
+          }
+        ],
+        "label": "1: Musee de Montmartre",
+        "allowedVehicleIndices": [0]
+      },
+      {
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "duration": "0s",
+            "tags": ["P001 barrier pickup"]
+          }
+        ],
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+            },
+            "duration": "0s",
+            "tags": ["P001 barrier delivery"]
+          }
+        ],
+        "penaltyCost": 0,
+        "allowedVehicleIndices": [0],
+        "label": "barrier P001"
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "global_route:0 start:2 size:2 parking:P001",
+        "endWaypoint": {
+          "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+        },
+        "startWaypoint": {
+          "placeId": "ChIJH5xfmm5u5kcRofsWanQvtvM"
+        },
+        "travelDurationMultiple": 1.0,
+        "travelMode": 2,
+        "fixedCost": 0,
+        "costPerHour": 300,
+        "costPerKilometer": 60,
+        "startTags": ["P001"],
+        "endTags": ["P001"],
+        "startTimeWindows": [
+          {
+            "startTime": "2023-12-18T12:33:03Z",
+            "endTime": "2023-12-18T12:33:03Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "softEndTime": "2023-12-18T14:25:13Z",
+            "costPerHourAfterSoftEndTime": 1000000
+          }
+        ]
+      }
+    ],
+    "transitionAttributes": [
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P001 visit",
+        "dstTag": "P001 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P001 load to vehicle",
+        "dstTag": "P001 unload from vehicle"
+      },
+      {
+        "delay": "7200s",
+        "cost": 1000000,
+        "srcTag": "P001 load to vehicle",
+        "dstTag": "P001 visit"
+      }
+    ],
+    "globalEndTime": "2023-12-18T20:00:00Z",
+    "globalStartTime": "2023-12-18T09:00:00Z"
+  },
+  "injectedFirstSolutionRoutes": [
+    {
+      "vehicleIndex": 0,
+      "visits": [
+        {
+          "shipmentIndex": 0,
+          "visitRequestIndex": 0,
+          "isPickup": true,
+          "shipmentLabel": "0: Basilique du Sacre-Coeur"
+        },
+        {
+          "shipmentIndex": 0,
+          "visitRequestIndex": 0,
+          "isPickup": false,
+          "shipmentLabel": "0: Basilique du Sacre-Coeur"
+        },
+        {
+          "shipmentIndex": 1,
+          "isPickup": true,
+          "shipmentLabel": "barrier P001"
+        },
+        {
+          "shipmentIndex": 1,
+          "shipmentLabel": "barrier P001"
+        },
+        {
+          "shipmentIndex": 2,
+          "visitRequestIndex": 0,
+          "isPickup": true,
+          "shipmentLabel": "2: Carrousel de Saint-Pierre"
+        },
+        {
+          "shipmentIndex": 3,
+          "visitRequestIndex": 0,
+          "isPickup": true,
+          "shipmentLabel": "1: Musee de Montmartre"
+        },
+        {
+          "shipmentIndex": 2,
+          "visitRequestIndex": 0,
+          "isPickup": false,
+          "shipmentLabel": "2: Carrousel de Saint-Pierre"
+        },
+        {
+          "shipmentIndex": 3,
+          "visitRequestIndex": 0,
+          "isPickup": false,
+          "shipmentLabel": "1: Musee de Montmartre"
+        }
+      ]
+    }
+  ],
+  "searchMode": 2,
+  "populatePolylines": true,
+  "populateTransitionPolylines": true
+}
