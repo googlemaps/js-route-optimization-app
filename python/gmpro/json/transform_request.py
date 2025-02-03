@@ -133,6 +133,7 @@ class Flags:
   visit_duration_scaling_factor: float | None
 
   duplicate_vehicles_by_label: Sequence[str] | None
+  remove_vehicles_by_index: Sequence[int] | None
   remove_vehicles_by_label: Sequence[str] | None
   reduce_to_shipments_by_index: Sequence[int] | None
   reduce_to_vehicles_by_label: Sequence[str] | None
@@ -250,6 +251,14 @@ class Flags:
             " list, finds a vehicle that has this label and adds a new vehicle"
             " that has the same attributes and constraints as the source"
             " vehicle."
+        ),
+    )
+    parser.add_argument(
+        "--remove_vehicles_by_index",
+        type=_parse_comma_separated_index_list,
+        help=(
+            "A comma-separated list of vehicle indices. Removes all vehicles"
+            " whose index appears in the list."
         ),
     )
     parser.add_argument(
@@ -397,46 +406,56 @@ def _get_indices_of_vehicles_with_labels(
   return selected_indices, unseen_labels
 
 
-def _remove_vehicles_by_label(
+def _remove_vehicles(
     request: cfr_json.OptimizeToursRequest,
-    vehicle_labels: Iterable[str],
+    vehicle_indices: Iterable[int] | None,
+    vehicle_labels: Iterable[str] | None,
     on_infeasible_shipment: transforms.OnInfeasibleShipment,
     allow_unseen_vehicle_labels: bool = False,
 ) -> None:
-  """Removes all vehicles in the request whose label is in `vehicle_labels`.
+  """Removes vehicles specified by `vehicle_indices` and `vehicle_labels`.
 
   Args:
     request: The request in which the vehicles are removed.
-    vehicle_labels: The labels of vehicles to be removed from the model.
+    vehicle_indices: The indices of the vehicles to be removed from the model.
+    vehicle_labels: The labels of vehicles to be removed from the model. When
+      a label from `vehicle_labels` is used by multiple vehicles, removes all
+      such vehicles.
     on_infeasible_shipment: The behavior of the tool when a shipment becomes
       trivially infeasible after removing a vehicle.
-    allow_unseen_labels: When False, the function fails with an exception if
-      `vehicle_labels` contains a string that doesn't correspond to a vehicle
-      label. When True, unseen vehicle labels are not checked.
+    allow_unseen_vehicle_labels: When False, the function fails with an
+      exception if `vehicle_labels` contains a string that doesn't correspond to
+      a vehicle label. When True, unseen vehicle labels are not checked.
   """
   model = request["model"]
-  indices_to_remove, unseen_labels = _get_indices_of_vehicles_with_labels(
-      model, vehicle_labels
-  )
+  indices_to_remove = set()
+  if vehicle_indices is not None:
+    indices_to_remove.update(vehicle_indices)
 
-  if unseen_labels:
-    unseen_labels_str = ", ".join(
-        repr(label) for label in sorted(unseen_labels)
+  if vehicle_labels is not None:
+    indices_from_labels, unseen_labels = _get_indices_of_vehicles_with_labels(
+        model, vehicle_labels
     )
-    if allow_unseen_vehicle_labels:
-      logging.warning(
-          "Unseen vehicle labels in  --remove_vehicles_by_label: %s",
-          unseen_labels_str,
+    indices_to_remove.update(indices_from_labels)
+
+    if unseen_labels:
+      unseen_labels_str = ", ".join(
+          repr(label) for label in sorted(unseen_labels)
       )
-    else:
-      raise ValueError(
-          "Vehicle labels from --remove_vehicles_by_label do not appear in the"
-          f" model: {unseen_labels_str}"
-      )
+      if allow_unseen_vehicle_labels:
+        logging.warning(
+            "Unseen vehicle labels in  --remove_vehicles_by_label: %s",
+            unseen_labels_str,
+        )
+      else:
+        raise ValueError(
+            "Vehicle labels from --remove_vehicles_by_label do not appear in"
+            f" the model: {unseen_labels_str}"
+        )
 
   new_vehicle_for_old_vehicle, new_shipment_for_old_shipment = (
       transforms.remove_vehicles(
-          model, set(indices_to_remove), on_infeasible_shipment
+          model, indices_to_remove, on_infeasible_shipment
       )
   )
   transforms.remove_vehicles_from_injected_first_solution_routes(
@@ -603,10 +622,11 @@ def main(args: Sequence[str] | None = None) -> None:
         flags.reduce_to_shipments_by_index,
         shipment_used_in_visit=flags.removed_shipment_used_in_injected_route_visit,
     )
-  if removed_labels := flags.remove_vehicles_by_label:
-    _remove_vehicles_by_label(
+  if flags.remove_vehicles_by_label or flags.remove_vehicles_by_index:
+    _remove_vehicles(
         request,
-        removed_labels,
+        flags.remove_vehicles_by_index,
+        flags.remove_vehicles_by_label,
         flags.infeasible_shipment_after_removing_vehicle,
         allow_unseen_vehicle_labels=flags.allow_unseen_vehicle_labels,
     )
