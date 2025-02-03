@@ -26,8 +26,9 @@ Typical usage:
 """
 
 import argparse
-from collections.abc import Callable, Collection, Iterable, Sequence, Set
+from collections.abc import Callable, Collection, Iterable, Mapping, Sequence, Set
 import dataclasses
+import datetime
 import enum
 import itertools
 import json
@@ -39,6 +40,7 @@ from . import cfr_json
 from . import io_utils
 from . import transforms
 from . import transforms_breaks
+from . import transforms_merge
 
 
 class ItemsPerShipment(utils.EnumForArgparse):
@@ -93,6 +95,22 @@ def _parse_comma_separated_index_list(value: str) -> Sequence[int]:
         "expected a list of non-negative integers separated by commas, got"
         " {value!r}"
     ) from None
+
+
+def _str_to_int_mapping(value: str) -> Mapping[str, int]:
+  """Parses a mapping in the format `key1=value1,key2=value,...`."""
+  try:
+    mapping = {}
+    for part in value.split(","):
+      part = part.strip()
+      key, value_str = part.split("=")
+      mapping[key] = int(value_str)
+  except ValueError:
+    raise argparse.ArgumentTypeError(
+        "Expected a mapping in the format key1=value1,key2=value2, got"
+        " {value!r}"
+    ) from None
+  return mapping
 
 
 def _non_negative_float(value: str) -> float:
@@ -155,6 +173,10 @@ class Flags:
 
   add_injected_first_solution_routes_from_file: str | None
   override_interpret_injected_solutions_using_labels: bool | None
+
+  merge_shipments: bool
+  max_merged_visit_request_duration_seconds: int | None
+  max_merged_load_demands: Mapping[str, int] | None
 
   @property
   def items_per_shipment_callback(self) -> Callable[[cfr_json.Shipment], int]:
@@ -406,6 +428,36 @@ class Flags:
             " the given value."
         ),
         type=_explicit_true_or_false,
+        default=None,
+    )
+    parser.add_argument(
+        "--merge_shipments",
+        help="When specified, merges compatible shipments in the model.",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
+    parser.add_argument(
+        "--max_merged_visit_request_duration_seconds",
+        help=(
+            "When --merge_shipments is used, this flag specifies the maximal"
+            " allowed duration of a visit request created by merging two or"
+            " more input visit requests. Note that shipments whose visit"
+            " requests are longer than this duration will be preserved in the"
+            " model, but they will not be used for merging."
+        ),
+        type=int,
+        default=None,
+    )
+    parser.add_argument(
+        "--max_merged_load_demands",
+        help=(
+            "When --merge_shipments is used, this flag specifies the maximal"
+            " allowed load demand of a shipment that is created by merging two"
+            " or more input shipments. Note that shipments that exceed the"
+            " limits specified by this flag will be preserved in the model, but"
+            " they will not be used for merging."
+        ),
+        type=_str_to_int_mapping,
         default=None,
     )
 
@@ -766,6 +818,33 @@ def main(args: Sequence[str] | None = None) -> None:
       request["internalParameters"] = internal_parameters
     else:
       request.pop("internalParameters", None)
+  if flags.merge_shipments:
+    if (
+        request.get("injectedFirstSolutionRoutes")
+        or request.get("injectedSolutionConstraint")
+        or request.get("refreshDetailsRoutes")
+    ):
+      raise ValueError(
+          "Merging shipments is incompatible with injected routes."
+      )
+    max_visit_duration = datetime.timedelta.max
+    if flags.max_merged_visit_request_duration_seconds is not None:
+      max_visit_duration = datetime.timedelta(
+          seconds=flags.max_merged_visit_request_duration_seconds
+      )
+    original_num_shipments = len(cfr_json.get_shipments(model))
+    merged_shipments, _ = transforms_merge.merge_shipments(
+        model,
+        max_visit_duration=max_visit_duration,
+        load_limits=flags.max_merged_load_demands,
+    )
+    logging.info(
+        "Merged co-located shipments. Original: %d shipments, merged: %d"
+        " shipments",
+        original_num_shipments,
+        len(merged_shipments),
+    )
+    model["shipments"] = merged_shipments
 
   io_utils.write_json_to_file(flags.output_file, request)
 
