@@ -82,21 +82,23 @@ def make_local_refinement_request(
     solution of the global model.
   """
   model = request["model"]
-  shipments = model["shipments"]
+  shipments = cfr_json.get_shipments(model)
   global_routes = cfr_json.get_routes(global_response)
   transition_attribute_manager = _parking.TransitionAttributeManager(model)
 
   refinement_vehicles: list[cfr_json.Vehicle] = []
   refinement_shipments: list[cfr_json.Shipment] = []
   refinement_model: cfr_json.ShipmentModel = {
-      "globalEndTime": model["globalEndTime"],
-      "globalStartTime": model["globalStartTime"],
       "shipments": refinement_shipments,
       "vehicles": refinement_vehicles,
       "transitionAttributes": (
           transition_attribute_manager.local_refinement_transition_attributes
       ),
   }
+  if (global_end_time := model.get("globalEndTime")) is not None:
+    refinement_model["globalEndTime"] = global_end_time
+  if (global_start_time := model.get("globalStartTime")) is not None:
+    refinement_model["globalStartTime"] = global_start_time
   refinement_injected_routes: list[cfr_json.ShipmentRoute] = []
 
   consecutive_visit_sequences: list[_ConsecutiveParkingLocationVisits] = []
