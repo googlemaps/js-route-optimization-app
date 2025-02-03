@@ -29,6 +29,8 @@ import argparse
 from collections.abc import Callable, Collection, Iterable, Sequence, Set
 import dataclasses
 import enum
+import itertools
+import json
 import logging
 from typing import Self
 
@@ -149,6 +151,8 @@ class Flags:
   override_consider_road_traffic: bool | None
   override_avoid_u_turns: bool | None
   override_avoid_u_turns_shipment_indices: Sequence[int] | None
+
+  add_injected_first_solution_routes_from_file: str | None
 
   @property
   def items_per_shipment_callback(self) -> Callable[[cfr_json.Shipment], int]:
@@ -371,6 +375,18 @@ class Flags:
         ),
         default=transforms.OnRemovedShipmentUsedInVisit.FAIL,
     )
+    parser.add_argument(
+        "--add_injected_first_solution_routes_from_file",
+        help=(
+            "When specified, the value must be the path of a GMPRO response"
+            " file in the JSON format that corresponds to the input request."
+            " Takes routes from the response and adds them as"
+            " `injectedFirstSolutionRoutes` to the request. Checks that"
+            " vehicle, shipment and visit request indices on the routes are"
+            " valid."
+        ),
+        default=None,
+    )
 
     parsed_args = parser.parse_args(args)
     return cls(**vars(parsed_args))
@@ -575,6 +591,49 @@ def _duplicate_vehicles_by_label(
     transforms.duplicate_vehicle(model, vehicle_index)
 
 
+def _add_injected_first_solution_routes_from_file(
+    request: cfr_json.OptimizeToursRequest,
+    response_file: str,
+) -> None:
+  """Adds routes from `response` as injected first solution routes to `request`.
+
+  Any existing injected first solution routes that were in `request` before are
+  replaced by this function.
+
+  Args:
+    request: The request in which the first solution routes are replaced.
+    response_file: The name of the file from which the injected routes are
+      loaded.
+
+  Raises:
+    ValueError: When the routes do not correspond to the request or when the
+      input file could not be loaded.
+  """
+  try:
+    response = io_utils.read_json_from_file(response_file)
+  except (json.JSONDecodeError, OSError) as err:
+    raise ValueError(
+        f"Could not load the response from {response_file!r}"
+    ) from err
+  response_validation_errors = cfr_json.validate_indices_in_routes(
+      request["model"], cfr_json.get_routes(response)
+  )
+  if response_validation_errors:
+    error_message_parts = [
+        "Routes from the response do not correspond to the request:"
+    ]
+    error_message_parts.extend(
+        itertools.islice(response_validation_errors, 0, 5)
+    )
+    if len(response_validation_errors) > 5:
+      error_message_parts.append(
+          f"...and {len(response_validation_errors) - 5} more..."
+      )
+    raise ValueError("\n".join(error_message_parts))
+
+  request["injectedFirstSolutionRoutes"] = list(cfr_json.get_routes(response))
+
+
 def main(args: Sequence[str] | None = None) -> None:
   """Runs the command-line utility.
 
@@ -589,6 +648,10 @@ def main(args: Sequence[str] | None = None) -> None:
 
   model = request["model"]
 
+  if flags.add_injected_first_solution_routes_from_file is not None:
+    _add_injected_first_solution_routes_from_file(
+        request, flags.add_injected_first_solution_routes_from_file
+    )
   if flags.override_consider_road_traffic is not None:
     request["considerRoadTraffic"] = flags.override_consider_road_traffic
   if flags.override_avoid_u_turns is not None:

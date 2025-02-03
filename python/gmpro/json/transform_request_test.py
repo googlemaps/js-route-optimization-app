@@ -72,6 +72,83 @@ class TransformRequestTest(unittest.TestCase):
     }
     self.assertEqual(self.run_transform_request_main(request, ()), request)
 
+  def test_add_injected_first_solution_routes_from_file(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}]},
+                {"label": "S002", "deliveries": [{}]},
+                {"label": "S003", "pickups": [{}]},
+            ],
+            "vehicles": [{"label": "V001"}, {"label": "V002"}],
+        }
+    }
+    response: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "visits": [
+                    {"shipmentIndex": 0, "isPickup": True},
+                    {"shipmentIndex": 2, "isPickup": True},
+                ]
+            },
+            {"visits": [{"shipmentIndex": 1}]},
+        ]
+    }
+    expected_output_request = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}]},
+                {"label": "S002", "deliveries": [{}]},
+                {"label": "S003", "pickups": [{}]},
+            ],
+            "vehicles": [{"label": "V001"}, {"label": "V002"}],
+        },
+        "injectedFirstSolutionRoutes": [
+            {
+                "visits": [
+                    {"shipmentIndex": 0, "isPickup": True},
+                    {"shipmentIndex": 2, "isPickup": True},
+                ]
+            },
+            {"visits": [{"shipmentIndex": 1}]},
+        ],
+    }
+    response_file = path.join(
+        self.enterContext(tempfile.TemporaryDirectory()), "solution.json"
+    )
+    io_utils.write_json_to_file(response_file, response)
+    self.assertEqual(
+        self.run_transform_request_main(
+            request,
+            (
+                f"--add_injected_first_solution_routes_from_file={response_file}",
+            ),
+        ),
+        expected_output_request,
+    )
+
+  def test_add_injected_first_solution_routes_from_file__invalid_route(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}]},
+            ],
+            "vehicles": [{"label": "V001"}],
+        }
+    }
+    response: cfr_json.OptimizeToursResponse = {
+        "routes": [{"vehicleIndex": 1, "visits": [{"shipmentIndex": 2}]}]
+    }
+    response_file = path.join(
+        self.enterContext(tempfile.TemporaryDirectory()), "solution.json"
+    )
+    io_utils.write_json_to_file(response_file, response)
+    with self.assertRaisesRegex(ValueError, "Invalid vehicle index:"):
+      self.run_transform_request_main(
+          request,
+          (f"--add_injected_first_solution_routes_from_file={response_file}",),
+      )
+
   def test_shipment_penalty_cost_per_item__one_item_per_shipment(self):
     request: cfr_json.OptimizeToursRequest = {
         "model": {

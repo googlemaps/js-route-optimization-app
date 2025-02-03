@@ -1972,3 +1972,75 @@ def get_num_elements_in_label(shipment: Shipment) -> int:
   """
   label = shipment.get("label", "")
   return label.count(",") + 1
+
+
+def validate_indices_in_routes(
+    model: ShipmentModel, routes: Sequence[ShipmentRoute]
+) -> Collection[str]:
+  """Validates the vehicle, shipment and visit request indices in `routes`.
+
+  Only very rudimentary validation is performed: checks that each indexed
+  vehicle, shipment, and visit request exist in the model. Does not check any
+  additional properties, e.g. that there aren't duplicate uses of the same
+  index.
+
+  Args:
+    model: The model used to check the routes.
+    routes: A sequence of routes to be checked.
+
+  Returns:
+    Collection of validation errors discovered by the function. When the routes
+    are all valid (to the extent checked by this function), returns an empty
+    collection.
+  """
+  vehicles = get_vehicles(model)
+  num_vehicles = len(vehicles)
+  shipments = get_shipments(model)
+  num_shipments = len(shipments)
+
+  validation_errors = []
+  for route_index, route in enumerate(routes):
+    vehicle_index = route.get("vehicleIndex", 0)
+    if vehicle_index < 0 or vehicle_index >= num_vehicles:
+      validation_errors.append(
+          f"Invalid vehicle index: {route_index=}, {vehicle_index=}"
+      )
+
+    visits = get_visits(route)
+    for visit_index, visit in enumerate(visits):
+      shipment_index = visit.get("shipmentIndex", 0)
+      visit_request_index = visit.get("visitRequestIndex", 0)
+      is_pickup = visit.get("isPickup", False)
+
+      if shipment_index < 0 or shipment_index > num_shipments:
+        validation_errors.append(
+            f"Invalid shipment index: {route_index=}, {visit_index=},"
+            f" {shipment_index=}"
+        )
+        continue
+
+      shipment = shipments[shipment_index]
+      pickups = shipment.get("pickups", ())
+      deliveries = shipment.get("deliveries", ())
+      if is_pickup and not pickups:
+        validation_errors.append(
+            "isPickup is set on a visit for a delivery-only shipment:"
+            f" {route_index=}, {visit_index=}, {shipment_index=}"
+        )
+        continue
+      if not is_pickup and not deliveries:
+        validation_errors.append(
+            "isPickup is unset on a visit for a pickup-only shipment:"
+            f" {route_index=}, {visit_index=}, {shipment_index=}"
+        )
+        continue
+
+      visit_requests = pickups if is_pickup else deliveries
+      if visit_request_index < 0 or visit_request_index >= len(visit_requests):
+        validation_errors.append(
+            f"Invalid visit request index: {route_index=}, {visit_index=},"
+            f" {shipment_index=}, {visit_request_index=}"
+        )
+        continue
+
+  return validation_errors
