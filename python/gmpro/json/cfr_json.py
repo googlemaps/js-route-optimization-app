@@ -15,11 +15,12 @@
 """Data structures and functions for working with CFR JSON requests."""
 
 import collections
-from collections.abc import Collection, Iterable, Mapping, Sequence, Set
+from collections.abc import Callable, Collection, Iterable, Mapping, Sequence, Set
 import datetime
 import itertools
 import logging
 import math
+import operator
 from typing import TypeAlias, TypedDict
 
 
@@ -530,6 +531,40 @@ def combined_load_demands(shipments: Collection[Shipment]) -> dict[str, Load]:
     }
 
   return demands
+
+
+def update_load_demands_in_place(
+    accumulator: dict[str, Load],
+    operand: dict[str, Load],
+    op: Callable[[int, int], int] = operator.add,
+) -> None:
+  """Updates load demands from `to_add` to `accumulator` in place.
+
+  Updates the load demands in `accumulator` for each load type in `accumulator`
+  of `operand` with the result of `op(acc_amount, operand_amount)` where
+  `acc_amount` and `operand_amount` are the load amounts from `accumulator`
+  resp. `operand`. Missing values are considered to be zeros; load demands with
+  zero amount are removed from `accumulator` by this function.
+
+  Args:
+    accumulator: A collection of load demands per load type that is updated in
+      place by this function.
+    operand: An operand to the update operation.
+    op: The operation used to update the amounts in the load demands,
+      elementwise.
+  """
+  for unit, load in operand.items():
+    add_amount = int(load.get("amount", 0))
+    acc_load = accumulator.get(unit)
+    if acc_load is None:
+      acc_load: Load = {"amount": "0"}
+      accumulator[unit] = acc_load
+    acc_amount = int(acc_load.get("amount", 0))
+    updated_amount = op(acc_amount, add_amount)
+    if updated_amount != 0:
+      acc_load["amount"] = str(updated_amount)
+    else:
+      del accumulator[unit]
 
 
 _DEFAULT_GLOBAL_START_TIME = datetime.datetime.fromtimestamp(

@@ -14,6 +14,7 @@
 
 import copy
 import datetime
+import operator
 from typing import Sequence
 import unittest
 
@@ -488,6 +489,63 @@ class CombinedLoadDemandsTest(unittest.TestCase):
             "ore": {"amount": "2"},
         },
     )
+
+
+class UpdateLoadDemandsInPlacetest(unittest.TestCase):
+  """Tests for update_load_demands_in_place."""
+
+  def test_both_empty(self):
+    acc: dict[str, cfr_json.Load] = {}
+    operand: dict[str, cfr_json.Load] = {}
+    cfr_json.update_load_demands_in_place(acc, operand)
+    self.assertEqual(acc, {})
+
+  def test_disjoint_units(self):
+    acc: dict[str, cfr_json.Load] = {"wheat": {"amount": "2"}}
+    operand: dict[str, cfr_json.Load] = {
+        "wood": {"amount": "1"},
+        "ore": {"amount": "3"},
+    }
+    cfr_json.update_load_demands_in_place(acc, operand)
+    self.assertEqual(
+        acc,
+        {
+            "wheat": {"amount": "2"},
+            "wood": {"amount": "1"},
+            "ore": {"amount": "3"},
+        },
+    )
+
+  def test_with_some_overlap(self):
+    acc: dict[str, cfr_json.Load] = {
+        "wheat": {"amount": "2"},
+        "ore": {"amount": "4"},
+    }
+    operand: dict[str, cfr_json.Load] = {
+        "ore": {"amount": "1"},
+        "wood": {"amount": "3"},
+    }
+    cfr_json.update_load_demands_in_place(acc, operand)
+    self.assertEqual(
+        acc,
+        {
+            "wheat": {"amount": "2"},
+            "ore": {"amount": "5"},
+            "wood": {"amount": "3"},
+        },
+    )
+
+  def test_subtract(self):
+    acc: dict[str, cfr_json.Load] = {
+        "wheat": {"amount": "3"},
+        "ore": {"amount": "2"},
+    }
+    operand: dict[str, cfr_json.Load] = {
+        "ore": {"amount": "2"},
+        "wheat": {"amount": "1"},
+    }
+    cfr_json.update_load_demands_in_place(acc, operand, op=operator.sub)
+    self.assertEqual(acc, {"wheat": {"amount": "2"}})
 
 
 class GetShipmentsTest(unittest.TestCase):
