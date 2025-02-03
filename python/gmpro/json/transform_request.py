@@ -151,6 +151,7 @@ class Flags:
   override_consider_road_traffic: bool | None
   override_avoid_u_turns: bool | None
   override_avoid_u_turns_shipment_indices: Sequence[int] | None
+  override_internal_parameters: str | None
 
   add_injected_first_solution_routes_from_file: str | None
 
@@ -357,6 +358,15 @@ class Flags:
             " all shipments."
         ),
     )
+    parser.add_argument(
+        "--override_internal_parameters",
+        help=(
+            "When specified, overrides the internal parameters string in the"
+            " request. When specified with an empty string as a value, removes"
+            " the internal parameters string from the request."
+        ),
+        default=None,
+    )
     transforms.OnInfeasibleShipment.add_as_argument(
         parser,
         "--infeasible_shipment_after_removing_vehicle",
@@ -434,9 +444,9 @@ def _remove_vehicles(
   Args:
     request: The request in which the vehicles are removed.
     vehicle_indices: The indices of the vehicles to be removed from the model.
-    vehicle_labels: The labels of vehicles to be removed from the model. When
-      a label from `vehicle_labels` is used by multiple vehicles, removes all
-      such vehicles.
+    vehicle_labels: The labels of vehicles to be removed from the model. When a
+      label from `vehicle_labels` is used by multiple vehicles, removes all such
+      vehicles.
     on_infeasible_shipment: The behavior of the tool when a shipment becomes
       trivially infeasible after removing a vehicle.
     allow_unseen_vehicle_labels: When False, the function fails with an
@@ -712,6 +722,11 @@ def main(args: Sequence[str] | None = None) -> None:
         flags.transform_breaks
     )
     transforms_breaks.transform_breaks(model, break_transform_rules)
+  if (internal_parameters := flags.override_internal_parameters) is not None:
+    if internal_parameters:
+      request["internalParameters"] = internal_parameters
+    else:
+      request.pop("internalParameters", None)
 
   io_utils.write_json_to_file(flags.output_file, request)
 

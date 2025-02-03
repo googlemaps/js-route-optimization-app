@@ -1283,6 +1283,44 @@ class TransformRequestTest(unittest.TestCase):
         expected_request,
     )
 
+  def test_override_internal_parameters(self):
+    request: cfr_json.OptimizeToursRequest = {"model": {}}
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+        "internalParameters": "foobar",
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--override_internal_parameters", "foobar")
+        ),
+        expected_request,
+    )
+
+  def test_override_internal_parameters__reset_parameters(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+        "internalParameters": "foobar",
+    }
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--override_internal_parameters=",)
+        ),
+        expected_request,
+    )
+
+  def test_override_internal_parameters__reset_already_clear_parameters(self):
+    request: cfr_json.OptimizeToursRequest = {"model": {}}
+    expected_request: cfr_json.OptimizeToursRequest = {"model": {}}
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--override_internal_parameters", "")
+        ),
+        expected_request,
+    )
+
 
 if __name__ == "__main__":
   unittest.main()
