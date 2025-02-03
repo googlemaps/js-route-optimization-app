@@ -361,6 +361,30 @@ class WaypointTest(unittest.TestCase):
     waypoint: cfr_json.Waypoint = {"placeId": "helloworld"}
     self.assertEqual(human_readable.waypoint(waypoint), "helloworld")
 
+  def test_place_id_side_of_road(self):
+    waypoint: cfr_json.Waypoint = {"placeId": "helloworld", "sideOfRoad": True}
+    self.assertEqual(human_readable.waypoint(waypoint), "helloworld, side=true")
+
+  def test_latlng_side_of_road(self):
+    waypoint: cfr_json.Waypoint = {
+        "location": {"latLng": {"latitude": 0.12, "longitude": 32.22}},
+        "sideOfRoad": True,
+    }
+    self.assertEqual(
+        human_readable.waypoint(waypoint), "0.12, 32.22, side=true"
+    )
+
+  def test_latlng_heading(self):
+    waypoint: cfr_json.Waypoint = {
+        "location": {
+            "latLng": {"latitude": 0.12, "longitude": 32.22},
+            "heading": 91,
+        },
+    }
+    self.assertEqual(
+        human_readable.waypoint(waypoint), "0.12, 32.22, heading=91"
+    )
+
 
 if __name__ == "__main__":
   unittest.main()

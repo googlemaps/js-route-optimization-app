@@ -181,9 +181,14 @@ def visit_request_location(visit_request: cfr_json.VisitRequest) -> str:
 def waypoint(wp: cfr_json.Waypoint) -> str:
   """Returns the coordinates of a waypoint in a human-readable form."""
   # TODO(ondrasej): Consider adding "sideOfRoad" and "heading".
+  parts = []
   if (location := wp.get("location")) is not None:
     if (latlng := location.get("latLng")) is not None:
-      return lat_lng(latlng)
+      parts.append(lat_lng(latlng))
+    if (heading := location.get("heading")) is not None:
+      parts.append(f"heading={heading}")
   elif (place_id := wp.get("placeId")) is not None:
-    return place_id
-  return ""
+    parts.append(place_id)
+  if wp.get("sideOfRoad", False):
+    parts.append("side=true")
+  return ", ".join(parts)
