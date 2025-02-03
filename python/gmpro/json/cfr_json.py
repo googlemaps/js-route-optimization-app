@@ -122,9 +122,12 @@ class VisitRequest(TypedDict, total=False):
   timeWindows: list[TimeWindow]
   duration: DurationString
   cost: float
+  label: str
   avoidUTurns: bool
 
   tags: list[str]
+  visitTypes: list[str]
+  loadDemands: dict[str, Load]
 
 
 class Shipment(TypedDict, total=False):
