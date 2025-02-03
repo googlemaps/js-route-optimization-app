@@ -91,7 +91,7 @@ class TransformRequestTest(unittest.TestCase):
                     {"shipmentIndex": 2, "isPickup": True},
                 ]
             },
-            {"visits": [{"shipmentIndex": 1}]},
+            {"vehicleIndex": 1, "visits": [{"shipmentIndex": 1}]},
         ]
     }
     expected_output_request = {
@@ -110,7 +110,119 @@ class TransformRequestTest(unittest.TestCase):
                     {"shipmentIndex": 2, "isPickup": True},
                 ]
             },
-            {"visits": [{"shipmentIndex": 1}]},
+            {"vehicleIndex": 1, "visits": [{"shipmentIndex": 1}]},
+        ],
+    }
+    response_file = path.join(
+        self.enterContext(tempfile.TemporaryDirectory()), "solution.json"
+    )
+    io_utils.write_json_to_file(response_file, response)
+    self.assertEqual(
+        self.run_transform_request_main(
+            request,
+            (
+                f"--add_injected_first_solution_routes_from_file={response_file}",
+            ),
+        ),
+        expected_output_request,
+    )
+
+  def test_add_injected_first_solution_routes_from_file__partial_routes(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}]},
+                {"label": "S002", "deliveries": [{}]},
+                {"label": "S003", "pickups": [{}]},
+            ],
+            "vehicles": [{"label": "V001"}, {"label": "V002"}],
+        }
+    }
+    response: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {"vehicleIndex": 1, "visits": [{"shipmentIndex": 1}]},
+        ]
+    }
+    expected_output_request = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}]},
+                {"label": "S002", "deliveries": [{}]},
+                {"label": "S003", "pickups": [{}]},
+            ],
+            "vehicles": [{"label": "V001"}, {"label": "V002"}],
+        },
+        "injectedFirstSolutionRoutes": [
+            {"vehicleIndex": 1, "visits": [{"shipmentIndex": 1}]},
+            {"vehicleIndex": 0, "vehicleLabel": "V001"},
+        ],
+    }
+    response_file = path.join(
+        self.enterContext(tempfile.TemporaryDirectory()), "solution.json"
+    )
+    io_utils.write_json_to_file(response_file, response)
+    self.assertEqual(
+        self.run_transform_request_main(
+            request,
+            (
+                f"--add_injected_first_solution_routes_from_file={response_file}",
+            ),
+        ),
+        expected_output_request,
+    )
+
+  def test_add_injected_first_solution_routes_from_file__partial_routes_and_labels(
+      self,
+  ):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}]},
+                {"label": "S002", "deliveries": [{}]},
+                {"label": "S003", "pickups": [{}]},
+            ],
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+            ],
+        },
+        "interpretInjectedSolutionsUsingLabels": True,
+    }
+    response: cfr_json.OptimizeToursResponse = {
+        "routes": [
+            {
+                "vehicleIndex": 1,
+                "vehicleLabel": "V002",
+                "visits": [{"shipmentIndex": 1}],
+            },
+            {
+                "vehicleLabel": "V001",
+            },
+        ]
+    }
+    expected_output_request = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}]},
+                {"label": "S002", "deliveries": [{}]},
+                {"label": "S003", "pickups": [{}]},
+            ],
+            "vehicles": [
+                {"label": "V001"},
+                {"label": "V002"},
+                {"label": "V003"},
+            ],
+        },
+        "interpretInjectedSolutionsUsingLabels": True,
+        "injectedFirstSolutionRoutes": [
+            {
+                "vehicleIndex": 1,
+                "vehicleLabel": "V002",
+                "visits": [{"shipmentIndex": 1}],
+            },
+            {"vehicleLabel": "V001"},
+            {"vehicleIndex": 2, "vehicleLabel": "V003"},
         ],
     }
     response_file = path.join(

@@ -652,7 +652,31 @@ def _add_injected_first_solution_routes_from_file(
       )
     raise ValueError("\n".join(error_message_parts))
 
-  request["injectedFirstSolutionRoutes"] = list(cfr_json.get_routes(response))
+  # As of 2025-01-31, the API requires that injectedFirstSolutionRoutes contains
+  # a route for each vehicle. To make sure that this always holds, we add an
+  # empty route for each vehicle that is not covered by the routes imported from
+  # the file.
+  seen_vehicles = set()
+  use_labels = request.get("interpretInjectedSolutionsUsingLabels", False)
+  # TODO(ondrasej): Make the index validation use labels too, when required.
+  injected_routes = []
+  for route in cfr_json.get_routes(response):
+    injected_routes.append(route)
+    if use_labels:
+      seen_vehicles.add(route.get("vehicleLabel", ""))
+    else:
+      seen_vehicles.add(route.get("vehicleIndex", 0))
+
+  for vehicle_index, vehicle in enumerate(request["model"]["vehicles"]):
+    vehicle_label = vehicle.get("label", "")
+    vehicle_id = vehicle_label if use_labels else vehicle_index
+    if vehicle_id not in seen_vehicles:
+      injected_routes.append({
+          "vehicleIndex": vehicle_index,
+          "vehicleLabel": vehicle_label,
+      })
+
+  request["injectedFirstSolutionRoutes"] = injected_routes
 
 
 def main(args: Sequence[str] | None = None) -> None:
