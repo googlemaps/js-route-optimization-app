@@ -1,0 +1,432 @@
+{
+  "model": {
+    "globalStartTime": "2024-03-30T08:00:00Z",
+    "globalEndTime": "2024-03-30T20:00:00Z",
+    "shipments": [
+      {
+        "label": "S0001",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87569319455461,
+                  "longitude": 2.3397954506152603
+                }
+              }
+            },
+            "duration": "300s",
+            "timeWindows": [
+              {
+                "startTime": "2024-03-30T09:00:00Z",
+                "endTime": "2024-03-30T11:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "label": "S0002",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.885698956587284,
+                  "longitude": 2.3609034251661027
+                }
+              }
+            },
+            "duration": "300s",
+            "timeWindows": [
+              {
+                "startTime": "2024-03-30T09:00:00Z",
+                "endTime": "2024-03-30T13:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        },
+        "penaltyCost": 10000.0
+      },
+      {
+        "label": "S0003",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8804388418973,
+                  "longitude": 2.3612970150561963
+                }
+              }
+            },
+            "duration": "300s",
+            "timeWindows": [
+              {
+                "startTime": "2024-03-30T09:00:00Z",
+                "endTime": "2024-03-30T13:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        },
+        "penaltyCost": 10000.0
+      },
+      {
+        "label": "S0004",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88470905742857,
+                  "longitude": 2.357024289821416
+                }
+              }
+            },
+            "duration": "300s",
+            "timeWindows": [
+              {
+                "startTime": "2024-03-30T09:00:00Z",
+                "endTime": "2024-03-30T11:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        },
+        "penaltyCost": 10000.0
+      },
+      {
+        "label": "S0005",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.876455420303756,
+                  "longitude": 2.3203110132412776
+                }
+              }
+            },
+            "duration": "300s",
+            "timeWindows": [
+              {
+                "startTime": "2024-03-30T09:00:00Z",
+                "endTime": "2024-03-30T13:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        },
+        "penaltyCost": 10000.0
+      },
+      {
+        "label": "S0006",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87151207620549,
+                  "longitude": 2.318843075024995
+                }
+              }
+            },
+            "duration": "300s",
+            "timeWindows": [
+              {
+                "startTime": "2024-03-30T09:00:00Z",
+                "endTime": "2024-03-30T11:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        },
+        "penaltyCost": 10000.0
+      },
+      {
+        "label": "S0007",
+        "pickups": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.8691311379193,
+                  "longitude": 2.324674079722038
+                }
+              }
+            },
+            "duration": "300s",
+            "timeWindows": [
+              {
+                "startTime": "2024-03-30T09:00:00Z",
+                "endTime": "2024-03-30T13:00:00Z"
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "shipment_count": {
+            "amount": "1"
+          }
+        },
+        "penaltyCost": 10000.0
+      },
+      {
+        "label": "P0002 arrival",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.872137841234895,
+                  "longitude": 2.3221168113361053
+                }
+              }
+            },
+            "duration": "20s",
+            "departureWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87156933296887,
+                  "longitude": 2.3224684673578118
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "P0002 departure",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87156933296887,
+                  "longitude": 2.3224684673578118
+                }
+              }
+            },
+            "duration": "120s",
+            "departureWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.872137841234895,
+                  "longitude": 2.3221168113361053
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "P0002 arrival",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.872137841234895,
+                  "longitude": 2.3221168113361053
+                }
+              }
+            },
+            "duration": "0s",
+            "departureWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87156933296887,
+                  "longitude": 2.3224684673578118
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "P0002 departure",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.87156933296887,
+                  "longitude": 2.3224684673578118
+                }
+              }
+            },
+            "duration": "120s",
+            "departureWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.872137841234895,
+                  "longitude": 2.3221168113361053
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "P0001 arrival",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88239578306499,
+                  "longitude": 2.3572253120853324
+                }
+              }
+            },
+            "duration": "60s",
+            "departureWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88036,
+                  "longitude": 2.352196
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "P0001 departure",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88036,
+                  "longitude": 2.352196
+                }
+              }
+            },
+            "duration": "0s",
+            "departureWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88239578306499,
+                  "longitude": 2.3572253120853324
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "P0001 arrival",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88239578306499,
+                  "longitude": 2.3572253120853324
+                }
+              }
+            },
+            "duration": "60s",
+            "departureWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88036,
+                  "longitude": 2.352196
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "P0001 departure",
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88036,
+                  "longitude": 2.352196
+                }
+              }
+            },
+            "duration": "30s",
+            "departureWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 48.88239578306499,
+                  "longitude": 2.3572253120853324
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "vehicles": [
+      {
+        "label": "V0001",
+        "costPerKilometer": 1.0,
+        "costPerHour": 60.0,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 48.879833,
+              "longitude": 2.349798
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2024-03-30T08:00:00Z",
+            "endTime": "2024-03-30T08:00:00Z"
+          }
+        ],
+        "fixedCost": 1000.0,
+        "loadLimits": {
+          "shipment_count": {
+            "maxLoad": "20"
+          }
+        }
+      }
+    ]
+  },
+  "label": "/merged",
+  "populateTransitionPolylines": true
+}

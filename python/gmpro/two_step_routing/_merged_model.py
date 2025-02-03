@@ -206,14 +206,22 @@ class MergeLocalAndGlobalModel:
       ):
         arrival_or_departure = "arrival" if arrival else "departure"
         shipment_index = len(merged_shipments)
+        arrival_waypoint = (
+            parking.waypoint if arrival else parking.waypoint_for_local_model
+        )
+        departure_waypoint = (
+            parking.waypoint_for_local_model if arrival else parking.waypoint
+        )
         shipment: cfr_json.Shipment = {
             "label": f"{parking.tag} {arrival_or_departure}",
             "deliveries": [{
-                "arrivalWaypoint": parking.waypoint_for_local_model,
+                "arrivalWaypoint": arrival_waypoint,
                 "duration": "0s",
             }],
             # TODO(ondrasej): Vehicle costs and allowed vehicle indices.
         }
+        if departure_waypoint != arrival_waypoint:
+          shipment["deliveries"][0]["departureWaypoint"] = departure_waypoint
         merged_shipments.append(shipment)
         return shipment_index, shipment
 

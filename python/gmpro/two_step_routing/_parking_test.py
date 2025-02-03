@@ -40,6 +40,35 @@ class ParkingLocationTest(unittest.TestCase):
         },
     )
 
+  def test_initialize_from_local_waypoint(self):
+    parking = _parking.ParkingLocation(
+        tag="P002",
+        waypoint={
+            "sideOfRoad": True,
+            "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",  # Google Paris.
+        },
+        local_waypoint={
+            "placeId": (
+                "ChIJGfDN4Htv5kcRUdraIqjw9cM"
+            ),  # Google Cloud Space France.
+        },
+    )
+    self.assertEqual(
+        parking.waypoint,
+        {
+            "sideOfRoad": True,
+            "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",  # Google Paris.
+        },
+    )
+    self.assertEqual(
+        parking.local_waypoint,
+        {
+            "placeId": (
+                "ChIJGfDN4Htv5kcRUdraIqjw9cM"
+            ),  # Google Cloud Space France.
+        },
+    )
+
   def test_initialize_from_coordinates(self):
     parking = _parking.ParkingLocation(
         tag="P002",
@@ -150,6 +179,14 @@ class LoadParkingFromJsonTest(unittest.TestCase):
                     "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",
                     "sideOfRoad": True,
                 },
+                "local_waypoint": {
+                    "location": {
+                        "latLng": {
+                            "latitude": 48.9,
+                            "longitude": 2.4,
+                        }
+                    }
+                },
                 "tag": "P007",
                 "travel_mode": 2,
             },
@@ -176,6 +213,14 @@ class LoadParkingFromJsonTest(unittest.TestCase):
                 waypoint={
                     "placeId": "ChIJixLu7DBu5kcRQnIpA2tErS8",
                     "sideOfRoad": True,
+                },
+                local_waypoint={
+                    "location": {
+                        "latLng": {
+                            "latitude": 48.9,
+                            "longitude": 2.4,
+                        }
+                    }
                 },
                 tag="P007",
                 travel_mode=2,
