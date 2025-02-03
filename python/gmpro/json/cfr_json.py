@@ -331,6 +331,7 @@ class OptimizeToursRequest(TypedDict, total=False):
   allowLargeDeadlineDespiteInterruptionRisk: bool
   considerRoadTraffic: bool
   injectedFirstSolutionRoutes: list[ShipmentRoute]
+  interpretInjectedSolutionsUsingLabels: bool
   internalParameters: str
   label: str
   model: ShipmentModel

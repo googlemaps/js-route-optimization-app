@@ -1321,6 +1321,37 @@ class TransformRequestTest(unittest.TestCase):
         expected_request,
     )
 
+  def test_override_interpret_injected_routes__from_none(self):
+    request: cfr_json.OptimizeToursRequest = {"model": {}}
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+        "interpretInjectedSolutionsUsingLabels": False,
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request,
+            ("--override_interpret_injected_solutions_using_labels=false",),
+        ),
+        expected_request,
+    )
+
+  def test_override_interpret_injected_routes__from_false(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+        "interpretInjectedSolutionsUsingLabels": False,
+    }
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {},
+        "interpretInjectedSolutionsUsingLabels": True,
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request,
+            ("--override_interpret_injected_solutions_using_labels=true",),
+        ),
+        expected_request,
+    )
+
 
 if __name__ == "__main__":
   unittest.main()

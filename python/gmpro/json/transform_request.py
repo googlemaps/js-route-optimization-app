@@ -154,6 +154,7 @@ class Flags:
   override_internal_parameters: str | None
 
   add_injected_first_solution_routes_from_file: str | None
+  override_interpret_injected_solutions_using_labels: bool | None
 
   @property
   def items_per_shipment_callback(self) -> Callable[[cfr_json.Shipment], int]:
@@ -395,6 +396,16 @@ class Flags:
             " vehicle, shipment and visit request indices on the routes are"
             " valid."
         ),
+        default=None,
+    )
+    parser.add_argument(
+        "--override_interpret_injected_solutions_using_labels",
+        help=(
+            "When specified, overrides the"
+            " `interpretInjectedSolutionsUsingLabels` field in the request with"
+            " the given value."
+        ),
+        type=_explicit_true_or_false,
         default=None,
     )
 
@@ -658,12 +669,16 @@ def main(args: Sequence[str] | None = None) -> None:
 
   model = request["model"]
 
+  if flags.override_consider_road_traffic is not None:
+    request["considerRoadTraffic"] = flags.override_consider_road_traffic
+  if flags.override_interpret_injected_solutions_using_labels is not None:
+    request["interpretInjectedSolutionsUsingLabels"] = (
+        flags.override_interpret_injected_solutions_using_labels
+    )
   if flags.add_injected_first_solution_routes_from_file is not None:
     _add_injected_first_solution_routes_from_file(
         request, flags.add_injected_first_solution_routes_from_file
     )
-  if flags.override_consider_road_traffic is not None:
-    request["considerRoadTraffic"] = flags.override_consider_road_traffic
   if flags.override_avoid_u_turns is not None:
     transforms.set_avoid_u_turns(
         model,
