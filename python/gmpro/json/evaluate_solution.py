@@ -161,6 +161,10 @@ def make_reduced_request(
         reduced_visit["shipmentLabel"] = shipment_label
       if (is_pickup := visit.get("isPickup")) is not None:
         reduced_visit["isPickup"] = is_pickup
+      if (visit_request_index := visit.get("visitRequestIndex")) is not None:
+        reduced_visit["visitRequestIndex"] = visit_request_index
+      if (token := visit.get("injectedSolutionLocationToken")) is not None:
+        reduced_visit["injectedSolutionLocationToken"] = token
       reduced_visits.append(reduced_visit)
 
   skipped_shipment_indices = cfr_json.get_skipped_shipments_from_routes(
@@ -272,7 +276,8 @@ def integrate_skipped_shipments(
   new_response["skippedShipments"] = new_response_skipped_shipments
 
   # Adjust costs and metrics.
-  if (metrics := new_response.get("metrics")) is None:
+  metrics = new_response.get("metrics")
+  if metrics is None:
     raise ValueError("Metrics are missing in `response`.")
   assert metrics.get("skippedMandatoryShipmentCount", 0) == 0, (
       "The response to the reduced request can't have skipped mandatory"
@@ -283,9 +288,6 @@ def integrate_skipped_shipments(
 
   total_cost = metrics.get("totalCost", 0)
   metrics["totalCost"] = total_cost + new_skipped_shipment_penalty_cost
-  # Update also the deprecated OptimizeToursResponse.totalCost.
-  total_cost = new_response.get("totalCost", 0)
-  new_response["totalCost"] = total_cost + new_skipped_shipment_penalty_cost
 
   assert metrics.get("model.shipments.penalty_cost", 0) == 0, (
       "The response to the reduced request can't have non-zero penalty cost for"

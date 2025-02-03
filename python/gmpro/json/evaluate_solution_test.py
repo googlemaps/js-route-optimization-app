@@ -98,7 +98,15 @@ class MakeReducedRequestTest(unittest.TestCase):
     routes: Sequence[cfr_json.ShipmentRoute] = (
         {"visits": [{"shipmentIndex": 2}, {"shipmentIndex": 1}]},
         {"vehicleIndex": 1},
-        {"vehicleIndex": 2, "visits": [{"shipmentIndex": 4}]},
+        {
+            "vehicleIndex": 2,
+            "visits": [{
+                "shipmentIndex": 4,
+                "visitRequestIndex": 3,
+                "injectedSolutionLocationToken": 10,
+                "isPickup": True,
+            }],
+        },
     )
     reduced_request, new_shipment_for_old_shipment, skipped_shipments = (
         evaluate_solution.make_reduced_request(model, routes)
@@ -131,7 +139,12 @@ class MakeReducedRequestTest(unittest.TestCase):
                     {"vehicleIndex": 1},
                     {
                         "vehicleIndex": 2,
-                        "visits": [{"shipmentIndex": 2}],
+                        "visits": [{
+                            "shipmentIndex": 2,
+                            "visitRequestIndex": 3,
+                            "injectedSolutionLocationToken": 10,
+                            "isPickup": True,
+                        }],
                     },
                 ],
             },
@@ -176,7 +189,6 @@ class IntegrateSkippedShipmentsTest(unittest.TestCase):
         output_response,
         {
             "routes": [{}, {"vehicleIndex": 1}, {"vehicleIndex": 2}],
-            "totalCost": 20000,
             "metrics": {
                 "skippedMandatoryShipmentCount": 2,
                 "costs": {"model.shipments.penalty_cost": 20000},

@@ -358,7 +358,6 @@ class OptimizeToursResponse(TypedDict, total=False):
   requestLabel: str
   routes: list[ShipmentRoute]
   skippedShipments: list[SkippedShipment]
-  totalCost: float
   metrics: Metrics
 
 
