@@ -82,6 +82,30 @@ def remove_shipments(
   return new_shipment_for_old_shipment
 
 
+def set_avoid_u_turns(
+    model: cfr_json.ShipmentModel,
+    avoid_u_turns: bool,
+    shipment_indices: Collection[int] | None,
+) -> None:
+  """Sets the avoid u-turns flag for all visit requests of the given shipments.
+
+  Args:
+    model: The model in which the change is made.
+    avoid_u_turns: The new value of the avoid u-turns flag.
+    shipment_indices: A collection of indices for which the flag is updated.
+      When None, the flag is updated for all shipments.
+  """
+  shipments = cfr_json.get_shipments(model)
+  if shipment_indices is None:
+    shipment_indices = range(len(shipments))
+  for shipment_index in shipment_indices:
+    shipment = shipments[shipment_index]
+    for visit_request in itertools.chain(
+        shipment.get("pickups", ()), shipment.get("deliveries", ())
+    ):
+      visit_request["avoidUTurns"] = avoid_u_turns
+
+
 def update_shipment_indices_in_shipment_routes(
     routes: Sequence[cfr_json.ShipmentRoute],
     new_shipment_for_old_shipment: Mapping[int, int],

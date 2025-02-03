@@ -1110,6 +1110,98 @@ class RemovePickupsTest(unittest.TestCase):
       transforms.remove_pickups(model)
 
 
+class SetAvoidUTurnsTest(unittest.TestCase):
+  """Tests for set_avoid_u_turns."""
+
+  maxDiff = None
+
+  def test_empty_model(self):
+    model: cfr_json.ShipmentModel = {}
+    transforms.set_avoid_u_turns(model, False, None)
+    self.assertEqual(model, {})
+
+  def test_no_shipments(self):
+    model = {"shipments": []}
+    transforms.set_avoid_u_turns(model, True, None)
+    self.assertEqual(model, {"shipments": []})
+
+  def test_update_all_shipments(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "label": "S001",
+                "pickups": [
+                    {"arrivalWaypoint": {"placeId": "foo"}},
+                    {"arrivalWaypoint": {"placeId": "bar"}},
+                ],
+                "deliveries": [{"arrivalWaypoint": {"placeId": "baz"}}],
+            },
+            {"label": "S002", "pickups": [{}]},
+            {"label": "S003", "deliveries": [{}]},
+        ]
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "label": "S001",
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {"placeId": "foo"},
+                        "avoidUTurns": True,
+                    },
+                    {
+                        "arrivalWaypoint": {"placeId": "bar"},
+                        "avoidUTurns": True,
+                    },
+                ],
+                "deliveries": [
+                    {"arrivalWaypoint": {"placeId": "baz"}, "avoidUTurns": True}
+                ],
+            },
+            {"label": "S002", "pickups": [{"avoidUTurns": True}]},
+            {"label": "S003", "deliveries": [{"avoidUTurns": True}]},
+        ]
+    }
+    transforms.set_avoid_u_turns(model, True, None)
+    self.assertEqual(model, expected_model)
+
+  def test_update_some_shipments(self):
+    model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "label": "S001",
+                "pickups": [
+                    {"arrivalWaypoint": {"placeId": "foo"}},
+                    {"arrivalWaypoint": {"placeId": "bar"}},
+                ],
+            },
+            {"label": "S002", "pickups": [{}]},
+            {"label": "S003", "deliveries": [{}]},
+        ]
+    }
+    expected_model: cfr_json.ShipmentModel = {
+        "shipments": [
+            {
+                "label": "S001",
+                "pickups": [
+                    {
+                        "arrivalWaypoint": {"placeId": "foo"},
+                        "avoidUTurns": True,
+                    },
+                    {
+                        "arrivalWaypoint": {"placeId": "bar"},
+                        "avoidUTurns": True,
+                    },
+                ],
+            },
+            {"label": "S002", "pickups": [{}]},
+            {"label": "S003", "deliveries": [{"avoidUTurns": True}]},
+        ]
+    }
+    transforms.set_avoid_u_turns(model, True, (0, 2))
+    self.assertEqual(model, expected_model)
+
+
 class SplitShipmentTest(unittest.TestCase):
   """Tests for split_shipment."""
 

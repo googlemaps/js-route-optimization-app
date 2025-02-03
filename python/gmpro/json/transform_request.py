@@ -146,6 +146,8 @@ class Flags:
   transform_breaks: str | None
 
   override_consider_road_traffic: bool | None
+  override_avoid_u_turns: bool | None
+  override_avoid_u_turns_shipment_indices: Sequence[int] | None
 
   @property
   def items_per_shipment_callback(self) -> Callable[[cfr_json.Shipment], int]:
@@ -320,6 +322,27 @@ class Flags:
         ),
         type=_explicit_true_or_false,
         default=None,
+    )
+    parser.add_argument(
+        "--override_avoid_u_turns",
+        help=(
+            "Specifies an override for the value of `avoidUTurns` in the visit"
+            " requests in the model. When unspecified, the original value is"
+            " preserved. When `--override_avoid_u_turns_shipment_indices` is"
+            " specified, the override is done only for the specified shipments;"
+            " otherwise, it's done for all shipments."
+        ),
+        type=_explicit_true_or_false,
+        default=None,
+    )
+    parser.add_argument(
+        "--override_avoid_u_turns_shipment_indices",
+        type=_parse_comma_separated_index_list,
+        help=(
+            "The list of shipment indices where `--override_avoid_u_turns`"
+            " should be applied. When unspecified, the transform is applied to"
+            " all shipments."
+        ),
     )
     transforms.OnInfeasibleShipment.add_as_argument(
         parser,
@@ -549,6 +572,12 @@ def main(args: Sequence[str] | None = None) -> None:
 
   if flags.override_consider_road_traffic is not None:
     request["considerRoadTraffic"] = flags.override_consider_road_traffic
+  if flags.override_avoid_u_turns is not None:
+    transforms.set_avoid_u_turns(
+        model,
+        flags.override_avoid_u_turns,
+        flags.override_avoid_u_turns_shipment_indices,
+    )
   if flags.shipment_penalty_cost_per_item is not None:
     transforms.make_all_shipments_optional(
         model,

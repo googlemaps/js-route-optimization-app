@@ -1031,6 +1031,77 @@ class TransformRequestTest(unittest.TestCase):
         f"{request=}\n{expected_output_request=}",
     )
 
+  def test_override_avoid_u_turns_for_all_shipments(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}, {}], "deliveries": [{}]},
+                {"label": "S002", "pickups": [{}], "deliveries": [{}]},
+            ]
+        },
+    }
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {
+                    "label": "S001",
+                    "pickups": [
+                        {"avoidUTurns": True},
+                        {"avoidUTurns": True},
+                    ],
+                    "deliveries": [{"avoidUTurns": True}],
+                },
+                {
+                    "label": "S002",
+                    "pickups": [{"avoidUTurns": True}],
+                    "deliveries": [{"avoidUTurns": True}],
+                },
+            ]
+        },
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request, ("--override_avoid_u_turns=true",)
+        ),
+        expected_request,
+    )
+
+  def test_override_avoid_u_turns_for_some_shipments(self):
+    request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {"label": "S001", "pickups": [{}, {}]},
+                {"label": "S002", "pickups": [{}], "deliveries": [{}]},
+                {"label": "S003", "deliveries": [{}]},
+            ]
+        },
+    }
+    expected_request: cfr_json.OptimizeToursRequest = {
+        "model": {
+            "shipments": [
+                {
+                    "label": "S001",
+                    "pickups": [
+                        {"avoidUTurns": False},
+                        {"avoidUTurns": False},
+                    ],
+                },
+                {"label": "S002", "pickups": [{}], "deliveries": [{}]},
+                {"label": "S003", "deliveries": [{"avoidUTurns": False}]},
+            ]
+        },
+    }
+    self.assertEqual(
+        self.run_transform_request_main(
+            request,
+            (
+                "--override_avoid_u_turns=false",
+                "--override_avoid_u_turns_shipment_indices=0,2",
+            ),
+        ),
+        expected_request,
+    )
+
   def test_override_consider_road_traffic_true_from_false(self):
     request: cfr_json.OptimizeToursRequest = {
         "model": {},
