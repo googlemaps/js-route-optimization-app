@@ -68,7 +68,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
     this.capsuleIconMapping = {};
     // dynamically create icon mapping based on sprite
     for (let i = 0; i < this.iconMappingOrder.length; i++) {
-      for (let stopOrder = 0; stopOrder < 101; stopOrder++) {
+      for (let stopOrder = 0; stopOrder < 200; stopOrder++) {
         const icon = `${this.iconMappingOrder[i]}-${stopOrder}`;
         this.capsuleIconMapping[icon] = {
           x: this.capsuleIconSize[0] * stopOrder,
@@ -91,7 +91,7 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
         ? `pickup-${this.defaultColor}-skipped-0`
         : `dropoff-${this.defaultColor}-skipped-0`;
     }
-    const stopOrder = Math.min(data.stopOrder, 100);
+    const stopOrder = Math.min(data.stopOrder, 199);
     return data.pickup
       ? `pickup-${this.defaultColor}-${stopOrder}`
       : `dropoff-${this.defaultColor}-${stopOrder}`;
@@ -152,8 +152,8 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
         : `dropoff-${this.defaultColor}-skipped-0`;
     }
 
-    // Clamp to 100, whereafter all labels are "99+"
-    const stopOrder = Math.min(data.stopOrder, 100);
+    // Labels go up to 199 and then all are "200+" after
+    const stopOrder = Math.min(data.stopOrder, 199);
     const color = (data.color && data.color.name) || this.defaultSelectedColor;
     const key = data.pickup ? `pickup-${color}-${stopOrder}` : `dropoff-${color}-${stopOrder}`;
     return key;
