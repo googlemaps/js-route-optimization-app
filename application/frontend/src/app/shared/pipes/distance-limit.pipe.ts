@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { IDistanceLimit } from 'src/app/core/models';
-import * as Long from 'long';
+import Long from 'long';
 
 /**
  * Converts a protobuf DistanceLimit to an object.

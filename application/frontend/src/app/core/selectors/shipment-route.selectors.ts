@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 import { decodePath, durationSeconds, maxLong, minLong, pick } from 'src/app/util';
 import { IBreak, RouteStats, ShipmentRoute, VisitVisitRequest } from '../models';
 import * as fromShipmentRoute from '../reducers/shipment-route.reducer';

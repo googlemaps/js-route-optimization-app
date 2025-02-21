@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 import { FilterNumberFormComponent } from 'src/app/shared/components/filter-number-form/filter-number-form.component';
 import { NumberFilterParams } from 'src/app/shared/models/filter';
 import {

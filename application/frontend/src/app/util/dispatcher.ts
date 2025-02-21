@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { google } from '@google-cloud/optimization/build/protos/protos';
-import * as Long from 'long';
+import Long from 'long';
 
 const toObjectOptions = { longs: String };
 

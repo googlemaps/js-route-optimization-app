@@ -16,7 +16,7 @@ limitations under the License.
 
 import * as fromShipmentModel from '../reducers/shipment-model.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 
 export const selectShipmentModelState = createFeatureSelector<fromShipmentModel.State>(
   fromShipmentModel.shipmentModelFeatureKey

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { formatDate } from '@angular/common';
-import * as Long from 'long';
+import Long from 'long';
 import { ITimestamp, ITimeWindow, IVisit } from '../core/models';
 import { durationSeconds } from './duration';
 

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 import { ChartConfig, Range } from 'src/app/shared/models';
 import * as chartConfig from 'src/app/shared/models/chart-config';
 import { routesFilterOptions, selectedRouteFilterOption } from '../models';

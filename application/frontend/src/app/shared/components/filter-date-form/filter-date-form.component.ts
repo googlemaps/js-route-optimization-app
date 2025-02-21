@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';

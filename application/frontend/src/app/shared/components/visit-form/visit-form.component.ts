@@ -32,7 +32,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import * as Long from 'long';
+import Long from 'long';
 import { asyncScheduler, combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith, throttleTime } from 'rxjs/operators';
 import { Vehicle, Visit, VisitRequest, VisitValidationResult } from 'src/app/core/models';

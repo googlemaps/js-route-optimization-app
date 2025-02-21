@@ -43,7 +43,7 @@ import { getCapacityQuantityRoot, getCapacityQuantityUnit, toFiniteOrNull } from
 import { ErrorStateMatcher, mixinErrorState, CanUpdateErrorState } from '@angular/material/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import * as Long from 'long';
+import Long from 'long';
 import { CapacityQuantityFormValue } from '../../models/capacity-quantity';
 
 /**

@@ -37,7 +37,7 @@ import {
 } from 'src/app/util';
 import { Timezone } from '../../../shared/models';
 import { selectTimezone, selectTimezoneOffset } from '../../../core/selectors/config.selectors';
-import * as Long from 'long';
+import Long from 'long';
 import { take } from 'rxjs/operators';
 
 @Component({

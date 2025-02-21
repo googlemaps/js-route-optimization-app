@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import * as Long from 'long';
+import Long from 'long';
 import { FilterDateFormComponent } from 'src/app/shared/components/filter-date-form/filter-date-form.component';
 import { FilterNumberFormComponent } from 'src/app/shared/components/filter-number-form/filter-number-form.component';
 import { FilterSelectFormComponent } from 'src/app/shared/components/filter-select-form/filter-select-form.component';
