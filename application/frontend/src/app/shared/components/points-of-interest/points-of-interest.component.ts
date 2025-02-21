@@ -27,7 +27,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import * as Long from 'long';
+import Long from 'long';
 import { PointOfInterest, PointOfInterestCategory, ChangedVisits } from 'src/app/core/models';
 import { defaultTimeFormat, formatSecondsDate, timeToPixel } from 'src/app/util';
 import { Cluster, PointsOfInterestImageAttribute, pointsOfInterestImages } from '../../models';

@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Dictionary } from '@ngrx/entity';
 import { createSelector, MemoizedSelector } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 import * as fromRoot from 'src/app/reducers';
 import { durationSeconds, maxLong, minLong } from 'src/app/util';
 import {

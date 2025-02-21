@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { pixelToTime, formatLongTime } from 'src/app/util';
-import * as Long from 'long';
+import Long from 'long';
 
 /**
  * Displays the time labels for a timeline

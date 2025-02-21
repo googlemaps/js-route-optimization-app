@@ -25,7 +25,7 @@ import {
 import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { select, Store } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { Timezone } from 'src/app/shared/models';
 import {

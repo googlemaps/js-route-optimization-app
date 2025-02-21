@@ -17,7 +17,7 @@ limitations under the License.
 import { TestBed } from '@angular/core/testing';
 import { Dictionary } from '@ngrx/entity';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import * as Long from 'long';
+import Long from 'long';
 import { createTimestamp, durationSeconds } from 'src/app/util';
 import {
   IShipmentTypeIncompatibility,

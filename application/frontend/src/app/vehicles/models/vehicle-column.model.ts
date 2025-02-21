@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Column, Vehicle } from 'src/app/core/models';
 import { durationSeconds } from 'src/app/util';
-import * as Long from 'long';
+import Long from 'long';
 
 export interface VehicleColumn<TValue = any> extends Column {
   selector?: (vehicle: Vehicle, selected: boolean) => TValue;

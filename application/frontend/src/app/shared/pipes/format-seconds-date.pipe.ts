@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
-import * as Long from 'long';
+import Long from 'long';
 import { formatSecondsDate } from 'src/app/util';
 
 /** Formats seconds as date */

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import * as Long from 'long';
+import Long from 'long';
 import { IDuration, ITimestamp } from 'src/app/core/models';
 import {
   BooleanFilterOperation,

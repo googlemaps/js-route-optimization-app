@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 import { take } from 'rxjs/operators';
 import * as fromRoot from 'src/app/reducers';
 import { durationSeconds, getAvailableTimeRange, ValidationTimeWindow } from '../../util';

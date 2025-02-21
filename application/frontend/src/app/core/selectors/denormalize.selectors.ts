@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Dictionary } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
-import * as Long from 'long';
+import Long from 'long';
 import {
   IConstraintRelaxation,
   IOptimizeToursRequest,

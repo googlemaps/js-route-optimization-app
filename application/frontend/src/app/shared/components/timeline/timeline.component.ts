@@ -28,7 +28,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import * as Long from 'long';
+import Long from 'long';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { PointOfInterest, Timeline, TimelineCategory } from 'src/app/core/models';
