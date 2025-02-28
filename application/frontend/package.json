@@ -57,7 +57,7 @@
     "nouislider": "^14.6.3",
     "pako": "^2.1.0",
     "papaparse": "^5.3.1",
-    "protobufjs": "~7.2.4",
+    "protobufjs": "~7.4.0",
     "rxjs": "^6.6.7",
     "split.js": "^1.6.2",
     "tslib": "^2.0.0",
