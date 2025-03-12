@@ -133,6 +133,7 @@ export class PreSolveEditVehicleDialogComponent implements OnInit {
           .open(ConfirmBulkEditDialogComponent, {
             data: {
               fields: editedFields,
+              isShipment: false,
             },
           })
           .afterClosed()

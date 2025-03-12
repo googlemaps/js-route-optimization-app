@@ -24,5 +24,5 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmBulkEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { fields: string[] }) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { fields: string[]; isShipment: boolean }) {}
 }
