@@ -171,6 +171,7 @@ export class PreSolveEditShipmentDialogComponent implements OnInit, OnDestroy {
           .open(ConfirmBulkEditDialogComponent, {
             data: {
               fields: editedFields,
+              isShipment: true,
             },
           })
           .afterClosed()

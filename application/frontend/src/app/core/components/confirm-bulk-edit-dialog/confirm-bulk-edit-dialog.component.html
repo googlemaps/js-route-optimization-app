@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>Confirm Bulk Overwrite</h2>
 <div mat-dialog-content>
-  This will overwrite the below fields for ALL selected shipments. Do you want to continue?
+  This will overwrite the below fields for ALL selected
+  {{ data.isShipment ? 'shipments' : 'vehicles' }}. Do you want to continue?
 </div>
 <li *ngFor="let fieldName of data.fields">{{ fieldName }}</li>
 <div mat-dialog-actions>
