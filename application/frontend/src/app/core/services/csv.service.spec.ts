@@ -21,19 +21,28 @@ import { selectMapApiKey } from '../selectors/config.selectors';
 import { CsvService } from './csv.service';
 import { parse, unparse } from 'papaparse';
 import { EXPERIMENTAL_API_FIELDS_VEHICLES } from '../models';
+import { GeocodingService } from './geocoding.service';
 
 describe('CsvService', () => {
   let service: CsvService;
 
+  let mockGeocodingService: jasmine.SpyObj<GeocodingService>;
+
   beforeEach(() => {
+    mockGeocodingService = jasmine.createSpyObj('geocodingService', ['geocodeAddress']);
+    mockGeocodingService.geocodeAddress.and.resolveTo(null);
+
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
+        { provide: GeocodingService, useValue: mockGeocodingService },
         provideMockStore({
           selectors: [{ selector: selectMapApiKey, value: '' }],
         }),
       ],
-    });
+    })
+      .overrideProvider(GeocodingService, { useValue: mockGeocodingService })
+      .compileComponents();
 
     service = TestBed.inject(CsvService);
   });
@@ -253,6 +262,115 @@ describe('CsvService', () => {
       expect(result.length).toBe(2);
       expect(result[0].errors.length).toBe(0);
       expect(result[1].errors.length).toBe(1);
+    });
+  });
+
+  describe('Validate geocoding', () => {
+    it('should return null if an empty coordinate is provided', (done) => {
+      service.geocodeLocation('').subscribe((res) => {
+        expect(res).toBeNull();
+        done();
+      });
+    });
+
+    it('should return null if a null coordinate is provided', (done) => {
+      service.geocodeLocation(null).subscribe((res) => {
+        expect(res).toBeNull();
+        done();
+      });
+    });
+
+    it('should return a valid ILatLng if a valid coordinate string is provided', (done) => {
+      service.geocodeLocation('-10,30').subscribe((res) => {
+        expect(res).toEqual({ latitude: -10, longitude: 30 });
+        done();
+      });
+    });
+
+    it('should geocode an invalid lat/lng string', (done) => {
+      service.geocodeLocation('1000,300').subscribe(() => {
+        expect(mockGeocodingService.geocodeAddress).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should return a geocoding error if no results are found', (done) => {
+      mockGeocodingService.geocodeAddress.and.resolveTo([]);
+      service.geocodeLocation('bad address').subscribe((result) => {
+        expect(result).toEqual({
+          error: true,
+          location: 'bad address',
+          message: 'No results found',
+        });
+        done();
+      });
+    });
+
+    it('should return a geocoding error if geocode is out of range', (done) => {
+      mockGeocodingService.geocodeAddress.and.resolveTo([
+        {
+          address_components: [],
+          formatted_address: '',
+          geometry: {
+            location_type: 'test location',
+            location: {
+              lat: 1000,
+              lng: 1000,
+            },
+            viewport: {
+              northeast: { lat: 0, lng: 0 },
+              southwest: { lat: 0, lng: 0 },
+            },
+          },
+          place_id: '',
+          plus_code: {
+            compound_code: '',
+            global_code: '',
+          },
+          types: [],
+        },
+      ]);
+      service.geocodeLocation('bad address').subscribe((result) => {
+        expect(result).toEqual({
+          error: true,
+          location: 'bad address',
+          message: 'Invalid geocode location',
+        });
+        done();
+      });
+    });
+
+    it('should return an ILatLng if geocode is valid range', (done) => {
+      mockGeocodingService.geocodeAddress.and.resolveTo([
+        {
+          address_components: [],
+          formatted_address: '',
+          geometry: {
+            location_type: 'test location',
+            location: {
+              lat: 10,
+              lng: 10,
+            },
+            viewport: {
+              northeast: { lat: 0, lng: 0 },
+              southwest: { lat: 0, lng: 0 },
+            },
+          },
+          place_id: '',
+          plus_code: {
+            compound_code: '',
+            global_code: '',
+          },
+          types: [],
+        },
+      ]);
+      service.geocodeLocation('valid address').subscribe((result) => {
+        expect(result).toEqual({
+          latitude: 10,
+          longitude: 10,
+        });
+        done();
+      });
     });
   });
 });
