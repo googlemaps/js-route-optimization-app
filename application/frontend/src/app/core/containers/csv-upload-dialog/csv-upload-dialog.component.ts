@@ -528,6 +528,7 @@ export class CsvUploadDialogComponent implements OnDestroy, OnInit {
         UnloadingPolicy: this.fb.control(''),
         CostPerHour: this.fb.control(''),
         CostPerTraveledHour: this.fb.control(''),
+        CostPerKilometer: this.fb.control(''),
         FixedCost: this.fb.control(''),
         UsedIfRouteIsEmpty: this.fb.control(''),
         TravelDurationMultiple: this.fb.control(''),
