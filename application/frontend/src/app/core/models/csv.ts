@@ -54,6 +54,7 @@ export enum VehicleFields {
   UnloadingPolicy,
   CostPerHour,
   CostPerTraveledHour,
+  CostPerKilometer,
   FixedCost,
   UsedIfRouteIsEmpty,
   TravelDurationMultiple,
