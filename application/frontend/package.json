@@ -48,7 +48,7 @@
     "cheap-ruler": "^2.5.1",
     "google-gax": "^3.6.0",
     "grpc-web": "^1.2.1",
-    "jspdf": "^3.0.0",
+    "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
     "jszip": "^3.5.0",
     "lodash": "^4.17.20",
