@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoadDemandsMetricsComponent } from './load-demands-metrics.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MaterialModule } from 'src/app/material';
+import { MatIconRegistry } from '@angular/material/icon';
+import { FakeMatIconRegistry } from 'src/test/material-fakes';
 
 describe('LoadDemandsMetricsComponent', () => {
   let component: LoadDemandsMetricsComponent;
@@ -9,6 +12,7 @@ describe('LoadDemandsMetricsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [LoadDemandsMetricsComponent],
       providers: [
         { provide: MatDialogRef, useValue: {} },
@@ -55,7 +59,9 @@ describe('LoadDemandsMetricsComponent', () => {
           },
         },
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(LoadDemandsMetricsComponent);
     component = fixture.componentInstance;

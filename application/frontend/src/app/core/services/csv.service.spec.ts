@@ -20,7 +20,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { selectMapApiKey } from '../selectors/config.selectors';
 import { CsvService } from './csv.service';
 import { parse, unparse } from 'papaparse';
-import { EXPERIMENTAL_API_FIELDS_VEHICLES } from '../models';
+import { EXPERIMENTAL_API_FIELDS_VEHICLES, UnloadingPolicy } from '../models';
 import { GeocodingService } from './geocoding.service';
 
 describe('CsvService', () => {
@@ -262,6 +262,74 @@ describe('CsvService', () => {
       expect(result.length).toBe(2);
       expect(result[0].errors.length).toBe(0);
       expect(result[1].errors.length).toBe(1);
+    });
+
+    it('should parse unloading policies provided by name', () => {
+      const vehicles = [
+        {
+          label: 'test vehicle 1',
+          unloadingPolicy: 'UNLOADING_POLICY_UNSPECIFIED',
+        },
+        {
+          label: 'test vehicle 2',
+          unloadingPolicy: 'FIRST_IN_FIRST_OUT',
+        },
+        {
+          label: 'test vehicle 3',
+          unloadingPolicy: 'LAST_IN_FIRST_OUT',
+        },
+        {
+          label: 'test vehicle 4',
+        },
+      ];
+      const testVehicleMapping = {
+        Label: 'label',
+        UnloadingPolicy: 'unloadingPolicy',
+      };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(4);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[1].errors.length).toBe(0);
+      expect(result[2].errors.length).toBe(0);
+      expect(result[3].errors.length).toBe(0);
+      expect(result[0].vehicle.unloadingPolicy).toBe(UnloadingPolicy.UNLOADING_POLICY_UNSPECIFIED);
+      expect(result[1].vehicle.unloadingPolicy).toBe(UnloadingPolicy.FIRST_IN_FIRST_OUT);
+      expect(result[2].vehicle.unloadingPolicy).toBe(UnloadingPolicy.LAST_IN_FIRST_OUT);
+      expect(result[3].vehicle.unloadingPolicy).toBeUndefined();
+    });
+
+    it('should parse unloading policies provided by value', () => {
+      const vehicles = [
+        {
+          label: 'test vehicle 1',
+          unloadingPolicy: '0',
+        },
+        {
+          label: 'test vehicle 2',
+          unloadingPolicy: '1',
+        },
+        {
+          label: 'test vehicle 3',
+          unloadingPolicy: '2',
+        },
+        {
+          label: 'test vehicle 4',
+        },
+      ];
+      const testVehicleMapping = {
+        Label: 'label',
+        UnloadingPolicy: 'unloadingPolicy',
+      };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(4);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[1].errors.length).toBe(0);
+      expect(result[2].errors.length).toBe(0);
+      expect(result[3].errors.length).toBe(0);
+      expect(result[0].vehicle.unloadingPolicy).toBe(UnloadingPolicy.UNLOADING_POLICY_UNSPECIFIED);
+      expect(result[1].vehicle.unloadingPolicy).toBe(UnloadingPolicy.LAST_IN_FIRST_OUT);
+      expect(result[2].vehicle.unloadingPolicy).toBe(UnloadingPolicy.FIRST_IN_FIRST_OUT);
+      expect(result[3].vehicle.unloadingPolicy).toBeUndefined();
     });
   });
 

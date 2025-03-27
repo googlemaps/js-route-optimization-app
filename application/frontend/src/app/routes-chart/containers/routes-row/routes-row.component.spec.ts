@@ -22,7 +22,6 @@ import { provideMockStore } from '@ngrx/store/testing';
 import Long from 'long';
 import {
   PointOfInterest,
-  PointOfInterestClick,
   ShipmentRoute,
   Timeline,
   ChangedVisits,
@@ -51,6 +50,7 @@ class MockBaseRoutesRowComponent {
   @Input() route: ShipmentRoute;
   @Input() vehicle: Vehicle;
   @Input() shipmentCount: number;
+  @Input() selected = false;
   @Input() timeline: Timeline;
   @Input() duration: [Long, Long];
   @Input() availability: [Long, Long];
