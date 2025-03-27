@@ -179,7 +179,15 @@ export abstract class BaseVisitRequestLayer {
       getSize: 10,
       sizeScale: this.getSizeScale(),
       getPosition: (d) => d.arrivalPosition,
-      pickable: false,
+      pickable: true,
+      onHover: ({ object }) => {
+        this.mapService.map.setOptions({ draggableCursor: object ? 'pointer' : 'grab' });
+      },
+      onClick: ({ object }) => {
+        this.zone.run(() => {
+          this.store.dispatch(UIActions.mapVisitRequestClicked({ id: object.id }));
+        });
+      },
     });
     this.updateLayers();
   }
