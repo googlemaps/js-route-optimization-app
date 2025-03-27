@@ -19,7 +19,7 @@
       title="Pickup"></mat-icon>
   </span>
   <!-- title -->
-  <ng-container *ngIf="postSolve && visit; else visitRequestTitleTemplate">
+  <ng-container *ngIf="shipment; else visitRequestTitleTemplate">
     <span>
       Shipment:
       <span [ngClass]="{ link: navigation }" (click)="onShipmentClick()">
