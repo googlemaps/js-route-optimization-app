@@ -57,7 +57,8 @@
   <ng-template #preSolve>
     <div *ngIf="visitRequest">
       <div>
-        Visit Request Type: <span class="strong">{{ visitRequest.pickup ? 'Pickup' : 'Delivery' }}</span>
+        Visit Request Type:
+        <span class="strong">{{ visitRequest.pickup ? 'Pickup' : 'Delivery' }}</span>
       </div>
       <div *ngIf="visitRequest.duration">
         Duration: {{ formattedDurationSeconds(durationSeconds(visitRequest.duration)) }}
