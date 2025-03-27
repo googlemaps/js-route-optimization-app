@@ -29,7 +29,6 @@ import {
   ShipmentRoute,
   Timeline,
   Vehicle,
-  PointOfInterestClick,
   ChangedVisits,
 } from 'src/app/core/models';
 import { formatLongTime } from 'src/app/util';

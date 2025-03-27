@@ -22,7 +22,6 @@ import { provideMockStore } from '@ngrx/store/testing';
 import Long from 'long';
 import {
   PointOfInterest,
-  PointOfInterestClick,
   ShipmentRoute,
   Timeline,
   ChangedVisits,
