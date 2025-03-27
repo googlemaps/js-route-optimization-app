@@ -32,26 +32,38 @@
   </ng-template>
 </div>
 <div class="text__caption mt-1">
-  <div>
-    <span>{{ visit | entityName: 'Visit:' }}</span>
-  </div>
-  <div *ngIf="visit">
-    Visit Type: <span class="strong">{{ visit.isPickup ? 'Pickup' : 'Delivery' }}</span>
-  </div>
-  <div *ngIf="shipment?.shipmentType">
-    Shipment Type: <span class="strong">{{ shipment.shipmentType }}</span>
-  </div>
-  <div *ngIf="visit">
+  <div *ngIf="postSolve; else preSolve">
     <div>
-      Arrival: <span class="strong">{{ buildFormattedArrival() }}</span>
+      <span>{{ visit | entityName: 'Visit:' }}</span>
     </div>
-    <div *ngIf="buildFormattedDeparture() as formattedDeparture">
-      Departure: <span class="strong">{{ formattedDeparture }}</span>
+    <div *ngIf="visit">
+      Visit Type: <span class="strong">{{ visit.isPickup ? 'Pickup' : 'Delivery' }}</span>
     </div>
-    <div>
-      Vehicle: <span class="strong">{{ getVehicleName(vehicle) }}</span>
+    <div *ngIf="shipment?.shipmentType">
+      Shipment Type: <span class="strong">{{ shipment.shipmentType }}</span>
+    </div>
+    <div *ngIf="visit">
+      <div>
+        Arrival: <span class="strong">{{ buildFormattedArrival() }}</span>
+      </div>
+      <div *ngIf="buildFormattedDeparture() as formattedDeparture">
+        Departure: <span class="strong">{{ formattedDeparture }}</span>
+      </div>
+      <div>
+        Vehicle: <span class="strong">{{ getVehicleName(vehicle) }}</span>
+      </div>
     </div>
   </div>
+  <ng-template #preSolve>
+    <div *ngIf="visitRequest">
+      <div>
+        Visit Request Type: <span class="strong">{{ visitRequest.pickup ? 'Pickup' : 'Delivery' }}</span>
+      </div>
+      <div *ngIf="visitRequest.duration">
+        Duration: {{ formattedDurationSeconds(durationSeconds(visitRequest.duration)) }}
+      </div>
+    </div>
+  </ng-template>
 </div>
 <div *ngIf="savePending" class="updating-overlay">
   <mat-spinner [diameter]="50"></mat-spinner>
