@@ -51,6 +51,7 @@ class MockBaseRoutesRowComponent {
   @Input() route: ShipmentRoute;
   @Input() vehicle: Vehicle;
   @Input() shipmentCount: number;
+  @Input() selected = false;
   @Input() timeline: Timeline;
   @Input() duration: [Long, Long];
   @Input() availability: [Long, Long];
