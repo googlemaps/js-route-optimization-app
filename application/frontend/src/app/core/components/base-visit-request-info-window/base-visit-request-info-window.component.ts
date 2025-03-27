@@ -31,6 +31,7 @@ import { MatSelect } from '@angular/material/select';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import {
   durationSeconds,
+  formattedDurationSeconds,
   getChosenTimeWindow,
   getEntityName,
   getSoftEndTimeMissedCost,
@@ -64,6 +65,9 @@ export class BaseVisitRequestInfoWindowComponent {
   readonly VisitCategory = VisitCategory;
   readonly vehicleCtrl: UntypedFormControl;
   readonly optionItemSize = 48;
+
+  readonly formattedDurationSeconds = formattedDurationSeconds;
+  readonly durationSeconds = durationSeconds;
 
   get visitCategory(): number {
     return this.shipment?.deliveries.includes(this.visitRequest?.id)
