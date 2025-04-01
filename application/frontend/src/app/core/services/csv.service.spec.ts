@@ -508,4 +508,99 @@ describe('CsvService', () => {
       });
     });
   });
+
+  describe('Geocode shipments', () => {
+    it('should return an empty array when no shiments are provided', (done) => {
+      service.geocodeShipments([]).subscribe((res) => {
+        expect(res).toEqual([]);
+        done();
+      });
+    });
+
+    it('should return null values when no waypoints are provided', (done) => {
+      service.geocodeShipments([{}]).subscribe((res) => {
+        expect(res).toEqual([null, null]);
+        done();
+      });
+    });
+
+    it('should return null values for missing pickup arrival waypoints', (done) => {
+      service
+        .geocodeShipments([{ deliveries: [{ arrivalWaypoint: '35.1, 10.53' }] }])
+        .subscribe((res) => {
+          expect(res).toEqual([null, { latitude: 35.1, longitude: 10.53 }]);
+          done();
+        });
+    });
+
+    it('should return null values for missing delivery arrival waypoints', (done) => {
+      service
+        .geocodeShipments([{ pickups: [{ arrivalWaypoint: '35.1, 10.53' }] }])
+        .subscribe((res) => {
+          expect(res).toEqual([{ latitude: 35.1, longitude: 10.53 }, null]);
+          done();
+        });
+    });
+
+    it('should only geocode the first pickup', (done) => {
+      service
+        .geocodeShipments([
+          { pickups: [{ arrivalWaypoint: '35.1, 10.53' }, { arrivalWaypoint: '-5.123, 38.3' }] },
+        ])
+        .subscribe((res) => {
+          expect(res).toEqual([{ latitude: 35.1, longitude: 10.53 }, null]);
+          done();
+        });
+    });
+
+    it('should only geocode the first delivery', (done) => {
+      service
+        .geocodeShipments([
+          { deliveries: [{ arrivalWaypoint: '35.1, 10.53' }, { arrivalWaypoint: '-5.123, 38.3' }] },
+        ])
+        .subscribe((res) => {
+          expect(res).toEqual([null, { latitude: 35.1, longitude: 10.53 }]);
+          done();
+        });
+    });
+
+    it('should parse geocode errors', (done) => {
+      spyOn(service, 'geocodeLocation').and.callFake((loc: string) => {
+        return of({
+          error: true,
+          message: 'Invalid location',
+          location: loc,
+        });
+      });
+
+      const shipment1 = {
+        pickups: [{ arrivalWaypoint: '35.1, 10.53' }],
+        deliveries: [{ arrivalWaypoint: '5.13, 3.51' }],
+      };
+
+      service.geocodeShipments([shipment1]).subscribe((res) => {
+        expect(res).toEqual([
+          {
+            error: true,
+            message: 'Invalid location',
+            field: 'arrivalWaypoint',
+            location: '35.1, 10.53',
+            index: 0,
+            source: shipment1.pickups[0],
+            shipment: shipment1,
+          },
+          {
+            error: true,
+            message: 'Invalid location',
+            field: 'arrivalWaypoint',
+            location: '5.13, 3.51',
+            index: 0,
+            source: shipment1.deliveries[0],
+            shipment: shipment1,
+          },
+        ]);
+        done();
+      });
+    });
+  });
 });
