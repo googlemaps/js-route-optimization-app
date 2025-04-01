@@ -57,7 +57,7 @@ export class CsvService {
           // start location
           this.geocodeLocation(vehicle.startWaypoint).pipe(
             map((g) => {
-              if ((g as GeocodeErrorResponse).error) {
+              if (g && (g as GeocodeErrorResponse).error) {
                 g = <GeocodeErrorResponse>{
                   ...g,
                   source: vehicle,
@@ -74,7 +74,7 @@ export class CsvService {
           // end location
           this.geocodeLocation(vehicle.endWaypoint).pipe(
             map((g) => {
-              if ((g as GeocodeErrorResponse)?.error) {
+              if (g && (g as GeocodeErrorResponse)?.error) {
                 return <GeocodeErrorResponse>{
                   ...g,
                   source: vehicle,
@@ -105,7 +105,7 @@ export class CsvService {
           // pickup
           this.geocodeLocation(shipment.pickups?.[0].arrivalWaypoint).pipe(
             map((g) => {
-              if ((g as GeocodeErrorResponse)?.error) {
+              if (g && (g as GeocodeErrorResponse)?.error) {
                 return <GeocodeErrorResponse>{
                   ...g,
                   source: shipment.pickups?.[0],
@@ -122,7 +122,7 @@ export class CsvService {
           // delivery
           this.geocodeLocation(shipment.deliveries?.[0].arrivalWaypoint).pipe(
             map((g) => {
-              if ((g as GeocodeErrorResponse)?.error) {
+              if (g && (g as GeocodeErrorResponse)?.error) {
                 return <GeocodeErrorResponse>{
                   ...g,
                   source: shipment.deliveries?.[0],
