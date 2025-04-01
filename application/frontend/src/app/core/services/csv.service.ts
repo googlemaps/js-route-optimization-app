@@ -648,7 +648,11 @@ export class CsvService {
   }
 
   private toBool(value: string): boolean {
-    return !!JSON.parse(value.toLowerCase());
+    try {
+      return !!JSON.parse(value.toLowerCase());
+    } catch {
+      return false;
+    }
   }
 
   private toDuration(value: any): any {
