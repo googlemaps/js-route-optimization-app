@@ -22,6 +22,7 @@ import { CsvService } from './csv.service';
 import { parse, unparse } from 'papaparse';
 import { EXPERIMENTAL_API_FIELDS_VEHICLES, UnloadingPolicy } from '../models';
 import { GeocodingService } from './geocoding.service';
+import { of } from 'rxjs';
 
 describe('CsvService', () => {
   let service: CsvService;
@@ -437,6 +438,72 @@ describe('CsvService', () => {
           latitude: 10,
           longitude: 10,
         });
+        done();
+      });
+    });
+  });
+
+  describe('Geocode vehicles', () => {
+    it('should return an empty array when no vehicles are provided', (done) => {
+      service.geocodeVehicles([]).subscribe((res) => {
+        expect(res).toEqual([]);
+        done();
+      });
+    });
+
+    it('should return null values when no waypoints are provided', (done) => {
+      service.geocodeVehicles([{}]).subscribe((res) => {
+        expect(res).toEqual([null, null]);
+        done();
+      });
+    });
+
+    it('should return null values for missing start waypoints', (done) => {
+      service.geocodeVehicles([{ endWaypoint: '35.1, 10.53' }]).subscribe((res) => {
+        expect(res).toEqual([null, { latitude: 35.1, longitude: 10.53 }]);
+        done();
+      });
+    });
+
+    it('should return null values for missing end waypoints', (done) => {
+      service.geocodeVehicles([{ startWaypoint: '35.1, 10.53' }]).subscribe((res) => {
+        expect(res).toEqual([{ latitude: 35.1, longitude: 10.53 }, null]);
+        done();
+      });
+    });
+
+    it('should parse geocode errors', (done) => {
+      spyOn(service, 'geocodeLocation').and.callFake((loc: string) => {
+        return of({
+          error: true,
+          message: 'Invalid location',
+          location: loc,
+        });
+      });
+
+      const vehicle1 = { startWaypoint: '35.1, 10.53' };
+
+      service.geocodeVehicles([vehicle1]).subscribe((res) => {
+        expect(res).toEqual([
+          {
+            error: true,
+            message: 'Invalid location',
+            field: 'startWaypoint',
+            location: '35.1, 10.53',
+            index: 0,
+            source: vehicle1,
+            vehicle: vehicle1,
+          },
+          {
+            error: true,
+            message: 'Invalid location',
+            field: 'endWaypoint',
+            location: undefined,
+            index: 0,
+            source: vehicle1,
+            vehicle: vehicle1,
+          },
+        ]);
         done();
       });
     });
