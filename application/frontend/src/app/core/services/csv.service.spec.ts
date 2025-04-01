@@ -22,6 +22,7 @@ import { CsvService } from './csv.service';
 import { parse, unparse } from 'papaparse';
 import { EXPERIMENTAL_API_FIELDS_VEHICLES, UnloadingPolicy } from '../models';
 import { GeocodingService } from './geocoding.service';
+import { of } from 'rxjs';
 
 describe('CsvService', () => {
   let service: CsvService;
@@ -156,6 +157,90 @@ describe('CsvService', () => {
       expect(result.length).toBe(2);
       expect(result[0].errors.length).toBe(1);
       expect(result[1].errors.length).toBe(1);
+    });
+
+    it('should parse valid allowedVehicleIndices', () => {
+      const shipments = [{ label: 'test shipment', allowedVehicleIndices: '1,2,3,4' }];
+      const testMapping = { Label: 'label', AllowedVehicleIndices: 'allowedVehicleIndices' };
+      const result = service.csvToShipments(shipments, testMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[0].shipment.allowedVehicleIndices).toEqual([1, 2, 3, 4]);
+    });
+
+    it('should parse valid allowedVehicleIndices when spaces are present', () => {
+      const shipments = [{ label: 'test shipment', allowedVehicleIndices: '1, 2, 3, 4 ' }];
+      const testMapping = { Label: 'label', AllowedVehicleIndices: 'allowedVehicleIndices' };
+      const result = service.csvToShipments(shipments, testMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[0].shipment.allowedVehicleIndices).toEqual([1, 2, 3, 4]);
+    });
+
+    it('should parse shipment pickup time windows', () => {
+      const shipments = [
+        {
+          startTime: '2025-04-01T10:00:00Z',
+          softStartTime: '2025-04-01T08:00:00Z',
+          endTime: '2025-04-01T20:00:00Z',
+          softEndTime: '2025-04-01T19:00:00Z',
+        },
+      ];
+      const testShipmentMapping = {
+        PickupStartTime: 'startTime',
+        PickupSoftStartTime: 'softStartTime',
+        PickupEndTime: 'endTime',
+        PickupSoftEndTime: 'softEndTime',
+      };
+
+      const result = service.csvToShipments(shipments, testShipmentMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[0].shipment.pickups[0].timeWindows[0].startTime).toEqual({
+        seconds: '1743501600',
+      });
+      expect(result[0].shipment.pickups[0].timeWindows[0].softStartTime).toEqual({
+        seconds: '1743494400',
+      });
+      expect(result[0].shipment.pickups[0].timeWindows[0].endTime).toEqual({
+        seconds: '1743537600',
+      });
+      expect(result[0].shipment.pickups[0].timeWindows[0].softEndTime).toEqual({
+        seconds: '1743534000',
+      });
+    });
+
+    it('should parse shipment delivery time windows', () => {
+      const shipments = [
+        {
+          startTime: '2025-04-01T10:00:00Z',
+          softStartTime: '2025-04-01T08:00:00Z',
+          endTime: '2025-04-01T20:00:00Z',
+          softEndTime: '2025-04-01T19:00:00Z',
+        },
+      ];
+      const testShipmentMapping = {
+        DeliveryStartTime: 'startTime',
+        DeliverySoftStartTime: 'softStartTime',
+        DeliveryEndTime: 'endTime',
+        DeliverySoftEndTime: 'softEndTime',
+      };
+
+      const result = service.csvToShipments(shipments, testShipmentMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[0].shipment.deliveries[0].timeWindows[0].startTime).toEqual({
+        seconds: '1743501600',
+      });
+      expect(result[0].shipment.deliveries[0].timeWindows[0].softStartTime).toEqual({
+        seconds: '1743494400',
+      });
+      expect(result[0].shipment.deliveries[0].timeWindows[0].endTime).toEqual({
+        seconds: '1743537600',
+      });
+      expect(result[0].shipment.deliveries[0].timeWindows[0].softEndTime).toEqual({
+        seconds: '1743534000',
+      });
     });
   });
 
@@ -331,6 +416,68 @@ describe('CsvService', () => {
       expect(result[2].vehicle.unloadingPolicy).toBe(UnloadingPolicy.FIRST_IN_FIRST_OUT);
       expect(result[3].vehicle.unloadingPolicy).toBeUndefined();
     });
+
+    it('should parse usedIfRouteIsEmpty', () => {
+      const vehicles = [
+        {
+          label: 'test vehicle 1',
+          usedIfRouteIsEmpty: 'true',
+        },
+        {
+          label: 'test vehicle 2',
+          usedIfRouteIsEmpty: ' TRUE ',
+        },
+        {
+          label: 'test vehicle 3',
+          usedIfRouteIsEmpty: 'FALSE',
+        },
+        {
+          label: 'test vehicle 4',
+          usedIfRouteIsEmpty: 'not a bool',
+        },
+      ];
+      const testVehicleMapping = {
+        Label: 'label',
+        UsedIfRouteIsEmpty: 'usedIfRouteIsEmpty',
+      };
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(4);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[1].errors.length).toBe(0);
+      expect(result[2].errors.length).toBe(0);
+      expect(result[3].errors.length).toBe(0);
+      expect(result[0].vehicle.usedIfRouteIsEmpty).toBeTrue();
+      expect(result[1].vehicle.usedIfRouteIsEmpty).toBeTrue();
+      expect(result[2].vehicle.usedIfRouteIsEmpty).toBeFalse();
+      expect(result[3].vehicle.usedIfRouteIsEmpty).toBeFalse();
+    });
+
+    it('should parse vehicle time windows', () => {
+      const vehicles = [
+        {
+          startTime: '2025-04-01T10:00:00Z',
+          softStartTime: '2025-04-01T08:00:00Z',
+          endTime: '2025-04-01T20:00:00Z',
+          softEndTime: '2025-04-01T19:00:00Z',
+        },
+      ];
+      const testVehicleMapping = {
+        StartTimeWindowStartTime: 'startTime',
+        StartTimeWindowSoftStartTime: 'softStartTime',
+        StartTimeWindowEndTime: 'endTime',
+        StartTimeWindowSoftEndTime: 'softEndTime',
+      };
+
+      const result = service.csvToVehicles(vehicles, testVehicleMapping);
+      expect(result.length).toBe(1);
+      expect(result[0].errors.length).toBe(0);
+      expect(result[0].vehicle.startTimeWindows[0].startTime).toEqual({ seconds: '1743501600' });
+      expect(result[0].vehicle.startTimeWindows[0].softStartTime).toEqual({
+        seconds: '1743494400',
+      });
+      expect(result[0].vehicle.startTimeWindows[0].endTime).toEqual({ seconds: '1743537600' });
+      expect(result[0].vehicle.startTimeWindows[0].softEndTime).toEqual({ seconds: '1743534000' });
+    });
   });
 
   describe('Validate geocoding', () => {
@@ -437,6 +584,167 @@ describe('CsvService', () => {
           latitude: 10,
           longitude: 10,
         });
+        done();
+      });
+    });
+  });
+
+  describe('Geocode vehicles', () => {
+    it('should return an empty array when no vehicles are provided', (done) => {
+      service.geocodeVehicles([]).subscribe((res) => {
+        expect(res).toEqual([]);
+        done();
+      });
+    });
+
+    it('should return null values when no waypoints are provided', (done) => {
+      service.geocodeVehicles([{}]).subscribe((res) => {
+        expect(res).toEqual([null, null]);
+        done();
+      });
+    });
+
+    it('should return null values for missing start waypoints', (done) => {
+      service.geocodeVehicles([{ endWaypoint: '35.1, 10.53' }]).subscribe((res) => {
+        expect(res).toEqual([null, { latitude: 35.1, longitude: 10.53 }]);
+        done();
+      });
+    });
+
+    it('should return null values for missing end waypoints', (done) => {
+      service.geocodeVehicles([{ startWaypoint: '35.1, 10.53' }]).subscribe((res) => {
+        expect(res).toEqual([{ latitude: 35.1, longitude: 10.53 }, null]);
+        done();
+      });
+    });
+
+    it('should parse geocode errors', (done) => {
+      spyOn(service, 'geocodeLocation').and.callFake((loc: string) => {
+        return of({
+          error: true,
+          message: 'Invalid location',
+          location: loc,
+        });
+      });
+
+      const vehicle1 = { startWaypoint: '35.1, 10.53' };
+
+      service.geocodeVehicles([vehicle1]).subscribe((res) => {
+        expect(res).toEqual([
+          {
+            error: true,
+            message: 'Invalid location',
+            field: 'startWaypoint',
+            location: '35.1, 10.53',
+            index: 0,
+            source: vehicle1,
+            vehicle: vehicle1,
+          },
+          {
+            error: true,
+            message: 'Invalid location',
+            field: 'endWaypoint',
+            location: undefined,
+            index: 0,
+            source: vehicle1,
+            vehicle: vehicle1,
+          },
+        ]);
+        done();
+      });
+    });
+  });
+
+  describe('Geocode shipments', () => {
+    it('should return an empty array when no shiments are provided', (done) => {
+      service.geocodeShipments([]).subscribe((res) => {
+        expect(res).toEqual([]);
+        done();
+      });
+    });
+
+    it('should return null values when no waypoints are provided', (done) => {
+      service.geocodeShipments([{}]).subscribe((res) => {
+        expect(res).toEqual([null, null]);
+        done();
+      });
+    });
+
+    it('should return null values for missing pickup arrival waypoints', (done) => {
+      service
+        .geocodeShipments([{ deliveries: [{ arrivalWaypoint: '35.1, 10.53' }] }])
+        .subscribe((res) => {
+          expect(res).toEqual([null, { latitude: 35.1, longitude: 10.53 }]);
+          done();
+        });
+    });
+
+    it('should return null values for missing delivery arrival waypoints', (done) => {
+      service
+        .geocodeShipments([{ pickups: [{ arrivalWaypoint: '35.1, 10.53' }] }])
+        .subscribe((res) => {
+          expect(res).toEqual([{ latitude: 35.1, longitude: 10.53 }, null]);
+          done();
+        });
+    });
+
+    it('should only geocode the first pickup', (done) => {
+      service
+        .geocodeShipments([
+          { pickups: [{ arrivalWaypoint: '35.1, 10.53' }, { arrivalWaypoint: '-5.123, 38.3' }] },
+        ])
+        .subscribe((res) => {
+          expect(res).toEqual([{ latitude: 35.1, longitude: 10.53 }, null]);
+          done();
+        });
+    });
+
+    it('should only geocode the first delivery', (done) => {
+      service
+        .geocodeShipments([
+          { deliveries: [{ arrivalWaypoint: '35.1, 10.53' }, { arrivalWaypoint: '-5.123, 38.3' }] },
+        ])
+        .subscribe((res) => {
+          expect(res).toEqual([null, { latitude: 35.1, longitude: 10.53 }]);
+          done();
+        });
+    });
+
+    it('should parse geocode errors', (done) => {
+      spyOn(service, 'geocodeLocation').and.callFake((loc: string) => {
+        return of({
+          error: true,
+          message: 'Invalid location',
+          location: loc,
+        });
+      });
+
+      const shipment1 = {
+        pickups: [{ arrivalWaypoint: '35.1, 10.53' }],
+        deliveries: [{ arrivalWaypoint: '5.13, 3.51' }],
+      };
+
+      service.geocodeShipments([shipment1]).subscribe((res) => {
+        expect(res).toEqual([
+          {
+            error: true,
+            message: 'Invalid location',
+            field: 'arrivalWaypoint',
+            location: '35.1, 10.53',
+            index: 0,
+            source: shipment1.pickups[0],
+            shipment: shipment1,
+          },
+          {
+            error: true,
+            message: 'Invalid location',
+            field: 'arrivalWaypoint',
+            location: '5.13, 3.51',
+            index: 0,
+            source: shipment1.deliveries[0],
+            shipment: shipment1,
+          },
+        ]);
         done();
       });
     });
