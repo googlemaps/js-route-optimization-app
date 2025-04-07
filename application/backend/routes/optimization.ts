@@ -18,7 +18,7 @@ import express, { Response, Request } from "express";
 import * as pako from "pako";
 export const router = express.Router();
 
-import { google } from "@google-cloud/routeoptimization/build/protos/protos";
+import { google } from "@googlemaps/routeoptimization/build/protos/protos";
 
 import { log } from "../logging";
 import { fleetRouting } from "../services/optimization";

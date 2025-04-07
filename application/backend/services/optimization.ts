@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { v1 } from "@google-cloud/routeoptimization";
-import { google } from "@google-cloud/routeoptimization/build/protos/protos";
+import { v1 } from "@googlemaps/routeoptimization";
+import { google } from "@googlemaps/routeoptimization/build/protos/protos";
 import { CallOptions } from "google-gax";
 
 import { log } from "../logging";
