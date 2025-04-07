@@ -59,7 +59,7 @@ import { unparse } from 'papaparse';
 import { durationSeconds, formattedDurationSeconds } from 'src/app/util';
 import { Modal } from '../models';
 import * as fromUI from '../selectors/ui.selectors';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DownloadPdfDialogComponent } from '../containers/download-pdf-dialog/download-pdf-dialog.component';
 import protobuf from 'protobufjs';
 import { ExtendedConversionOptions } from 'src/app/util/canonical-protobuf';

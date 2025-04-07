@@ -28,8 +28,8 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ConfirmOverwriteDialogComponent } from 'src/app/shared/components';
 import { SearchResult, StorageFile, StoredSolution } from '../../models/storage-api';
 import { UploadService } from '../../services/upload.service';

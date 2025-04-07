@@ -32,7 +32,7 @@ import {
   ViewChildren,
   ViewEncapsulation,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Dictionary } from '@ngrx/entity';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';

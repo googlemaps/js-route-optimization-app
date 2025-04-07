@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { Shipment, Vehicle, Visit, VisitRequest } from 'src/app/core/models';

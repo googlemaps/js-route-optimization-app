@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Store } from '@ngrx/store';
 import { MainNavActions } from '../../actions';
 import { MapService, VehicleLayer } from '../../services';

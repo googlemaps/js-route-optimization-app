@@ -40,7 +40,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent } from '@angular/material/legacy-autocomplete';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { EMPTY, merge, Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';

@@ -18,7 +18,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DocumentationActions } from 'src/app/core/actions';
 import { exhaustMap } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DocumentationDialogComponent } from '../containers';
 import { Modal } from '../models';
 

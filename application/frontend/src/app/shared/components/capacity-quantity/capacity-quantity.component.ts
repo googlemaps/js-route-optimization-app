@@ -41,7 +41,7 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { getCapacityQuantityRoot, getCapacityQuantityUnit, toFiniteOrNull } from 'src/app/util';
 import { ErrorStateMatcher, mixinErrorState, CanUpdateErrorState } from '@angular/material/core';
-import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import Long from 'long';
 import { CapacityQuantityFormValue } from '../../models/capacity-quantity';

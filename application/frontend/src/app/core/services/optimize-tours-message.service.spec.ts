@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { TestBed } from '@angular/core/testing';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { provideMockStore } from '@ngrx/store/testing';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import { MessageService } from './message.service';

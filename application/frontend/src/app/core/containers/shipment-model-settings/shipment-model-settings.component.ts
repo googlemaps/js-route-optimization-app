@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Store } from '@ngrx/store';
 import { ShipmentTypeIncompatibilityDialogComponent } from '../../components/shipment-type-incompatibility-dialog/shipment-type-incompatibility-dialog.component';
 import { ShipmentTypeRequirementDialogComponent } from '../../components/shipment-type-requirement-dialog/shipment-type-requirement-dialog.component';

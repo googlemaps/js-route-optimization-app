@@ -35,7 +35,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent } from '@angular/material/legacy-autocomplete';
 import { Dictionary } from '@ngrx/entity';
 import { asyncScheduler, BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, startWith, throttleTime } from 'rxjs/operators';

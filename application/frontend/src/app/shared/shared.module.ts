@@ -76,7 +76,7 @@ import { ExtraVisitDurationFormComponent } from './components/extra-visit-durati
 import { BreakRequestFormComponent } from './components/break-request-form/break-request-form.component';
 import { FrequencyConstraintFormComponent } from './components/frequency-constraint-form/frequency-constraint-form.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { BulkEditUnsetComponent } from './components/bulk-edit-unset/bulk-edit-unset.component';
 import { UndoRedoComponent } from './components/undo-redo/undo-redo.component';
 import { LoadDemandsMetricsComponent } from './components/load-demands-metrics/load-demands-metrics.component';

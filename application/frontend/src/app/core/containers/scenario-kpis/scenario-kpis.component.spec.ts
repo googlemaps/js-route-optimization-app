@@ -18,7 +18,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScenarioKpisComponent } from './scenario-kpis.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { selectScenarioKpis } from '../../selectors/pre-solve.selectors';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 describe('ScenarioKpisComponent', () => {
   let component: ScenarioKpisComponent;

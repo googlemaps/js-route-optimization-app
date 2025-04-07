@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { DialogPosition } from '@angular/material/dialog';
+import { LegacyDialogPosition as DialogPosition } from '@angular/material/legacy-dialog';
 import { positionTopLeftRelativeToTopLeft, positionTopLeftRelativeToTopRight } from '.';
 
 describe('util', () => {

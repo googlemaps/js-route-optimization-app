@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { RoutesMetadataActions } from 'src/app/core/actions';

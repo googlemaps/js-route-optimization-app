@@ -29,7 +29,7 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import { map } from 'rxjs/operators';
 import { setActive, setTime } from '../../actions/travel-simulator.actions';
 import TravelSimulatorSelectors from '../../selectors/travel-simulator.selectors';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggleChange as MatSlideToggleChange } from '@angular/material/legacy-slide-toggle';
 import { formatSecondsDate } from 'src/app/util/time-translation';
 import { MapService } from '../../services';
 

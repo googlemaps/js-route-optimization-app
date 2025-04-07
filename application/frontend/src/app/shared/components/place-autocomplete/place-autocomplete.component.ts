@@ -40,7 +40,7 @@ import {
   NgForm,
 } from '@angular/forms';
 import { CanUpdateErrorState, ErrorStateMatcher, mixinErrorState } from '@angular/material/core';
-import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
 import { Subject, Subscription } from 'rxjs';
 import { ILatLng } from 'src/app/core/models';
 import { isPlaceId, PlacesService } from 'src/app/core/services';

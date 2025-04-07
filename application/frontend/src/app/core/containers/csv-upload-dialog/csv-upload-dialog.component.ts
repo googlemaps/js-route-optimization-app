@@ -33,7 +33,7 @@ import {
   NgForm,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Store } from '@ngrx/store';
 import { concat, forkJoin, of } from 'rxjs';
