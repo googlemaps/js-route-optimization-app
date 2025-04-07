@@ -23,7 +23,7 @@ describe('Depot Selectors', () => {
       latitude: 40.5,
       longitude: -104.5,
     };
-    const depot = fromDepot.selectDepot.projector(scenarioDepot);
+    const depot = fromDepot.selectDepot.projector(scenarioDepot, []);
     expect(depot).toBeTruthy();
     expect(depot.latitude).toEqual(scenarioDepot.latitude);
     expect(depot.longitude).toEqual(scenarioDepot.longitude);
