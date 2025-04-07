@@ -1,6 +1,7 @@
 <app-table-control-bar
   [displayColumns]="displayColumns$ | async"
-  (displayColumnChange)="onDisplayColumnChange($event)">
+  (displayColumnChange)="onDisplayColumnChange($event)"
+  (openShipmentModelSettings)="onOpenShipmentModelSettings()">
   <app-filter-menu
     [filters]="filters$ | async"
     [filterOptions]="filterOptions$ | async"

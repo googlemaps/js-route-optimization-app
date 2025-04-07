@@ -30,8 +30,10 @@ import { ActiveFilter } from 'src/app/shared/models';
 import { FilterService } from 'src/app/shared/services';
 import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
 import { PreSolveVehicleActions } from '../../actions';
-import { Column, VehicleFilterOption } from '../../models';
+import { Column, Modal, VehicleFilterOption } from '../../models';
 import PreSolveVehicleSelectors from '../../selectors/pre-solve-vehicle.selectors';
+import { ShipmentModelSettingsComponent } from '../shipment-model-settings/shipment-model-settings.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-vehicles-control-bar',
@@ -49,7 +51,11 @@ export class VehiclesControlBarComponent implements OnDestroy {
   private addSubscription: Subscription;
   private editSubscription: Subscription;
 
-  constructor(private filterService: FilterService, private store: Store<fromRoot.State>) {
+  constructor(
+    private filterService: FilterService,
+    private store: Store<fromRoot.State>,
+    private dialog: MatDialog
+  ) {
     this.filterOptions$ = store.pipe(
       select(PreSolveVehicleSelectors.selectAvailableFiltersOptions)
     );
@@ -111,5 +117,15 @@ export class VehiclesControlBarComponent implements OnDestroy {
           })
         );
       });
+  }
+
+  onOpenShipmentModelSettings(): void {
+    this.dialog.open(ShipmentModelSettingsComponent, {
+      id: Modal.EditShipmentModelSettings,
+      maxHeight: '100%',
+      maxWidth: '100%',
+      position: { right: '0' },
+      panelClass: 'fly-out-dialog',
+    });
   }
 }
