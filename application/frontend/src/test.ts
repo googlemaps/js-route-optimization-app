@@ -23,8 +23,6 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 
-declare const require: any;
-
 // Google Maps mock
 import { google } from 'src/test/google-maps-mocks';
 (window as any).google = google;
@@ -33,7 +31,3 @@ import { google } from 'src/test/google-maps-mocks';
 getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), {
   teardown: { destroyAfterEach: false },
 });
-// Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().map(context);
