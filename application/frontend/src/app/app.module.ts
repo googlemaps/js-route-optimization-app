@@ -72,7 +72,8 @@ import { ScenarioSolutionHelpDialogComponent } from './core/containers/scenario-
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
-    connectInZone: true}),
+      connectInZone: true,
+    }),
     EffectsModule.forRoot([
       ConfigEffects,
       DepotLayerEffects,
