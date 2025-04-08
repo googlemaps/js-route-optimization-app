@@ -14,6 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 
 export type Place = google.type.ILatLng;

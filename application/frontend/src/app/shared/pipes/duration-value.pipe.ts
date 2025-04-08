@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { durationSeconds } from 'src/app/util';
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 
 /**
  * Converts a protobuf duration to seconds and optionally convert the value

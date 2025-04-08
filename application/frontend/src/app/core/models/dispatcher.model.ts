@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 import dispatcher = google.maps.routeoptimization.v1;
 
 import IncompatibilityMode = dispatcher.ShipmentTypeIncompatibility.IncompatibilityMode;

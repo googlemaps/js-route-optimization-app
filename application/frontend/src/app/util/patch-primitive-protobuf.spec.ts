@@ -16,7 +16,7 @@ limitations under the License.
 
 import Long from 'long';
 import * as protobuf from 'protobufjs/minimal';
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 import { ExtendedConversionOptions } from './canonical-protobuf';
 import { patchDuration, patchTimestamp } from './patch-primitive-protobuf';
 

@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import Long from 'long';
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 import {
   ExtendedConversionOptions,
   isCanonicalDuration,

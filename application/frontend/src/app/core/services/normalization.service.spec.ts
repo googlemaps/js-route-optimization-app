@@ -22,7 +22,7 @@ import {
   SearchMode,
 } from '../models';
 import { NormalizationService } from './normalization.service';
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 import Level = google.maps.routeoptimization.v1.InjectedSolutionConstraint.ConstraintRelaxation.Relaxation.Level;
 
 describe('normalization Service', () => {
