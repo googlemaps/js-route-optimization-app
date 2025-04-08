@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { exhaustMap, first, map } from 'rxjs/operators';
 import { newScenario } from 'src/app/welcome/actions/welcome-page.actions';

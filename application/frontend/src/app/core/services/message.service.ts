@@ -15,8 +15,11 @@ limitations under the License.
 */
 
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
-import { MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import {
+  MatLegacySnackBar as MatSnackBar,
+  MatLegacySnackBarRef as MatSnackBarRef,
+} from '@angular/material/legacy-snack-bar';
+import { MatLegacySnackBarVerticalPosition as MatSnackBarVerticalPosition } from '@angular/material/legacy-snack-bar';
 
 import { MessageSnackBarComponent } from '../components/message-snack-bar/message-snack-bar.component';
 import { Store, select } from '@ngrx/store';

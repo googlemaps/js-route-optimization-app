@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MaterialModule } from 'src/app/material';
 import { ActiveFilter } from '../../models';
 import { FilterComponent } from './filter.component';

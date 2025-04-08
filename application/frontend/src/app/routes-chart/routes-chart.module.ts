@@ -16,7 +16,7 @@ limitations under the License.
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatLegacyPaginatorIntl as MatPaginatorIntl } from '@angular/material/legacy-paginator';
 import { CoreModule } from '../core';
 import { PointOfInterestDragComponent } from '../core/containers';
 import { MaterialModule } from '../material';

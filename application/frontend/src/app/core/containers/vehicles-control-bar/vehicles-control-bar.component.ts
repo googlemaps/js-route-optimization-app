@@ -33,7 +33,7 @@ import { PreSolveVehicleActions } from '../../actions';
 import { Column, Modal, VehicleFilterOption } from '../../models';
 import PreSolveVehicleSelectors from '../../selectors/pre-solve-vehicle.selectors';
 import { ShipmentModelSettingsComponent } from '../shipment-model-settings/shipment-model-settings.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'app-vehicles-control-bar',

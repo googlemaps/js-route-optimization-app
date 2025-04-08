@@ -32,7 +32,7 @@ import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
 import { PreSolveShipmentActions } from '../../actions';
 import { Column, Modal, ShipmentFilterOption } from '../../models';
 import PreSolveShipmentSelectors from '../../selectors/pre-solve-shipment.selectors';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ShipmentModelSettingsComponent } from '../shipment-model-settings/shipment-model-settings.component';
 
 @Component({

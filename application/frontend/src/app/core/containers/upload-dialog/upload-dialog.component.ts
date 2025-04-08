@@ -23,7 +23,11 @@ import {
   UntypedFormGroup,
   ValidationErrors,
 } from '@angular/forms';
-import { MatDialog, MatDialogRef, MatDialogState } from '@angular/material/dialog';
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogRef as MatDialogRef,
+  MatLegacyDialogState as MatDialogState,
+} from '@angular/material/legacy-dialog';
 import { Store } from '@ngrx/store';
 import { merge } from 'lodash';
 

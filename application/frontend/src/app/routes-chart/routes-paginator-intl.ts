@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Injectable } from '@angular/core';
-import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatLegacyPaginatorIntl as MatPaginatorIntl } from '@angular/material/legacy-paginator';
 
 @Injectable()
 export class RoutesPaginatorIntl extends MatPaginatorIntl {

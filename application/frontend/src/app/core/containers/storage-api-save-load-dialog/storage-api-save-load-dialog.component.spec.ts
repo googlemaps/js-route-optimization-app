@@ -17,7 +17,7 @@ limitations under the License.
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import * as fromDownload from 'src/app/core/selectors/download.selectors';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { StorageApiSaveLoadDialogComponent } from './storage-api-save-load-dialog.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';

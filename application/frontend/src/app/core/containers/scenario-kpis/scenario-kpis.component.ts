@@ -18,7 +18,7 @@ import { Store, select } from '@ngrx/store';
 import { LoadDemandKPI, ScenarioKpis } from '../../models';
 import { selectScenarioKpis } from '../../selectors/pre-solve.selectors';
 import { formattedDurationSeconds } from 'src/app/util';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { LoadDemandsMetricsComponent } from 'src/app/shared/components/load-demands-metrics/load-demands-metrics.component';
 
 @Component({

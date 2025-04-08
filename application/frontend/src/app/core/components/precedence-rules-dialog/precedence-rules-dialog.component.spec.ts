@@ -24,6 +24,7 @@ import * as shipmentSelectors from '../../../core/selectors/shipment.selectors';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import { MatIconRegistry } from '@angular/material/icon';
 import { FakeMatIconRegistry } from 'src/test/material-fakes';
+import * as fromShipment from '../../reducers/shipment.reducer';
 
 describe('PrecedenceRulesDialogComponent', () => {
   let component: PrecedenceRulesDialogComponent;
@@ -42,7 +43,12 @@ describe('PrecedenceRulesDialogComponent', () => {
       .overrideProvider(MatIconRegistry, { useFactory: () => new FakeMatIconRegistry() })
       .compileComponents();
 
-    spyOnProperty(shipmentSelectors, 'selectAll').and.returnValue(() => []);
+    spyOn(fromShipment.adapter, 'getSelectors').and.returnValue([
+      () => [],
+      () => {},
+      () => [],
+      () => 0,
+    ] as any);
 
     fixture = TestBed.createComponent(PrecedenceRulesDialogComponent);
     component = fixture.componentInstance;

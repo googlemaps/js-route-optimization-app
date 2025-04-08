@@ -25,7 +25,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ActiveFilter, FilterForm, FilterOption } from '../../models';

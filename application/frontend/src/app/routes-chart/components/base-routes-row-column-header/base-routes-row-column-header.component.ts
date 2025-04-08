@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 
 @Component({
   selector: 'app-base-routes-row-column-header',

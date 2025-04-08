@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { TestBed } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { createSelector } from '@ngrx/store';

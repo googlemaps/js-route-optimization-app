@@ -15,7 +15,10 @@ limitations under the License.
 */
 
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 import { select, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { take } from 'rxjs/operators';

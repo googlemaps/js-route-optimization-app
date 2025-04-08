@@ -5,7 +5,7 @@
 
 // Define a custom typography config that overrides the font-family as well as the
 // `headlines` and `body-1` levels.
-$custom-typography: mat.define-typography-config(
+$custom-typography: mat.define-legacy-typography-config(
   $font-family: 'Google Sans, Roboto, "Helvetica Neue", sans-serif',
 );
 

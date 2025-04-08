@@ -17,7 +17,7 @@ limitations under the License.
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';

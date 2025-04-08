@@ -23,7 +23,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { TravelSimulatorActions } from 'src/app/core/actions';

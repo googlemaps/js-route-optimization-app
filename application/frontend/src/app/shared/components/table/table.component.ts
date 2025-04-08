@@ -33,8 +33,11 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatColumnDef, MatTable } from '@angular/material/table';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
+import {
+  MatLegacyColumnDef as MatColumnDef,
+  MatLegacyTable as MatTable,
+} from '@angular/material/legacy-table';
 import { asyncScheduler, BehaviorSubject, Subscription } from 'rxjs';
 import { debounceTime, startWith, tap } from 'rxjs/operators';
 

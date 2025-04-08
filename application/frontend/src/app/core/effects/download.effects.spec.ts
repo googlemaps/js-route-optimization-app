@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { TestBed } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Store } from '@ngrx/store';
@@ -26,7 +26,7 @@ import { download, downloadFailure, downloadSuccess } from '../actions/download.
 import * as fromDownload from '../selectors/download.selectors';
 import { FileService, MessageService } from '../services';
 import { DownloadEffects } from './download.effects';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import * as fromUI from '../selectors/ui.selectors';
 import { selectScenarioName } from '../selectors/dispatcher.selectors';
 

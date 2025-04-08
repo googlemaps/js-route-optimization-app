@@ -42,7 +42,7 @@ import {
   NgForm,
   Validators,
 } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent } from '@angular/material/legacy-autocomplete';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { merge, Observable, Subscription } from 'rxjs';
@@ -96,7 +96,7 @@ import { FormMapService, VehicleLayer } from '../../services';
 import { LocationId } from '../../services/vehicle-layer.service';
 import { ExtraVisitDurationFormComponent } from '../../../shared/components/extra-visit-duration-form/extra-visit-duration-form.component';
 import { ExtraVisitDurationFormValue } from '../../../shared/models/extra-visit-duration';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { BreakRequestFormComponent } from '../../../shared/components/break-request-form/break-request-form.component';
 import { FrequencyConstraintFormComponent } from '../../../shared/components/frequency-constraint-form/frequency-constraint-form.component';
 import { DomPortal } from '@angular/cdk/portal';
