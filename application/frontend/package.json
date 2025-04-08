@@ -78,7 +78,6 @@
     "@types/jasmine": "^5.1.7",
     "@types/jasminewd2": "~2.0.3",
     "@types/lodash": "^4.17.16",
-    "@types/long": "^4.0.0",
     "@types/node": "^20.17.30",
     "@types/nouislider": "^9.0.7",
     "@types/pako": "^2.0.3",
