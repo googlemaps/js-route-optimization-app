@@ -15,7 +15,10 @@ limitations under the License.
 */
 
 import { Injectable } from '@angular/core';
-import { LegacyDialogPosition as DialogPosition, MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import {
+  LegacyDialogPosition as DialogPosition,
+  MatLegacyDialog as MatDialog,
+} from '@angular/material/legacy-dialog';
 import { Observable, of } from 'rxjs';
 import { positionTopLeftRelativeToTopRight } from 'src/app/util';
 import { FilterComponent } from '../components';
