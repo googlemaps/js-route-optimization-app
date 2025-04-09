@@ -19,7 +19,7 @@ import path from "path";
 
 import { jest } from "@jest/globals";
 
-import { google } from "@google-cloud/routeoptimization/build/protos/protos";
+import { google } from "@googlemaps/routeoptimization/build/protos/protos";
 
 export const SCENARIOS_AND_SOLUTIONS: {
   [label: string]: {
@@ -81,7 +81,7 @@ export function mockGoogleCloudOptimization() {
     };
   });
 
-  return jest.mock("@google-cloud/routeoptimization", () => {
+  return jest.mock("@googlemaps/routeoptimization", () => {
     return {
       RouteOptimizationClient: mockImp, // alias for v1.RouteOptimizationClient
       v1: {

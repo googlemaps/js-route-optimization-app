@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 import { configureProtobuf } from './configure-protobuf';
 import masterCanon from 'src/samples/master_test.json';
 import masterNonCanon from 'src/samples/master_test_noncanonical.json';

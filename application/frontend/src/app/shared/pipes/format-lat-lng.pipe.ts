@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { formatDispatcherLatLng } from 'src/app/util';
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 
 /** Formats a CFR lat lng value */
 @Pipe({ name: 'formatLatLng' })

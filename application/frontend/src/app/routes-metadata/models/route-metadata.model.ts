@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { ShipmentRoute } from 'src/app/core/models';
-import { google } from '@google-cloud/optimization/build/protos/protos';
+import { google } from '@googlemaps/routeoptimization/build/protos/protos';
 
 export interface RouteMetadata {
   capacityUtilization: {
