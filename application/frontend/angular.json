@@ -45,7 +45,14 @@
               "nouislider",
               "probe.gl/env",
               "jspdf-autotable",
-              "core-js"
+              "core-js",
+              "earcut",
+              "@mapbox/tiny-sdf",
+              "raf",
+              "rgbcolor",
+              "html2canvas",
+              "papaparse",
+              "jszip"
             ]
           },
           "configurations": {

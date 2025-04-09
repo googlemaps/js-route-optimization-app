@@ -20,7 +20,7 @@ import { IPrecedenceRule, Shipment } from '../../models';
 import { take } from 'rxjs/operators';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import { BehaviorSubject } from 'rxjs';
-import { selectAll as selectAllShipments } from '../../../core/selectors/shipment.selectors';
+import ShipmentSelectors from '../../../core/selectors/shipment.selectors';
 import { noDuplicateFormArrayValuesValidator } from 'src/app/util';
 
 @Component({
@@ -63,7 +63,7 @@ export class PrecedenceRulesDialogComponent {
         this.precedenceRulesControl.enable();
       });
 
-    store.pipe(select(selectAllShipments), take(1)).subscribe((shipments) => {
+    store.pipe(select(ShipmentSelectors.selectAll), take(1)).subscribe((shipments) => {
       this.scenarioShipments$.next(shipments);
     });
   }

@@ -37,7 +37,7 @@ import {
 import * as fromPointsOfInterest from '../reducers/points-of-interest.reducer';
 import * as fromDepot from './depot.selectors';
 import ShipmentRouteSelectors, * as fromShipmentRoute from './shipment-route.selectors';
-import * as fromShipment from './shipment.selectors';
+import ShipmentSelectors, * as fromShipment from './shipment.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import * as fromVisitRequest from './visit-request.selectors';
 import * as fromVisit from './visit.selectors';
@@ -247,7 +247,7 @@ export const selectCurrentDragVisit = createSelector(
 
 export const selectDragShipment = createSelector(
   selectDragStart,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   fromVisitRequest.selectEntities,
   (dragStart, shipments, visitRequests) => shipments[visitRequests[dragStart?.visitId]?.shipmentId]
 );

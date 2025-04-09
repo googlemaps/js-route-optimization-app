@@ -23,7 +23,7 @@ export const selectShipmentState = createFeatureSelector<fromShipment.State>(
   fromShipment.shipmentsFeatureKey
 );
 
-export const { selectIds, selectEntities, selectAll, selectTotal } =
+const { selectIds, selectEntities, selectAll, selectTotal } =
   fromShipment.adapter.getSelectors(selectShipmentState);
 
 const selectById = (id: number) =>
@@ -99,6 +99,10 @@ const selectShipmentTypes = createSelector(selectAll, (shipments) => {
 });
 
 export const ShipmentSelectors = {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal,
   selectById,
   selectByIds,
   selectChangeTime,

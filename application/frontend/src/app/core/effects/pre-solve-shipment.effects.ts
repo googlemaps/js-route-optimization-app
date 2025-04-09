@@ -30,7 +30,7 @@ import {
 import { PreSolveEditShipmentDialogComponent } from '../containers';
 import { Modal, Shipment } from '../models';
 import * as fromRoot from 'src/app/reducers';
-import * as fromShipment from 'src/app/core/selectors/shipment.selectors';
+import ShipmentSelectors from 'src/app/core/selectors/shipment.selectors';
 import * as fromVehicle from 'src/app/core/selectors/vehicle.selectors';
 import { combineLatest } from 'rxjs';
 
@@ -41,7 +41,7 @@ export class PreSolveShipmentEffects {
       ofType(VehicleActions.deleteVehicle, VehicleActions.deleteVehicles),
       mergeMap((_action) =>
         combineLatest([
-          this.store.select(fromShipment.selectAll),
+          this.store.select(ShipmentSelectors.selectAll),
           this.store.select(fromVehicle.selectLastDeletedIndices),
         ]).pipe(take(1))
       ),

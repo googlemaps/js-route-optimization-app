@@ -38,7 +38,7 @@ import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
 import * as fromPreSolve from './pre-solve.selectors';
 import RequestSettingsSelectors, * as fromRequestSettings from './request-settings.selectors';
-import * as fromShipment from './shipment.selectors';
+import ShipmentSelectors from './shipment.selectors';
 import * as fromShipmentModel from './shipment-model.selectors';
 import { State as ShipmentModelState } from '../reducers/shipment-model.reducer';
 import ShipmentRouteSelectors, * as fromShipmentRoute from './shipment-route.selectors';
@@ -97,7 +97,7 @@ const selectIgnoredVehicleIds = createSelector(
 );
 
 const selectRequestShipments = createSelector(
-  fromShipment.selectAll,
+  ShipmentSelectors.selectAll,
   PreSolveShipmentSelectors.selectSelectedLookup,
   (shipments, selected): Shipment[] =>
     shipments.map((shipment) => ({ ...shipment, ignore: !selected[shipment.id] || null }))
@@ -114,7 +114,7 @@ const selectRequestVehicles = createSelector(
 );
 
 const selectRequestedShipments = createSelector(
-  fromShipment.selectAll,
+  ShipmentSelectors.selectAll,
   PreSolveShipmentSelectors.selectRequestedLookup,
   (shipments, requested): Shipment[] =>
     shipments.map((shipment) => ({ ...shipment, ignore: !requested.has(shipment.id) || null }))
@@ -158,7 +158,7 @@ const getHasStaleSolutionEntities = <T extends { changeTime?: number }>(
 const selectHasStaleSolutionShipments = createSelector(
   fromDispatcher.selectSolution,
   fromDispatcher.selectBatchTime,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   PreSolveShipmentSelectors.selectSelected,
   PreSolveShipmentSelectors.selectRequestedLookup,
   PreSolveShipmentSelectors.selectSelectedLookup,
@@ -221,7 +221,7 @@ const getIncompatibleSolutionEntities = <T extends { changeTime?: number }>(
 
 const selectIncompatibleSolutionShipmentIds = createSelector(
   fromDispatcher.selectBatchTime,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   PreSolveShipmentSelectors.selectRequestedLookup,
   PreSolveShipmentSelectors.selectSelectedLookup,
   getIncompatibleSolutionEntities
@@ -237,7 +237,7 @@ const selectIncompatibleSolutionVehicleIds = createSelector(
 
 const selectIncompatibleSolutionVisitIdsByShipmentRouteId = createSelector(
   selectIncompatibleSolutionShipmentIds,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   fromVisit.selectEntities,
   (incompatibleShipments, shipments, visits) => {
     const incompatibleVisitIdsByShipmentRouteId = new Map<number, Set<number>>();
@@ -353,7 +353,7 @@ const selectDenormalizedInjectedRoutes = (
   );
 
 const selectDenormalizedShipments = createSelector(
-  fromShipment.selectAll,
+  ShipmentSelectors.selectAll,
   fromVisitRequest.selectEntities,
   denormalizeShipments
 );

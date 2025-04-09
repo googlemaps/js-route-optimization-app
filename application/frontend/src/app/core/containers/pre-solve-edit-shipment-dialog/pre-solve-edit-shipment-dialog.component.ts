@@ -157,7 +157,7 @@ export class PreSolveEditShipmentDialogComponent implements OnInit, OnDestroy {
     unsetFields: string[];
   }): void {
     if (this.shipmentIds.length === 1) {
-      this.store.pipe(select(fromShipment.selectEntities), take(1)).subscribe((shipments) => {
+      this.store.pipe(select(ShipmentSelectors.selectEntities), take(1)).subscribe((shipments) => {
         const changes = getShipmentEditChanges(shipment, visitRequests, shipments);
         this.store.dispatch(
           PreSolveShipmentActions.saveShipment({ changes, changeTime: Date.now() })

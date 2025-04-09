@@ -30,7 +30,7 @@ import {
 } from '../models';
 import * as fromPreSolveShipment from '../reducers/pre-solve-shipment.reducer';
 import * as fromMapTheme from '../services/map-theme.service';
-import * as fromShipment from './shipment.selectors';
+import ShipmentSelectors from './shipment.selectors';
 import * as fromVisitRequest from './visit-request.selectors';
 import ShipmentModelSelectors from './shipment-model.selectors';
 
@@ -89,7 +89,7 @@ const selectEditShipmentId = createSelector(
 
 const selectEditShipment = createSelector(
   selectEditShipmentId,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   (shipmentId, shipments) => shipments[shipmentId]
 );
 
@@ -113,7 +113,7 @@ const selectSelectedLookup = createSelector(selectSelected, (selected) => {
 });
 
 const selectSelectedShipments = createSelector(
-  fromShipment.selectAll,
+  ShipmentSelectors.selectAll,
   selectSelectedLookup,
   (shipments, selected) => shipments.filter((shipment) => selected[shipment.id])
 );
@@ -121,13 +121,13 @@ const selectSelectedShipments = createSelector(
 const selectRequestedLookup = createSelector(selectRequested, (requested) => new Set(requested));
 
 const selectRequestedShipments = createSelector(
-  fromShipment.selectAll,
+  ShipmentSelectors.selectAll,
   selectRequestedLookup,
   (shipments, requested) => shipments.filter((shipment) => requested.has(shipment.id))
 );
 
 const selectShipmentPickupsFn = createSelector(
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   fromVisitRequest.selectEntities,
   (shipment: Dictionary<Shipment>, visitRequests: Dictionary<VisitRequest>) =>
     (shipmentId: number) =>
@@ -135,14 +135,14 @@ const selectShipmentPickupsFn = createSelector(
 );
 
 const selectShipmentDeliveriesFn = createSelector(
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   fromVisitRequest.selectEntities,
   (shipment: Dictionary<Shipment>, visitRequests: Dictionary<VisitRequest>) =>
     (shipmentId: number) =>
       shipment[shipmentId]?.deliveries.map((id) => visitRequests[id]).filter(Boolean) || []
 );
 
-const selectDemandTypes = createSelector(fromShipment.selectEntities, (shipments) => {
+const selectDemandTypes = createSelector(ShipmentSelectors.selectEntities, (shipments) => {
   const demandTypes = new Set<string>(
     Object.values(shipments).flatMap((s) => Object.keys(s.loadDemands || {}))
   );
@@ -222,7 +222,7 @@ const selectFiltersOptionById = (id: string) =>
 
 const selectFilteredVisitRequests = createSelector(
   fromVisitRequest.selectAll,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   selectActiveFilterFilterOptions,
   selectSelectedLookup,
   ShipmentModelSelectors.selectGlobalDuration,
@@ -250,7 +250,7 @@ const selectFilteredVisitRequests = createSelector(
 
 const selectFilteredShipments = createSelector(
   selectFilteredVisitRequests,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   (visitRequests, shipments) => {
     const shipmentIds = new Set(visitRequests.map((vr) => vr.shipmentId));
     return Array.from(shipmentIds.values())
@@ -283,7 +283,7 @@ const selectFilteredShipmentsSelectedLookup = createSelector(
 
 const selectFilteredShipmentItems = createSelector(
   selectFilteredVisitRequests,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   (visitRequests, shipments) =>
     visitRequests.map<ShipmentItem>((vr) => ({
       shipment: shipments[vr.shipmentId],
@@ -483,13 +483,13 @@ const selectShipmentsKpis = createSelector(
 
 const selectDeselectedIds = createSelector(
   selectSelectedLookup,
-  fromShipment.selectIds,
+  ShipmentSelectors.selectIds,
   (selected, ids: number[] | string[]) => new Set((ids as number[]).filter((id) => !selected[id]))
 );
 
 const selectUnrequestedIds = createSelector(
   selectRequestedLookup,
-  fromShipment.selectIds,
+  ShipmentSelectors.selectIds,
   (requested, ids: number[] | string[]) =>
     new Set((ids as number[]).filter((id) => !requested.has(id)))
 );
