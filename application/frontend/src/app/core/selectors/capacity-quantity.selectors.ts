@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { createSelector } from '@ngrx/store';
-import * as fromShipments from 'src/app/core/selectors/shipment.selectors';
+import ShipmentSelectors from 'src/app/core/selectors/shipment.selectors';
 import * as fromVehicles from 'src/app/core/selectors/vehicle.selectors';
 import * as fromVisitRequests from 'src/app/core/selectors/visit-request.selectors';
 import { Shipment, Vehicle, VisitRequest } from '../models';
@@ -30,7 +30,7 @@ export const selectUniqueCapacities = createSelector(
 );
 
 export const selectUniqueDemands = createSelector(
-  fromShipments.selectAll,
+  ShipmentSelectors.selectAll,
   fromVisitRequests.selectAll,
   (shipments: Shipment[], visitRequests: VisitRequest[]) => {
     const demands = shipments

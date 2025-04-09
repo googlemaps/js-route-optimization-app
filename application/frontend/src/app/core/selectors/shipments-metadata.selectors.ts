@@ -78,7 +78,7 @@ export const selectSelectedLookup = createSelector(selectSelected, (selected) =>
 });
 
 export const selectSelectedShipments = createSelector(
-  fromShipment.selectAll,
+  ShipmentSelectors.selectAll,
   selectSelectedLookup,
   (shipments, selected) => shipments.filter((shipment) => selected[shipment.id])
 );
@@ -123,7 +123,7 @@ export const selectFiltersOptionById = (id: string) =>
 
 export const selectSkippedVisitRequests = createSelector(
   fromVisitRequest.selectAll,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   PreSolveShipmentSelectors.selectRequestedLookup,
   ShipmentSelectors.selectSkippedLookup,
   (visitRequests, shipments, requestedLookup, skippedLookup) => {
@@ -172,7 +172,7 @@ const getTraveledDistanceMeters = (visitId: number, shipmentRoute: ShipmentRoute
 
 const selectPartialShipmentMetadata = createSelector(
   selectVisitRequests,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   fromVisit.selectEntities,
   ShipmentModelSelectors.selectGlobalDuration,
   selectSelectedLookup,

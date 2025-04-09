@@ -39,7 +39,7 @@ import {
   optimizeToursSuccess,
 } from '../actions/dispatcher-api.actions';
 import { loadSolution } from '../actions/dispatcher.actions';
-import * as fromShipment from '../selectors/shipment.selectors';
+import ShipmentSelectors from '../selectors/shipment.selectors';
 import * as fromVehicle from '../selectors/vehicle.selectors';
 import { NormalizationService, OptimizeToursMessageService } from '../services';
 import { DispatcherClient } from '../services/dispatcher-client';
@@ -107,7 +107,7 @@ export class DispatcherApiEffects {
       ofType(applySolution, optimizeToursSuccess),
       withLatestFrom(
         this.store.pipe(select(fromVehicle.selectIds)),
-        this.store.pipe(select(fromShipment.selectAll))
+        this.store.pipe(select(ShipmentSelectors.selectAll))
       ),
       map(
         ([

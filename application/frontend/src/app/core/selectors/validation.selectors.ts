@@ -18,7 +18,7 @@ import { createSelector } from '@ngrx/store';
 import { ValidationContext } from '../models';
 import DenormalizeSelectors from './denormalize.selectors';
 import * as fromShipmentRoute from './shipment-route.selectors';
-import * as fromShipment from './shipment.selectors';
+import ShipmentSelectors from './shipment.selectors';
 import { ShipmentModelSelectors } from './shipment-model.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import * as fromVisitRequest from './visit-request.selectors';
@@ -39,7 +39,7 @@ export const selectValidateRequest = createSelector(
 
 const selectValidationContextEntities = createSelector(
   fromShipmentRoute.selectEntities,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   fromVehicle.selectEntities,
   fromVisit.selectEntities,
   fromVisitRequest.selectEntities,

@@ -20,7 +20,7 @@ import { getBounds } from 'src/app/util';
 import { ILatLng, Shipment } from '../models';
 import { VisitRequest } from '../models/visit-request.model';
 import * as fromVisitRequest from '../reducers/visit-request.reducer';
-import ShipmentSelectors, * as fromShipment from './shipment.selectors';
+import ShipmentSelectors from './shipment.selectors';
 import * as fromUI from './ui.selectors';
 
 export const selectVisitRequestState = createFeatureSelector<fromVisitRequest.State>(
@@ -35,7 +35,7 @@ const selectById = (id: number) =>
 
 const selectShipmentsVisitRequests = (shipmentIds: number[]) =>
   createSelector(
-    fromShipment.selectEntities,
+    ShipmentSelectors.selectEntities,
     selectEntities,
     (shipments: Dictionary<Shipment>, visitRequests: Dictionary<VisitRequest>) => {
       const shipmentsVisitRequests: VisitRequest[] = [];
@@ -55,7 +55,7 @@ const selectShipmentsVisitRequests = (shipmentIds: number[]) =>
 
 const selectVisitRequestShipment = (visitRequestId: number) =>
   createSelector(
-    fromShipment.selectEntities,
+    ShipmentSelectors.selectEntities,
     selectEntities,
     (shipments: Dictionary<Shipment>, visitRequests: Dictionary<VisitRequest>) =>
       shipments[visitRequests[visitRequestId]?.shipmentId]
@@ -63,7 +63,7 @@ const selectVisitRequestShipment = (visitRequestId: number) =>
 
 const selectSkippedVisitRequests = createSelector(
   ShipmentSelectors.selectSkipped,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   selectEntities,
   (skipped, shipments, visitRequests) => {
     const skippedVisitRequests: VisitRequest[] = [];

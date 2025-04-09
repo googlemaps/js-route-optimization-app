@@ -20,7 +20,7 @@ import { durationSeconds, pick } from 'src/app/util';
 import { ITransition, ShipmentRoute, Visit } from '../models';
 import * as fromEditVisit from '../reducers/edit-visit.reducer';
 import * as fromShipmentRoute from './shipment-route.selectors';
-import * as fromShipment from './shipment.selectors';
+import ShipmentSelectors, * as fromShipment from './shipment.selectors';
 import * as fromVisitRequest from './visit-request.selectors';
 import * as fromVisit from './visit.selectors';
 
@@ -49,7 +49,7 @@ export const selectSaveError = createSelector(selectEditVisitState, fromEditVisi
 
 export const selectVisitShipment = createSelector(
   selectVisitId,
-  fromShipment.selectEntities,
+  ShipmentSelectors.selectEntities,
   fromVisitRequest.selectEntities,
   (visitId, shipments, visitRequests) => shipments[visitRequests[visitId]?.shipmentId]
 );

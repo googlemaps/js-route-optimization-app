@@ -41,7 +41,7 @@ export class PreSolveShipmentEffects {
       ofType(VehicleActions.deleteVehicle, VehicleActions.deleteVehicles),
       mergeMap((_action) =>
         combineLatest([
-          this.store.select(fromShipment.selectAll),
+          this.store.select(ShipmentSelectors.selectAll),
           this.store.select(fromVehicle.selectLastDeletedIndices),
         ]).pipe(take(1))
       ),
