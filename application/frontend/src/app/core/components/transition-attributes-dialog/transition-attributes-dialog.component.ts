@@ -19,6 +19,7 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import {
   aRequiredIfB,
   durationMinutesSeconds,
+  oneOfARequiredIfB,
   requireAxorB,
   secondsToDuration,
 } from 'src/app/util';
@@ -52,6 +53,10 @@ export class TransitionAttributesDialogComponent {
         cost: [value?.cost, Validators.min(0)],
         costPerKilometer: [value?.costPerKilometer, Validators.min(0)],
         distanceLimitSoftMax: [value?.distanceLimit?.softMaxMeters, Validators.min(0)],
+        distanceLimitCostBelowSoftMax: [
+          value?.distanceLimit?.costPerKilometerBelowSoftMax,
+          Validators.min(0),
+        ],
         distanceLimitCostAboveSoftMax: [
           value?.distanceLimit?.costPerKilometerAboveSoftMax,
           Validators.min(0),
@@ -66,14 +71,19 @@ export class TransitionAttributesDialogComponent {
         validators: [
           requireAxorB('srcTag', 'excludedSrcTag', 'srcTagOrExcludeSrcTag'),
           requireAxorB('dstTag', 'excludedDstTag', 'dstTagOrExcludeDstTag'),
-          aRequiredIfB(
-            'distanceLimitCostAboveSoftMax',
+          oneOfARequiredIfB(
+            ['distanceLimitCostAboveSoftMax', 'distanceLimitCostBelowSoftMax'],
             'distanceLimitSoftMax',
             'distanceLimitSoftCostRequired'
           ),
           aRequiredIfB(
             'distanceLimitSoftMax',
             'distanceLimitCostAboveSoftMax',
+            'distanceLimitSoftMaxRequired'
+          ),
+          aRequiredIfB(
+            'distanceLimitSoftMax',
+            'distanceLimitCostBelowSoftMax',
             'distanceLimitSoftMaxRequired'
           ),
         ],
@@ -160,6 +170,7 @@ export class TransitionAttributesDialogComponent {
         costPerKilometer: transition.costPerKilometer,
         distanceLimit: {
           softMaxMeters: transition.distanceLimitSoftMax,
+          costPerKilometerBelowSoftMax: transition.distanceLimitCostBelowSoftMax,
           costPerKilometerAboveSoftMax: transition.distanceLimitCostAboveSoftMax,
         },
         delay: secondsToDuration(transition.delay.min * 60 + transition.delay.sec),

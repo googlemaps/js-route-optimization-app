@@ -169,13 +169,23 @@
                   Must be greater than zero
                 </mat-error>
               </div>
+              <div class="settings-item">
+                <mat-form-field appearance="outline" class="unpadded-form-field">
+                  <mat-label>Distance limit cost below soft max</mat-label>
+                  <input matInput type="number" formControlName="distanceLimitCostBelowSoftMax" />
+                </mat-form-field>
+                <mat-error
+                  *ngIf="transitionAttributes.get('distanceLimitCostBelowSoftMax').errors?.min">
+                  Must be greater than zero
+                </mat-error>
+              </div>
             </div>
             <mat-error
               *ngIf="
                 transitionAttributes.errors?.distanceLimitSoftCostRequired ||
                 transitionAttributes.errors?.distanceLimitSoftMaxRequired
               ">
-              <span> Soft max and cost must both be defined </span>
+              <span> Soft max and at least one cost must both be defined </span>
             </mat-error>
           </div>
           <!-- Delay -->

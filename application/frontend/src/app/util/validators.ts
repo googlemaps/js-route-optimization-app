@@ -259,3 +259,17 @@ export function requireAxorB(a: string, b: string, id = 'requireAxorB'): Validat
     return (!aValue && !bValue) || (aValue && bValue) ? { [id]: true } : null;
   };
 }
+
+export function oneOfARequiredIfB(a: string[], b: string, id = 'oneOfARequiredIfB'): ValidatorFn {
+  return (fg: UntypedFormGroup) => {
+    const bValue = fg.get(b).value;
+    if (bValue == null) {
+      return null;
+    }
+
+    const returnVal = !a.some((element) => fg.get(element).value) && {
+      [id]: { ...a },
+    };
+    return returnVal;
+  };
+}
