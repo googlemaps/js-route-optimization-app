@@ -167,7 +167,7 @@ Populate `application/.env` file with the details of your Google Cloud project a
 | API_ROOT | URL of the backend API (probably `http://localhost:8080/api`) |  |
 | FRONTEND_PROXY | URL of the frontend Angular development server (probably `http://localhost:4200/`) - *FOR DEVELOPMENT USE ONLY* |  |
 | MAP_API_KEY | API Key to load Google Maps JavaScript API in frontend (see [*Authentication*](#authentication) section) |  |
-| GOOGLE_APPLICATION_CREDENTIALS | Path to a service account credentials JSON file to authenticate Google API requests (see [*Authentication*](#authentication) section) | *Default application credentials* |
+| IMPERSONATED_SERVICE_ACCOUNT | Service Account to impersonate (Used by backend for Route Optimization API calls) (see [*Authentication*](#authentication) section) | |
 | **Optional** | | |
 | LOG_FORMAT | Log format to output (`google` or `pretty`) | `google` |
 | LOG_LEVEL | Minimum [Pino log level](https://getpino.io/#/docs/api?id=level-string) to output | `info` |

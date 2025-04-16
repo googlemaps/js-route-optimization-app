@@ -44,7 +44,7 @@ app.use(
   cors({
     origin: "*",
     methods: "GET, PUT, POST, DELETE",
-    allowedHeaders: "Content-Type",
+    allowedHeaders: "Content-Type, Content-Encoding, enctype, x-server-timeout"
   })
 );
 

@@ -19,7 +19,9 @@
     "body-parser": "^1.20.3",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
+    "google-auth-library": "^9.15.1",
     "multer": "1.4.5-lts.1",
     "pako": "^2.1.0",
     "pino-http": "^10.4.0"
