@@ -16,6 +16,7 @@ limitations under the License.
 
 import { v1 } from "@googlemaps/routeoptimization";
 import { google } from "@googlemaps/routeoptimization/build/protos/protos";
+import { GoogleAuth } from "google-auth-library";
 import { CallOptions } from "google-gax";
 
 import { log } from "../logging";
@@ -28,9 +29,29 @@ class FleetRoutingService {
     if (!process.env.PROJECT_ID) {
       throw Error("Missing required environment variable: PROJECT_ID");
     }
+    if (!process.env.IMPERSONATED_SERVICE_ACCOUNT) {
+      throw Error(
+        "Missing required environment variable: IMPERSONATED_SERVICE_ACCOUNT"
+      );
+    }
     this._parent = `projects/${process.env.PROJECT_ID}`;
 
+    const targetPrincipal = process.env.IMPERSONATED_SERVICE_ACCOUNT;
+    const scopes = ["https://www.googleapis.com/auth/cloud-platform"];
+
+    // Configure GoogleAuth for impersonation
+    const auth = new GoogleAuth({
+      scopes: scopes,
+      // Specify the target service account for impersonation
+      clientOptions: {
+        subject: targetPrincipal,
+      },
+      // Ensure the project ID is used if not implicitly picked up
+      projectId: process.env.PROJECT_ID,
+    });
+
     this._client = new v1.RouteOptimizationClient({
+      auth: auth, // Use the configured GoogleAuth instance
       "grpc.keepalive_time_ms": 120000, // 2m
       "grpc.keepalive_timeout_ms": 10000, // 10s
       "grpc.http2.max_pings_without_data": 0,

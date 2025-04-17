@@ -1,3 +1,7 @@
+// Load environment variables from .env file before any other imports
+import dotenv from "dotenv";
+dotenv.config({ path: "../.env" });
+
 /*
 Copyright 2024 Google LLC
 
@@ -14,7 +18,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { app } from "./app"
+// Now import other modules that might use the loaded env variables
+import { app } from "./app";
 import { log } from "./logging";
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8080;
