@@ -23,7 +23,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { exhaustMap, map, take } from 'rxjs/operators';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
 import RoutesChartSelectors from 'src/app/core/selectors/routes-chart.selectors';
@@ -37,6 +37,7 @@ import { Router } from '@angular/router';
 import { Range } from 'src/app/shared/models';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
+import RoutesMetadataSelectors from '../../selectors/routes-metadata.selectors';
 
 @Component({
   selector: 'app-routes-chart-control-bar',
@@ -86,7 +87,10 @@ export class RoutesChartControlBarComponent implements OnInit, OnDestroy {
       select(fromUI.selectPage),
       map((page) => (page === Page.ShipmentsMetadata ? Page.RoutesMetadata : page))
     );
-    this.viewHasChanged$ = this.store.pipe(select(RoutesChartSelectors.selectViewHasChanged));
+    this.viewHasChanged$ = combineLatest([
+      this.store.pipe(select(RoutesChartSelectors.selectViewHasChanged)),
+      this.store.pipe(select(RoutesMetadataSelectors.selectViewHasChanged)),
+    ]).pipe(map(([chartChanged, metadataChanged]) => chartChanged || metadataChanged));
   }
 
   ngOnDestroy(): void {

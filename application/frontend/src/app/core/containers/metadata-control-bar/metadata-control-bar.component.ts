@@ -24,7 +24,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { exhaustMap, map, switchMap, take } from 'rxjs/operators';
 import { FilterMenuComponent } from 'src/app/shared/components';
 import { ActiveFilter, FilterOption } from 'src/app/shared/models';
@@ -91,7 +91,11 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
         this.store.pipe(select(selectors.selectAvailableDisplayColumnsOptions))
       )
     );
-    this.viewHasChanged$ = this.store.pipe(select(RoutesChartSelectors.selectViewHasChanged));
+
+    this.viewHasChanged$ = combineLatest([
+      this.store.pipe(select(RoutesChartSelectors.selectViewHasChanged)),
+      this.store.pipe(select(RoutesMetadataSelectors.selectViewHasChanged)),
+    ]).pipe(map(([chartChanged, metadataChanged]) => chartChanged || metadataChanged));
   }
 
   ngOnDestroy(): void {
