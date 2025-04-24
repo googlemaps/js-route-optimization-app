@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { DurationLimitPipe } from "./duration-limit.pipe";
+import { DurationLimitPipe } from './duration-limit.pipe';
 
 describe('DurationLimitPipe', () => {
   const pipe = new DurationLimitPipe();
@@ -26,22 +26,23 @@ describe('DurationLimitPipe', () => {
 
   it('returns undefined values when fed undefined values', () => {
     expect(pipe.transform({})).toEqual({
-        maxDuration: undefined,
-        softMaxDuration: undefined,
-        costPerHourAfterSoftMax: undefined,
-      });
+      maxDuration: undefined,
+      softMaxDuration: undefined,
+      costPerHourAfterSoftMax: undefined,
+    });
   });
 
   it('returns numbers when fed numbers', () => {
-    expect(pipe.transform({
+    expect(
+      pipe.transform({
         maxDuration: { seconds: 100, nanos: 500 },
         softMaxDuration: { seconds: 10, nanos: 20 },
         costPerHourAfterSoftMax: 10,
-      })).toEqual({
-        maxDuration: { seconds: 100, nanos: 500 },
-        softMaxDuration: { seconds: 10, nanos: 20 },
-        costPerHourAfterSoftMax: 10,
-      });
+      })
+    ).toEqual({
+      maxDuration: { seconds: 100, nanos: 500 },
+      softMaxDuration: { seconds: 10, nanos: 20 },
+      costPerHourAfterSoftMax: 10,
+    });
   });
-
 });

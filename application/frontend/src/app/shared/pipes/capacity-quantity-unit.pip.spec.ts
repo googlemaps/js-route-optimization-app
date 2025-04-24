@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { CapacityQuantityUnitPipe } from "./capacity-quantity-unit.pipe";
-
+import { CapacityQuantityUnitPipe } from './capacity-quantity-unit.pipe';
 
 describe('CapacityQuantityUnitPipe', () => {
   const pipe = new CapacityQuantityUnitPipe();
@@ -33,10 +32,10 @@ describe('CapacityQuantityUnitPipe', () => {
   });
 
   it('returns default string when abbreviations is not found', () => {
-    expect(pipe.transform('weight_kilograms', { 'pounds': 'lb' })).toBe('kilograms');
+    expect(pipe.transform('weight_kilograms', { pounds: 'lb' })).toBe('kilograms');
   });
 
   it('returns abbreviation when provided', () => {
-    expect(pipe.transform('weight_kilograms', { 'kilograms': 'kg' })).toBe('kg');
+    expect(pipe.transform('weight_kilograms', { kilograms: 'kg' })).toBe('kg');
   });
 });

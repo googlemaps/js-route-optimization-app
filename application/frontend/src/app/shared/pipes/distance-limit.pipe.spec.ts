@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { DistanceLimitPipe } from "./distance-limit.pipe";
+import { DistanceLimitPipe } from './distance-limit.pipe';
 
 describe('DistanceLimitPipe', () => {
   const pipe = new DistanceLimitPipe();
@@ -26,22 +26,24 @@ describe('DistanceLimitPipe', () => {
 
   it('returns null values when fed null values', () => {
     expect(pipe.transform({})).toEqual({
-        maxMeters: null,
-        maxSoftMeters: null,
-        costPerKilometerAfterSoftMax: null,
-      });
+      maxMeters: null,
+      maxSoftMeters: null,
+      costPerKilometerAfterSoftMax: null,
+    });
   });
 
   it('returns numbers when fed numbers', () => {
-    expect(pipe.transform({
+    expect(
+      pipe.transform({
         maxMeters: 100,
         softMaxMeters: 10,
         costPerKilometerBelowSoftMax: 5,
-        costPerKilometerAboveSoftMax: 8
-    })).toEqual({
-        maxMeters: 100,
-        maxSoftMeters: 10,
-        costPerKilometerAfterSoftMax: 8,
-      });
+        costPerKilometerAboveSoftMax: 8,
+      })
+    ).toEqual({
+      maxMeters: 100,
+      maxSoftMeters: 10,
+      costPerKilometerAfterSoftMax: 8,
+    });
   });
 });
