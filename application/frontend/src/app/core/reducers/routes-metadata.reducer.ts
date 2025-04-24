@@ -21,6 +21,7 @@ import {
   MetadataControlBarActions,
   RoutesMetadataActions,
   PostSolveMetricsActions,
+  RoutesChartActions,
 } from '../actions';
 import { Page, routeIdMetadataFilterOption } from '../models';
 
@@ -93,6 +94,7 @@ export const reducer = createReducer(
         }
       : state
   ),
+  on(RoutesChartActions.resetView, () => initialState),
   on(RoutesMetadataActions.changeSort, (state, { active, direction }) => ({
     ...state,
     sort: { active, direction },

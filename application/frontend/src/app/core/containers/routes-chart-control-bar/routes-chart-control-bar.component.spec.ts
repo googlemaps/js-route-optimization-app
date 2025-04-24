@@ -31,6 +31,7 @@ import Long from 'long';
 import { Page } from '../../models';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import RoutesMetadataSelectors from '../../selectors/routes-metadata.selectors';
 
 @Component({
   selector: 'app-time-navigation',
@@ -78,6 +79,8 @@ describe('RoutesChartControlBarComponent', () => {
             { selector: RoutesChartSelectors.selectRangeOffset, value: 0 },
             { selector: RoutesChartSelectors.selectSelectedRange, value: null },
             { selector: fromUI.selectPage, value: Page.RoutesChart },
+            { selector: RoutesChartSelectors.selectViewHasChanged, value: false },
+            { selector: RoutesMetadataSelectors.selectViewHasChanged, value: false },
           ],
         }),
       ],

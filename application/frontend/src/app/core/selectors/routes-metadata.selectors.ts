@@ -357,6 +357,22 @@ const selectDisplayColumns = createSelector(
   }
 );
 
+const selectViewHasChanged = createSelector(
+  selectFilters,
+  selectPageIndex,
+  selectPageSize,
+  selectSelected,
+  selectDisplayColumnsState,
+  selectSort,
+  (filters, pageIndex, pageSize, selected, displayColumns, sort) =>
+    filters.length > 0 ||
+    pageIndex !== 0 ||
+    pageSize !== 25 ||
+    selected.length > 0 ||
+    !!displayColumns ||
+    sort.direction?.length > 0
+);
+
 export const RoutesMetadataSelectors = {
   selectDisplayColumns,
   selectColumnsToDisplay,
@@ -386,6 +402,7 @@ export const RoutesMetadataSelectors = {
   selectSort,
   selectPageSize,
   selectPageIndex,
+  selectViewHasChanged,
 };
 
 export default RoutesMetadataSelectors;

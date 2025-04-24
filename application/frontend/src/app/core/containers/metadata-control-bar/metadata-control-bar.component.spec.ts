@@ -27,6 +27,7 @@ import { FakeMatIconRegistry } from 'src/test/material-fakes';
 import RoutesMetadataSelectors from '../../selectors/routes-metadata.selectors';
 import * as fromUI from '../../selectors/ui.selectors';
 import { MetadataControlBarComponent } from './metadata-control-bar.component';
+import RoutesChartSelectors from '../../selectors/routes-chart.selectors';
 
 describe('MetadataControlBarComponent', () => {
   let component: MetadataControlBarComponent;
@@ -45,6 +46,8 @@ describe('MetadataControlBarComponent', () => {
             { selector: RoutesMetadataSelectors.selectAvailableDisplayColumnsOptions, value: [] },
             { selector: RoutesMetadataSelectors.selectFilters, value: [] },
             { selector: RoutesMetadataSelectors.selectDisplayColumns, value: null },
+            { selector: RoutesChartSelectors.selectViewHasChanged, value: false },
+            { selector: RoutesMetadataSelectors.selectViewHasChanged, value: false },
           ],
         }),
       ],
