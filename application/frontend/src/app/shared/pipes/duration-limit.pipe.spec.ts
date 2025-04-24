@@ -14,34 +14,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { DistanceLimitPipe } from "./distance-limit.pipe";
+import { DurationLimitPipe } from "./duration-limit.pipe";
 
-describe('DistanceLimitPipe', () => {
-  const pipe = new DistanceLimitPipe();
+describe('DurationLimitPipe', () => {
+  const pipe = new DurationLimitPipe();
 
   it('returns undefined when fed a null value', () => {
     expect(pipe.transform()).toBeUndefined();
     expect(pipe.transform(null)).toBeUndefined();
   });
 
-  it('returns null values when fed null values', () => {
+  it('returns undefined values when fed undefined values', () => {
     expect(pipe.transform({})).toEqual({
-        maxMeters: null,
-        maxSoftMeters: null,
-        costPerKilometerAfterSoftMax: null,
+        maxDuration: undefined,
+        softMaxDuration: undefined,
+        costPerHourAfterSoftMax: undefined,
       });
   });
 
   it('returns numbers when fed numbers', () => {
     expect(pipe.transform({
-        maxMeters: 100,
-        softMaxMeters: 10,
-        costPerKilometerBelowSoftMax: 5,
-        costPerKilometerAboveSoftMax: 8
-    })).toEqual({
-        maxMeters: 100,
-        maxSoftMeters: 10,
-        costPerKilometerAfterSoftMax: 8,
+        maxDuration: { seconds: 100, nanos: 500 },
+        softMaxDuration: { seconds: 10, nanos: 20 },
+        costPerHourAfterSoftMax: 10,
+      })).toEqual({
+        maxDuration: { seconds: 100, nanos: 500 },
+        softMaxDuration: { seconds: 10, nanos: 20 },
+        costPerHourAfterSoftMax: 10,
       });
   });
+
 });
