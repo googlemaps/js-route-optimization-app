@@ -30,3 +30,9 @@ mat-divider {
   height: 4em;
   margin: 0 0.5em;
 }
+
+@media only screen and (max-width: 1600px) {
+  .reset-text {
+    display: none;
+  }
+}

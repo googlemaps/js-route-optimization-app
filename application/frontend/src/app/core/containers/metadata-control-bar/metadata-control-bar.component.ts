@@ -30,11 +30,12 @@ import { FilterMenuComponent } from 'src/app/shared/components';
 import { ActiveFilter, FilterOption } from 'src/app/shared/models';
 import { FilterService } from 'src/app/shared/services';
 import { positionTopLeftRelativeToTopLeft } from 'src/app/util';
-import { MetadataControlBarActions } from '../../actions';
+import { MetadataControlBarActions, RoutesChartActions } from '../../actions';
 import { Column, Page } from '../../models';
 import RoutesMetadataSelectors from '../../selectors/routes-metadata.selectors';
 import * as fromShipmentsMetadata from '../../selectors/shipments-metadata.selectors';
 import * as fromUI from '../../selectors/ui.selectors';
+import RoutesChartSelectors from '../../selectors/routes-chart.selectors';
 
 export type MetadataSelectors = typeof RoutesMetadataSelectors | typeof fromShipmentsMetadata;
 
@@ -52,6 +53,8 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
   displayColumns$: Observable<Column[]>;
   page$: Observable<Page>;
   pageToggle$: Observable<Page>;
+  viewHasChanged$: Observable<boolean>;
+
   private pageSelectors$: Observable<{ page: Page; selectors: MetadataSelectors }>;
   private addSubscription: Subscription;
   private editSubscription: Subscription;
@@ -88,6 +91,7 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
         this.store.pipe(select(selectors.selectAvailableDisplayColumnsOptions))
       )
     );
+    this.viewHasChanged$ = this.store.pipe(select(RoutesChartSelectors.selectViewHasChanged));
   }
 
   ngOnDestroy(): void {
@@ -181,5 +185,9 @@ export class MetadataControlBarComponent implements OnInit, OnDestroy {
 
   onToggleChange(selection: Page): void {
     this.router.navigateByUrl('/' + selection, { skipLocationChange: true });
+  }
+
+  onResetView(): void {
+    this.store.dispatch(RoutesChartActions.resetView());
   }
 }
