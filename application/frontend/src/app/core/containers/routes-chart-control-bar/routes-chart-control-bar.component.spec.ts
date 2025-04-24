@@ -80,7 +80,7 @@ describe('RoutesChartControlBarComponent', () => {
             { selector: RoutesChartSelectors.selectSelectedRange, value: null },
             { selector: fromUI.selectPage, value: Page.RoutesChart },
             { selector: RoutesChartSelectors.selectViewHasChanged, value: false },
-            { selector: RoutesMetadataSelectors.selectViewHasChanged, value: false }
+            { selector: RoutesMetadataSelectors.selectViewHasChanged, value: false },
           ],
         }),
       ],
