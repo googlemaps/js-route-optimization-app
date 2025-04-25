@@ -4,9 +4,9 @@ The application consists of a **frontend** Angular single-page web application
 and a Node.js **backend** API. The frontend app is served
 as static files by the backend.
 
-Requests to **Cloud Fleet Routing** are proxied from the frontend
+Requests to **Route Optimization** are proxied from the frontend
 through the backend. The backend forwards requests to the
-**Google Cloud Optimization client library for Node.js** (pre-release build),
+**Route Optimization client library for Node.js**,
 authenticated as the backend's dedicated service account.
 
 Optionally, "scenario" and "solution" JSON files created in the app
@@ -17,7 +17,7 @@ This GCS integration must be explicitly enabled in the deployment configuration,
 ```mermaid
 flowchart LR
     F[Angular Frontend] --- B["Node.js Backend (Cloud Run)"]
-    B --- C["Cloud Fleet Routing (Cloud Optimization API)"]
+    B --- C["Route Optimization (Route Optimization API)"]
     B -.- S[Google Cloud Storage]
 ```
 
@@ -35,7 +35,7 @@ Container images are pulled from an **Artifact Registry**
 repository in the `fleetrouting-app-ops` project.
 
 The Cloud Run service runs as a dedicated **Service Account** (`fleetrouting-app`)
-with the *Cloud Optimization AI Editor* (`roles/cloudoptimization.editor`) IAM role.
+with the *Route Optimization Editor* (`roles/routeoptimization.editor`) IAM role.
 The Cloud Run instances run on a **private VPC network** (i.e. not publicly-accessible).
 *No default VPCs or service accounts are utilized*.
 
@@ -87,9 +87,8 @@ are enabled for the project:
   - Secret Manager
   - Serverless VPC Access
   - Storage
-- Optimization / Fleet Routing
-  - Cloud Optimization API
-  - Maps for Fleet Routing
+- Optimization
+  - Route Optimization API
 - Google Maps
   - Distance Matrix API
   - Geocoding API
@@ -101,7 +100,7 @@ are enabled for the project:
 ## Frontend
 The frontend is an Angular single-page application (SPA).
 
-- The user constructs a Cloud Fleet Routing vehicle routing *scenario*
+- The user constructs a Route Optimization vehicle routing *scenario*
   from scratch with the forms in the application
   or imports a JSON or CSV file populated with *scenario* data.
   - In the app forms, vehicle and shipment locations are specified
@@ -114,7 +113,7 @@ The frontend is an Angular single-page application (SPA).
     - Vehicle start/end locations
     - Shipment pickup/dropoff locations
 - The *scenario* can exported to local disk as a JSON file
-- When the user is ready, the app sends the *scenario* to **Cloud Fleet Routing**
+- When the user is ready, the app sends the *scenario* to **Route Optimization**
   via the **backend**, which returns a *solution* containing the optimized routes
   - Any errors for the request are presented to the user
 - With an active *solution*, users can explore the optimized routes
@@ -133,8 +132,8 @@ The backend service is a **Node.js Express API**, written in **TypeScript**.
 - Serves the frontend app as static content
   - Injects environment-specific variables (URLs, Maps API key, feature flags)
     into the frontend's `config.json` file at runtime
-- Proxies **Cloud Fleet Routing** requests, forwarding them to the
-  **Google Cloud Optimization client library**
+- Proxies **Route Optimization** requests, forwarding them to the
+  **Route Optimization client library**
 - If configured, writes and reads *scenario* and *solution* JSON files
   to/from Google Cloud Storage with the Google Cloud Storage client library
 - Requests have 1-hour to allow for long-running optimization requests
@@ -155,7 +154,7 @@ Runtime:
 - Angular
 - Deck.gl
 - Google Maps JavaScript API
-- Google Cloud Optimization client (pre-release)
+- Google Maps Route Optimization Client
 - NgRx
 - Turf
 
@@ -170,9 +169,7 @@ Development:
 ### Backend
 Runtime:
 - Express
-- Google Cloud Optimization Client
-  > The optimization client library is an pre-release build provided by Google.
-  > It is not publicly distributed.
+- Google Maps Route Optimization Client
 - Google Cloud Storage Client
 - Pino
 
@@ -191,11 +188,11 @@ Development:
 ## External APIs
 The following external APIs are used by the app:
 
-- Google Cloud Optimization API
 - Google Fonts
 - Google Maps Platform:
     - Geocoding API
     - Maps JavaScript API
     - Places API
     - Static Maps API
+    - Route Optimization API
 - Google Cloud Storage API
