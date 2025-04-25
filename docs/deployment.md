@@ -140,7 +140,7 @@ the HTTPS certificate finishes provisioning.
 
 The application is live when you see a **Google Sign-In** page upon loading the URL.
 After signing in, you should see the app's landing page
-with "Cloud Fleet Routing API" displayed at the top.
+with "Google Maps Platform | Route Optimization API" displayed at the top.
 
 ---
 ### Troubleshooting
