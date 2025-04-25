@@ -71,7 +71,6 @@ see [LICENSE](LICENSE) for details.
 The application is subject the following terms of use:
 - [Google Cloud Terms of Use](https://cloud.google.com/terms)
 - [Google Maps Platform Terms of Use](https://cloud.google.com/maps-platform/terms)
-- [Google Cloud Optimization API service-specific terms](https://cloud.google.com/optimization/docs/tos/service-terms)
 - [Google OAuth 2.0 Policies](https://developers.google.com/identity/protocols/oauth2/policies)
 
 

@@ -45,7 +45,7 @@ gcloud projects create {PROJECT_ID} --name={PROJECT_NAME} --folder={FOLDER_NUMBE
 > Later, **Terraform** will explicitly enable just the services required by Fleet Routing App.
 
 ### Enable Billing
-**Cloud Fleet Routing** and **Google Maps Platform** and dependencies of
+**Route Optimization** and **Google Maps Platform** and dependencies of
 **Fleet Routing App** are paid services that require a project
 to be linked to a billing account before they can be enabled.
 
