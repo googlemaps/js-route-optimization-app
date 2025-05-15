@@ -331,11 +331,13 @@ export class UploadDialogComponent {
     let solution;
     files.forEach((file) => {
       if (!scenario || !Object.keys(scenario).length) {
-        scenario = this.validateScenario(file.content);
+        const res = this.validateScenario(file.content);
+        scenario = res.isValid ? res.scenario : null;
       }
 
       if (!solution || !Object.keys(solution).length) {
-        solution = this.validateSolution(file.content);
+        const res = this.validateSolution(file.content);
+        solution = res.isValid ? res.solution : null;
       }
     });
 
@@ -374,35 +376,32 @@ export class UploadDialogComponent {
    * Only validates the message/value structure
    */
   scenarioValidator(_: UntypedFormControl): ValidationErrors | null {
-    try {
-      const scenario = this.validateScenario(this.json);
-
-      if (this.scenario == null) {
-        this.scenario = scenario;
-      }
-    } catch (error) {
+    const res = this.validateScenario(this.json);
+    if (this.scenario == null && res.isValid) {
+      this.scenario = res.scenario;
+      return null;
+    } else {
       // eslint-disable-next-line no-console
-      console.log('Invalid request format:', error);
+      console.error(res.validationResult);
       return { requestFormat: true };
     }
-    return null;
   }
 
-  validateScenario(json: any): Scenario {
+  validateScenario(json: any): { scenario: Scenario; isValid: boolean; validationResult?: any } {
     const validationResult = this.uploadService.validateScenarioFormat(json);
     if (validationResult) {
-      throw validationResult;
+      return { scenario: null, isValid: false, validationResult };
     }
 
-    return this.dispatcherService.objectToScenario(json);
+    return { scenario: this.dispatcherService.objectToScenario(json), isValid: true };
   }
 
-  validateSolution(json: any): Solution {
+  validateSolution(json: any): { solution: Solution; isValid: boolean; validationResult?: any } {
     const validationResult = this.uploadService.validateSolutionFormat(json);
     if (validationResult) {
-      throw validationResult;
+      return { solution: null, isValid: false, validationResult };
     }
 
-    return this.dispatcherService.objectToSolution(json);
+    return { solution: this.dispatcherService.objectToSolution(json), isValid: true };
   }
 }
