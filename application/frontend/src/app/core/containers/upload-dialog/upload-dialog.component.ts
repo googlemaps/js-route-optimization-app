@@ -337,13 +337,11 @@ export class UploadDialogComponent {
     let solution;
     files.forEach((file) => {
       if (!scenario || !Object.keys(scenario).length) {
-        const res = this.validateScenario(file.content);
-        scenario = res.isValid ? res.scenario : null;
+        scenario = this.validateScenario(file.content).scenario;
       }
 
       if (!solution || !Object.keys(solution).length) {
-        const res = this.validateSolution(file.content);
-        solution = res.isValid ? res.solution : null;
+        solution = this.validateSolution(file.content).solution;
       }
     });
 
