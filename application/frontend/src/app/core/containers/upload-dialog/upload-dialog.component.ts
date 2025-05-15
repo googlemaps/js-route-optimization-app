@@ -163,6 +163,12 @@ export class UploadDialogComponent {
       return;
     }
 
+    this.fileInvalid = false;
+    this.zipContentsInvalid = false;
+    this.zipContentCountInvalid = false;
+    this.zipMissingScenario = false;
+    this.zipMissingSolution = false;
+
     this.selectedFilename = file.name.replace(/\.[^/.]+$/, '');
 
     this.validatingUpload = true;
