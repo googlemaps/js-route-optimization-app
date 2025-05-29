@@ -6,7 +6,7 @@ for **Fleet Routing App**.
 ## Google Cloud Project Setup
 🛑 Before you can run the app,
 you will need access to a Google Cloud project
-with **Optimization API** other required services enabled.
+with **Optimization API** and other required services enabled.
 You will also need **Service Account** and **API Key** credentials
 to authenticate requests.
 
