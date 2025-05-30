@@ -30,7 +30,7 @@ import { Shipment, ShipmentChanges, Vehicle, Visit, VisitRequest } from '../../m
 import * as fromConfig from '../../selectors/config.selectors';
 import * as fromMap from '../../selectors/map.selectors';
 import * as fromScenario from '../../selectors/scenario.selectors';
-import ShipmentSelectors, * as fromShipment from '../../selectors/shipment.selectors';
+import ShipmentSelectors from '../../selectors/shipment.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
 import VisitSelectors from '../../selectors/visit.selectors';
 import { FormVisitRequestLayer, MessageService } from '../../services';
