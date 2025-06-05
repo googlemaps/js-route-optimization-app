@@ -1,0 +1,1007 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.40888,
+                  "longitude": -122.0182428
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 1 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4081111,
+                  "longitude": -121.995133
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "300s"
+          }
+        ],
+        "label": "Visit 2 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4042637,
+                  "longitude": -122.0220748
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 3 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3737861,
+                  "longitude": -122.0563337
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 4 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3840749,
+                  "longitude": -122.0294684
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "240s"
+          }
+        ],
+        "label": "Visit 5 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.394982,
+                  "longitude": -122.0329622
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "300s"
+          }
+        ],
+        "label": "Visit 6 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3793119,
+                  "longitude": -122.0338496
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 7 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.40888,
+                  "longitude": -122.0182428
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "600s"
+          }
+        ],
+        "label": "Visit 8 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3554198,
+                  "longitude": -122.018108
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 9 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3520534,
+                  "longitude": -122.061315
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 10 - ENT"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3764791,
+                  "longitude": -122.0299426
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "240s"
+          }
+        ],
+        "label": "Visit 11 - Phy. Therapy"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3718019,
+                  "longitude": -122.0485583
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "300s"
+          }
+        ],
+        "label": "Visit 12 - Phy. Therapy"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3411484,
+                  "longitude": -122.0409272
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "900s"
+          }
+        ],
+        "label": "Visit 13 - Phy. Therapy"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3375075,
+                  "longitude": -122.0550025
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "900s"
+          }
+        ],
+        "label": "Visit 14"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4009912,
+                  "longitude": -122.0518973
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "300s"
+          }
+        ],
+        "label": "Visit 15"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4119412,
+                  "longitude": -122.0004821
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "240s"
+          }
+        ],
+        "label": "Visit 16"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3664633,
+                  "longitude": -122.0565792
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "900s"
+          }
+        ],
+        "label": "Visit 17"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4650362,
+                  "longitude": -122.18484
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 18"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.2994674,
+                  "longitude": -121.9638019
+                }
+              }
+            },
+            "tags": [
+              "installation"
+            ],
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "3600s"
+          }
+        ],
+        "label": "Visit 19"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3759743,
+                  "longitude": -122.0306859
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 20"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.36289484786073,
+                  "longitude": -122.0364066997553
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 21"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.381235765832265,
+                  "longitude": -122.02343219760212
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 22"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.37673688886619,
+                  "longitude": -122.04962730637381
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 23"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.34581028766401,
+                  "longitude": -122.04670088614398
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 24"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.359377871330004,
+                  "longitude": -122.0046690411342
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 25"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.33734268830637,
+                  "longitude": -122.03951208328735
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 26"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.38605041361312,
+                  "longitude": -122.08243467917764
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 27"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.400448262674864,
+                  "longitude": -121.98773914655501
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 28"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.32072358286647,
+                  "longitude": -122.0155576767359
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 29"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.30871358166039,
+                  "longitude": -122.01832018755823
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T09:00:00.000Z",
+                "endTime": "2025-06-12T05:00:00.000Z"
+              }
+            ],
+            "duration": "150s"
+          }
+        ],
+        "label": "Visit 30"
+      }
+    ],
+    "vehicles": [
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 30,
+        "costPerKilometer": 30,
+        "fixedCost": 120,
+        "travelDurationLimit": {},
+        "label": "General 1"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 30,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "General 2"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 30,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "General 3"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 30,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "General 4"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 30,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "General 5"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 40,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "ENT 1"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 40,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "ENT 2"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 40,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "ENT 3"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 50,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "Phy. Therapy 1"
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "costPerHour": 50,
+        "costPerKilometer": 20,
+        "fixedCost": 100,
+        "label": "Phy. Therapy 2"
+      }
+    ],
+    "globalStartTime": "2025-06-12T06:00:00.000Z",
+    "globalEndTime": "2025-06-12T17:00:00.000Z"
+  },
+  "searchMode": 1,
+  "considerRoadTraffic": false,
+  "label": "module2 - exercise3"
+}
