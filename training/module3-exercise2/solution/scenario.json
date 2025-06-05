@@ -1,0 +1,255 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.40888,
+                  "longitude": -122.0182428
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4081111,
+                  "longitude": -121.995133
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Gizmo Deluxe"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4042637,
+                  "longitude": -122.0220748
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Thingamajig Standard"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3737861,
+                  "longitude": -122.0563337
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3840749,
+                  "longitude": -122.0294684
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Doohickey Plus"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.394982,
+                  "longitude": -122.0329622
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "PREMIUM DELIVERY TIME \nGizmo Deluxe"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3793119,
+                  "longitude": -122.0338496
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Thingamajig Standard"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.40888,
+                  "longitude": -122.0182428
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Super Gadget"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3554198,
+                  "longitude": -122.018108
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro"
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3520534,
+                  "longitude": -122.061315
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T07:00:00.000Z",
+                "endTime": "2025-06-12T16:00:00.000Z"
+              }
+            ]
+          }
+        ],
+        "label": "Doohickey Plus"
+      }
+    ],
+    "vehicles": [
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "costPerKilometer": 200,
+        "label": "Truck1"
+      }
+    ],
+    "globalStartTime": "2025-06-12T06:00:00.000Z",
+    "globalEndTime": "2025-06-12T17:00:00.000Z"
+  },
+  "searchMode": 1,
+  "considerRoadTraffic": false,
+  "label": "module3 - exercise2S"
+}

@@ -1,0 +1,1613 @@
+{
+  "model": {
+    "shipments": [
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.40888,
+                  "longitude": -122.0182428
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4081111,
+                  "longitude": -121.995133
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Gizmo Deluxe",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4042637,
+                  "longitude": -122.0220748
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Thingamajig Standard",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3737861,
+                  "longitude": -122.0563337
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3840749,
+                  "longitude": -122.0294684
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Doohickey Plus",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.394982,
+                  "longitude": -122.0329622
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "PREMIUM DELIVERY TIME \nGizmo Deluxe",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3793119,
+                  "longitude": -122.0338496
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Thingamajig Standard",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.40888,
+                  "longitude": -122.0182428
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Super Gadget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3554198,
+                  "longitude": -122.018108
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3520534,
+                  "longitude": -122.061315
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Doohickey Plus",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3764791,
+                  "longitude": -122.0299426
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Electro-Widget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3718019,
+                  "longitude": -122.0485583
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Hyper Gizmo",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3411484,
+                  "longitude": -122.0409272
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Ultra Thingamajig",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3375075,
+                  "longitude": -122.0550025
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Mega Doohickey",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4009912,
+                  "longitude": -122.0518973
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Quantum Gadget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4119412,
+                  "longitude": -122.0004821
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Sonic Widget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3664633,
+                  "longitude": -122.0565792
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Robotic Gizmo",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.4650362,
+                  "longitude": -122.18484
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Advanced Thingamajig",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.2994674,
+                  "longitude": -121.9638019
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "WHITE GLOVE DELIVERY \nSmart Doohickey",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3759743,
+                  "longitude": -122.0306859
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Future Gadget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.405280517668096,
+                  "longitude": -122.02278043622134
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.402274854326194,
+                  "longitude": -122.00998281877587
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Gizmo Deluxe",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.38601270581714,
+                  "longitude": -122.03621389276462
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Thingamajig Standard",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.37010926190221,
+                  "longitude": -122.06017269283147
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.384553865360054,
+                  "longitude": -122.03043469240033
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Doohickey Plus",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.39646241909212,
+                  "longitude": -122.03225479397506
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.37949250471397,
+                  "longitude": -122.03484807890852
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Thingamajig Standard",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.40189185030423,
+                  "longitude": -122.02241938710243
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Super Gadget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.362986055622756,
+                  "longitude": -122.02104888008468
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Widget Pro",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.3610530870279,
+                  "longitude": -122.0442911324625
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Doohickey Plus",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.385722553614166,
+                  "longitude": -122.04832584724794
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Electro-Widget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.37095082980627,
+                  "longitude": -122.04951386356426
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Hyper Gizmo",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.335372853529265,
+                  "longitude": -122.0411854798881
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Ultra Thingamajig",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.344650307061166,
+                  "longitude": -122.04833969507786
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Mega Doohickey",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.40798069453329,
+                  "longitude": -122.06389866108778
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Quantum Gadget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.39230759933434,
+                  "longitude": -122.01481188177652
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Sonic Widget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.35664424015952,
+                  "longitude": -122.0578473419372
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Robotic Gizmo",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.45417428390153,
+                  "longitude": -122.16501060779277
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Advanced Thingamajig",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.2737729236271,
+                  "longitude": -121.96645748941002
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "WHITE GLOVE DELIVERY \nSmart Doohickey",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      },
+      {
+        "deliveries": [
+          {
+            "arrivalWaypoint": {
+              "location": {
+                "latLng": {
+                  "latitude": 37.33933880505075,
+                  "longitude": -122.06063196888671
+                }
+              }
+            },
+            "timeWindows": [
+              {
+                "startTime": "2025-06-12T08:00:00.000Z",
+                "endTime": "2025-06-12T09:00:00.000Z",
+                "softStartTime": "2025-06-12T08:00:00.000Z",
+                "softEndTime": "2025-06-12T08:15:00.000Z",
+                "costPerHourAfterSoftEndTime": 500,
+                "costPerHourBeforeSoftStartTime": 0
+              }
+            ]
+          }
+        ],
+        "label": "Future Gadget",
+        "loadDemands": {
+          "parcel": {
+            "amount": "1"
+          }
+        }
+      }
+    ],
+    "vehicles": [
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck1",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck2",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck3",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck4",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck5",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck6",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck7",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck8",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck9",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      },
+      {
+        "travelMode": 1,
+        "startWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "endWaypoint": {
+          "location": {
+            "latLng": {
+              "latitude": 37.4220095,
+              "longitude": -122.0847515
+            }
+          }
+        },
+        "startTimeWindows": [
+          {
+            "startTime": "2025-06-12T06:00:00.000Z"
+          }
+        ],
+        "endTimeWindows": [
+          {
+            "startTime": "2025-06-12T17:00:00.000Z"
+          }
+        ],
+        "travelDurationLimit": {},
+        "label": "Truck10",
+        "loadLimits": {
+          "parcel": {
+            "maxLoad": "5",
+            "softMaxLoad": "4",
+            "costPerUnitAboveSoftMax": 500,
+            "startLoadInterval": {},
+            "endLoadInterval": {}
+          }
+        }
+      }
+    ],
+    "globalStartTime": "2025-06-12T06:00:00.000Z",
+    "globalEndTime": "2025-06-12T17:00:00.000Z",
+    "globalDurationCostPerHour": "200"
+  },
+  "searchMode": 1,
+  "considerRoadTraffic": false,
+  "label": "module3 - exercise3"
+}
