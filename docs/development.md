@@ -6,9 +6,9 @@ for **Fleet Routing App**.
 ## Google Cloud Project Setup
 🛑 Before you can run the app,
 you will need access to a Google Cloud project
-with **Optimization API** other required services enabled.
-You will also need **Service Account** and **API Key** credentials
-to authenticate requests.
+with **Optimization API** and other required services enabled.
+You *may* also need a **Service Account** and **API Key** credentials
+to authenticate requests. See the [*Authentication*](#authentication) section for more details.
 
 > ⏭️ If you have already [deployed an instance](deployment.md)
 > of **Fleet Routing App** to a Google Cloud project,
@@ -167,8 +167,8 @@ Populate `application/.env` file with the details of your Google Cloud project a
 | API_ROOT | URL of the backend API (probably `http://localhost:8080/api`) |  |
 | FRONTEND_PROXY | URL of the frontend Angular development server (probably `http://localhost:4200/`) - *FOR DEVELOPMENT USE ONLY* |  |
 | MAP_API_KEY | API Key to load Google Maps JavaScript API in frontend (see [*Authentication*](#authentication) section) |  |
-| GOOGLE_APPLICATION_CREDENTIALS | Path to a service account credentials JSON file to authenticate Google API requests (see [*Authentication*](#authentication) section) | *Default application credentials* |
 | **Optional** | | |
+| GOOGLE_APPLICATION_CREDENTIALS | Path to a service account credentials JSON file to authenticate Google API requests (see [*Authentication*](#authentication) section) | *Default application credentials* |
 | LOG_FORMAT | Log format to output (`google` or `pretty`) | `google` |
 | LOG_LEVEL | Minimum [Pino log level](https://getpino.io/#/docs/api?id=level-string) to output | `info` |
 | GRPC_TRACE | gRPC component(s) to show internal logs for (or set to `all` to log every component). *See [gRPC Troubleshooting guide](https://github.com/grpc/grpc/blob/master/TROUBLESHOOTING.md)*. | If not set, no internal gRPC logs are enabled |
@@ -194,16 +194,9 @@ LOG_FORMAT=pretty
 #### Service Account Credentials
 To authenticate requests to **Route Optimization**,
 the backend needs credentials for a Google Cloud service account
-with the **Route OptimizationEditor** role.
+with the **Route OptimizationEditor** role. These credentials are provided using [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials) in the application environment. See the official docs for how to configure application credentials.
 
 > ℹ **Route Optimization** requests cannot be authenticated with end-user credentials.
-
-[Create a JSON service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys)
-for the *Fleet Routing App Service Account (`fleetrouting-app@`)*
-in your project. Save it to your machine
-and set the absolute path of the downloaded credentials JSON file
-as the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
-(see [*Configure Environment Variables*](#configure-environment-variables) section).
 
 #### API Key for Google Maps
 To load **Google Maps JavaScript API**
