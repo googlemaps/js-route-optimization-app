@@ -60,7 +60,7 @@ export class DispatcherService {
   }
 
   private convertProtoFieldNamesToCamelCase(obj: any, parentField: string = null): any {
-    if (typeof obj !== 'object') {
+    if (typeof obj !== 'object' || obj === null) {
       return obj;
     }
     if (Array.isArray(obj)) {
