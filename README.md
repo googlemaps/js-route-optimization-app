@@ -1,5 +1,11 @@
 # Google Fleet Routing App
 
+**European Economic Area (EEA) developers**
+
+If your billing address is in the European Economic Area, effective on 8 July 2025, the [Google Maps Platform EEA Terms of Service](https://cloud.google.com/terms/maps-platform/eea) will apply to your use of the Services. Functionality varies by region. [Learn more.](https://developers.google.com/maps/comms/eea/faq)
+
+---
+
 A web application to explore the capabilities of [**Google Maps Platform Route Optimization**](https://developers.google.com/maps/documentation/route-optimization) (GMPRO).
 
 GMPRO solves vehicle routing problems (VRPs).
