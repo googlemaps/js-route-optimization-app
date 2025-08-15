@@ -20,7 +20,7 @@
     "compression": "^1.8.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "multer": "2.0.0",
+    "multer": "2.0.2",
     "pako": "^2.1.0",
     "pino-http": "^10.4.0"
   },
