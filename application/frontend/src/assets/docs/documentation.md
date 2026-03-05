@@ -470,14 +470,14 @@ Now let's get a scenario loaded into Fleet Routing App!
 3. Find the GCS bucket that contains scenarios. The bucket name is something you will have configured when you deployed the app from the Google Marketplace, but it's good to validate before trying to copy files there:
 
    ```bash
-    $ gsutil ls
+    $ gcloud storage ls
     gs://some-bucket
     gs://dispatcher-solutions-dev/ # This is the one we want!
     gs://another-bucket
     ...
    ```
 
-4. Use the `gsutil` tool to upload the sample scenario.
+4. Use the `gcloud storage` tool to upload the sample scenario.
 
    > TIP: By default the application is configured to look for a folder called `scenarios` and a subfolder named after a date, e.g., `2020-01-31`.
 
@@ -485,8 +485,8 @@ Now let's get a scenario loaded into Fleet Routing App!
     bucket=gs://dispatcher-solutions-dev
     path="scenarios/$(date +%Y-%m-%d)" # Get the right date-formatted destination
     destination="$bucket/$path/"
-    gsutil cp sample-scenario.json $destination
-    gsutil ls $bucket
+    gcloud storage cp sample-scenario.json $destination
+    gcloud storage ls $bucket
    ```
 
 5. Open Fleet Routing App and use the _Open_ function, you should see something like `2021-01-28/sample-scenario.json` ready to work with.
