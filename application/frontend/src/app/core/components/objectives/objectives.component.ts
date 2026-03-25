@@ -22,6 +22,10 @@ export class ObjectivesComponent {
     { type: ObjectiveType.MIN_NUM_VEHICLES, label: 'Minimize Number of Vehicles' },
   ];
 
+  get selectedCount(): number {
+    return this.form.controls.filter((control) => control.get('selected')?.value).length;
+  }
+
   constructor(private store: Store, private fb: UntypedFormBuilder) {
     this.initForm();
   }

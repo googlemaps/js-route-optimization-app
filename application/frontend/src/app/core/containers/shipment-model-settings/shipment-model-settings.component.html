@@ -60,7 +60,7 @@
         <mat-panel-title [ngClass]="
             this.objectives?.form.valid ? 'panel-title-valid' : 'panel-title-invalid'
           ">
-          Objectives
+          Objectives ({{ objectives?.selectedCount || 0 }})
         </mat-panel-title>
       </mat-expansion-panel-header>
       <app-objectives #objectives></app-objectives>
