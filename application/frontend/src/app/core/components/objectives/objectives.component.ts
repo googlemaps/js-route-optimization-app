@@ -10,10 +10,6 @@ import { IObjective, ObjectiveType } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObjectivesComponent {
-  form: UntypedFormArray;
-
-  objectives: IObjective[] = [];
-
   readonly objectiveTypes = [
     { type: ObjectiveType.DEFAULT, label: 'Default' },
     { type: ObjectiveType.MIN_DISTANCE, label: 'Minimize Distance Traveled' },
@@ -25,6 +21,17 @@ export class ObjectivesComponent {
   get selectedCount(): number {
     return this.form.controls.filter((control) => control.get('selected')?.value).length;
   }
+
+  get objectives(): IObjective[] {
+    return this.form.controls
+      .filter((control) => control.get('selected')?.value)
+      .map((control) => ({
+        type: control.get('type')?.value,
+        weight: control.get('weight')?.value,
+      }));
+  }
+
+  form: UntypedFormArray;
 
   constructor(private store: Store, private fb: UntypedFormBuilder) {
     this.initForm();
