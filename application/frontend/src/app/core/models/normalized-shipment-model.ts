@@ -15,11 +15,11 @@ limitations under the License.
 */
 
 import {
-  IObjective,
   IPrecedenceRule,
   IShipmentTypeIncompatibility,
   IShipmentTypeRequirement,
   ITransitionAttributes,
+  ModelObjective,
 } from '.';
 
 /**
@@ -35,5 +35,5 @@ export interface NormalizedShipmentModel {
   shipmentTypeIncompatibilities?: IShipmentTypeIncompatibility[];
   shipmentTypeRequirements?: IShipmentTypeRequirement[];
   transitionAttributes?: ITransitionAttributes[];
-  objectives?: IObjective[];
+  objectives?: ModelObjective[];
 }

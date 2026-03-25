@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UntypedFormArray, UntypedFormBuilder, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { IObjective, ObjectiveType } from '../../models';
+import { ModelObjective, ObjectiveType } from '../../models';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import { take } from 'rxjs/operators';
 
@@ -24,13 +24,12 @@ export class ObjectivesComponent {
     return this.form.controls.filter((control) => control.get('selected').value).length;
   }
 
-  get objectives(): IObjective[] {
-    return this.form.controls
-      .filter((control) => control.get('selected').value)
-      .map((control) => ({
-        type: control.get('type').value,
-        weight: control.get('weight').value,
-      }));
+  get objectives(): ModelObjective[] {
+    return this.form.controls.map((control) => ({
+      selected: control.get('selected').value,
+      type: control.get('type').value,
+      weight: control.get('weight').value,
+    }));
   }
 
   form: UntypedFormArray;
@@ -47,7 +46,7 @@ export class ObjectivesComponent {
     this.form = this.fb.array(
       this.objectiveTypes.map((objective) =>
         this.fb.group({
-          selected: objective.type === ObjectiveType.DEFAULT,
+          selected: false,
           type: [objective.type],
           weight: [1.0, [Validators.min(0)]],
         })
@@ -55,13 +54,13 @@ export class ObjectivesComponent {
     );
   }
 
-  resetObjectives(objectives: IObjective[]): void {
+  resetObjectives(objectives: ModelObjective[]): void {
     this.form.controls.forEach((control) => {
       const type = control.get('type').value;
-      const matchingObjective = objectives.find((obj) => obj.type === type);
-      if (matchingObjective) {
-        control.get('selected').setValue(true);
-        control.get('weight').setValue(matchingObjective.weight ?? 1.0);
+      const obj = objectives.find((obj) => obj.type === type);
+      if (obj) {
+        control.get('selected').setValue(obj.selected);
+        control.get('weight').setValue(obj.weight ?? 1.0);
       } else {
         control.get('selected').setValue(false);
         control.get('weight').setValue(1.0);

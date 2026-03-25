@@ -16,11 +16,11 @@ limitations under the License.
 
 import { createAction, props } from '@ngrx/store';
 import {
-  IObjective,
   IPrecedenceRule,
   IShipmentTypeIncompatibility,
   IShipmentTypeRequirement,
   ITransitionAttributes,
+  ModelObjective,
   NormalizedShipmentModel,
 } from '../models';
 
@@ -71,5 +71,5 @@ export const setTransitionAttributes = createAction(
 
 export const setObjectives = createAction(
   '[Shipment Model] Set Objectives',
-  props<{ objectives: IObjective[] }>()
+  props<{ objectives: ModelObjective[] }>()
 );

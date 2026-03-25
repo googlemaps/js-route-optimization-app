@@ -17,11 +17,12 @@ limitations under the License.
 import { createReducer, on } from '@ngrx/store';
 import { ShipmentModelActions } from '../actions';
 import {
-  IObjective,
   IPrecedenceRule,
   IShipmentTypeIncompatibility,
   IShipmentTypeRequirement,
   ITransitionAttributes,
+  ModelObjective,
+  ObjectiveType,
 } from '../models';
 
 export const shipmentModelFeatureKey = 'shipmentModel';
@@ -35,7 +36,7 @@ export interface State {
   shipmentTypeIncompatibilities?: IShipmentTypeIncompatibility[];
   shipmentTypeRequirements?: IShipmentTypeRequirement[];
   transitionAttributes?: ITransitionAttributes[];
-  objectives?: IObjective[];
+  objectives?: ModelObjective[];
 }
 
 export const initialState: State = {
@@ -47,7 +48,7 @@ export const initialState: State = {
   shipmentTypeIncompatibilities: null,
   shipmentTypeRequirements: null,
   transitionAttributes: null,
-  objectives: null,
+  objectives: [{ type: ObjectiveType.DEFAULT, weight: 1.0, selected: true }],
 };
 
 export const reducer = createReducer(
@@ -107,4 +108,4 @@ export const selectShipmentTypeRequirements = (state: State): IShipmentTypeRequi
   state.shipmentTypeRequirements;
 export const selectTransitionAttributes = (state: State): ITransitionAttributes[] =>
   state.transitionAttributes;
-export const selectObjectives = (state: State): IObjective[] => state.objectives;
+export const selectObjectives = (state: State): ModelObjective[] => state.objectives;

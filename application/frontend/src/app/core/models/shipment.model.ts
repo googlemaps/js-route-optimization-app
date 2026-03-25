@@ -14,11 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { IShipment } from 'src/app/core/models';
+import { IObjective, IShipment } from 'src/app/core/models';
 
 export interface Shipment extends Omit<IShipment, 'pickups' | 'deliveries'> {
   id: number;
   pickups: number[];
   deliveries: number[];
   changeTime?: number;
+}
+
+export interface ModelObjective extends IObjective {
+  selected: boolean;
 }
