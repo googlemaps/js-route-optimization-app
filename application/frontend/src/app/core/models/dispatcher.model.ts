@@ -31,8 +31,10 @@ import SolvingMode = dispatcher.OptimizeToursRequest.SolvingMode;
 import TimeWindow = dispatcher.TimeWindow;
 import TravelMode = dispatcher.Vehicle.TravelMode;
 import UnloadingPolicy = dispatcher.Vehicle.UnloadingPolicy;
+import ObjectiveType = dispatcher.ShipmentModel.Objective.Type;
 export {
   IncompatibilityMode,
+  ObjectiveType,
   RequirementMode,
   OptimizeToursRequest,
   OptimizeToursResponse,
