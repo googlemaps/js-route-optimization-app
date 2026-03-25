@@ -51,7 +51,7 @@ export class ShipmentModelSettingsComponent {
         shipmentTypeRequirements: this.shipmentTypeRequirements.shipmentTypeRequirements,
         precedenceRules: this.precedenceRules.precedenceRules,
         transitionAttributes: this.transitionAttributes.transitionAttributes,
-        objectives: this.objectives.objectives
+        objectives: this.objectives.objectives,
       })
     );
     this.dialogRef.close();

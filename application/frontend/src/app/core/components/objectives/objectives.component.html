@@ -6,7 +6,7 @@
     <div class="weight-container">
       <mat-form-field appearance="outline" class="weight-field unpadded-form-field">
         <mat-label>Weight</mat-label>
-        <input matInput type="number" [formControl]="control.get('weight')" min="0">
+        <input matInput type="number" [formControl]="control.get('weight')" min="0" />
       </mat-form-field>
       <mat-error *ngIf="control.get('weight').errors?.min">
         Must be greater than or equal to zero

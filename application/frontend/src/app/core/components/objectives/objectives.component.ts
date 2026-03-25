@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UntypedFormArray, UntypedFormBuilder, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { IObjective, ObjectiveType } from '../../models';
+import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-objectives',
   templateUrl: './objectives.component.html',
   styleUrl: './objectives.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectivesComponent {
   readonly objectiveTypes = [
@@ -19,15 +21,15 @@ export class ObjectivesComponent {
   ];
 
   get selectedCount(): number {
-    return this.form.controls.filter((control) => control.get('selected')?.value).length;
+    return this.form.controls.filter((control) => control.get('selected').value).length;
   }
 
   get objectives(): IObjective[] {
     return this.form.controls
-      .filter((control) => control.get('selected')?.value)
+      .filter((control) => control.get('selected').value)
       .map((control) => ({
-        type: control.get('type')?.value,
-        weight: control.get('weight')?.value,
+        type: control.get('type').value,
+        weight: control.get('weight').value,
       }));
   }
 
@@ -35,6 +37,10 @@ export class ObjectivesComponent {
 
   constructor(private store: Store, private fb: UntypedFormBuilder) {
     this.initForm();
+
+    store.pipe(select(ShipmentModelSelectors.selectObjectives), take(1)).subscribe((objectives) => {
+      this.resetObjectives(objectives || []);
+    });
   }
 
   initForm(): void {
@@ -47,5 +53,19 @@ export class ObjectivesComponent {
         })
       )
     );
+  }
+
+  resetObjectives(objectives: IObjective[]): void {
+    this.form.controls.forEach((control) => {
+      const type = control.get('type').value;
+      const matchingObjective = objectives.find((obj) => obj.type === type);
+      if (matchingObjective) {
+        control.get('selected').setValue(true);
+        control.get('weight').setValue(matchingObjective.weight ?? 1.0);
+      } else {
+        control.get('selected').setValue(false);
+        control.get('weight').setValue(1.0);
+      }
+    });
   }
 }

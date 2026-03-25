@@ -57,9 +57,8 @@
     </mat-expansion-panel>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title [ngClass]="
-            this.objectives?.form.valid ? 'panel-title-valid' : 'panel-title-invalid'
-          ">
+        <mat-panel-title
+          [ngClass]="this.objectives?.form.valid ? 'panel-title-valid' : 'panel-title-invalid'">
           Objectives ({{ objectives?.selectedCount || 0 }})
         </mat-panel-title>
       </mat-expansion-panel-header>

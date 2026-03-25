@@ -194,7 +194,7 @@ export const CONTAINERS = [
     PrecedenceRulesDialogComponent,
     ShipmentModelSettingsComponent,
     PostSolveMapLegendComponent,
-    ObjectivesComponent
+    ObjectivesComponent,
   ],
   exports: [COMPONENTS, CONTAINERS, CsvUploadDialogComponent],
 })
