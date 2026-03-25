@@ -21,6 +21,7 @@ import { ShipmentTypeRequirementDialogComponent } from '../../components/shipmen
 import { PrecedenceRulesDialogComponent } from '../../components/precedence-rules-dialog/precedence-rules-dialog.component';
 import { TransitionAttributesDialogComponent } from '../../components/transition-attributes-dialog/transition-attributes-dialog.component';
 import { ShipmentModelActions } from '../../actions';
+import { ObjectivesComponent } from '../../components/objectives/objectives.component';
 
 @Component({
   selector: 'app-shipment-model-settings',
@@ -35,6 +36,7 @@ export class ShipmentModelSettingsComponent {
   shipmentTypeRequirements: ShipmentTypeRequirementDialogComponent;
   @ViewChild('precedenceRules') precedenceRules: PrecedenceRulesDialogComponent;
   @ViewChild('transitionAttributes') transitionAttributes: TransitionAttributesDialogComponent;
+  @ViewChild('objectives') objectives: ObjectivesComponent;
 
   constructor(
     private store: Store,
@@ -49,6 +51,7 @@ export class ShipmentModelSettingsComponent {
         shipmentTypeRequirements: this.shipmentTypeRequirements.shipmentTypeRequirements,
         precedenceRules: this.precedenceRules.precedenceRules,
         transitionAttributes: this.transitionAttributes.transitionAttributes,
+        objectives: this.objectives.objectives
       })
     );
     this.dialogRef.close();
@@ -59,7 +62,8 @@ export class ShipmentModelSettingsComponent {
       this.shipmentTypeIncompatibilities?.form.valid &&
       this.shipmentTypeRequirements?.form.valid &&
       this.precedenceRules?.form.valid &&
-      this.transitionAttributes?.form.valid
+      this.transitionAttributes?.form.valid &&
+      this.objectives?.form.valid
     );
   }
 }

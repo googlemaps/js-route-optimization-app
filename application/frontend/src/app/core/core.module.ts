@@ -99,6 +99,7 @@ import { PrecedenceRulesDialogComponent } from './components/precedence-rules-di
 import { ShipmentModelSettingsComponent } from './containers/shipment-model-settings/shipment-model-settings.component';
 import { PostSolveMapLegendComponent } from './components/post-solve-map-legend/post-solve-map-legend.component';
 import { TravelSimulatorComponent } from './containers/travel-simulator/travel-simulator.component';
+import { ObjectivesComponent } from './components/objectives/objectives.component';
 
 export const COMPONENTS = [
   BaseDocumentationDialogComponent,
@@ -193,6 +194,7 @@ export const CONTAINERS = [
     PrecedenceRulesDialogComponent,
     ShipmentModelSettingsComponent,
     PostSolveMapLegendComponent,
+    ObjectivesComponent
   ],
   exports: [COMPONENTS, CONTAINERS, CsvUploadDialogComponent],
 })
