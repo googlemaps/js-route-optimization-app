@@ -17,6 +17,7 @@ limitations under the License.
 import { createReducer, on } from '@ngrx/store';
 import { ShipmentModelActions } from '../actions';
 import {
+  IObjective,
   IPrecedenceRule,
   IShipmentTypeIncompatibility,
   IShipmentTypeRequirement,
@@ -34,6 +35,7 @@ export interface State {
   shipmentTypeIncompatibilities?: IShipmentTypeIncompatibility[];
   shipmentTypeRequirements?: IShipmentTypeRequirement[];
   transitionAttributes?: ITransitionAttributes[];
+  objectives?: IObjective[];
 }
 
 export const initialState: State = {
@@ -45,6 +47,7 @@ export const initialState: State = {
   shipmentTypeIncompatibilities: null,
   shipmentTypeRequirements: null,
   transitionAttributes: null,
+  objectives: null,
 };
 
 export const reducer = createReducer(
@@ -85,6 +88,10 @@ export const reducer = createReducer(
   on(ShipmentModelActions.setTransitionAttributes, (state, newState) => ({
     ...state,
     transitionAttributes: newState.transitionAttributes,
+  })),
+  on(ShipmentModelActions.setObjectives, (state, newState) => ({
+    ...state,
+    objectives: newState.objectives,
   }))
 );
 
@@ -100,3 +107,4 @@ export const selectShipmentTypeRequirements = (state: State): IShipmentTypeRequi
   state.shipmentTypeRequirements;
 export const selectTransitionAttributes = (state: State): ITransitionAttributes[] =>
   state.transitionAttributes;
+export const selectObjectives = (state: State): IObjective[] => state.objectives;

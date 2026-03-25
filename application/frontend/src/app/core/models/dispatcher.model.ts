@@ -79,6 +79,7 @@ export type IVehicle = dispatcher.IVehicle;
 export type IVisit = dispatcher.ShipmentRoute.IVisit;
 export type IVisitRequest = dispatcher.Shipment.IVisitRequest;
 export type IWaypoint = dispatcher.IWaypoint;
+export type IObjective = dispatcher.ShipmentModel.IObjective;
 
 // Typing copied from IOptimizeToursRequest
 // Required since the scenario interface supports numbers and string forms of the enumerator

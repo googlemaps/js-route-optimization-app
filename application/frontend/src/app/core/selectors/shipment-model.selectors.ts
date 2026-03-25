@@ -70,6 +70,11 @@ const selectTransitionAttributes = createSelector(
   fromShipmentModel.selectTransitionAttributes
 );
 
+const selectObjectives = createSelector(
+  selectShipmentModelState,
+  fromShipmentModel.selectObjectives
+);
+
 export const ShipmentModelSelectors = {
   selectGlobalDuration,
   selectGlobalDurationCostPerHour,
@@ -80,6 +85,7 @@ export const ShipmentModelSelectors = {
   selectShipmentTypeIncompatibilities,
   selectShipmentTypeRequirements,
   selectTransitionAttributes,
+  selectObjectives,
 };
 
 export default ShipmentModelSelectors;
