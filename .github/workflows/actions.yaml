@@ -83,18 +83,22 @@ jobs:
       (needs.check-frontend.result == 'success' || needs.check-frontend.result == 'skipped')
 
     runs-on: ubuntu-latest
-    container: google/cloud-sdk
     env:
-      GCLOUD_SERVICE_ACCOUNT_JSON: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
       SNAPSHOT_REGISTRY: ${{ secrets.SNAPSHOT_REGISTRY }}
       COMMIT_TAG: ${{ github.sha }}
 
     steps:
       - run: echo "COMMIT_TAG=$(echo $COMMIT_TAG | cut -c 1-7)" >> $GITHUB_ENV
 
-      - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
-
       - uses: actions/checkout@v3
+
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - run: gcloud auth configure-docker us-docker.pkg.dev
 
       - run: make build
       - run: make push
@@ -108,9 +112,7 @@ jobs:
     - build-container
 
     runs-on: ubuntu-latest
-    container: google/cloud-sdk
     env:
-      GCLOUD_SERVICE_ACCOUNT_JSON: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
       SNAPSHOT_REGISTRY: ${{ secrets.SNAPSHOT_REGISTRY }}
       RELEASE_REGISTRY: ${{ secrets.RELEASE_REGISTRY }}
       COMMIT_TAG: ${{ github.sha }}
@@ -119,10 +121,15 @@ jobs:
     steps:
       - run: echo "COMMIT_TAG=$(echo $COMMIT_TAG | cut -c 1-7)" >> $GITHUB_ENV
 
-      - run: echo $GCLOUD_SERVICE_ACCOUNT_JSON | base64 -d > /tmp/service-account.json
-      - run: gcloud auth activate-service-account --key-file=/tmp/service-account.json
-
       - uses: actions/checkout@v3
+
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - run: gcloud auth configure-docker us-docker.pkg.dev
 
       - run: make release
 
