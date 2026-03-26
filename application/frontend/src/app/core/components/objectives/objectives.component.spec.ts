@@ -109,30 +109,30 @@ describe('ObjectivesComponent', () => {
       expect(objectives.length).toBe(5);
       expect(objectives).toEqual([
         {
-        selected: true,
-        type: ObjectiveType.DEFAULT,
-        weight: 2.5,
-      },
-      {
-        selected: false,
-        type: ObjectiveType.MIN_DISTANCE,
-        weight: 1.0,
-      },
-      {
-        selected: false,
-        type: ObjectiveType.MIN_WORKING_TIME,
-        weight: 1.0,
-      },
-      {
-        selected: false,
-        type: ObjectiveType.MIN_TRAVEL_TIME,
-        weight: 1.0,
-      },
-      {
-        selected: false,
-        type: ObjectiveType.MIN_NUM_VEHICLES,
-        weight: 1.0,
-      }
+          selected: true,
+          type: ObjectiveType.DEFAULT,
+          weight: 2.5,
+        },
+        {
+          selected: false,
+          type: ObjectiveType.MIN_DISTANCE,
+          weight: 1.0,
+        },
+        {
+          selected: false,
+          type: ObjectiveType.MIN_WORKING_TIME,
+          weight: 1.0,
+        },
+        {
+          selected: false,
+          type: ObjectiveType.MIN_TRAVEL_TIME,
+          weight: 1.0,
+        },
+        {
+          selected: false,
+          type: ObjectiveType.MIN_NUM_VEHICLES,
+          weight: 1.0,
+        },
       ]);
     });
   });
@@ -150,12 +150,12 @@ describe('ObjectivesComponent', () => {
 
       component.resetObjectives(savedObjectives);
 
-      component.objectiveTypes.forEach(obj => {
-        const control = component.form.controls.find(
-          (c) => c.get('type').value === obj.type
-        );
+      component.objectiveTypes.forEach((obj) => {
+        const control = component.form.controls.find((c) => c.get('type').value === obj.type);
         expect(control.get('selected').value).toBe(obj.type === ObjectiveType.MIN_NUM_VEHICLES);
-        expect(control.get('weight').value).toBe(obj.type === ObjectiveType.MIN_NUM_VEHICLES ? 2.0 : 1.0);
+        expect(control.get('weight').value).toBe(
+          obj.type === ObjectiveType.MIN_NUM_VEHICLES ? 2.0 : 1.0
+        );
       });
     });
 

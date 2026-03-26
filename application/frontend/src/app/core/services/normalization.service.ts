@@ -89,7 +89,7 @@ export class NormalizationService {
       shipmentTypeIncompatibilities: scenario?.model?.shipmentTypeIncompatibilities,
       shipmentTypeRequirements: scenario?.model?.shipmentTypeRequirements,
       transitionAttributes: scenario?.model?.transitionAttributes,
-      objectives: scenario?.model?.objectives?.map(obj => ({...obj, selected: true}))
+      objectives: scenario?.model?.objectives?.map((obj) => ({ ...obj, selected: true })),
     };
 
     const injectedSolution = normalizedScenario?.injectedSolutionConstraint != null;

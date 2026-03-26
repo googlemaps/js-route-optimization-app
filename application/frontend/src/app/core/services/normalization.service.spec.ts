@@ -632,7 +632,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
-        objectives: undefined
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,

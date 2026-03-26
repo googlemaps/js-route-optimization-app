@@ -88,7 +88,7 @@ describe('ShipmentModelSettingsComponent', () => {
         MockShipmentTypeRequirementsDialogComponent,
         MockPrecedenceRulesDialogComponent,
         MockTransitionAttributesDialogComponent,
-        MockObjectivesComponent
+        MockObjectivesComponent,
       ],
       providers: [
         provideMockStore(),
