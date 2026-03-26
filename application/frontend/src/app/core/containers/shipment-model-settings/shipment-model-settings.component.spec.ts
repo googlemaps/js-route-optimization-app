@@ -66,6 +66,15 @@ class MockTransitionAttributesDialogComponent {
   transitionAttributesControl = { controls: [] };
 }
 
+@Component({
+  selector: 'app-objectives',
+  template: '',
+})
+class MockObjectivesComponent {
+  objectives = [];
+  form = { valid: true };
+}
+
 describe('ShipmentModelSettingsComponent', () => {
   let component: ShipmentModelSettingsComponent;
   let fixture: ComponentFixture<ShipmentModelSettingsComponent>;
@@ -79,6 +88,7 @@ describe('ShipmentModelSettingsComponent', () => {
         MockShipmentTypeRequirementsDialogComponent,
         MockPrecedenceRulesDialogComponent,
         MockTransitionAttributesDialogComponent,
+        MockObjectivesComponent,
       ],
       providers: [
         provideMockStore(),

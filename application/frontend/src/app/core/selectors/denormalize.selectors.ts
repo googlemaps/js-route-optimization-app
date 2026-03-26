@@ -445,6 +445,7 @@ const getRequestScenario = (
       shipmentTypeIncompatibilities: shipmentModel?.shipmentTypeIncompatibilities,
       shipmentTypeRequirements: shipmentModel?.shipmentTypeRequirements,
       transitionAttributes: shipmentModel?.transitionAttributes,
+      objectives: (shipmentModel?.objectives || []).filter((obj) => obj.selected),
     },
     interpretInjectedSolutionsUsingLabels: requestSettings.interpretInjectedSolutionsUsingLabels,
     populateTransitionPolylines: requestSettings.populateTransitionPolylines,

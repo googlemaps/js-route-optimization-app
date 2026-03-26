@@ -60,6 +60,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -145,6 +146,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -270,6 +272,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -395,6 +398,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -513,6 +517,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -627,6 +632,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -740,6 +746,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -853,6 +860,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -969,6 +977,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -1131,6 +1140,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -1377,6 +1387,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -1621,6 +1632,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -1865,6 +1877,7 @@ describe('normalization Service', () => {
         transitionAttributes: undefined,
         globalStartTime: nowSeconds,
         globalEndTime: tomorrowSeconds,
+        objectives: undefined,
       },
       solvingMode: undefined,
       timeout: undefined,
@@ -2836,5 +2849,67 @@ describe('normalization Service', () => {
     expect(
       _normalizationService.normalizeScenario(scenario, 0).visitRequests[0].arrivalLocation
     ).toEqual(undefined);
+  });
+
+  describe('normalize objectives', () => {
+    it('normalizes scenario with objectives', () => {
+      model.objectives = [
+        { type: 0, weight: 1.0 },
+        { type: 10, weight: 2.5 },
+      ];
+      scenario.model = model;
+
+      const result = _normalizationService.normalizeScenario(scenario, 0);
+
+      expect(result.shipmentModel.objectives).toEqual([
+        { type: 0, weight: 1.0, selected: true },
+        { type: 10, weight: 2.5, selected: true },
+      ]);
+    });
+
+    it('normalizes scenario without objectives', () => {
+      scenario.model = model;
+
+      const result = _normalizationService.normalizeScenario(scenario, 0);
+
+      expect(result.shipmentModel.objectives).toBeUndefined();
+    });
+
+    it('normalizes scenario with empty objectives array', () => {
+      model.objectives = [];
+      scenario.model = model;
+
+      const result = _normalizationService.normalizeScenario(scenario, 0);
+
+      expect(result.shipmentModel.objectives).toEqual([]);
+    });
+
+    it('sets selected to true for all loaded objectives', () => {
+      model.objectives = [
+        { type: 11, weight: 0.5 },
+        { type: 12, weight: 1.5 },
+        { type: 13, weight: 3.0 },
+      ];
+      scenario.model = model;
+
+      const result = _normalizationService.normalizeScenario(scenario, 0);
+
+      result.shipmentModel.objectives.forEach((obj) => {
+        expect(obj.selected).toBe(true);
+      });
+    });
+
+    it('preserves weight values from scenario objectives', () => {
+      model.objectives = [
+        { type: 0, weight: 0 },
+        { type: 10, weight: 100.5 },
+      ];
+      scenario.model = model;
+
+      const result = _normalizationService.normalizeScenario(scenario, 0);
+
+      expect(result.shipmentModel.objectives[0].weight).toBe(0);
+      expect(result.shipmentModel.objectives[1].weight).toBe(100.5);
+    });
   });
 });

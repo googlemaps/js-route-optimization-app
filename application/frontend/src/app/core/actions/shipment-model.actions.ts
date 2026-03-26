@@ -20,6 +20,7 @@ import {
   IShipmentTypeIncompatibility,
   IShipmentTypeRequirement,
   ITransitionAttributes,
+  ModelObjective,
   NormalizedShipmentModel,
 } from '../models';
 
@@ -66,4 +67,9 @@ export const setShipmentTypeRequirements = createAction(
 export const setTransitionAttributes = createAction(
   '[Shipment Model] Set Transition Attributes',
   props<{ transitionAttributes: ITransitionAttributes[] }>()
+);
+
+export const setObjectives = createAction(
+  '[Shipment Model] Set Objectives',
+  props<{ objectives: ModelObjective[] }>()
 );

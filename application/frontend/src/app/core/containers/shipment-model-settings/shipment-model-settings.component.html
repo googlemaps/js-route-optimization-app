@@ -55,6 +55,15 @@
       </mat-expansion-panel-header>
       <app-transition-attributes-dialog #transitionAttributes></app-transition-attributes-dialog>
     </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          [ngClass]="this.objectives?.form.valid ? 'panel-title-valid' : 'panel-title-invalid'">
+          Objectives ({{ objectives?.selectedCount || 0 }})
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-objectives #objectives></app-objectives>
+    </mat-expansion-panel>
   </mat-accordion>
 </mat-dialog-content>
 <mat-divider></mat-divider>

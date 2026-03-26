@@ -21,6 +21,8 @@ import {
   IShipmentTypeIncompatibility,
   IShipmentTypeRequirement,
   ITransitionAttributes,
+  ModelObjective,
+  ObjectiveType,
 } from '../models';
 
 export const shipmentModelFeatureKey = 'shipmentModel';
@@ -34,6 +36,7 @@ export interface State {
   shipmentTypeIncompatibilities?: IShipmentTypeIncompatibility[];
   shipmentTypeRequirements?: IShipmentTypeRequirement[];
   transitionAttributes?: ITransitionAttributes[];
+  objectives?: ModelObjective[];
 }
 
 export const initialState: State = {
@@ -45,6 +48,7 @@ export const initialState: State = {
   shipmentTypeIncompatibilities: null,
   shipmentTypeRequirements: null,
   transitionAttributes: null,
+  objectives: [{ type: ObjectiveType.DEFAULT, weight: 1.0, selected: true }],
 };
 
 export const reducer = createReducer(
@@ -85,6 +89,10 @@ export const reducer = createReducer(
   on(ShipmentModelActions.setTransitionAttributes, (state, newState) => ({
     ...state,
     transitionAttributes: newState.transitionAttributes,
+  })),
+  on(ShipmentModelActions.setObjectives, (state, newState) => ({
+    ...state,
+    objectives: newState.objectives,
   }))
 );
 
@@ -100,3 +108,4 @@ export const selectShipmentTypeRequirements = (state: State): IShipmentTypeRequi
   state.shipmentTypeRequirements;
 export const selectTransitionAttributes = (state: State): ITransitionAttributes[] =>
   state.transitionAttributes;
+export const selectObjectives = (state: State): ModelObjective[] => state.objectives;

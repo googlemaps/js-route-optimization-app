@@ -41,7 +41,8 @@ router.post(
         const jsonString = pako.inflate(buffer, { to: 'string' });
         body = JSON.parse(jsonString) as google.maps.routeoptimization.v1.IOptimizeToursRequest;
       } catch (err: unknown) {
-        log.logger.warn('Unable to parse request body as gzip-compressed JSON string', err);
+        const error = err instanceof Error ? err : new Error(String(err));
+        log.logger.warn(error, 'Unable to parse request body as gzip-compressed JSON string');
         return res.status(400).send("Invalid request body, expected a gzip-compressed JSON string");
       }
     } else {

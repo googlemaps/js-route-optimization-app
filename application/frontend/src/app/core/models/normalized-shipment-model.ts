@@ -19,6 +19,7 @@ import {
   IShipmentTypeIncompatibility,
   IShipmentTypeRequirement,
   ITransitionAttributes,
+  ModelObjective,
 } from '.';
 
 /**
@@ -34,4 +35,5 @@ export interface NormalizedShipmentModel {
   shipmentTypeIncompatibilities?: IShipmentTypeIncompatibility[];
   shipmentTypeRequirements?: IShipmentTypeRequirement[];
   transitionAttributes?: ITransitionAttributes[];
+  objectives?: ModelObjective[];
 }
