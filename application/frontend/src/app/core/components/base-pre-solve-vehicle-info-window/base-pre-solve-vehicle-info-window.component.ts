@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Vehicle } from '../../models';
 
 @Component({
@@ -22,6 +22,29 @@ import { Vehicle } from '../../models';
   styleUrl: './base-pre-solve-vehicle-info-window.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BasePreSolveVehicleInfoWindowComponent {
+export class BasePreSolveVehicleInfoWindowComponent implements OnChanges {
   @Input() vehicle: Vehicle;
+
+  loadLimitsNames: string[] = [];
+  loadLimitsValues: string[] = [];
+
+  ngOnChanges(_changes: SimpleChanges): void {
+    this.getFormattedLoadLimits();
+  }
+
+  getFormattedLoadLimits(): void {
+    this.loadLimitsNames = [];
+    this.loadLimitsValues = [];
+
+    if (!this.vehicle) {
+      return;
+    }
+
+    Object.keys(this.vehicle.loadLimits || {}).forEach((key) => {
+      if (this.vehicle.loadLimits[key].maxLoad) {
+        this.loadLimitsNames.push(key);
+        this.loadLimitsValues.push(`${this.vehicle.loadLimits[key].maxLoad}`);
+      }
+    });
+  }
 }

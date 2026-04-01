@@ -1,1 +1,15 @@
-<p>base-pre-solve-vehicle-info-window works!</p>
+<div class="text__title">
+  {{ vehicle | entityName: 'Vehicle' }}
+</div>
+<div class="text__caption">
+  <div class="strong underline">Max Load Limits</div>
+  <div *ngIf="loadLimitsNames.length; else noLoadLimits">
+    <div *ngFor="let limit of loadLimitsNames; let i = index">
+      <span>{{ limit }} - </span>
+      <span class="strong">{{ loadLimitsValues[i] }}</span>
+    </div>
+  </div>
+  <ng-template #noLoadLimits>
+    <div>None</div>
+  </ng-template>
+</div>
