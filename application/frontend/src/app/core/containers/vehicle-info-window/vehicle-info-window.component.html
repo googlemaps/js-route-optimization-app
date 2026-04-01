@@ -1,4 +1,5 @@
 <app-base-vehicle-info-window
+  *ngIf="isPostSolve(page$ | async); else preSolve"
   [vehicle]="vehicle$ | async"
   [shipmentCount]="shipmentCount$ | async"
   [navigation]="true"
@@ -6,3 +7,8 @@
   [timezoneOffset]="timezoneOffset$ | async"
   (vehicleClick)="onVehicleClick($event)">
 </app-base-vehicle-info-window>
+
+<ng-template #preSolve>
+  <app-base-pre-solve-vehicle-info-window
+    [vehicle]="vehicle$ | async"></app-base-pre-solve-vehicle-info-window>
+</ng-template>

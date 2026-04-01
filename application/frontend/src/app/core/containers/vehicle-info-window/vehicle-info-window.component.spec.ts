@@ -18,12 +18,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createSelector } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ShipmentRoute, Vehicle } from '../../models';
+import { Page, ShipmentRoute, Vehicle } from '../../models';
 import ShipmentRouteSelectors from '../../selectors/shipment-route.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
 import * as fromShipmentRoute from '../../selectors/shipment-route.selectors';
 import { VehicleInfoWindowComponent } from './vehicle-info-window.component';
 import * as fromConfig from '../../selectors/config.selectors';
+import { selectPage } from '../../selectors/ui.selectors';
 
 @Component({
   selector: 'app-base-vehicle-info-window',
@@ -38,13 +39,25 @@ class MockBaseVehicleInfoWindowComponent {
   @Output() vehicleClick = new EventEmitter<Vehicle>();
 }
 
+@Component({
+  selector: 'app-base-pre-solve-vehicle-info-window',
+  template: '',
+})
+class MockBasePreSolveVehicleInfoWindowComponent {
+  @Input() vehicle: Vehicle;
+}
+
 describe('VehicleInfoWindowComponent', () => {
   let component: VehicleInfoWindowComponent;
   let fixture: ComponentFixture<VehicleInfoWindowComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockBaseVehicleInfoWindowComponent, VehicleInfoWindowComponent],
+      declarations: [
+        MockBaseVehicleInfoWindowComponent,
+        VehicleInfoWindowComponent,
+        MockBasePreSolveVehicleInfoWindowComponent,
+      ],
       providers: [
         provideMockStore({
           selectors: [
@@ -54,6 +67,7 @@ describe('VehicleInfoWindowComponent', () => {
               value: { entities: {}, ids: [] },
             },
             { selector: fromConfig.selectTimezoneOffset, value: 0 },
+            { selector: selectPage, value: Page.Welcome },
           ],
         }),
       ],

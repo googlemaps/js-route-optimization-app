@@ -19,11 +19,12 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as fromRoot from 'src/app/reducers';
 import { MapActions } from '../../actions';
-import { ShipmentRoute, Vehicle } from '../../models';
+import { Page, ShipmentRoute, Vehicle } from '../../models';
 import ShipmentRouteSelectors from '../../selectors/shipment-route.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
 import { map } from 'rxjs/operators';
 import * as fromConfig from '../../selectors/config.selectors';
+import { selectPage } from '../../selectors/ui.selectors';
 
 @Component({
   selector: 'app-vehicle-info-window',
@@ -34,6 +35,7 @@ import * as fromConfig from '../../selectors/config.selectors';
 export class VehicleInfoWindowComponent implements OnInit {
   @Input() vehicleId: number;
 
+  page$: Observable<Page>;
   route$: Observable<ShipmentRoute>;
   vehicle$: Observable<Vehicle>;
   shipmentCount$: Observable<number>;
@@ -42,6 +44,7 @@ export class VehicleInfoWindowComponent implements OnInit {
   constructor(private store: Store<fromRoot.State>) {}
 
   ngOnInit(): void {
+    this.page$ = this.store.pipe(select(selectPage));
     this.route$ = this.store.pipe(
       select(ShipmentRouteSelectors.selectRoutesByIds([this.vehicleId])),
       map((routes) => routes[this.vehicleId])
@@ -55,5 +58,11 @@ export class VehicleInfoWindowComponent implements OnInit {
 
   onVehicleClick(vehicle: Vehicle): void {
     this.store.dispatch(MapActions.editPreSolveVehicle({ vehicleId: vehicle.id }));
+  }
+
+  isPostSolve(page: Page): boolean {
+    return (
+      page === Page.RoutesChart || page === Page.RoutesMetadata || page === Page.ShipmentsMetadata
+    );
   }
 }
