@@ -13,3 +13,14 @@
     <div>None</div>
   </ng-template>
 </div>
+<div class="text__caption">
+  <div class="strong underline">Start Windows</div>
+  <div *ngIf="startTimeWindows.length; else noStartWindows">
+    <div *ngFor="let window of startTimeWindows">
+      <span>{{ window | formatHardTimeWindow }}</span>
+    </div>
+  </div>
+  <ng-template #noStartWindows>
+    <div>None</div>
+  </ng-template>
+</div>

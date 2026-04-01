@@ -15,6 +15,7 @@ limitations under the License.
 */
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Vehicle } from '../../models';
+import { timeWindowToDuration } from 'src/app/util';
 
 @Component({
   selector: 'app-base-pre-solve-vehicle-info-window',
@@ -27,9 +28,20 @@ export class BasePreSolveVehicleInfoWindowComponent implements OnChanges {
 
   loadLimitsNames: string[] = [];
   loadLimitsValues: string[] = [];
+  startTimeWindows: {
+    startDate: string;
+    startTime: string;
+    endDate?: string;
+    endTime: string;
+  }[] = [];
 
   ngOnChanges(_changes: SimpleChanges): void {
     this.getFormattedLoadLimits();
+    this.getFormattedTimeWindows();
+  }
+
+  getFormattedTimeWindows(): void {
+    this.startTimeWindows = [];
   }
 
   getFormattedLoadLimits(): void {
