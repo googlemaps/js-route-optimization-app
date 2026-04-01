@@ -17,7 +17,7 @@
   <div class="strong underline">Start Windows</div>
   <div *ngIf="startTimeWindows.length; else noStartWindows">
     <div *ngFor="let window of startTimeWindows">
-      <span>{{ window | formatHardTimeWindow }}</span>
+      <span>{{ window }}</span>
     </div>
   </div>
   <ng-template #noStartWindows>

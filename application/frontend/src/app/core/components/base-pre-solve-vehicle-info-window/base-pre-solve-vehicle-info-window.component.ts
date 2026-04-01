@@ -13,9 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Vehicle } from '../../models';
-import { timeWindowToDuration } from 'src/app/util';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Input,
+  LOCALE_ID,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { ITimeWindow, Vehicle } from '../../models';
+import { durationSeconds } from 'src/app/util/duration';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-base-pre-solve-vehicle-info-window',
@@ -25,15 +34,14 @@ import { timeWindowToDuration } from 'src/app/util';
 })
 export class BasePreSolveVehicleInfoWindowComponent implements OnChanges {
   @Input() vehicle: Vehicle;
+  @Input() timezoneOffset = 0;
+  @Input() globalDuration: [Long, Long];
 
   loadLimitsNames: string[] = [];
   loadLimitsValues: string[] = [];
-  startTimeWindows: {
-    startDate: string;
-    startTime: string;
-    endDate?: string;
-    endTime: string;
-  }[] = [];
+  startTimeWindows: string[] = [];
+
+  constructor(@Inject(LOCALE_ID) private locale: string) {}
 
   ngOnChanges(_changes: SimpleChanges): void {
     this.getFormattedLoadLimits();
@@ -42,6 +50,17 @@ export class BasePreSolveVehicleInfoWindowComponent implements OnChanges {
 
   getFormattedTimeWindows(): void {
     this.startTimeWindows = [];
+
+    if (!this.vehicle || !this.vehicle.startTimeWindows) {
+      return;
+    }
+
+    this.vehicle.startTimeWindows.forEach((timewindow) => {
+      if (!timewindow.startTime && !timewindow.endTime) {
+        return;
+      }
+      this.startTimeWindows.push(this.formatTimeWindow(timewindow));
+    });
   }
 
   getFormattedLoadLimits(): void {
@@ -58,5 +77,29 @@ export class BasePreSolveVehicleInfoWindowComponent implements OnChanges {
         this.loadLimitsValues.push(`${this.vehicle.loadLimits[key].maxLoad}`);
       }
     });
+  }
+
+  formatTimeWindow(timewindow: ITimeWindow): string {
+    const startTime = timewindow.startTime
+      ? durationSeconds(timewindow.startTime).toNumber()
+      : this.globalDuration[0].toNumber();
+    const endTime = timewindow.endTime
+      ? durationSeconds(timewindow.endTime).toNumber()
+      : this.globalDuration[1].toNumber();
+
+    const formattedStart = formatDate(
+      (startTime + this.timezoneOffset) * 1000,
+      'yyyy/MM/dd h:mm aa',
+      this.locale,
+      'UTC'
+    ).toLocaleLowerCase(this.locale);
+    const formattedEnd = formatDate(
+      (endTime + this.timezoneOffset) * 1000,
+      'yyyy/MM/dd h:mm aa',
+      this.locale,
+      'UTC'
+    ).toLocaleLowerCase(this.locale);
+
+    return `${formattedStart} - ${formattedEnd}`;
   }
 }

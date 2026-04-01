@@ -25,6 +25,7 @@ import * as fromVehicle from '../../selectors/vehicle.selectors';
 import { map } from 'rxjs/operators';
 import * as fromConfig from '../../selectors/config.selectors';
 import { selectPage } from '../../selectors/ui.selectors';
+import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 
 @Component({
   selector: 'app-vehicle-info-window',
@@ -40,6 +41,7 @@ export class VehicleInfoWindowComponent implements OnInit {
   vehicle$: Observable<Vehicle>;
   shipmentCount$: Observable<number>;
   timezoneOffset$: Observable<number>;
+  globalDuration$: Observable<[Long, Long]>;
 
   constructor(private store: Store<fromRoot.State>) {}
 
@@ -54,6 +56,7 @@ export class VehicleInfoWindowComponent implements OnInit {
       select(ShipmentRouteSelectors.selectRouteShipmentCount(this.vehicleId))
     );
     this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
+    this.globalDuration$ = this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration));
   }
 
   onVehicleClick(vehicle: Vehicle): void {
