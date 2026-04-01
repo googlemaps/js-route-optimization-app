@@ -8,6 +8,10 @@
   Route End: <span class="strong">{{ formatDate(route.vehicleEndTime) }}</span>
 </div>
 <div *ngIf="route" class="text__caption">
+  Route Duration:
+  <span class="strong">{{ formatRouteDuration(route.metrics.totalDuration) }}</span>
+</div>
+<div *ngIf="route" class="text__caption">
   Route Distance:
   <span class="strong">{{ route.metrics.travelDistanceMeters / 1000 | number: '1.1-1' }} km</span>
 </div>

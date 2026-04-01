@@ -23,9 +23,9 @@ import {
   LOCALE_ID,
   Output,
 } from '@angular/core';
-import { ITimestamp, ShipmentRoute, Vehicle } from '../../models';
+import { IDuration, ITimestamp, ShipmentRoute, Vehicle } from '../../models';
 import { formatDate } from '@angular/common';
-import { durationSeconds } from 'src/app/util';
+import { durationSeconds, formattedDurationSeconds } from 'src/app/util';
 
 @Component({
   selector: 'app-base-vehicle-info-window',
@@ -42,6 +42,7 @@ export class BaseVehicleInfoWindowComponent {
   @Output() vehicleClick = new EventEmitter<Vehicle>();
 
   ObjectKeys = Object.keys;
+  formattedDurationSeconds = formattedDurationSeconds;
 
   constructor(@Inject(LOCALE_ID) private locale: string) {}
 
@@ -56,5 +57,9 @@ export class BaseVehicleInfoWindowComponent {
     return formatDate(time, 'yyyy/MM/dd h:mm aa', this.locale, 'UTC').toLocaleLowerCase(
       this.locale
     );
+  }
+
+  formatRouteDuration(duration: IDuration): string {
+    return formattedDurationSeconds(durationSeconds(duration));
   }
 }
