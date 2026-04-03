@@ -23,6 +23,7 @@ export * from './base-main-nav/base-main-nav.component';
 export * from './base-post-solve-message/base-post-solve-message.component';
 export * from './base-post-solve-metrics/base-post-solve-metrics.component';
 export * from './base-pre-solve-message/base-pre-solve-message.component';
+export * from './base-pre-solve-vehicle-info-window/base-pre-solve-vehicle-info-window.component';
 export * from './base-regenerate-confirmation-dialog/base-regenerate-confirmation-dialog.component';
 export * from './base-shipments-kpis/base-shipments-kpis.component';
 export * from './base-storage-api-save-load-dialog/base-storage-api-save-load-dialog.component';

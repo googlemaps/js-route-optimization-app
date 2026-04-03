@@ -30,6 +30,7 @@ export class PreSolveVehicleLayer extends BaseVehicleLayer {
 
     this.store.pipe(select(selectFilteredVehiclesSelected)).subscribe((vehicles) => {
       this.onDataSelected(vehicles);
+      this.onDataFiltered(vehicles);
     });
   }
 

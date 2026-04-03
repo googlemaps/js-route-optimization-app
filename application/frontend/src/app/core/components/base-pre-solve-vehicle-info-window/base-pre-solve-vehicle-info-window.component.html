@@ -1,0 +1,26 @@
+<div class="text__title">
+  {{ vehicle | entityName: 'Vehicle' }}
+</div>
+<div class="text__caption">
+  <div class="strong underline">Max Load Limits</div>
+  <div *ngIf="loadLimitsNames.length; else noLoadLimits">
+    <div *ngFor="let limit of loadLimitsNames; let i = index">
+      <span>{{ limit }} - </span>
+      <span class="strong">{{ loadLimitsValues[i] }}</span>
+    </div>
+  </div>
+  <ng-template #noLoadLimits>
+    <div>None</div>
+  </ng-template>
+</div>
+<div class="text__caption">
+  <div class="strong underline">Start Windows</div>
+  <div *ngIf="startTimeWindows.length; else noStartWindows">
+    <div *ngFor="let window of startTimeWindows">
+      <span>{{ window }}</span>
+    </div>
+  </div>
+  <ng-template #noStartWindows>
+    <div>None</div>
+  </ng-template>
+</div>
