@@ -148,7 +148,11 @@ export abstract class BaseVehicleLayer {
       },
       onClick: ({ object }) => {
         this.zone.run(() => {
-          this.store.dispatch(UIActions.mapVehicleClicked({ id: object.id }));
+          this.store.dispatch(
+            UIActions.mapMarkerClicked({
+              position: { longitude: object.position[0], latitude: object.position[1] },
+            })
+          );
         });
       },
     });

@@ -30,13 +30,13 @@ import {
   toTurfLineString,
   toTurfPoint,
 } from 'src/app/util';
-import { ILatLng, Page, TravelMode, ShipmentRoute, VisitRequest } from '../models';
+import { ILatLng, Page, TravelMode, ShipmentRoute, VisitRequest, Vehicle } from '../models';
 import * as fromDepot from './depot.selectors';
 import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
 import RoutesChartSelectors from './routes-chart.selectors';
 import ShipmentRouteSelectors from './shipment-route.selectors';
-import { selectPage } from './ui.selectors';
+import { selectClickedPosition, selectPage } from './ui.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import VisitSelectors from './visit.selectors';
 import VisitRequestSelectors from './visit-request.selectors';
@@ -47,6 +47,8 @@ import * as fromShipmentRoute from './shipment-route.selectors';
 import Long from 'long';
 
 type MapLatLng = google.maps.LatLng;
+
+const coincidentMarkerDistanceMeters = 3.0;
 
 export const selectMapState = createFeatureSelector<fromMap.State>(fromMap.mapFeatureKey);
 
@@ -347,5 +349,44 @@ export const selectUsedMapLayers = createSelector(
     });
 
     return mapLayers;
+  }
+);
+
+export const selectClickedObjects = createSelector(
+  selectPage,
+  selectClickedPosition,
+  fromVehicle.selectAll,
+  (page, position, vehicles) => {
+    const selections: Vehicle[] = [];
+
+    if (!position) {
+      return {
+        position: null,
+        selections: selections,
+      };
+    }
+
+    const clickLatLng = fromDispatcherLatLng(position);
+    // Is on pre-solve view
+    if ([Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page)) {
+      vehicles.forEach((vehicle) => {
+        const startLatLng = vehicle.startWaypoint?.location?.latLng;
+        if (!startLatLng) {
+          return;
+        }
+        if (
+          google.maps.geometry.spherical.computeDistanceBetween(
+            clickLatLng,
+            fromDispatcherLatLng(startLatLng)
+          ) <= coincidentMarkerDistanceMeters
+        ) {
+          selections.push(vehicle);
+        }
+      });
+    }
+    // Is on post-solve view
+    else {
+    }
+    return { position, selections };
   }
 );

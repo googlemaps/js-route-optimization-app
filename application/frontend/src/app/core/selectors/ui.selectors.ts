@@ -46,3 +46,5 @@ export const selectOpenUploadDialogOnClose = createSelector(
   selectUIState,
   fromUI.selectOpenUploadDialogOnClose
 );
+
+export const selectClickedPosition = createSelector(selectUIState, fromUI.selectClickedPosition);

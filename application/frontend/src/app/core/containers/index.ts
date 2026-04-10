@@ -25,6 +25,7 @@ export * from './main-nav/main-nav.component';
 export * from './map-wrapper/map-wrapper.component';
 export * from './map/map.component';
 export * from './metadata-control-bar/metadata-control-bar.component';
+export * from './multiselect-info-window/multiselect-info-window.component';
 export * from './point-of-interest-drag/point-of-interest-drag.component';
 export * from './post-solve-message/post-solve-message.component';
 export * from './post-solve-metrics/post-solve-metrics.component';

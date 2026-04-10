@@ -50,6 +50,7 @@ import {
   MATERIAL_COLORS,
   VehicleInfoWindowService,
   VisitRequestInfoWindowService,
+  MultiselectInfoWindowService,
 } from '../../services';
 import { DepotLayer } from '../../services/depot-layer.service';
 import { MapService } from '../../services/map.service';
@@ -94,7 +95,8 @@ export class MapComponent implements OnInit, OnDestroy {
     private preSolveVehicleLayer: PreSolveVehicleLayer,
     private preSolveVisitRequestLayer: PreSolveVisitRequestLayer,
     public vehicleInfoWindowService: VehicleInfoWindowService,
-    public visitRequestInfoWindowService: VisitRequestInfoWindowService
+    public visitRequestInfoWindowService: VisitRequestInfoWindowService,
+    public multiselectInfoWindowService: MultiselectInfoWindowService
   ) {}
 
   ngOnInit(): void {

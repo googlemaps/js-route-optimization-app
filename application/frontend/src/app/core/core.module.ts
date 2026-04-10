@@ -84,6 +84,7 @@ import {
   VehiclesControlBarComponent,
   VehiclesKpisComponent,
   VisitRequestInfoWindowComponent,
+  MultiselectInfoWindowComponent,
 } from './containers';
 import { DownloadPdfDialogComponent } from './containers/download-pdf-dialog/download-pdf-dialog.component';
 import { PdfMapComponent } from './containers/pdf-map/pdf-map.component';
@@ -148,6 +149,7 @@ export const CONTAINERS = [
   MapComponent,
   MapWrapperComponent,
   MetadataControlBarComponent,
+  MultiselectInfoWindowComponent,
   PostSolveMessageComponent,
   PostSolveMetricsComponent,
   PreSolveControlBarComponent,
