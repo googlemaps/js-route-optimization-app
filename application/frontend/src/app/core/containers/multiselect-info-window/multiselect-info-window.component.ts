@@ -23,6 +23,9 @@ export class MultiselectInfoWindowComponent implements OnChanges {
   constructor(private detectorRef: ChangeDetectorRef) {}
 
   ngOnChanges(_changes: SimpleChanges): void {
+    if (this.selections.length === 0) {
+      return;
+    }
     this.currentIndex = 0;
     this.currentSelection = this.selections[this.currentIndex];
     this.detectorRef.markForCheck();

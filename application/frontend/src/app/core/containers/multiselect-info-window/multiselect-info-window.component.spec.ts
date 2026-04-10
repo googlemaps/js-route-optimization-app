@@ -8,7 +8,7 @@ describe('MultiselectInfoWindowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MultiselectInfoWindowComponent],
+      declarations: [MultiselectInfoWindowComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MultiselectInfoWindowComponent);
