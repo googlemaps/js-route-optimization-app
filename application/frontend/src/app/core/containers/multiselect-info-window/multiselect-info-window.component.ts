@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MapSelection } from '../../models/map';
 
 @Component({
   selector: 'app-multiselect-info-window',
@@ -6,4 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './multiselect-info-window.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MultiselectInfoWindowComponent {}
+export class MultiselectInfoWindowComponent {
+  selections: MapSelection[] = [];
+}

@@ -23,6 +23,7 @@ import { MapService } from './map.service';
 import { UIActions } from '../actions';
 import { ILatLng, Vehicle } from '../models';
 import { MultiselectInfoWindowComponent } from '../containers/multiselect-info-window/multiselect-info-window.component';
+import { MapSelection } from '../models/map';
 
 /** Manages lifecycle of vehicle info windows */
 @Injectable({
@@ -40,12 +41,13 @@ export class MultiselectInfoWindowService extends BaseInfoWindowService<Multisel
     this.store.pipe(select(selectClickedObjects)).subscribe((selection) => this.open(selection));
   }
 
-  open(selection: { position: ILatLng | null; selections: Vehicle[] }): void {
-    if (selection.position) {
+  open(event: { position: ILatLng | null; selections: MapSelection[] }): void {
+    if (event.position) {
       this.create(MultiselectInfoWindowComponent);
+      this.componentRef.instance.selections = event.selections;
       this.infoWindow.setPosition({
-        lat: selection.position.latitude,
-        lng: selection.position.longitude,
+        lat: event.position.latitude,
+        lng: event.position.longitude,
       });
       this.infoWindow.open(this.mapService.map);
     } else {

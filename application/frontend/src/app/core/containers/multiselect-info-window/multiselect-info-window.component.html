@@ -1,1 +1,12 @@
-<p>multiselect-info-window works!</p>
+<div class="info-window-containers">
+  <div *ngFor="let selection of selections">
+      @switch (selection.type) {
+          @case ('VEHICLE') {
+            <app-vehicle-info-window [vehicleId]="selection.id"></app-vehicle-info-window>
+          }
+          @case ('VISIT_REQUEST') {
+            <div>TODO: visit request</div>
+          }
+      }
+  </div>
+</div>

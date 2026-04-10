@@ -41,7 +41,7 @@ import * as fromVehicle from './vehicle.selectors';
 import VisitSelectors from './visit.selectors';
 import VisitRequestSelectors from './visit-request.selectors';
 import * as fromMap from '../reducers/map.reducer';
-import { MapLayer, MapLayerId } from '../models/map';
+import { MapLayer, MapLayerId, MapSelection } from '../models/map';
 import TravelSimulatorSelectors from './travel-simulator.selectors';
 import * as fromShipmentRoute from './shipment-route.selectors';
 import Long from 'long';
@@ -356,8 +356,9 @@ export const selectClickedObjects = createSelector(
   selectPage,
   selectClickedPosition,
   fromVehicle.selectAll,
-  (page, position, vehicles) => {
-    const selections: Vehicle[] = [];
+  selectVehicleLocationsOnRouteWithHeadings,
+  (page, position, vehicles, routeLocations) => {
+    const selections: MapSelection[] = [];
 
     if (!position) {
       return {
@@ -380,12 +381,13 @@ export const selectClickedObjects = createSelector(
             fromDispatcherLatLng(startLatLng)
           ) <= coincidentMarkerDistanceMeters
         ) {
-          selections.push(vehicle);
+          selections.push({ id: vehicle.id, type: 'VEHICLE' });
         }
       });
     }
     // Is on post-solve view
     else {
+      Object.keys(routeLocations).forEach((id) => {});
     }
     return { position, selections };
   }
