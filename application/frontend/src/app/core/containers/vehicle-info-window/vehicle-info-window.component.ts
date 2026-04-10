@@ -14,7 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as fromRoot from 'src/app/reducers';
@@ -33,20 +40,32 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
   styleUrls: ['./vehicle-info-window.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VehicleInfoWindowComponent implements OnInit {
-  @Input() vehicleId: number;
+export class VehicleInfoWindowComponent implements OnInit, OnChanges {
+  @Input() vehicleId!: number;
 
-  page$: Observable<Page>;
-  route$: Observable<ShipmentRoute>;
-  vehicle$: Observable<Vehicle>;
-  shipmentCount$: Observable<number>;
-  timezoneOffset$: Observable<number>;
-  globalDuration$: Observable<[Long, Long]>;
+  page$?: Observable<Page>;
+  route$?: Observable<ShipmentRoute | undefined>;
+  vehicle$?: Observable<Vehicle | undefined>;
+  shipmentCount$?: Observable<number | undefined>;
+  timezoneOffset$?: Observable<number>;
+  globalDuration$?: Observable<[Long, Long]>;
 
   constructor(private store: Store<fromRoot.State>) {}
 
   ngOnInit(): void {
     this.page$ = this.store.pipe(select(selectPage));
+    this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
+    this.globalDuration$ = this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration));
+    this.updateVehicleObservables();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['vehicleId'] && !changes['vehicleId'].firstChange) {
+      this.updateVehicleObservables();
+    }
+  }
+
+  private updateVehicleObservables(): void {
     this.route$ = this.store.pipe(
       select(ShipmentRouteSelectors.selectRoutesByIds([this.vehicleId])),
       map((routes) => routes[this.vehicleId])
@@ -55,8 +74,6 @@ export class VehicleInfoWindowComponent implements OnInit {
     this.shipmentCount$ = this.store.pipe(
       select(ShipmentRouteSelectors.selectRouteShipmentCount(this.vehicleId))
     );
-    this.timezoneOffset$ = this.store.pipe(select(fromConfig.selectTimezoneOffset));
-    this.globalDuration$ = this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration));
   }
 
   onVehicleClick(vehicle: Vehicle): void {
