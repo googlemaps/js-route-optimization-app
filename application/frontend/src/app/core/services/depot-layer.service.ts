@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromRoot from 'src/app/reducers';
 import { fromDispatcherLatLng } from 'src/app/util';
@@ -22,6 +22,7 @@ import { ILatLng } from '../models';
 import { BaseMarkersLayer } from './base-markers-layer.service';
 import { ZIndex } from './map-theme.service';
 import { MapService } from './map.service';
+import { UIActions } from '../actions';
 
 @Injectable({
   providedIn: 'root',
@@ -61,8 +62,15 @@ export class DepotLayer extends BaseMarkersLayer {
     this._symbol = value;
   }
 
-  constructor(mapService: MapService, store: Store<fromRoot.State>) {
-    super(mapService, store);
+  constructor(mapService: MapService, store: Store<fromRoot.State>, zone: NgZone) {
+    super(mapService, store, zone);
+    this.click$.subscribe((res) =>
+      store.dispatch(
+        UIActions.mapMarkerClicked({
+          position: { latitude: res.pos.lat(), longitude: res.pos.lng() },
+        })
+      )
+    );
   }
 
   getMarker(): google.maps.Marker {
@@ -74,6 +82,7 @@ export class DepotLayer extends BaseMarkersLayer {
       this.addMarker(this.depotId, this.createMarker(depot));
       this.moveMarker(this.depotId, depot != null ? fromDispatcherLatLng(depot) : null);
       this.draggable = false;
+      this.clickable = true;
       this.show();
     } else {
       this.hide();
