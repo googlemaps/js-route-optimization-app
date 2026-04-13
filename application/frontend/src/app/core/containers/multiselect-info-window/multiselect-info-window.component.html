@@ -9,12 +9,16 @@
       <mat-icon>chevron_left</mat-icon>
     </button>
     <div class="selection-window">
-      @switch (currentSelection?.type) { @case ('VEHICLE') {
-      <app-vehicle-info-window [vehicleId]="currentSelection.id"></app-vehicle-info-window>
-      } @case ('VISIT_REQUEST') {
-      <app-visit-request-info-window
-        [visitRequestId]="currentSelection.id"></app-visit-request-info-window>
-      } }
+      @for (selection of selections; track selection.id; let i = $index) {
+      <div class="selection-item" [class.active]="i === currentIndex">
+        @switch (selection.type) { @case ('VEHICLE') {
+        <app-vehicle-info-window [vehicleId]="selection.id"></app-vehicle-info-window>
+        } @case ('VISIT_REQUEST') {
+        <app-visit-request-info-window
+          [visitRequestId]="selection.id"></app-visit-request-info-window>
+        } }
+      </div>
+      }
     </div>
     <button
       *ngIf="selections.length > 1"

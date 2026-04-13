@@ -16,13 +16,15 @@
 
 .selection-window {
   flex-grow: 1;
+  display: grid;
 
-  app-vehicle-info-window {
-    min-width: 255px;
-  }
+  .selection-item {
+    grid-area: 1 / 1;
+    visibility: hidden;
 
-  app-visit-request-info-window {
-    min-width: 175px;
+    &.active {
+      visibility: visible;
+    }
   }
 }
 
