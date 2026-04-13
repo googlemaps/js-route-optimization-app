@@ -12,11 +12,18 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  min-width: 365px;
 }
 
 .selection-window {
   flex-grow: 1;
+
+  app-vehicle-info-window {
+    min-width: 255px;
+  }
+
+  app-visit-request-info-window {
+    min-width: 175px;
+  }
 }
 
 .selection-count {
