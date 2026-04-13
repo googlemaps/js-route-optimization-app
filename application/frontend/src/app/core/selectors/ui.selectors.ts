@@ -48,3 +48,7 @@ export const selectOpenUploadDialogOnClose = createSelector(
 );
 
 export const selectClickedPosition = createSelector(selectUIState, fromUI.selectClickedPosition);
+
+export const selectIsPreSolve = createSelector(selectPage, (page) =>
+  [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page)
+);

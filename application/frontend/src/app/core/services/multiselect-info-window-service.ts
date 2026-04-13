@@ -24,6 +24,7 @@ import { UIActions } from '../actions';
 import { ILatLng, Vehicle } from '../models';
 import { MultiselectInfoWindowComponent } from '../containers/multiselect-info-window/multiselect-info-window.component';
 import { MapSelection } from '../models/map';
+import { selectIsPreSolve } from '../selectors/ui.selectors';
 
 /** Manages lifecycle of vehicle info windows */
 @Injectable({
@@ -39,6 +40,7 @@ export class MultiselectInfoWindowService extends BaseInfoWindowService<Multisel
     super(injector, applicationRef);
 
     this.store.pipe(select(selectClickedObjects)).subscribe((selection) => this.open(selection));
+    this.store.pipe(select(selectIsPreSolve)).subscribe((_isPreSolve) => this.onClose());
   }
 
   open(event: { position: ILatLng | null; selections: MapSelection[] }): void {
