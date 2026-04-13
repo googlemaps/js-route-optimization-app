@@ -7,8 +7,8 @@
       [disabled]="currentIndex === 0 || selections.length === 0">
       <mat-icon>chevron_left</mat-icon>
     </button>
-    <div *ngIf="currentSelection" class="selection-window">
-      @switch (currentSelection.type) { @case ('VEHICLE') {
+    <div class="selection-window">
+      @switch (currentSelection?.type) { @case ('VEHICLE') {
       <app-vehicle-info-window [vehicleId]="currentSelection.id"></app-vehicle-info-window>
       } @case ('VISIT_REQUEST') {
       <div>TODO: visit request</div>
