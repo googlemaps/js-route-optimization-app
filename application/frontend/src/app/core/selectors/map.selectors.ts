@@ -368,27 +368,32 @@ export const selectClickedObjects = createSelector(
     }
 
     const clickLatLng = fromDispatcherLatLng(position);
-    // Is on pre-solve view
-    if ([Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page)) {
-      vehicles.forEach((vehicle) => {
-        const startLatLng = vehicle.startWaypoint?.location?.latLng;
-        if (!startLatLng) {
-          return;
-        }
-        if (
-          google.maps.geometry.spherical.computeDistanceBetween(
-            clickLatLng,
-            fromDispatcherLatLng(startLatLng)
-          ) <= coincidentMarkerDistanceMeters
-        ) {
-          selections.push({ id: vehicle.id, type: 'VEHICLE' });
-        }
-      });
-    }
-    // Is on post-solve view
-    else {
-      Object.keys(routeLocations).forEach((id) => {});
-    }
+    const isOnPreSolve = [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page);
+    const vehiclesToCheck: { id: string | number; latLng: ILatLng }[] = isOnPreSolve
+      ? vehicles
+          .filter((vehicle) => !!vehicle.startWaypoint?.location?.latLng)
+          .map((vehicle) => ({ id: vehicle.id, latLng: vehicle.startWaypoint!.location!.latLng }))
+      : Object.keys(routeLocations)
+          .filter((id) => !!routeLocations[id].location)
+          .map((id) => ({
+            id,
+            latLng: {
+              latitude: routeLocations[id].location.lat(),
+              longitude: routeLocations[id].location.lng(),
+            },
+          }));
+
+    vehiclesToCheck.forEach((vehicle) => {
+      if (
+        google.maps.geometry.spherical.computeDistanceBetween(
+          clickLatLng,
+          fromDispatcherLatLng(vehicle.latLng)
+        ) <= coincidentMarkerDistanceMeters
+      ) {
+        selections.push({ id: vehicle.id, type: 'VEHICLE' });
+      }
+    });
+
     return { position, selections };
   }
 );
