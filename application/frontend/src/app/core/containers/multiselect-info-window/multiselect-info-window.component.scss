@@ -1,5 +1,18 @@
-.windows-container {
+@import '../../../../styles/variables.scss';
+
+.info-container {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.window-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.selection-count {
+  color: $gray;
 }

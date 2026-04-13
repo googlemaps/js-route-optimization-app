@@ -1,23 +1,28 @@
-<div class="windows-container">
-  <button
-    mat-icon-button
-    aria-label="Previous"
-    (click)="previous()"
-    [disabled]="currentIndex === 0 || selections.length === 0">
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-  <div *ngIf="currentSelection">
-    @switch (currentSelection.type) { @case ('VEHICLE') {
-    <app-vehicle-info-window [vehicleId]="currentSelection.id"></app-vehicle-info-window>
-    } @case ('VISIT_REQUEST') {
-    <div>TODO: visit request</div>
-    } }
+<div class="window-container">
+  <div class="info-container">
+    <button
+      mat-icon-button
+      aria-label="Previous"
+      (click)="previous()"
+      [disabled]="currentIndex === 0 || selections.length === 0">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <div *ngIf="currentSelection">
+      @switch (currentSelection.type) { @case ('VEHICLE') {
+      <app-vehicle-info-window [vehicleId]="currentSelection.id"></app-vehicle-info-window>
+      } @case ('VISIT_REQUEST') {
+      <div>TODO: visit request</div>
+      } }
+    </div>
+    <button
+      mat-icon-button
+      aria-label="Next"
+      (click)="next()"
+      [disabled]="currentIndex === selections.length - 1 || selections.length === 0">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
   </div>
-  <button
-    mat-icon-button
-    aria-label="Next"
-    (click)="next()"
-    [disabled]="currentIndex === selections.length - 1 || selections.length === 0">
-    <mat-icon>chevron_right</mat-icon>
-  </button>
+  <div class="selection-count">
+    {{ selections.length ? currentIndex + 1 : 0 }} / {{ selections.length }}
+  </div>
 </div>
