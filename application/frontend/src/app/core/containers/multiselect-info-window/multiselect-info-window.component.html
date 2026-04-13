@@ -11,7 +11,8 @@
       @switch (currentSelection?.type) { @case ('VEHICLE') {
       <app-vehicle-info-window [vehicleId]="currentSelection.id"></app-vehicle-info-window>
       } @case ('VISIT_REQUEST') {
-      <div>TODO: visit request</div>
+      <app-visit-request-info-window
+        [visitRequestId]="currentSelection.id"></app-visit-request-info-window>
       } }
     </div>
     <button

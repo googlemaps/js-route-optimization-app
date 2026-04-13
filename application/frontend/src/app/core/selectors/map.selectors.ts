@@ -45,6 +45,7 @@ import { MapLayer, MapLayerId, MapSelection } from '../models/map';
 import TravelSimulatorSelectors from './travel-simulator.selectors';
 import * as fromShipmentRoute from './shipment-route.selectors';
 import Long from 'long';
+import * as fromVisitRequests from './visit-request.selectors';
 
 type MapLatLng = google.maps.LatLng;
 
@@ -357,8 +358,10 @@ export const selectClickedObjects = createSelector(
   selectClickedPosition,
   fromVehicle.selectAll,
   selectVehicleLocationsOnRouteWithHeadings,
-  (page, position, vehicles, routeLocations) => {
+  fromVisitRequests.selectEntities,
+  (page, position, vehicles, routeLocations, visitRequests) => {
     const selections: MapSelection[] = [];
+    const isOnPreSolve = [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page);
 
     if (!position) {
       return {
@@ -368,7 +371,20 @@ export const selectClickedObjects = createSelector(
     }
 
     const clickLatLng = fromDispatcherLatLng(position);
-    const isOnPreSolve = [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page);
+
+    Object.keys(visitRequests)
+      .filter((id) => !!visitRequests[id]?.arrivalWaypoint?.location?.latLng)
+      .forEach((id) => {
+        if (
+          google.maps.geometry.spherical.computeDistanceBetween(
+            clickLatLng,
+            fromDispatcherLatLng(visitRequests[id]!.arrivalWaypoint!.location!.latLng!)
+          ) <= coincidentMarkerDistanceMeters
+        ) {
+          selections.push({ id, type: 'VISIT_REQUEST' });
+        }
+      });
+
     const vehiclesToCheck: { id: string | number; latLng: ILatLng }[] = isOnPreSolve
       ? vehicles
           .filter((vehicle) => !!vehicle.startWaypoint?.location?.latLng)
