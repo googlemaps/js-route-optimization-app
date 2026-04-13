@@ -22,10 +22,12 @@
   <div class="mr-1">Max load:</div>
   <div ngClass="d-flex flex-column">
     <div *ngFor="let load of ObjectKeys(route.metrics?.maxLoads); let first = first">
-      <span class="strong"
-        >{{ route.metrics.maxLoads[load].amount }} / {{ vehicle.loadLimits[load].maxLoad }}
-        {{ load }}</span
-      >
+      <div *ngIf="vehicle.loadLimits[load]">
+        <span class="strong"
+          >{{ route.metrics.maxLoads[load].amount }} / {{ vehicle.loadLimits[load].maxLoad }}
+          {{ load }}</span
+        >
+      </div>
     </div>
   </div>
 </div>
