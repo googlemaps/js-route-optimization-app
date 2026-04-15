@@ -46,6 +46,7 @@ export class MultiselectInfoWindowService extends BaseInfoWindowService<Multisel
   open(event: { position: ILatLng | null; selections: MapSelection[] }): void {
     if (!event.position || event.selections.length === 0) {
       this.clear();
+      this.onClose();
       return;
     }
 
