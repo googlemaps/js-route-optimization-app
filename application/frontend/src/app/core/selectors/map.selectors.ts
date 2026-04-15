@@ -30,7 +30,7 @@ import {
   toTurfLineString,
   toTurfPoint,
 } from 'src/app/util';
-import { ILatLng, Page, TravelMode, ShipmentRoute, VisitRequest, Vehicle } from '../models';
+import { ILatLng, Page, TravelMode, ShipmentRoute, VisitRequest } from '../models';
 import * as fromDepot from './depot.selectors';
 import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
@@ -49,9 +49,15 @@ import * as fromVisitRequests from './visit-request.selectors';
 
 type MapLatLng = google.maps.LatLng;
 
-const coincidentMarkerDistanceMeters = 3.0;
-
 export const selectMapState = createFeatureSelector<fromMap.State>(fromMap.mapFeatureKey);
+
+export const selectZoom = createSelector(selectMapState, fromMap.selectZoom);
+
+// Calculate the appropriate multi-selection distance in meters based on the current zoom level
+export const selectSelectionDistanceMeters = createSelector(selectZoom, (zoom: number): number => {
+  const distance = 3 * Math.pow(2, 19 - zoom);
+  return Math.max(1, Math.min(500000, distance));
+});
 
 const findAlternativeStartLocation = (path: MapLatLng[]): MapLatLng => {
   const distanceAlongPath = google.maps.geometry.spherical.computeLength(path) / 10;
@@ -359,7 +365,8 @@ export const selectClickedObjects = createSelector(
   fromVehicle.selectAll,
   selectVehicleLocationsOnRouteWithHeadings,
   fromVisitRequests.selectAll,
-  (page, position, vehicles, routeLocations, visitRequests) => {
+  selectSelectionDistanceMeters,
+  (page, position, vehicles, routeLocations, visitRequests, selectionDistanceMeters) => {
     const selections: MapSelection[] = [];
     const isOnPreSolve = [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page);
 
@@ -379,7 +386,7 @@ export const selectClickedObjects = createSelector(
           google.maps.geometry.spherical.computeDistanceBetween(
             clickLatLng,
             fromDispatcherLatLng(vr.arrivalWaypoint!.location!.latLng!)
-          ) <= coincidentMarkerDistanceMeters
+          ) <= selectionDistanceMeters
         ) {
           selections.push({ id: vr.id, type: 'VISIT_REQUEST' });
         }
@@ -404,7 +411,7 @@ export const selectClickedObjects = createSelector(
         google.maps.geometry.spherical.computeDistanceBetween(
           clickLatLng,
           fromDispatcherLatLng(vehicle.latLng)
-        ) <= coincidentMarkerDistanceMeters
+        ) <= selectionDistanceMeters
       ) {
         selections.push({ id: vehicle.id, type: 'VEHICLE' });
       }
