@@ -358,7 +358,7 @@ export const selectClickedObjects = createSelector(
   selectClickedPosition,
   fromVehicle.selectAll,
   selectVehicleLocationsOnRouteWithHeadings,
-  fromVisitRequests.selectEntities,
+  fromVisitRequests.selectAll,
   (page, position, vehicles, routeLocations, visitRequests) => {
     const selections: MapSelection[] = [];
     const isOnPreSolve = [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page);
@@ -372,30 +372,30 @@ export const selectClickedObjects = createSelector(
 
     const clickLatLng = fromDispatcherLatLng(position);
 
-    Object.keys(visitRequests)
-      .filter((id) => !!visitRequests[id]?.arrivalWaypoint?.location?.latLng)
-      .forEach((id) => {
+    visitRequests
+      .filter((vr) => !!vr.arrivalWaypoint?.location?.latLng)
+      .forEach((vr) => {
         if (
           google.maps.geometry.spherical.computeDistanceBetween(
             clickLatLng,
-            fromDispatcherLatLng(visitRequests[id]!.arrivalWaypoint!.location!.latLng!)
+            fromDispatcherLatLng(vr.arrivalWaypoint!.location!.latLng!)
           ) <= coincidentMarkerDistanceMeters
         ) {
-          selections.push({ id, type: 'VISIT_REQUEST' });
+          selections.push({ id: vr.id, type: 'VISIT_REQUEST' });
         }
       });
 
     const vehiclesToCheck: { id: string | number; latLng: ILatLng }[] = isOnPreSolve
       ? vehicles
           .filter((vehicle) => !!vehicle.startWaypoint?.location?.latLng)
-          .map((vehicle) => ({ id: vehicle.id, latLng: vehicle.startWaypoint!.location!.latLng }))
-      : Object.keys(routeLocations)
-          .filter((id) => !!routeLocations[id].location)
-          .map((id) => ({
-            id,
+          .map((vehicle) => ({ id: vehicle.id, latLng: vehicle.startWaypoint!.location!.latLng! }))
+      : Object.entries(routeLocations)
+          .filter(([, loc]) => !!loc.location)
+          .map(([id, loc]) => ({
+            id: +id,
             latLng: {
-              latitude: routeLocations[id].location.lat(),
-              longitude: routeLocations[id].location.lng(),
+              latitude: loc.location.lat(),
+              longitude: loc.location.lng(),
             },
           }));
 
