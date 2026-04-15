@@ -44,17 +44,18 @@ export class MultiselectInfoWindowService extends BaseInfoWindowService<Multisel
   }
 
   open(event: { position: ILatLng | null; selections: MapSelection[] }): void {
-    if (event.position) {
-      this.create(MultiselectInfoWindowComponent);
-      this.componentRef.setInput('selections', event.selections);
-      this.infoWindow.setPosition({
-        lat: event.position.latitude,
-        lng: event.position.longitude,
-      });
-      this.infoWindow.open(this.mapService.map);
-    } else {
+    if (!event.position || event.selections.length === 0) {
       this.clear();
+      return;
     }
+
+    this.create(MultiselectInfoWindowComponent);
+    this.componentRef.setInput('selections', event.selections);
+    this.infoWindow.setPosition({
+      lat: event.position.latitude,
+      lng: event.position.longitude,
+    });
+    this.infoWindow.open(this.mapService.map);
   }
 
   onClose(): void {
