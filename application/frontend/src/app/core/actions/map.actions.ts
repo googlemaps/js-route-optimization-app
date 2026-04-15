@@ -58,3 +58,5 @@ export const setLayerVisible = createAction(
   '[Map] Set Layer Visible',
   props<{ layerId: MapLayerId; visible: boolean }>()
 );
+
+export const setZoomLevel = createAction('[Map] Set Zoom Level', props<{ zoom: number }>());

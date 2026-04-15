@@ -148,6 +148,10 @@ export class MapComponent implements OnInit, OnDestroy {
       this.store.pipe(select(selectPage)).subscribe((page) => {
         this.page = page;
         this.changeDetector.markForCheck();
+      }),
+
+      this.mapService.zoomChanged$.subscribe((zoom) => {
+        this.store.dispatch(MapActions.setZoomLevel({ zoom }));
       })
     );
 
