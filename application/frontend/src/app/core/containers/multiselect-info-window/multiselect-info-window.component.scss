@@ -21,9 +21,12 @@
   .selection-item {
     grid-area: 1 / 1;
     visibility: hidden;
+    height: 0;
+    overflow: hidden;
 
     &.active {
       visibility: visible;
+      height: auto;
     }
   }
 }
