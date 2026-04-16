@@ -15,12 +15,18 @@ limitations under the License.
 */
 
 import { createAction, props } from '@ngrx/store';
+import { ILatLng } from '../models';
 
 export const mapVehicleClicked = createAction('[UI] Map Vehicle Clicked', props<{ id: number }>());
 
 export const mapVisitRequestClicked = createAction(
   '[UI] Map Visit Request Clicked',
   props<{ id: number }>()
+);
+
+export const mapMarkerClicked = createAction(
+  '[UI] Map Marker Clicked',
+  props<{ position: ILatLng | null }>()
 );
 
 export const changeSplitSizes = createAction(

@@ -28,3 +28,8 @@ export interface MapLayer {
   visible?: boolean;
   travelMode?: TravelMode;
 }
+
+export interface MapSelection {
+  id: number | string;
+  type: 'VEHICLE' | 'VISIT_REQUEST';
+}

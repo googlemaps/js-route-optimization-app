@@ -1,0 +1,33 @@
+@import '../../../../styles/variables.scss';
+
+.info-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.window-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.selection-window {
+  flex-grow: 1;
+  display: grid;
+
+  .selection-item {
+    grid-area: 1 / 1;
+    visibility: hidden;
+
+    &.active {
+      visibility: visible;
+    }
+  }
+}
+
+.selection-count {
+  color: $gray;
+}

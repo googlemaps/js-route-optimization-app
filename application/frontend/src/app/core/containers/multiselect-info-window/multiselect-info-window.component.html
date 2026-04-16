@@ -1,0 +1,35 @@
+<div class="window-container">
+  <div class="info-container">
+    <button
+      *ngIf="selections.length > 1"
+      mat-icon-button
+      aria-label="Previous"
+      (click)="previous()"
+      [disabled]="currentIndex === 0 || selections.length === 0">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <div class="selection-window">
+      @for (selection of selections; track selection.id; let i = $index) {
+      <div class="selection-item" [class.active]="i === currentIndex">
+        @switch (selection.type) { @case ('VEHICLE') {
+        <app-vehicle-info-window [vehicleId]="selection.id"></app-vehicle-info-window>
+        } @case ('VISIT_REQUEST') {
+        <app-visit-request-info-window
+          [visitRequestId]="selection.id"></app-visit-request-info-window>
+        } }
+      </div>
+      }
+    </div>
+    <button
+      *ngIf="selections.length > 1"
+      mat-icon-button
+      aria-label="Next"
+      (click)="next()"
+      [disabled]="currentIndex === selections.length - 1 || selections.length === 0">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+  <div class="selection-count" *ngIf="selections.length > 1">
+    {{ selections.length ? currentIndex + 1 : 0 }} / {{ selections.length }}
+  </div>
+</div>

@@ -113,7 +113,14 @@ export class PostSolveVisitRequestLayer extends BaseVisitRequestLayer {
       },
       onClick: ({ object }) => {
         this.zone.run(() => {
-          this.store.dispatch(UIActions.mapVisitRequestClicked({ id: object.id }));
+          this.store.dispatch(
+            UIActions.mapMarkerClicked({
+              position: {
+                longitude: object.arrivalPosition[0],
+                latitude: object.arrivalPosition[1],
+              },
+            })
+          );
         });
       },
     });

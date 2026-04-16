@@ -17,6 +17,7 @@ limitations under the License.
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { Subject } from 'rxjs';
 import { MockMap } from 'src/test/google-maps-mocks';
 import { MockInfoWindowService, MockLayerService } from 'src/test/service-mocks';
 import * as fromConfig from '../../selectors/config.selectors';
@@ -96,6 +97,7 @@ describe('MapComponent', () => {
       this.map = new MockMap();
     }
     map: MockMap;
+    zoomChanged$ = new Subject<number>();
   }
 
   beforeEach(async () => {

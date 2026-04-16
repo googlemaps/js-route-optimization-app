@@ -36,19 +36,28 @@ import PreSolveShipmentSelectors from './pre-solve-shipment.selectors';
 import PreSolveVehicleSelectors from './pre-solve-vehicle.selectors';
 import RoutesChartSelectors from './routes-chart.selectors';
 import ShipmentRouteSelectors from './shipment-route.selectors';
-import { selectPage } from './ui.selectors';
+import { selectClickedPosition, selectPage } from './ui.selectors';
 import * as fromVehicle from './vehicle.selectors';
 import VisitSelectors from './visit.selectors';
 import VisitRequestSelectors from './visit-request.selectors';
 import * as fromMap from '../reducers/map.reducer';
-import { MapLayer, MapLayerId } from '../models/map';
+import { MapLayer, MapLayerId, MapSelection } from '../models/map';
 import TravelSimulatorSelectors from './travel-simulator.selectors';
 import * as fromShipmentRoute from './shipment-route.selectors';
 import Long from 'long';
+import * as fromVisitRequests from './visit-request.selectors';
 
 type MapLatLng = google.maps.LatLng;
 
 export const selectMapState = createFeatureSelector<fromMap.State>(fromMap.mapFeatureKey);
+
+export const selectZoom = createSelector(selectMapState, fromMap.selectZoom);
+
+// Calculate the appropriate multi-selection distance in meters based on the current zoom level
+export const selectSelectionDistanceMeters = createSelector(selectZoom, (zoom: number): number => {
+  const distance = 3 * Math.pow(2, 19 - zoom);
+  return Math.max(1, Math.min(500000, distance));
+});
 
 const findAlternativeStartLocation = (path: MapLatLng[]): MapLatLng => {
   const distanceAlongPath = google.maps.geometry.spherical.computeLength(path) / 10;
@@ -347,5 +356,67 @@ export const selectUsedMapLayers = createSelector(
     });
 
     return mapLayers;
+  }
+);
+
+export const selectClickedObjects = createSelector(
+  selectPage,
+  selectClickedPosition,
+  fromVehicle.selectAll,
+  selectVehicleLocationsOnRouteWithHeadings,
+  fromVisitRequests.selectAll,
+  selectSelectionDistanceMeters,
+  (page, position, vehicles, routeLocations, visitRequests, selectionDistanceMeters) => {
+    const selections: MapSelection[] = [];
+    const isOnPreSolve = [Page.Shipments, Page.Vehicles, Page.ScenarioPlanning].includes(page);
+
+    if (!position) {
+      return {
+        position: null,
+        selections: selections,
+      };
+    }
+
+    const clickLatLng = fromDispatcherLatLng(position);
+
+    visitRequests
+      .filter((vr) => !!vr.arrivalWaypoint?.location?.latLng)
+      .forEach((vr) => {
+        if (
+          google.maps.geometry.spherical.computeDistanceBetween(
+            clickLatLng,
+            fromDispatcherLatLng(vr.arrivalWaypoint!.location!.latLng!)
+          ) <= selectionDistanceMeters
+        ) {
+          selections.push({ id: vr.id, type: 'VISIT_REQUEST' });
+        }
+      });
+
+    const vehiclesToCheck: { id: string | number; latLng: ILatLng }[] = isOnPreSolve
+      ? vehicles
+          .filter((vehicle) => !!vehicle.startWaypoint?.location?.latLng)
+          .map((vehicle) => ({ id: vehicle.id, latLng: vehicle.startWaypoint!.location!.latLng! }))
+      : Object.entries(routeLocations)
+          .filter(([, loc]) => !!loc.location)
+          .map(([id, loc]) => ({
+            id: +id,
+            latLng: {
+              latitude: loc.location.lat(),
+              longitude: loc.location.lng(),
+            },
+          }));
+
+    vehiclesToCheck.forEach((vehicle) => {
+      if (
+        google.maps.geometry.spherical.computeDistanceBetween(
+          clickLatLng,
+          fromDispatcherLatLng(vehicle.latLng)
+        ) <= selectionDistanceMeters
+      ) {
+        selections.push({ id: vehicle.id, type: 'VEHICLE' });
+      }
+    });
+
+    return { position, selections };
   }
 );

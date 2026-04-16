@@ -31,6 +31,7 @@ export abstract class BaseMarkersLayer {
   );
   readonly dragEnd$ = new Subject<{ id: number | string; pos: google.maps.LatLng }>();
   readonly edit$ = new Subject<{ id: number | string; pos: google.maps.LatLng }>();
+  readonly click$ = new Subject<{ id: number | string; pos: google.maps.LatLng }>();
 
   protected markers = new Map<number | string, google.maps.Marker>();
   protected listeners = new Map<
@@ -40,6 +41,7 @@ export abstract class BaseMarkersLayer {
   protected abstract zIndex: number;
   private _visible = false;
   private _draggable = false;
+  private _clickable = false;
 
   get visible(): boolean {
     return this._visible;
@@ -59,6 +61,15 @@ export abstract class BaseMarkersLayer {
   set draggable(value: boolean) {
     this._draggable = value;
     Array.from(this.markers.keys()).forEach((id) => this.setDraggable(id, value));
+  }
+
+  get clickable(): boolean {
+    return this._clickable;
+  }
+
+  set clickable(value: boolean) {
+    this._clickable = value;
+    Array.from(this.markers.keys()).forEach((id) => this.setClickable(id, value));
   }
 
   constructor(
@@ -179,6 +190,26 @@ export abstract class BaseMarkersLayer {
       'dragend',
       (event: google.maps.MapMouseEvent) => {
         this.zone.run(() => this.dragEnd$.next({ id, pos: event.latLng }));
+      }
+    );
+  }
+
+  protected setClickable(id: number | string, clickable: boolean): void {
+    const marker = this.markers.get(id);
+    if (!marker) {
+      return;
+    }
+    marker.setClickable(clickable);
+    const listeners = this.listeners.get(id);
+    listeners.click?.remove();
+    if (!clickable) {
+      return;
+    }
+    listeners.click = google.maps.event.addListener(
+      marker,
+      'click',
+      (event: google.maps.MapMouseEvent) => {
+        this.zone.run(() => this.click$.next({ id, pos: event.latLng }));
       }
     );
   }

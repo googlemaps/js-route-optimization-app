@@ -60,6 +60,7 @@ const ignoreActions = new Set<string>([
   UIActions.changeSplitSizes.type,
   UIActions.mapVehicleClicked.type,
   UIActions.mapVisitRequestClicked.type,
+  UIActions.mapMarkerClicked.type,
   MetadataControlBarActions.addFilter.type,
   MetadataControlBarActions.editFilter.type,
   MetadataControlBarActions.removeFilter.type,

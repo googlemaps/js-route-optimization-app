@@ -32,7 +32,7 @@ import {
   UndoRedoActions,
   UploadActions,
 } from '../actions';
-import { Modal, Page } from '../models';
+import { ILatLng, Modal, Page } from '../models';
 import { ScenarioPlanningActions } from 'src/app/scenario-planning/actions';
 
 export const uiFeatureKey = 'ui';
@@ -40,6 +40,7 @@ export const uiFeatureKey = 'ui';
 export interface State {
   clickedMapVehicleId?: number;
   clickedMapVisitRequestId?: number;
+  clickedPosition?: ILatLng;
   hasMap: boolean;
   modal?: Modal;
   mouseOverId?: number;
@@ -51,6 +52,7 @@ export interface State {
 export const initialState: State = {
   clickedMapVehicleId: null,
   clickedMapVisitRequestId: null,
+  clickedPosition: null,
   hasMap: true,
   modal: null,
   mouseOverId: null,
@@ -98,6 +100,10 @@ export const reducer = createReducer(
     ...state,
     clickedMapVisitRequestId: id,
   })),
+  on(UIActions.mapMarkerClicked, (state, { position }) => ({
+    ...state,
+    clickedPosition: position,
+  })),
   on(
     PreSolveShipmentActions.showOnMap,
     PreSolveVehicleActions.showOnMap,
@@ -131,6 +137,8 @@ export const reducer = createReducer(
 export const selectClickedVehicleId = (state: State): number => state.clickedMapVehicleId;
 
 export const selectClickedVisitRequestId = (state: State): number => state.clickedMapVisitRequestId;
+
+export const selectClickedPosition = (state: State): ILatLng => state.clickedPosition;
 
 export const selectModal = (state: State): Modal => state.modal;
 

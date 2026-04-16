@@ -23,6 +23,7 @@ export const mapFeatureKey = 'map';
 
 export interface State {
   visibleMapLayers: { [id in MapLayerId]: MapLayer };
+  zoom: number;
 }
 
 export const initialState: State = {
@@ -45,6 +46,7 @@ export const initialState: State = {
       travelMode: TravelMode.WALKING,
     },
   },
+  zoom: 12,
 };
 
 export const reducer = createReducer(
@@ -58,8 +60,14 @@ export const reducer = createReducer(
         visible,
       },
     },
+  })),
+  on(MapActions.setZoomLevel, (state, { zoom }) => ({
+    ...state,
+    zoom,
   }))
 );
 
 export const selectVisibleMapLayers = (state: State): { [id in MapLayerId]: MapLayer } =>
   state.visibleMapLayers;
+
+export const selectZoom = (state: State): number => state.zoom;

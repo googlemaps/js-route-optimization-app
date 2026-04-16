@@ -25,6 +25,7 @@ export * from './map-api.service';
 export * from './map-theme.service';
 export * from './map.service';
 export * from './message.service';
+export * from './multiselect-info-window-service';
 export * from './normalization.service';
 export * from './optimize-tours-message.service';
 export * from './places.service';
