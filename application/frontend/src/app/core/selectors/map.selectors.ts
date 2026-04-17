@@ -218,10 +218,11 @@ const getSimulatedVehicleLocationsOnRouteWithHeadings = (
         const end = start.add(duration);
 
         if (start.lessThanOrEqual(simulationTime)) {
-          const transitionPercent = Math.min(
-            1,
-            Math.max(0, (simulationTime - start.toNumber()) / end.subtract(start).toNumber())
-          );
+          const duration = end.subtract(start).toNumber();
+          const transitionPercent =
+            duration > 0
+              ? Math.min(1, Math.max(0, (simulationTime - start.toNumber()) / duration))
+              : 1;
           interpolationDistance =
             totalDistance + transition.travelDistanceMeters * transitionPercent;
         }
