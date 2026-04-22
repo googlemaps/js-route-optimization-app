@@ -114,6 +114,15 @@
       [solving]="solving"
       [label]="label"></app-generate-button>
   </div>
+  <div class="nav-item nav-subitem">
+    <button
+      type="button"
+      mat-flat-button
+      (click)="generateDistanceMatrices.emit()"
+      attr.aria-label="Generate distance matrices">
+      Generate distance matrices
+    </button>
+  </div>
   <div class="nav-item nav-subitem" *ngIf="hasSolutionWarning">
     <app-post-solve-message class="nav-message"></app-post-solve-message>
   </div>

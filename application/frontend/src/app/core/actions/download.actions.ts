@@ -28,3 +28,5 @@ export const downloadFailure = createAction('[Download] Download Failure', props
 export const downloadCSV = createAction('[Download] Download CSV');
 
 export const downloadPDF = createAction('[Download] Download PDF');
+
+export const generateDistanceMatrices = createAction('[Download] Generate Distance Matrices');

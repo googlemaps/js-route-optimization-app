@@ -27,7 +27,7 @@ import * as fromSolution from 'src/app/core/selectors/solution.selectors';
 import * as fromUI from 'src/app/core/selectors/ui.selectors';
 import PreSolveVehicleSelectors from 'src/app/core/selectors/pre-solve-vehicle.selectors';
 import * as fromConfig from 'src/app/core/selectors/config.selectors';
-import { PreSolveShipmentActions, PreSolveVehicleActions } from '../../actions';
+import { DownloadActions, PreSolveShipmentActions, PreSolveVehicleActions } from '../../actions';
 import * as fromDispatcher from 'src/app/core/selectors/dispatcher.selectors';
 
 @Component({
@@ -95,5 +95,9 @@ export class MainNavComponent {
 
   addVehicle(): void {
     this.store.dispatch(PreSolveVehicleActions.addVehicle({}));
+  }
+
+  onGenerateDistanceMatrices(): void {
+    this.store.dispatch(DownloadActions.generateDistanceMatrices());
   }
 }
