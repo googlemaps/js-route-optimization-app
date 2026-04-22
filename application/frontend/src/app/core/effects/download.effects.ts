@@ -25,6 +25,7 @@ import {
   downloadFailure,
   downloadCSV,
   downloadPDF,
+  downloadDistanceMatrices,
 } from '../actions/download.actions';
 import {
   switchMap,
@@ -61,6 +62,7 @@ import { Modal } from '../models';
 import * as fromUI from '../selectors/ui.selectors';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DownloadPdfDialogComponent } from '../containers/download-pdf-dialog/download-pdf-dialog.component';
+import { DownloadDistanceMatrixDialogComponent } from '../containers/download-distance-matrix-dialog/download-distance-matrix-dialog.component';
 import protobuf from 'protobufjs';
 import { ExtendedConversionOptions } from 'src/app/util/canonical-protobuf';
 import { selectScenarioName } from '../selectors/dispatcher.selectors';
@@ -186,6 +188,20 @@ export class DownloadEffects {
           })
         )
       )
+    )
+  );
+
+  startGenerateDistanceMatrices$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(downloadDistanceMatrices),
+      switchMap(() => {
+        const dialogRef = this.dialog.open(DownloadDistanceMatrixDialogComponent, {
+          width: '600px',
+          disableClose: true,
+        });
+
+        return dialogRef.afterClosed();
+      })
     )
   );
 

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Generate distance matrices</h1>
+<div mat-dialog-content>
+  This will download the distance matrix for all vehicles and shipments in the scenario. This may
+  take some time to generate.
+</div>
+<div mat-dialog-actions>
+  <button *ngIf="!isInProgress" type="button" mat-stroked-button color="primary" (click)="cancel()">
+    Close
+  </button>
+  <button *ngIf="isInProgress" type="button" mat-flat-button color="warn" (click)="cancel()">
+    Cancel
+  </button>
+  <button type="button" mat-flat-button color="primary" [disabled]="isInProgress">Generate</button>
+</div>

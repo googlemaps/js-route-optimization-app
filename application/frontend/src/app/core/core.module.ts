@@ -102,6 +102,7 @@ import { ShipmentModelSettingsComponent } from './containers/shipment-model-sett
 import { PostSolveMapLegendComponent } from './components/post-solve-map-legend/post-solve-map-legend.component';
 import { TravelSimulatorComponent } from './containers/travel-simulator/travel-simulator.component';
 import { ObjectivesComponent } from './components/objectives/objectives.component';
+import { DownloadDistanceMatrixDialogComponent } from './containers/download-distance-matrix-dialog/download-distance-matrix-dialog.component';
 
 export const COMPONENTS = [
   BaseDocumentationDialogComponent,
@@ -185,6 +186,7 @@ export const CONTAINERS = [
     CONTAINERS,
     CsvUploadDialogComponent,
     DownloadPdfDialogComponent,
+    DownloadDistanceMatrixDialogComponent,
     PdfMapComponent,
     ConfirmBulkEditDialogComponent,
     CsvHelpDialogComponent,
