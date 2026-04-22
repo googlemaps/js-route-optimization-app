@@ -12,6 +12,8 @@ import { FileService } from '../../services';
 export class DownloadDistanceMatrixDialogComponent {
   isInProgress = false;
 
+  generationProgress = 0;
+
   constructor(
     private changeDetector: ChangeDetectorRef,
     private fileService: FileService,
@@ -21,5 +23,10 @@ export class DownloadDistanceMatrixDialogComponent {
 
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  generate(): void {
+    this.isInProgress = true;
+    this.changeDetector.markForCheck();
   }
 }
