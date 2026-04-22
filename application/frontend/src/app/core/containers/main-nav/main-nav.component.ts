@@ -98,6 +98,6 @@ export class MainNavComponent {
   }
 
   onGenerateDistanceMatrices(): void {
-    this.store.dispatch(DownloadActions.generateDistanceMatrices());
+    this.store.dispatch(DownloadActions.downloadDistanceMatrices());
   }
 }
