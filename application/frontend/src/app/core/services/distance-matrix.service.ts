@@ -31,7 +31,7 @@ export interface DistanceMatrixPair {
 
 export type DistanceMatrixChunk = DistanceMatrixPair[];
 
-const MAX_CHUNK_SIZE = 25 * 25;
+export const MAX_CHUNK_SIZE = 25 * 25;
 
 @Injectable({ providedIn: 'root' })
 export class DistanceMatrixService {
