@@ -21,23 +21,32 @@ import * as fromRoot from 'src/app/reducers';
 import { selectMapApiKey } from '../selectors/config.selectors';
 import { ILatLng, Vehicle, VisitRequest } from '../models';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface DistanceMatrixEntry {}
 
-export interface DistanceMatrixPair {
-  origin: { waypoint: { location: ILatLng } };
-  destination: { waypoint: { location: ILatLng } };
+export interface DistanceMatrixWaypoint {
+  waypoint: {
+    location: {
+      latLng: ILatLng;
+    };
+  };
 }
 
-export type DistanceMatrixChunk = DistanceMatrixPair[];
+export interface DistanceMatrixRequest {
+  origins: DistanceMatrixWaypoint[];
+  destinations: DistanceMatrixWaypoint[];
+  travelMode: string;
+  routingPreference: string;
+}
 
-export const MAX_CHUNK_SIZE = 25 * 25;
+export const MAX_CHUNK_SIZE = 25;
 
 @Injectable({ providedIn: 'root' })
 export class DistanceMatrixService {
   private apiKey!: string;
 
-  constructor(store: Store<fromRoot.State>) {
+  constructor(store: Store<fromRoot.State>, private http: HttpClient) {
     store.pipe(select(selectMapApiKey)).subscribe((apiKey) => (this.apiKey = apiKey));
   }
 
@@ -45,14 +54,14 @@ export class DistanceMatrixService {
     vehicles: Vehicle[],
     visitRequests: VisitRequest[]
   ): Observable<DistanceMatrixEntry[]> {
-    const matrixChunks = this.buildDistanceMatrixChunks(vehicles, visitRequests);
-    return of(matrixChunks);
+    const matrixRequests = this.buildDistanceMatrixRequests(vehicles, visitRequests);
+    return of(matrixRequests);
   }
 
-  buildDistanceMatrixChunks(
+  buildDistanceMatrixRequests(
     vehicles: Vehicle[],
     visitRequests: VisitRequest[]
-  ): DistanceMatrixChunk[] {
+  ): DistanceMatrixRequest[] {
     const vehicleStartLocations: ILatLng[] = vehicles
       .map((v) => v.startWaypoint?.location?.latLng)
       .filter((loc) => !!loc);
@@ -61,32 +70,52 @@ export class DistanceMatrixService {
       .map((vr) => vr.arrivalWaypoint?.location?.latLng)
       .filter((loc) => !!loc);
 
-    const origins: ILatLng[] = [...vehicleStartLocations, ...visitRequestLocations];
-    const destinations: ILatLng[] = [...visitRequestLocations];
+    const origins = [...vehicleStartLocations, ...visitRequestLocations].map((loc) =>
+      this.toWaypoint(loc)
+    );
+    const destinations = visitRequestLocations.map((loc) => this.toWaypoint(loc));
 
-    return this.createMatrixChunks(origins, destinations);
+    return this.createMatrixRequests(origins, destinations);
   }
 
-  private createMatrixChunks(origins: ILatLng[], destinations: ILatLng[]): DistanceMatrixChunk[] {
-    const allPairs: DistanceMatrixPair[] = [];
-    origins.forEach((origin) => {
-      destinations.forEach((destination) => {
-        allPairs.push({
-          origin: this.toWaypoint(origin),
-          destination: this.toWaypoint(destination),
-        });
-      });
-    });
+  private createMatrixRequests(
+    origins: DistanceMatrixWaypoint[],
+    destinations: DistanceMatrixWaypoint[]
+  ): DistanceMatrixRequest[] {
+    const requests: DistanceMatrixRequest[] = [];
 
-    const chunks: DistanceMatrixChunk[] = [];
-    for (let i = 0; i < allPairs.length; i += MAX_CHUNK_SIZE) {
-      chunks.push(allPairs.slice(i, i + MAX_CHUNK_SIZE));
+    for (let i = 0; i < origins.length; i += MAX_CHUNK_SIZE) {
+      const originChunk = origins.slice(i, i + MAX_CHUNK_SIZE);
+      for (let j = 0; j < destinations.length; j += MAX_CHUNK_SIZE) {
+        const destChunk = destinations.slice(j, j + MAX_CHUNK_SIZE);
+        requests.push({
+          origins: originChunk,
+          destinations: destChunk,
+          travelMode: 'DRIVE',
+          routingPreference: 'TRAFFIC_AWARE',
+        });
+      }
     }
 
-    return chunks;
+    return requests;
   }
 
-  private toWaypoint(loc: ILatLng): { waypoint: { location: ILatLng } } {
-    return { waypoint: { location: loc } };
+  private toWaypoint(loc: ILatLng): DistanceMatrixWaypoint {
+    return { waypoint: { location: { latLng: loc } } };
+  }
+
+  private requestDistanceMatrix(request: DistanceMatrixRequest): Observable<any> {
+    return this.http.post(
+      'https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix',
+      request,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': this.apiKey,
+          'X-Goog-FieldMask':
+            'originIndex,destinationIndex,duration,distanceMeters,status,condition',
+        },
+      }
+    );
   }
 }

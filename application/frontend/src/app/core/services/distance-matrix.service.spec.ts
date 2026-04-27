@@ -19,12 +19,14 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { DistanceMatrixService, MAX_CHUNK_SIZE } from './distance-matrix.service';
 import { Vehicle, VisitRequest } from '../models';
 import { selectMapApiKey } from '../selectors/config.selectors';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DistanceMatrixService', () => {
   let service: DistanceMatrixService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [
         provideMockStore({
           selectors: [{ selector: selectMapApiKey, value: 'test-api-key' }],
@@ -38,9 +40,9 @@ describe('DistanceMatrixService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('buildDistanceMatrixChunks', () => {
-    it('should return empty chunks for empty inputs', () => {
-      const result = service.buildDistanceMatrixChunks([], []);
+  describe('buildDistanceMatrixRequests', () => {
+    it('should return empty requests for empty inputs', () => {
+      const result = service.buildDistanceMatrixRequests([], []);
       expect(result).toEqual([]);
     });
 
@@ -65,19 +67,17 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const chunks = service.buildDistanceMatrixChunks(vehicles, visitRequests);
-      expect(chunks.length).toBe(1);
-      expect(chunks[0].length).toBe(2);
-      expect(chunks[0]).toEqual([
-        {
-          origin: { waypoint: { location: { latitude: 1, longitude: 2 } } },
-          destination: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-          destination: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-        },
-      ]);
+      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(requests.length).toBe(1);
+      expect(requests[0]).toEqual({
+        origins: [
+          { waypoint: { location: { latLng: { latitude: 1, longitude: 2 } } } },
+          { waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } },
+        ],
+        destinations: [{ waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } }],
+        travelMode: 'DRIVE',
+        routingPreference: 'TRAFFIC_AWARE',
+      });
     });
 
     it('should filter out vehicles without start locations', () => {
@@ -96,18 +96,17 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const chunks = service.buildDistanceMatrixChunks(vehicles, visitRequests);
-      expect(chunks[0].length).toBe(2);
-      expect(chunks[0]).toEqual([
-        {
-          origin: { waypoint: { location: { latitude: 1, longitude: 2 } } },
-          destination: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-          destination: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-        },
-      ]);
+      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(requests[0].origins.length).toBe(2);
+      expect(requests[0]).toEqual({
+        origins: [
+          { waypoint: { location: { latLng: { latitude: 1, longitude: 2 } } } },
+          { waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } },
+        ],
+        destinations: [{ waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } }],
+        travelMode: 'DRIVE',
+        routingPreference: 'TRAFFIC_AWARE',
+      });
     });
 
     it('should filter out visit requests without arrival waypoints', () => {
@@ -134,29 +133,24 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const chunks = service.buildDistanceMatrixChunks(vehicles, visitRequests);
-      expect(chunks[0].length).toBe(4);
-      expect(chunks[0]).toEqual([
-        {
-          origin: { waypoint: { location: { latitude: 1, longitude: 2 } } },
-          destination: { waypoint: { location: { latitude: 1, longitude: 2 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 1, longitude: 2 } } },
-          destination: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-          destination: { waypoint: { location: { latitude: 1, longitude: 2 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-          destination: { waypoint: { location: { latitude: 3, longitude: 4 } } },
-        },
-      ]);
+      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(requests[0].origins.length).toBe(2);
+      expect(requests[0].destinations.length).toBe(2);
+      expect(requests[0]).toEqual({
+        origins: [
+          { waypoint: { location: { latLng: { latitude: 1, longitude: 2 } } } },
+          { waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } },
+        ],
+        destinations: [
+          { waypoint: { location: { latLng: { latitude: 1, longitude: 2 } } } },
+          { waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } },
+        ],
+        travelMode: 'DRIVE',
+        routingPreference: 'TRAFFIC_AWARE',
+      });
     });
 
-    it('should create all origin-destination permutations', () => {
+    it('should include all origins and destinations', () => {
       const vehicles: Vehicle[] = [
         { id: 1, startWaypoint: { location: { latLng: { latitude: 0, longitude: 0 } } } },
       ] as Vehicle[];
@@ -176,37 +170,26 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const chunks = service.buildDistanceMatrixChunks(vehicles, visitRequests);
-      expect(chunks[0].length).toBe(6);
-      expect(chunks[0]).toEqual([
-        {
-          origin: { waypoint: { location: { latitude: 0, longitude: 0 } } },
-          destination: { waypoint: { location: { latitude: 1, longitude: 1 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 0, longitude: 0 } } },
-          destination: { waypoint: { location: { latitude: 2, longitude: 2 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 1, longitude: 1 } } },
-          destination: { waypoint: { location: { latitude: 1, longitude: 1 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 1, longitude: 1 } } },
-          destination: { waypoint: { location: { latitude: 2, longitude: 2 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 2, longitude: 2 } } },
-          destination: { waypoint: { location: { latitude: 1, longitude: 1 } } },
-        },
-        {
-          origin: { waypoint: { location: { latitude: 2, longitude: 2 } } },
-          destination: { waypoint: { location: { latitude: 2, longitude: 2 } } },
-        },
-      ]);
+      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(requests.length).toBe(1);
+      expect(requests[0].origins.length).toBe(3);
+      expect(requests[0].destinations.length).toBe(2);
+      expect(requests[0]).toEqual({
+        origins: [
+          { waypoint: { location: { latLng: { latitude: 0, longitude: 0 } } } },
+          { waypoint: { location: { latLng: { latitude: 1, longitude: 1 } } } },
+          { waypoint: { location: { latLng: { latitude: 2, longitude: 2 } } } },
+        ],
+        destinations: [
+          { waypoint: { location: { latLng: { latitude: 1, longitude: 1 } } } },
+          { waypoint: { location: { latLng: { latitude: 2, longitude: 2 } } } },
+        ],
+        travelMode: 'DRIVE',
+        routingPreference: 'TRAFFIC_AWARE',
+      });
     });
 
-    it('should chunk matrices', () => {
+    it('should chunk requests when exceeding max chunk size', () => {
       const vehicles: Vehicle[] = Array.from({ length: 30 }, (_, i) => ({
         id: i,
         startWaypoint: { location: { latLng: { latitude: i, longitude: i } } },
@@ -219,11 +202,10 @@ describe('DistanceMatrixService', () => {
         arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
       })) as VisitRequest[];
 
-      const chunks = service.buildDistanceMatrixChunks(vehicles, visitRequests);
-      expect(chunks.length).toBe(3);
-      expect(chunks[0].length).toBe(MAX_CHUNK_SIZE);
-      expect(chunks[1].length).toBe(MAX_CHUNK_SIZE);
-      expect(chunks[2].length).toBe(550);
+      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(requests.length).toBe(6);
+      expect(requests[0].origins.length).toBe(MAX_CHUNK_SIZE);
+      expect(requests[0].destinations.length).toBe(MAX_CHUNK_SIZE);
     });
   });
 });
