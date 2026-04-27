@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { FileService } from '../../services';
 import { DistanceMatrixService } from '../../services/distance-matrix.service';
 import { switchMap, take } from 'rxjs/operators';
-import ShipmentSelectors from '../../selectors/shipment.selectors';
+import * as fromVisitRequests from '../../selectors/visit-request.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
 import { combineLatest } from 'rxjs';
 
@@ -36,13 +36,13 @@ export class DownloadDistanceMatrixDialogComponent {
     this.changeDetector.markForCheck();
 
     combineLatest([
-      this.store.pipe(select(ShipmentSelectors.selectAll)),
       this.store.pipe(select(fromVehicle.selectAll)),
+      this.store.pipe(select(fromVisitRequests.selectAll)),
     ])
       .pipe(
         take(1),
-        switchMap(([shipments, vehicles]) =>
-          this.service.generateDistanceMatrices(vehicles, shipments)
+        switchMap(([vehicles, visitRequests]) =>
+          this.service.generateDistanceMatrices(vehicles, visitRequests)
         )
       )
       .subscribe((res) => {

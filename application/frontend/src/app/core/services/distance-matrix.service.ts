@@ -19,14 +19,23 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromRoot from 'src/app/reducers';
 import { selectMapApiKey } from '../selectors/config.selectors';
-import { Shipment, Vehicle } from '../models';
+import { ILatLng, Vehicle, VisitRequest } from '../models';
 import { Observable, of } from 'rxjs';
 
 export interface DistanceMatrixEntry {}
 
+export interface DistanceMatrixPair {
+  origin: { waypoint: { location: ILatLng } };
+  destination: { waypoint: { location: ILatLng } };
+}
+
+export type DistanceMatrixChunk = DistanceMatrixPair[];
+
+const MAX_CHUNK_SIZE = 25 * 25;
+
 @Injectable({ providedIn: 'root' })
 export class DistanceMatrixService {
-  private apiKey: string;
+  private apiKey!: string;
 
   constructor(store: Store<fromRoot.State>) {
     store.pipe(select(selectMapApiKey)).subscribe((apiKey) => (this.apiKey = apiKey));
@@ -34,8 +43,44 @@ export class DistanceMatrixService {
 
   generateDistanceMatrices(
     vehicles: Vehicle[],
-    shipments: Shipment[]
+    visitRequests: VisitRequest[]
   ): Observable<DistanceMatrixEntry[]> {
-    return of([]);
+    const vehicleStartLocations: ILatLng[] = vehicles
+      .map((v) => v.startWaypoint?.location?.latLng)
+      .filter((loc) => !!loc);
+
+    const visitRequestLocations: ILatLng[] = visitRequests
+      .map((vr) => vr.arrivalWaypoint?.location?.latLng)
+      .filter((loc) => !!loc);
+
+    const origins: ILatLng[] = [...vehicleStartLocations, ...visitRequestLocations];
+    const destinations: ILatLng[] = [...visitRequestLocations];
+
+    const matrixChunks = this.createMatrixChunks(origins, destinations);
+
+    return of(matrixChunks);
   }
+
+  private createMatrixChunks(origins: ILatLng[], destinations: ILatLng[]): DistanceMatrixChunk[] {
+    const allPairs: DistanceMatrixPair[] = [];
+    origins.forEach((origin) => {
+      destinations.forEach((destination) => {
+        allPairs.push({
+          origin: this.toWaypoint(origin),
+          destination: this.toWaypoint(destination),
+        });
+      });
+    });
+
+    const chunks: DistanceMatrixChunk[] = [];
+    for (let i = 0; i < allPairs.length; i += MAX_CHUNK_SIZE) {
+      chunks.push(allPairs.slice(i, i + MAX_CHUNK_SIZE));
+    }
+
+    return chunks;
+  }
+
+  private toWaypoint(loc: ILatLng): { waypoint: { location: ILatLng } } {
+    return { waypoint: { location: loc } };
+  };
 }
