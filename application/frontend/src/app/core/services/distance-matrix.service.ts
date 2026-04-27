@@ -45,6 +45,14 @@ export class DistanceMatrixService {
     vehicles: Vehicle[],
     visitRequests: VisitRequest[]
   ): Observable<DistanceMatrixEntry[]> {
+    const matrixChunks = this.buildDistanceMatrixChunks(vehicles, visitRequests);
+    return of(matrixChunks);
+  }
+
+  buildDistanceMatrixChunks(
+    vehicles: Vehicle[],
+    visitRequests: VisitRequest[]
+  ): DistanceMatrixChunk[] {
     const vehicleStartLocations: ILatLng[] = vehicles
       .map((v) => v.startWaypoint?.location?.latLng)
       .filter((loc) => !!loc);
@@ -56,9 +64,7 @@ export class DistanceMatrixService {
     const origins: ILatLng[] = [...vehicleStartLocations, ...visitRequestLocations];
     const destinations: ILatLng[] = [...visitRequestLocations];
 
-    const matrixChunks = this.createMatrixChunks(origins, destinations);
-
-    return of(matrixChunks);
+    return this.createMatrixChunks(origins, destinations);
   }
 
   private createMatrixChunks(origins: ILatLng[], destinations: ILatLng[]): DistanceMatrixChunk[] {
@@ -82,5 +88,5 @@ export class DistanceMatrixService {
 
   private toWaypoint(loc: ILatLng): { waypoint: { location: ILatLng } } {
     return { waypoint: { location: loc } };
-  };
+  }
 }
