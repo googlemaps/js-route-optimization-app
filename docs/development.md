@@ -60,6 +60,7 @@ The frontend application depends on the following APIs:
 - **Google Maps JavaScript API**,
 - **Google Maps Places**
 - **Google Maps Static Maps**
+- **Google Maps Routes API**
 
 Find and enable each of these APIs in the [**APIs & Services > Library**](https://console.cloud.google.com/apis/library)
 section of Cloud Console or run the following `gcloud` commands:
@@ -76,6 +77,8 @@ gcloud services enable maps-backend.googleapis.com --project {PROJECT_ID}
 gcloud services enable places-backend.googleapis.com --project {PROJECT_ID}
 # static maps
 gcloud services enable static-maps-backend.googleapis.com --project {PROJECT_ID}
+# routes
+gcloud services enable routes.googleapis.com --project {PROJECT_ID}
 ```
 
 ### Create API Key

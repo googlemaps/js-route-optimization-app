@@ -172,3 +172,4 @@ and select the following APIs from the dropdown checklist:
    - Maps JavaScript API
    - Places API
    - Static Maps API
+   - Routes API

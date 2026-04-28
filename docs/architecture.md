@@ -95,6 +95,7 @@ are enabled for the project:
   - Maps JavaScript API
   - Places API
   - Static Maps API
+  - Routes API
 
 ---
 ## Frontend
