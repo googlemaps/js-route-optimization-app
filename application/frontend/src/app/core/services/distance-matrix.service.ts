@@ -20,7 +20,8 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from 'src/app/reducers';
 import { selectMapApiKey } from '../selectors/config.selectors';
 import { ILatLng, Vehicle, VisitRequest } from '../models';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 export interface DistanceMatrixEntry {}
@@ -55,7 +56,14 @@ export class DistanceMatrixService {
     visitRequests: VisitRequest[]
   ): Observable<DistanceMatrixEntry[]> {
     const matrixRequests = this.buildDistanceMatrixRequests(vehicles, visitRequests);
-    return of(matrixRequests);
+
+    if (matrixRequests.length === 0) {
+      return of([]);
+    }
+
+    const requests$ = matrixRequests.map((req) => this.requestDistanceMatrix(req));
+
+    return forkJoin(requests$).pipe(map((results) => results.flat()));
   }
 
   buildDistanceMatrixRequests(
@@ -113,7 +121,7 @@ export class DistanceMatrixService {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': this.apiKey,
           'X-Goog-FieldMask':
-            'originIndex,destinationIndex,duration,distanceMeters,status,condition',
+            'originIndex,destinationIndex,duration,distanceMeters',
         },
       }
     );
