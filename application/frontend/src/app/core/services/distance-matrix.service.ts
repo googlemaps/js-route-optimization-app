@@ -20,9 +20,9 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from 'src/app/reducers';
 import { selectMapApiKey } from '../selectors/config.selectors';
 import { ILatLng, Vehicle, VisitRequest } from '../models';
-import { Observable, of, forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { Observable, of, forkJoin, timer } from 'rxjs';
+import { map, retryWhen, mergeMap, scan } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 export interface DistanceMatrixEntry {}
 
@@ -113,17 +113,33 @@ export class DistanceMatrixService {
   }
 
   private requestDistanceMatrix(request: DistanceMatrixRequest): Observable<any> {
-    return this.http.post(
-      'https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix',
-      request,
-      {
+    const maxRetries = 10;
+
+    return this.http
+      .post('https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix', request, {
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': this.apiKey,
-          'X-Goog-FieldMask':
-            'originIndex,destinationIndex,duration,distanceMeters',
+          'X-Goog-FieldMask': 'originIndex,destinationIndex,duration,distanceMeters',
         },
-      }
-    );
+      })
+      .pipe(
+        retryWhen((errors) =>
+          errors.pipe(
+            scan((retryCount: number, error: HttpErrorResponse) => {
+              const isRetryable =
+                error.status === 429 || (error.status >= 500 && error.status < 600);
+              if (retryCount >= maxRetries || !isRetryable) {
+                throw error;
+              }
+              return retryCount + 1;
+            }, 0),
+            mergeMap((retryCount: number) => {
+              const delayMs = 100 + Math.pow(2, retryCount);
+              return timer(delayMs);
+            })
+          )
+        )
+      );
   }
 }
