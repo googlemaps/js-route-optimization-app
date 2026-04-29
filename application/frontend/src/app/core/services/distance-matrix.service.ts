@@ -95,7 +95,7 @@ export class DistanceMatrixService {
     const requests$ = chunkedRequests.map((chunked) =>
       this.requestDistanceMatrix(chunked.request).pipe(
         map((apiEntries: ApiResponse[]) =>
-          this.mapChunkResponse(apiEntries, chunked, originEntities, destinationEntityIds)
+          this.mapApiResponse(apiEntries, chunked, originEntities, destinationEntityIds)
         )
       )
     );
@@ -139,7 +139,7 @@ export class DistanceMatrixService {
     return { chunkedRequests, originEntities, destinationEntityIds };
   }
 
-  private mapChunkResponse(
+  private mapApiResponse(
     apiEntries: ApiResponse[],
     chunked: ChunkedRequest,
     originEntities: OriginEntityInfo[],
