@@ -79,6 +79,7 @@ describe('DistanceMatrixService', () => {
         destinations: [{ waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } }],
         travelMode: 'DRIVE',
         routingPreference: 'TRAFFIC_AWARE',
+        departureTime: jasmine.any(String),
       });
       expect(result.originEntities).toEqual([
         { id: 1, type: 'vehicle' },
@@ -113,6 +114,7 @@ describe('DistanceMatrixService', () => {
         destinations: [{ waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } }],
         travelMode: 'DRIVE',
         routingPreference: 'TRAFFIC_AWARE',
+        departureTime: jasmine.any(String),
       });
       expect(result.originEntities).toEqual([
         { id: 1, type: 'vehicle' },
@@ -158,6 +160,7 @@ describe('DistanceMatrixService', () => {
         ],
         travelMode: 'DRIVE',
         routingPreference: 'TRAFFIC_AWARE',
+        departureTime: jasmine.any(String),
       });
       expect(result.originEntities).toEqual([
         { id: 1, type: 'visitRequest' },
@@ -202,6 +205,7 @@ describe('DistanceMatrixService', () => {
         ],
         travelMode: 'DRIVE',
         routingPreference: 'TRAFFIC_AWARE',
+        departureTime: jasmine.any(String),
       });
       expect(result.originEntities).toEqual([
         { id: 1, type: 'vehicle' },

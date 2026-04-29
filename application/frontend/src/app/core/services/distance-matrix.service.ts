@@ -16,6 +16,7 @@ limitations under the License.
 
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import Long from 'long';
 
 import * as fromRoot from 'src/app/reducers';
 import { selectMapApiKey } from '../selectors/config.selectors';
@@ -69,6 +70,7 @@ export interface DistanceMatrixRequest {
   destinations: DistanceMatrixWaypoint[];
   travelMode: string;
   routingPreference: string;
+  departureTime: string;
 }
 
 export const MAX_CHUNK_SIZE = 25;
@@ -83,10 +85,12 @@ export class DistanceMatrixService {
 
   generateDistanceMatrices(
     vehicles: Vehicle[],
-    visitRequests: VisitRequest[]
+    visitRequests: VisitRequest[],
+    startTimeSeconds: Long
   ): Observable<DistanceMatrixResult[]> {
+    const departureTime = new Date(startTimeSeconds.toNumber() * 1000).toISOString();
     const { chunkedRequests, originEntities, destinationEntityIds } =
-      this.buildDistanceMatrixRequests(vehicles, visitRequests);
+      this.buildDistanceMatrixRequests(vehicles, visitRequests, departureTime);
 
     if (chunkedRequests.length === 0) {
       return of([]);
@@ -103,7 +107,11 @@ export class DistanceMatrixService {
     return forkJoin(requests$).pipe(map((results) => results.flat()));
   }
 
-  buildDistanceMatrixRequests(vehicles: Vehicle[], visitRequests: VisitRequest[]): BuiltRequests {
+  buildDistanceMatrixRequests(
+    vehicles: Vehicle[],
+    visitRequests: VisitRequest[],
+    departureTime?: string
+  ): BuiltRequests {
     const originEntities: OriginEntityInfo[] = [];
     const originWaypoints: DistanceMatrixWaypoint[] = [];
 
@@ -134,7 +142,11 @@ export class DistanceMatrixService {
       }
     }
 
-    const chunkedRequests = this.createMatrixRequests(originWaypoints, destinationWaypoints);
+    const chunkedRequests = this.createMatrixRequests(
+      originWaypoints,
+      destinationWaypoints,
+      departureTime
+    );
 
     return { chunkedRequests, originEntities, destinationEntityIds };
   }
@@ -162,7 +174,8 @@ export class DistanceMatrixService {
 
   private createMatrixRequests(
     origins: DistanceMatrixWaypoint[],
-    destinations: DistanceMatrixWaypoint[]
+    destinations: DistanceMatrixWaypoint[],
+    departureTime?: string
   ): ChunkedRequest[] {
     const chunkedRequests: ChunkedRequest[] = [];
 
@@ -176,6 +189,7 @@ export class DistanceMatrixService {
             destinations: destChunk,
             travelMode: 'DRIVE',
             routingPreference: 'TRAFFIC_AWARE',
+            departureTime: departureTime || new Date().toISOString(),
           },
           originOffset: i,
           destinationOffset: j,
