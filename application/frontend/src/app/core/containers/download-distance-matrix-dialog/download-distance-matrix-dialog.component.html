@@ -1,11 +1,18 @@
 <h1 mat-dialog-title>Generate distance matrices</h1>
 <div mat-dialog-content>
-  This will download the distance matrix for all vehicles and shipments in the scenario. This may
-  take some time to generate.
-  <mat-progress-bar
-    mode="indeterminate"
-    [value]="generationProgress"
-    *ngIf="isInProgress"></mat-progress-bar>
+  @if (timeToGenerateMsg){ @if (errorMsg) {
+  <mat-error>There was an error generating your request: {{ errorMsg }}</mat-error>
+  } @else {
+  <div>
+    <div>Generated distance matrix in {{ timeToGenerateMsg }}</div>
+  </div>
+  } } @else {
+  <div>
+    This will download the distance matrix for all vehicles and shipments in the scenario. This may
+    take some time to generate.
+    <mat-progress-bar mode="indeterminate" *ngIf="isInProgress"></mat-progress-bar>
+  </div>
+  }
 </div>
 <div mat-dialog-actions>
   <button *ngIf="!isInProgress" type="button" mat-stroked-button color="primary" (click)="cancel()">

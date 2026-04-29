@@ -3,12 +3,13 @@ import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dia
 import { select, Store } from '@ngrx/store';
 import { FileService } from '../../services';
 import { DistanceMatrixService } from '../../services/distance-matrix.service';
-import { switchMap, take } from 'rxjs/operators';
+import { catchError, switchMap, take } from 'rxjs/operators';
 import * as fromVisitRequests from '../../selectors/visit-request.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
+import { formattedDurationSeconds } from 'src/app/util';
 
 @Component({
   selector: 'app-download-distance-matrix-dialog',
@@ -18,8 +19,8 @@ import RequestSettingsSelectors from '../../selectors/request-settings.selectors
 })
 export class DownloadDistanceMatrixDialogComponent {
   isInProgress = false;
-
-  generationProgress = 0;
+  errorMsg: string = '';
+  timeToGenerateMsg: string = '';
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -35,7 +36,11 @@ export class DownloadDistanceMatrixDialogComponent {
 
   generate(): void {
     this.isInProgress = true;
+    this.timeToGenerateMsg = '';
+    this.errorMsg = '';
     this.changeDetector.markForCheck();
+
+    const startTime = Date.now();
 
     combineLatest([
       this.store.pipe(select(fromVehicle.selectAll)),
@@ -52,10 +57,17 @@ export class DownloadDistanceMatrixDialogComponent {
             globalDuration[0],
             considerTraffic
           )
-        )
+        ),
+        catchError((error) => {
+          this.errorMsg = `Placeholder - ${error}`;
+          return of(true);
+        })
       )
       .subscribe((res) => {
         console.log(res);
+        const timeToRunSeconds = (Date.now() - startTime) / 1000;
+        this.timeToGenerateMsg =
+          Math.floor(timeToRunSeconds) > 0 ? formattedDurationSeconds(timeToRunSeconds) : '< 1s';
         this.isInProgress = false;
         this.changeDetector.markForCheck();
       });
