@@ -8,6 +8,7 @@ import * as fromVisitRequests from '../../selectors/visit-request.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
 import { combineLatest } from 'rxjs';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
+import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
 
 @Component({
   selector: 'app-download-distance-matrix-dialog',
@@ -40,11 +41,17 @@ export class DownloadDistanceMatrixDialogComponent {
       this.store.pipe(select(fromVehicle.selectAll)),
       this.store.pipe(select(fromVisitRequests.selectAll)),
       this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration)),
+      this.store.pipe(select(RequestSettingsSelectors.selectTraffic)),
     ])
       .pipe(
         take(1),
-        switchMap(([vehicles, visitRequests, globalDuration]) =>
-          this.service.generateDistanceMatrices(vehicles, visitRequests, globalDuration[0])
+        switchMap(([vehicles, visitRequests, globalDuration, considerTraffic]) =>
+          this.service.generateDistanceMatrices(
+            vehicles,
+            visitRequests,
+            globalDuration[0],
+            considerTraffic
+          )
         )
       )
       .subscribe((res) => {

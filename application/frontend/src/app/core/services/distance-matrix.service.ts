@@ -68,8 +68,8 @@ interface DistanceMatrixWaypoint {
 export interface DistanceMatrixRequest {
   origins: DistanceMatrixWaypoint[];
   destinations: DistanceMatrixWaypoint[];
-  travelMode: string;
-  routingPreference: string;
+  travelMode: 'DRIVE';
+  routingPreference: 'TRAFFIC_AWARE_OPTIMAL' | 'TRAFFIC_UNAWARE';
   departureTime: string;
 }
 
@@ -86,11 +86,12 @@ export class DistanceMatrixService {
   generateDistanceMatrices(
     vehicles: Vehicle[],
     visitRequests: VisitRequest[],
-    startTimeSeconds: Long
+    startTimeSeconds: Long,
+    considerTraffic: boolean
   ): Observable<DistanceMatrixResult[]> {
     const departureTime = new Date(startTimeSeconds.toNumber() * 1000).toISOString();
     const { chunkedRequests, originEntities, destinationEntityIds } =
-      this.buildDistanceMatrixRequests(vehicles, visitRequests, departureTime);
+      this.buildDistanceMatrixRequests(vehicles, visitRequests, departureTime, considerTraffic);
 
     if (chunkedRequests.length === 0) {
       return of([]);
@@ -110,7 +111,8 @@ export class DistanceMatrixService {
   buildDistanceMatrixRequests(
     vehicles: Vehicle[],
     visitRequests: VisitRequest[],
-    departureTime?: string
+    departureTime: string,
+    considerTraffic: boolean
   ): BuiltRequests {
     const originEntities: OriginEntityInfo[] = [];
     const originWaypoints: DistanceMatrixWaypoint[] = [];
@@ -145,7 +147,8 @@ export class DistanceMatrixService {
     const chunkedRequests = this.createMatrixRequests(
       originWaypoints,
       destinationWaypoints,
-      departureTime
+      departureTime,
+      considerTraffic
     );
 
     return { chunkedRequests, originEntities, destinationEntityIds };
@@ -175,9 +178,11 @@ export class DistanceMatrixService {
   private createMatrixRequests(
     origins: DistanceMatrixWaypoint[],
     destinations: DistanceMatrixWaypoint[],
-    departureTime?: string
+    departureTime: string,
+    considerTraffic: boolean
   ): ChunkedRequest[] {
     const chunkedRequests: ChunkedRequest[] = [];
+    const routingPreference = considerTraffic ? 'TRAFFIC_AWARE_OPTIMAL' : 'TRAFFIC_UNAWARE';
 
     for (let i = 0; i < origins.length; i += MAX_CHUNK_SIZE) {
       const originChunk = origins.slice(i, i + MAX_CHUNK_SIZE);
@@ -188,8 +193,8 @@ export class DistanceMatrixService {
             origins: originChunk,
             destinations: destChunk,
             travelMode: 'DRIVE',
-            routingPreference: 'TRAFFIC_AWARE',
-            departureTime: departureTime || new Date().toISOString(),
+            routingPreference,
+            departureTime,
           },
           originOffset: i,
           destinationOffset: j,
