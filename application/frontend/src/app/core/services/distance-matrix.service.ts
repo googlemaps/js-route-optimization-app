@@ -24,9 +24,39 @@ import { Observable, of, forkJoin, timer } from 'rxjs';
 import { map, retryWhen, mergeMap, scan } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-export interface DistanceMatrixEntry {}
+export interface DistanceMatrixResult {
+  distanceMeters: number;
+  durationSeconds: number;
+  originType: 'vehicle' | 'visitRequest';
+  originEntityId: number;
+  destinationEntityId: number;
+}
 
-export interface DistanceMatrixWaypoint {
+interface ApiResponse {
+  originIndex: number;
+  destinationIndex: number;
+  distanceMeters: number;
+  duration: string;
+}
+
+interface ChunkedRequest {
+  request: DistanceMatrixRequest;
+  originOffset: number;
+  destinationOffset: number;
+}
+
+interface OriginEntityInfo {
+  id: number;
+  type: 'vehicle' | 'visitRequest';
+}
+
+interface BuiltRequests {
+  chunkedRequests: ChunkedRequest[];
+  originEntities: OriginEntityInfo[];
+  destinationEntityIds: number[];
+}
+
+interface DistanceMatrixWaypoint {
   waypoint: {
     location: {
       latLng: ILatLng;
@@ -54,75 +84,127 @@ export class DistanceMatrixService {
   generateDistanceMatrices(
     vehicles: Vehicle[],
     visitRequests: VisitRequest[]
-  ): Observable<DistanceMatrixEntry[]> {
-    const matrixRequests = this.buildDistanceMatrixRequests(vehicles, visitRequests);
+  ): Observable<DistanceMatrixResult[]> {
+    const { chunkedRequests, originEntities, destinationEntityIds } =
+      this.buildDistanceMatrixRequests(vehicles, visitRequests);
 
-    if (matrixRequests.length === 0) {
+    if (chunkedRequests.length === 0) {
       return of([]);
     }
 
-    const requests$ = matrixRequests.map((req) => this.requestDistanceMatrix(req));
+    const requests$ = chunkedRequests.map((chunked) =>
+      this.requestDistanceMatrix(chunked.request).pipe(
+        map((apiEntries: ApiResponse[]) =>
+          this.mapChunkResponse(apiEntries, chunked, originEntities, destinationEntityIds)
+        )
+      )
+    );
 
     return forkJoin(requests$).pipe(map((results) => results.flat()));
   }
 
-  buildDistanceMatrixRequests(
-    vehicles: Vehicle[],
-    visitRequests: VisitRequest[]
-  ): DistanceMatrixRequest[] {
-    const vehicleStartLocations: ILatLng[] = vehicles
-      .map((v) => v.startWaypoint?.location?.latLng)
-      .filter((loc) => !!loc);
+  buildDistanceMatrixRequests(vehicles: Vehicle[], visitRequests: VisitRequest[]): BuiltRequests {
+    const originEntities: OriginEntityInfo[] = [];
+    const originWaypoints: DistanceMatrixWaypoint[] = [];
 
-    const visitRequestLocations: ILatLng[] = visitRequests
-      .map((vr) => vr.arrivalWaypoint?.location?.latLng)
-      .filter((loc) => !!loc);
+    for (const vehicle of vehicles) {
+      const loc = vehicle.startWaypoint?.location?.latLng;
+      if (loc) {
+        originEntities.push({ id: vehicle.id, type: 'vehicle' });
+        originWaypoints.push(this.toWaypoint(loc));
+      }
+    }
 
-    const origins = [...vehicleStartLocations, ...visitRequestLocations].map((loc) =>
-      this.toWaypoint(loc)
-    );
-    const destinations = visitRequestLocations.map((loc) => this.toWaypoint(loc));
+    for (const vr of visitRequests) {
+      const loc = vr.arrivalWaypoint?.location?.latLng;
+      if (loc) {
+        originEntities.push({ id: vr.id, type: 'visitRequest' });
+        originWaypoints.push(this.toWaypoint(loc));
+      }
+    }
 
-    return this.createMatrixRequests(origins, destinations);
+    const destinationEntityIds: number[] = [];
+    const destinationWaypoints: DistanceMatrixWaypoint[] = [];
+
+    for (const vr of visitRequests) {
+      const loc = vr.arrivalWaypoint?.location?.latLng;
+      if (loc) {
+        destinationEntityIds.push(vr.id);
+        destinationWaypoints.push(this.toWaypoint(loc));
+      }
+    }
+
+    const chunkedRequests = this.createMatrixRequests(originWaypoints, destinationWaypoints);
+
+    return { chunkedRequests, originEntities, destinationEntityIds };
+  }
+
+  private mapChunkResponse(
+    apiEntries: ApiResponse[],
+    chunked: ChunkedRequest,
+    originEntities: OriginEntityInfo[],
+    destinationEntityIds: number[]
+  ): DistanceMatrixResult[] {
+    return apiEntries.map((entry) => {
+      const globalOriginIndex = entry.originIndex + chunked.originOffset;
+      const globalDestinationIndex = entry.destinationIndex + chunked.destinationOffset;
+      const originEntity = originEntities[globalOriginIndex];
+
+      return {
+        distanceMeters: entry.distanceMeters,
+        durationSeconds: parseInt(entry.duration),
+        originType: originEntity.type,
+        originEntityId: originEntity.id,
+        destinationEntityId: destinationEntityIds[globalDestinationIndex],
+      };
+    });
   }
 
   private createMatrixRequests(
     origins: DistanceMatrixWaypoint[],
     destinations: DistanceMatrixWaypoint[]
-  ): DistanceMatrixRequest[] {
-    const requests: DistanceMatrixRequest[] = [];
+  ): ChunkedRequest[] {
+    const chunkedRequests: ChunkedRequest[] = [];
 
     for (let i = 0; i < origins.length; i += MAX_CHUNK_SIZE) {
       const originChunk = origins.slice(i, i + MAX_CHUNK_SIZE);
       for (let j = 0; j < destinations.length; j += MAX_CHUNK_SIZE) {
         const destChunk = destinations.slice(j, j + MAX_CHUNK_SIZE);
-        requests.push({
-          origins: originChunk,
-          destinations: destChunk,
-          travelMode: 'DRIVE',
-          routingPreference: 'TRAFFIC_AWARE',
+        chunkedRequests.push({
+          request: {
+            origins: originChunk,
+            destinations: destChunk,
+            travelMode: 'DRIVE',
+            routingPreference: 'TRAFFIC_AWARE',
+          },
+          originOffset: i,
+          destinationOffset: j,
         });
       }
     }
 
-    return requests;
+    return chunkedRequests;
   }
 
   private toWaypoint(loc: ILatLng): DistanceMatrixWaypoint {
     return { waypoint: { location: { latLng: loc } } };
   }
 
-  private requestDistanceMatrix(request: DistanceMatrixRequest): Observable<any> {
+  private requestDistanceMatrix(request: DistanceMatrixRequest): Observable<ApiResponse[]> {
     const maxRetries = 10;
 
     return this.http
-      .post('https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix', request, {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Goog-Api-Key': this.apiKey,
-          'X-Goog-FieldMask': 'originIndex,destinationIndex,duration,distanceMeters',
-        },
-      })
+      .post<ApiResponse[]>(
+        'https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix',
+        request,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': this.apiKey,
+            'X-Goog-FieldMask': 'originIndex,destinationIndex,duration,distanceMeters',
+          },
+        }
+      )
       .pipe(
         retryWhen((errors) =>
           errors.pipe(

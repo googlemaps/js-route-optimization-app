@@ -43,7 +43,9 @@ describe('DistanceMatrixService', () => {
   describe('buildDistanceMatrixRequests', () => {
     it('should return empty requests for empty inputs', () => {
       const result = service.buildDistanceMatrixRequests([], []);
-      expect(result).toEqual([]);
+      expect(result.chunkedRequests).toEqual([]);
+      expect(result.originEntities).toEqual([]);
+      expect(result.destinationEntityIds).toEqual([]);
     });
 
     it('should extract vehicle start locations', () => {
@@ -67,9 +69,9 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
-      expect(requests.length).toBe(1);
-      expect(requests[0]).toEqual({
+      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(result.chunkedRequests.length).toBe(1);
+      expect(result.chunkedRequests[0].request).toEqual({
         origins: [
           { waypoint: { location: { latLng: { latitude: 1, longitude: 2 } } } },
           { waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } },
@@ -78,6 +80,11 @@ describe('DistanceMatrixService', () => {
         travelMode: 'DRIVE',
         routingPreference: 'TRAFFIC_AWARE',
       });
+      expect(result.originEntities).toEqual([
+        { id: 1, type: 'vehicle' },
+        { id: 1, type: 'visitRequest' },
+      ]);
+      expect(result.destinationEntityIds).toEqual([1]);
     });
 
     it('should filter out vehicles without start locations', () => {
@@ -96,9 +103,9 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
-      expect(requests[0].origins.length).toBe(2);
-      expect(requests[0]).toEqual({
+      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(result.chunkedRequests[0].request.origins.length).toBe(2);
+      expect(result.chunkedRequests[0].request).toEqual({
         origins: [
           { waypoint: { location: { latLng: { latitude: 1, longitude: 2 } } } },
           { waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } },
@@ -107,6 +114,10 @@ describe('DistanceMatrixService', () => {
         travelMode: 'DRIVE',
         routingPreference: 'TRAFFIC_AWARE',
       });
+      expect(result.originEntities).toEqual([
+        { id: 1, type: 'vehicle' },
+        { id: 1, type: 'visitRequest' },
+      ]);
     });
 
     it('should filter out visit requests without arrival waypoints', () => {
@@ -133,10 +144,10 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
-      expect(requests[0].origins.length).toBe(2);
-      expect(requests[0].destinations.length).toBe(2);
-      expect(requests[0]).toEqual({
+      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(result.chunkedRequests[0].request.origins.length).toBe(2);
+      expect(result.chunkedRequests[0].request.destinations.length).toBe(2);
+      expect(result.chunkedRequests[0].request).toEqual({
         origins: [
           { waypoint: { location: { latLng: { latitude: 1, longitude: 2 } } } },
           { waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } },
@@ -148,6 +159,11 @@ describe('DistanceMatrixService', () => {
         travelMode: 'DRIVE',
         routingPreference: 'TRAFFIC_AWARE',
       });
+      expect(result.originEntities).toEqual([
+        { id: 1, type: 'visitRequest' },
+        { id: 3, type: 'visitRequest' },
+      ]);
+      expect(result.destinationEntityIds).toEqual([1, 3]);
     });
 
     it('should include all origins and destinations', () => {
@@ -170,11 +186,11 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
-      expect(requests.length).toBe(1);
-      expect(requests[0].origins.length).toBe(3);
-      expect(requests[0].destinations.length).toBe(2);
-      expect(requests[0]).toEqual({
+      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(result.chunkedRequests.length).toBe(1);
+      expect(result.chunkedRequests[0].request.origins.length).toBe(3);
+      expect(result.chunkedRequests[0].request.destinations.length).toBe(2);
+      expect(result.chunkedRequests[0].request).toEqual({
         origins: [
           { waypoint: { location: { latLng: { latitude: 0, longitude: 0 } } } },
           { waypoint: { location: { latLng: { latitude: 1, longitude: 1 } } } },
@@ -187,6 +203,12 @@ describe('DistanceMatrixService', () => {
         travelMode: 'DRIVE',
         routingPreference: 'TRAFFIC_AWARE',
       });
+      expect(result.originEntities).toEqual([
+        { id: 1, type: 'vehicle' },
+        { id: 1, type: 'visitRequest' },
+        { id: 2, type: 'visitRequest' },
+      ]);
+      expect(result.destinationEntityIds).toEqual([1, 2]);
     });
 
     it('should chunk requests when exceeding max chunk size', () => {
@@ -202,10 +224,16 @@ describe('DistanceMatrixService', () => {
         arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
       })) as VisitRequest[];
 
-      const requests = service.buildDistanceMatrixRequests(vehicles, visitRequests);
-      expect(requests.length).toBe(6);
-      expect(requests[0].origins.length).toBe(MAX_CHUNK_SIZE);
-      expect(requests[0].destinations.length).toBe(MAX_CHUNK_SIZE);
+      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      expect(result.chunkedRequests.length).toBe(6);
+      expect(result.chunkedRequests[0].request.origins.length).toBe(MAX_CHUNK_SIZE);
+      expect(result.chunkedRequests[0].request.destinations.length).toBe(MAX_CHUNK_SIZE);
+      expect(result.chunkedRequests[0].originOffset).toBe(0);
+      expect(result.chunkedRequests[0].destinationOffset).toBe(0);
+      expect(result.chunkedRequests[1].originOffset).toBe(0);
+      expect(result.chunkedRequests[1].destinationOffset).toBe(25);
+      expect(result.chunkedRequests[2].originOffset).toBe(25);
+      expect(result.chunkedRequests[2].destinationOffset).toBe(0);
     });
   });
 });
