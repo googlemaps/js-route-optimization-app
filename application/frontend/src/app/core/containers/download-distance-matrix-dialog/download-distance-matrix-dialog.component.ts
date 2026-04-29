@@ -10,6 +10,7 @@ import { combineLatest, of } from 'rxjs';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
 import { formattedDurationSeconds } from 'src/app/util';
+import { selectScenarioName } from '../../selectors/dispatcher.selectors';
 
 @Component({
   selector: 'app-download-distance-matrix-dialog',
@@ -21,6 +22,8 @@ export class DownloadDistanceMatrixDialogComponent {
   isInProgress = false;
   errorMsg: string = '';
   timeToGenerateMsg: string = '';
+  scenarioName: string = '';
+  matrixData: string = '';
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -28,7 +31,9 @@ export class DownloadDistanceMatrixDialogComponent {
     private dialogRef: MatDialogRef<DownloadDistanceMatrixDialogComponent>,
     private service: DistanceMatrixService,
     private store: Store
-  ) {}
+  ) {
+    this.store.pipe(select(selectScenarioName)).subscribe((name) => (this.scenarioName = name));
+  }
 
   cancel(): void {
     this.dialogRef.close();
@@ -64,12 +69,24 @@ export class DownloadDistanceMatrixDialogComponent {
         })
       )
       .subscribe((res) => {
-        console.log(res);
         const timeToRunSeconds = (Date.now() - startTime) / 1000;
         this.timeToGenerateMsg =
           Math.floor(timeToRunSeconds) > 0 ? formattedDurationSeconds(timeToRunSeconds) : '< 1s';
         this.isInProgress = false;
+
+        if (!this.errorMsg) {
+          this.matrixData = JSON.stringify(res, null, 2);
+          this.downloadMatrix();
+        }
+
         this.changeDetector.markForCheck();
       });
+  }
+
+  downloadMatrix(): void {
+    const filename = `${
+      this.scenarioName.length ? this.scenarioName : new Date().toISOString()
+    }-distance-matrix`;
+    this.fileService.download(`${filename}.json`, [this.matrixData], 'application/json');
   }
 }

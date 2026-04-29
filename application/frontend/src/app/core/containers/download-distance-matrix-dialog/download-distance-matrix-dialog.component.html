@@ -1,9 +1,18 @@
-<h1 mat-dialog-title>Generate distance matrices</h1>
+<h1 mat-dialog-title>
+  {{ timeToGenerateMsg ? 'Distance matrix generated!' : 'Generate distance matrices' }}
+</h1>
 <div mat-dialog-content>
   @if (timeToGenerateMsg){ @if (errorMsg) {
   <mat-error>There was an error generating your request: {{ errorMsg }}</mat-error>
   } @else {
-  <div>
+  <div class="success-contents">
+    <div>
+      <div>
+        If the download did not automatically begin, you can click
+        <a href="javascript:void(0)" (click)="downloadMatrix()">here</a> to download the report.
+      </div>
+      <div>It is now safe to close this window.</div>
+    </div>
     <div>Generated distance matrix in {{ timeToGenerateMsg }}</div>
   </div>
   } } @else {
@@ -27,6 +36,6 @@
     color="primary"
     [disabled]="isInProgress"
     (click)="generate()">
-    Generate
+    {{ timeToGenerateMsg ? 'Regenerate' : 'Generate' }}
   </button>
 </div>
