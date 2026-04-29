@@ -70,7 +70,7 @@ export interface DistanceMatrixRequest {
   destinations: DistanceMatrixWaypoint[];
   travelMode: 'DRIVE';
   routingPreference: 'TRAFFIC_AWARE_OPTIMAL' | 'TRAFFIC_UNAWARE';
-  departureTime: string;
+  departureTime?: string;
 }
 
 export const MAX_CHUNK_SIZE = 25;
@@ -188,14 +188,17 @@ export class DistanceMatrixService {
       const originChunk = origins.slice(i, i + MAX_CHUNK_SIZE);
       for (let j = 0; j < destinations.length; j += MAX_CHUNK_SIZE) {
         const destChunk = destinations.slice(j, j + MAX_CHUNK_SIZE);
+        const request: DistanceMatrixRequest = {
+          origins: originChunk,
+          destinations: destChunk,
+          travelMode: 'DRIVE',
+          routingPreference,
+        };
+        if (considerTraffic) {
+          request.departureTime = departureTime;
+        }
         chunkedRequests.push({
-          request: {
-            origins: originChunk,
-            destinations: destChunk,
-            travelMode: 'DRIVE',
-            routingPreference,
-            departureTime,
-          },
+          request,
           originOffset: i,
           destinationOffset: j,
         });
