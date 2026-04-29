@@ -41,8 +41,10 @@ describe('DistanceMatrixService', () => {
   });
 
   describe('buildDistanceMatrixRequests', () => {
+    const testDepartureTime = '2024-01-01T00:00:00.000Z';
+
     it('should return empty requests for empty inputs', () => {
-      const result = service.buildDistanceMatrixRequests([], []);
+      const result = service.buildDistanceMatrixRequests([], [], testDepartureTime, true);
       expect(result.chunkedRequests).toEqual([]);
       expect(result.originEntities).toEqual([]);
       expect(result.destinationEntityIds).toEqual([]);
@@ -69,7 +71,12 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      const result = service.buildDistanceMatrixRequests(
+        vehicles,
+        visitRequests,
+        testDepartureTime,
+        true
+      );
       expect(result.chunkedRequests.length).toBe(1);
       expect(result.chunkedRequests[0].request).toEqual({
         origins: [
@@ -78,8 +85,8 @@ describe('DistanceMatrixService', () => {
         ],
         destinations: [{ waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } }],
         travelMode: 'DRIVE',
-        routingPreference: 'TRAFFIC_AWARE',
-        departureTime: jasmine.any(String),
+        routingPreference: 'TRAFFIC_AWARE_OPTIMAL',
+        departureTime: testDepartureTime,
       });
       expect(result.originEntities).toEqual([
         { id: 1, type: 'vehicle' },
@@ -104,7 +111,12 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      const result = service.buildDistanceMatrixRequests(
+        vehicles,
+        visitRequests,
+        testDepartureTime,
+        true
+      );
       expect(result.chunkedRequests[0].request.origins.length).toBe(2);
       expect(result.chunkedRequests[0].request).toEqual({
         origins: [
@@ -113,8 +125,8 @@ describe('DistanceMatrixService', () => {
         ],
         destinations: [{ waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } }],
         travelMode: 'DRIVE',
-        routingPreference: 'TRAFFIC_AWARE',
-        departureTime: jasmine.any(String),
+        routingPreference: 'TRAFFIC_AWARE_OPTIMAL',
+        departureTime: testDepartureTime,
       });
       expect(result.originEntities).toEqual([
         { id: 1, type: 'vehicle' },
@@ -146,7 +158,12 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      const result = service.buildDistanceMatrixRequests(
+        vehicles,
+        visitRequests,
+        testDepartureTime,
+        false
+      );
       expect(result.chunkedRequests[0].request.origins.length).toBe(2);
       expect(result.chunkedRequests[0].request.destinations.length).toBe(2);
       expect(result.chunkedRequests[0].request).toEqual({
@@ -159,8 +176,7 @@ describe('DistanceMatrixService', () => {
           { waypoint: { location: { latLng: { latitude: 3, longitude: 4 } } } },
         ],
         travelMode: 'DRIVE',
-        routingPreference: 'TRAFFIC_AWARE',
-        departureTime: jasmine.any(String),
+        routingPreference: 'TRAFFIC_UNAWARE',
       });
       expect(result.originEntities).toEqual([
         { id: 1, type: 'visitRequest' },
@@ -189,7 +205,12 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      const result = service.buildDistanceMatrixRequests(
+        vehicles,
+        visitRequests,
+        testDepartureTime,
+        true
+      );
       expect(result.chunkedRequests.length).toBe(1);
       expect(result.chunkedRequests[0].request.origins.length).toBe(3);
       expect(result.chunkedRequests[0].request.destinations.length).toBe(2);
@@ -204,8 +225,8 @@ describe('DistanceMatrixService', () => {
           { waypoint: { location: { latLng: { latitude: 2, longitude: 2 } } } },
         ],
         travelMode: 'DRIVE',
-        routingPreference: 'TRAFFIC_AWARE',
-        departureTime: jasmine.any(String),
+        routingPreference: 'TRAFFIC_AWARE_OPTIMAL',
+        departureTime: testDepartureTime,
       });
       expect(result.originEntities).toEqual([
         { id: 1, type: 'vehicle' },
@@ -228,7 +249,12 @@ describe('DistanceMatrixService', () => {
         arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
       })) as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(vehicles, visitRequests);
+      const result = service.buildDistanceMatrixRequests(
+        vehicles,
+        visitRequests,
+        testDepartureTime,
+        true
+      );
       expect(result.chunkedRequests.length).toBe(6);
       expect(result.chunkedRequests[0].request.origins.length).toBe(MAX_CHUNK_SIZE);
       expect(result.chunkedRequests[0].request.destinations.length).toBe(MAX_CHUNK_SIZE);
