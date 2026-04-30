@@ -73,8 +73,6 @@ export interface DistanceMatrixRequest {
   departureTime?: string;
 }
 
-export const MAX_CHUNK_SIZE = 25;
-
 @Injectable({ providedIn: 'root' })
 export class DistanceMatrixService {
   private apiKey!: string;
@@ -188,11 +186,13 @@ export class DistanceMatrixService {
   ): ChunkedRequest[] {
     const chunkedRequests: ChunkedRequest[] = [];
     const routingPreference = considerTraffic ? 'TRAFFIC_AWARE_OPTIMAL' : 'TRAFFIC_UNAWARE';
+    const maxChunkSize = considerTraffic ? 10 : 25;
 
-    for (let i = 0; i < origins.length; i += MAX_CHUNK_SIZE) {
-      const originChunk = origins.slice(i, i + MAX_CHUNK_SIZE);
-      for (let j = 0; j < destinations.length; j += MAX_CHUNK_SIZE) {
-        const destChunk = destinations.slice(j, j + MAX_CHUNK_SIZE);
+
+    for (let i = 0; i < origins.length; i += maxChunkSize) {
+      const originChunk = origins.slice(i, i + maxChunkSize);
+      for (let j = 0; j < destinations.length; j += maxChunkSize) {
+        const destChunk = destinations.slice(j, j + maxChunkSize);
         const request: DistanceMatrixRequest = {
           origins: originChunk,
           destinations: destChunk,
