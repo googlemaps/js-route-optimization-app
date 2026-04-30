@@ -13,12 +13,12 @@
       </div>
       <div>It is now safe to close this window.</div>
     </div>
-    <div>Generated distance matrix in {{ timeToGenerateMsg }}</div>
+    <div>Generated in {{ timeToGenerateMsg }}</div>
   </div>
   } } @else {
   <div>
-    This will download the distance matrix for all vehicles and shipments in the scenario. This may
-    take some time to generate.
+    This will generate and download the distance matrix for {{ vehicles.length }} vehicles and {{ visitRequests.length }} visit requests.
+    This may take some time to generate.
     <mat-progress-bar mode="indeterminate" *ngIf="isInProgress"></mat-progress-bar>
   </div>
   }

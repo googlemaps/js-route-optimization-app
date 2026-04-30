@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { select, Store } from '@ngrx/store';
 import { FileService } from '../../services';
@@ -11,6 +11,8 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
 import { formattedDurationSeconds } from 'src/app/util';
 import { selectScenarioName } from '../../selectors/dispatcher.selectors';
+import { Vehicle, VisitRequest } from '../../models';
+import ShipmentSelectors from '../../selectors/shipment.selectors';
 
 @Component({
   selector: 'app-download-distance-matrix-dialog',
@@ -18,12 +20,15 @@ import { selectScenarioName } from '../../selectors/dispatcher.selectors';
   styleUrl: './download-distance-matrix-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DownloadDistanceMatrixDialogComponent {
+export class DownloadDistanceMatrixDialogComponent implements OnInit {
   isInProgress = false;
   errorMsg: string = '';
   timeToGenerateMsg: string = '';
   scenarioName: string = '';
   matrixData: string = '';
+  vehicles: Vehicle[] = [];
+  visitRequests: VisitRequest[] = [];
+  shipmentCount: number = 0;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -32,7 +37,28 @@ export class DownloadDistanceMatrixDialogComponent {
     private service: DistanceMatrixService,
     private store: Store
   ) {
-    this.store.pipe(select(selectScenarioName)).subscribe((name) => (this.scenarioName = name));
+  }
+
+  ngOnInit(): void {
+    this.store.pipe(select(selectScenarioName)).subscribe((name) => {
+      this.scenarioName = name;
+      this.changeDetector.markForCheck();
+    });
+
+    this.store.pipe(select(fromVehicle.selectAll)).subscribe((vehicles) => {
+      this.vehicles = vehicles;
+      this.changeDetector.markForCheck();
+    });
+
+    this.store.pipe(select(fromVisitRequests.selectAll)).subscribe((visitRequests) => {
+      this.visitRequests = visitRequests;
+      this.changeDetector.markForCheck();
+    });
+
+    this.store.pipe(select(ShipmentSelectors.selectTotal)).subscribe(count => {
+      this.shipmentCount = count;
+      this.changeDetector.markForCheck();
+    })
   }
 
   cancel(): void {
@@ -48,17 +74,15 @@ export class DownloadDistanceMatrixDialogComponent {
     const startTime = Date.now();
 
     combineLatest([
-      this.store.pipe(select(fromVehicle.selectAll)),
-      this.store.pipe(select(fromVisitRequests.selectAll)),
       this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration)),
       this.store.pipe(select(RequestSettingsSelectors.selectTraffic)),
     ])
       .pipe(
         take(1),
-        switchMap(([vehicles, visitRequests, globalDuration, considerTraffic]) =>
+        switchMap(([globalDuration, considerTraffic]) =>
           this.service.generateDistanceMatrices(
-            vehicles,
-            visitRequests,
+            this.vehicles,
+            this.visitRequests,
             globalDuration[0],
             considerTraffic
           )
