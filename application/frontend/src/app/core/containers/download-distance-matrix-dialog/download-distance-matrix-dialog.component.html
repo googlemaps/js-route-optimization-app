@@ -17,8 +17,13 @@
   </div>
   } } @else {
   <div>
-    This will generate and download the distance matrix for {{ vehicles.length }} vehicles and {{ visitRequests.length }} visit requests.
-    This may take some time to generate.
+    This will generate and download the distance matrix for {{ vehicles.length }} vehicles and
+    {{ visitRequests.length }} visit requests, resulting in
+    {{
+      matrixRequests.originEntities.length * matrixRequests.destinationEntityIds.length
+    }}
+    elements. By default, you are limited to 3,000 elements per minute. Large requests will take
+    time to process.
     <mat-progress-bar mode="indeterminate" *ngIf="isInProgress"></mat-progress-bar>
   </div>
   }
@@ -34,7 +39,7 @@
     type="button"
     mat-flat-button
     color="primary"
-    [disabled]="isInProgress"
+    [disabled]="isInProgress || !matrixRequests"
     (click)="generate()">
     {{ timeToGenerateMsg ? 'Regenerate' : 'Generate' }}
   </button>

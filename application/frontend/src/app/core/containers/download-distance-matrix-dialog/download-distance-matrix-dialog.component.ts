@@ -2,8 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { select, Store } from '@ngrx/store';
 import { FileService } from '../../services';
-import { DistanceMatrixService } from '../../services/distance-matrix.service';
-import { catchError, switchMap, take } from 'rxjs/operators';
+import {
+  MatrixGenerationRequests,
+  DistanceMatrixService,
+} from '../../services/distance-matrix.service';
+import { catchError, take } from 'rxjs/operators';
 import * as fromVisitRequests from '../../selectors/visit-request.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
 import { combineLatest, of } from 'rxjs';
@@ -11,7 +14,7 @@ import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
 import { formattedDurationSeconds } from 'src/app/util';
 import { selectScenarioName } from '../../selectors/dispatcher.selectors';
-import { Vehicle, VisitRequest } from '../../models';
+import { Shipment, Vehicle, VisitRequest } from '../../models';
 import ShipmentSelectors from '../../selectors/shipment.selectors';
 
 @Component({
@@ -22,13 +25,18 @@ import ShipmentSelectors from '../../selectors/shipment.selectors';
 })
 export class DownloadDistanceMatrixDialogComponent implements OnInit {
   isInProgress = false;
+
   errorMsg: string = '';
   timeToGenerateMsg: string = '';
   scenarioName: string = '';
   matrixData: string = '';
+
   vehicles: Vehicle[] = [];
   visitRequests: VisitRequest[] = [];
-  shipmentCount: number = 0;
+  shipments: Shipment[] = [];
+  considerTraffic: boolean = false;
+
+  matrixRequests!: MatrixGenerationRequests;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -36,8 +44,7 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<DownloadDistanceMatrixDialogComponent>,
     private service: DistanceMatrixService,
     private store: Store
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.store.pipe(select(selectScenarioName)).subscribe((name) => {
@@ -50,15 +57,28 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
       this.changeDetector.markForCheck();
     });
 
-    this.store.pipe(select(fromVisitRequests.selectAll)).subscribe((visitRequests) => {
-      this.visitRequests = visitRequests;
-      this.changeDetector.markForCheck();
-    });
+    combineLatest([
+      this.store.pipe(select(fromVehicle.selectAll)),
+      this.store.pipe(select(fromVisitRequests.selectAll)),
+      this.store.pipe(select(ShipmentSelectors.selectAll)),
+      this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration)),
+      this.store.pipe(select(RequestSettingsSelectors.selectTraffic)),
+    ])
+      .pipe(take(1))
+      .subscribe(([vehicles, visitRequests, shipments, globalDuration, considerTraffic]) => {
+        this.vehicles = vehicles;
+        this.visitRequests = visitRequests;
+        this.shipments = shipments;
+        this.considerTraffic = considerTraffic;
 
-    this.store.pipe(select(ShipmentSelectors.selectTotal)).subscribe(count => {
-      this.shipmentCount = count;
-      this.changeDetector.markForCheck();
-    })
+        this.matrixRequests = this.service.generateDistanceMatrixRequests(
+          vehicles,
+          visitRequests,
+          globalDuration[0],
+          considerTraffic
+        );
+        this.changeDetector.markForCheck();
+      });
   }
 
   cancel(): void {
@@ -73,20 +93,9 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
 
     const startTime = Date.now();
 
-    combineLatest([
-      this.store.pipe(select(ShipmentModelSelectors.selectGlobalDuration)),
-      this.store.pipe(select(RequestSettingsSelectors.selectTraffic)),
-    ])
+    this.service
+      .executeDistanceMatrixRequests(this.matrixRequests)
       .pipe(
-        take(1),
-        switchMap(([globalDuration, considerTraffic]) =>
-          this.service.generateDistanceMatrices(
-            this.vehicles,
-            this.visitRequests,
-            globalDuration[0],
-            considerTraffic
-          )
-        ),
         catchError((error) => {
           this.errorMsg = `Placeholder - ${error}`;
           return of(true);

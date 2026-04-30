@@ -51,7 +51,7 @@ interface OriginEntityInfo {
   type: 'vehicle' | 'visitRequest';
 }
 
-interface BuiltRequests {
+export interface MatrixGenerationRequests {
   chunkedRequests: ChunkedRequest[];
   originEntities: OriginEntityInfo[];
   destinationEntityIds: number[];
@@ -83,15 +83,20 @@ export class DistanceMatrixService {
     store.pipe(select(selectMapApiKey)).subscribe((apiKey) => (this.apiKey = apiKey));
   }
 
-  generateDistanceMatrices(
+  generateDistanceMatrixRequests(
     vehicles: Vehicle[],
     visitRequests: VisitRequest[],
     startTimeSeconds: Long,
     considerTraffic: boolean
-  ): Observable<DistanceMatrixResult[]> {
+  ): MatrixGenerationRequests {
     const departureTime = new Date(startTimeSeconds.toNumber() * 1000).toISOString();
-    const { chunkedRequests, originEntities, destinationEntityIds } =
-      this.buildDistanceMatrixRequests(vehicles, visitRequests, departureTime, considerTraffic);
+    return this.buildRequests(vehicles, visitRequests, departureTime, considerTraffic);
+  }
+
+  executeDistanceMatrixRequests(
+    builtRequests: MatrixGenerationRequests
+  ): Observable<DistanceMatrixResult[]> {
+    const { chunkedRequests, originEntities, destinationEntityIds } = builtRequests;
 
     if (chunkedRequests.length === 0) {
       return of([]);
@@ -108,12 +113,12 @@ export class DistanceMatrixService {
     return forkJoin(requests$).pipe(map((results) => results.flat()));
   }
 
-  buildDistanceMatrixRequests(
+  private buildRequests(
     vehicles: Vehicle[],
     visitRequests: VisitRequest[],
     departureTime: string,
     considerTraffic: boolean
-  ): BuiltRequests {
+  ): MatrixGenerationRequests {
     const originEntities: OriginEntityInfo[] = [];
     const originWaypoints: DistanceMatrixWaypoint[] = [];
 
