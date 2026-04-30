@@ -16,7 +16,11 @@ limitations under the License.
 
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { DistanceMatrixService, MAX_CHUNK_SIZE } from './distance-matrix.service';
+import {
+  DistanceMatrixService,
+  MAX_ELEMENTS_TRAFFIC,
+  MAX_ELEMENTS_NO_TRAFFIC,
+} from './distance-matrix.service';
 import { Vehicle, VisitRequest } from '../models';
 import { selectMapApiKey } from '../selectors/config.selectors';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -40,11 +44,11 @@ describe('DistanceMatrixService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('buildDistanceMatrixRequests', () => {
+  describe('buildRequests', () => {
     const testDepartureTime = '2024-01-01T00:00:00.000Z';
 
     it('should return empty requests for empty inputs', () => {
-      const result = service.buildDistanceMatrixRequests([], [], testDepartureTime, true);
+      const result = service.buildRequests([], [], testDepartureTime, true);
       expect(result.chunkedRequests).toEqual([]);
       expect(result.originEntities).toEqual([]);
       expect(result.destinationEntityIds).toEqual([]);
@@ -71,7 +75,7 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(
+      const result = service.buildRequests(
         vehicles,
         visitRequests,
         testDepartureTime,
@@ -111,7 +115,7 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(
+      const result = service.buildRequests(
         vehicles,
         visitRequests,
         testDepartureTime,
@@ -158,7 +162,7 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(
+      const result = service.buildRequests(
         vehicles,
         visitRequests,
         testDepartureTime,
@@ -205,7 +209,7 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(
+      const result = service.buildRequests(
         vehicles,
         visitRequests,
         testDepartureTime,
@@ -236,34 +240,120 @@ describe('DistanceMatrixService', () => {
       expect(result.destinationEntityIds).toEqual([1, 2]);
     });
 
-    it('should chunk requests when exceeding max chunk size', () => {
-      const vehicles: Vehicle[] = Array.from({ length: 30 }, (_, i) => ({
+    it('should chunk requests', () => {
+      const vehicles: Vehicle[] = Array.from({ length: 5 }, (_, i) => ({
         id: i,
         startWaypoint: { location: { latLng: { latitude: i, longitude: i } } },
       })) as Vehicle[];
 
-      const visitRequests: VisitRequest[] = Array.from({ length: 30 }, (_, i) => ({
+      const visitRequests: VisitRequest[] = Array.from({ length: 20 }, (_, i) => ({
         id: i,
         shipmentId: i,
         pickup: true,
         arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
       })) as VisitRequest[];
 
-      const result = service.buildDistanceMatrixRequests(
+      const result = service.buildRequests(
         vehicles,
         visitRequests,
         testDepartureTime,
         true
       );
-      expect(result.chunkedRequests.length).toBe(6);
-      expect(result.chunkedRequests[0].request.origins.length).toBe(MAX_CHUNK_SIZE);
-      expect(result.chunkedRequests[0].request.destinations.length).toBe(MAX_CHUNK_SIZE);
+      for (const chunked of result.chunkedRequests) {
+        expect(
+          chunked.request.origins.length * chunked.request.destinations.length
+        ).toBeLessThanOrEqual(MAX_ELEMENTS_TRAFFIC);
+      }
+      const allOriginOffsets = new Set(result.chunkedRequests.map((c) => c.originOffset));
+      const allDestOffsets = new Set(result.chunkedRequests.map((c) => c.destinationOffset));
+      expect(allOriginOffsets.size).toBeGreaterThanOrEqual(1);
+      expect(allDestOffsets.size).toBeGreaterThanOrEqual(1);
+    });
+
+    it('should chunk requests within limits for traffic', () => {
+      const vehicles: Vehicle[] = Array.from({ length: 5 }, (_, i) => ({
+        id: i,
+        startWaypoint: { location: { latLng: { latitude: i, longitude: i } } },
+      })) as Vehicle[];
+
+      const visitRequests: VisitRequest[] = Array.from({ length: 50 }, (_, i) => ({
+        id: i,
+        shipmentId: i,
+        pickup: true,
+        arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
+      })) as VisitRequest[];
+
+      const result = service.buildRequests(
+        vehicles,
+        visitRequests,
+        testDepartureTime,
+        true
+      );
+      for (const chunked of result.chunkedRequests) {
+        expect(
+          chunked.request.origins.length * chunked.request.destinations.length
+        ).toBeLessThanOrEqual(MAX_ELEMENTS_TRAFFIC);
+      }
+    });
+
+    it('should chunk requests within limits for no traffic consideration', () => {
+      const vehicles: Vehicle[] = Array.from({ length: 50 }, (_, i) => ({
+        id: i,
+        startWaypoint: { location: { latLng: { latitude: i, longitude: i } } },
+      })) as Vehicle[];
+
+      const visitRequests: VisitRequest[] = Array.from({ length: 15 }, (_, i) => ({
+        id: i,
+        shipmentId: i,
+        pickup: true,
+        arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
+      })) as VisitRequest[];
+
+      const result = service.buildRequests(
+        vehicles,
+        visitRequests,
+        testDepartureTime,
+        false
+      );
+      for (const chunked of result.chunkedRequests) {
+        expect(
+          chunked.request.origins.length * chunked.request.destinations.length
+        ).toBeLessThanOrEqual(MAX_ELEMENTS_NO_TRAFFIC);
+      }
+      let coveredOrigins = 0;
+      let coveredDests = 0;
+      for (const chunked of result.chunkedRequests) {
+        coveredOrigins += chunked.request.origins.length;
+        coveredDests += chunked.request.destinations.length;
+      }
+      const uniqueOriginOffsets = new Set(result.chunkedRequests.map((c) => c.originOffset)).size;
+      const uniqueDestOffsets = new Set(result.chunkedRequests.map((c) => c.destinationOffset))
+        .size;
+      expect(coveredOrigins / uniqueDestOffsets).toBe(65);
+      expect(coveredDests / uniqueOriginOffsets).toBe(15);
+    });
+
+    it('should correctly set origin and destination offsets', () => {
+      const visitRequests: VisitRequest[] = Array.from({ length: 15 }, (_, i) => ({
+        id: i,
+        shipmentId: i,
+        pickup: true,
+        arrivalWaypoint: { location: { latLng: { latitude: i, longitude: i } } },
+      })) as VisitRequest[];
+
+      const result = service.buildRequests(
+        [],
+        visitRequests,
+        testDepartureTime,
+        true
+      );
+      expect(result.chunkedRequests.length).toBe(3);
       expect(result.chunkedRequests[0].originOffset).toBe(0);
       expect(result.chunkedRequests[0].destinationOffset).toBe(0);
       expect(result.chunkedRequests[1].originOffset).toBe(0);
-      expect(result.chunkedRequests[1].destinationOffset).toBe(25);
-      expect(result.chunkedRequests[2].originOffset).toBe(25);
-      expect(result.chunkedRequests[2].destinationOffset).toBe(0);
+      expect(result.chunkedRequests[1].destinationOffset).toBe(5);
+      expect(result.chunkedRequests[2].originOffset).toBe(0);
+      expect(result.chunkedRequests[2].destinationOffset).toBe(10);
     });
   });
 });

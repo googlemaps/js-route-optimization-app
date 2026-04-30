@@ -65,6 +65,9 @@ interface DistanceMatrixWaypoint {
   };
 }
 
+export const MAX_ELEMENTS_TRAFFIC = 100;
+export const MAX_ELEMENTS_NO_TRAFFIC = 625;
+
 export interface DistanceMatrixRequest {
   origins: DistanceMatrixWaypoint[];
   destinations: DistanceMatrixWaypoint[];
@@ -111,7 +114,7 @@ export class DistanceMatrixService {
     return forkJoin(requests$).pipe(map((results) => results.flat()));
   }
 
-  private buildRequests(
+  buildRequests(
     vehicles: Vehicle[],
     visitRequests: VisitRequest[],
     departureTime: string,
@@ -178,6 +181,31 @@ export class DistanceMatrixService {
     });
   }
 
+  private calculateOptimalChunkSizes(
+    numOrigins: number,
+    numDestinations: number,
+    maxElements: number
+  ): { originChunkSize: number; dstChunkSize: number } {
+    let bestOriginChunkSize = 1;
+    let bestDstChunkSize = 1;
+    let bestNumChunks = Infinity;
+
+    const maxDstChunkSize = Math.min(numDestinations, maxElements);
+    for (let i = 1; i <= maxDstChunkSize; i++) {
+      const candidateOriginChunkSize = Math.min(Math.floor(maxElements / i), numOrigins);
+      const numChunks =
+        Math.ceil(numOrigins / candidateOriginChunkSize) * Math.ceil(numDestinations / i);
+
+      if (numChunks < bestNumChunks) {
+        bestNumChunks = numChunks;
+        bestOriginChunkSize = candidateOriginChunkSize;
+        bestDstChunkSize = i;
+      }
+    }
+
+    return { originChunkSize: bestOriginChunkSize, dstChunkSize: bestDstChunkSize };
+  }
+
   private createMatrixRequests(
     origins: DistanceMatrixWaypoint[],
     destinations: DistanceMatrixWaypoint[],
@@ -186,16 +214,20 @@ export class DistanceMatrixService {
   ): ChunkedRequest[] {
     const chunkedRequests: ChunkedRequest[] = [];
     const routingPreference = considerTraffic ? 'TRAFFIC_AWARE_OPTIMAL' : 'TRAFFIC_UNAWARE';
-    const maxChunkSize = considerTraffic ? 10 : 25;
+    const maxElements = considerTraffic ? MAX_ELEMENTS_TRAFFIC : MAX_ELEMENTS_NO_TRAFFIC;
+    const { originChunkSize, dstChunkSize: dstChunkSize } = this.calculateOptimalChunkSizes(
+      origins.length,
+      destinations.length,
+      maxElements
+    );
 
-
-    for (let i = 0; i < origins.length; i += maxChunkSize) {
-      const originChunk = origins.slice(i, i + maxChunkSize);
-      for (let j = 0; j < destinations.length; j += maxChunkSize) {
-        const destChunk = destinations.slice(j, j + maxChunkSize);
+    for (let i = 0; i < origins.length; i += originChunkSize) {
+      const originChunk = origins.slice(i, i + originChunkSize);
+      for (let j = 0; j < destinations.length; j += dstChunkSize) {
+        const dstChunk = destinations.slice(j, j + dstChunkSize);
         const request: DistanceMatrixRequest = {
           origins: originChunk,
-          destinations: destChunk,
+          destinations: dstChunk,
           travelMode: 'DRIVE',
           routingPreference,
         };
