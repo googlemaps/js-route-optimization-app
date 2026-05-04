@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, take } from 'rxjs/operators';
 import * as fromVisitRequests from '../../selectors/visit-request.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, defer, of } from 'rxjs';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
 import { formattedDurationSeconds, getEntityName } from 'src/app/util';
@@ -95,12 +95,11 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
 
     const startTime = Date.now();
 
-    this.service
-      .executeDistanceMatrixRequests(this.matrixRequests)
+    defer(() => this.service.executeDistanceMatrixRequests(this.matrixRequests))
       .pipe(
         catchError((error) => {
           this.errorMsg = this.extractErrorMessage(error);
-          return of(true);
+          return of([] as DistanceMatrixResult[]);
         })
       )
       .subscribe((res) => {
