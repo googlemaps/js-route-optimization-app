@@ -83,6 +83,25 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
       });
   }
 
+  get invalidRequestReason(): string | null {
+    if (!this.matrixRequests) {
+      return null;
+    }
+    const noOrigins = this.matrixRequests.originEntities.length === 0;
+    const noDestinations = this.matrixRequests.destinationEntityIds.length === 0;
+    
+    if (noOrigins && noDestinations) {
+      return 'No valid origins or destinations. Ensure there is at least one visit request in the scenario.';
+    }
+    if (noOrigins) {
+      return 'No valid origins. Ensure there is at least one vehicle or visit request in the scenario.';
+    }
+    if (noDestinations) {
+      return 'No valid destinations. Ensure there is at least one visit request in the scenario.';
+    }
+    return null;
+  }
+
   cancel(): void {
     this.dialogRef.close();
   }

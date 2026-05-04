@@ -23,6 +23,9 @@
     elements. By default, you are limited to 3,000 elements per minute. Large requests will take
     time to process.
     <mat-progress-bar mode="indeterminate" *ngIf="isInProgress"></mat-progress-bar>
+    @if (invalidRequestReason) {
+    <mat-error>{{ invalidRequestReason }}</mat-error>
+    }
   </div>
   }
 </div>
@@ -37,7 +40,7 @@
     type="button"
     mat-flat-button
     color="primary"
-    [disabled]="isInProgress || !matrixRequests"
+    [disabled]="isInProgress || !matrixRequests || !!invalidRequestReason"
     (click)="generate()">
     {{ timeToGenerateMsg ? 'Regenerate' : 'Generate' }}
   </button>
