@@ -89,7 +89,7 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
     }
     const noOrigins = this.matrixRequests.originEntities.length === 0;
     const noDestinations = this.matrixRequests.destinationEntityIds.length === 0;
-    
+
     if (noOrigins && noDestinations) {
       return 'No valid origins or destinations. Ensure there is at least one visit request in the scenario.';
     }

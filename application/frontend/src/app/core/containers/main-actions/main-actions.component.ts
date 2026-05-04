@@ -112,4 +112,8 @@ export class MainActionsComponent implements OnInit, AfterViewInit {
   onHelp(): void {
     this.store.dispatch(DocumentationActions.open());
   }
+
+  onDownloadDistanceMatrix(): void {
+    this.store.dispatch(DownloadActions.downloadDistanceMatrices());
+  }
 }

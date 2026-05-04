@@ -85,6 +85,7 @@ export class AppComponent {
       'pickup',
       'reset_settings',
       'route',
+      'route_thin',
       'satellite',
       'save_alt',
       'select_bbox',
