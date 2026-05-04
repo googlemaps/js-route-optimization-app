@@ -4,6 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { FileService } from '../../services';
 import {
   MatrixGenerationRequests,
+  DistanceMatrixResult,
   DistanceMatrixService,
 } from '../../services/distance-matrix.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,7 +14,7 @@ import * as fromVehicle from '../../selectors/vehicle.selectors';
 import { combineLatest, of } from 'rxjs';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
 import RequestSettingsSelectors from '../../selectors/request-settings.selectors';
-import { formattedDurationSeconds } from 'src/app/util';
+import { formattedDurationSeconds, getEntityName } from 'src/app/util';
 import { selectScenarioName } from '../../selectors/dispatcher.selectors';
 import { Shipment, Vehicle, VisitRequest } from '../../models';
 import ShipmentSelectors from '../../selectors/shipment.selectors';
@@ -109,12 +110,34 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
         this.isInProgress = false;
 
         if (!this.errorMsg) {
-          this.matrixData = JSON.stringify(res, null, 2);
+          this.matrixData = JSON.stringify(
+            this.formatResponse(res as DistanceMatrixResult[]),
+            null,
+            2
+          );
           this.downloadMatrix();
         }
 
         this.changeDetector.markForCheck();
       });
+  }
+
+  private formatResponse(results: DistanceMatrixResult[]): object[] {
+    return results.map(({ originType, originEntityId, destinationEntityId, ...rest }) => {
+      const originEntity =
+        originType === 'vehicle'
+          ? this.vehicles.find((v) => v.id === originEntityId)
+          : this.visitRequests.find((vr) => vr.id === originEntityId);
+      const destinationEntity = this.visitRequests.find((vr) => vr.id === destinationEntityId);
+      return {
+        ...rest,
+        origin: getEntityName(
+          originEntity as Vehicle | VisitRequest,
+          originType === 'vehicle' ? 'Vehicle' : 'Visit Request'
+        ),
+        destination: getEntityName(destinationEntity as VisitRequest, 'Visit Request'),
+      };
+    });
   }
 
   private extractErrorMessage(error: unknown): string {
