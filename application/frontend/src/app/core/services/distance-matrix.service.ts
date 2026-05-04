@@ -31,6 +31,8 @@ export interface DistanceMatrixResult {
   originType: 'vehicle' | 'visitRequest';
   originEntityId: number;
   destinationEntityId: number;
+  originLatLng: { latitude: number; longitude: number };
+  destinationLatLng: { latitude: number; longitude: number };
 }
 
 interface ApiResponse {
@@ -170,6 +172,9 @@ export class DistanceMatrixService {
       const globalOriginIndex = entry.originIndex + chunked.originOffset;
       const globalDestinationIndex = entry.destinationIndex + chunked.destinationOffset;
       const originEntity = originEntities[globalOriginIndex];
+      const originLoc = chunked.request.origins[entry.originIndex].waypoint.location.latLng;
+      const destinationLoc =
+        chunked.request.destinations[entry.destinationIndex].waypoint.location.latLng;
 
       return {
         distanceMeters: entry.distanceMeters,
@@ -177,6 +182,11 @@ export class DistanceMatrixService {
         originType: originEntity.type,
         originEntityId: originEntity.id,
         destinationEntityId: destinationEntityIds[globalDestinationIndex],
+        originLatLng: { latitude: originLoc.latitude ?? 0, longitude: originLoc.longitude ?? 0 },
+        destinationLatLng: {
+          latitude: destinationLoc.latitude ?? 0,
+          longitude: destinationLoc.longitude ?? 0,
+        },
       };
     });
   }
