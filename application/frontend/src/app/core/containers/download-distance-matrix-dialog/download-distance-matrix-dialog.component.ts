@@ -6,6 +6,7 @@ import {
   MatrixGenerationRequests,
   DistanceMatrixService,
 } from '../../services/distance-matrix.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, take } from 'rxjs/operators';
 import * as fromVisitRequests from '../../selectors/visit-request.selectors';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
@@ -97,7 +98,7 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
       .executeDistanceMatrixRequests(this.matrixRequests)
       .pipe(
         catchError((error) => {
-          this.errorMsg = `Placeholder - ${error}`;
+          this.errorMsg = this.extractErrorMessage(error);
           return of(true);
         })
       )
@@ -114,6 +115,28 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
 
         this.changeDetector.markForCheck();
       });
+  }
+
+  private extractErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      switch (error.status) {
+        case 400:
+          return 'Invalid request.';
+        case 401:
+        case 403:
+          return 'Authentication error. Please check your API key configuration.';
+        case 429:
+          return 'Rate limit exceeded. Please wait a moment and try again.';
+      }
+      if (error.status >= 500 && error.status < 600) {
+        return 'Server error. Please try again later.';
+      }
+      return error.error?.error?.message || error.message || error.statusText || 'Unknown error.';
+    }
+    if (error instanceof Error) {
+      return error.message;
+    }
+    return 'An unexpected error occurred.';
   }
 
   downloadMatrix(): void {

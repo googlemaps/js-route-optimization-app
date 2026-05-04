@@ -75,12 +75,7 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildRequests(
-        vehicles,
-        visitRequests,
-        testDepartureTime,
-        true
-      );
+      const result = service.buildRequests(vehicles, visitRequests, testDepartureTime, true);
       expect(result.chunkedRequests.length).toBe(1);
       expect(result.chunkedRequests[0].request).toEqual({
         origins: [
@@ -115,12 +110,7 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildRequests(
-        vehicles,
-        visitRequests,
-        testDepartureTime,
-        true
-      );
+      const result = service.buildRequests(vehicles, visitRequests, testDepartureTime, true);
       expect(result.chunkedRequests[0].request.origins.length).toBe(2);
       expect(result.chunkedRequests[0].request).toEqual({
         origins: [
@@ -162,12 +152,7 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildRequests(
-        vehicles,
-        visitRequests,
-        testDepartureTime,
-        false
-      );
+      const result = service.buildRequests(vehicles, visitRequests, testDepartureTime, false);
       expect(result.chunkedRequests[0].request.origins.length).toBe(2);
       expect(result.chunkedRequests[0].request.destinations.length).toBe(2);
       expect(result.chunkedRequests[0].request).toEqual({
@@ -209,12 +194,7 @@ describe('DistanceMatrixService', () => {
         },
       ] as VisitRequest[];
 
-      const result = service.buildRequests(
-        vehicles,
-        visitRequests,
-        testDepartureTime,
-        true
-      );
+      const result = service.buildRequests(vehicles, visitRequests, testDepartureTime, true);
       expect(result.chunkedRequests.length).toBe(1);
       expect(result.chunkedRequests[0].request.origins.length).toBe(3);
       expect(result.chunkedRequests[0].request.destinations.length).toBe(2);
@@ -253,12 +233,7 @@ describe('DistanceMatrixService', () => {
         arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
       })) as VisitRequest[];
 
-      const result = service.buildRequests(
-        vehicles,
-        visitRequests,
-        testDepartureTime,
-        true
-      );
+      const result = service.buildRequests(vehicles, visitRequests, testDepartureTime, true);
       for (const chunked of result.chunkedRequests) {
         expect(
           chunked.request.origins.length * chunked.request.destinations.length
@@ -283,12 +258,7 @@ describe('DistanceMatrixService', () => {
         arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
       })) as VisitRequest[];
 
-      const result = service.buildRequests(
-        vehicles,
-        visitRequests,
-        testDepartureTime,
-        true
-      );
+      const result = service.buildRequests(vehicles, visitRequests, testDepartureTime, true);
       for (const chunked of result.chunkedRequests) {
         expect(
           chunked.request.origins.length * chunked.request.destinations.length
@@ -309,12 +279,7 @@ describe('DistanceMatrixService', () => {
         arrivalWaypoint: { location: { latLng: { latitude: 100 + i, longitude: 100 + i } } },
       })) as VisitRequest[];
 
-      const result = service.buildRequests(
-        vehicles,
-        visitRequests,
-        testDepartureTime,
-        false
-      );
+      const result = service.buildRequests(vehicles, visitRequests, testDepartureTime, false);
       for (const chunked of result.chunkedRequests) {
         expect(
           chunked.request.origins.length * chunked.request.destinations.length
@@ -341,12 +306,7 @@ describe('DistanceMatrixService', () => {
         arrivalWaypoint: { location: { latLng: { latitude: i, longitude: i } } },
       })) as VisitRequest[];
 
-      const result = service.buildRequests(
-        [],
-        visitRequests,
-        testDepartureTime,
-        true
-      );
+      const result = service.buildRequests([], visitRequests, testDepartureTime, true);
       expect(result.chunkedRequests.length).toBe(3);
       expect(result.chunkedRequests[0].originOffset).toBe(0);
       expect(result.chunkedRequests[0].destinationOffset).toBe(0);

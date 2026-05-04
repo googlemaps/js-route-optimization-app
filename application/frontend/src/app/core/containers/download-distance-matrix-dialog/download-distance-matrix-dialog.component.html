@@ -3,7 +3,7 @@
 </h1>
 <div mat-dialog-content>
   @if (timeToGenerateMsg){ @if (errorMsg) {
-  <mat-error>There was an error generating your request: {{ errorMsg }}</mat-error>
+  <mat-error>{{ errorMsg }}</mat-error>
   } @else {
   <div class="success-contents">
     <div>
