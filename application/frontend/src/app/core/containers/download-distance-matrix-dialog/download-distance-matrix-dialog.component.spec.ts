@@ -21,6 +21,10 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { MaterialModule } from 'src/app/material';
 import * as fromVehicle from '../../selectors/vehicle.selectors';
 import * as fromVisitRequests from '../../selectors/visit-request.selectors';
+import ShipmentSelectors from '../../selectors/shipment.selectors';
+import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
+import { RequestSettingsSelectors } from '../../selectors/request-settings.selectors';
+import { selectScenarioName } from '../../selectors/dispatcher.selectors';
 import { FileService } from '../../services';
 import { DistanceMatrixService } from '../../services/distance-matrix.service';
 
@@ -46,12 +50,23 @@ describe('DownloadDistanceMatrixDialogComponent', () => {
         },
         {
           provide: DistanceMatrixService,
-          useValue: jasmine.createSpyObj('distanceMatrixService', ['generateDistanceMatrices']),
+          useValue: jasmine.createSpyObj('distanceMatrixService', {
+            generateDistanceMatrixRequests: {
+              chunkedRequests: [],
+              originEntities: [],
+              destinationEntityIds: [],
+            },
+            executeDistanceMatrixRequests: undefined,
+          }),
         },
         provideMockStore({
           selectors: [
             { selector: fromVehicle.selectAll, value: [] },
             { selector: fromVisitRequests.selectAll, value: [] },
+            { selector: ShipmentSelectors.selectAll, value: [] },
+            { selector: ShipmentModelSelectors.selectGlobalDuration, value: [0, 1000] },
+            { selector: RequestSettingsSelectors.selectTraffic, value: false },
+            { selector: selectScenarioName, value: '' },
           ],
         }),
       ],
