@@ -191,18 +191,20 @@ export class DownloadEffects {
     )
   );
 
-  startGenerateDistanceMatrices$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(downloadDistanceMatrices),
-      switchMap(() => {
-        const dialogRef = this.dialog.open(DownloadDistanceMatrixDialogComponent, {
-          width: '600px',
-          disableClose: true,
-        });
+  startGenerateDistanceMatrices$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(downloadDistanceMatrices),
+        switchMap(() => {
+          const dialogRef = this.dialog.open(DownloadDistanceMatrixDialogComponent, {
+            width: '600px',
+            disableClose: true,
+          });
 
-        return dialogRef.afterClosed();
-      })
-    )
+          return dialogRef.afterClosed();
+        })
+      ),
+    { dispatch: false }
   );
 
   csvDataToLabeledCsvData(csvData: Partial<CsvData>[], useAbbreviatedNames?: boolean): any {
