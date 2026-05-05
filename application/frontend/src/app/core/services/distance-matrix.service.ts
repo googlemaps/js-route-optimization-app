@@ -21,8 +21,8 @@ import Long from 'long';
 import * as fromRoot from 'src/app/reducers';
 import { selectMapApiKey } from '../selectors/config.selectors';
 import { ILatLng, Vehicle, VisitRequest } from '../models';
-import { Observable, of, forkJoin, timer } from 'rxjs';
-import { map, retryWhen, mergeMap, scan } from 'rxjs/operators';
+import { Observable, of, from, timer } from 'rxjs';
+import { map, retryWhen, mergeMap, scan, concatMap, delay, last } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 export interface DistanceMatrixResult {
@@ -40,6 +40,11 @@ interface ApiResponse {
   destinationIndex: number;
   distanceMeters: number;
   duration: string;
+  error?: {
+    code: number;
+    message: string;
+    status: string;
+  };
 }
 
 interface ChunkedRequest {
@@ -105,15 +110,19 @@ export class DistanceMatrixService {
       return of([]);
     }
 
-    const requests$ = chunkedRequests.map((chunked) =>
-      this.requestDistanceMatrix(chunked.request).pipe(
-        map((apiEntries: ApiResponse[]) =>
-          this.mapApiResponse(apiEntries, chunked, originEntities, destinationEntityIds)
+    return from(chunkedRequests).pipe(
+      concatMap((chunked, index) =>
+        of(chunked).pipe(
+          delay(index * 50),
+          mergeMap(() => this.requestDistanceMatrix(chunked.request)),
+          map((apiEntries: ApiResponse[]) =>
+            this.mapApiResponse(apiEntries, chunked, originEntities, destinationEntityIds)
+          )
         )
-      )
+      ),
+      scan((acc, chunk) => [...acc, ...chunk], [] as DistanceMatrixResult[]),
+      last()
     );
-
-    return forkJoin(requests$).pipe(map((results) => results.flat()));
   }
 
   buildRequests(
@@ -168,7 +177,8 @@ export class DistanceMatrixService {
     originEntities: OriginEntityInfo[],
     destinationEntityIds: number[]
   ): DistanceMatrixResult[] {
-    return apiEntries.map((entry) => {
+    const validEntries = apiEntries.filter((entry) => !entry.error);
+    return validEntries.map((entry) => {
       const globalOriginIndex = entry.originIndex + chunked.originOffset;
       const globalDestinationIndex = entry.destinationIndex + chunked.destinationOffset;
       const originEntity = originEntities[globalOriginIndex];
@@ -260,7 +270,7 @@ export class DistanceMatrixService {
   }
 
   private requestDistanceMatrix(request: DistanceMatrixRequest): Observable<ApiResponse[]> {
-    const maxRetries = 10;
+    const maxRetries = 11;
 
     return this.http
       .post<ApiResponse[]>(
@@ -275,6 +285,17 @@ export class DistanceMatrixService {
         }
       )
       .pipe(
+        map((response: ApiResponse[]) => {
+          const quotaError = response.find((entry) => entry.error?.code === 429);
+          if (quotaError) {
+            throw new HttpErrorResponse({
+              status: 429,
+              statusText: quotaError.error!.status,
+              error: quotaError.error,
+            });
+          }
+          return response;
+        }),
         retryWhen((errors) =>
           errors.pipe(
             scan((retryCount: number, error: HttpErrorResponse) => {
@@ -286,7 +307,7 @@ export class DistanceMatrixService {
               return retryCount + 1;
             }, 0),
             mergeMap((retryCount: number) => {
-              const delayMs = 100 + Math.pow(2, retryCount);
+              const delayMs = 100 * Math.pow(2, retryCount);
               return timer(delayMs);
             })
           )
