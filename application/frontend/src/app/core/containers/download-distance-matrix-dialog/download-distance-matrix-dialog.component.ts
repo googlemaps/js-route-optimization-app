@@ -140,6 +140,13 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
       });
   }
 
+  downloadMatrix(): void {
+    const filename = `${
+      this.scenarioName.length ? this.scenarioName : new Date().toISOString()
+    }-distance-matrix`;
+    this.fileService.download(`${filename}.json`, [this.matrixData], 'application/json');
+  }
+
   private formatResponse(results: DistanceMatrixResult[]): object[] {
     return results.map(({ originType, originEntityId, destinationEntityId, ...rest }) => {
       const originEntity =
@@ -162,7 +169,7 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
     if (error instanceof HttpErrorResponse) {
       switch (error.status) {
         case 400:
-          return 'Invalid request.';
+          return this.extraMessageFromErrorObject(error) || 'Invalid request.';
         case 401:
         case 403:
           return 'Authentication error. Please check your API key configuration.';
@@ -172,7 +179,7 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
       if (error.status >= 500 && error.status < 600) {
         return 'Server error. Please try again later.';
       }
-      return error.error?.error?.message || error.message || error.statusText || 'Unknown error.';
+      return this.extraMessageFromErrorObject(error) || 'An unknown error has occurred.';
     }
     if (error instanceof Error) {
       return error.message;
@@ -180,10 +187,9 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
     return 'An unexpected error occurred.';
   }
 
-  downloadMatrix(): void {
-    const filename = `${
-      this.scenarioName.length ? this.scenarioName : new Date().toISOString()
-    }-distance-matrix`;
-    this.fileService.download(`${filename}.json`, [this.matrixData], 'application/json');
+  private extraMessageFromErrorObject(error: HttpErrorResponse): string {
+    return Array.isArray(error.error)
+      ? error.error[0]?.error?.message
+      : error.error?.error?.message || error.message || error.statusText || '';
   }
 }
