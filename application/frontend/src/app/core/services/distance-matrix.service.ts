@@ -270,7 +270,7 @@ export class DistanceMatrixService {
   }
 
   private requestDistanceMatrix(request: DistanceMatrixRequest): Observable<ApiResponse[]> {
-    const maxRetries = 11;
+    const maxRetries = 12;
 
     return this.http
       .post<ApiResponse[]>(
@@ -307,7 +307,7 @@ export class DistanceMatrixService {
               return retryCount + 1;
             }, 0),
             mergeMap((retryCount: number) => {
-              const delayMs = 100 * Math.pow(2, retryCount);
+              const delayMs = 250 * Math.pow(1.75, retryCount);
               return timer(delayMs);
             })
           )
