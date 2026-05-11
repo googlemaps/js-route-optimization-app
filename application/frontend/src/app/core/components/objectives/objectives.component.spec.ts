@@ -181,4 +181,47 @@ describe('ObjectivesComponent', () => {
       expect(defaultControl.get('weight').value).toBe(1.0);
     });
   });
+
+  describe('clampWeight', () => {
+    it('should clamp values below the minimum to weight limit', () => {
+      const control = component.form.controls[0].get('weight');
+      control.setValue(-10, { emitEvent: false });
+      component.clampWeight(control);
+      expect(control.value).toBe(component.minWeight);
+    });
+
+    it('should clamp values above the maximum to weight limit', () => {
+      const control = component.form.controls[0].get('weight');
+      control.setValue(150, { emitEvent: false });
+      component.clampWeight(control);
+      expect(control.value).toBe(component.maxWeight);
+    });
+
+    it('should leave values within range unchanged', () => {
+      const control = component.form.controls[0].get('weight');
+      control.setValue(50, { emitEvent: false });
+      component.clampWeight(control);
+      expect(control.value).toBe(50);
+    });
+
+    it('should leave values equal to minWeight unchanged', () => {
+      const control = component.form.controls[0].get('weight');
+      control.setValue(component.minWeight, { emitEvent: false });
+      component.clampWeight(control);
+      expect(control.value).toBe(component.minWeight);
+    });
+
+    it('should leave values equal to maxWeight unchanged', () => {
+      const control = component.form.controls[0].get('weight');
+      control.setValue(component.maxWeight, { emitEvent: false });
+      component.clampWeight(control);
+      expect(control.value).toBe(component.maxWeight);
+    });
+
+    it('should do nothing when value is null', () => {
+      const control = component.form.controls[0].get('weight');
+      control.setValue(null, { emitEvent: false });
+      expect(() => component.clampWeight(control)).not.toThrow();
+    });
+  });
 });

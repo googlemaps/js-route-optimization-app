@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { ModelObjective, ObjectiveType } from '../../models';
 import ShipmentModelSelectors from '../../selectors/shipment-model.selectors';
@@ -27,6 +27,9 @@ import { take } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectivesComponent {
+  readonly minWeight = 0;
+  readonly maxWeight = 100;
+
   readonly objectiveTypes = [
     { type: ObjectiveType.DEFAULT, label: 'Default' },
     { type: ObjectiveType.MIN_DISTANCE, label: 'Minimize Distance Traveled' },
@@ -63,7 +66,7 @@ export class ObjectivesComponent {
         this.fb.group({
           selected: false,
           type: [objective.type],
-          weight: [1.0, [Validators.min(0)]],
+          weight: [1.0, [Validators.min(this.minWeight), Validators.max(this.maxWeight)]],
         })
       )
     );
@@ -81,5 +84,16 @@ export class ObjectivesComponent {
         control.get('weight').setValue(1.0);
       }
     });
+  }
+
+  clampWeight(control: AbstractControl): void {
+    const value = control.value as number;
+    if (value == null || isNaN(value)) {
+      return;
+    }
+    const clamped = Math.min(this.maxWeight, Math.max(this.minWeight, value));
+    if (clamped !== value) {
+      control.setValue(clamped, { emitEvent: false });
+    }
   }
 }
