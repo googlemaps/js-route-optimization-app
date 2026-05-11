@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { select, Store } from '@ngrx/store';
+import Long from 'long';
 import { FileService } from '../../services';
 import {
   MatrixGenerationRequests,
@@ -37,6 +38,7 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
   visitRequests: VisitRequest[] = [];
   shipments: Shipment[] = [];
   considerTraffic: boolean = false;
+  globalStartTime: Long | null = null;
 
   matrixRequests!: MatrixGenerationRequests;
 
@@ -72,6 +74,7 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
         this.visitRequests = visitRequests;
         this.shipments = shipments;
         this.considerTraffic = considerTraffic;
+        this.globalStartTime = globalDuration[0];
 
         this.matrixRequests = this.service.generateDistanceMatrixRequests(
           vehicles,
@@ -102,8 +105,47 @@ export class DownloadDistanceMatrixDialogComponent implements OnInit {
     return null;
   }
 
+  get hasIncompatibleTimestamp(): boolean {
+    if (!this.considerTraffic || !this.globalStartTime) {
+      return false;
+    }
+    const nowSeconds = Math.floor(Date.now() / 1000);
+    return this.globalStartTime.toNumber() < nowSeconds;
+  }
+
+  get nextDayStartTime(): Long {
+    if (!this.globalStartTime) {
+      return Long.fromNumber(Math.floor(Date.now() / 1000));
+    }
+    const originalSeconds = this.globalStartTime.toNumber();
+    const secondsToDay = 24 * 60 * 60;
+    const nowSeconds = Math.floor(Date.now() / 1000);
+    const daysToAdd = Math.ceil((nowSeconds - originalSeconds) / secondsToDay);
+    return Long.fromNumber(originalSeconds + daysToAdd * secondsToDay);
+  }
+
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  generateWithoutTraffic(): void {
+    this.matrixRequests = this.service.generateDistanceMatrixRequests(
+      this.vehicles,
+      this.visitRequests,
+      this.globalStartTime!,
+      false
+    );
+    this.generate();
+  }
+
+  generateWithFutureTime(): void {
+    this.matrixRequests = this.service.generateDistanceMatrixRequests(
+      this.vehicles,
+      this.visitRequests,
+      this.nextDayStartTime,
+      true
+    );
+    this.generate();
   }
 
   generate(): void {

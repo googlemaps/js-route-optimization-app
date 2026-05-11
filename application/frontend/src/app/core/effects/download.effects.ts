@@ -197,7 +197,7 @@ export class DownloadEffects {
         ofType(downloadDistanceMatrices),
         switchMap(() => {
           const dialogRef = this.dialog.open(DownloadDistanceMatrixDialogComponent, {
-            width: '600px',
+            width: '700px',
             disableClose: true,
           });
 
