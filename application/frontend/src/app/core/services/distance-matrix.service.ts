@@ -72,9 +72,6 @@ interface DistanceMatrixWaypoint {
   };
 }
 
-export const MAX_ELEMENTS_TRAFFIC = 100;
-export const MAX_ELEMENTS_NO_TRAFFIC = 625;
-
 export interface DistanceMatrixRequest {
   origins: DistanceMatrixWaypoint[];
   destinations: DistanceMatrixWaypoint[];
@@ -82,6 +79,10 @@ export interface DistanceMatrixRequest {
   routingPreference: 'TRAFFIC_AWARE_OPTIMAL' | 'TRAFFIC_UNAWARE';
   departureTime?: string;
 }
+
+export const MAX_ELEMENTS_TRAFFIC = 100;
+export const MAX_ELEMENTS_NO_TRAFFIC = 625;
+const DELAY_PER_REQUEST = 10;
 
 @Injectable({ providedIn: 'root' })
 export class DistanceMatrixService {
@@ -113,7 +114,7 @@ export class DistanceMatrixService {
     return from(chunkedRequests).pipe(
       concatMap((chunked, index) =>
         of(chunked).pipe(
-          delay(index * 50),
+          delay(index * DELAY_PER_REQUEST),
           mergeMap(() => this.requestDistanceMatrix(chunked.request)),
           map((apiEntries: ApiResponse[]) =>
             this.mapApiResponse(apiEntries, chunked, originEntities, destinationEntityIds)
