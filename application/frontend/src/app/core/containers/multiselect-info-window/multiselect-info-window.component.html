@@ -2,7 +2,7 @@
   <div class="info-container">
     <button
       *ngIf="selections.length > 1"
-      mat-icon-button
+      class="pagination-button"
       aria-label="Previous"
       (click)="previous()"
       [disabled]="currentIndex === 0 || selections.length === 0">
@@ -22,7 +22,7 @@
     </div>
     <button
       *ngIf="selections.length > 1"
-      mat-icon-button
+      class="pagination-button"
       aria-label="Next"
       (click)="next()"
       [disabled]="currentIndex === selections.length - 1 || selections.length === 0">

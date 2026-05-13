@@ -34,3 +34,25 @@
 .selection-count {
   color: $gray;
 }
+
+.pagination-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #717171;
+  padding: 0;
+
+  &:hover {
+    color: #050505;
+  }
+
+  &:disabled {
+    color: #C0C0C0;
+  }
+
+  mat-icon {
+    font-size: 28px;
+    position: relative;
+    top: -1px;
+  }
+}
