@@ -57,7 +57,7 @@ export class RouteLayer {
     this.gLayer.setMap(this._visible ? this.mapService.map : null);
   }
   private symbol = {
-    getWidth: 25,
+    getWidth: 5,
     getColor: MATERIAL_COLORS.BlueGrey.rgb,
   };
 
@@ -66,8 +66,7 @@ export class RouteLayer {
     this.layer = new PathLayer({
       id: 'routes',
       data,
-      widthMinPixels: 4,
-      widthMaxPixels: 60,
+      widthUnits: 'pixels',
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
@@ -76,12 +75,11 @@ export class RouteLayer {
     this.outlineLayer = new PathLayer({
       id: 'routes-outline',
       data,
-      widthMinPixels: 6,
-      widthMaxPixels: 80,
+      widthUnits: 'pixels',
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 30,
+      getWidth: 8,
       getColor: MATERIAL_COLORS.BlueGrey.strokeRgb,
     });
     this.gLayer.setProps({
@@ -99,23 +97,21 @@ export class RouteLayer {
     this.selectedDataLayer = new PathLayer({
       id: 'selected-routes',
       data,
-      widthMinPixels: 2,
-      widthMaxPixels: 60,
+      widthUnits: 'pixels',
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 20,
+      getWidth: 3,
       getColor: (d) => d.color.rgb,
     });
     this.selectedDataOutlineLayer = new PathLayer({
       id: 'selected-routes-outline',
       data,
-      widthMinPixels: 6,
-      widthMaxPixels: 80,
+      widthUnits: 'pixels',
       capRounded: true,
       jointRounded: true,
       getPath: (d) => d.path,
-      getWidth: 30,
+      getWidth: 8,
       getColor: (d) => d.color.strokeRgb,
     });
     this.gLayer.setProps({
