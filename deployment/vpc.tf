@@ -12,6 +12,8 @@ resource "google_vpc_access_connector" "cloud_run_connector" {
   name          = "${substr(var.deployment_name, 0, 16)}-conn"
   ip_cidr_range = "10.8.0.0/28"
   network       = google_compute_network.serverless_vpc.name
+  min_instances = 2
+  max_instances = 3
 }
 
 resource "google_compute_managed_ssl_certificate" "fleetrouting_app_frontend" {
