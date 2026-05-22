@@ -31,9 +31,13 @@ import { APP_CONFIG } from '../models/tokens';
 // Debug: accumulate all messages for download (run __downloadChatMsgs() in DevTools)
 (window as any).__chatMsgs = (window as any).__chatMsgs || [];
 (window as any).__downloadChatMsgs = () => {
-  const blob = new Blob([JSON.stringify((window as any).__chatMsgs, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'chat-msgs.json'; a.click();
+  const blob = new Blob([JSON.stringify((window as any).__chatMsgs, null, 2)], {
+    type: 'application/json',
+  });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'chat-msgs.json';
+  a.click();
 };
 
 // ---------------------------------------------------------------------------
@@ -335,8 +339,9 @@ class StreamProcessor {
    */
   private extractUserFacingText(msg: AgentMessage | undefined): string {
     return (
-      msg?.content?.flatMap(c => (c.text && c.metadata?.thought !== true ? [c.text] : [])).join('') ??
-      ''
+      msg?.content
+        ?.flatMap(c => (c.text && c.metadata?.thought !== true ? [c.text] : []))
+        .join('') ?? ''
     );
   }
 
