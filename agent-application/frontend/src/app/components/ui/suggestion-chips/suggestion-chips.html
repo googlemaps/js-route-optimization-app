@@ -1,0 +1,5 @@
+<div class="chips-container">
+  @for (chip of suggestions(); track $index) {
+  <button class="chip" (click)="suggestionClicked.emit(chip)"> {{ chip }} </button>
+  }
+</div>

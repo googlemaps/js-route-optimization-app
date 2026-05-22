@@ -1,0 +1,756 @@
+$central-width: 760px;
+$google-blue: #1a73e8;
+$google-blue-link: #4285f4;
+$google-red: #c5221f;
+$text-dark: #1f1f1f;
+$text-medium: #444746;
+$border-color: #c4c7c5;
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #fff;
+}
+
+/* =========================================
+   LAYOUT & CONTAINERS
+   ========================================= */
+.chat-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.message-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scroll-padding-top: 24px;
+
+  /* Custom Scrollbar */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(217, 217, 217, 0.3);
+    border-radius: 30px;
+    background-clip: content-box;
+    border: 2px solid transparent;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: #d9d9d9;
+  }
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+
+/* =========================================
+   MESSAGE BUBBLES (HISTORY)
+   ========================================= */
+.message-container {
+  width: 100%;
+  max-width: $central-width;
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: flex-start;
+
+  &.user-message-container {
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-bottom: 16px;
+  }
+
+  &.gm-message-container {
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  &.follow-up {
+    margin-top: 4px;
+  }
+}
+
+.user-message,
+.gm-message {
+  max-width: 95%;
+  padding: 16px;
+  border-radius: 16px;
+  font-family: 'Google Sans Text';
+  line-height: 20px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.user-message {
+  background: #f0f4f9;
+  color: $text-dark;
+
+  // Collapse paragraph margins inside user chat bubbles so they stay compact.
+  ::ng-deep p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.gm-message {
+  padding: 10px;
+  border-radius: 8px;
+  flex: 1;
+  overflow-x: auto;
+
+  ::ng-deep p {
+    margin: 0 0 0.75em;
+    padding: 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ::ng-deep {
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 8px 0;
+      table-layout: auto;
+
+      th,
+      td {
+        padding: 8px 12px;
+        border: 1px solid $border-color;
+        text-align: left;
+        vertical-align: top;
+        word-break: normal;
+        overflow-wrap: normal;
+      }
+
+      th {
+        background-color: #f1f3f4;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+/* =========================================
+   GEMINI THINKING INDICATOR
+   Two-layer animation system:
+     1. .outer-ring-svg  — SVG container rotates continuously
+     2. circle (inside)  — stroke-dasharray morphs to fake
+                           fluid acceleration (the "whip" effect)
+     3. .center-icon     — the bot icon pulses gently in the center
+   ========================================= */
+.gemini-thinking-wrapper {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Layer 1: the whole SVG rotates at a variable speed (encoded in keyframes). */
+.outer-ring-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: container-spin 2s linear infinite;
+
+  /* Layer 2: the arc length stretches and snaps, mimicking Lottie-style
+     momentum without requiring a JS animation library. */
+  circle {
+    stroke-dasharray: 1, 150; /* start as a tiny dot (circumference ~125) */
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    animation: ring-morph 1.5s ease-in-out infinite;
+  }
+}
+
+/* Layer 3: center icon breathes to show the model is actively thinking. */
+.center-icon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  animation: gemini-pulse 1.5s ease-in-out infinite alternate;
+}
+
+/*
+ * Container spin — variable speed via uneven degree distribution.
+ * animation-timing-function stays linear; the keyframe values themselves
+ * encode slow → fast → slow within each loop iteration.
+ */
+@keyframes container-spin {
+  0% {
+    transform: rotate(0deg);
+  } /* slow crawl out of the gate  */
+  15% {
+    transform: rotate(18deg);
+  } /* still easing in             */
+  50% {
+    transform: rotate(210deg);
+  } /* fast burst (most of arc)    */
+  85% {
+    transform: rotate(342deg);
+  } /* decelerating into the end   */
+  100% {
+    transform: rotate(360deg);
+  } /* settled, ready to loop      */
+}
+
+/*
+ * Ring morph — manipulates stroke-dasharray (arc length) and
+ * stroke-dashoffset (arc start position) to simulate the spinner
+ * stretching and snapping like a professional Lottie animation.
+ */
+@keyframes ring-morph {
+  0% {
+    stroke-dasharray: 1, 150; /* tiny dot at the start  */
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150; /* arc stretches out long */
+    stroke-dashoffset: -35; /* tail starts pulling forward */
+  }
+  100% {
+    stroke-dasharray: 90, 150; /* arc holds length while offset */
+    stroke-dashoffset: -124; /* completes the visual lap */
+  }
+}
+
+/* Center icon: subtle scale + opacity pulse to signal active processing. */
+@keyframes gemini-pulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.bot-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+.timestamp {
+  font-family: 'Google Sans Flex';
+  font-size: 14px;
+  line-height: 20px;
+  color: $text-medium;
+  margin-top: 8px;
+}
+
+/* --- Thinking Panel --- */
+.thinking-panel {
+  margin-bottom: 10px;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.thinking-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: $text-medium;
+  text-align: left;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #f0f4f9;
+  }
+
+  .thinking-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: $google-blue;
+    flex-shrink: 0;
+  }
+
+  .thinking-label {
+    flex: 1;
+    font-family: 'Google Sans Text';
+    font-size: 13px;
+  }
+
+  .thinking-chevron {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.thinking-steps {
+  padding: 10px 14px;
+  border-top: 1px solid $border-color;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.thinking-step {
+  font-size: 12px;
+  line-height: 18px;
+  color: $text-medium;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border-left: 2px solid transparent;
+
+  ::ng-deep p {
+    margin: 0;
+    padding: 0;
+  }
+  ::ng-deep ul,
+  ::ng-deep ol {
+    margin: 4px 0 0 16px;
+    padding: 0;
+  }
+
+  &.thinking-tool {
+    border-left-color: $google-blue;
+    background: #f0f4f9;
+    font-size: 12px;
+    color: $text-dark;
+  }
+}
+
+/* --- Live thinking status: still expandable but label is italic / animated --- */
+.thinking-panel--live {
+  .thinking-label {
+    color: $text-medium;
+    font-style: italic;
+  }
+}
+
+/* --- Inline upsell notification inside the streaming message --- */
+.upsell-inline {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .upsell-inline__text {
+    margin: 0;
+    font-size: 13px;
+    color: $text-medium;
+  }
+
+  .action-btn {
+    align-self: flex-start;
+  }
+
+  .denied-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: $text-medium;
+  }
+}
+
+/* --- Read-only Attachments in History --- */
+.message-attachments-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.history-attachment-chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  border: 1px solid $border-color;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  .file-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: $google-blue;
+    margin-right: 6px;
+  }
+
+  .file-name {
+    font-family: 'Google Sans Text';
+    font-weight: 500;
+    font-size: 13px;
+    color: $text-dark;
+  }
+}
+
+/* =========================================
+   TYPING & LOADING INDICATORS
+   ========================================= */
+.placeholder-message {
+  display: flex;
+  margin-bottom: 16px;
+  flex-direction: column;
+}
+
+.loading-message-bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 8px;
+  flex-direction: column;
+
+  .loading-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .upsell-wrapper,
+  .denied-wrapper {
+    margin-top: 4px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 0;
+
+  span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #999;
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out both;
+
+    &:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+    &:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+  }
+}
+
+@keyframes typing {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.25s ease-out;
+}
+
+/* =========================================
+   INPUT AREA & ATTACHMENTS
+   ========================================= */
+.input-area {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0 16px 16px;
+  background: white;
+}
+
+.custom-input-wrapper {
+  width: 100%;
+  max-width: $central-width;
+  flex-grow: 1;
+  background: #fff;
+  border: 1px solid $border-color;
+  border-radius: 24px;
+  box-shadow: 0px 2px 8px -2px rgba(0, 0, 0, 0.16);
+  padding: 12px; // Unified padding
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.input-row {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  gap: 8px;
+}
+
+.custom-textarea {
+  flex-grow: 1;
+  padding: 12px 0; // Aligns text baseline with buttons
+  border: none;
+  resize: none;
+  font-family: 'Google Sans Flex';
+  font-size: 16px;
+  line-height: 24px;
+  max-height: 150px;
+  color: #727676;
+  outline: none;
+  background: transparent;
+}
+
+.send-message-button {
+  width: 40px !important; // Force material button constraints
+  height: 40px !important;
+  padding: 8px !important;
+  margin-bottom: 4px; // Prevent touching bottom edge
+}
+
+/* --- Input Area Preview Chips --- */
+.preview-attachments-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.attachment-preview-chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: #f0f4f9;
+  border-radius: 12px;
+  padding: 4px 8px;
+  border: 1px solid #e0e0e0;
+  max-width: 100%;
+
+  .file-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: $google-blue;
+    margin-right: 6px;
+  }
+
+  .file-name {
+    font-family: 'Google Sans Text';
+    font-size: 13px;
+    color: $text-medium;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+
+  .remove-btn {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin-left: 6px;
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      color: #5f6368;
+    }
+  }
+}
+
+/* --- Error Messaging --- */
+.file-errors-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  background-color: rgba($google-red, 0.05);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba($google-red, 0.2);
+}
+
+.file-error-text {
+  display: inline-flex;
+  align-items: center;
+  color: $google-red;
+  font-size: 12px;
+  font-family: 'Google Sans Text';
+  font-weight: 500;
+
+  .error-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+}
+
+/* =========================================
+   ERROR CARDS & UTILS
+   ========================================= */
+.error-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+
+  padding: 12px 16px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+
+  background: rgba($google-red, 0.05);
+  max-width: 100%;
+
+  .icon-area {
+    flex: none;
+    display: flex;
+    align-items: center;
+    height: 24px;
+  }
+
+  .warning-symbol {
+    color: $google-red;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .content-area {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .error-title {
+    font-family: 'Google Sans Text';
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: $text-dark;
+  }
+
+  .error-subtitle {
+    font-family: 'Google Sans Text';
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $text-medium;
+    margin-bottom: 4px;
+  }
+
+  .details-link {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    font-family: 'Google Sans Text';
+    font-size: 14px;
+    color: $google-blue-link;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      transition: transform 0.2s ease; /* Smooth rotation */
+    }
+
+    /* Rotate chevron when open */
+    .rotated {
+      transform: rotate(180deg);
+    }
+  }
+
+  .error-code-block {
+    margin-top: 12px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid rgba($google-red, 0.2);
+    border-radius: 8px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    color: #444746;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+}
+
+.clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.show-more-btn {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 4px;
+  font-family: 'Google Sans Text';
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.8;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

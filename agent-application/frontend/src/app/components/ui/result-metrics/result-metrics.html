@@ -1,0 +1,54 @@
+@if (metrics) {
+<div class="metrics-container">
+  <div class="metric-entry">
+    <div class="metric-title">Cost</div>
+    <div class="metric-value"
+      >{{ metrics.totalCost ? (metrics!.totalCost | currency: 'USD') : '-' }}</div
+    >
+    <div class="metric-subtitle">Total</div>
+  </div>
+  <div class="metric-entry">
+    <div class="metric-title">km Driven</div>
+    <div class="metric-value"
+      >{{ metrics.aggregatedRouteMetrics?.travelDistanceMeters ?
+      (metrics!.aggregatedRouteMetrics!.travelDistanceMeters! / 1000 | number: '1.0-1' ) : '-'
+      }}</div
+    >
+    <div class="metric-subtitle">Total</div>
+  </div>
+  <div class="metric-entry">
+    <div class="metric-title">Assigned</div>
+    <div class="metric-value">
+      @if (metrics.aggregatedRouteMetrics?.performedShipmentCount !== null) { {{
+      metrics!.aggregatedRouteMetrics!.performedShipmentCount | number }}/{{ totalShipmentCount |
+      number }} } @else {
+      <span>-</span>
+      }
+    </div>
+    <div class="metric-subtitle">Shipments</div>
+  </div>
+  <div class="metric-entry">
+    <div class="metric-title">Skipped</div>
+    <div
+      class="metric-value"
+      [ngClass]="(totalShipmentCount - (metrics.aggregatedRouteMetrics?.performedShipmentCount || 0)) ? 'metric-value-warn' : 'metric-value-good'">
+      @if (metrics.aggregatedRouteMetrics?.performedShipmentCount !== null) { {{
+      metrics.aggregatedRouteMetrics?.performedShipmentCount ? ((totalShipmentCount -
+      metrics!.aggregatedRouteMetrics!.performedShipmentCount!) | number) : '0' }} } @else {
+      <span>-</span>
+      }
+    </div>
+    <div class="metric-subtitle">Shipments</div>
+  </div>
+  <div class="metric-entry">
+    <div class="metric-title">Vehicles</div>
+    <div class="metric-value">
+      @if (metrics.usedVehicleCount !== null) { {{ metrics.usedVehicleCount | number }}/{{
+      totalVehicleCount | number }} } @else {
+      <span>-</span>
+      }
+    </div>
+    <div class="metric-subtitle">Used/Available</div>
+  </div>
+</div>
+}

@@ -1,0 +1,131 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+@import 'highlight.js/styles/googlecode.css';
+
+:root {
+  --as-gutter-background-color: #fff;
+  --as-gutter-icon-horizontal: url('/grabber.svg');
+}
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: 'Google Sans',
+      density: 0,
+    )
+  );
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+body {
+  margin: 0;
+  font-family: 'Google Sans', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+/* App layout styles */
+app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+app-root main {
+  flex: 1; /* Allow main to grow and fill available space */
+  overflow-y: auto; /* Add scroll to main content if it overflows */
+}
+
+.request-icon {
+  height: 21px;
+  stroke: #d32f2f;
+}
+
+.vehicle-icon {
+  width: 33px;
+  height: 26px;
+}
+
+.request-icon-delivery {
+  transform: scaleY(-1);
+}
+
+.visit-icon-label {
+  position: absolute;
+  top: 1px;
+  left: 11px;
+  right: 0;
+  bottom: 0;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+}
+
+.mat-icon-small {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-message-button:not(:disabled) mat-icon {
+  color: #4597f7 !important;
+}
+
+.cdk-overlay-pane.fly-out-dialog {
+  // Slide dialog in from right
+  // Source:  https://github.com/angular/components/issues/8857#issuecomment-638576836
+  @keyframes slide {
+    100% {
+      right: 0;
+    }
+  }
+
+  position: fixed !important;
+  right: -100vw;
+  animation: slide 200ms forwards;
+  animation-delay: 100ms;
+  height: 100%;
+
+  .mat-mdc-dialog-container {
+    height: 100vh;
+    width: calc(100vw - 4rem);
+    border-radius: 0;
+    box-shadow: none;
+
+    .mat-mdc-dialog-inner-container .mat-mdc-dialog-surface {
+      border-radius: 0;
+    }
+  }
+}

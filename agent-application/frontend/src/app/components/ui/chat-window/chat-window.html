@@ -1,0 +1,236 @@
+<div class="chat-container">
+  <div class="message-list" #chatListContainer>
+    @for (message of chatStore.messages(); track message.id; let i = $index; let messages = $count)
+    { @let showAvatar = (i === 0 || chatStore.messages()[i - 1].isUser);
+    <div
+      class="message-container"
+      [class.user-message-container]="message.isUser"
+      [class.gm-message-container]="!message.isUser"
+      [class.follow-up]="!showAvatar && !message.isUser">
+      <div
+        [class.user-message]="message.isUser"
+        [class.gm-message]="!message.isUser"
+        [class.placeholder-message]="message.isPlaceholder">
+        @if (!message.isUser) { @if (showAvatar) { @if (message.isStreaming) {
+        <div class="gemini-thinking-wrapper">
+          <svg class="outer-ring-svg" viewBox="0 0 50 50">
+            <defs>
+              <!-- Google brand colors: Blue → Red → Yellow → Green -->
+              <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#4285f4" />
+                <stop offset="33%" stop-color="#ea4335" />
+                <stop offset="66%" stop-color="#fbbc05" />
+                <stop offset="100%" stop-color="#34a853" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="25"
+              cy="25"
+              r="20"
+              fill="none"
+              stroke="url(#ring-gradient)"
+              stroke-width="3"
+              stroke-linecap="round"></circle>
+          </svg>
+          <img ngSrc="/BotIcon.png" width="24" height="24" alt="Gemini" class="center-icon" />
+        </div>
+        } @else {
+        <img ngSrc="/BotIcon.png" width="24" height="24" alt="Bot Avatar" class="bot-avatar" />
+        } } } @if (message.isPlaceholder) {
+        <div class="loading-message-bubble">
+          <div class="loading-content">
+            <p>{{ message.content }}</p>
+            <div class="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          @if (message.content === UPSELL_MESSAGE) {
+          <div class="upsell-wrapper fade-in">
+            <button mat-button color="primary" class="action-btn" (click)="enableNotifications()">
+              <mat-icon>notifications_active</mat-icon>
+              Click to enable
+            </button>
+          </div>
+          } @if (message.content === UPSELL_DENIED_MESSAGE) {
+          <div class="denied-wrapper fade-in">
+            <mat-icon class="lock-icon">notifications_off</mat-icon>
+            <span class="denied-text">
+              Click the icon next to the URL above to enable notifications in your settings.
+            </span>
+          </div>
+          }
+        </div>
+        } @else { @if (!message.isUser) { @if (message.isStreaming || (message.thinkingSteps &&
+        message.thinkingSteps.length > 0)) {
+        <div class="thinking-panel" [class.thinking-panel--live]="!!message.isStreaming">
+          <button
+            class="thinking-toggle"
+            (click)="toggleMessageExpansion('thinking_' + message.id)">
+            <mat-icon class="thinking-icon">psychology</mat-icon>
+            <span class="thinking-label">
+              @if (message.isStreaming) { {{ getCurrentStepLabel(message) }} } @else { Thought for
+              {{ message.thinkingDuration }}s }
+            </span>
+            <mat-icon
+              class="thinking-chevron"
+              [class.rotated]="isMessageExpanded('thinking_' + message.id)"
+              >expand_more</mat-icon
+            >
+          </button>
+          @if (isMessageExpanded('thinking_' + message.id)) {
+          <div class="thinking-steps">
+            @for (step of message.thinkingSteps; track step.id) {
+            <div class="thinking-step" [class.thinking-tool]="step.type !== 'thought'">
+              <markdown [data]="step.text"></markdown>
+            </div>
+            }
+          </div>
+          }
+        </div>
+        } @if (isWaiting(message)) { @if (message.upsellContent) {
+        <div class="upsell-inline">
+          <p class="upsell-inline__text">{{ message.upsellContent }}</p>
+          @if (message.upsellContent === UPSELL_MESSAGE) {
+          <button mat-button color="primary" class="action-btn" (click)="enableNotifications()">
+            <mat-icon>notifications_active</mat-icon>
+            Click to enable
+          </button>
+          } @if (message.upsellContent === UPSELL_DENIED_MESSAGE) {
+          <div class="denied-wrapper fade-in">
+            <mat-icon class="lock-icon">notifications_off</mat-icon>
+            <span class="denied-text">
+              Click the icon next to the URL above to enable notifications in your settings.
+            </span>
+          </div>
+          }
+        </div>
+        } } @if(isCodeBlock(message.content)) {
+        <app-code-box [code]="extractCode(message.content)" [messageId]="message.id"></app-code-box>
+        } @else if (message.errorDetails) {
+        <div class="error-card">
+          <div class="icon-area">
+            <mat-icon class="warning-symbol">warning_amber</mat-icon>
+          </div>
+
+          <div class="content-area">
+            <div class="error-title">Error processing request.</div>
+
+            <div class="error-subtitle"> Please try again </div>
+
+            <button class="details-link" (click)="toggleMessageExpansion(message.id)">
+              {{ isMessageExpanded(message.id) ? 'Hide' : 'Show' }} technical details
+
+              <mat-icon [class.rotated]="isMessageExpanded(message.id)">expand_more</mat-icon>
+            </button>
+
+            @if (isMessageExpanded(message.id)) {
+            <div class="error-code-block"> {{ message.errorDetails }} </div>
+            }
+          </div>
+        </div>
+        } @else if (message.contentSegments && message.contentSegments.length > 0) { @for (segment
+        of getDisplayedSegments(message) ?? []; track $index) { @if (segment.type === 'code') {
+        <app-code-box
+          [code]="segment.value"
+          [messageId]="message.id + '_seg_' + $index"></app-code-box>
+        } @else {
+        <markdown [data]="segment.value"></markdown>
+        } } } @else {
+        <markdown [data]="message.content"></markdown>
+        } } @else { @if (message.attachments && message.attachments.length > 0) {
+        <div class="message-attachments-row">
+          @for (fileName of message.attachments; track fileName) {
+          <div class="history-attachment-chip">
+            <mat-icon class="file-icon">description</mat-icon>
+            <span class="file-name">{{ fileName }}</span>
+          </div>
+          }
+        </div>
+        }
+        <div [class.clamped]="!isMessageExpanded(message.id) && message.content.length > 300">
+          <markdown [data]="message.content"></markdown>
+        </div>
+        @if (message.content.length > 300) {
+        <button class="show-more-btn" (click)="toggleMessageExpansion(message.id)">
+          {{ isMessageExpanded(message.id) ? 'Show less' : 'Show more' }}
+        </button>
+        }
+        <div class="timestamp"> {{ message.timestamp | date : 'MMM d, h:mm a' }} </div>
+        } }
+      </div>
+    </div>
+    }
+  </div>
+  @if (IS_SUGGESTION_CHIP_TURNED_ON && chatStore.messages().length === 1 &&
+  chatStore.canSendMessage()) {
+  <app-suggestion-chips
+    [suggestions]="defaultSuggestions"
+    (suggestionClicked)="onSuggestionClick($event)">
+  </app-suggestion-chips>
+  }
+  <div class="input-area">
+    <div class="custom-input-wrapper">
+      @if (attachedFiles().length > 0) {
+      <div class="preview-attachments-container">
+        @for (file of attachedFiles(); track file.fileName; let i = $index) {
+        <div class="attachment-preview-chip">
+          <mat-icon class="file-icon">description</mat-icon>
+          <span class="file-name" [title]="file.fileName">{{ file.fileName }}</span>
+          <button mat-icon-button class="remove-btn" (click)="removeAttachment(i)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        }
+      </div>
+      } @if (fileErrors().length > 0) {
+      <div class="file-errors-container">
+        @for (error of fileErrors(); track error) {
+        <div class="file-error-text">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          {{ error }}
+        </div>
+        }
+      </div>
+      }
+
+      <div class="input-row">
+        <button
+          mat-icon-button
+          class="send-message-button"
+          matTooltip="Upload CSV file"
+          (click)="fileInput.click()">
+          <mat-icon class="mat-icon-small">upload_file</mat-icon>
+        </button>
+
+        <input
+          #fileInput
+          type="file"
+          multiple
+          (change)="onFileSelected($event)"
+          accept=".csv"
+          style="display: none" />
+
+        <textarea
+          [ngModel]="userMessage()"
+          (ngModelChange)="userMessage.set($event)"
+          class="custom-textarea"
+          placeholder="Enter prompt here"
+          (keydown.enter)="onEnterKey($event)"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"></textarea>
+
+        <button
+          mat-icon-button
+          class="send-message-button"
+          matTooltip="Send message"
+          (click)="sendMessage()"
+          [disabled]="!canSendMessage()">
+          <mat-icon class="mat-icon-small">send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,215 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  font-family: 'JetBrains Mono';
+  max-width: 760px;
+  gap: 4px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid #c4c7c5;
+    border-radius: 4px;
+    background-color: #f0f4f9;
+    border-bottom: 1px solid #c4c7c5;
+
+    .left-actions {
+      display: flex;
+      align-items: center;
+
+      .collapse-icon {
+        cursor: pointer;
+        background: none;
+        border: 0;
+      }
+
+      .compact-icon-button {
+        width: 24px !important;
+        height: 24px !important;
+
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+          font-size: 20px; // Slightly smaller to fit inside 24px
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+        }
+      }
+    }
+
+    .right-actions {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+
+      .fullscreen-icon {
+        width: 24px !important;
+        height: 24px !important;
+
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+
+        border: none;
+        background: none;
+        cursor: pointer;
+
+        mat-icon {
+          font-size: 20px; // Slightly smaller to fit inside 24px
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+
+  pre {
+    margin: 0;
+    padding: 12px;
+    background: #ffffff;
+    color: #8430ce;
+    font-size: 10px;
+    line-height: 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    border: 1px solid #c4c7c5;
+    border-radius: 4px;
+    margin-top: -10px; // make top connect to the header
+
+    white-space: pre; // important for horizontal scroll
+    overflow: hidden;
+
+    // collapsed state (Default)
+    // 16px line-height * 10 lines + 24px padding = 184px
+    max-height: 184px;
+
+    transition: max-height 0.3s ease-in-out;
+
+    &.expanded {
+      max-height: 10000px; // Arbitrary large number to allow full expansion
+      overflow-x: auto;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #e9eef6;
+    border: 1px solid #c4c7c5;
+    border-radius: 4px;
+    font-family: 'Google Sans Text';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.1px;
+    flex: none;
+    color: #444746;
+
+    .copy-text {
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 14px;
+      color: #0b57d0;
+      font-weight: bold;
+      font-family: inherit;
+
+      .btn-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+      }
+    }
+
+    .success-icon,
+    .custom-copy-icon {
+      display: block;
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      line-height: 16px;
+      overflow: hidden;
+      margin-right: 0 !important;
+
+      padding: 0;
+      margin: 0;
+    }
+
+    .custom-copy-icon {
+      object-fit: contain;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .success-icon {
+      color: #188038; // Google Green
+      animation: scaleIn 0.2s ease-out;
+
+      align-items: center;
+    }
+
+    // Hover states
+    &:hover .custom-copy-icon {
+      opacity: 1;
+    }
+
+    // Simple pop animation
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+
+    p {
+      margin: 0px;
+    }
+  }
+
+  &.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    border-radius: 0;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    max-width: none;
+
+    .header,
+    .footer {
+      flex-shrink: 0;
+    }
+
+    pre {
+      flex: 1;
+      overflow: auto;
+      max-height: none !important;
+    }
+  }
+}

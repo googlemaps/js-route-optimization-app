@@ -1,0 +1,9 @@
+<div class="map" #mapOutlet></div>
+<app-result-metrics></app-result-metrics>
+@if (showGenerateButton() && chatStore.canSendMessage()) {
+<div class="top-controls">
+  <button matButton="elevated" class="generate-polylines-button" (click)="generatePolylines()">
+    Generate route polylines
+  </button>
+</div>
+}

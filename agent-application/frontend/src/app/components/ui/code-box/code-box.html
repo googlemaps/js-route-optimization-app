@@ -1,0 +1,60 @@
+<div class="header">
+  <div class="left-actions">
+    <button
+      mat-icon-button
+      class="compact-icon-button"
+      (click)="toggleCollapse()"
+      [disabled]="isFullscreen()"
+      [matTooltip]="!isCollapsed() ? 'Collapse code' : 'Expand code'"
+      [attr.aria-label]="!isCollapsed() ? 'Collapse code' : 'Expand code'">
+      <mat-icon fontIcon="{{ !isCollapsed() ? 'unfold_less' : 'keyboard_double_arrow_down' }}">
+      </mat-icon
+    ></button>
+  </div>
+  <div class="right-actions">
+    <button
+      mat-icon-button
+      (click)="toggleFullscreen()"
+      class="fullscreen-icon"
+      [attr.aria-label]="isFullscreen() ? 'fullscreen_exit' : 'fullscreen'">
+      <mat-icon fontIcon="{{ isFullscreen() ? 'fullscreen_exit' : 'fullscreen' }}"></mat-icon>
+    </button>
+  </div>
+</div>
+
+<pre
+  [class.expanded]="!isCollapsed()"><code [highlight]="visibleCode()" language="json"></code></pre>
+
+<div class="footer">
+  <p
+    >Use this code with caution.
+    <a
+      href="https://cloud.google.com/gemini/docs/discover/works#how_helps_with_coding"
+      target="_blank"
+      >Learn More</a
+    ></p
+  >
+</div>
+
+<div class="footer">
+  <button
+    mat-button
+    class="copy-text"
+    alt="Copy to clipboard"
+    matTooltip="Copy to clipboard"
+    [cdkCopyToClipboard]="this.code()"
+    (cdkCopyToClipboardCopied)="copyCode(this.messageId())"
+    [disabled]="copiedMessageId() === this.messageId()">
+    @if (copiedMessageId() === this.messageId()) {
+    <span class="btn-content">
+      <mat-icon class="success-icon">check</mat-icon>
+      <span>Copied!</span>
+    </span>
+    } @else {
+    <span class="btn-content">
+      <img ngSrc="/CopyIcon.png" width="16" height="16" alt="Copy icon" class="custom-copy-icon" />
+      <span>Copy code</span>
+    </span>
+    }
+  </button>
+</div>

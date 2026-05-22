@@ -1,0 +1,4 @@
+**/*.env
+**/.vscode
+**/venv
+**/config.json

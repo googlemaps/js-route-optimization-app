@@ -1,0 +1,58 @@
+{
+  "name": "gm-pro-chatbot",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "style-fix": "prettier --write .",
+    "lint": "ng lint"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/cdk": "^20.2.13",
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/material": "^20.2.11",
+    "@angular/platform-browser": "^20.3.0",
+    "@angular/router": "^20.3.0",
+    "@googlemaps/js-api-loader": "^2.0.2",
+    "@googlemaps/markerclusterer": "^2.6.2",
+    "@googlemaps/routeoptimization": "^0.6.0",
+    "@ngrx/signals": "^20.1.0",
+    "angular-split": "^20.0.0",
+    "ngx-highlightjs": "^14.0.1",
+    "ngx-markdown": "^20.1.0",
+    "papaparse": "^5.5.3",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.0.1",
+    "@analogjs/vitest-angular": "^2.0.1",
+    "@angular/build": "^20.3.8",
+    "@angular/cli": "^20.3.8",
+    "@angular/compiler-cli": "^20.3.0",
+    "@types/google.maps": "^3.58.1",
+    "@types/jest": "^30.0.0",
+    "@types/papaparse": "^5.5.2",
+    "angular-eslint": "20.6.0",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.8",
+    "jsdom": "^22.0.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "8.46.3",
+    "vite": "^7.1.12",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^4.0.7"
+  },
+  "overrides": {
+    "vitest": "^4.0.7"
+  }
+}

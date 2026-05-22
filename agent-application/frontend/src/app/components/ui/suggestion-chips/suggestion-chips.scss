@@ -1,0 +1,49 @@
+$central-width: 760px;
+
+.chips-container {
+  max-width: $central-width;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 20px;
+}
+
+.chip {
+  appearance: none;
+  background: #ffffff;
+  cursor: pointer;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  height: 32px;
+  width: 100%;
+  padding: 0 16px;
+
+  border: 1px solid #c4c7c5;
+  border-radius: 4px;
+
+  font-family: 'Google Sans Text', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #444746;
+  text-align: left;
+  letter-spacing: 0.1px;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #f8f9fa;
+    border-color: #8e918f;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #0b57d0;
+    outline-offset: 2px;
+  }
+}

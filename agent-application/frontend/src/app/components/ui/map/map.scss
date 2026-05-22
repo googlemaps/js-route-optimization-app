@@ -1,0 +1,32 @@
+:host {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  background-color: #fff;
+  position: relative;
+}
+
+.map {
+  flex-grow: 1;
+  border-radius: 32px;
+  border-bottom-right-radius: 0;
+  overflow: hidden;
+  margin: 0 16px 16px 0;
+}
+
+app-result-metrics {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+}
+
+.top-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}

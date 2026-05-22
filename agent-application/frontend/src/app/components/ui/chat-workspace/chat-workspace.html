@@ -1,0 +1,17 @@
+<as-split [gutterSize]="38">
+  <as-split-area [size]="40" [minSize]="30">
+    <app-chat-window />
+  </as-split-area>
+  <as-split-area [size]="60" [minSize]="30">
+    <div
+      style="
+        height: 100%;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      ">
+      <app-map></app-map>
+    </div>
+  </as-split-area>
+</as-split>

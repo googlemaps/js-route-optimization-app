@@ -1,0 +1,58 @@
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+.metrics-container {
+  background: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  border: 1px solid #f6f5f5;
+}
+
+.metric-entry {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+
+  &:not(:last-child) {
+    border-right: 1px solid #f6f5f5;
+  }
+}
+
+.metric-title {
+  font-family: 'Roboto';
+  color: #202124;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 13px;
+  text-align: center;
+}
+
+.metric-value {
+  font-family: 'Google Sans';
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+
+  color: #0d99ff;
+}
+
+.metric-value-warn {
+  color: #eb4335;
+}
+
+.metric-value-good {
+  color: #4baf50;
+}
+
+.metric-subtitle {
+  color: #5f6368;
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 13px;
+  text-align: center;
+  letter-spacing: 0.125497px;
+}

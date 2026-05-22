@@ -21,3 +21,10 @@ terraform.tfstate*
 
 .DS_Store
 application/frontend/src/config/*
+
+__pycache__
+venv
+.angular
+.env
+config.json
+*.tfvars

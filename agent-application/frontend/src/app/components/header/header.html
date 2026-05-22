@@ -1,0 +1,24 @@
+<header class="nav-mini">
+  <div class="header-container">
+    <img class="logo-maps-pin" src="/GoogleMapsIcon.png" alt="Google Maps Icon" />
+    <div class="google-maps-platform">Route Optimization Agent</div>
+    <div class="header-actions">
+      <button mat-icon-button (click)="startNewSession()" matTooltip="New Chat">
+        <mat-icon fontSet="material-symbols-outlined" class="mat-icon-small">
+          edit_square
+        </mat-icon>
+      </button>
+      <a
+        href="https://issuetracker.google.com/issues/new?component=1968631&template=2226640&customFields=1515706:{{ contextId }}&customFields=1515549:{{ messageId }}"
+        target="_blank"
+        aria-label="Report a bug"
+        matTooltip="Report a bug"
+        class="bug-report">
+        <mat-icon>bug_report</mat-icon>
+      </a>
+      <button mat-icon-button (click)="openHelpDocs()" matTooltip="Open help docs">
+        <mat-icon fontSet="material-symbols-outlined" class="mat-icon-small"> help </mat-icon>
+      </button>
+    </div>
+  </div>
+</header>
