@@ -1,3 +1,5 @@
+FastAPI server for the application.
+
 ## Local development
 1. Configure your [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials).
 1. Create a virtual environment with Python v3.10 `python3.10 -m venv venv`
@@ -6,6 +8,7 @@
 1. Create a `.env` file in the format of `.example.env`
 1. Run the development server with `fastapi dev app/main.py`
 
+### Env file
 Env file description
 |  Parameter       |  Description  |
 | ---------------- | ------------- |
