@@ -8,6 +8,7 @@ jobs:
     outputs:
       backend: ${{ steps.filter.outputs.backend }}
       frontend: ${{ steps.filter.outputs.frontend }}
+      agent-frontend: ${{ steps.filter.outputs.agent-frontend }}
     steps:
     - uses: actions/checkout@v3
     - uses: dorny/paths-filter@v2
@@ -18,6 +19,8 @@ jobs:
             - 'application/backend/**'
           frontend:
             - 'application/frontend/**'
+          agent-frontend:
+            - 'agent-application/frontend/**'
 
   # backend checks
   check-backend:
@@ -70,6 +73,31 @@ jobs:
     - run: npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage
       env:
         DISPLAY: ':99'
+
+  # agent-application frontend checks
+  check-agent-frontend:
+    needs: changes
+    if: ${{ needs.changes.outputs.agent-frontend == 'true' }}
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: agent-application/frontend
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js v22 LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: agent-application/frontend/package-lock.json
+
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run style-check
+    - run: npm test
 
   # build container image
   build-container:

@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "style-fix": "prettier --write .",
+    "style-check": "npx prettier --check .",
     "lint": "ng lint"
   },
   "private": true,
