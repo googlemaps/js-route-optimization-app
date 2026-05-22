@@ -25,6 +25,20 @@ Code is licensed under the Apache 2.0 license. See [LICENSE](../LICENSE) for det
 - [Google OAuth 2.0 Policies](https://developers.google.com/identity/protocols/oauth2/policies)
 
 ---
+## Prerequisites
+
+The following tools are required for local development:
+
+- [Node.js](https://nodejs.org/) v18 or higher
+- [Python 3.10](https://www.python.org/downloads/)
+- [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) (`gcloud`)
+
+The following APIs must be enabled on your GCP project (NOTE: If using the provided terraform, these will be enabled for you as part of setup):
+
+- [Route Optimization API](https://console.cloud.google.com/apis/library/routeoptimization.googleapis.com)
+- [Maps JavaScript API](https://console.cloud.google.com/apis/library/maps-backend.googleapis.com)
+
+---
 ## Deployment
 
 Pre-configured Terraform is provided for ease of deployment. See [infrastructure/README.md](infrastructure/README.md) for detailed instructions on setting up your Google Cloud environment.
@@ -39,4 +53,7 @@ export REGISTRY=us-central1-docker.pkg.dev/your-project/application-registry/app
 ---
 ## Local Development
 
-See the documentation in the [frontend](/agent-application/frontend/README.md) and [backend](/agent-application/backend/README.md) for instructions on setup.
+1. Set up and start the [backend](/agent-application/backend/README.md) first
+2. Then set up and start the [frontend](/agent-application/frontend/README.md)
+
+The frontend proxies API requests to `http://localhost:8000`, so the backend must be running before the frontend will work correctly.
