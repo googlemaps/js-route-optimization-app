@@ -28,18 +28,6 @@ import {
 } from '../models/chat';
 import { APP_CONFIG } from '../models/tokens';
 
-// Debug: accumulate all messages for download (run __downloadChatMsgs() in DevTools)
-(window as any).__chatMsgs = (window as any).__chatMsgs || [];
-(window as any).__downloadChatMsgs = () => {
-  const blob = new Blob([JSON.stringify((window as any).__chatMsgs, null, 2)], {
-    type: 'application/json',
-  });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'chat-msgs.json';
-  a.click();
-};
-
 // ---------------------------------------------------------------------------
 // Public StreamChunk types
 // ---------------------------------------------------------------------------
@@ -307,8 +295,6 @@ class StreamProcessor {
       });
       return;
     }
-    console.log(msg);
-    (window as any).__chatMsgs.push(msg);
 
     if (state === TASK_SUBMITTED) {
       this.handleSubmitted(msg, resolvedMessageId, resolvedContextId);
