@@ -18,7 +18,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(asctime)s [
 
 app = FastAPI()
 
-app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
+app.add_middleware(CORSMiddleware, allow_origins=[settings.API_URL], allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
 
 @app.get('/config.json')
 def config():
