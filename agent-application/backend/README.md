@@ -11,6 +11,6 @@ Env file description
 |  AGENT_URL       | URL for the synchronous message endpoint |
 |  AGENT_STREAM_URL| URL for the streaming message endpoint |
 |  PROJECT_ID      | ID of the GCP project |
-| API_URL          | URL to use for the API. When running locally, use `http://localhost:8000` |
-| MAPS_API_KEY     | API key for Google Maps |
-| MAP_ID           | Map ID for Google Maps |
+|  API_URL         | URL to use for the API. When running locally, use `http://localhost:8000` |
+|  MAPS_API_KEY    | API key for Google Maps |
+|  MAP_ID          | Map ID for Google Maps |
