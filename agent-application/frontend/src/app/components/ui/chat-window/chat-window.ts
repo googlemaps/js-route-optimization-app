@@ -47,7 +47,7 @@ import { HelpDialogService } from '../../../services/help-dialog';
 import { extractCode, isCodeBlock } from '../../../util/json';
 import { CodeBoxComponent } from '../code-box/code-box';
 import { SuggestionChipsComponent } from '../suggestion-chips/suggestion-chips';
-import { CsvParserService } from '../../../util/csvParser';
+import { CsvParserService } from '../../../util/csv-parser';
 import { ThinkingLabelQueue } from './thinking-label-queue';
 import { TypewriterController } from './typewriter';
 
