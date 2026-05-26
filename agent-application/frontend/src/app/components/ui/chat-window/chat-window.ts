@@ -50,6 +50,7 @@ import { SuggestionChipsComponent } from '../suggestion-chips/suggestion-chips';
 import { CsvParserService } from '../../../util/csv-parser';
 import { ThinkingLabelQueue } from './thinking-label-queue';
 import { TypewriterController } from './typewriter';
+import { JsonParserService } from '../../../util/json-parser';
 
 interface PendingFile {
   fileName: string;
@@ -83,6 +84,7 @@ export class ChatWindowComponent {
   private readonly browserNotificationService = inject(BrowserNotificationService);
   private readonly helpService = inject(HelpDialogService);
   private readonly csvParser = inject(CsvParserService);
+  private readonly jsonParser = inject(JsonParserService);
 
   protected readonly chatStore = inject(ChatStore);
   protected readonly userMessage = signal<string>('');
@@ -301,7 +303,7 @@ export class ChatWindowComponent {
   }
 
   /**
-   * Handles file input changes. Parses each selected CSV file and adds valid
+   * Handles file input changes. Parses each selected CSV or JSON file and adds valid
    * ones to the attachment list. Invalid files produce per-file error messages.
    */
   async onFileSelected(event: Event): Promise<void> {
@@ -315,7 +317,11 @@ export class ChatWindowComponent {
     await Promise.all(
       Array.from(input.files).map(async file => {
         try {
-          const parsed = await this.csvParser.parseFile(file);
+          const extension = file.name.toLowerCase().split('.').pop();
+          const parsed =
+            extension === 'json'
+              ? await this.jsonParser.parseFile(file)
+              : await this.csvParser.parseFile(file);
           validFiles.push({ fileName: file.name, rawText: parsed.rawText });
         } catch (error: unknown) {
           const msg = error instanceof Error ? error.message : 'Failed to parse.';

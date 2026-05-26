@@ -199,7 +199,7 @@
         <button
           mat-icon-button
           class="send-message-button"
-          matTooltip="Upload CSV file"
+          matTooltip="Upload CSV or JSON file"
           (click)="fileInput.click()">
           <mat-icon class="mat-icon-small">upload_file</mat-icon>
         </button>
@@ -209,7 +209,7 @@
           type="file"
           multiple
           (change)="onFileSelected($event)"
-          accept=".csv"
+          accept=".csv,.json"
           style="display: none" />
 
         <textarea
