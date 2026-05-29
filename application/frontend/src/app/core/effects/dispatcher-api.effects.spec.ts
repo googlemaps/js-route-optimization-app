@@ -144,10 +144,10 @@ describe('DispatcherApiEffects', () => {
 
     it('should dispatch optimize tours failure', () => {
       const error = { message: 'foo', requestTime: Date.now() };
-      dispatcherClient.optimizeTours.and.callFake(() => throwError(error));
-      createTestScheduler().run(({ expectObservable }) => {
+      dispatcherClient.optimizeTours.and.callFake(() => throwError(() => error));
+      createTestScheduler().run(({ expectObservable, cold: rxjsCold }) => {
         actions$ = merge(
-          cold('-a----', { a: optimizeTours({ scenario: {} }) }),
+          rxjsCold('-a----', { a: optimizeTours({ scenario: {} }) }),
           store.scannedActions$
         );
         expectObservable(effects.optimizeTours$).toBe('- a', {
@@ -169,9 +169,9 @@ describe('DispatcherApiEffects', () => {
       };
       const source = createRetryableStream(throwError(error), of(elapsedSolution));
       dispatcherClient.optimizeTours.and.callFake(() => source);
-      createTestScheduler().run(({ expectObservable }) => {
+      createTestScheduler().run(({ expectObservable, cold: rxjsCold }) => {
         actions$ = merge(
-          cold('-a----', { a: optimizeTours({ scenario: {} }) }),
+          rxjsCold('-a----', { a: optimizeTours({ scenario: {} }) }),
           store.scannedActions$
         );
         expectObservable(effects.optimizeTours$).toBe('- 1s a', {
