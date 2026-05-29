@@ -12,8 +12,10 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "target": "ES2022",
+    "skipLibCheck": true,
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "../node_modules/@types"
     ],
     "lib": [
       "es2018",

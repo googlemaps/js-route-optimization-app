@@ -31,7 +31,7 @@
             ],
             "styles": [
               "src/styles/main.scss",
-              "node_modules/nouislider/distribute/nouislider.min.css"
+              "../node_modules/nouislider/distribute/nouislider.min.css"
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
