@@ -1,11 +1,6 @@
 {
   "version": "0.0.0",
   "npmClient": "npm",
-  "packages": [
-    "backend",
-    "frontend"
-  ],
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "useNx": false,
-  "useWorkspaces": false
+  "useNx": false
 }

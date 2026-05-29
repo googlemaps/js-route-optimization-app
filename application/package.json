@@ -6,13 +6,15 @@
   "engines": {
     "node": ">=22 <23"
   },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "devDependencies": {
     "dotenv": "^16.5.0",
     "lerna": "^9.0.7"
   },
   "scripts": {
-    "postinstall": "npx lerna init",
-    "prepare": "npx lerna bootstrap",
     "start": "npx --node-options=\"-r dotenv/config\" lerna run --parallel start"
   }
 }
