@@ -54,7 +54,7 @@ export class DispatcherApiEffects {
         this.store.pipe(select(PreSolveVehicleSelectors.selectSelected))
       ),
       switchMap(([{ scenario }, requestedShipmentIds, requestedVehicleIds]) => {
-        return race<Action>(
+        return (
           // Deferred to recreate the inner observable when retried
           defer(() => this.dispatcherClient.optimizeTours(scenario, Date.now())).pipe(
             map((elapsedSolution) =>

@@ -151,8 +151,8 @@ export class PreSolveGlobalSettingsComponent implements OnDestroy {
           selectAllowLargeDeadlineDespiteInterruptionRisk,
         ]) => {
           this.currentTimezone = selectTimezone as Timezone;
-          this.globalStartSeconds = Long.fromValue(selectGlobalStartTime as Long);
-          this.globalEndSeconds = Long.fromValue(selectGlobalEndTime as Long);
+          this.globalStartSeconds = Long.fromValue(selectGlobalStartTime as unknown as Long);
+          this.globalEndSeconds = Long.fromValue(selectGlobalEndTime as unknown as Long);
           this.globalStartDateValue = timeToDate(
             this.globalStartSeconds,
             this.currentTimezone.offset
