@@ -18,7 +18,7 @@ import along from '@turf/along';
 import simplify from '@turf/simplify';
 import lineSlice from '@turf/line-slice';
 import length from '@turf/length';
-import * as cheapRuler from '../../../node_modules/cheap-ruler';
+import * as cheapRuler from 'cheap-ruler';
 import { feature, LineString, Point, FeatureCollection, Units } from '@turf/helpers';
 import {
   fromTurfPoint,

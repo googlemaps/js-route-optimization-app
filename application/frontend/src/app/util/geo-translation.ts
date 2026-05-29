@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Polygon, Point, LineString, Feature, point, lineString, polygon } from '@turf/helpers';
-import * as cheapRuler from '../../../node_modules/cheap-ruler';
+import * as cheapRuler from 'cheap-ruler';
 import { ILatLng, IWaypoint } from '../core/models';
 
 export function fromDispatcherLatLng(vertex: ILatLng): google.maps.LatLng {
