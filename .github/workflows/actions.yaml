@@ -40,9 +40,10 @@ jobs:
       with:
         node-version: '22'
         cache: 'npm'
-        cache-dependency-path: application/backend/package-lock.json
+        cache-dependency-path: application/package-lock.json
 
     - run: npm ci
+      working-directory: application
     - run: npm run lint
     - run: npm test
 
@@ -64,9 +65,10 @@ jobs:
       with:
         node-version: '22'
         cache: 'npm'
-        cache-dependency-path: application/frontend/package-lock.json
+        cache-dependency-path: application/package-lock.json
 
     - run: npm ci
+      working-directory: application
     - run: npm run lint
     - run: npm run style-check
     - run: Xvfb :99 &
