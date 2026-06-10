@@ -17,11 +17,7 @@ limitations under the License.
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
-import {
-  TerraDraw,
-  TerraDrawRectangleMode,
-  TerraDrawPolygonMode,
-} from 'terra-draw';
+import { TerraDraw, TerraDrawRectangleMode, TerraDrawPolygonMode } from 'terra-draw';
 import { TerraDrawGoogleMapsAdapter } from 'terra-draw-google-maps-adapter';
 import { Feature, Polygon } from '@turf/helpers';
 import { SelectionMode } from '../models';
