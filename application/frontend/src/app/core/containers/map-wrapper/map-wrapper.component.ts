@@ -19,6 +19,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   OnDestroy,
   OnInit,
@@ -28,6 +29,11 @@ import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { MapService } from '../../services';
 
+export interface MapInitializeEvent {
+  map: google.maps.Map;
+  element: HTMLElement;
+}
+
 @Component({
   selector: 'app-map-wrapper',
   templateUrl: './map-wrapper.component.html',
@@ -36,7 +42,8 @@ import { MapService } from '../../services';
 })
 export class MapWrapperComponent implements OnInit, OnDestroy {
   @Input() options: google.maps.MapOptions;
-  @Output() mapInitialize = new EventEmitter<google.maps.Map>();
+  @Output() mapInitialize = new EventEmitter<MapInitializeEvent>();
+  @HostBinding('attr.id') readonly mapId = 'google-map-container';
   private readonly subscriptions: Subscription[] = [];
   private previousMapWidth: number;
 
@@ -54,7 +61,7 @@ export class MapWrapperComponent implements OnInit, OnDestroy {
   private initializeMap(options: google.maps.MapOptions): Observable<google.maps.Map> {
     return this.mapService.initMap(this.el.nativeElement, options).pipe(
       tap((map) => {
-        this.mapInitialize.emit(map);
+        this.mapInitialize.emit({ map, element: this.el.nativeElement });
 
         // Reset the map bounds when it is toggled on.
         // bounds_changed fires off whenever the viewable bounds of the map change, even from user interaction,

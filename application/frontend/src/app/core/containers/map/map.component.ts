@@ -26,7 +26,6 @@ import { combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, take } from 'rxjs/operators';
 import { selectMapSelectionToolsVisible, State } from 'src/app/reducers';
 import { ActiveFilter, FilterOption } from 'src/app/shared/models';
-import { boundsToTurfPolygon, mapsPolygonToTurfPolygon } from 'src/app/util';
 import {
   MapActions,
   PreSolveShipmentActions,
@@ -47,10 +46,10 @@ import * as fromUI from '../../selectors/ui.selectors';
 import { selectPage } from '../../selectors/ui.selectors';
 import TravelSimulatorSelectors from '../../selectors/travel-simulator.selectors';
 import {
-  MATERIAL_COLORS,
   VehicleInfoWindowService,
   VisitRequestInfoWindowService,
   MultiselectInfoWindowService,
+  TerraDrawService,
 } from '../../services';
 import { DepotLayer } from '../../services/depot-layer.service';
 import { MapService } from '../../services/map.service';
@@ -60,6 +59,7 @@ import { PreSolveVehicleLayer } from '../../services/pre-solve-vehicle-layer.ser
 import { PreSolveVisitRequestLayer } from '../../services/pre-solve-visit-request-layer.service';
 import { RouteLayer } from '../../services/route-layer.service';
 import { MapLayer, MapLayerId } from '../../models/map';
+import { MapInitializeEvent } from '../map-wrapper/map-wrapper.component';
 
 @Component({
   selector: 'app-map',
@@ -80,8 +80,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private readonly subscriptions: Subscription[] = [];
-  private drawingManager: google.maps.drawing.DrawingManager;
   private map: google.maps.Map;
+  private mapElement: HTMLElement;
   private page: Page;
 
   constructor(
@@ -96,7 +96,8 @@ export class MapComponent implements OnInit, OnDestroy {
     private preSolveVisitRequestLayer: PreSolveVisitRequestLayer,
     public vehicleInfoWindowService: VehicleInfoWindowService,
     public visitRequestInfoWindowService: VisitRequestInfoWindowService,
-    public multiselectInfoWindowService: MultiselectInfoWindowService
+    public multiselectInfoWindowService: MultiselectInfoWindowService,
+    private terraDrawService: TerraDrawService
   ) {}
 
   ngOnInit(): void {
@@ -160,6 +161,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.splice(0).forEach((subscription) => subscription.unsubscribe());
+    this.terraDrawService.destroy();
   }
 
   private createFilter(option: FilterOption): ActiveFilter {
@@ -195,16 +197,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   onToggleSelectMapItems(mode: SelectionMode): void {
-    if (mode === SelectionMode.Off) {
-      this.drawingManager.setMap(null);
-    } else {
-      this.drawingManager.setMap(this.map);
-      this.drawingManager.setDrawingMode(
-        mode === SelectionMode.Bbox
-          ? google.maps.drawing.OverlayType.RECTANGLE
-          : google.maps.drawing.OverlayType.POLYGON
-      );
-    }
+    this.terraDrawService.setMode(mode);
   }
 
   onTypeChange(satellite: boolean): void {
@@ -215,44 +208,31 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapService.zoomToHome();
   }
 
-  onMapInitialize(map: google.maps.Map): void {
-    this.map = map;
-    this.drawingManager = this.createDrawingTools();
+  onMapInitialize(event: MapInitializeEvent): void {
+    this.map = event.map;
+    this.mapElement = event.element;
+    this.initializeTerraDraw();
   }
 
-  createDrawingTools(): google.maps.drawing.DrawingManager {
-    const drawingManager = new google.maps.drawing.DrawingManager({
-      drawingControl: false,
-      drawingMode: google.maps.drawing.OverlayType.RECTANGLE,
-      rectangleOptions: {
-        fillOpacity: 0.0,
-        strokeColor: MATERIAL_COLORS.Red.hex,
-      },
-      polygonOptions: {
-        fillOpacity: 0.0,
-        strokeColor: MATERIAL_COLORS.Red.hex,
-      },
-    });
+  private initializeTerraDraw(): void {
+    if (!this.mapElement) {
+      console.error('Map element not found for TerraDraw initialization');
+      return;
+    }
 
-    google.maps.event.addListener(drawingManager, 'overlaycomplete', (event) => {
-      let polygon;
-      if (event.type === 'rectangle') {
-        const bounds = event.overlay.getBounds();
-        polygon = boundsToTurfPolygon(bounds);
-      } else {
-        polygon = mapsPolygonToTurfPolygon(event.overlay);
-      }
-      event.overlay.setMap(null);
+    this.terraDrawService.initialize(this.map, this.mapElement);
 
-      if (this.page === Page.Shipments) {
-        this.store.dispatch(MapActions.selectPreSolveShipmentMapItems({ polygon }));
-      } else if (this.page === Page.Vehicles) {
-        this.store.dispatch(MapActions.selectPreSolveVehicleMapItems({ polygon }));
-      } else if (this.page === Page.RoutesChart) {
-        this.store.dispatch(MapActions.selectPostSolveMapItems({ polygon }));
-      }
-    });
-    return drawingManager;
+    this.subscriptions.push(
+      this.terraDrawService.onFeatureComplete$.subscribe((polygon) => {
+        if (this.page === Page.Shipments) {
+          this.store.dispatch(MapActions.selectPreSolveShipmentMapItems({ polygon }));
+        } else if (this.page === Page.Vehicles) {
+          this.store.dispatch(MapActions.selectPreSolveVehicleMapItems({ polygon }));
+        } else if (this.page === Page.RoutesChart) {
+          this.store.dispatch(MapActions.selectPostSolveMapItems({ polygon }));
+        }
+      })
+    );
   }
 
   isPreSolve(): boolean {

@@ -36,6 +36,7 @@ export * from './pre-solve-visit-request-layer.service';
 export * from './routes-chart.service';
 export * from './route-layer.service';
 export * from './storage-api.service';
+export * from './terra-draw.service';
 export * from './upload.service';
 export * from './validation.service';
 export * from './vehicle-info-window.service';
