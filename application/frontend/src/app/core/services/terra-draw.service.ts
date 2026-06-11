@@ -17,7 +17,7 @@ limitations under the License.
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
-import { TerraDraw, TerraDrawRectangleMode, TerraDrawPolygonMode } from 'terra-draw';
+import { TerraDraw, TerraDrawRectangleMode, TerraDrawPolygonMode, HexColor } from 'terra-draw';
 import { TerraDrawGoogleMapsAdapter } from 'terra-draw-google-maps-adapter';
 import { Feature, Polygon } from '@turf/helpers';
 import { SelectionMode } from '../models';
@@ -69,11 +69,11 @@ export class TerraDrawService {
   }
 
   private initializeTerraDraw(map: google.maps.Map): void {
-    const strokeColor = MATERIAL_COLORS.Red.hex as `#${string}`;
+    const strokeColor = MATERIAL_COLORS.Red.hex as HexColor;
 
     const rectangleMode = new TerraDrawRectangleMode({
       styles: {
-        fillColor: '#ffffff' as `#${string}`,
+        fillColor: '#ffffff' as HexColor,
         fillOpacity: 0,
         outlineColor: strokeColor,
         outlineWidth: 2,
@@ -82,13 +82,13 @@ export class TerraDrawService {
 
     const polygonMode = new TerraDrawPolygonMode({
       styles: {
-        fillColor: '#ffffff' as `#${string}`,
+        fillColor: '#ffffff' as HexColor,
         fillOpacity: 0,
         outlineColor: strokeColor,
         outlineWidth: 2,
         closingPointColor: strokeColor,
         closingPointWidth: 6,
-        closingPointOutlineColor: '#ffffff' as `#${string}`,
+        closingPointOutlineColor: '#ffffff' as HexColor,
         closingPointOutlineWidth: 2,
       },
     });
