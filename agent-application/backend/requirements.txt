@@ -30,7 +30,7 @@ Pygments==2.19.2
 python-dotenv==1.2.1
 python-multipart==0.0.20
 PyYAML==6.0.3
-requests==2.32.5
+requests==2.33.0
 rich==14.2.0
 rich-toolkit==0.15.1
 rignore==0.7.6
