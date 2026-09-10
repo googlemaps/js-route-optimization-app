@@ -397,8 +397,7 @@ class StreamProcessor {
     resolvedContextId: string | undefined
   ): void {
     const fnData = content.data?.data as
-      | { name?: string; id?: string; response?: { result?: string } }
-      | undefined;
+      { name?: string; id?: string; response?: { result?: string } } | undefined;
     const toolName = fnData?.name ?? UNKNOWN_TOOL;
     const responseText = fnData?.response?.result ?? '';
 
