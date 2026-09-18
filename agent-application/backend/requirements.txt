@@ -1,6 +1,6 @@
 annotated-doc==0.0.4
 annotated-types==0.7.0
-anyio==4.11.0
+anyio==4.14.2
 cachetools==6.2.2
 certifi==2025.11.12
 charset-normalizer==3.4.4
