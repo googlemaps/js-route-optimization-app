@@ -29,6 +29,7 @@ import { MATERIAL_COLORS } from './map-theme.service';
 @Injectable({ providedIn: 'root' })
 export class TerraDrawService {
   private draw: TerraDraw | null = null;
+  private map: google.maps.Map | null = null;
   private projectionListener: google.maps.MapsEventListener | null = null;
   private readonly ready$ = new BehaviorSubject<boolean>(false);
   private readonly featureComplete$ = new Subject<Feature<Polygon>>();
@@ -46,6 +47,7 @@ export class TerraDrawService {
   constructor(private zone: NgZone) {}
 
   initialize(map: google.maps.Map, mapElement: HTMLElement): void {
+    this.map = map;
     if (this.draw) {
       this.destroy();
     }
@@ -127,20 +129,23 @@ export class TerraDrawService {
   }
 
   setMode(mode: SelectionMode): void {
-    if (!this.draw || !this.isReady) {
+    if (!this.draw || !this.isReady || !this.map) {
       return;
     }
 
     switch (mode) {
       case SelectionMode.Bbox:
         this.draw.setMode('rectangle');
+        this.map.setOptions({ draggableCursor: 'crosshair' });
         break;
       case SelectionMode.Polygon:
         this.draw.setMode('polygon');
+        this.map.setOptions({ draggableCursor: 'crosshair' });
         break;
       case SelectionMode.Off:
       default:
         this.draw.setMode('static');
+        this.map.setOptions({ draggableCursor: null });
         break;
     }
   }
@@ -150,10 +155,14 @@ export class TerraDrawService {
       this.projectionListener.remove();
       this.projectionListener = null;
     }
+    if (this.map) {
+      this.map.setOptions({ draggableCursor: null });
+    }
     if (this.draw) {
       this.draw.stop();
       this.draw = null;
       this.ready$.next(false);
     }
+    this.map = null;
   }
 }
